@@ -1,42 +1,37 @@
+
 from django.http import HttpResponse
-
-from rest_framework.views import APIView
-from django.shortcuts import redirect
-from pyexcel_xls import get_data as xls_get
-from pyexcel_xlsx import get_data as xlsx_get
-from django.utils.datastructures import MultiValueDictKeyError
-
-
-class ParseExcel(APIView):
-    def post(self, request, format=None):
-        try:
-            excel_file = request.FILES['files']
-            if str(excel_file).split('.')[-1] == 'xls':
-                data = xls_get(excel_file, column_limit=4)
-            elif str(excel_file).split('.')[-1] == 'xlsx':
-                data = xlsx_get(excel_file, column_limit=4)
-            else:
-                return HttpResponse("File format not valid.")
-            print(data)
-            return redirect('load_file.html')
-        except MultiValueDictKeyError:
-            return HttpResponse("Failed to upload Excel file.")
-
-
 from django.shortcuts import render
-from django.conf import settings
-from django.core.files.storage import FileSystemStorage
 
-def simple_upload(request):
-    if request.method == 'POST' and request.FILES['myfile']:
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)
-        return render(request, 'simple_upload.html', {
-            'uploaded_file_url': uploaded_file_url
-        })
-    return render(request, 'simple_upload.html')
+from DataVisualization.utilities.ExcelParser import ExcelParser
+from DataVisualization.models import Document, Commentary
+
+import pandas as pd
+
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    parser = ExcelParser()
+    parser.drop_database()
+    for doc in Document.objects.all():
+        parser.load_and_parse(doc)
+    print(Commentary.objects.all())
+    return HttpResponse("Hello, world.")
+
+
+def sales(request):
+    """ view function for sales app """
+
+    # read data
+
+    df = pd.read_csv("DataVisualization/data/car_sales.csv")
+    rs = df.groupby("Engine size")["Sales in thousands"].agg("sum")
+    categories = list(rs.index)
+    values = list(rs.values)
+
+    table_content = df.to_html(index=None)
+
+    table_content = table_content.replace("", "")
+    table_content = table_content.replace('class="dataframe"', "class='table table-striped'")
+    table_content = table_content.replace('border="1"', "")
+
+    context = {"categories": categories, 'values': values, 'table_data': table_content}
+    return render(request, 'sales.html', context=context)

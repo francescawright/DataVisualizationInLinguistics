@@ -15,13 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from DataVisualization.views import ParseExcel
-from DataVisualization.views import index
-from DataVisualization.views import simple_upload
+from DataVisualization.views import index, sales
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
-    path('parse-excel/', ParseExcel.as_view()),
-    path('upload/', simple_upload),
+    path('sales/', sales, name='sales'),
 ]
