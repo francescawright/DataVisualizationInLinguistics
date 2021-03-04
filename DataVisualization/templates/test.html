@@ -1,0 +1,43 @@
+<div id="container"></div>
+<script src="https://code.highcharts.com/highcharts.src.js"></script>
+<script>
+  Highcharts.chart('container', {
+      chart: {
+          type: 'column'
+      },
+      title: {
+          text: 'Testing a barchart'
+      },
+      xAxis: {
+          categories: [
+            "Non-toxic comments", "Toxic comments"
+          ]
+      },
+      plotOptions: {
+        series: {
+            stacking: 'normal'
+        }
+    },
+      series: [{
+          name: 'Non toxic comment',
+          data: [
+            {% for entry in dataset %}{{ entry.toxicity_no }}{% if not forloop.last %}, {% endif %}{% endfor %}
+          ],
+          color: 'green'
+      },
+      {
+          name: 'Low toxicity',
+          data: [
+            {% for entry in dataset %}{{ entry.low_toxicity }}{% if not forloop.last %}, {% endif %}{% endfor %}
+          ],
+          color: 'orange'
+      },
+      {
+          name: 'High toxicity',
+          data: [
+            {% for entry in dataset %}{{ entry.high_toxicity }}{% if not forloop.last %}, {% endif %}{% endfor %}
+          ],
+          color: 'red'
+      }]
+  });
+</script>

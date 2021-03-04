@@ -4,6 +4,9 @@ from pyexcel_xlsx import get_data as xlsx_get
 from DataVisualization.models import Commentary, Document
 import datetime
 
+from django.utils import timezone
+
+
 excel_columns = {
     "COMMENT_ID": 0,
     "USER_ID": 1,
@@ -41,7 +44,8 @@ class ExcelParser:
                         document_name=excel_file.document.name,
                         comment_id=row[excel_columns["COMMENT_ID"]],
                         user_id=row[excel_columns["USER_ID"]],
-                        date=datetime.datetime.combine(row[excel_columns["DATE"]], row[excel_columns["TIME"]]),
+                        date=datetime.datetime.combine(row[excel_columns["DATE"]], row[excel_columns["TIME"]],
+                                                       tzinfo=timezone.utc),
                         thread=row[excel_columns["THREAD"]],
                         comment_level=row[excel_columns["COMMENT_LEVEL"]],
                         comment=row[excel_columns["COMMENT"]],
@@ -62,7 +66,6 @@ class ExcelParser:
                         toxicity_level=row[excel_columns["TOXICITY_LEVEL"]]
                     )
                 except IndexError:
-                    print(row)
                     continue
 
     def drop_database(self):

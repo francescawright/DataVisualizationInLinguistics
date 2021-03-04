@@ -4,6 +4,7 @@ from django.shortcuts import render
 
 from DataVisualization.utilities.ExcelParser import ExcelParser
 from DataVisualization.models import Document, Commentary
+from django.db.models import Count, Q
 
 import pandas as pd
 
@@ -13,8 +14,19 @@ def index(request):
     parser.drop_database()
     for doc in Document.objects.all():
         parser.load_and_parse(doc)
-    print(Commentary.objects.all())
-    return HttpResponse("Hello, world.")
+    return render(request, 'base.html', context=None)
+
+
+def test(request):
+    dataset = Commentary.objects \
+        .values('toxicity') \
+        .annotate(toxicity_no=Count('toxicity', filter=Q(toxicity=0))) \
+        .annotate(toxicity_yes=Count('toxicity', filter=Q(toxicity=1))) \
+        .annotate(non_toxicity=Count('toxicity_level', filter=Q(toxicity_level=0))) \
+        .annotate(low_toxicity=Count('toxicity_level', filter=Q(toxicity_level=1))) \
+        .annotate(high_toxicity=Count('toxicity_level', filter=Q(toxicity_level=2)))
+    print(dataset)
+    return render(request, 'test.html', {'dataset': dataset})
 
 
 def sales(request):
