@@ -65,7 +65,7 @@ class ExcelParser:
                         toxicity=row[excel_columns["TOXICITY"]],
                         toxicity_level=row[excel_columns["TOXICITY_LEVEL"]]
                     )
-                except IndexError:
+                except:
                     continue
 
     def drop_database(self):

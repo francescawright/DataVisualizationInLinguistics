@@ -1,4 +1,4 @@
-
+from django.views.generic import TemplateView
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -22,28 +22,35 @@ def test(request):
         .values('toxicity') \
         .annotate(toxicity_no=Count('toxicity', filter=Q(toxicity=0))) \
         .annotate(toxicity_yes=Count('toxicity', filter=Q(toxicity=1))) \
-        .annotate(non_toxicity=Count('toxicity_level', filter=Q(toxicity_level=0))) \
         .annotate(low_toxicity=Count('toxicity_level', filter=Q(toxicity_level=1))) \
-        .annotate(high_toxicity=Count('toxicity_level', filter=Q(toxicity_level=2)))
+        .annotate(med_toxicity=Count('toxicity_level', filter=Q(toxicity_level=2))) \
+        .annotate(high_toxicity=Count('toxicity_level', filter=Q(toxicity_level=3)))
+
+    dataset2 = Commentary.objects \
+        .values('toxicity') \
+        .annotate(sarcasm=Count('sarcasm', filter=Q(sarcasm=1))) \
+        .annotate(argumentation=Count('argumentation', filter=Q(argumentation=1))) \
+        .annotate(positive_stance=Count('positive_stance', filter=Q(positive_stance=1))) \
+        .annotate(negative_stance=Count('negative_stance', filter=Q(negative_stance=1)))
+    return render(request, 'test2.html', {'dataset': dataset, 'dataset2': dataset2})
+
+
+def testButton(request):
+    dataset = Commentary.objects \
+        .values('toxicity') \
+        .annotate(sarcasm=Count('sarcasm', filter=Q(sarcasm=1))) \
+        .annotate(argumentation=Count('argumentation', filter=Q(argumentation=1))) \
+        .annotate(positive_stance=Count('positive_stance', filter=Q(positive_stance=1))) \
+        .annotate(negative_stance=Count('negative_stance', filter=Q(negative_stance=1)))
+
     print(dataset)
-    return render(request, 'test.html', {'dataset': dataset})
+    return render(request, 'test3.html', {'dataset': dataset})
 
 
-def sales(request):
-    """ view function for sales app """
+class TestChartView(TemplateView):
+    template_name = "test.html"
 
-    # read data
-
-    df = pd.read_csv("DataVisualization/data/car_sales.csv")
-    rs = df.groupby("Engine size")["Sales in thousands"].agg("sum")
-    categories = list(rs.index)
-    values = list(rs.values)
-
-    table_content = df.to_html(index=None)
-
-    table_content = table_content.replace("", "")
-    table_content = table_content.replace('class="dataframe"', "class='table table-striped'")
-    table_content = table_content.replace('border="1"', "")
-
-    context = {"categories": categories, 'values': values, 'table_data': table_content}
-    return render(request, 'sales.html', context=context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["all"] = Commentary.objects.all()
+        return context
