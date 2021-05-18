@@ -3,9 +3,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <button id="btnenabledisable" type="button" value="Enable/Disable Stacking">Enable/Disable Stacking</button>
 
-<script src="https://code.highcharts.com/highcharts.src.js"></script>
 <script>
-    Highcharts.chart('container', {
+    Highcharts.chart({{ identifier }}, {
         chart: {
             type: 'column'
         },
@@ -51,7 +50,7 @@
                 color: 'red'
             }]
     });
-    var chart = Highcharts.chart('container2', {
+    var chart = Highcharts.chart({{ identifier2 }}, {
         chart: {
             type: 'bar'
         },
@@ -102,7 +101,7 @@
     $("#btnenabledisable").on('click', function () {
 
         var options = GetOptions(chart);
-        var ch = $('#container2').highcharts(),
+        var ch = $('#{{ identifier2 }}').highcharts(),
             s = ch.series,
             sLen = s.length;
 

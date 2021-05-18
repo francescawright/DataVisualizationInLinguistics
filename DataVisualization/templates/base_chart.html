@@ -1,0 +1,51 @@
+<div id="container"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+<script>
+    Highcharts.chart("{{ identifier }}", {
+        chart: {
+            type: "{{ options.chart_type }}"
+        },
+        title: {
+            text: "{{ options.title }} || {{ title }}"
+        },
+        xAxis: {
+            categories: [
+                {% for category in data.categories %}"{{ category }}"{% if not forloop.last %}, {% endif %}{% endfor %}
+            ]
+        },
+        plotOptions: {
+            series: {
+                stacking: "{{ options.stacking_type }}"
+            }
+        },
+        series: [{
+            name: 'Non toxic comment',
+            data: [
+                {% for entry in data.dataset1 %}{{ entry.toxicity_no }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            ],
+            color: 'green'
+        },
+            {
+                name: 'Low toxicity',
+                data: [
+                    {% for entry in data.dataset1 %}{{ entry.low_toxicity }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'yellow'
+            },
+            {
+                name: 'Med toxicity',
+                data: [
+                    {% for entry in data.dataset1 %}{{ entry.med_toxicity }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'orange'
+            },
+            {
+                name: 'High toxicity',
+                data: [
+                    {% for entry in data.dataset1 %}{{ entry.high_toxicity }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'red'
+            }]
+    });
+</script>

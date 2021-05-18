@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Force-Directed Tree</title>
+<style>
+
+    .node {
+        cursor: pointer;
+    }
+
+    .overlay {
+        background-color: #EEE;
+    }
+
+    circle {
+        cursor: pointer;
+        stroke: #000;
+        stroke-width: .5px;
+        z-index: 3;
+    }
+
+    circle.fixed { /*To the elements that are circle, we append the class fixed*/
+        stroke: #04d004;
+        stroke-width: 2.5px;
+        z-index: 3;
+    }
+
+
+    .link {
+        cursor: pointer;
+        stroke-width: 1.5px;
+    }
+
+    .my-statistic {
+        margin-top: 100px;
+        margin-left: 50px;
+        max-width: 300px;
+        font-size: 14px;
+        font-family: sans-serif;
+        opacity: 0.8;
+        color: darkslategray;
+    }
+
+    .my-statistic-title {
+        margin-top: 70px;
+        margin-left: 50px;
+        max-width: 300px;
+        font-size: 20px;
+        font-family: sans-serif;
+        opacity: 0.8;
+        color: darkslategray;
+    }
+
+
+    .my-tooltip {
+        background: rgba(174, 174, 243, 0.9);
+        /*background: rgb(0, 0, 255);*/
+        max-width: 400px;
+        min-width: 400px;
+        font-size: 14px;
+        font-family: sans-serif;
+        opacity: 1;
+        padding: 10px;
+    }
+
+
+    /* Create two equal columns that floats next to each other */
+    .column {
+        font-size: 15px;
+        font-family: sans-serif;
+        float: left;
+        width: 200px;
+        padding: 10px;
+        height: 30px; /* Should be removed. Only for demonstration */
+    }
+
+    .column2 {
+        float: left;
+        width: 80%;
+        padding: 10px;
+        /*height: 300px; /* Should be removed. Only for demonstration */
+    }
+
+    .gradient-line {
+        margin: 0 0 0 0;
+        display: block;
+        border: none;
+        height: 2px;
+        background: #0071B9;
+        background: linear-gradient(to right, white, #0071B9, #26ABFF, #0071B9, white);
+    }
+
+
+</style>
+<head>
+    {% load static %}
+</head>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+    var dataset = "{% static dataset %}";
+    var pt = "{% static 'images/targets/' %}";
+    var pf = "{% static 'images/features/' %}"
+</script>
+<script src="{% static 'js/dndTree_force.js' %}"></script>
+<body>
+<div class="row">
+
+    <div id="menu-left" class="column">
+        <p style="text-align: center; margin-top: 0px; margin-bottom: 0px; font-weight: bold; font-family:cursive; font-size: 20px;">
+            Menu</p>
+        <hr class="gradient-line"/>
+        <!--Checkboxes-->
+        <!-- Targets -->
+        <div id="target-checkbox-group" style="margin-top: 5px;background-color: #c9daf8ff; padding-bottom: 10px; ">
+            <p style="text-align: center; font-weight: bold; padding-top: 10px;">Show targets</p>
+            <div style="padding-left: 10px; padding-right: 10px">
+                <!-- Dropdown menu -->
+                <label for="dropdown-targets">Style:</label>
+                <select id="dropdown-targets" name="dropdown-targets">
+                    <option value="icons">Icons</option>
+                    <option value="rings">Rings</option>
+                    <option value="one-icon-or-rings">Icon and rings</option>
+                    <option value="directory-1">Directory 1</option>
+                    <option value="directory-2">Directory 2</option>
+                </select>
+                <!-- Checkboxes-->
+                <div style="margin-bottom: 5px">
+                    <input type="checkbox" class="checkbox" name="cbTargets" value="target-group"
+                           id="target-group"><label for="target-group">Group</label>
+                    <img src="{% static './images/targets/icons/Group.png' %}" alt="Purple people" width="20"
+                         height="20"
+                         style="float:right; ">
+                </div>
+
+                <div style="margin-bottom: 5px">
+                    <input type="checkbox" class="checkbox" name="cbTargets" value="target-person"
+                           id="target-person"><label for="target-person">Person</label>
+                    <img src="{% static './images/targets/icons/Person.png' %}" alt="Dat with blue person" width="20"
+                         height="20"
+                         style="float:right; ">
+                </div>
+
+                <div style="margin-bottom: 5px">
+                    <input type="checkbox" class="checkbox" name="cbTargets" value="target-stereotype"
+                           id="target-stereotype"><label for="target-stereotype">Stereotype</label>
+                    <img src="{% static './images/targets/icons/Stereotype.png' %}" alt="Orange thinking cloud"
+                         width="20" height="20"
+                         style="float:right;">
+                </div>
+
+            </div>
+        </div>
+        <!--Features -->
+        <div id="feature-checkbox-group"
+             style="margin-top: 10px;background-color: #c9daf8ff; padding-bottom: 10px; padding-top: 10px; padding-left: 10px">
+            <!--<p style="text-align: center; font-weight: bold; padding-top: 10px;">Show features</p>-->
+            <input type="checkbox" class="checkbox" name="cbFeatureMenu" value="feature-group" id="feature-group"><label
+                for="feature-group" style="font-weight: bold;">Show features</label>
+            <div style="padding-left: 10px; padding-right: 10px; padding-top: 10px;">
+                <div style="padding-bottom: 20px">
+                    <!-- Dropdown menu -->
+                    <div>
+                        <label for="dropdown-features">Style:</label>
+                        <select id="dropdown-features" name="dropdown-features" disabled="true">
+                            <option value="dots">Dots</option>
+                            <option value="trivial-cheese">Trivial cheese</option>
+                            <option value="directory-1">All in one bubble</option>
+                            <option value="directory-2">All in one circle</option>
+                            <option value="directory-3">All in one rectangle</option>
+                        </select>
+                    </div>
+                    <div id="feature-over-node-or-outside"><!--Show on the node or to the right-->
+                        <input type="checkbox" class="checkbox" name="cbFeaturePositioning" value="on-node" id="on-node"
+                               disabled="true"><label for="on-node">On the node</label>
+                        <br>
+                        <input type="checkbox" class="checkbox" name="cbFeaturePositioning" value="node-outside"
+                               id="node-right" disabled="true"><label for="node-right">Outside of the node</label>
+                    </div>
+                    <div style="display:none">
+                        <input type="checkbox" class="checkbox" name="cbFeatureProperty" value="dot-feat" id="dot-feat"
+                               disabled="true"><label for="dot-feat">Dot</label>
+                        <input type="checkbox" class="checkbox" name="cbFeatureProperty" value="cheese-feat"
+                               id="cheese-feat" disabled="true"><label for="cheese-feat">Trivial cheese</label>
+                    </div>
+                </div>
+                <!--Positive features-->
+                <div style="margin-bottom: 5px">
+                    <input type="checkbox" class="checkbox" name="cbFeatures" value="argumentation" id="argumentation"
+                           disabled="true"><label for="argumentation">Argumentation</label>
+                    <div style="float: right">
+                        <svg height="20" width="30" style="display: inline-block;">
+                            <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5" fill="#a1d99b"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 15px">
+                    <input type="checkbox" class="checkbox" name="cbFeatures" value="constructiveness"
+                           id="constructiveness" disabled="true"><label for="constructiveness">Constructiveness</label>
+                    <div style="float: right">
+                        <svg height="20" width="30" style="display: inline-block;">
+                            <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5" fill="#31a354"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!--Negative features-->
+                <div style="margin-bottom: 5px">
+                    <input type="checkbox" class="checkbox" name="cbFeatures" value="sarcasm" id="sarcasm"
+                           disabled="true"><label for="sarcasm">Sarcasm</label>
+                    <div style="float: right">
+                        <svg height="20" width="30" style="display: inline-block;">
+                            <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5" fill="#fee5d9"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 5px">
+                    <input type="checkbox" class="checkbox" name="cbFeatures" value="mockery" id="mockery"
+                           disabled="true"><label for="mockery">Mockery</label>
+                    <div style="float: right">
+                        <svg height="20" width="30" style="display: inline-block;">
+                            <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5" fill="#fcbba1"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 5px">
+                    <input type="checkbox" class="checkbox" name="cbFeatures" value="intolerance" id="intolerance"
+                           disabled="true"><label for="intolerance">Intolerance</label>
+                    <div style="float: right">
+                        <svg height="20" width="30" style="display: inline-block;">
+                            <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5" fill="#fc9272"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 5px">
+                    <input type="checkbox" class="checkbox" name="cbFeatures" value="improper_language"
+                           id="improper_language" disabled="true"><label for="improper_language">Improper
+                    language</label>
+                    <div style="float: right">
+                        <svg height="20" width="20" style="display: inline-block;">
+                            <circle cx="10" cy="10" r="7" stroke="black" stroke-width="0.5" fill="#fb6a4a"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 5px">
+                    <input type="checkbox" class="checkbox" name="cbFeatures" value="insult" id="insult"
+                           disabled="true"><label for="insult">Insult</label>
+                    <div style="float: right">
+                        <svg height="20" width="30" style="display: inline-block;">
+                            <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5" fill="#de2d26"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 5px">
+                    <input type="checkbox" class="checkbox" name="cbFeatures" value="aggressiveness" id="aggressiveness"
+                           disabled="true"><label for="aggressiveness">Aggressiveness</label>
+                    <div style="float: right">
+                        <svg height="20" width="30" style="display: inline-block;">
+                            <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5" fill="#a50f15"/>
+                        </svg>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Highligth -->
+        <div id="highlight-checkbox-group" style="margin-top: 10px;background-color: #c9daf8ff; padding-bottom: 10px; ">
+            <div style="padding-top: 10px;padding-left: 10px">
+                <input type="checkbox" class="checkbox" name="cbHighlightMenu" value="highlight-group"
+                       id="highlight-group-cb"><label for="highlight-group-cb" style="font-weight: bold;">Highlight node
+                & edge</label>
+                <div style="padding-top: 10px;padding-left: 10px;">
+                    <input type="checkbox" class="checkbox" name="cbHighlightProperty" value="and-group" id="and-group"
+                           disabled="true"><label for="and-group">AND</label>
+                    <input type="checkbox" class="checkbox" name="cbHighlightProperty" value="or-group" id="or-group"
+                           disabled="true"><label for="or-group">OR</label>
+                    <br>
+                    <div style="padding-top: 10px;">
+                        <!--Toxicity level-->
+                        <div style="padding-top: 10px; padding-right: 10px">
+                            <div style="margin-bottom: 5px">
+                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-toxicity-0"
+                                       id="highlight-toxicity-0" disabled="true"><label for="highlight-toxicity-0">Not
+                                toxic</label>
+                                <div style="float: right">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5" fill="#f7f7f7"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 5px">
+                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-toxicity-1"
+                                       id="highlight-toxicity-1" disabled="true"><label for="highlight-toxicity-1">Mildly
+                                toxic</label>
+                                <div style="float: right">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5" fill="#cccccc"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 5px">
+                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-toxicity-2"
+                                       id="highlight-toxicity-2" disabled="true"><label
+                                    for="highlight-toxicity-2">Toxic</label>
+                                <div style="float: right">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5" fill="#737373"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 5px">
+                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-toxicity-3"
+                                       id="highlight-toxicity-3" disabled="true"><label for="highlight-toxicity-3">Very
+                                toxic</label>
+                                <div style="float: right">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5" fill="#000000"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Stance-->
+                        <div style="padding-top: 10px;">
+                            <div>
+                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-neutral"
+                                       id="highlight-neutral" disabled="true"><label for="highlight-neutral">Neutral
+                                stance</label>
+                                <div style="float: right">
+                                    <svg height=" 10" width="30" style="display: inline-block;">
+                                        <rect width="20" height="10" fill="#2b2727"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div>
+                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-positive"
+                                       id="highlight-positive" disabled="true"><label for="highlight-positive">Positive
+                                stance</label>
+                                <div style="float: right">
+                                    <svg height=" 10" width="30" style="display: inline-block;">
+                                        <rect width="20" height="10" fill="#77dd77"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div>
+                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-negative"
+                                       id="highlight-negative" disabled="true"><label for="highlight-negative">Negative
+                                stance</label>
+                                <div style="float: right">
+                                    <svg height=" 10" width="30" style="display: inline-block;">
+                                        <rect width="20" height="10" fill="#ff6961"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--Target-->
+                        <div style="padding-top: 10px;">
+                            <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-group"
+                                   id="highlight-group" disabled="true"><label for="highlight-group">Target
+                            group</label>
+                            <br>
+                            <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-person"
+                                   id="highlight-person" disabled="true"><label for="highlight-person">Target
+                            person</label>
+                            <br>
+                            <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-stereotype"
+                                   id="highlight-stereotype" disabled="true"><label for="highlight-stereotype">Stereotype</label>
+                        </div>
+                        <!--Features-->
+                        <div style="padding-top: 10px;">
+                            <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-argumentation"
+                                   id="highlight-argumentation" disabled="true"><label for="highlight-argumentation">Argumentation</label>
+                            <br>
+                            <input type="checkbox" class="checkbox" name="cbHighlight"
+                                   value="highlight-constructiveness" id="highlight-constructiveness"
+                                   disabled="true"><label for="highlight-constructiveness">Constructiveness</label>
+                            <br>
+                            <br>
+                            <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-sarcasm"
+                                   id="highlight-sarcasm" disabled="true"><label for="highlight-sarcasm">Sarcasm</label>
+                            <br>
+                            <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-mockery"
+                                   id="highlight-mockery" disabled="true"><label for="highlight-mockery">Mockery</label>
+                            <br>
+                            <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-intolerance"
+                                   id="highlight-intolerance" disabled="true"><label for="highlight-intolerance">Intolerance</label>
+                            <br>
+                            <input type="checkbox" class="checkbox" name="cbHighlight"
+                                   value="highlight-improper-language" id="highlight-improper-language" disabled="true"><label
+                                for="highlight-improper-language">Improper language</label>
+                            <br>
+                            <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-insult"
+                                   id="highlight-insult" disabled="true"><label for="highlight-insult">Insult</label>
+                            <br>
+                            <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-aggressiveness"
+                                   id="highlight-aggressiveness" disabled="true"><label for="highlight-aggressiveness">Aggressiveness</label>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!--Legend-->
+        <div id="legendGroup">
+            <p style="text-align: center; margin-top: 10px; margin-bottom: 0px; font-weight: bold; font-family:cursive; font-size: 20px;">
+                Legend</p>
+            <hr class="gradient-line"/>
+            <div style="background-color: #69b3a2;margin-top: 10px;margin-bottom: 5px;padding-left: 10px; padding-right: 10px; padding-bottom: 10px;padding-top: 5px;">
+                <div style="margin-bottom: 5px">
+                    <label>News Article</label>
+                    <div style="float: right">
+                        <svg height="20" width="20" style="display: inline-block;">
+                            <circle cx="10" cy="10" r="7" stroke="black" stroke-width="0.5" fill="lightsteelblue"/>
+                        </svg>
+                    </div>
+                </div>
+                <div style="margin-bottom: 5px">
+                    <label>Node collapsed with just one direct son</label>
+                    <div style="float: right">
+                        <svg height="20" width="20" style="display: inline-block;">
+                            <circle cx="10" cy="10" r="7" stroke="black" stroke-width="0.5" fill="lightsteelblue"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 5px">
+                    <label>Node with stance positive and negative</label>
+                    <div style="float: right">
+                        <svg height=" 10" width="20" style="display: inline-block;">
+                            <rect width="20" height="10" fill="#FFA500"/>
+                        </svg>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="tree-container"
+         class="column2"
+         style="background-color: #EEE"></div>
+</div>
+</body>
+</html>

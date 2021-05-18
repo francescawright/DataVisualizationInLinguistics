@@ -15,13 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from DataVisualization.views import index, TestChartView, test, testButton
+from DataVisualization.views import index, TestChartView, test, testButton, dashboard, test_boostrap, manage_data, \
+    upload_data, delete_data, save_project, export_visualization, index_reyes, index_reyes_force, index_reyes_radial, \
+    testD3
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index),
+    path('', testD3),
     path('test/', TestChartView.as_view(), name='test'),
     path('test2/', test, name='test2'),
-    path('testButton/', testButton, name='testButton')
+    path('testButton/', testButton, name='testButton'),
+    path('dashboard/', dashboard, name='dashboard'),
+    path('test_dashboard/', dashboard, name="test_dashboard"),
+    path('test_bootstrap/', test_boostrap),
+    path('manage_data/', manage_data, name="manage_data"),
+    path('index_reyes/', index_reyes),
+    path('index_reyes_force/', index_reyes_force),
+    path('index_reyes_radial/', index_reyes_radial)
 
 ]
