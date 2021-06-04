@@ -26,7 +26,7 @@ SECRET_KEY = 's*8frmd!5ch@abh32^-&(ryx0pq@d!h*g&f@%6i3t(d_ji51qa'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '0.0.0.0'
+    '0.0.0.0',
     'datavisualizationinlinguistics.herokuapp.com',
     '127.0.0.1'
 ]
