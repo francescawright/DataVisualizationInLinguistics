@@ -56,7 +56,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     var groupDrawn = false, personDrawn = false;
     var opacityValue = 0.2;
-    var circleRadius = 4.5;
+    var circleRadius = 8.7;
 
     /* Colours
    * */
@@ -111,7 +111,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     /* Features
     * */
-    var cheeseX = 10, cheeseY = -10, cheeseHeight = 20, cheeseWidth = 20;
+    var cheeseX = -17.53, cheeseY = -27.45, cheeseHeight = 55, cheeseWidth = 55;
 
     var pathFeatures = pf;
 
@@ -131,7 +131,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     // size of the diagram
     var viewerWidth = $(document).width();
     var viewerHeight = $(document).height();
-    var separationHeight = 15; //Sets the separation between two nodes to 15 pixels
+    var separationHeight = 61; //Sets the separation between two nodes to 15 pixels
     var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
 
     root = treeData; //Define the root
@@ -1006,8 +1006,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr('id', features[i].id)
                     .attr("x", features[i].x)
                     .attr("y", features[i].y)
-                    .attr("height", features[i].height)
-                    .attr("width", features[i].width)
+                    .attr("height", 55)
+                    .attr("width", 55)
                     .attr("href", pathFeatures + localPath + features[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.name === rootName) return 0;
@@ -1045,10 +1045,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', allObjectsInNode[i].class)
                     .attr('id', allObjectsInNode[i].id)
-                    .attr("x", localPosition)
-                    .attr("y", -10)
-                    .attr("height", cheeseHeight)
-                    .attr("width", cheeseWidth)
+                    .attr("x", localPosition - 17.53)
+                    .attr("y", -27.45)
+                    .attr("height", 55)
+                    .attr("width", 55)
+                    .style("stroke", "black")
+                    .style("stroke-width", "0.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.name === rootName) return 0;
@@ -1094,10 +1096,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', allObjectsInNode[i].class)
                     .attr('id', allObjectsInNode[i].id)
-                    .attr("x", localPosition)
-                    .attr("y", -10)
-                    .attr("height", cheeseHeight)
-                    .attr("width", cheeseWidth)
+                    .attr("x", localPosition - 17.53)
+                    .attr("y", -27.45)
+                    .attr("height", 55)
+                    .attr("width", 55)
+                    .style("stroke", "black")
+                    .style("stroke-width", "0.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.name === rootName) return 0;
@@ -2169,7 +2173,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 if (d._children) { //Si tiene msá de dos hijos, retora 2*#hijos; si tiene 2 hijos, retorna 5, si un hijo, 4.5
                     return d._children.length > 2 ? 2 * d._children.length : d._children.length === 2 ? 6 : 4.5;
                 }
-                return 4.5;
+                return 8.7;
             })
             .style("fill", function (d) {
                 //console.log("if _children QUANTITY", d._children.length);
@@ -2406,24 +2410,40 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         };
     }
 
-    /**
-     * Write statistic data in a table
-     * */
-    function writeStatisticText(totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic,
-                                totalGroup, totalPerson, totalStereotype, totalNone) {
-        var statisticText = "<table>";
+    //I compute the values for the statistic data showing in the background
+    var listStatistics = getStatisticValues(root);
+    var totalNumberOfNodes = listStatistics.children;
+
+    var totalNotToxic = listStatistics.toxicity0,
+        totalMildlyToxic = listStatistics.toxicity1,
+        totalToxic = listStatistics.toxicity2,
+        totalVeryToxic = listStatistics.toxicity3;
+
+    var totalGroup = listStatistics.totalTargGroup,
+        totalPerson = listStatistics.totalTargPerson,
+        totalStereotype = listStatistics.totalTargStereotype,
+        totalNone = listStatistics.totalTargNone;
+
+    var statisticTitle = "<span style='font-size: 22px;'> Static values of " + sel_item.split('/')[2] + "</span>";
+    statisticTitleBackground.style("visibility", "visible").html(statisticTitle);
+    statisticBackground.style("visibility", "visible").html(writeStatisticText());
+
+    function writeStatisticText() {
+        var statisticText = "<table style='width: 500px;'>";
 
         var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
         var statValuesTox = [totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic];
         var statValuesTarg = [totalGroup, totalPerson, totalStereotype, totalNone];
+        var targetImagesPath = ["icons/Group.png", "icons/Person.png", "icons/Stereotype.png", "/icons/Blank.png"];
+        var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
         for (var i = 0; i < statTitlesToxicity.length; i++) {
-            statisticText += "<tr>"; //Start table line
+            statisticText += "<tr style='font-size: 20px;'>"; //Start table line
 
             //Write toxicity and target line
-            statisticText += "<td>" + statTitlesToxicity[i] + ": " + "<td>" + statValuesTox[i] + "</td>";
-            statisticText += "<td>" + statTitlesTargets[i] + ": " + "<td>" + statValuesTarg[i] + "</td>";
+            statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td>" + statValuesTox[i].toString() + "</td>";
+            statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
 
             statisticText += "</tr>"; //End table line
         }
@@ -2432,6 +2452,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         return statisticText;
     }
 
-    computeStatistics();
+
+    //computeStatistics();
 
 });

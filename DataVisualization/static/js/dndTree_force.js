@@ -12,9 +12,17 @@ treeJSON = d3.json(dataset, function (error, json) {
 
     var optimalK;
 
-    var ringHeight = 20, ringWidth = 20, ringX = -10, ringY = -10;
+    var ringHeight = 55, ringWidth = 55, ringX = -10, ringY = -10;
     var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
     var opacityValue = 0.2; //Opacity when a node or link is not highlighted
+
+
+    // Define the zoom function for the zoomable tree
+    function zoom() {
+        svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+    }
+
+    var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
 
     /* Colours
     * */
@@ -70,7 +78,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
     /* Features
     * */
-    var cheeseX = 10, cheeseY = -10, cheeseHeight = 20, cheeseWidth = 20;
+    var cheeseX = -17.53, cheeseY = -27.45, cheeseHeight = 55, cheeseWidth = 55;
 
     var pathFeatures = pf;
 
@@ -84,6 +92,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         .append("svg")
         .attr("width", width) //Dimensions of the layout
         .attr("height", height)
+        .attr("class", "overlay")
         .call(d3.behavior.zoom().scaleExtent([0.1, 8]).on("zoom", zoom)) //Allow zoom
         .append("g");
 
@@ -115,13 +124,20 @@ treeJSON = d3.json(dataset, function (error, json) {
         .style("z-index", "10")
         .style("visibility", "hidden");
 
+
     var statisticBackground = d3.select("#tree-container")
         .append("div")
         .attr("class", "my-statistic") //add the tooltip class
         .style("position", "absolute")
         .style("z-index", "0") //it has no change
-        .style("visibility", "visible")
-        .html("Static values of the news article");
+        .style("visibility", "visible");
+
+    var statisticTitleBackground = d3.select("#tree-container")
+        .append("div")
+        .attr("class", "my-statistic-title") //add the tooltip class
+        .style("position", "absolute")
+        .style("z-index", "0") //it has no change
+        .style("visibility", "visible");
 
 
     /*SECTION checkboxes*/
@@ -520,6 +536,9 @@ treeJSON = d3.json(dataset, function (error, json) {
     var keysNode = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic", "News Article", "Node collapsed with", " just one direct son"];
     var colorNode = [colourToxicity0, colourToxicity1, colourToxicity2, colourToxicity3, colourNewsArticle, colourCollapsed, "none"];
 
+
+    var svgGroup = svg.append("g");
+
     // Add one dot in the legend for each name.
     nodeLegend.selectAll("mydotsToxicity")
         .data(keysNode)
@@ -592,20 +611,7 @@ treeJSON = d3.json(dataset, function (error, json) {
     /* END SECTION legend*/
 
     /*SECTION statistic background*/
-    var statisticBackground = d3.select("#tree-container")
-        .append("div")
-        .attr("class", "my-statistic") //add the tooltip class
-        .style("position", "absolute")
-        .style("z-index", "1") //it has no change
-        .style("visibility", "visible")
-        .html("Static values of the news article");
 
-    var statisticTitleBackground = d3.select("#tree-container")
-        .append("div")
-        .attr("class", "my-statistic-title") //add the tooltip class
-        .style("position", "absolute")
-        .style("z-index", "0") //it has no change
-        .style("visibility", "visible");
     /*END section statistic background*/
 
     /* SECTION TO DRAW TARGETS */
@@ -871,10 +877,12 @@ treeJSON = d3.json(dataset, function (error, json) {
                 nodeEnter.append("image")
                     .attr('class', allObjectsInNode[i].class)
                     .attr('id', allObjectsInNode[i].id)
-                    .attr("x", localPosition)
-                    .attr("y", -10)
-                    .attr("height", cheeseHeight)
-                    .attr("width", cheeseWidth)
+                    .attr("x", localPosition - 17.53)
+                    .attr("y", -27.45)
+                    .attr("height", 55)
+                    .attr("width", 55)
+                    .style("stroke", "black")
+                    .style("stroke-width", "0.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.name === rootName) return 0;
@@ -920,10 +928,12 @@ treeJSON = d3.json(dataset, function (error, json) {
                 nodeEnter.append("image")
                     .attr('class', allObjectsInNode[i].class)
                     .attr('id', allObjectsInNode[i].id)
-                    .attr("x", localPosition)
-                    .attr("y", -10)
-                    .attr("height", cheeseHeight)
-                    .attr("width", cheeseWidth)
+                    .attr("x", localPosition - 17.53)
+                    .attr("y", -27.45)
+                    .attr("height", 55)
+                    .attr("width", 55)
+                    .style("stroke", "black")
+                    .style("stroke-width", "0.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.name === rootName) return 0;
@@ -1676,15 +1686,7 @@ treeJSON = d3.json(dataset, function (error, json) {
             });
 
 
-        link.append("image")
-            .attr("x1", 10)
-            .attr("y1", 25)
-            .attr("height", 25)
-            .attr("width", 25)
-            .attr("href", "./icons/Target/Person.png");
-
-
-        node = svg.selectAll(".node")
+        node = svgGroup.selectAll("g.node")
             .data(nodes.sort(function (a, b) {
                 return d3.ascending(a.toxicity_level, b.toxicity_level); //NOTE: this avoids the tree being sorted and changed when collapsing a node
             }), function (d) {
@@ -1740,7 +1742,7 @@ treeJSON = d3.json(dataset, function (error, json) {
                     If no children, new radius = 4.5 (as usual)
                 * */
                 if (d._children) return d._children.length > 2 ? radiusFactor * d._children.length : d._children.length === 2 ? 5.5 : 4.5;
-                return 4.5;
+                return 8.7;
             })
             .style("fill", function (d) {
                 if (d._children && d._children.length === 1) return colourCollapsed;
@@ -2055,10 +2057,10 @@ treeJSON = d3.json(dataset, function (error, json) {
             totalStereotype = listStatistics.totalTargStereotype,
             totalNone = listStatistics.totalTargNone;
 
-        var statisticTitle = "Static values of the news article";
-        statisticTitleBackground.style("visibility", "visible").html(statisticTitle);
-        statisticBackground.style("visibility", "visible").html(writeStatisticText(totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic,
-            totalGroup, totalPerson, totalStereotype, totalNone));
+        // var statisticTitle = "Static values of the news article";
+        // statisticTitleBackground.style("visibility", "visible").html(statisticTitle);
+        // statisticBackground.style("visibility", "visible").html(writeStatisticText(totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic,
+        //     totalGroup, totalPerson, totalStereotype, totalNone));
     }
 
     /**
@@ -2143,24 +2145,40 @@ treeJSON = d3.json(dataset, function (error, json) {
         };
     }
 
-    /**
-     * Write statistic data in a table
-     * */
-    function writeStatisticText(totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic,
-                                totalGroup, totalPerson, totalStereotype, totalNone) {
-        var statisticText = "<table>";
+    //I compute the values for the statistic data showing in the background
+    var listStatistics = getStatisticValues(root);
+    var totalNumberOfNodes = listStatistics.children;
+
+    var totalNotToxic = listStatistics.toxicity0,
+        totalMildlyToxic = listStatistics.toxicity1,
+        totalToxic = listStatistics.toxicity2,
+        totalVeryToxic = listStatistics.toxicity3;
+
+    var totalGroup = listStatistics.totalTargGroup,
+        totalPerson = listStatistics.totalTargPerson,
+        totalStereotype = listStatistics.totalTargStereotype,
+        totalNone = listStatistics.totalTargNone;
+
+    var statisticTitle = "<span style='font-size: 22px;'> Static values of " + sel_item.split('/')[2] + "</span>";
+    statisticTitleBackground.style("visibility", "visible").html(statisticTitle);
+    statisticBackground.style("visibility", "visible").html(writeStatisticText());
+
+    function writeStatisticText() {
+        var statisticText = "<table style='width: 500px;'>";
 
         var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
         var statValuesTox = [totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic];
         var statValuesTarg = [totalGroup, totalPerson, totalStereotype, totalNone];
+        var targetImagesPath = ["icons/Group.png", "icons/Person.png", "icons/Stereotype.png", "/icons/Blank.png"];
+        var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
         for (var i = 0; i < statTitlesToxicity.length; i++) {
-            statisticText += "<tr>"; //Start table line
+            statisticText += "<tr style='font-size: 20px;'>"; //Start table line
 
             //Write toxicity and target line
-            statisticText += "<td>" + statTitlesToxicity[i] + ": " + "<td>" + statValuesTox[i] + "</td>";
-            statisticText += "<td>" + statTitlesTargets[i] + ": " + "<td>" + statValuesTarg[i] + "</td>";
+            statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td>" + statValuesTox[i].toString() + "</td>";
+            statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
 
             statisticText += "</tr>"; //End table line
         }

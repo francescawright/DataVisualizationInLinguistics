@@ -21,7 +21,7 @@ from DataVisualization.views import index, TestChartView, test, testButton, dash
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', testD3),
+    path('', index),
     path('test/', TestChartView.as_view(), name='test'),
     path('test2/', test, name='test2'),
     path('testButton/', testButton, name='testButton'),
@@ -29,8 +29,8 @@ urlpatterns = [
     path('test_dashboard/', dashboard, name="test_dashboard"),
     path('test_bootstrap/', test_boostrap),
     path('manage_data/', manage_data, name="manage_data"),
-    path('index_reyes/', index_reyes),
-    path('index_reyes_force/', index_reyes_force),
-    path('index_reyes_radial/', index_reyes_radial)
+    path('view_data/', testD3),
+    path('selected_data/', testD3, name='selected_data'),
+    path('selected_layout/', testD3, name='dropdown_layout')
 
 ]

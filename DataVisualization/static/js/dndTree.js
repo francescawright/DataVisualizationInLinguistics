@@ -58,33 +58,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var targetIconHeight = 15, targetIconWidth = 15, targetIconGroupX = -30, targetIconPersonX = -50,
         targetIconStereotypeX = -70, targetIconY = -10; //Size and relative position of targets drawn as icons
     var pathTargets = pt;
-    var objTargetGroup = {
-            class: "targetGroup",
-            id: "targetGroup",
-            x: -30,
-            y: -10,
-            height: targetIconHeight,
-            width: targetIconWidth,
-            fileName: "Group.png"
-        },
-        objTargetPerson = {
-            class: "targetPerson",
-            id: "targetPerson",
-            x: -50,
-            y: -10,
-            height: targetIconHeight,
-            width: targetIconWidth,
-            fileName: "Person.png"
-        },
-        objTargetStereotype = {
-            class: "targetStereotype",
-            id: "targetStereotype",
-            x: -70,
-            y: -10,
-            height: targetIconHeight,
-            width: targetIconWidth,
-            fileName: "Stereotype.png"
-        }
 
     var objTargetGroupRing = {
             class: "targetGroup",
@@ -126,94 +99,19 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     /* Features
     * */
     var pathFeatures = pf;
-    var objFeatArgumentation = {
-            class: "featArgumentation",
-            id: "featArgumentation",
-            x: cheeseX,
-            y: cheeseY,
-            height: cheeseHeight,
-            width: cheeseWidth,
-            fileName: "Argumentation.png"
-        },
-        objFeatConstructiveness = {
-            class: "featConstructiveness",
-            id: "featConstructiveness",
-            x: cheeseX,
-            y: cheeseY,
-            height: cheeseHeight,
-            width: cheeseWidth,
-            fileName: "Constructiveness.png"
-        },
-        objFeatSarcasm = {
-            class: "featSarcasm",
-            id: "featSarcasm",
-            x: cheeseX,
-            y: cheeseY,
-            height: cheeseHeight,
-            width: cheeseWidth,
-            fileName: "Sarcasm.png"
-        },
-        objFeatMockery = {
-            class: "featMockery",
-            id: "featMockery",
-            x: cheeseX,
-            y: cheeseY,
-            height: cheeseHeight,
-            width: cheeseWidth,
-            fileName: "Mockery.png"
-        },
-        objFeatIntolerance = {
-            class: "featIntolerance",
-            id: "featIntolerance",
-            x: cheeseX,
-            y: cheeseY,
-            height: cheeseHeight,
-            width: cheeseWidth,
-            fileName: "Intolerance.png"
-        },
-        objFeatImproper = {
-            class: "featImproper",
-            id: "featImproper",
-            x: cheeseX,
-            y: cheeseY,
-            height: cheeseHeight,
-            width: cheeseWidth,
-            fileName: "Improper.png"
-        },
-        objFeatInsult = {
-            class: "featInsult",
-            id: "featInsult",
-            x: cheeseX,
-            y: cheeseY,
-            height: cheeseHeight,
-            width: cheeseWidth,
-            fileName: "Insult.png"
-        },
-        objFeatAggressiveness = {
-            class: "featAggressiveness",
-            id: "featAggressiveness",
-            x: cheeseX,
-            y: cheeseY,
-            height: cheeseHeight,
-            width: cheeseWidth,
-            fileName: "Aggressiveness.png"
-        },
-        objFeatGray = {
-            class: "featGray",
-            id: "featGray",
-            x: cheeseX,
-            y: cheeseY,
-            height: cheeseHeight,
-            width: cheeseWidth,
-            fileName: "Gray.png"
-        };
+
+    var objToxicity0 = {class: "toxicity0", id: "toxicity0", selected: 1, fileName: "Level0.svg"},
+        objToxicity1 = {class: "toxicity1", id: "toxicity1", selected: 1, fileName: "Level1.svg"},
+        objToxicity2 = {class: "toxicity2", id: "toxicity2", selected: 1, fileName: "Level2.svg"},
+        objToxicity3 = {class: "toxicity3", id: "toxicity3", selected: 1, fileName: "Level3.svg"};
+    var drawingAllInOne = false; //if we are drawing all together or separated
 
     var previousHighlightSelection = false;
     var opacityValue = 0.2;
     // size of the diagram
     var viewerWidth = $(document).width();
     var viewerHeight = $(document).height();
-    var separationHeight = 21; //Sets the separation between two nodes to 15 pixels
+    var separationHeight = 61; //Sets the separation between two nodes to 15 pixels
     var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
     var tooltipText;
 
@@ -256,42 +154,44 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     /* SECTION legend*/
     var targetLegend = d3.select("#target-legend-container");
 
-    // Handmade legend
-    targetLegend.append("image")
-        .attr("x", 10)
-        .attr("y", 0)
-        .attr("height", 25)
-        .attr("width", 25)
-        .attr("href", pathTargets + "icons/" + objTargetGroup.fileName);
-    targetLegend.append("text")
-        .attr("x", 50).attr("y", 10)
-        .text("Target group")
-        .style("font-size", "15px")
-        .attr("alignment-baseline", "middle")
+    function displayTargetLegend() {
+        // Handmade legend
+        targetLegend.append("image")
+            .attr("x", 10)
+            .attr("y", 0)
+            .attr("height", 25)
+            .attr("width", 25)
+            .attr("href", pathTargets + "icons/" + objTargetGroup.fileName);
+        targetLegend.append("text")
+            .attr("x", 50).attr("y", 10)
+            .text("Target group")
+            .style("font-size", "15px")
+            .attr("alignment-baseline", "middle")
 
-    targetLegend.append("image")
-        .attr("x", 10)
-        .attr("y", 25)
-        .attr("height", 25)
-        .attr("width", 25)
-        .attr("href", pathTargets + "icons/" + objTargetPerson.fileName);
-    targetLegend.append("text")
-        .attr("x", 50).attr("y", 40)
-        .text("Target person")
-        .style("font-size", "15px")
-        .attr("alignment-baseline", "middle")
+        targetLegend.append("image")
+            .attr("x", 10)
+            .attr("y", 25)
+            .attr("height", 25)
+            .attr("width", 25)
+            .attr("href", pathTargets + "icons/" + objTargetPerson.fileName);
+        targetLegend.append("text")
+            .attr("x", 50).attr("y", 40)
+            .text("Target person")
+            .style("font-size", "15px")
+            .attr("alignment-baseline", "middle")
 
-    targetLegend.append("image")
-        .attr("x", 10)
-        .attr("y", 55)
-        .attr("height", 25)
-        .attr("width", 25)
-        .attr("href", pathTargets + "icons/" + objTargetStereotype.fileName);
-    targetLegend.append("text")
-        .attr("x", 50).attr("y", 70)
-        .text("Stereotype")
-        .style("font-size", "15px")
-        .attr("alignment-baseline", "middle")
+        targetLegend.append("image")
+            .attr("x", 10)
+            .attr("y", 55)
+            .attr("height", 25)
+            .attr("width", 25)
+            .attr("href", pathTargets + "icons/" + objTargetStereotype.fileName);
+        targetLegend.append("text")
+            .attr("x", 50).attr("y", 70)
+            .text("Stereotype")
+            .style("font-size", "15px")
+            .attr("alignment-baseline", "middle")
+    }
 
 
     var featureLegend = d3.select("#feature-legend-container");
@@ -442,6 +342,131 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     let enabledHighlight = []; //Where the cb selected will appear
     /*END SECTION checkboxes*/
 
+    var objTargetGroup = {
+            class: "targetGroup",
+            id: "targetGroup",
+            selected: enabledTargets.indexOf("target-group"),
+            x: -30,
+            y: -10,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Group.png"
+        },
+        objTargetPerson = {
+            class: "targetPerson",
+            id: "targetPerson",
+            selected: enabledTargets.indexOf("target-person"),
+            x: -50,
+            y: -10,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Person.png"
+        },
+        objTargetStereotype = {
+            class: "targetStereotype",
+            id: "targetStereotype",
+            selected: enabledTargets.indexOf("target-stereotype"),
+            x: -70,
+            y: -10,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Stereotype.png"
+        };
+
+    displayTargetLegend();
+
+    var objFeatArgumentation = {
+            class: "featArgumentation",
+            id: "featArgumentation",
+            selected: enabledSettings.indexOf("argumentation"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Argumentation.svg"
+        },
+        objFeatConstructiveness = {
+            class: "featConstructiveness",
+            id: "featConstructiveness",
+            selected: enabledSettings.indexOf("constructiveness"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Constructiveness.svg"
+        },
+        objFeatSarcasm = {
+            class: "featSarcasm",
+            id: "featSarcasm",
+            selected: enabledSettings.indexOf("sarcasm"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Sarcasm.svg"
+        },
+        objFeatMockery = {
+            class: "featMockery",
+            id: "featMockery",
+            selected: enabledSettings.indexOf("mockery"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Mockery.svg"
+        },
+        objFeatIntolerance = {
+            class: "featIntolerance",
+            id: "featIntolerance",
+            selected: enabledSettings.indexOf("intolerance"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Intolerance.svg"
+        },
+        objFeatImproper = {
+            class: "featImproper",
+            id: "featImproper",
+            selected: enabledSettings.indexOf("improper_language"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Improper.svg"
+        },
+        objFeatInsult = {
+            class: "featInsult",
+            id: "featInsult",
+            selected: enabledSettings.indexOf("insult"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Insult.svg"
+        },
+        objFeatAggressiveness = {
+            class: "featAggressiveness",
+            selected: enabledSettings.indexOf("aggressiveness"),
+            id: "featAggressiveness",
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Aggressiveness.svg"
+        },
+        objFeatGray = {
+            class: "featGray",
+            id: "featGray",
+            selected: 1,
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Gray.svg"
+        };
+
+
     var dropdownTargets = document.getElementById("dropdown-targets");
     var dropdownFeatures = document.getElementById("dropdown-features");
 
@@ -499,7 +524,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
     // Define the zoom function for the zoomable tree
-
     function zoom() {
         svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
     }
@@ -673,29 +697,33 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     function selectTargetVisualization(nodeEnter) {
         var option = dropdownTargets.value;
 
-        switch (option) {
-            //draw as icons on the left side of the node
-            case "icons":
-                drawTargets(nodeEnter, "icons/");
-                break;
-            case "directory-1":
-                drawTargets(nodeEnter, "newOption1/")
-                break;
-            case "directory-2":
-                drawTargets(nodeEnter, "newOption2/")
-                break;
-            //draw as ring outside of the node
-            case "rings":
-                drawTargetRings(nodeEnter, "rings/")
-                break;
-            //draw as an icon if 1, as rings if more options checked
-            case "one-icon-or-rings":
-                enabledTargets.length > 1 ? drawTargetRings(nodeEnter, "rings/") : drawTargets(nodeEnter, "icons/");
-                break;
+        //If we are displaying all in one, call that function
+        if (drawingAllInOne) selectFeatureVisualization(nodeEnter);
+        else {
+            switch (option) {
+                //draw as icons on the left side of the node
+                case "icons":
+                    drawTargets(nodeEnter, "icons/");
+                    break;
+                case "directory-1":
+                    drawTargets(nodeEnter, "newOption1/")
+                    break;
+                case "directory-2":
+                    drawTargets(nodeEnter, "newOption2/")
+                    break;
+                //draw as ring outside of the node
+                case "rings":
+                    drawTargetRings(nodeEnter, "rings/")
+                    break;
+                //draw as an icon if 1, as rings if more options checked
+                case "one-icon-or-rings":
+                    enabledTargets.length > 1 ? drawTargetRings(nodeEnter, "rings/") : drawTargets(nodeEnter, "icons/");
+                    break;
 
-            default:
-                console.log("default option", option);
-                break;
+                default:
+                    console.log("default option", option);
+                    break;
+            }
         }
     }
 
@@ -757,6 +785,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         d3.selectAll("#targetGray").remove();
     }
 
+    /**
+     * Remove all the target icon or images of the given node
+     * */
     function removeThisTargets(nodeEnter) {
         nodeEnter.select("#targetGroup").remove();
         nodeEnter.select("#targetPerson").remove();
@@ -770,15 +801,30 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      * Removes the features of the node given
      * */
     function removeThisFeatures(nodeEnter) {
-        nodeEnter.select("#featGray").remove();
-        nodeEnter.select("#featArgumentation").remove();
-        nodeEnter.select("#featConstructiveness").remove();
-        nodeEnter.select("#featSarcasm").remove();
-        nodeEnter.select("#featMockery").remove();
-        nodeEnter.select("#featIntolerance").remove();
-        nodeEnter.select("#featImproper").remove();
-        nodeEnter.select("#featInsult").remove();
-        nodeEnter.select("#featAggressiveness").remove();
+        nodeEnter.selectAll("#featGray").remove();
+        nodeEnter.selectAll("#featArgumentation").remove();
+        nodeEnter.selectAll("#featConstructiveness").remove();
+        nodeEnter.selectAll("#featSarcasm").remove();
+        nodeEnter.selectAll("#featMockery").remove();
+        nodeEnter.selectAll("#featIntolerance").remove();
+        nodeEnter.selectAll("#featImproper").remove();
+        nodeEnter.selectAll("#featInsult").remove();
+        nodeEnter.selectAll("#featAggressiveness").remove();
+    }
+
+    /**
+     * Removes the features of all the nodes
+     * */
+    function removeAllFeatures() {
+        d3.selectAll("#featGray").remove();
+        d3.selectAll("#featArgumentation").remove();
+        d3.selectAll("#featConstructiveness").remove();
+        d3.selectAll("#featSarcasm").remove();
+        d3.selectAll("#featMockery").remove();
+        d3.selectAll("#featIntolerance").remove();
+        d3.selectAll("#featImproper").remove();
+        d3.selectAll("#featInsult").remove();
+        d3.selectAll("#featAggressiveness").remove();
     }
 
     /**
@@ -789,6 +835,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      * */
     function drawFeatureDots(nodeEnter) {
         removeThisFeatures(nodeEnter);
+        removeToxicities(nodeEnter); //Remove all the pngs for toxicity
+
         var cbFeatureEnabled = [enabledSettings.indexOf("argumentation"), enabledSettings.indexOf("constructiveness"),
             enabledSettings.indexOf("sarcasm"), enabledSettings.indexOf("mockery"), enabledSettings.indexOf("intolerance"),
             enabledSettings.indexOf("improper_language"), enabledSettings.indexOf("insult"), enabledSettings.indexOf("aggressiveness")];
@@ -801,7 +849,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("circle")
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
-                    .attr("r", "4.5")
+                    .attr("r", "10.5")
                     .attr("transform", "translate(" + (35 + i * 10) + "," + 0 + ")")
                     .attr("fill", colorFeature[i])
                     .style("stroke", "black")
@@ -818,6 +866,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     function drawFeatureAsCheese(nodeEnter, localPath) {
         removeThisFeatures(nodeEnter);
+        removeToxicities(nodeEnter); //Remove all the pngs for toxicity
+
         //Add the gray cheese
         nodeEnter.append("image")
             .attr('class', objFeatGray.class)
@@ -837,6 +887,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             enabledSettings.indexOf("improper_language"), enabledSettings.indexOf("insult"), enabledSettings.indexOf("aggressiveness")];
 
         var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
+        var listOpacity;
 
         for (var i = 0; i < features.length; i++) {
             if (cbFeatureEnabled[i] > -1) {
@@ -858,6 +909,110 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
     /**
+     * Hide all previous features and targets
+     * Draw everything inside of the node
+     * */
+    function drawFeatureAsGlyph(nodeEnter, localPath, localPosition) {
+        removeThisFeatures(nodeEnter);
+        removeThisTargets(nodeEnter);
+        removeToxicities(nodeEnter);
+
+        var allObjectsInNode = [objToxicity0, objToxicity1, objToxicity2, objToxicity3,
+            objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness,
+            objTargetGroup, objTargetPerson, objTargetStereotype];
+        var listOpacity;
+
+        //Better done than perfect
+        var cbShowTargets = [1, 1, 1, 1,
+            enabledSettings.indexOf("argumentation"), enabledSettings.indexOf("constructiveness"),
+            enabledSettings.indexOf("sarcasm"), enabledSettings.indexOf("mockery"), enabledSettings.indexOf("intolerance"),
+            enabledSettings.indexOf("improper_language"), enabledSettings.indexOf("insult"), enabledSettings.indexOf("aggressiveness"),
+            enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
+
+
+        for (var i = 0; i < allObjectsInNode.length; i++) {
+            if (cbShowTargets[i] > -1) { //If the checkbox is checked, display it if it has the property
+                nodeEnter.append("image")
+                    .attr('class', allObjectsInNode[i].class)
+                    .attr('id', allObjectsInNode[i].id)
+                    .attr("x", localPosition)
+                    .attr("y", -10)
+                    .attr("height", 20)
+                    .attr("width", 20)
+                    .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.name === rootName) return 0;
+
+                        listOpacity = [d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
+                            d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
+                            d.target_group, d.target_person, d.stereotype];
+
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+    /**
+     * Draw everything in a circular glyph
+     * Better done than perfect
+     *
+     * Due to pngs order, features need to be drawn first
+     * */
+    function drawFeatureAsCircularGlyph(nodeEnter, localPath, localPosition) {
+        removeThisFeatures(nodeEnter);
+        removeThisTargets(nodeEnter);
+        removeToxicities(nodeEnter);
+
+        var allObjectsInNode = [objFeatGray,
+            objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness,
+            objToxicity0, objToxicity1, objToxicity2, objToxicity3,
+            objTargetGroup, objTargetPerson, objTargetStereotype];
+        var listOpacity;
+
+        //Better done than perfect
+        var cbShowTargets = [1,
+            enabledSettings.indexOf("argumentation"), enabledSettings.indexOf("constructiveness"),
+            enabledSettings.indexOf("sarcasm"), enabledSettings.indexOf("mockery"), enabledSettings.indexOf("intolerance"),
+            enabledSettings.indexOf("improper_language"), enabledSettings.indexOf("insult"), enabledSettings.indexOf("aggressiveness"),
+            1, 1, 1, 1,
+            enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
+
+
+        for (var i = 0; i < allObjectsInNode.length; i++) {
+            if (cbShowTargets[i] > -1) { //If the checkbox is checked, display it if it has the property
+                nodeEnter.append("image")
+                    .attr('class', allObjectsInNode[i].class)
+                    .attr('id', allObjectsInNode[i].id)
+                    .attr("x", localPosition - 17.53)
+                    .attr("y", -27.45)
+                    .attr("height", 55)
+                    .attr("width", 55)
+                    .style("stroke", "black")
+                    .style("stroke-width", "0.5px")
+                    .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.name === rootName) return 0;
+
+                        listOpacity = [1,
+                            d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
+                            d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
+                            d.target_group, d.target_person, d.stereotype];
+
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+    function removeToxicities(nodeEnter) {
+        nodeEnter.selectAll("#toxicity0").remove();
+        nodeEnter.selectAll("#toxicity1").remove();
+        nodeEnter.selectAll("#toxicity2").remove();
+        nodeEnter.selectAll("#toxicity3").remove();
+    }
+
+    /**
      * Determines the type of visualization for the features
      * determinated by the drop down menu
      *
@@ -865,24 +1020,39 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      * */
     function selectFeatureVisualization(nodeEnter) {
         var option = dropdownFeatures.value;
-        console.log("being called");
-        document.getElementById("feature-over-node-or-outside").style.display = "none";
+        document.getElementById("feature-over-node-or-outside").style.display = "none"; //Hide the dropdown menu
+        drawingAllInOne = false;
+        var localPosition;
+        cbFeatureInside.checked ? localPosition = -10 : localPosition = 30;
         switch (option) {
             case "dots":
+                selectTargetVisualization(nodeEnter); //draw the targets if necessary
                 drawFeatureDots(nodeEnter); //Always drawn on the right side
                 break;
             case "trivial-cheese":
-                drawFeatureAsCheese(nodeEnter, "trivialCheese/") //Always drawn on the right side
+                selectTargetVisualization(nodeEnter); //draw the targets if necessary
+                drawFeatureAsCheese(nodeEnter, "trivialCheese/"); //Always drawn on the right side
                 break;
 
-            case "directory-1": //"All for one and one for all" we will draw the features inside of the circle, the targets outside and the level of toxicity in blue
+            case "directory-1": //"All for one and one for all" we will draw the features inside of the circle, the targets outside will be hidden and the level of toxicity in blue
+                drawingAllInOne = true;
                 //Deletes the targets and draws them again but INSIDE of the node
-                document.getElementById("feature-over-node-or-outside").style.display = "block";
+                document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
 
-                //drawTargets(nodeEnter, "newOption1/")
+                drawFeatureAsGlyph(nodeEnter, "Bubble/", localPosition);
                 break;
-            case "directory-2": //Drawn on the node or on the right side
-                //drawTargets(nodeEnter, "newOption2/")
+            case "directory-2":
+                drawingAllInOne = true;
+                //Deletes the targets and draws them again but INSIDE of the node
+                document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
+                drawFeatureAsCircularGlyph(nodeEnter, "Circular/", localPosition);
+                break;
+
+            case "directory-3":
+                drawingAllInOne = true;
+                //Deletes the targets and draws them again but INSIDE of the node
+                document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
+                drawFeatureAsGlyph(nodeEnter, "Rectangular/", localPosition);
                 break;
 
             default:
@@ -1885,7 +2055,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         nodeEnter.append("circle")
             .attr('class', 'nodeCircle')
-            .attr("r", 4.5)
+            .attr("r", "10.5")
             .style("stroke", "black")
             .style("stroke-width", 0.5);
 
@@ -1902,12 +2072,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 return checkboxId.checked ? 1 : 0;
             });
 
+        //Dropdown menus
         dropdownTargets.addEventListener("change", function () {
             selectTargetVisualization(nodeEnter);
         });
         dropdownFeatures.addEventListener("change", function () {
             selectFeatureVisualization(nodeEnter);
         });
+
         /*SECTION checkboxes listener*/
         checkboxId.addEventListener('change', function () {
             this.checked ? writeIdLabel(nodeEnter) : d3.selectAll("#nodeText").remove();
@@ -1927,9 +2099,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
         });
 
-        // if the option to show features is checked
+        // if the option to show features is checked, enable checkboxes and dropdown menu
         checkboxFeatureMenu.addEventListener('change', function () {
-            if (this.checked) {
+            if (this.checked) { //Enable checkboxes and dropdown menu + show features if they are selected
                 checkboxesPropertyFeature.forEach(function (checkboxItem) {
                     checkboxItem.removeAttribute('disabled');
                 });
@@ -1943,9 +2115,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
                 if (!document.querySelector("input[value=dot-feat]").checked && !document.querySelector("input[value=cheese-feat]").checked) {
                     document.querySelector("input[value=dot-feat]").checked = true;
-                    drawFeatures(nodeEnter);
+                    //drawFeatures(nodeEnter);
                 } else {
-                    checkboxFeatureCheese.checked ? drawFeaturesCheese(nodeEnter) : drawFeatures(nodeEnter);
+                    //checkboxFeatureCheese.checked ? drawFeaturesCheese(nodeEnter) : drawFeatures(nodeEnter);
                     console.log(enabledSettings);
                 }
 
@@ -1954,7 +2126,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 }
                 selectFeatureVisualization(nodeEnter);
 
-            } else {
+            } else { //Disable checkboxes and dropdown menu + remove all the features
                 checkboxesPropertyFeature.forEach(function (checkboxItem) {
                     checkboxItem.setAttribute('disabled', 'disabled');
                 });
@@ -1967,33 +2139,34 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 checkboxes.forEach(function (checkboxItem) {
                     checkboxItem.setAttribute('disabled', 'disabled');
                 });
-                /*                hideFeatureDots();
-                                hideCheese();*/
-                removeThisFeatures(nodeEnter);
+
+                removeAllFeatures(); //Hide all features when the cb is unchecked
             }
         });
 
-        // if DOT is checked, uncheck OR
-        checkboxFeatureDot.addEventListener('change', function () {
-            if (this.checked) {
-                checkboxFeatureCheese.checked = false;
-                drawFeatures(nodeEnter);
-            } else {
-                checkboxFeatureCheese.checked = true;
-                drawFeaturesCheese(nodeEnter);
-            }
+        /*        // if DOT is checked, uncheck OR
+                checkboxFeatureDot.addEventListener('change', function() {
+                    if (this.checked){
+                        checkboxFeatureCheese.checked = false;
+                        drawFeatures(nodeEnter);
+                    }
+                    else {
+                        checkboxFeatureCheese.checked = true;
+                        drawFeaturesCheese(nodeEnter);
+                    }
 
-        });
-        // if CHEESE is checked, uncheck AND
-        checkboxFeatureCheese.addEventListener('change', function () {
-            if (this.checked) {
-                checkboxFeatureDot.checked = false;
-                drawFeaturesCheese(nodeEnter);
-            } else {
-                checkboxFeatureDot.checked = true;
-                drawFeatures(nodeEnter);
-            }
-        });
+                });
+                // if CHEESE is checked, uncheck AND
+                checkboxFeatureCheese.addEventListener('change', function() {
+                    if (this.checked) {
+                        checkboxFeatureDot.checked = false;
+                        drawFeaturesCheese(nodeEnter);
+                    }
+                    else {
+                        checkboxFeatureDot.checked = true;
+                        drawFeatures(nodeEnter);
+                    }
+                });*/
 
         // if DOT is checked, uncheck OR
         cbFeatureInside.addEventListener('change', function () {
@@ -2016,7 +2189,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
                 console.log(enabledSettings);
-
                 selectFeatureVisualization(nodeEnter);
             })
         });
@@ -2099,7 +2271,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         - highlight nodes and edges
         * */
         selectTargetVisualization(nodeEnter);
-        selectFeatureVisualization(nodeEnter);
+        checkboxFeatureMenu.checked ? selectFeatureVisualization(nodeEnter) : removeAllFeatures();
         /*if(checkboxFeatureMenu.checked) checkboxFeatureCheese.checked ? drawFeaturesCheese(nodeEnter) : drawFeatures(nodeEnter);*/
 
         // Update the text to reflect whether node has children or not.
@@ -2123,7 +2295,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     If no children, new radius = 4.5 (as usual)
                 * */
                 if (d._children) return d._children.length > 2 ? radiusFactor * d._children.length : d._children.length === 2 ? 5.5 : 4.5;
-                return 4.5;
+                return 8.7;
             })
             .style("fill", function (d) {
                 //console.log("if _children QUANTITY", d._children.length);
@@ -2275,24 +2447,26 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         totalStereotype = listStatistics.totalTargStereotype,
         totalNone = listStatistics.totalTargNone;
 
-    var statisticTitle = "Static values of the news article";
+    var statisticTitle = "<span style='font-size: 22px;'> Static values of " + sel_item.split('/')[2] + "</span>";
     statisticTitleBackground.style("visibility", "visible").html(statisticTitle);
     statisticBackground.style("visibility", "visible").html(writeStatisticText());
 
     function writeStatisticText() {
-        var statisticText = "<table>";
+        var statisticText = "<table style='width: 500px;'>";
 
         var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
         var statValuesTox = [totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic];
         var statValuesTarg = [totalGroup, totalPerson, totalStereotype, totalNone];
+        var targetImagesPath = ["icons/Group.png", "icons/Person.png", "icons/Stereotype.png", "/icons/Blank.png"];
+        var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
         for (var i = 0; i < statTitlesToxicity.length; i++) {
-            statisticText += "<tr>"; //Start table line
+            statisticText += "<tr style='font-size: 20px;'>"; //Start table line
 
             //Write toxicity and target line
-            statisticText += "<td>" + statTitlesToxicity[i] + ": " + "<td>" + statValuesTox[i] + "</td>";
-            statisticText += "<td>" + statTitlesTargets[i] + ": " + "<td>" + statValuesTarg[i] + "</td>";
+            statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td>" + statValuesTox[i].toString() + "</td>";
+            statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
 
             statisticText += "</tr>"; //End table line
         }

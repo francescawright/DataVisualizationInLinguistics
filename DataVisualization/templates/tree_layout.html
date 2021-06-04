@@ -45,20 +45,21 @@
     }
 
     /* Create two equal columns that floats next to each other */
-    .column {
+    .column3 {
         font-size: 15px;
         font-family: sans-serif;
         float: left;
-        width: 200px;
-        padding: 10px;
-        height: 30px; /* Should be removed. Only for demonstration */
+        width: 250px;
+        padding: 19px;
+        line-height: 1;
+    {#height: 30px; /* Should be removed. Only for demonstration */#}
     }
 
     .column2 {
         float: left;
         width: 80%;
         padding: 10px;
-        height: 300px; /* Should be removed. Only for demonstration */
+        /*height: 300px; /* Should be removed. Only for demonstration */
     }
 
     .gradient-line {
@@ -91,23 +92,65 @@
         color: darkslategray;
     }
 
+    /* Add a black background color to the top navigation */
+    .topnav {
+        background-color: #f2f2f2;
+        overflow: hidden;
+        display: flex;
+    }
+
+    /* Style the links inside the navigation bar */
+    .topnav a {
+        float: left;
+        color: black;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+    }
+
+    /* Change the color of links on hover */
+    .topnav a:hover {
+        background-color: #f2f2f2;
+        color: #f2f2f2;
+    }
+
+    /* Add a color to the active/current link */
+    .topnav a.active {
+        background-color: #04AA6D;
+        color: white;
+    }
+
+    .checkbox {
+        margin-right: 3px;
+    }
+
 </style>
 <head>
     {% load static %}
+
 </head>
+
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.src.js"></script>
+
 <script>
     var dataset = "{% static dataset %}";
     var pt = "{% static 'images/targets/' %}";
     var pf = "{% static 'images/features/' %}"
+    var sel_item = "{% static selected_item %}";
 </script>
+
+
 <script src="{% static 'js/dndTree.js' %}"></script>
 <body>
+{% include 'nav_bar.html' %}
+
 <div>
     <div class="row">
 
-        <div id="menu-left" class="column">
+        <div id="menu-left" class="column3">
             <p style="text-align: center; margin-top: 0px; margin-bottom: 0px; font-weight: bold; font-family:cursive; font-size: 20px;">
                 Menu</p>
             <hr class="gradient-line"/>
@@ -133,15 +176,16 @@
                         <option value="directory-2">Directory 2</option>
                     </select>
                     <!-- Checkboxes-->
-                    <div style="margin-bottom: 5px">
-                        <input type="checkbox" class="checkbox" name="cbTargets" value="target-group" id="target-group"><label
+                    <div>
+                        <input type="checkbox" class="checkbox" name="cbTargets" value="target-group"
+                               id="target-group"><label
                             for="target-group">Group</label>
                         <img src="{% static './images/targets/icons/Group.png' %}" alt="Purple people" width="20"
                              height="20"
                              style="float:right; ">
                     </div>
 
-                    <div style="margin-bottom: 5px">
+                    <div>
                         <input type="checkbox" class="checkbox" name="cbTargets" value="target-person"
                                id="target-person"><label for="target-person">Person</label>
                         <img src="{% static './images/targets/icons/Person.png' %}" alt="Dat with blue person"
@@ -149,7 +193,7 @@
                              style="float:right; ">
                     </div>
 
-                    <div style="margin-bottom: 5px">
+                    <div>
                         <input type="checkbox" class="checkbox" name="cbTargets" value="target-stereotype"
                                id="target-stereotype"><label for="target-stereotype">Stereotype</label>
                         <img src="{% static './images/targets/icons/Stereotype.png' %}" alt="Orange thinking cloud"
@@ -173,8 +217,9 @@
                             <select id="dropdown-features" name="dropdown-features" disabled="true">
                                 <option value="dots">Dots</option>
                                 <option value="trivial-cheese">Trivial cheese</option>
-                                <option value="directory-1">All in one</option>
-                                <option value="directory-2">Directory 2</option>
+                                <option value="directory-1">All in one bubble</option>
+                                <option value="directory-2">All in one circle</option>
+                                <option value="directory-3">All in one rectangle</option>
                             </select>
                         </div>
                         <div id="feature-over-node-or-outside"><!--Show on the node or to the right-->
@@ -192,7 +237,7 @@
                         </div>
                     </div>
                     <!--Positive features-->
-                    <div style="margin-bottom: 5px">
+                    <div>
                         <input type="checkbox" class="checkbox" name="cbFeatures" value="argumentation"
                                id="argumentation" disabled="true"><label for="argumentation">Argumentation</label>
                         <div style="float: right">
@@ -214,7 +259,7 @@
                     </div>
 
                     <!--Negative features-->
-                    <div style="margin-bottom: 5px">
+                    <div>
                         <input type="checkbox" class="checkbox" name="cbFeatures" value="sarcasm" id="sarcasm"
                                disabled="true"><label for="sarcasm">Sarcasm</label>
                         <div style="float: right">
@@ -224,7 +269,7 @@
                         </div>
                     </div>
 
-                    <div style="margin-bottom: 5px">
+                    <div>
                         <input type="checkbox" class="checkbox" name="cbFeatures" value="mockery" id="mockery"
                                disabled="true"><label for="mockery">Mockery</label>
                         <div style="float: right">
@@ -234,7 +279,7 @@
                         </div>
                     </div>
 
-                    <div style="margin-bottom: 5px">
+                    <div>
                         <input type="checkbox" class="checkbox" name="cbFeatures" value="intolerance" id="intolerance"
                                disabled="true"><label for="intolerance">Intolerance</label>
                         <div style="float: right">
@@ -244,7 +289,7 @@
                         </div>
                     </div>
 
-                    <div style="margin-bottom: 5px">
+                    <div>
                         <input type="checkbox" class="checkbox" name="cbFeatures" value="improper_language"
                                id="improper_language" disabled="true"><label for="improper_language">Improper
                         language</label>
@@ -255,7 +300,7 @@
                         </div>
                     </div>
 
-                    <div style="margin-bottom: 5px">
+                    <div>
                         <input type="checkbox" class="checkbox" name="cbFeatures" value="insult" id="insult"
                                disabled="true"><label for="insult">Insult</label>
                         <div style="float: right">
@@ -265,7 +310,7 @@
                         </div>
                     </div>
 
-                    <div style="margin-bottom: 5px">
+                    <div>
                         <input type="checkbox" class="checkbox" name="cbFeatures" value="aggressiveness"
                                id="aggressiveness" disabled="true"><label for="aggressiveness">Aggressiveness</label>
                         <div style="float: right">
@@ -293,7 +338,7 @@
                         <div style="padding-top: 10px;">
                             <!--Toxicity level-->
                             <div style="padding-top: 10px; padding-right: 10px">
-                                <div style="margin-bottom: 5px">
+                                <div>
                                     <input type="checkbox" class="checkbox" name="cbHighlight"
                                            value="highlight-toxicity-0" id="highlight-toxicity-0" disabled="true"><label
                                         for="highlight-toxicity-0">Not toxic</label>
@@ -305,7 +350,7 @@
                                     </div>
                                 </div>
 
-                                <div style="margin-bottom: 5px">
+                                <div>
                                     <input type="checkbox" class="checkbox" name="cbHighlight"
                                            value="highlight-toxicity-1" id="highlight-toxicity-1" disabled="true"><label
                                         for="highlight-toxicity-1">Mildly toxic</label>
@@ -317,7 +362,7 @@
                                     </div>
                                 </div>
 
-                                <div style="margin-bottom: 5px">
+                                <div>
                                     <input type="checkbox" class="checkbox" name="cbHighlight"
                                            value="highlight-toxicity-2" id="highlight-toxicity-2" disabled="true"><label
                                         for="highlight-toxicity-2">Toxic</label>
@@ -329,7 +374,7 @@
                                     </div>
                                 </div>
 
-                                <div style="margin-bottom: 5px">
+                                <div>
                                     <input type="checkbox" class="checkbox" name="cbHighlight"
                                            value="highlight-toxicity-3" id="highlight-toxicity-3" disabled="true"><label
                                         for="highlight-toxicity-3">Very toxic</label>
@@ -438,7 +483,7 @@
                     Legend</p>
                 <hr class="gradient-line"/>
                 <div style="background-color: #69b3a2;margin-top: 10px;margin-bottom: 5px;padding-left: 10px; padding-right: 10px; padding-bottom: 10px;padding-top: 5px;">
-                    <div style="margin-bottom: 5px">
+                    <div>
                         <label>News Article</label>
                         <div style="float: right">
                             <svg height="20" width="20" style="display: inline-block;">
@@ -446,7 +491,7 @@
                             </svg>
                         </div>
                     </div>
-                    <div style="margin-bottom: 5px">
+                    <div>
                         <label>Node collapsed with just one direct son</label>
                         <div style="float: right">
                             <svg height="20" width="20" style="display: inline-block;">
@@ -455,7 +500,7 @@
                         </div>
                     </div>
 
-                    <div style="margin-bottom: 5px">
+                    <div>
                         <label>Node with stance positive and negative</label>
                         <div style="float: right">
                             <svg height=" 10" width="20" style="display: inline-block;">
@@ -468,8 +513,127 @@
             </div>
         </div>
         <div id="tree-container" class="column2"></div>
+
+
+        <table style="display: flex; margin-left: 150px;">
+            <div class="row" style="width: 48%; margin-left: 180px;">
+                <div id="aux_graph" class="column2"></div>
+            </div>
+            <div id="aux_graph2" class="row" style="width: 48%">
+
+            </div>
+        </table>
+
+        {#        <table style="display: flex; margin-left: 150px;">#}
+        {#            <div class="row" style="width: 33%; margin-left: 180px;">#}
+        {#                <div id="aux_graph" class="column2"></div>#}
+        {#            </div>#}
+        {#            <div id="aux_graph2" class="row" style="width: 33%">#}
+        {##}
+        {#            </div>#}
+        {#            <div id="text" class="row" style="width: 33%">#}
+        {#                Some interesting statistics here#}
+        {#            </div>#}
+        {#        </table>#}
     </div>
 
 </div>
 </body>
+<script>
+    Highcharts.chart('aux_graph', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Toxicity'
+        },
+        xAxis: {
+            categories: [
+                "Non-toxic comments", "Toxic comments"
+            ]
+        },
+        plotOptions: {
+            series: {
+                stacking: 'normal'
+            }
+        },
+        series: [{
+            name: 'Non toxic comment',
+            data: [
+                {% for entry in d1 %}{{ entry.toxicity_no }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            ],
+            color: 'green'
+        },
+            {
+                name: 'Low toxicity',
+                data: [
+                    {% for entry in d1 %}{{ entry.low_toxicity }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'yellow'
+            },
+            {
+                name: 'Med toxicity',
+                data: [
+                    {% for entry in d1 %}{{ entry.med_toxicity }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'orange'
+            },
+            {
+                name: 'High toxicity',
+                data: [
+                    {% for entry in d1 %}{{ entry.high_toxicity }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'red'
+            }]
+    });
+    var chart = Highcharts.chart('aux_graph2', {
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Other important columns'
+        },
+        xAxis: {
+            categories: [
+                "Non-toxic comment", "Toxic comment"
+            ]
+        },
+        plotOptions: {
+            series: {
+                stacking: ''
+            }
+        },
+        series: [{
+            name: 'Sarcasm',
+            data: [
+                {% for entry in d2 %}{{ entry.sarcasm }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            ],
+            color: 'green'
+        },
+            {
+                name: 'Argumentation',
+                data: [
+                    {% for entry in d2 %}{{ entry.argumentation }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'orange'
+            },
+            {
+                name: 'Positive Stance',
+                data: [
+                    {% for entry in d2 %}{{ entry.positive_stance }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'blue'
+            },
+            {
+                name: 'Negative Stance',
+                data: [
+                    {% for entry in d2 %}{{ entry.negative_stance }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'red'
+            }]
+    });
+
+</script>
+
+
 </html>

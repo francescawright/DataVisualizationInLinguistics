@@ -1,3 +1,4 @@
+from django.utils.datastructures import MultiValueDictKeyError
 from django.views.generic import TemplateView
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -26,19 +27,24 @@ def index(request):
         .annotate(argumentation=Count('argumentation', filter=Q(argumentation=1))) \
         .annotate(positive_stance=Count('positive_stance', filter=Q(positive_stance=1))) \
         .annotate(negative_stance=Count('negative_stance', filter=Q(negative_stance=1)))
-    return render(request, 'index.html', context={'dataset': dataset, 'dataset2': dataset2})
+    print(dataset)
+    print(dataset2)
+    return render(request, 'index.html', context={'dataset': dataset, 'dataset2': dataset})
 
 
 def index_reyes(request):
-    return render(request, "index_reyes.html", context={"dataset": "test_json.json"})
+    data = Commentary.objects.all()
+    print(data)
+    # return render(request, "tree_layout.html", context={"dataset": "test_json.json"})
+    return render(request, "tree_layout.html", context={"dataset": data})
 
 
 def index_reyes_force(request):
-    return render(request, "index_force.html", context={"dataset": "test_json.json"})
+    return render(request, "force_layout.html", context={"dataset": "test_json.json"})
 
 
 def index_reyes_radial(request):
-    return render(request, "index_radial.html", context={"dataset": "test_json.json"})
+    return render(request, "radial_layout.html", context={"dataset": "test_json.json"})
 
 
 def manage_data(request):
@@ -56,6 +62,7 @@ def manage_data(request):
 
 def upload_data(request):
     parser = ExcelParser()
+    print(Document.objects.all())
     for doc in Document.objects.all():
         parser.load_and_parse(doc)
 
@@ -73,7 +80,7 @@ def export_visualization():
     raise NotImplemented()
 
 
-def recursive_add_node(node):
+def recursive_add_node(node, doc):
     result = {
         "name": node.comment_id,
         "user_id": node.user_id,
@@ -99,7 +106,8 @@ def recursive_add_node(node):
     }
     # children = [recursive_add_node(c) for c in Commentary.objects.all().filter(thread=node.comment_id)] lmao, peta porque se pilla a sí mismo
     # los comentarios de nivel 1 tienen como thread su mismo id!!
-    children = [recursive_add_node(c) for c in Commentary.objects.all().filter(thread=node.comment_id, comment_level=2)]
+    children = [recursive_add_node(c, doc) for c in
+                Commentary.objects.filter(document_id=doc).all().filter(thread=node.comment_id, comment_level=2)]
     if children:
         result["children"] = children
     # else:
@@ -108,21 +116,62 @@ def recursive_add_node(node):
 
 
 def testD3(request):
-    dataset = Commentary.objects.all()
-    print(dataset)
+    # print(request)
+    # print(request.POST["selected_data"])
+    try:
+        doc = Document.objects.filter(description=request.POST["selected_data"]).first()
+        selected_item = request.POST["selected_data"]
+    except MultiValueDictKeyError:
+        doc = Document.objects.all()[0]
+        selected_item = Document.objects.all()[0].description
+    dataset = Commentary.objects.filter(document_id=doc).all()
+    # print(dataset)
 
     # Filtramos todos los hijos de primer nivel.
     first_level = dataset.filter(comment_level=1)
 
     # Recursivamente añadimos sus hijos.
-    data_list = [recursive_add_node(node) for node in first_level]
+    data_list = [recursive_add_node(node, doc) for node in first_level]
 
-    data = {"name": "News Article", "children": data_list}
+    data = {"name": doc, "children": data_list}
     # print(json.dumps(data, default=str))
-    print(os.path)
-    # with open(os.path.join(".." + django_settings.STATIC_URL, 'test_json.json'), 'w') as outfile:
-    #    json.dump(data, outfile, default=str)
-    return render(request, 'index.html', {'dataset': data})
+    # print(os.path)
+    with open(os.path.join('DataVisualization/' + django_settings.STATIC_URL, 'output.json'), 'w') as outfile:
+        json.dump(data, outfile, default=str)
+    print(request.POST)
+    try:
+        selected_layout = request.POST["dropdown_layout"]
+        template = "tree_layout.html"
+        if request.POST["dropdown_layout"] == "Tree":
+            template = "tree_layout.html"
+        elif request.POST["dropdown_layout"] == "Force":
+            template = "force_layout.html"
+        elif request.POST["dropdown_layout"] == "Radial":
+            template = "radial_layout.html"
+    except MultiValueDictKeyError:
+        selected_layout = "tree_layout.html"
+        template = "tree_layout.html"
+    layouts = ["Tree", "Force", "Radial"]
+
+    d1 = Commentary.objects.filter(document_id=doc) \
+        .values('toxicity') \
+        .annotate(toxicity_no=Count('toxicity', filter=Q(toxicity=0))) \
+        .annotate(toxicity_yes=Count('toxicity', filter=Q(toxicity=1))) \
+        .annotate(low_toxicity=Count('toxicity_level', filter=Q(toxicity_level=1))) \
+        .annotate(med_toxicity=Count('toxicity_level', filter=Q(toxicity_level=2))) \
+        .annotate(high_toxicity=Count('toxicity_level', filter=Q(toxicity_level=3)))
+
+    d2 = Commentary.objects.filter(document_id=doc) \
+        .values('toxicity') \
+        .annotate(sarcasm=Count('sarcasm', filter=Q(sarcasm=1))) \
+        .annotate(argumentation=Count('argumentation', filter=Q(argumentation=1))) \
+        .annotate(positive_stance=Count('positive_stance', filter=Q(positive_stance=1))) \
+        .annotate(negative_stance=Count('negative_stance', filter=Q(negative_stance=1)))
+
+    return render(request, template,
+                  {'dataset': 'output.json', 'options': Document.objects.all(), 'layouts': layouts,
+                   'selected_layout': selected_layout,
+                   'selected_item': selected_item, "d1": d1, "d2": d2})
 
 
 ## WIP STUFF

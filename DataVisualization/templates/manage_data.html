@@ -51,9 +51,8 @@
         <div class="container-fluid">
 
             <h1>Manage Data</h1>
-
             <div style="margin: 4px;">
-                <form method="post">
+                <form method="post">{% csrf_token %}
                     <input type="submit" class="btn btn-primary" value="Upload Document" name="upload_button">
                 </form>
             </div>

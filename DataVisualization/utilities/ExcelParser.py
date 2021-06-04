@@ -6,7 +6,6 @@ import datetime
 
 from django.utils import timezone
 
-
 excel_columns = {
     "COMMENT_ID": 0,
     "USER_ID": 1,

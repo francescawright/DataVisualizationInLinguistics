@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static  'css/simple-sidebar.css' %}" rel="stylesheet">
+</head>
+<body>
+
+<div class="topnav" style="display: flex; max-width: 2500px; padding: 10px;">
+    <img src="{% static 'images/app_icon.svg' %}" style="width: 40px; margin: 10px; margin-right: 45px;">
+
+    <form style=" padding-left: 5px; padding-right: 45px; margin: 10px;">
+        <button style="margin-top: 4px;" class="btn btn-primary" formaction="{% url 'manage_data' %}">Manage Data
+        </button>
+    </form>
+    <form style="justify-content: center; vertical-align: center; padding-top: 4px; margin: 10px;"
+          action="{% url 'selected_data' %}"
+          id="dropdown_data"
+          method="POST">
+        {% csrf_token %}
+        <span style="padding-right: 2px;">Dataset:</span>
+        <select name="selected_data" form="dropdown_data">
+            {% for option in options %}
+                <option value="{{ option.description }}" id="{{ option.description }}"
+                        {% if option.description == selected_item %}selected{% endif %}>{{ option.description }}</option>
+            {% endfor %}
+        </select>
+        <span style="padding-left: 15px; padding-right: 2px;">Layout:</span>
+        <select name="dropdown_layout" form="dropdown_data">
+            {% for layout in layouts %}
+                <option value="{{ layout }}" id="{{ layout }}"
+                        {% if layout == selected_layout %}selected{% endif %}>{{ layout }}</option>
+            {% endfor %}
+        </select>
+        <input style="margin-left: 15px; margin-bottom: 4px;" class="btn btn-primary" type="submit" value="Submit">
+    </form>
+
+</div>
+</body>
+</html>
