@@ -1,1 +1,1 @@
-web: gunicorn --bind 0.0.0.0:8000 DataVisualization.wsgi
+gunicorn  DataVisualization:application -b 0.0.0.0:8000
