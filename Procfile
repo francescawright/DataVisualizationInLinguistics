@@ -1,1 +1,1 @@
-gunicorn  DataVisualization:application -b 0.0.0.0:8000
+web: gunicorn DataVisualization.wsgi -b 0.0.0.0:8000
