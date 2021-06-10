@@ -125,6 +125,14 @@
         margin-right: 3px;
     }
 
+
+    .row_cust {
+        flex-wrap: wrap;
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+
+
 </style>
 <head>
     {% load static %}
@@ -148,7 +156,7 @@
 {% include 'nav_bar.html' %}
 
 <div>
-    <div class="row">
+    <div class="row_cust">
 
         <div id="menu-left" class="column3">
             <p style="text-align: center; margin-top: 0px; margin-bottom: 0px; font-weight: bold; font-family:cursive; font-size: 20px;">
@@ -516,7 +524,7 @@
 
 
         <table style="display: flex; margin-left: 150px;">
-            <div class="row" style="width: 48%; margin-left: 180px;">
+            <div class="row_cust" style="width: 48%; margin-left: 180px;">
                 <div id="aux_graph" class="column2"></div>
             </div>
             <div id="aux_graph2" class="row" style="width: 48%">

@@ -7,6 +7,7 @@
     <title>Manage Data</title>
 </head>
 
+
 <body>
 
 <div class="d-flex" id="wrapper">
@@ -50,44 +51,20 @@
 
         <div class="container-fluid">
 
-            <h1>Manage Data</h1>
-            <div style="margin: 4px;">
-                <a type="button" href="/upload_file" class="btn btn-primary" value="Upload Document"
-                   name="upload_button">Upload Document</a>
-            </div>
-
-
-            <div style="margin: 4px;">
-
-                <form method="POST" id="dropdown_delete">
-                    {% csrf_token %}
-                    <input type="submit" class="btn btn-primary" value="Delete Data" name="delete_button">
-                    <select name="selected_data_delete" form="dropdown_delete">
-                        {% for document in documents_uploaded %}
-                            <option value="{{ document.description }}"
-                                    id="{{ document.description }}">{{ document.description }}</option>
-                        {% endfor %}
-                    </select>
-                </form>
-            </div>
-
-            <div style="margin: 4px;">
-
-                <form method="get">
-                    <input type="submit" class="btn btn-primary" value="Save Project" name="save_button">
-                </form>
-            </div>
-
-            <div style="margin: 4px;">
-
-                <form method="get">
-                    <input type="submit" class="btn btn-primary" value="Export Visualization" name="export_button">
-                </form>
-            </div>
-
+            <h2 class="display-4">Upload File</h2>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" style="color: #fff; background-color: #007bff; border-color: #007bff"
+                        class="btn btn-default">Parse and Upload
+                    file
+                </button>
+            </form>
         </div>
+
     </div>
-    <!-- /#page-content-wrapper -->
+</div>
+<!-- /#page-content-wrapper -->
 
 </div>
 <!-- /#wrapper -->

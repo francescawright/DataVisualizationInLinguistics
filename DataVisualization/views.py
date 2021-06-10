@@ -9,6 +9,8 @@ from django.db.models import Count, Q
 import json
 from django.conf import settings as django_settings
 import os
+from DataVisualization.forms import FileForm
+
 import pandas as pd
 
 
@@ -27,9 +29,17 @@ def index(request):
         .annotate(argumentation=Count('argumentation', filter=Q(argumentation=1))) \
         .annotate(positive_stance=Count('positive_stance', filter=Q(positive_stance=1))) \
         .annotate(negative_stance=Count('negative_stance', filter=Q(negative_stance=1)))
-    print(dataset)
-    print(dataset2)
-    return render(request, 'index.html', context={'dataset': dataset, 'dataset2': dataset})
+
+    dataset3 = Commentary.objects \
+        .values('toxicity') \
+        .annotate(target_group=Count('target_group', filter=Q(target_group=1))) \
+        .annotate(target_person=Count('target_person', filter=Q(target_person=1))) \
+        .annotate(stereotype=Count('stereotype', filter=Q(stereotype=1)))
+
+    documents_uploaded = Document.objects.all()
+    return render(request, 'index.html',
+                  context={'dataset': dataset, 'dataset2': dataset2, 'dataset3': dataset3,
+                           'documents_uploaded': documents_uploaded})
 
 
 def index_reyes(request):
@@ -48,28 +58,24 @@ def index_reyes_radial(request):
 
 
 def manage_data(request):
-    print(request)
-    if (request.POST.get("upload_button")):
-        upload_data(request)
-    if (request.GET.get("delete_button")):
-        delete_data()
+    if request.method == 'POST':
+        handle_delete_data(request)
     if (request.GET.get("save_button")):
         save_project()
     if (request.GET.get("export_button")):
         export_visualization()
-    return render(request, 'manage_data.html', context=None)
+    documents_uploaded = Document.objects.all()
+    return render(request, 'manage_data.html', context={"documents_uploaded": documents_uploaded})
 
 
-def upload_data(request):
+def parse_data(document):
     parser = ExcelParser()
-    print(Document.objects.all())
-    for doc in Document.objects.all():
-        parser.load_and_parse(doc)
+    parser.load_and_parse(Document.objects.filter(description=document.description).first())
 
 
-def delete_data():
+def delete_data(selected_data):
     parser = ExcelParser()
-    parser.drop_database()
+    parser.drop_database(selected_data)
 
 
 def save_project():
@@ -117,10 +123,16 @@ def recursive_add_node(node, doc):
 
 def testD3(request):
     # print(request)
-    # print(request.POST["selected_data"])
+    print("POST", request.POST)
+    selected_data = Document.objects.first().description
+    if "from_button" in request.POST.keys():
+        selected_data = request.POST['from_button']
+    elif "selected_data" in request.POST.keys():
+        selected_data = request.POST["selected_data"]
+
     try:
-        doc = Document.objects.filter(description=request.POST["selected_data"]).first()
-        selected_item = request.POST["selected_data"]
+        doc = Document.objects.filter(description=selected_data).first()
+        selected_item = selected_data
     except MultiValueDictKeyError:
         doc = Document.objects.all()[0]
         selected_item = Document.objects.all()[0].description
@@ -174,7 +186,34 @@ def testD3(request):
                    'selected_item': selected_item, "d1": d1, "d2": d2})
 
 
-## WIP STUFF
+def upload_file(request):
+    if request.method == 'POST':
+        file_form = FileForm(request.POST, request.FILES)
+        if file_form.is_valid():
+            handle_uploaded_file(request.FILES['document'])
+            file_form.save()
+            parse_data(Document.objects.last())
+            documents_uploaded = Document.objects.all()
+            return render(request, "index.html", {'documents_uploaded': documents_uploaded})
+    else:
+        file_form = FileForm()
+        return render(request, "upload_file.html", {'form': file_form})
+
+
+def handle_uploaded_file(f):
+    with open('DataVisualization/static/' + f.name, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+            ## WIP STUFF
+
+
+def handle_delete_data(request):
+    try:
+        selected_data = request.POST["selected_data_delete"]
+    except MultiValueDictKeyError as e:
+        selected_data = Document.objects.first()
+    delete_data(selected_data)
+
 
 class TestChartView(TemplateView):
     template_name = "test.html"

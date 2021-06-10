@@ -109,8 +109,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var previousHighlightSelection = false;
     var opacityValue = 0.2;
     // size of the diagram
-    var viewerWidth = $(document).width();
-    var viewerHeight = $(document).height();
+    //var viewerWidth = $(document).width();
+    var viewerWidth = 100;
+    var viewerHeight = 400;
     var separationHeight = 61; //Sets the separation between two nodes to 15 pixels
     var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
     var tooltipText;
@@ -534,8 +535,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     // define the baseSvg, attaching a class for styling and the zoomListener
     var baseSvg = d3.select("#tree-container").append("svg")
-        .attr("width", viewerWidth)
-        .attr("height", viewerHeight)
+        .attr("width", 2200)
+        .attr("height", 900)
         .attr("class", "overlay")
         .call(zoomListener);
 
@@ -986,8 +987,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr('id', allObjectsInNode[i].id)
                     .attr("x", localPosition - 17.53)
                     .attr("y", -27.45)
-                    .attr("height", 55)
-                    .attr("width", 55)
+                    .attr("height", 40)
+                    .attr("width", 40)
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
@@ -2294,7 +2295,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
                     If no children, new radius = 4.5 (as usual)
                 * */
-                if (d._children) return d._children.length > 2 ? radiusFactor * d._children.length : d._children.length === 2 ? 5.5 : 4.5;
+                if (d._children)
+                    if (d._children.length > 2)
+                        return radiusFactor * d._children.length * 4
+                    else if (d._children.length === 2)
+                        return 8.7 * radiusFactor
+                    else
+                        return 7.7 * radiusFactor;
                 return 8.7;
             })
             .style("fill", function (d) {
@@ -2465,7 +2472,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             statisticText += "<tr style='font-size: 20px;'>"; //Start table line
 
             //Write toxicity and target line
-            statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td>" + statValuesTox[i].toString() + "</td>";
+            statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td style='padding-right: 55px;'>" + statValuesTox[i].toString() + "</td>";
             statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
 
             statisticText += "</tr>"; //End table line

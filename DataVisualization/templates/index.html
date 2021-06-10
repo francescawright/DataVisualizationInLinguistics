@@ -18,13 +18,13 @@
 
 <div class="d-flex" id="wrapper">
 
-    {% include 'sidebar.html' with title="DViL" %}
+    {% include 'sidebar.html' with title="DViL" documents='{{ documents_uploaded }}' %}
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-            <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+            {#            <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>#}
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,6 +63,14 @@
         {#                optional, and just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which#}
         {#                will toggle the menu when clicked.</p>#}
         {#        </div>#}
+        <h1 class="display-2 text-center">Data Visualization in Linguistics</h1>
+        <br>
+        <p class="text-center">This project provides a way to explore and visualize the toxicity of news directly on a
+            website.</p>
+        <br>
+        <p class="text-center">Upload an Excel file and click on View Data to start!</p>
+        <br>
+        <p class="text-center">The following charts summarise the data upload until now</p>
 
         <table>
             <div class="column" style="width: 100%">
@@ -84,7 +92,7 @@
                     type: 'column'
                 },
                 title: {
-                    text: 'Toxicity'
+                    text: 'Global toxicity'
                 },
                 xAxis: {
                     categories: [
@@ -130,7 +138,7 @@
                     type: 'bar'
                 },
                 title: {
-                    text: 'Other important columns'
+                    text: 'Some features'
                 },
                 xAxis: {
                     categories: [
@@ -171,26 +179,44 @@
                         color: 'red'
                     }]
             });
-            Highcharts.chart('container3', {
+            var chart = Highcharts.chart('container3', {
                 chart: {
-                    type: 'column'
+                    type: 'bar'
                 },
                 title: {
-                    text: 'Historic World Population by Region'
+                    text: 'Targeting groups'
                 },
                 xAxis: {
-                    categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania']
+                    categories: [
+                        "Non-toxic comment", "Toxic comment"
+                    ]
+                },
+                plotOptions: {
+                    series: {
+                        stacking: ''
+                    }
                 },
                 series: [{
-                    name: 'Year 1800',
-                    data: [107, 31, 635, 203, 2]
-                }, {
-                    name: 'Year 1900',
-                    data: [133, 156, 947, 408, 6]
-                }, {
-                    name: 'Year 2012',
-                    data: [1052, 954, 4250, 740, 38]
-                }]
+                    name: 'Target person',
+                    data: [
+                        {% for entry in dataset3 %}{{ entry.target_person }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                    ],
+                    color: 'lightblue'
+                },
+                    {
+                        name: 'Target group',
+                        data: [
+                            {% for entry in dataset3 %}{{ entry.target_group }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                        ],
+                        color: 'blue'
+                    },
+                    {
+                        name: 'Stereotype',
+                        data: [
+                            {% for entry in dataset3 %}{{ entry.stereotype }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                        ],
+                        color: 'darkblue'
+                    }]
             });
         </script>
     </div>

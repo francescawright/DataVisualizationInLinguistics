@@ -1,5 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    /* Style the buttons that are used to open and close the accordion panel */
+    .accordion {
+        background-color: #eee;
+    {#color: #444;#} cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        text-align: left;
+        border: none;
+        outline: none;
+        transition: 0.4s;
+    }
+
+    /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+    .active, .accordion:hover {
+        background-color: #ccc;
+    }
+
+    /* Style the accordion panel. Note: hidden by default */
+    .panel {
+        padding: 0 18px;
+        background-color: white;
+        display: none;
+        overflow: hidden;
+    }
+
+</style>
 <head>
 
     {% load static %}
@@ -12,14 +39,59 @@
 </head>
 <body>
 <div class="bg-light border-right" id="sidebar-wrapper">
-    <div class="sidebar-heading">{{ title }}</div>
+
+    <div class="sidebar-heading">
+        <a href="/">
+            <img src="{% static 'images/app_icon.svg' %}"
+                 style="width: 40px;">
+        </a>
+        {{ title }}
+    </div>
     <div class="list-group list-group-flush">
-        <a href="/view_data/" class="list-group-item list-group-item-action bg-light">View Data</a>
-        <a href="/manage_data/" class="list-group-item list-group-item-action bg-light">Manage Data</a>
-        {#        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>#}
-        {#        <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>#}
-        {#        <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>#}
+        <form style="justify-content: center; vertical-align: center; padding-top: 4px; margin: 10px;"
+              action="{% url 'selected_data' %}"
+              id="data_selection"
+              method="POST">
+            {% csrf_token %}
+
+            <button type="button" class="accordion">View Data</button>
+            {#        <a href="/view_data/" class="list-group-item list-group-item-action bg-light">View Data</a>#}
+            <div class="panel">
+                {% for document in documents_uploaded %}
+                    <button href="/view_data" class="list-group-item-action bg-light"
+                            name="from_button"
+                            value="{{ document.description }}"
+                            form="data_selection">{{ document.description }}</button><br>
+                    {% if not forloop.last %}{% endif %}{% endfor %}
+            </div>
+            <a href="/manage_data/" class="list-group-item list-group-item-action bg-light">Manage Data</a>
+            {#        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>#}
+            {#        <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>#}
+            {#        <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>#}
+        </form>
     </div>
 </div>
 </body>
 </html>
+
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+            /* Toggle between adding and removing the "active" class,
+            to highlight the button that controls the panel */
+            this.classList.toggle("active");
+
+            /* Toggle between hiding and showing the active panel */
+            var panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+            }
+        });
+    }
+
+</script>

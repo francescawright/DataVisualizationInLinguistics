@@ -67,8 +67,9 @@ class ExcelParser:
                 except:
                     continue
 
-    def drop_database(self):
-        Commentary.objects.all().delete()
+    def drop_database(self, selected_data):
+        Commentary.objects.filter(document_id=Document.objects.filter(description=selected_data).first()).delete()
+        Document.objects.filter(description=selected_data).delete()
 
     def is_xls(self, excel_file):
         return str(excel_file.document.name).split('.')[-1] == 'xls'

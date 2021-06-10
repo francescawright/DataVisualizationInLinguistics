@@ -90,8 +90,8 @@ treeJSON = d3.json(dataset, function (error, json) {
 
     var svg = d3.select("#tree-container") //Define the container that holds the layout
         .append("svg")
-        .attr("width", width) //Dimensions of the layout
-        .attr("height", height)
+        .attr("width", 2200)
+        .attr("height", 900)
         .attr("class", "overlay")
         .call(d3.behavior.zoom().scaleExtent([0.1, 8]).on("zoom", zoom)) //Allow zoom
         .append("g");
@@ -110,7 +110,7 @@ treeJSON = d3.json(dataset, function (error, json) {
     var drag = force.drag() //Define behaviour on drag
         .on("dragstart", dragstart);
 
-    var link = svg.selectAll(".link"),
+    var link = svg.selectAll("path.link"),
         node = svg.selectAll(".node")
             .sort(function (a, b) {
                 console.log("sorting after force", a, b);
@@ -1657,7 +1657,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
         // Enter any new links
         //NOTE we insert the links first, so the nodes appear above them
-        link.enter().insert("line", ".node")
+        link.enter().insert("line", "g")
             .attr("class", "link")
             .attr("x1", function (d) {
                 return d.source.x;
@@ -1692,7 +1692,6 @@ treeJSON = d3.json(dataset, function (error, json) {
             }), function (d) {
                 return d.id;
             });
-
         // Create a container so we draw several elements along with the node
         // Enter nodes
         var container = node.enter().append("g")
@@ -1741,7 +1740,13 @@ treeJSON = d3.json(dataset, function (error, json) {
 
                     If no children, new radius = 4.5 (as usual)
                 * */
-                if (d._children) return d._children.length > 2 ? radiusFactor * d._children.length : d._children.length === 2 ? 5.5 : 4.5;
+                if (d._children)
+                    if (d._children.length > 2)
+                        return radiusFactor * d._children.length * 4
+                    else if (d._children.length === 2)
+                        return 8.7 * radiusFactor
+                    else
+                        return 7.7 * radiusFactor;
                 return 8.7;
             })
             .style("fill", function (d) {
@@ -2012,8 +2017,8 @@ treeJSON = d3.json(dataset, function (error, json) {
                 d.children = d._children;
                 d._children = null;
             }
-            update();
         }
+        update();
     }
 
     // Returns a list of all nodes under the root.
@@ -2177,7 +2182,7 @@ treeJSON = d3.json(dataset, function (error, json) {
             statisticText += "<tr style='font-size: 20px;'>"; //Start table line
 
             //Write toxicity and target line
-            statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td>" + statValuesTox[i].toString() + "</td>";
+            statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td style='padding-right: 55px;'>" + statValuesTox[i].toString() + "</td>";
             statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
 
             statisticText += "</tr>"; //End table line

@@ -126,6 +126,12 @@
         margin-right: 3px;
     }
 
+    .row_cust {
+        flex-wrap: wrap;
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+
 </style>
 <head>
     {% load static %}
@@ -149,7 +155,7 @@
 {% include 'nav_bar.html' %}
 
 <div>
-    <div class="row">
+    <div class="row_cust">
 
         <div id="menu-left" class="column3">
             <p style="text-align: center; margin-top: 0px; margin-bottom: 0px; font-weight: bold; font-family:cursive; font-size: 20px;">
@@ -515,10 +521,114 @@
         </div>
         <div id="tree-container" class="column2" style="display: flex;"></div>
 
+        <table style="display: flex; margin-left: 150px;">
+            <div class="row_cust" style="width: 48%; margin-left: 180px;">
+                <div id="aux_graph" class="column2"></div>
+            </div>
+            <div id="aux_graph2" class="row" style="width: 48%">
+
+            </div>
+        </table>
 
     </div>
 
 </div>
 </body>
+
+<script>
+    Highcharts.chart('aux_graph', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Toxicity'
+        },
+        xAxis: {
+            categories: [
+                "Non-toxic comments", "Toxic comments"
+            ]
+        },
+        plotOptions: {
+            series: {
+                stacking: 'normal'
+            }
+        },
+        series: [{
+            name: 'Non toxic comment',
+            data: [
+                {% for entry in d1 %}{{ entry.toxicity_no }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            ],
+            color: 'green'
+        },
+            {
+                name: 'Low toxicity',
+                data: [
+                    {% for entry in d1 %}{{ entry.low_toxicity }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'yellow'
+            },
+            {
+                name: 'Med toxicity',
+                data: [
+                    {% for entry in d1 %}{{ entry.med_toxicity }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'orange'
+            },
+            {
+                name: 'High toxicity',
+                data: [
+                    {% for entry in d1 %}{{ entry.high_toxicity }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'red'
+            }]
+    });
+    var chart = Highcharts.chart('aux_graph2', {
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Other important columns'
+        },
+        xAxis: {
+            categories: [
+                "Non-toxic comment", "Toxic comment"
+            ]
+        },
+        plotOptions: {
+            series: {
+                stacking: ''
+            }
+        },
+        series: [{
+            name: 'Sarcasm',
+            data: [
+                {% for entry in d2 %}{{ entry.sarcasm }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            ],
+            color: 'green'
+        },
+            {
+                name: 'Argumentation',
+                data: [
+                    {% for entry in d2 %}{{ entry.argumentation }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'orange'
+            },
+            {
+                name: 'Positive Stance',
+                data: [
+                    {% for entry in d2 %}{{ entry.positive_stance }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'blue'
+            },
+            {
+                name: 'Negative Stance',
+                data: [
+                    {% for entry in d2 %}{{ entry.negative_stance }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'red'
+            }]
+    });
+
+</script>
 
 </html>

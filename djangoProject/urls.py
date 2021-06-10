@@ -16,8 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from DataVisualization.views import index, TestChartView, test, testButton, dashboard, test_boostrap, manage_data, \
-    upload_data, delete_data, save_project, export_visualization, index_reyes, index_reyes_force, index_reyes_radial, \
-    testD3
+    upload_file, testD3, delete_data
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,8 +28,10 @@ urlpatterns = [
     path('test_dashboard/', dashboard, name="test_dashboard"),
     path('test_bootstrap/', test_boostrap),
     path('manage_data/', manage_data, name="manage_data"),
+    path('upload_file/', upload_file),
+    path('delete_data/', delete_data),
     path('view_data/', testD3),
     path('selected_data/', testD3, name='selected_data'),
-    path('selected_layout/', testD3, name='dropdown_layout')
+    path('selected_layout/', testD3, name='dropdown_layout'),
 
 ]

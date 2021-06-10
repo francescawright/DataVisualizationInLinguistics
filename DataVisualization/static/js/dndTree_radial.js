@@ -609,8 +609,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     // define the baseSvg, attaching a class for styling and the zoomListener
     var baseSvg = d3.select("#tree-container").append("svg")
-        .attr("width", viewerWidth)
-        .attr("height", viewerHeight)
+        .attr("width", 2200)
+        .attr("height", 900)
         .attr("class", "overlay")
         .call(zoomListener);
 
@@ -2170,9 +2170,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         // Change the circle fill depending on whether it has children and is collapsed
         node.select("circle.nodeCircle")
             .attr("r", function (d) {
-                if (d._children) { //Si tiene msá de dos hijos, retora 2*#hijos; si tiene 2 hijos, retorna 5, si un hijo, 4.5
-                    return d._children.length > 2 ? 2 * d._children.length : d._children.length === 2 ? 6 : 4.5;
-                }
+                if (d._children)
+                    if (d._children.length > 2)
+                        return radiusFactor * d._children.length * 4
+                    else if (d._children.length === 2)
+                        return 8.7 * radiusFactor
+                    else
+                        return 7.7 * radiusFactor;
                 return 8.7;
             })
             .style("fill", function (d) {
@@ -2442,7 +2446,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             statisticText += "<tr style='font-size: 20px;'>"; //Start table line
 
             //Write toxicity and target line
-            statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td>" + statValuesTox[i].toString() + "</td>";
+            statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td style='padding-right: 55px;'>" + statValuesTox[i].toString() + "</td>";
             statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
 
             statisticText += "</tr>"; //End table line
