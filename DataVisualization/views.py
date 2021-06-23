@@ -193,8 +193,7 @@ def upload_file(request):
             handle_uploaded_file(request.FILES['document'])
             file_form.save()
             parse_data(Document.objects.last())
-            documents_uploaded = Document.objects.all()
-            return render(request, "index.html", {'documents_uploaded': documents_uploaded})
+            return index(request)
     else:
         file_form = FileForm()
         return render(request, "upload_file.html", {'form': file_form})
@@ -213,6 +212,7 @@ def handle_delete_data(request):
     except MultiValueDictKeyError as e:
         selected_data = Document.objects.first()
     delete_data(selected_data)
+    return index(request)
 
 
 class TestChartView(TemplateView):

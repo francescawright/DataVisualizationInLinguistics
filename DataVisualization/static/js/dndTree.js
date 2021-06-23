@@ -51,7 +51,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     /* Features
     * */
-    var cheeseX = 10, cheeseY = -10, cheeseHeight = 20, cheeseWidth = 20;
+    var cheeseX = 15, cheeseY = -10, cheeseHeight = 20, cheeseWidth = 20;
 
     /* Icons
     * */
@@ -351,7 +351,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             y: -10,
             height: targetIconHeight,
             width: targetIconWidth,
-            fileName: "Group.png"
+            fileName: "Group.svg"
         },
         objTargetPerson = {
             class: "targetPerson",
@@ -361,7 +361,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             y: -10,
             height: targetIconHeight,
             width: targetIconWidth,
-            fileName: "Person.png"
+            fileName: "Person.svg"
         },
         objTargetStereotype = {
             class: "targetStereotype",
@@ -371,7 +371,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             y: -10,
             height: targetIconHeight,
             width: targetIconWidth,
-            fileName: "Stereotype.png"
+            fileName: "Stereotype.svg"
         };
 
     displayTargetLegend();
@@ -662,6 +662,71 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      * and if the node has that target (sets the opacity to visible)
      *
      * The icon used is from the local path passed by parameter
+     * The css values are from the target objects that are icons
+     * */
+    function drawTargetsOutside(nodeEnter, localPath) {
+        removeThisTargets(nodeEnter);
+        var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
+        var listOpacity;
+        var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
+
+        for (var i = 0; i < targets.length; i++) {
+            if (cbShowTargets[i] > -1) {
+                nodeEnter.append("image")
+                    .attr('class', targets[i].class)
+                    .attr('id', targets[i].id)
+                    .attr("x", targets[i].x)
+                    .attr("y", targets[i].y)
+                    .attr("height", targets[i].height)
+                    .attr("width", targets[i].width)
+                    .attr("href", pathTargets + localPath + targets[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.name === rootName) return 0;
+                        listOpacity = [d.target_group, d.target_person, d.stereotype];
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+
+    /**
+     * Draws the 3 targets of a node if the checkbox is checked
+     * and if the node has that target (sets the opacity to visible)
+     *
+     * The icon used is from the local path passed by parameter
+     * The css values are from the target objects that are icons
+     * */
+    function drawTargetsInside(nodeEnter, localPath) {
+        removeThisTargets(nodeEnter);
+        var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
+        var listOpacity;
+        var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
+
+        for (var i = 0; i < targets.length; i++) {
+            if (cbShowTargets[i] > -1) {
+                nodeEnter.append("image")
+                    .attr('class', targets[i].class)
+                    .attr('id', targets[i].id)
+                    .attr("x", -8.0)
+                    .attr("y", targets[i].y)
+                    .attr("height", targets[i].height)
+                    .attr("width", targets[i].width)
+                    .attr("href", pathTargets + localPath + targets[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.name === rootName) return 0;
+                        listOpacity = [d.target_group, d.target_person, d.stereotype];
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+    /**
+     * Draws the 3 targets of a node if the checkbox is checked
+     * and if the node has that target (sets the opacity to visible)
+     *
+     * The icon used is from the local path passed by parameter
      * The css values are from the target objects that are rings
      * */
     function drawTargetRings(nodeEnter, localPath) {
@@ -706,6 +771,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 case "icons":
                     drawTargets(nodeEnter, "icons/");
                     break;
+
+                case "icon-outside-node":
+                    drawTargetsOutside(nodeEnter, "icons/");
+                    break;
+
+                case "icon-on-node":
+                    drawTargetsInside(nodeEnter, "icons/");
+                    break;
                 case "directory-1":
                     drawTargets(nodeEnter, "newOption1/")
                     break;
@@ -713,7 +786,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     drawTargets(nodeEnter, "newOption2/")
                     break;
                 //draw as ring outside of the node
-                case "rings":
+                case "ring-on-node":
                     drawTargetRings(nodeEnter, "rings/")
                     break;
                 //draw as an icon if 1, as rings if more options checked
@@ -847,6 +920,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         for (var i = 0; i < 8; i++) {
             if (cbFeatureEnabled[i] > -1) {
+                console.log("hola")
+                console.log(35 + i * 10)
                 nodeEnter.append("circle")
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
@@ -865,7 +940,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     }
 
-    function drawFeatureAsCheese(nodeEnter, localPath) {
+    function drawFeatureAsCheeseOutside(nodeEnter, localPath) {
         removeThisFeatures(nodeEnter);
         removeToxicities(nodeEnter); //Remove all the pngs for toxicity
 
@@ -896,6 +971,50 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
                     .attr("x", features[i].x)
+                    .attr("y", features[i].y)
+                    .attr("height", features[i].height)
+                    .attr("width", features[i].width)
+                    .attr("href", pathFeatures + localPath + features[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.name === rootName) return 0;
+                        listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+    function drawFeatureAsCheeseInside(nodeEnter, localPath) {
+        removeThisFeatures(nodeEnter);
+        removeToxicities(nodeEnter); //Remove all the pngs for toxicity
+
+        //Add the gray cheese
+        nodeEnter.append("image")
+            .attr('class', objFeatGray.class)
+            .attr('id', objFeatGray.id)
+            .attr("x", -10)
+            .attr("y", objFeatGray.y)
+            .attr("height", objFeatGray.height)
+            .attr("width", objFeatGray.width)
+            .attr("href", pathFeatures + localPath + objFeatGray.fileName)
+            .attr("opacity", function (d) {
+                if (d.name === rootName) return 0;
+                return 0.5;
+            });
+
+        var cbFeatureEnabled = [enabledSettings.indexOf("argumentation"), enabledSettings.indexOf("constructiveness"),
+            enabledSettings.indexOf("sarcasm"), enabledSettings.indexOf("mockery"), enabledSettings.indexOf("intolerance"),
+            enabledSettings.indexOf("improper_language"), enabledSettings.indexOf("insult"), enabledSettings.indexOf("aggressiveness")];
+
+        var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
+        var listOpacity;
+
+        for (var i = 0; i < features.length; i++) {
+            if (cbFeatureEnabled[i] > -1) {
+                nodeEnter.append("image")
+                    .attr('class', features[i].class)
+                    .attr('id', features[i].id)
+                    .attr("x", -10)
                     .attr("y", features[i].y)
                     .attr("height", features[i].height)
                     .attr("width", features[i].width)
@@ -1030,9 +1149,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 selectTargetVisualization(nodeEnter); //draw the targets if necessary
                 drawFeatureDots(nodeEnter); //Always drawn on the right side
                 break;
-            case "trivial-cheese":
+            case "trivial-cheese-on-node":
                 selectTargetVisualization(nodeEnter); //draw the targets if necessary
-                drawFeatureAsCheese(nodeEnter, "trivialCheese/"); //Always drawn on the right side
+                drawFeatureAsCheeseInside(nodeEnter, "trivialCheese/"); //Always drawn on the right side
+                break;
+            case "trivial-cheese-outside-node":
+                selectTargetVisualization(nodeEnter); //draw the targets if necessary
+                drawFeatureAsCheeseOutside(nodeEnter, "trivialCheese/"); //Always drawn on the right side
                 break;
 
             case "directory-1": //"All for one and one for all" we will draw the features inside of the circle, the targets outside will be hidden and the level of toxicity in blue
