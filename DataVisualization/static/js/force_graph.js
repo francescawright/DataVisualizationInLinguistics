@@ -143,7 +143,8 @@ treeJSON = d3.json(dataset, function (error, json) {
     /*SECTION checkboxes*/
     //Check the values of the checkboxes and do something
     //Draw targets
-    var checkboxesTargets = document.querySelectorAll("input[type=checkbox][name=cbTargets]");
+    var checkboxesTargets = [document.getElementById("target-group"), document.getElementById("target-person"), document.getElementById("target-stereotype")];
+    console.log(checkboxesTargets);
     let enabledTargets = []; //Where the cb selected will appear
 
     // Select all checkboxes with the name 'cbFeatures' using querySelectorAll.
@@ -170,6 +171,8 @@ treeJSON = d3.json(dataset, function (error, json) {
 
     let enabledHighlight = []; //Where the cb selected will appear
     /*END SECTION checkboxes*/
+
+    var checkButtons = document.querySelectorAll("input[name=check_button_features]");
 
     /*
    Dropdown menus
@@ -706,6 +709,13 @@ treeJSON = d3.json(dataset, function (error, json) {
                 case "icons":
                     drawTargets(nodeEnter, "icons/");
                     break;
+                case "icon-outside-node":
+                    drawTargetsOutside(nodeEnter, "icons/");
+                    break;
+
+                case "icon-on-node":
+                    drawTargetsInside(nodeEnter, "icons/");
+                    break;
                 case "directory-1":
                     drawTargets(nodeEnter, "newOption1/")
                     break;
@@ -724,6 +734,70 @@ treeJSON = d3.json(dataset, function (error, json) {
                 default:
                     console.log("default option", option);
                     break;
+            }
+        }
+    }
+
+    /**
+     * Draws the 3 targets of a node if the checkbox is checked
+     * and if the node has that target (sets the opacity to visible)
+     *
+     * The icon used is from the local path passed by parameter
+     * The css values are from the target objects that are icons
+     * */
+    function drawTargetsOutside(nodeEnter, localPath) {
+        removeThisTargets(nodeEnter);
+        var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
+        var listOpacity;
+        var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
+
+        for (var i = 0; i < targets.length; i++) {
+            if (cbShowTargets[i] > -1) {
+                nodeEnter.append("image")
+                    .attr('class', targets[i].class)
+                    .attr('id', targets[i].id)
+                    .attr("x", targets[i].x)
+                    .attr("y", targets[i].y)
+                    .attr("height", targets[i].height)
+                    .attr("width", targets[i].width)
+                    .attr("href", pathTargets + localPath + targets[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.name === rootName) return 0;
+                        listOpacity = [d.target_group, d.target_person, d.stereotype];
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+    /**
+     * Draws the 3 targets of a node if the checkbox is checked
+     * and if the node has that target (sets the opacity to visible)
+     *
+     * The icon used is from the local path passed by parameter
+     * The css values are from the target objects that are icons
+     * */
+    function drawTargetsInside(nodeEnter, localPath) {
+        removeThisTargets(nodeEnter);
+        var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
+        var listOpacity;
+        var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
+
+        for (var i = 0; i < targets.length; i++) {
+            if (cbShowTargets[i] > -1) {
+                nodeEnter.append("image")
+                    .attr('class', targets[i].class)
+                    .attr('id', targets[i].id)
+                    .attr("x", -8.0)
+                    .attr("y", targets[i].y)
+                    .attr("height", targets[i].height)
+                    .attr("width", targets[i].width)
+                    .attr("href", pathTargets + localPath + targets[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.name === rootName) return 0;
+                        listOpacity = [d.target_group, d.target_person, d.stereotype];
+                        return listOpacity[i];
+                    });
             }
         }
     }
@@ -1802,6 +1876,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         checkboxFeatureMenu.addEventListener('change', function () {
             if (this.checked) { //Enable checkboxes and dropdown menu + show features if they are selected
                 checkboxesPropertyFeature.forEach(function (checkboxItem) {
+                    console.log("remove");
                     checkboxItem.removeAttribute('disabled');
                 });
                 checkboxesPositioningFeature.forEach(function (checkboxItem) {
@@ -1812,6 +1887,10 @@ treeJSON = d3.json(dataset, function (error, json) {
                 });
                 dropdownFeatures.removeAttribute('disabled');
 
+                checkButtons.forEach(function (button) {
+                        button.removeAttribute('disabled');
+                    }
+                );
                 if (!document.querySelector("input[value=dot-feat]").checked && !document.querySelector("input[value=cheese-feat]").checked) {
                     document.querySelector("input[value=dot-feat]").checked = true;
                 }
@@ -1834,6 +1913,10 @@ treeJSON = d3.json(dataset, function (error, json) {
                 checkboxes.forEach(function (checkboxItem) {
                     checkboxItem.setAttribute('disabled', 'disabled');
                 });
+                checkButtons.forEach(function (button) {
+                        button.setAttribute('disabled', 'disabled');
+                    }
+                );
 
                 removeAllFeatures(); //Hide all features when the cb is unchecked
             }

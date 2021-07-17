@@ -315,7 +315,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     //Check the values of the checkboxes and do something
     var checkbox = document.querySelector("input[name=cbTargets]");
-    var checkboxesTargets = document.querySelectorAll("input[type=checkbox][name=cbTargets]");
+    var checkboxesTargets = [document.getElementById("target-group"), document.getElementById("target-person"), document.getElementById("target-stereotype")];//document.querySelectorAll("input[type=checkbox][name=cbTargets]");
+    // for (var i = 0; i < checkboxesTargets.length; i++) {
+    //     checkboxesTargets[i] = "target-" + checkboxesTargets[i];
+    // }
+
     let enabledTargets = []; //Where the cb selected will appear
 
     // Select all checkboxes with the name 'cbFeatures' using querySelectorAll.
@@ -342,6 +346,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     let enabledHighlight = []; //Where the cb selected will appear
     /*END SECTION checkboxes*/
+
+    var checkButtons = document.querySelectorAll("input[name=check_button_features]");
+
 
     var objTargetGroup = {
             class: "targetGroup",
@@ -901,6 +908,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         d3.selectAll("#featAggressiveness").remove();
     }
 
+    function checkUncheckAll() {
+        checkboxes.forEach(cb => cb.checked = !cb.checked);
+    }
+
     /**
      * Delete the features of the node
      * Redraw the features of the node
@@ -920,7 +931,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         for (var i = 0; i < 8; i++) {
             if (cbFeatureEnabled[i] > -1) {
-                console.log("hola")
                 console.log(35 + i * 10)
                 nodeEnter.append("circle")
                     .attr('class', features[i].class)
@@ -2237,6 +2247,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 });
                 dropdownFeatures.removeAttribute('disabled');
 
+                checkButtons.forEach(function (button) {
+                        button.removeAttribute('disabled');
+                    }
+                );
+
                 if (!document.querySelector("input[value=dot-feat]").checked && !document.querySelector("input[value=cheese-feat]").checked) {
                     document.querySelector("input[value=dot-feat]").checked = true;
                     //drawFeatures(nodeEnter);
@@ -2263,6 +2278,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 checkboxes.forEach(function (checkboxItem) {
                     checkboxItem.setAttribute('disabled', 'disabled');
                 });
+                checkButtons.forEach(function (button) {
+                        button.setAttribute('disabled', 'disabled');
+                    }
+                );
 
                 removeAllFeatures(); //Hide all features when the cb is unchecked
             }
