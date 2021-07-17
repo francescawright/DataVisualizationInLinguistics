@@ -47,7 +47,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
         colourNeutralStance = "#2b2727";
     var colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
-        colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue";
+        colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue", colourCollapsed1Son = "lightsteelblue";
+
+    var rootPath = pr;
+    var objRoot = {
+        class: "rootNode",
+        id: "rootNode",
+        fileName: "root.png"  };
 
     /* Features
     * */
@@ -1476,6 +1482,27 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     /*END SECTION*/
 
+    /**
+     * Draw an icon for the root node
+     * */
+    function visualiseRootIcon(node){
+        console.log("drawing root icon");
+        //Filter the nodes and append an icon just for the root node
+        node.filter(function (d) {
+            return d.name === rootName;
+        }).append("image")
+            .attr('class', objRoot.class)
+            .attr('id', objRoot.id)
+            .attr("x", root.x - root.radius)
+            .attr("y", root.y - root.radius)
+            .attr("height", root.radius * 2)
+            .attr("width", root.radius * 2)
+            .attr("href", rootPath + objRoot.fileName)
+            .attr("opacity", function (d) {
+                return d.name === rootName ? 1 : 0;
+            });
+    }
+
     /*SECTION highlighting */
     function highlightByPropertyOR(node, link) {
         node.style("opacity", 0.2);
@@ -2117,19 +2144,22 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         tree = tree.nodeSize([separationHeight, 0]) //heigth and width of the rectangles that define the node space
             .separation(function (a, b) {
-                if (a._children && b._children) { //Both nodes have children
-                    return Math.ceil((a._children.length * radiusFactor / separationHeight)) +
-                        Math.ceil((b._children.length * radiusFactor / separationHeight));
+                var aChildren =  a.children ?? a._children; //Assign children of A collapsed or not
+                var bChildren =  b.children ?? b._children; //Assign children of B collapsed or not
+
+                if (aChildren && bChildren) { //Both nodes have children
+                    return Math.ceil((aChildren.length * radiusFactor / separationHeight)) +
+                        Math.ceil((bChildren.length * radiusFactor / separationHeight));
                 }
-                if (a._children) { // Only node a has children
-                    if (a._children.length === 1) return 1;
-                    if (a._children.length * radiusFactor < separationHeight) return 2;
-                    return Math.ceil(a._children.length * radiusFactor / separationHeight) + 1;
+                if (aChildren) { // Only node A has children
+                    if (aChildren.length === 1) return 1;
+                    if (aChildren.length * radiusFactor < separationHeight) return 2;
+                    return Math.ceil(aChildren.length * radiusFactor / separationHeight) + 1;
                 }
-                if (b._children) { //Only node b has children
-                    if (b._children.length === 1) return 1;
-                    if (b._children.length * radiusFactor < separationHeight) return 2;
-                    return Math.ceil(b._children.length * radiusFactor / separationHeight) + 1;
+                if (bChildren) { //Only node B has children
+                    if (bChildren.length === 1) return 1;
+                    if (bChildren.length * radiusFactor < separationHeight) return 2;
+                    return Math.ceil(bChildren.length * radiusFactor / separationHeight) + 1;
                 }
                 return 1;
             });
@@ -2412,58 +2442,36 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .attr("r", function (d) {
                 /*
                     If node has children,
-                    more than 2: new radius = 2 * #children
-                    2: new radius = 5.5
-                    1: new radius = 4.5 (as usual)
+                    more than 2: new radius = 8 * #children
+                    2: new radius = 2 * 8.7
+                    1: new radius = 7.7
 
-                    If no children, new radius = 4.5 (as usual)
+                    If no children, new radius = 8.7
                 * */
-                if (d._children)
-                    if (d._children.length > 2)
-                        return radiusFactor * d._children.length * 4
-                    else if (d._children.length === 2)
-                        return 8.7 * radiusFactor
-                    else
-                        return 7.7 * radiusFactor;
-                return 8.7;
+                d.radius = 8.7;
+                if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 8.7
+
+                var children =  d.children ?? d._children; //Assign children collapsed or not
+                children.length > 2 ? d.radius = radiusFactor * 4 * children.length
+                    : children.length  === 2 ? d.radius = 8.7 * radiusFactor
+                    : d.radius = 7.7 * radiusFactor;
+                return d.radius;
+
             })
             .style("fill", function (d) {
-                //console.log("if _children QUANTITY", d._children.length);
-                if (d._children) { // Si solo tiene un hijo, lo pongo de color azul
-                    if (d._children.length === 1) {
-                        return "lightsteelblue";
-                    } else { // Si tiene más de un hijo, le dejamos su nivel de toxicidad como color
-                        if (d.toxicity_level === 0) {
-                            return colourToxicity0;
-                        }
-                        if (d.toxicity_level === 1) {
-                            return colourToxicity1;
-                        }
-                        if (d.toxicity_level === 2) {
-                            return colourToxicity2;
-                        } else {
-                            if (d.toxicity_level)
-                                return colourToxicity3;
-                            else return "lightsteelblue";
-                        }
-                    }
-                } else { // Le ponemos color al nodo según su toxicidad
-                    if (d.toxicity_level === 0) {
-                        return colourToxicity0;
-                    }
-                    if (d.toxicity_level === 1) {
-                        return colourToxicity1;
-                    }
-                    if (d.toxicity_level === 2) {
-                        return colourToxicity2;
-                    } else {
-                        if (d.toxicity_level)
-                            return colourToxicity3;
-                        else return colourNewsArticle;
+                if (d._children && d._children.length === 1) return colourCollapsed1Son; //If it is collapsed and just has one children
+                else { //Otherwise, colour the node according to its level of toxicity
+                    switch (d.toxicity_level) {
+                        case 0: return colourToxicity0;
+                        case 1: return colourToxicity1;
+                        case 2: return colourToxicity2;
+                        case 3: return colourToxicity3;
+                        default: return colourNewsArticle;
                     }
                 }
-                //return d._children ? "lightsteelblue" : "#fff";
             });
+
+        visualiseRootIcon(node); //Draw an icon for the root node
 
         // Transition nodes to their new position.
         var nodeUpdate = node.transition()
