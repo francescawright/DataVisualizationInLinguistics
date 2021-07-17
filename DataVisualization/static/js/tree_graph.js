@@ -118,7 +118,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     //var viewerWidth = $(document).width();
     var viewerWidth = 100;
     var viewerHeight = 400;
-    var separationHeight = 61; //Sets the separation between two nodes to 15 pixels
+    var separationHeight = 100; //Sets the separation between two nodes to 15 pixels
     var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
     var tooltipText;
 
