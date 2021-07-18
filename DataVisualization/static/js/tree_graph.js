@@ -671,6 +671,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      * The css values are from the target objects that are icons
      * */
     function drawTargetsOutside(nodeEnter, localPath) {
+        console.log("outside");
         removeThisTargets(nodeEnter);
         var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
         var listOpacity;
@@ -687,7 +688,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr("width", targets[i].width)
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
-                        if (d.name === rootName) return 0;
+                        console.log(d);
+                        if (d.parent === undefined) return 0;
                         listOpacity = [d.target_group, d.target_person, d.stereotype];
                         return listOpacity[i];
                     });
