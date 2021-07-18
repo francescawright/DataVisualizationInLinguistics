@@ -127,10 +127,12 @@ def testD3(request):
     selected_data = Document.objects.first().description
 
     targets = ["target_group", "target_person", "target_stereotype"]
-    features = ["argumentation", "constructiveness", "sarcasm", "mockery", "intolerance", "improper_language", "insult",
+    features = ["argumentation", "constructiveness", "sarcasm", "mockery", "intolerance",
+                "improper_language", "insult",
                 "aggressiveness"]
     cbTargets = {target: 0 for target in targets}
     cbFeatures = {feature: 0 for feature in features}
+    cbFeatures["feature_group"] = 0
 
     if "from_button" in request.POST.keys():
         selected_data = request.POST['from_button']
@@ -142,6 +144,8 @@ def testD3(request):
     if "cbFeatures" in request.POST.keys():
         for feature in request.POST.getlist("cbFeatures"):
             cbFeatures[feature] = 1
+    if "cbFeatureMenu" in request.POST.keys():
+        cbFeatures[request.POST["cbFeatureMenu"].replace('-', '_')] = 1
     try:
         doc = Document.objects.filter(description=selected_data).first()
         selected_item = selected_data
@@ -193,6 +197,7 @@ def testD3(request):
         .annotate(negative_stance=Count('negative_stance', filter=Q(negative_stance=1)))
 
     print(cbTargets)
+    print(cbFeatures)
     return render(request, template,
                   {'dataset': 'output.json', 'options': Document.objects.all(), 'layouts': layouts,
                    'selected_layout': selected_layout,

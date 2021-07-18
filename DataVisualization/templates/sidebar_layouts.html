@@ -7,6 +7,18 @@
         margin-right: -15px;
         margin-left: -15px;
     }
+
+    /* Create two equal columns that floats next to each other */
+    .column3 {
+        font-size: 15px;
+        font-family: sans-serif;
+        float: left;
+        width: 275px;
+        padding: 19px;
+        line-height: 1;
+    {#height: 30px; /* Should be removed. Only for demonstration */#}
+    }
+
 </style>
 
 <head>
@@ -83,7 +95,9 @@
                  style="margin-top: 10px;background-color: #c9daf8ff; padding-bottom: 10px; padding-top: 10px; padding-left: 10px">
                 <!--<p style="text-align: center; font-weight: bold; padding-top: 10px;">Show features</p>-->
                 <input type="checkbox" class="checkbox" name="cbFeatureMenu" value="feature-group"
-                       id="feature-group"><label for="feature-group" style="font-weight: bold;">Show features</label>
+                       id="feature-group"
+                       {% if cbFeatures.feature_group == 1 %}checked{% else %}unchecked{% endif %} form="dropdown_data"><label
+                    for="feature-group" style="font-weight: bold;">Show features</label>
                 <div style="padding-left: 10px; padding-right: 10px; padding-top: 10px;">
                     <div style="padding-bottom: 20px">
                         <!-- Dropdown menu -->
@@ -479,6 +493,11 @@
             evt.initEvent("change", false, true);
             chk_features[i].dispatchEvent(evt);
         }
+
+        var chk_enable_features = document.getElementById("feature-group")
+        var evt = document.createEvent("HTMLEvents");
+        evt.initEvent("change", false, true);
+        chk_enable_features.dispatchEvent(evt);
     };
 
 </script>
