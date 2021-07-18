@@ -27,27 +27,12 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
 
 // Get JSON data
-//20170819_CR.json
-//20190519_SO.json
-//20190716_CR.json
-//20200608_SO.json
-//20200618_MI.json
-//20200621_SO.json
-//20200622_MI.json
-//20200626_SO.json
-//20200705_SO.json
-//20200708_MI.json
-//20200715_CR.json
-//20200715b_CR.json
-//20200726_SO.json
 treeJSON = d3.json(dataset, function (error, treeData) {
 
     // Calculate total nodes, max label length
     var totalNodes = 0;
     var maxLabelLength = 22;
-    // variables for drag/drop
-    // panning variables
-    var panSpeed = 200;
+
     // Misc. variables
     var i = 0;
     var duration = 750;
@@ -63,10 +48,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
         colourNeutralStance = "#2b2727";
     var colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
-        colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue";
+        colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue", colourCollapsed1Son = "lightsteelblue";
+    var colorFeature = ["#a1d99b", "#31a354",
+        "#fee5d9", "#fcbba1", "#fc9272",
+        "#fb6a4a", "#de2d26", "#a50f15"];
 
-    /*
-    Target objects
+    /* Targets: size, position, local path, objects to draw the target as ring
     * */
     var drawingAllInOne = false; //if we are drawing all together or separated
     var pathTargets = pt;
@@ -109,10 +96,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             fileName: "Gray.png"
         };
 
-    /* Features
+    /* Features: size, position, local path
     * */
     var cheeseX = -17.53, cheeseY = -27.45, cheeseHeight = 55, cheeseWidth = 55;
-
     var pathFeatures = pf;
 
     var objToxicity0 = {class: "toxicity0", id: "toxicity0", selected: 1, fileName: "Level0.png"},
@@ -131,7 +117,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     // size of the diagram
     var viewerWidth = $(document).width();
     var viewerHeight = $(document).height();
-    var separationHeight = 61; //Sets the separation between two nodes to 15 pixels
+    var separationHeight = 61; //Desired separation between two node brothers
     var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
 
     root = treeData; //Define the root
@@ -162,43 +148,29 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         });
 
     // define a d3 diagonal projection for use by the node paths later on.
-    var diagonalHorizontally = d3.svg.diagonal()
-        .projection(function (d) {
-            return [d.y, d.x];
-        });
-
     var diagonal = d3.svg.diagonal.radial()
         .projection(function (d) {
             return [d.y, d.x / 180 * Math.PI];
         });
 
     /**
-     * @param x: angulo
-     * @param y: radio
+     * Computes the rectangular coordinates from the polar coordinates
+     * @param x: angle theta of a point in polar coordinates
+     * @param y: radius r of a point in polar coordinates
      *
-     * @return punto en coordenadas cartesianas
+     * Conversion formula to convert from polar to rectangular coordinates
+     * x = r cos(theta)
+     * y = r sin(theta)
      *
-     * NOTE: el origen del sistema (0,0) es el nodo root <- FIXME not quite true
+     * @return rectangular coordinates
+     *
      * This is from the official library https://github.com/d3/d3-shape/blob/master/src/pointRadial.js
      * */
-    function radialPointWithDepth(d, x, y) {
-        /* console.log("values in rgd", x,y);
-         console.log("depth en radial point: ", d.depth, x, y );
-         console.log("wtv: ",  [(y = +y) * Math.cos(x -= Math.PI / 2), y * Math.sin(x) ]);*/
+    function radialPoint(x, y) {
         return [(y = +y) * Math.cos(x -= Math.PI / 2), y * Math.sin(x)];
     }
 
-    function radialPoint(x, y) {
-        // console.log("x,y", x, y);
-        var first, second;
-        first = (y = +y) * Math.cos(x -= Math.PI / 2);
-        second = y * Math.sin(x);
-        //var idk = [(y = +y) * Math.cos(x -= Math.PI / 2), y * Math.sin(x) ]
-        // console.log("on radial point function: ", first, second);
-        return [first, second];
-        //return [(y = +y) * Math.cos(x -= Math.PI / 2), y * Math.sin(x) ];
-    }
-
+    // Hover rectangle in which the information of a node is displayed
     var tooltip = d3.select("#tree-container")
         .append("div")
         .attr("class", "my-tooltip") //add the tooltip class
@@ -206,13 +178,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .style("z-index", "1")
         .style("visibility", "hidden");
 
-    var tooltip2 = d3.select("#tree-container")
-        .append("div")
-        .attr("class", "my-tooltip2") //add the tooltip class
-        .style("position", "absolute")
-        .style("z-index", "10")
-        .style("visibility", "hidden");
-
+    // Div where the title of the "Static Values" is displayed
     var statisticBackground = d3.select("#tree-container")
         .append("div")
         .attr("class", "my-statistic") //add the tooltip class
@@ -221,6 +187,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .style("visibility", "visible")
         .html("Static values of the news article");
 
+    // Div where the sum up information of "Static Values" is displayed
     var statisticTitleBackground = d3.select("#tree-container")
         .append("div")
         .attr("class", "my-statistic-title") //add the tooltip class
@@ -228,174 +195,19 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .style("z-index", "0") //it has no change
         .style("visibility", "visible");
 
-    /* SECTION legend*/
-    var targetLegend = d3.select("#target-legend-container");
-
-    function displayTargetLegend() {
-        // Handmade legend
-        targetLegend.append("image")
-            .attr("x", 10)
-            .attr("y", 0)
-            .attr("height", 25)
-            .attr("width", 25)
-            .attr("href", pathTargets + "icons/" + objTargetGroup.fileName);
-        targetLegend.append("text")
-            .attr("x", 50).attr("y", 10)
-            .text("Target group")
-            .style("font-size", "15px")
-            .attr("alignment-baseline", "middle")
-
-        targetLegend.append("image")
-            .attr("x", 10)
-            .attr("y", 25)
-            .attr("height", 25)
-            .attr("width", 25)
-            .attr("href", pathTargets + "icons/" + objTargetPerson.fileName);
-        targetLegend.append("text")
-            .attr("x", 50).attr("y", 40)
-            .text("Target person")
-            .style("font-size", "15px")
-            .attr("alignment-baseline", "middle")
-
-        targetLegend.append("image")
-            .attr("x", 10)
-            .attr("y", 55)
-            .attr("height", 25)
-            .attr("width", 25)
-            .attr("href", pathTargets + "icons/" + objTargetStereotype.fileName);
-        targetLegend.append("text")
-            .attr("x", 50).attr("y", 70)
-            .text("Stereotype")
-            .style("font-size", "15px")
-            .attr("alignment-baseline", "middle")
-    }
-
-
-    var featureLegend = d3.select("#feature-legend-container");
-
-    // create a list of keys
-    var keys = ["Argumentation", "Constructiveness", "Sarcasm", "Mockery", "Intolerance", "Improper language", "Insult", "Aggressiveness"];
-    var colorFeature = ["#a1d99b", "#31a354",
-        "#fee5d9", "#fcbba1", "#fc9272",
-        "#fb6a4a", "#de2d26", "#a50f15"];
-
-    // Add one dot in the legend for each name.
-    featureLegend.selectAll("mydots")
-        .data(keys)
-        .enter()
-        .append("circle")
-        .attr("cx", 20)
-        .attr("cy", function (d, i) {
-            return 20 + i * 25
-        }) // 100 is where the first dot appears. 25 is the distance between dots
-        .attr("r", 7)
-        .style("fill", function (d, i) {
-            return colorFeature[i]
-        });
-
-    featureLegend.selectAll("mylabels")
-        .data(keys)
-        .enter()
-        .append("text")
-        .attr("x", 40)
-        .attr("y", function (d, i) {
-            return 20 + i * 25
-        }) // 100 is where the first dot appears. 25 is the distance between dots
-        .text(function (d) {
-            return d
-        })
-        .attr("text-anchor", "left")
-        .style("alignment-baseline", "middle");
-
-
-    var nodeLegend = d3.select("#toxicity-legend-container");
-
-    // create a list of keys
-    var keysNode = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic", "News Article", "Node collapsed with", " just one direct son"];
-    var colorNode = [colourToxicity0, colourToxicity1, colourToxicity2, colourToxicity3, colourNewsArticle, "lightsteelblue", "none"];
-
-    // Add one dot in the legend for each name.
-    nodeLegend.selectAll("mydotsToxicity")
-        .data(keysNode)
-        .enter()
-        .append("circle")
-        .attr("cx", 20)
-        .attr("cy", function (d, i) {
-            return 20 + i * 25
-        }) // 100 is where the first dot appears. 25 is the distance between dots
-        .attr("r", 7)
-        .style("fill", function (d, i) {
-            return colorNode[i]
-        });
-
-    nodeLegend.selectAll("mylabelsToxicity")
-        .data(keysNode)
-        .enter()
-        .append("text")
-        .attr("x", 40)
-        .attr("y", function (d, i) {
-            return 20 + i * 25
-        }) // 100 is where the first dot appears. 25 is the distance between dots
-        .text(function (d) {
-            return d
-        })
-        .attr("text-anchor", "left")
-        .attr("white-space", "normal")
-        .attr("overflow", "scroll")
-        .style("alignment-baseline", "middle");
-
-
-    var edgeLegend = d3.select("#edge-legend-container");
-
-    // create a list of keys
-    var keysEdge = ["Neutral", "Positive stance", "Negative stance"];
-    var colorEdge = ["#000000", "#77dd77", "#ff6961"];
-
-    // Add one dot in the legend for each name.
-    edgeLegend.selectAll("mylinesEdges")
-        .data(keysEdge)
-        .enter()
-        .append("rect")
-        .attr("x", 10)
-        .attr("y", function (d, i) {
-            return 15 + i * 25
-        }) // 100 is where the first dot appears. 25 is the distance between dots
-        .attr("width", "20px")
-        .attr("height", "10px")
-        .style("fill", function (d, i) {
-            return colorEdge[i]
-        });
-
-    edgeLegend.selectAll("mylabelsEdge")
-        .data(keysEdge)
-        .enter()
-        .append("text")
-        .attr("x", 40)
-        .attr("y", function (d, i) {
-            return 20 + i * 25
-        }) // 100 is where the first dot appears. 25 is the distance between dots
-        .text(function (d) {
-            return d
-        })
-        .attr("text-anchor", "left")
-        .attr("white-space", "normal")
-        .attr("overflow", "scroll")
-        .style("alignment-baseline", "middle");
-
-    /* END SECTION legend*/
 
     /*SECTION checkboxes*/
     //Check the values of the checkboxes and do something
     var checkbox = document.querySelector("input[name=cbTargets]");
     var checkboxesTargets = [document.getElementById("target-group"), document.getElementById("target-person"), document.getElementById("target-stereotype")];
-    let enabledTargets = []; //Where the cb selected will appear
+    let enabledTargets = []; //Variable which contains the string of the enabled options to display targets
 
     // Select all checkboxes with the name 'cbFeatures' using querySelectorAll.
     var checkboxes = document.querySelectorAll("input[type=checkbox][name=cbFeatures]");
-    let enabledSettings = []; //Where the cb selected will appear
+    let enabledFeatures = []; //Variable which contains the string of the enabled options to display features
     var checkboxFeatureMenu = document.querySelector("input[name=cbFeatureMenu]");
 
-    //Or dots or cheese
+    // Select how to display the features: svg circles or trivial cheese (previous version)
     var checkboxesPropertyFeature = document.querySelectorAll("input[type=checkbox][name=cbFeatureProperty]");
     var checkboxFeatureDot = document.querySelector("input[type=checkbox][name=cbFeatureProperty][value=dot-feat]");
     var checkboxFeatureCheese = document.querySelector("input[type=checkbox][name=cbFeatureProperty][value=cheese-feat]");
@@ -405,14 +217,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var cbFeatureInside = document.querySelector("input[type=checkbox][name=cbFeaturePositioning][value=on-node]");
     var cbFeatureOutside = document.querySelector("input[type=checkbox][name=cbFeaturePositioning][value=node-outside]");
 
-    //Check the values of the checkboxes and do something
+    // Select which properties and if an intersection or union of those
     var checkboxHighlightMenu = document.querySelector("input[name=cbHighlightMenu]");
     var checkboxesProperty = document.querySelectorAll("input[type=checkbox][name=cbHighlightProperty]");
     var checkboxAND = document.querySelector("input[type=checkbox][name=cbHighlightProperty][value=and-group]");
     var checkboxOR = document.querySelector("input[type=checkbox][name=cbHighlightProperty][value=or-group]");
     var checkboxesHighlightGroup = document.querySelectorAll("input[type=checkbox][name=cbHighlight]");
 
-    let enabledHighlight = []; //Where the cb selected will appear
+    let enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
     /*END SECTION checkboxes*/
 
     var checkButtons = document.querySelectorAll("input[name=check_button_features]");
@@ -456,12 +268,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             fileName: "Stereotype.png"
         };
 
-    displayTargetLegend();
-
     var objFeatArgumentation = {
             class: "featArgumentation",
             id: "featArgumentation",
-            selected: enabledSettings.indexOf("argumentation"),
+            selected: enabledFeatures.indexOf("argumentation"),
             x: cheeseX,
             y: cheeseY,
             height: cheeseHeight,
@@ -471,7 +281,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         objFeatConstructiveness = {
             class: "featConstructiveness",
             id: "featConstructiveness",
-            selected: enabledSettings.indexOf("constructiveness"),
+            selected: enabledFeatures.indexOf("constructiveness"),
             x: cheeseX,
             y: cheeseY,
             height: cheeseHeight,
@@ -481,7 +291,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         objFeatSarcasm = {
             class: "featSarcasm",
             id: "featSarcasm",
-            selected: enabledSettings.indexOf("sarcasm"),
+            selected: enabledFeatures.indexOf("sarcasm"),
             x: cheeseX,
             y: cheeseY,
             height: cheeseHeight,
@@ -491,7 +301,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         objFeatMockery = {
             class: "featMockery",
             id: "featMockery",
-            selected: enabledSettings.indexOf("mockery"),
+            selected: enabledFeatures.indexOf("mockery"),
             x: cheeseX,
             y: cheeseY,
             height: cheeseHeight,
@@ -501,7 +311,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         objFeatIntolerance = {
             class: "featIntolerance",
             id: "featIntolerance",
-            selected: enabledSettings.indexOf("intolerance"),
+            selected: enabledFeatures.indexOf("intolerance"),
             x: cheeseX,
             y: cheeseY,
             height: cheeseHeight,
@@ -511,7 +321,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         objFeatImproper = {
             class: "featImproper",
             id: "featImproper",
-            selected: enabledSettings.indexOf("improper_language"),
+            selected: enabledFeatures.indexOf("improper_language"),
             x: cheeseX,
             y: cheeseY,
             height: cheeseHeight,
@@ -521,7 +331,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         objFeatInsult = {
             class: "featInsult",
             id: "featInsult",
-            selected: enabledSettings.indexOf("insult"),
+            selected: enabledFeatures.indexOf("insult"),
             x: cheeseX,
             y: cheeseY,
             height: cheeseHeight,
@@ -530,7 +340,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         },
         objFeatAggressiveness = {
             class: "featAggressiveness",
-            selected: enabledSettings.indexOf("aggressiveness"),
+            selected: enabledFeatures.indexOf("aggressiveness"),
             id: "featAggressiveness",
             x: cheeseX,
             y: cheeseY,
@@ -567,48 +377,19 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     // Call visit function to establish maxLabelLength
     visit(treeData, function (d) {
         totalNodes++;
-        //maxLabelLength = Math.max(d.name.length, maxLabelLength);
-
     }, function (d) {
         return d.children && d.children.length > 0 ? d.children : null;
     });
 
-
-    // Pan function, can be better implemented.
-    function pan(domNode, direction) {
-        console.log("pan being called");
-        var speed = panSpeed;
-        if (panTimer) {
-            clearTimeout(panTimer);
-            translateCoords = d3.transform(svgGroup.attr("transform"));
-            if (direction == 'left' || direction == 'right') {
-                translateX = direction == 'left' ? translateCoords.translate[0] + speed : translateCoords.translate[0] - speed;
-                translateY = translateCoords.translate[1];
-            } else if (direction == 'up' || direction == 'down') {
-                translateX = translateCoords.translate[0];
-                translateY = direction == 'up' ? translateCoords.translate[1] + speed : translateCoords.translate[1] - speed;
-            }
-            scaleX = translateCoords.scale[0];
-            scaleY = translateCoords.scale[1];
-            scale = zoomListener.scale();
-            svgGroup.transition().attr("transform", "translate(" + translateX + "," + translateY + ")scale(" + scale + ")");
-            d3.select(domNode).select('g.node').attr("transform", "translate(" + translateX + "," + translateY + ")");
-            zoomListener.scale(zoomListener.scale());
-            zoomListener.translate([translateX, translateY]);
-            panTimer = setTimeout(function () {
-                pan(domNode, speed, direction);
-            }, 50);
-        }
-    }
 
     // Define the zoom function for the zoomable tree
     function zoom() {
         svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
     }
 
-
     // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
     var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+
 
     // define the baseSvg, attaching a class for styling and the zoomListener
     var baseSvg = d3.select("#tree-container").append("svg")
@@ -617,58 +398,45 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .attr("class", "overlay")
         .call(zoomListener);
 
-    // Helper functions for collapsing and expanding nodes.
-    function collapse(d) {
-        if (d.children) {
-            d._children = d.children;
-            d._children.forEach(collapse);
-            d.children = null;
-        }
-    }
-
-    function expand(d) {
-        if (d._children) {
-            d.children = d._children;
-            d.children.forEach(expand);
-            d._children = null;
-        }
-    }
-
-    // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
+    /**
+     * Center the screen to the position of the given node
+     * */
     function centerNode(source) {
         var angulo = source.x0 % 360;
-        console.log("Los valores anteriores: ", "x0: ", (source.x0 % 360), "y0: ", source.y0 / 220);
 
-        //Por definición, el ángulo de Math.cos en javascript debe ser dado en radianes
+        //By definition, the angle of the Math.cos function must be given in radians
         var zoomX = source.y0 * Math.cos(angulo * Math.PI / 180);
         var zoomY = source.y0 * Math.sin(angulo * Math.PI / 180);
-        //console.log("Translate x,y: ", zoomX, zoomY);
 
         /*
-        El sistema de coordenadas es un poco diferente.
-        El (0,0) se encuentra "abajo a la derecha" en nuestro json original.
-        El "News Article" se muestra aprox en (500,300)
-        El eje de las X es el horizontal, aumenta hacia la izquierda y decrece hacia la derecha (NOTE: al revés de lo normal)
-        El eje de las Y es el vertical, aumenta hacia arriba y decrece hacia abajo.
-        Teniendo en cuenta que nuestra definición de coordenadas nos sitúa
+        The coordinate system is a little bit different.
+        The (0,0) point is approximately at the "bottom right" of where our tree is being displayed.
+        The "News Article" is shown approximately at (500,300)
+        The X axis is the horizontal one. It increases to the left and decreases to the right (the opposite of the cartesian system)
+        The Y axis is the vertical one. It increases upward and decreases downwards.
+
+        Taking into account that our definition of coordinates has the angles placed like
                    0º
                    |
           270º ---------- 90º
                    |
                  180º
-        Tenemos que sumar y restar de esta forma zoomX y zoomY para obtener el zoom en el nodo clicado
+        We have to sum and substract zoomX and zoomY to obtain the zoom in the given node.
         * */
         d3.select('g').transition()
             .duration(duration)
             .attr("transform", "translate(" + (500 - zoomY) + "," + (300 + zoomX) + ")");
     }
 
+    /**
+     * Center the screen to the position of the given link
+     * */
     function centerLink(link) {
         scale = zoomListener.scale();
         /*
-        Note: los valores de la Y nos dan el radio; por tanto, queremos la media de este valor
-        el valor de la x nos daba el ángulo, por tanto, si no están en línea recta, queremos un promedio
-        * */
+         NOTE: the Y values give us the radius; therefore, we want the average of this value
+         the X value give us the angle; therefore, if the nodes are not in a line, we want the average value
+         * */
         x = (link.source.y0 + link.target.y0) / 2;
         y = ((link.source.x0 % 360) + (link.target.x0 % 360)) / 2;
 
@@ -694,7 +462,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         return d;
     }
 
-    // Toggle children on click.
+    /**
+     * Clicked node behaviour
+     * Compute descendants information
+     * Toggle children on click.
+     * */
     function click(d) {
         if (d3.event.defaultPrevented) return; // click suppressed
 
@@ -706,8 +478,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         d.descendantsWithToxicity2 = descendantsData.toxicity2;
         d.descendantsWithToxicity3 = descendantsData.toxicity3;
 
+        //Hides/Shows and recomputes the position when collapsing or uncollapsing a node
         d = toggleChildren(d);
-        update(d); // esconde y recalcula posiciones al compactar nodos
+        update(d);
     }
 
     function zoomToNode(d) {
@@ -757,7 +530,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr("width", targets[i].width)
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
-                        if (d.name === rootName) return 0;
+                        if (d.parent === undefined) return 0;
                         listOpacity = [d.target_group, d.target_person, d.stereotype];
                         return listOpacity[i];
                     });
@@ -789,7 +562,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr("width", targets[i].width)
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
-                        if (d.name === rootName) return 0;
+                        if (d.parent === undefined) return 0;
                         listOpacity = [0.5, d.target_group, d.target_person, d.stereotype]; //Note: the opacity of the gray ring
                         return listOpacity[i];
                     });
@@ -868,7 +641,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr("width", targets[i].width)
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
-                        if (d.name === rootName) return 0;
+                        if (d.parent === undefined) return 0;
                         listOpacity = [d.target_group, d.target_person, d.stereotype];
                         return listOpacity[i];
                     });
@@ -900,7 +673,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr("width", targets[i].width)
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
-                        if (d.name === rootName) return 0;
+                        if (d.parent === undefined) return 0;
                         listOpacity = [d.target_group, d.target_person, d.stereotype];
                         return listOpacity[i];
                     });
@@ -1022,9 +795,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         removeThisFeatures(nodeEnter);
         removeToxicities(nodeEnter); //Remove all the pngs for toxicity
 
-        var cbFeatureEnabled = [enabledSettings.indexOf("argumentation"), enabledSettings.indexOf("constructiveness"),
-            enabledSettings.indexOf("sarcasm"), enabledSettings.indexOf("mockery"), enabledSettings.indexOf("intolerance"),
-            enabledSettings.indexOf("improper_language"), enabledSettings.indexOf("insult"), enabledSettings.indexOf("aggressiveness")];
+        var cbFeatureEnabled = [enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+            enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
+            enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness")];
 
         var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
         var listOpacity;
@@ -1040,7 +813,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
                     .attr("opacity", function (d) {
-                        if (d.name === rootName) return 0;
+                        if (d.parent === undefined) return 0;
                         listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
                         return listOpacity[i];
                     });
@@ -1063,13 +836,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .attr("width", objFeatGray.width)
             .attr("href", pathFeatures + localPath + objFeatGray.fileName)
             .attr("opacity", function (d) {
-                if (d.name === rootName) return 0;
+                if (d.parent === undefined) return 0;
                 return 0.5;
             });
 
-        var cbFeatureEnabled = [enabledSettings.indexOf("argumentation"), enabledSettings.indexOf("constructiveness"),
-            enabledSettings.indexOf("sarcasm"), enabledSettings.indexOf("mockery"), enabledSettings.indexOf("intolerance"),
-            enabledSettings.indexOf("improper_language"), enabledSettings.indexOf("insult"), enabledSettings.indexOf("aggressiveness")];
+        var cbFeatureEnabled = [enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+            enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
+            enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness")];
 
         var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
         var listOpacity;
@@ -1085,7 +858,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr("width", 55)
                     .attr("href", pathFeatures + localPath + features[i].fileName)
                     .attr("opacity", function (d) {
-                        if (d.name === rootName) return 0;
+                        if (d.parent === undefined) return 0;
                         listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
                         return listOpacity[i];
                     });
@@ -1109,9 +882,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         //Better done than perfect
         var cbShowTargets = [1, 1, 1, 1,
-            enabledSettings.indexOf("argumentation"), enabledSettings.indexOf("constructiveness"),
-            enabledSettings.indexOf("sarcasm"), enabledSettings.indexOf("mockery"), enabledSettings.indexOf("intolerance"),
-            enabledSettings.indexOf("improper_language"), enabledSettings.indexOf("insult"), enabledSettings.indexOf("aggressiveness"),
+            enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+            enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
+            enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness"),
             enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
 
 
@@ -1128,7 +901,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .style("stroke-width", "0.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
                     .attr("opacity", function (d) {
-                        if (d.name === rootName) return 0;
+                        if (d.parent === undefined) return 0;
 
                         listOpacity = [d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
                             d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
@@ -1159,9 +932,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         //Better done than perfect
         var cbShowTargets = [1,
-            enabledSettings.indexOf("argumentation"), enabledSettings.indexOf("constructiveness"),
-            enabledSettings.indexOf("sarcasm"), enabledSettings.indexOf("mockery"), enabledSettings.indexOf("intolerance"),
-            enabledSettings.indexOf("improper_language"), enabledSettings.indexOf("insult"), enabledSettings.indexOf("aggressiveness"),
+            enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+            enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
+            enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness"),
             1, 1, 1, 1,
             enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
 
@@ -1179,7 +952,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .style("stroke-width", "0.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
                     .attr("opacity", function (d) {
-                        if (d.name === rootName) return 0;
+                        if (d.parent === undefined) return 0;
 
                         listOpacity = [1,
                             d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
@@ -1246,9 +1019,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     function drawFeaturesCheese(nodeEnter) {
         hideFeatureDots();
 
-        var listEnabledVisualization = [0, enabledSettings.indexOf("argumentation"), enabledSettings.indexOf("constructiveness"),
-            enabledSettings.indexOf("sarcasm"), enabledSettings.indexOf("mockery"), enabledSettings.indexOf("intolerance"),
-            enabledSettings.indexOf("improper_language"), enabledSettings.indexOf("insult"), enabledSettings.indexOf("aggressiveness")];
+        var listEnabledVisualization = [0, enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+            enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
+            enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness")];
 
         var listCheeseClass = ["grayCheese", "cheeseArgumentation", "cheeseConstructiveness",
             "cheeseSarcasm", "cheeseMockery", "cheeseIntolerance", "cheeseImproper", "cheeseInsult", "cheeseAggressiveness"];
@@ -1266,7 +1039,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr("width", cheeseWidth)
                     .attr("href", listCheeseImgPath[i])
                     .attr("opacity", function (d) {
-                        if (d.name === rootName) return 0;
+                        if (d.parent === undefined) return 0;
                         listCheeseOpacity = [0.5, d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
                         return listCheeseOpacity[i];
                     });
@@ -1277,7 +1050,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     function drawFeatures(nodeEnter) {
         hideCheese();
         // Argumentation
-        if (enabledSettings.indexOf("argumentation") > -1) {
+        if (enabledFeatures.indexOf("argumentation") > -1) {
             nodeEnter.append("circle")
                 .attr('class', 'featureArgumentation')
                 .attr('id', 'featureArgumentation')
@@ -1292,7 +1065,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 });
         }
 
-        if (enabledSettings.indexOf("constructiveness") > -1) {
+        if (enabledFeatures.indexOf("constructiveness") > -1) {
             // Constructiveness
             nodeEnter.append("circle")
                 .attr('class', 'featureConstructiveness')
@@ -1307,7 +1080,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     return 0
                 });
         }
-        if (enabledSettings.indexOf("sarcasm") > -1) {
+        if (enabledFeatures.indexOf("sarcasm") > -1) {
             // Sarcasm
             nodeEnter.append("circle")
                 .attr('class', 'featureSarcasm')
@@ -1322,7 +1095,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     return 0
                 });
         }
-        if (enabledSettings.indexOf("mockery") > -1) {
+        if (enabledFeatures.indexOf("mockery") > -1) {
             // Mockery
             nodeEnter.append("circle")
                 .attr('class', 'featureMockery')
@@ -1337,7 +1110,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     return 0
                 });
         }
-        if (enabledSettings.indexOf("intolerance") > -1) {
+        if (enabledFeatures.indexOf("intolerance") > -1) {
             // Intolerance
             nodeEnter.append("circle")
                 .attr('class', 'featureIntolerance')
@@ -1353,7 +1126,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 });
         }
 
-        if (enabledSettings.indexOf("improper_language") > -1) {
+        if (enabledFeatures.indexOf("improper_language") > -1) {
             // Improper Language
             nodeEnter.append("circle")
                 .attr('class', 'featureImproperLanguage')
@@ -1369,7 +1142,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 });
         }
 
-        if (enabledSettings.indexOf("insult") > -1) {
+        if (enabledFeatures.indexOf("insult") > -1) {
             // Insult
             nodeEnter.append("circle")
                 .attr('class', 'featureInsult')
@@ -1384,7 +1157,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     return 0
                 });
         }
-        if (enabledSettings.indexOf("aggressiveness") > -1) {
+        if (enabledFeatures.indexOf("aggressiveness") > -1) {
             // Aggressiveness
             nodeEnter.append("circle")
                 .attr('class', 'featureAggressiveness')
@@ -1845,8 +1618,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             };
         }
         var total = 0, childrenList = [], totalToxic0 = 0, totalToxic1 = 0, totalToxic2 = 0, totalToxic3 = 0;
-        if (node.children) {
-            node.children.forEach(function (d) {
+
+        var children = node.children ?? node._children;
+
+        if (children) {
+            children.forEach(function (d) {
 
                 childrenList = getDescendants(d);
                 total += childrenList.children + 1;
@@ -1857,55 +1633,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 totalToxic3 += childrenList.toxicity3;
 
                 switch (childrenList.toxicityLevel) {
-
-                    case 0:
-                        totalToxic0 += 1;
-                        break;
-
-                    case 1:
-                        totalToxic1 += 1;
-                        break;
-
-                    case 2:
-                        totalToxic2 += 1;
-                        break;
-
-                    case 3:
-                        totalToxic3 += 1;
-                        break;
-                }
-
-            })
-        }
-
-        if (node._children) {
-            node._children.forEach(function (d) {
-
-                childrenList = getDescendants(d);
-                total += childrenList.children + 1;
-
-                totalToxic0 += childrenList.toxicity0;
-                totalToxic1 += childrenList.toxicity1;
-                totalToxic2 += childrenList.toxicity2;
-                totalToxic3 += childrenList.toxicity3;
-
-                switch (childrenList.toxicityLevel) {
-
-                    case 0:
-                        totalToxic0 += 1;
-                        break;
-
-                    case 1:
-                        totalToxic1 += 1;
-                        break;
-
-                    case 2:
-                        totalToxic2 += 1;
-                        break;
-
-                    case 3:
-                        totalToxic3 += 1;
-                        break;
+                    case 0: totalToxic0 += 1; break;
+                    case 1: totalToxic1 += 1; break;
+                    case 2: totalToxic2 += 1; break;
+                    case 3: totalToxic3 += 1; break;
                 }
             })
         }
@@ -1970,39 +1701,15 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         tree = tree.nodeSize([separationHeight, 0]) //heigth and width of the rectangles that define the node space
             .separation(function (a, b) {
                 if (a.depth === 1 && b.depth === 1) {
-                    //return 360 / root.children.length ; //how to determine the separation of the nodes of first level so they are not extremely together, nor too separated that do not look sorted
-                    //return root.children.length / 360;
-                    //return 1; it makes the nodes and edges appear one over the other
-                    //return 1 / root.children.length *4 *4;
                     return (360.0 / root.children.length) / separationHeight;
                 }
                 if (a.depth === 2 && b.depth === 2) return Math.min((360.0 / root.children.length) / separationHeight, (a.parent === b.parent ? 1 / (a.depth * a.depth) : 2 / (a.depth * a.depth)));
-                //if (a.depth === 1 && b.depth === 1) return 360 / root.children.length; //it looks nice for the 20190716_CR, but overlaps for the eighth
                 return (a.parent === b.parent ? 1 / (a.depth * a.depth) : 2 / (a.depth * a.depth));
-            })
-        /*.sort(null)*/;
+            });
 
         // Compute the new tree layout.
         var nodes = tree.nodes(root).reverse(),
             links = tree.links(nodes);
-
-        /*        var numChildren;
-                root.children ?  numChildren = root.children.length : root._children.length;
-                // Set widths between levels
-                nodes.forEach(function(d) {
-                    console.log(d.depth, d);
-                    //Compute how many children the root has
-                    //The number of children of first level multiplied by the height of the glyphs, will tell
-                    // This way we modify the radius of the first level nodes, so we do not have intersections at least... not taking into account if they get separated due to number of children of the nodes of first level
-                    var firstLevelRadius = Math.max( (d.depth * (maxLabelLength * 20) ), (numChildren * (cheeseHeight + 5)) / (2 * Math.PI));
-
-                    console.log("first level", firstLevelRadius);
-                    if (d.depth === 1 ) d.y = firstLevelRadius;
-                    else d.y = firstLevelRadius + ( (d.depth - 1) * (maxLabelLength * 20)) ;
-
-                    //d.y = (d.depth * (maxLabelLength * 20)); //maxLabelLength * 10px
-
-                });*/
 
         // Set widths between levels
         nodes.forEach(function (d) {
@@ -2023,7 +1730,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
             .on('click', function (d) {
                 console.log("Node positions when clicked ON CLICK: ", source.x, source.y);
-                console.log("maybe: ", radialPointWithDepth(d, source.x0, source.y0));
+                console.log("maybe: ", radialPoint(d, source.x0, source.y0));
                 click(d);
             })
             .on('mouseover', function (d) {
@@ -2073,7 +1780,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
         });
 
-        // if the option to show features is checked, enable checkboxes and dropdown menu
+        //Listener related to the visualization of features
         checkboxFeatureMenu.addEventListener('change', function () {
             if (this.checked) { //Enable checkboxes and dropdown menu + show features if they are selected
                 checkboxesPropertyFeature.forEach(function (checkboxItem) {
@@ -2164,18 +1871,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         // Draw feature circles
         checkboxes.forEach(function (checkboxItem) {
             checkboxItem.addEventListener('change', function () {
-                enabledSettings =
+                enabledFeatures =
                     Array.from(checkboxes) // Convert checkboxes to an array to use filter and map.
                         .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-                console.log(enabledSettings);
+                console.log(enabledFeatures);
                 selectFeatureVisualization(nodeEnter);
 
             })
         });
 
-        // if the option to highlight nodes is checked
+        //Listener related to highlighting nodes and edges
         checkboxHighlightMenu.addEventListener('change', function () {
             if (this.checked) {
                 checkboxesProperty.forEach(function (checkboxItem) {
@@ -2205,7 +1912,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             }
         });
 
-        // if AND is checked, uncheck OR
+        // If AND is selected, uncheck the OR and highlight by property AND
         checkboxAND.addEventListener('change', function () {
             if (this.checked) {
                 checkboxOR.checked = false;
@@ -2216,7 +1923,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             }
 
         });
-        // if OR is checked, uncheck AND
+        // If OR is selected, uncheck the AND and highlight by property OR
         checkboxOR.addEventListener('change', function () {
             if (this.checked) {
                 checkboxAND.checked = false;
@@ -2265,48 +1972,22 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 return 8.7;
             })
             .style("fill", function (d) {
-                //console.log("if _children QUANTITY", d._children.length);
-                if (d._children) { // Si solo tiene un hijo, lo pongo de color azul
-                    if (d._children.length === 1) {
-                        return "lightsteelblue";
-                    } else { // Si tiene más de un hijo, le dejamos su nivel de toxicidad como color
-                        if (d.toxicity_level === 0) {
-                            return colourToxicity0;
-                        }
-                        if (d.toxicity_level === 1) {
-                            return colourToxicity1;
-                        }
-                        if (d.toxicity_level === 2) {
-                            return colourToxicity2;
-                        } else {
-                            if (d.toxicity_level)
-                                return colourToxicity3;
-                            else return "lightsteelblue";
-                        }
-                    }
-                } else { // Le ponemos color al nodo según su toxicidad
-                    if (d.toxicity_level === 0) {
-                        return colourToxicity0;
-                    }
-                    if (d.toxicity_level === 1) {
-                        return colourToxicity1;
-                    }
-                    if (d.toxicity_level === 2) {
-                        return colourToxicity2;
-                    } else {
-                        if (d.toxicity_level)
-                            return colourToxicity3;
-                        else return colourNewsArticle;
+                if (d._children && d._children.length === 1) return colourCollapsed1Son; //If it is collapsed and just has one children
+                else { //Otherwise, colour the node according to its level of toxicity
+                    switch (d.toxicity_level) {
+                        case 0: return colourToxicity0;
+                        case 1: return colourToxicity1;
+                        case 2: return colourToxicity2;
+                        case 3: return colourToxicity3;
+                        default: return colourNewsArticle;
                     }
                 }
-                //return d._children ? "lightsteelblue" : "#fff";
             });
 
         // Transition nodes to their new position.
         var nodeUpdate = node.transition()
             .duration(duration)
             .attr("transform", function (d) {
-                //if (d.x > 360) return "rotate(" + (d.x - 100) + ")translate(" + d.y + ")";
                 return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")";
             });
 
@@ -2337,26 +2018,21 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 return diagonal({source: o, target: o});
             })
             .style("stroke", function (d) {
-                if (d.target.positive_stance && d.target.negative_stance) { //Si está a favor y en contra
-                    return colourBothStances;
-                } else if (d.target.positive_stance === 1) { //A favor
-                    return colourPositiveStance;
-                } else if (d.target.negative_stance === 1) { // En contra
-                    return colourNegativeStance;
-                } else {
-                    return colourNeutralStance;
-                }
+                if (d.target.positive_stance && d.target.negative_stance) return colourBothStances; //Both against and in favour
+                else if (d.target.positive_stance === 1) return colourPositiveStance; //In favour
+                else if (d.target.negative_stance === 1)  return colourNegativeStance; //Against
+                else return colourNeutralStance; //Neutral comment
             })
             .on('click', clickLink);
 
         // Transition links to their new position.
         link.transition()
             .duration(duration)
-            .attr("d", diagonal)
-        ;
+            .attr("d", diagonal);
 
         //Highlight nodes if necessary NOTE: it needs to be after the definition of the link
         if (checkboxHighlightMenu.checked && source.children) checkboxOR.checked ? highlightByPropertyOR(node, link) : highlightByPropertyAND(node, link);
+
         // Transition exiting nodes to the parent's new position.
         link.exit().transition()
             .duration(duration)
@@ -2372,8 +2048,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             d.x0 = d.x;
             d.y0 = d.y;
         });
-
-        console.log("node positions at the end of update: ", source.x, source.y);
     }
 
     // Append a group which holds all nodes and which the zoom Listener can act upon.
@@ -2382,16 +2056,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     // Define the root
     root = treeData;
 
-    //root.x0 = viewerHeight / 2;
     root.x0 = 0;
     root.y0 = 0;
 
     // Layout the tree initially and center on the root node.
-    console.log("root coordinates", root.x, root.y);
     update(root);
-    console.log("root coordinates AFTER UPDATE", root.x, root.y);
     centerNode(root);
-    console.log("root coordinates AFTER center node", root.x, root.y);
 
     /**
      * Wrap call to compute statistics and to write them in a hover text
@@ -2455,22 +2125,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 totalToxic3 += childrenList.toxicity3;
 
                 switch (childrenList.toxicityLevel) {
-
-                    case 0:
-                        totalToxic0 += 1;
-                        break;
-
-                    case 1:
-                        totalToxic1 += 1;
-                        break;
-
-                    case 2:
-                        totalToxic2 += 1;
-                        break;
-
-                    case 3:
-                        totalToxic3 += 1;
-                        break;
+                    case 0: totalToxic0 += 1; break;
+                    case 1: totalToxic1 += 1; break;
+                    case 2: totalToxic2 += 1; break;
+                    case 3: totalToxic3 += 1; break;
                 }
 
                 //Targets are not exclusive
@@ -2540,8 +2198,5 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         statisticText += "</table>";
         return statisticText;
     }
-
-
-    //computeStatistics();
 
 });
