@@ -634,6 +634,21 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     /*SECTION draw svgs from checboxes*/
 
     /**
+     * Compute the position of an associated image to be centered on the node
+     * that is a 10% smaller than it
+     * */
+    function positionImage(nodeRadius) {
+        return nodeRadius * (1.0/imgRatio - 1);
+    }
+
+    /**
+     * Compute the size of an associated image to be a 10% smaller than the node
+     * */
+    function sizeImage(nodeRadius){
+        return 2 * nodeRadius * (1 - 1.0/imgRatio);
+    }
+
+    /**
      * Draws the 3 targets of a node if the checkbox is checked
      * and if the node has that target (sets the opacity to visible)
      *
@@ -753,16 +768,16 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
                     .attr("x", function (d) {
-                        return d.radius * (1.0/imgRatio - 1);
+                        return positionImage(d.radius);
                     })
                     .attr("y", function (d) {
-                        return d.radius * (1.0/imgRatio - 1);
+                        return positionImage(d.radius);
                     })
                     .attr("height", function (d) {
-                        return 2 * d.radius * (1 - 1.0/imgRatio);
+                        return sizeImage(d.radius);
                     })
                     .attr("width", function (d) {
-                        return 2 * d.radius * (1 - 1.0/imgRatio);
+                        return sizeImage(d.radius);
                     })
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
@@ -1012,10 +1027,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         nodeEnter.append("image")
             .attr('class', objFeatGray.class)
             .attr('id', objFeatGray.id)
-            .attr("x", -10)
-            .attr("y", objFeatGray.y)
-            .attr("height", objFeatGray.height)
-            .attr("width", objFeatGray.width)
+            .attr("x", function (d) {
+                return positionImage(d.radius);
+            })
+            .attr("y", function (d) {
+                return positionImage(d.radius);
+            })
+            .attr("height", function (d) {
+                return sizeImage(d.radius);
+            })
+            .attr("width", function (d) {
+                return sizeImage(d.radius);
+            })
             .attr("href", pathFeatures + localPath + objFeatGray.fileName)
             .attr("opacity", function (d) {
                 if (d.name === rootName) return 0;
@@ -1034,10 +1057,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
-                    .attr("x", -10)
-                    .attr("y", features[i].y)
-                    .attr("height", features[i].height)
-                    .attr("width", features[i].width)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius);
+                    })
                     .attr("href", pathFeatures + localPath + features[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.name === rootName) return 0;
