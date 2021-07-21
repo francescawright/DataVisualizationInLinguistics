@@ -635,17 +635,17 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     /**
      * Compute the position of an associated image to be centered on the node
-     * that is a 10% smaller than it
+     * that is a radiusPercentage smaller than it
      * */
-    function positionImage(nodeRadius) {
-        return nodeRadius * (1.0/imgRatio - 1);
+    function positionImage(nodeRadius, radiusPercentage = imgRatio) {
+        return nodeRadius * (radiusPercentage / 100.0 - 1);
     }
 
     /**
-     * Compute the size of an associated image to be a 10% smaller than the node
+     * Compute the size of an associated image to be a radiusPercentage smaller than the node
      * */
-    function sizeImage(nodeRadius){
-        return 2 * nodeRadius * (1 - 1.0/imgRatio);
+    function sizeImage(nodeRadius, radiusPercentage = imgRatio){
+        return 2 * nodeRadius * (1 - radiusPercentage / 100.0);
     }
 
     /**
@@ -1154,10 +1154,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', allObjectsInNode[i].class)
                     .attr('id', allObjectsInNode[i].id)
-                    .attr("x", localPosition - 17.53)
-                    .attr("y", -27.45)
-                    .attr("height", 40)
-                    .attr("width", 40)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius, 0);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius, 0);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius, 0);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius, 0);
+                    })
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
