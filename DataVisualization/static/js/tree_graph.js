@@ -31,7 +31,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     // Calculate total nodes, max label length
     var totalNodes = 0;
-    var maxLabelLength = 22;
+    var edgeLength = 300;
     // variables for drag/drop
     var selectedNode = null;
     // panning variables
@@ -119,7 +119,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     //var viewerWidth = $(document).width();
     var viewerWidth = 100;
     var viewerHeight = 400;
-    var separationHeight = 100; //Sets the separation between two nodes to 15 pixels
+    var separationHeight = 50; //Sets the separation between two nodes to 15 pixels
     var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
     var tooltipText;
 
@@ -494,10 +494,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
-    // Call visit function to establish maxLabelLength
+    // Call visit function to establish edgeLength
     visit(treeData, function (d) {
         totalNodes++;
-        //maxLabelLength = Math.max(d.name.length, maxLabelLength);
+        //edgeLength = Math.max(d.name.length, edgeLength);
 
     }, function (d) {
         return d.children && d.children.length > 0 ? d.children : null;
@@ -2179,9 +2179,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         nodes = tree.nodes(root).reverse();
         var links = tree.links(nodes);
 
-        // Set widths between levels based on maxLabelLength.
+        // Set widths between levels based on edgeLength.
         nodes.forEach(function (d) {
-            d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
+            d.y = (d.depth * edgeLength);
             // alternatively to keep a fixed scale one can set a fixed depth per level
             // Normalize for fixed-depth by commenting out below line
             // d.y = (d.depth * 500); //500px per level.
