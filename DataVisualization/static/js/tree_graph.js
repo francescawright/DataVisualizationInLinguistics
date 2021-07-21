@@ -54,7 +54,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         class: "rootNode",
         id: "rootNode",
         fileName: "root.png"  };
-    var imageOffset = 4;
+    var imageOffset = 4; //Radii size difference between a node and its associated image
+    var imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
 
     /* Features
     * */
@@ -750,16 +751,16 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
                     .attr("x", function (d) {
-                        return imageOffset - d.radius;
+                        return d.radius * (1.0/imgRatio - 1);
                     })
                     .attr("y", function (d) {
-                        return imageOffset - d.radius;
+                        return d.radius * (1.0/imgRatio - 1);
                     })
                     .attr("height", function (d) {
-                        return 2 * (d.radius - imageOffset);
+                        return 2 * d.radius * (1 - 1.0/imgRatio);
                     })
                     .attr("width", function (d) {
-                        return 2 * (d.radius - imageOffset);
+                        return 2 * d.radius * (1 - 1.0/imgRatio);
                     })
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
