@@ -684,7 +684,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
-                    .attr("x", targets[i].x)
+                    .attr("x", function (d) {
+                        return targets[i].x - d.radius;
+                    })
                     .attr("y", targets[i].y)
                     .attr("height", targets[i].height)
                     .attr("width", targets[i].width)
