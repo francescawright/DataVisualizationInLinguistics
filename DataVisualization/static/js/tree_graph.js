@@ -54,6 +54,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         class: "rootNode",
         id: "rootNode",
         fileName: "root.png"  };
+    var imageOffset = 4;
 
     /* Features
     * */
@@ -748,10 +749,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
-                    .attr("x", targets[i].x)
-                    .attr("y", targets[i].y)
-                    .attr("height", targets[i].height)
-                    .attr("width", targets[i].width)
+                    .attr("x", function (d) {
+                        return imageOffset - d.radius;
+                    })
+                    .attr("y", function (d) {
+                        return imageOffset - d.radius;
+                    })
+                    .attr("height", function (d) {
+                        return 2 * (d.radius - imageOffset);
+                    })
+                    .attr("width", function (d) {
+                        return 2 * (d.radius - imageOffset);
+                    })
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.name === rootName) return 0;
