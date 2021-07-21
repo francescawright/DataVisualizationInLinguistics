@@ -955,13 +955,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         for (var i = 0; i < 8; i++) {
             if (cbFeatureEnabled[i] > -1) {
-                console.log("hola")
-                console.log(35 + i * 10)
                 nodeEnter.append("circle")
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
                     .attr("r", "10.5")
-                    .attr("transform", "translate(" + (35 + i * 10) + "," + 0 + ")")
+                    /*.attr("transform", function (d) {
+                        return "translate(" + (d.radius + 10.5 + i * (10.5*2)) + "," + 0 + ")";
+                    })*/
+                    .attr("transform", "translate(" + (35 + i * (10.5*2)) + "," + 0 + ")")
                     .attr("fill", colorFeature[i])
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
