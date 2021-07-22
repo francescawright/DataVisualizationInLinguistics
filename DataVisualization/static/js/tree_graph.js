@@ -1541,7 +1541,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         console.log("drawing root icon");
         //Filter the nodes and append an icon just for the root node
         node.filter(function (d) {
-            return d.name === rootName;
+            return d.parent === undefined;
         }).append("image")
             .attr('class', objRoot.class)
             .attr('id', objRoot.id)
@@ -1550,9 +1550,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .attr("height", root.radius * 2)
             .attr("width", root.radius * 2)
             .attr("href", rootPath + objRoot.fileName)
-            .attr("opacity", function (d) {
-                return d.name === rootName ? 1 : 0;
-            });
+            .attr("opacity", 1);
     }
 
     /*SECTION highlighting */
