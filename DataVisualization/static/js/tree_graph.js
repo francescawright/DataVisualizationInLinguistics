@@ -439,6 +439,37 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             fileName: "Stereotype.svg"
         };
 
+    var objTargetGroupInside = {
+            class: "targetGroup",
+            id: "targetGroup",
+            selected: enabledTargets.indexOf("target-group"),
+            x: -30,
+            y: -1,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Group.svg"
+        },
+        objTargetPersonInside = {
+            class: "targetPerson",
+            id: "targetPerson",
+            selected: enabledTargets.indexOf("target-person"),
+            x: -50,
+            y: 0,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Person.svg"
+        },
+        objTargetStereotypeInside = {
+            class: "targetStereotype",
+            id: "targetStereotype",
+            selected: enabledTargets.indexOf("target-stereotype"),
+            x: -70,
+            y: -1,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Stereotype.svg"
+        };
+
     displayTargetLegend();
 
     var objFeatArgumentation = {
@@ -800,22 +831,34 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      *
      * The icon used is from the local path passed by parameter
      * The css values are from the target objects that are icons
+     *
+     * Draw in a triangle Group --- Stereotype
+     *                          \ /
+     *                         Person
      * */
     function drawTargetsInside(nodeEnter, localPath) {
         removeThisTargets(nodeEnter);
         var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
         var listOpacity;
-        var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
+        var targets = [objTargetGroupInside, objTargetPersonInside, objTargetStereotypeInside];
 
         for (var i = 0; i < targets.length; i++) {
             if (cbShowTargets[i] > -1) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
-                    .attr("x", -8.0)
-                    .attr("y", targets[i].y)
-                    .attr("height", targets[i].height)
-                    .attr("width", targets[i].width)
+                    .attr("x", function (d) {
+                        return d.radius * (i/2.0 - 1);
+                    })
+                    .attr("y", function (d) {
+                        return d.radius * targets[i].y;
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius)/2.0;
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius)/2.0;
+                    })
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.name === rootName) return 0;
