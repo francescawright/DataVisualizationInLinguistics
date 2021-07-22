@@ -25,6 +25,60 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
+/**
+ * Computes the borders of a box containing our nodes
+ * */
+function computeDimensions(nodes){
+    /* Note our coordinate system:
+    *
+    *                     | X negative
+    *                     |
+    * Y negative <--------|-------> Y positive
+    *                     |
+    *                     | X positive
+    * */
+    var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for(const n of nodes){
+        if(n.x < minX) minX = n.x;
+        if(n.y < minY) minY = n.y;
+        if(n.x > maxX) maxX = n.x;
+        if(n.y > maxY) maxY = n.y;
+    }
+    return {minX: minX, minY: minY, maxX: maxX, maxY: maxY};
+}
+
+/**
+ * Center graph and zoom to fit the whole graph visualization in our canvas
+ * */
+function zoomToFitGraph(minX, minY, maxX, maxY,
+                        canvasHeight = 900, canvasWidth = 2200,
+                        duration = 750) {
+    /* Note our coordinate system:
+    *
+    *
+    *                     | X negative
+    *                     |
+    * Y negative <--------|-------> Y positive
+    *                     |
+    *                     | X positive
+    * Due to the D3 algorithm we are expecting
+    * minX = - maxX
+    * */
+    var boxWidth = maxY - minY,
+        boxHeight = maxX - minX;
+
+    var midY = boxWidth / 2.0,
+        midX = boxHeight / 2.0;
+
+    scale = Math.min(canvasWidth/boxWidth, canvasHeight/boxHeight);
+
+    d3.select('g').transition()
+        .duration(duration)
+        .attr("transform", "translate(" + midY + "," + (midX/2.0) + ")scale(" + scale + ")");
+
+    return {initialZoom: scale, initialY: midY, initialX: midX/2.0}
+}
+
 
 // Get JSON data
 treeJSON = d3.json(dataset, function (error, treeData) {
@@ -120,6 +174,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     //var viewerWidth = $(document).width();
     var viewerWidth = 100;
     var viewerHeight = 400;
+    var canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
+    var initialZoom, initialX, initialY; //Initial zoom and central coordinates of the first visualization of the graph
+
     var separationHeight = 50; //Sets the separation between two nodes to 15 pixels
     var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
     var tooltipText;
@@ -532,9 +589,32 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
-    // Define the zoom function for the zoomable tree
+    /**
+     * Define zoom and translation
+     * */
     function zoom() {
-        svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        /* The initial d3 events for scale and translation have initial values 1 and [x,y] = [50, 200] respectively
+        * Therefore we need to take this into account and sum the difference to our initial scale and position attributes
+        * defined in zoomToFit()
+        * */
+
+        /*
+        * NOTE:
+        * If the scale is negative, we will see the graph upside-down and left-right swapped
+        * If the scale is 0, we will not see the graph
+        * Define the scale to be at least 0.1 and set it to the initialZoom + the difference of the listener and the d3.event initial scale
+        * */
+        var newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1); //Avoid the graph to be seen mirrored.
+
+        /*
+        * NOTE: Add to the initial position values (initialX and initialY) the movement registered by d3.
+        * d3.event.translate returns an array [x,y] with starting values [50, 200]
+        * The values X and Y are swapped in zoomToFit() and we need to take that into account to give the new coordinates
+        * */
+        var movement = d3.event.translate;
+        var newX = initialX + (movement[1]-200);
+        var newY = initialY + (movement[0]-50);
+        svgGroup.attr("transform", "translate(" + [newY, newX] + ")scale(" + newScale + ")");
     }
 
 
@@ -543,8 +623,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     // define the baseSvg, attaching a class for styling and the zoomListener
     var baseSvg = d3.select("#tree-container").append("svg")
-        .attr("width", 2200)
-        .attr("height", 900)
+        .attr("width", canvasWidth)
+        .attr("height", canvasHeight)
         .attr("class", "overlay")
         .call(zoomListener);
 
@@ -688,7 +768,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      * The css values are from the target objects that are icons
      * */
     function drawTargetsOutside(nodeEnter, localPath) {
-        console.log("outside");
         removeThisTargets(nodeEnter);
         var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
         var listOpacity;
@@ -1538,7 +1617,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      * Draw an icon for the root node
      * */
     function visualiseRootIcon(node){
-        console.log("drawing root icon");
         //Filter the nodes and append an icon just for the root node
         node.filter(function (d) {
             return d.parent === undefined;
@@ -2620,6 +2698,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     // Layout the tree initially and center on the root node.
     update(root);
     centerNode(root);
+
+    var box = computeDimensions(nodes);
+    var initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY);
+    initialZoom = initialSight.initialZoom;
+    initialX = initialSight.initialX;
+    initialY = initialSight.initialY;
 
     //I compute the values for the statistic data showing in the background
     var listStatistics = getStatisticValues(root);
