@@ -452,8 +452,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             class: "targetGroup",
             id: "targetGroup",
             selected: enabledTargets.indexOf("target-group"),
-            x: -30,
-            y: -1,
+            x: -0.9,
+            y: -0.8,
             height: targetIconHeight,
             width: targetIconWidth,
             fileName: "Group.svg"
@@ -462,7 +462,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             class: "targetPerson",
             id: "targetPerson",
             selected: enabledTargets.indexOf("target-person"),
-            x: -50,
+            x: -0.5,
             y: 0,
             height: targetIconHeight,
             width: targetIconWidth,
@@ -472,8 +472,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             class: "targetStereotype",
             id: "targetStereotype",
             selected: enabledTargets.indexOf("target-stereotype"),
-            x: -70,
-            y: -1,
+            x: -0.1,
+            y: -0.8,
             height: targetIconHeight,
             width: targetIconWidth,
             fileName: "Stereotype.svg"
@@ -857,7 +857,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
                     .attr("x", function (d) {
-                        return d.radius * (i/2.0 - 1);
+                        return d.radius * targets[i].x;
                     })
                     .attr("y", function (d) {
                         return d.radius * targets[i].y;
