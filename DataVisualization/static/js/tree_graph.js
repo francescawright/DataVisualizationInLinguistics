@@ -36,13 +36,14 @@ function computeDimensions(nodes){
     * Y negative <--------|-------> Y positive
     *                     |
     *                     | X positive
+    * And note we need to take into account the radius of the node
     * */
     var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
     for(const n of nodes){
-        if(n.x < minX) minX = n.x;
-        if(n.y < minY) minY = n.y;
-        if(n.x > maxX) maxX = n.x;
-        if(n.y > maxY) maxY = n.y;
+        if((n.x - n.radius) < minX) minX = n.x - n.radius;
+        if((n.y - n.radius) < minY) minY = n.y - n.radius;
+        if((n.x + n.radius) > maxX) maxX = n.x + n.radius;
+        if((n.y + n.radius) > maxY) maxY = n.y + n.radius;
     }
     return {minX: minX, minY: minY, maxX: maxX, maxY: maxY};
 }
@@ -61,8 +62,8 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
     * Y negative <--------|-------> Y positive
     *                     |
     *                     | X positive
-    * Due to the D3 algorithm we are expecting
-    * minX = - maxX
+    * Due to the D3 algorithm we are expecting: minX = - maxX
+    * and due to the assignment of the root positions: minY = 0
     * */
     var boxWidth = maxY - minY,
         boxHeight = maxX - minX;
@@ -72,11 +73,19 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
 
     scale = Math.min(canvasWidth/boxWidth, canvasHeight/boxHeight);
 
+    var newX = canvasWidth/2.0,
+        newY = canvasHeight/2.0;
+
+    if(canvasWidth/boxWidth < canvasHeight/boxHeight) newY -= midX * scale;
+    else newX -= midY * scale;
+
     d3.select('g').transition()
         .duration(duration)
-        .attr("transform", "translate(" + midY + "," + (midX/2.0) + ")scale(" + scale + ")");
+        .attr("transform", "translate(" + newX + "," + newY + ")scale(" + scale + ")");
 
-    return {initialZoom: scale, initialY: midY, initialX: midX/2.0}
+    return {initialZoom: scale,
+        initialY: newX,
+        initialX: newY}
 }
 
 
