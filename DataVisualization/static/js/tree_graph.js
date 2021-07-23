@@ -89,6 +89,336 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
 }
 
 
+
+/**
+ * Highlights nodes by category of Toxicity
+ * */
+function highlightToxicityOR(node, enabledHighlight){
+    //Toxicity 0
+    if (enabledHighlight.indexOf("highlight-toxicity-0") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level === 0) d.highlighted = 1;
+            console.log(d);
+            return (d.toxicity_level === 0);
+        }).style("opacity", 1);
+    }
+
+    //Toxicity 1
+    if (enabledHighlight.indexOf("highlight-toxicity-1") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level === 1) d.highlighted = 1;
+            console.log(d);
+            return (d.toxicity_level === 1);
+        }).style("opacity", 1);
+    }
+
+    //Toxicity 2
+    if (enabledHighlight.indexOf("highlight-toxicity-2") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level === 2) d.highlighted = 1;
+            console.log(d);
+            return (d.toxicity_level === 2);
+        }).style("opacity", 1);
+    }
+
+    //Toxicity 3
+    if (enabledHighlight.indexOf("highlight-toxicity-3") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level === 3) d.highlighted = 1;
+            console.log(d);
+            return (d.toxicity_level === 3);
+        }).style("opacity", 1);
+    }
+
+}
+
+/**
+ * Highlights nodes and edges by category of Toxicity belonging to the intersection of selected values
+ *
+ * Unhighlights nodes that do not have the selected property
+ * */
+function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
+    //Toxicity not 0
+    if (enabledHighlight.indexOf("highlight-toxicity-0") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level !== 0) d.highlighted = 0;
+            return (d.toxicity_level !== 0);
+        }).style("opacity", opacityValue);
+
+    }
+
+    //Toxicity not 1
+    if (enabledHighlight.indexOf("highlight-toxicity-1") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level !== 1) d.highlighted = 0;
+            return (d.toxicity_level !== 1);
+        }).style("opacity", opacityValue);
+    }
+
+    //Toxicity not 2
+    if (enabledHighlight.indexOf("highlight-toxicity-2") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level !== 2) d.highlighted = 0;
+            return (d.toxicity_level !== 2);
+        }).style("opacity", opacityValue);
+    }
+
+    //Toxicity not 3
+    if (enabledHighlight.indexOf("highlight-toxicity-3") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level !== 3) d.highlighted = 0;
+            return (d.toxicity_level !== 3);
+        }).style("opacity", opacityValue);
+    }
+
+}
+
+function highlightStanceOR(node, enabledHighlight){
+    //Neutral stance CB is checked
+    if (enabledHighlight.indexOf("highlight-neutral") > -1) {
+        node.filter(function (d) {
+            if (!d.positive_stance && !d.negative_stance) d.highlighted = 1;
+            return (!d.positive_stance && !d.negative_stance);
+        }).style("opacity", 1);
+    }
+
+    //Positive stance CB is checked
+    if (enabledHighlight.indexOf("highlight-positive") > -1) {
+        node.filter(function (d) {
+            if (d.positive_stance) d.highlighted = 1;
+            return (d.positive_stance);
+        }).style("opacity", 1);
+    }
+
+    //Negative stance CB is checked
+    if (enabledHighlight.indexOf("highlight-negative") > -1) {
+        node.filter(function (d) {
+            if (d.negative_stance) d.highlighted = 1;
+            return (d.negative_stance);
+        }).style("opacity", 1);
+    }
+
+}
+
+function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2){
+    //Neutral stance CB is checked
+    if (enabledHighlight.indexOf("highlight-neutral") > -1) {
+        node.filter(function (d) {
+            if (d.positive_stance || d.negative_stance) d.highlighted = 0;
+            return (d.positive_stance || d.negative_stance);
+        }).style("opacity", opacityValue);
+    }
+
+    //Positive stance CB is checked
+    if (enabledHighlight.indexOf("highlight-positive") > -1) {
+        node.filter(function (d) {
+            if (!d.positive_stance) d.highlighted = 0;
+            return (!d.positive_stance);
+        }).style("opacity", opacityValue);
+    }
+
+    //Negative stance CB is checked
+    if (enabledHighlight.indexOf("highlight-negative") > -1) {
+        node.filter(function (d) {
+            if (!d.negative_stance) d.highlighted = 0;
+            return (!d.negative_stance);
+        }).style("opacity", opacityValue);
+    }
+
+}
+
+function highlightTargetOR(node, enabledHighlight){
+    //Target group CB is checked
+    if (enabledHighlight.indexOf("highlight-group") > -1) {
+        node.filter(function (d) {
+            if (d.target_group) d.highlighted = 1;
+            return (d.target_group);
+        }).style("opacity", 1);
+    }
+
+    //Target person CB is checked
+    if (enabledHighlight.indexOf("highlight-person") > -1) {
+        node.filter(function (d) {
+            if (d.target_person) d.highlighted = 1;
+            return (d.target_person);
+        }).style("opacity", 1);
+    }
+
+    //Stereotype CB is checked
+    if (enabledHighlight.indexOf("highlight-stereotype") > -1) {
+        node.filter(function (d) {
+            if (d.stereotype) d.highlighted = 1;
+            return (d.stereotype);
+        }).style("opacity", 1);
+    }
+}
+
+function highlightTargetAND(node, enabledHighlight, opacityValue = 0.2){
+    //Target group CB is checked
+    if (enabledHighlight.indexOf("highlight-group") > -1) {
+        node.filter(function (d) {
+            if (!d.target_group) d.highlighted = 0;
+            return (!d.target_group);
+        }).style("opacity", opacityValue);
+
+    }
+
+    //Target person CB is checked
+    if (enabledHighlight.indexOf("highlight-person") > -1) {
+        node.filter(function (d) {
+            if (!d.target_person) d.highlighted = 0;
+            return (!d.target_person);
+        }).style("opacity", opacityValue);
+    }
+
+    //Stereotype CB is checked
+    if (enabledHighlight.indexOf("highlight-stereotype") > -1) {
+        node.filter(function (d) {
+            if (!d.stereotype) d.highlighted = 0;
+            return (!d.stereotype);
+        }).style("opacity", opacityValue);
+    }
+}
+
+function highlightPositiveOR(node, enabledHighlight){
+    //Argumentation CB is checked
+    if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
+        node.filter(function (d) {
+            if (d.argumentation) d.highlighted = 1;
+            return (d.argumentation);
+        }).style("opacity", 1);
+    }
+
+    //Constructiveness CB is checked
+    if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
+        node.filter(function (d) {
+            if (d.constructiveness) d.highlighted = 1;
+            return (d.constructiveness);
+        }).style("opacity", 1);
+    }
+
+}
+
+function highlightPositiveAND(node, enabledHighlight, opacityValue = 0.2){
+    //Argumentation CB is checked
+    if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
+        node.filter(function (d) {
+            if (!d.argumentation); d.highlighted = 0;
+            return (!d.argumentation);
+        }).style("opacity", opacityValue);
+    }
+
+    //Constructiveness CB is checked
+    if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
+        node.filter(function (d) {
+            if (!d.constructiveness); d.highlighted = 0;
+            return (!d.constructiveness);
+        }).style("opacity", opacityValue);
+    }
+
+}
+
+function highlightNegativeOR(node, enabledHighlight){
+    //Sarcasm CB is checked
+    if (enabledHighlight.indexOf("highlight-sarcasm") > -1) {
+        node.filter(function (d) {
+            if (d.sarcasm) d.highlighted = 1;
+            return (d.sarcasm);
+        }).style("opacity", 1);
+    }
+
+    //Mockery CB is checked
+    if (enabledHighlight.indexOf("highlight-mockery") > -1) {
+        node.filter(function (d) {
+            if (d.mockery) d.highlighted = 1;
+            return (d.mockery);
+        }).style("opacity", 1);
+    }
+
+    //Intolerance CB is checked
+    if (enabledHighlight.indexOf("highlight-intolerance") > -1) {
+        node.filter(function (d) {
+            if (d.intolerance) d.highlighted = 1;
+            return (d.intolerance);
+        }).style("opacity", 1);
+    }
+
+    //Improper language CB is checked
+    if (enabledHighlight.indexOf("highlight-improper-language") > -1) {
+        node.filter(function (d) {
+            if (d.improper_language) d.highlighted = 1;
+            return (d.improper_language);
+        }).style("opacity", 1);
+    }
+
+    //Insult language CB is checked
+    if (enabledHighlight.indexOf("highlight-insult") > -1) {
+        node.filter(function (d) {
+            if (d.insult) d.highlighted = 1;
+            return (d.insult);
+        }).style("opacity", 1);
+    }
+
+    //Aggressiveness language CB is checked
+    if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) {
+        node.filter(function (d) {
+            if (d.aggressiveness) d.highlighted = 1;
+            return (d.aggressiveness);
+        }).style("opacity", 1);
+    }
+}
+
+function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2){
+    //Sarcasm CB is checked
+    if (enabledHighlight.indexOf("highlight-sarcasm") > -1) {
+        node.filter(function (d) {
+            if (!d.sarcasm) d.highlighted = 0;
+            return (!d.sarcasm);
+        }).style("opacity", opacityValue);
+    }
+
+    //Mockery CB is checked
+    if (enabledHighlight.indexOf("highlight-mockery") > -1) {
+        node.filter(function (d) {
+            if (!d.mockery) d.highlighted = 0;
+            return (!d.mockery);
+        }).style("opacity", opacityValue);
+    }
+
+    //Intolerance CB is checked
+    if (enabledHighlight.indexOf("highlight-intolerance") > -1) {
+        node.filter(function (d) {
+            if (!d.intolerance) d.highlighted = 0;
+            return (!d.intolerance);
+        }).style("opacity", opacityValue);
+    }
+
+    //Improper language CB is checked
+    if (enabledHighlight.indexOf("highlight-improper-language") > -1) {
+        node.filter(function (d) {
+            if (!d.improper_language) d.highlighted = 0;
+            return (!d.improper_language);
+        }).style("opacity", opacityValue);
+    }
+
+    //Insult language CB is checked
+    if (enabledHighlight.indexOf("highlight-insult") > -1) {
+        node.filter(function (d) {
+            if (!d.insult) d.highlighted = 0;
+            return (!d.insult);
+        }).style("opacity", opacityValue);
+    }
+
+    //Aggressiveness language CB is checked
+    if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) {
+        node.filter(function (d) {
+            if (!d.aggressiveness) d.highlighted = 0;
+            return (!d.aggressiveness);
+        }).style("opacity", opacityValue);
+    }
+}
+
+
 // Get JSON data
 treeJSON = d3.json(dataset, function (error, treeData) {
 
@@ -2087,6 +2417,53 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
+
+    function highlightNodesByPropertyOR(node, link){
+        if (enabledHighlight.length === 0){ //If no tag (toxicity, stance,...) checkbox is selected: highlight all
+            nodes.forEach(function (d) {
+                d.highlighted = 1;
+            });
+            node.style("opacity", 1);
+        }
+        else { //If some tag checkbox is selected behave as expected
+            //First, unhighlight everything and set the parameter highlighted to 0
+            nodes.forEach(function (d) {
+                d.highlighted = 0;
+            });
+            node.style("opacity", opacityValue);
+
+            //Then highlight by property OR
+            highlightToxicityOR(node, enabledHighlight);
+            highlightStanceOR(node, enabledHighlight);
+            highlightTargetOR(node, enabledHighlight);
+            highlightPositiveOR(node, enabledHighlight);
+            highlightNegativeOR(node, enabledHighlight);
+        }
+        //Highlight only the edges whose both endpoints are highlighted
+        link.style("opacity", function (d) {
+            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+        });
+    }
+
+    function highlightNodesByPropertyAND(node, link) {
+        nodes.forEach(function (d) {
+            d.highlighted = 1;
+        });
+        node.style("opacity", 1);
+
+        //Then unhighlight by property AND
+        highlightToxicityAND(node, enabledHighlight);
+        highlightStanceAND(node, enabledHighlight);
+        highlightTargetAND(node, enabledHighlight);
+        highlightPositiveAND(node, enabledHighlight);
+        highlightNegativeAND(node, enabledHighlight);
+
+        //Highlight only the edges whose both endpoints are highlighted
+        link.style("opacity", function (d) {
+            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+        });
+    }
+
     /*END section */
 
     function writeIdLabel(nodeEnter) {
@@ -2539,9 +2916,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
                 if (!document.querySelector("input[value=and-group]").checked && !document.querySelector("input[value=or-group]").checked) {
                     document.querySelector("input[value=and-group]").checked = true;
-                    highlightByPropertyAND(node, link);
+                    highlightNodesByPropertyAND(node, link);
                 } else {
-                    checkboxAND.checked ? highlightByPropertyAND(node, link) : highlightByPropertyOR(node, link);
+                    checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
                     console.log(enabledHighlight);
                 }
 
@@ -2564,20 +2941,20 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         checkboxAND.addEventListener('change', function () {
             if (this.checked) {
                 checkboxOR.checked = false;
-                highlightByPropertyAND(node, link);
+                highlightNodesByPropertyAND(node, link);
             } else {
                 checkboxOR.checked = true;
-                highlightByPropertyOR(node, link);
+                highlightNodesByPropertyOR(node, link);
             }
         });
         // if OR is checked, uncheck AND
         checkboxOR.addEventListener('change', function () {
             if (this.checked) {
                 checkboxAND.checked = false;
-                highlightByPropertyOR(node, link);
+                highlightNodesByPropertyOR(node, link);
             } else {
                 checkboxAND.checked = true;
-                highlightByPropertyAND(node, link);
+                highlightNodesByPropertyAND(node, link);
             }
         });
 
@@ -2590,7 +2967,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
                 console.log(enabledHighlight);
-                checkboxOR.checked ? highlightByPropertyOR(node, link) : highlightByPropertyAND(node, link);
+                checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
             })
         });
 
@@ -2715,7 +3092,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .duration(duration)
             .attr("d", diagonal);
 
-        if (checkboxHighlightMenu.checked && source.children) checkboxOR.checked ? highlightByPropertyOR(node, link) : highlightByPropertyAND(node, link);
+        if (checkboxHighlightMenu.checked && source.children) checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
 
 
         // Transition exiting nodes to the parent's new position.
