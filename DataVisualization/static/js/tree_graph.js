@@ -76,6 +76,7 @@ function computeDimensions(nodes){
  * Center graph and zoom to fit the whole graph visualization in our canvas
  * */
 function zoomToFitGraph(minX, minY, maxX, maxY,
+                        root,
                         canvasHeight = 900, canvasWidth = 2200,
                         duration = 750) {
     /* Note our coordinate system:
@@ -100,12 +101,18 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
     var newX = canvasWidth/2.0,
         newY = canvasHeight/2.0;
 
-    if(canvasWidth/boxWidth < canvasHeight/boxHeight) newY -= midX * scale;
+    if(canvasWidth/boxWidth < canvasHeight/boxHeight) {
+        newY -= midX * scale;
+        newX -= midY * scale;
+    }
     else newX -= midY * scale;
+
+    //For nodes wider than tall, we need to displace them to the middle of the graph
+    if(newY < boxHeight*scale && boxHeight*scale < canvasHeight) newY =  canvasHeight / 2.0;
 
     d3.select('g').transition()
         .duration(duration)
-        .attr("transform", "translate(" + newX + "," + newY + ")scale(" + scale + ")");
+        .attr("transform", "translate(" + (newX + root.radius*scale) + "," + newY + ")scale(" + scale + ")");
 
     return {initialZoom: scale,
         initialY: newX,
@@ -177,19 +184,27 @@ function highlightToxicityOR(node, enabledHighlight){
 function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
     //Toxicity not 0
     if (enabledHighlight.indexOf("highlight-toxicity-0") > -1) {
-        node.filter(function (d) {
+        var unhighlightNodes = node.filter(function (d) {
             if (d.toxicity_level !== 0) d.highlighted = 0;
             return (d.toxicity_level !== 0);
-        })
+        });
+        unhighlightNodes.style("opacity", opacityValue);
+        unhighlightNodes.select("g.node.backgroundCircle").style("opacity", 1);
+        /*for(const n of unhighlightNodes){
+            console.log("something", n.firstChild);
+        }*/
+        //unhighlightNodes.select("image.backgroundCircle").style("opacity", 1);
+
+        //unhighlightNodes.selectAll("#backgroundCircle").style("opacity", 1);
             //.select("image:not(.backgroundCircle)")
             //.select(".nodeCircle, .featInsult, .nodeText")
            /* .style("position", "relative")
             .style("z-index", 1)*/
-            .style("opacity", opacityValue)
+
             /*.select('[class^="feat-"]')
             .style("opacity", opacityValue)
             .select('[class^="target-"]')
-            .style("opacity", opacityValue)*/;
+            .style("opacity", opacityValue)*/
     }
 
     //Toxicity not 1
@@ -2776,6 +2791,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         // Compute the new tree layout.
         nodes = tree.nodes(root).reverse();
+        //nodes = tree.nodes(root);
         var links = tree.links(nodes);
 
         // Set widths between levels based on edgeLength.
@@ -2787,7 +2803,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         });
 
         // Update the nodes…
-        node = svgGroup.selectAll("g.node")
+        var node = svgGroup.selectAll("g.node")
             .data(nodes, function (d) {
                 return d.id || (d.id = ++i);
             });
@@ -2819,7 +2835,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         nodeEnter.append("image")
             .attr('class', 'backgroundCircle')
-            .attr('id', "backgroundCircle");
+            .attr('id', "backgroundCircle")
+            .style("position", "relative")
+            .style("z-index", -1)
+            .style("opacity", 1);
 
         nodeEnter.append("circle")
             .attr('class', 'nodeCircle')
@@ -3187,7 +3206,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     centerNode(root);
 
     var box = computeDimensions(nodes);
-    var initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY);
+    var initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root);
     initialZoom = initialSight.initialZoom;
     initialX = initialSight.initialX;
     initialY = initialSight.initialY;
