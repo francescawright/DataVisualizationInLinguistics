@@ -26,6 +26,29 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
 /**
+ * Compute the radius of the node based on the number of children it has
+ * */
+function computeNodeRadius(d, edgeLength = 300) {
+    /*
+        If node has children,
+        more than 2: new radius = 16 + 4 * (#children - 2)
+        2 children: new radius = 16
+        1 child: new radius = 13
+        0 children: new radius = 10
+    * */
+    d.radius = 10;
+    if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 10
+
+    var children =  d.children ?? d._children; //Assign children collapsed or not
+
+    children.length > 2 ? d.radius = 16 + 4 * (children.length - 2) // more than 2 children
+        : children.length  === 2 ? d.radius = 16 //2 children
+        : d.radius = 13; //One child
+    if(d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
+    return d.radius;
+}
+
+/**
  * Computes the borders of a box containing our nodes
  * */
 function computeDimensions(nodes){
@@ -558,7 +581,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
     var initialZoom, initialX, initialY; //Initial zoom and central coordinates of the first visualization of the graph
 
-    var separationHeight = 50; //Sets the separation between two nodes to 15 pixels
+    var separationHeight = 10; //Sets the separation between two nodes to 15 pixels
     var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
     var tooltipText;
 
@@ -2743,24 +2766,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         tree = tree.nodeSize([separationHeight, 0]) //heigth and width of the rectangles that define the node space
             .separation(function (a, b) {
-                var aChildren =  a.children ?? a._children; //Assign children of A collapsed or not
-                var bChildren =  b.children ?? b._children; //Assign children of B collapsed or not
+                //Compute the radius of the node for the first visualization of the graph
+                if (a.radius === undefined) a.radius = computeNodeRadius(a);
+                if(b.radius === undefined) b.radius = computeNodeRadius(b);
 
-                if (aChildren && bChildren) { //Both nodes have children
-                    return Math.ceil((aChildren.length * radiusFactor / separationHeight)) +
-                        Math.ceil((bChildren.length * radiusFactor / separationHeight));
-                }
-                if (aChildren) { // Only node A has children
-                    if (aChildren.length === 1) return 1;
-                    if (aChildren.length * radiusFactor < separationHeight) return 2;
-                    return Math.ceil(aChildren.length * radiusFactor / separationHeight) + 1;
-                }
-                if (bChildren) { //Only node B has children
-                    if (bChildren.length === 1) return 1;
-                    if (bChildren.length * radiusFactor < separationHeight) return 2;
-                    return Math.ceil(bChildren.length * radiusFactor / separationHeight) + 1;
-                }
-                return 1;
+                return Math.ceil( (a.radius + b.radius) / separationHeight ) + 1;
             });
 
         // Compute the new tree layout.
@@ -3043,23 +3053,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         node.select("circle.nodeCircle")
             //.attr("r", 4.5)
             .attr("r", function (d) {
-                /*
-                    If node has children,
-                    more than 2: new radius = 8 * #children
-                    2: new radius = 2 * 8.7
-                    1: new radius = 7.7
-
-                    If no children, new radius = 8.7
-                * */
-                d.radius = 8.7;
-                if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 8.7
-
-                var children =  d.children ?? d._children; //Assign children collapsed or not
-                children.length > 2 ? d.radius = radiusFactor * 4 * children.length
-                    : children.length  === 2 ? d.radius = 8.7 * radiusFactor
-                    : d.radius = 7.7 * radiusFactor;
-                return d.radius;
-
+                return computeNodeRadius(d);
             })
             .style("fill", function (d) {
                 if (d._children && d._children.length === 1) return colourCollapsed1Son; //If it is collapsed and just has one children
