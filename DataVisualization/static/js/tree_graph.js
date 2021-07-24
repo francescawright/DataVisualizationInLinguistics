@@ -88,7 +88,20 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
         initialX: newY}
 }
 
+var rootPath = pr;
+var colourUnhighlightedToxicity0 = "#f0f0f0", colourUnhighlightedToxicity1 = "#d6d6d6",
+    colourUnhighlightedToxicity2 = "#ababab", colourUnhighlightedToxicity3 = "#6b6b6b",
+    colourUnhighlightedCollapsed1Son = "cfdbeb";
 
+function colourUnhighlightedNode(d) {
+    if (d._children?.length === 1) return colourUnhighlightedCollapsed1Son;
+    switch (d.toxicity_level) {
+        case 0: return colourUnhighlightedToxicity0;
+        case 1: return colourUnhighlightedToxicity1;
+        case 2: return colourUnhighlightedToxicity2;
+        case 3: return colourUnhighlightedToxicity3;
+    }
+}
 
 /**
  * Highlights nodes by category of Toxicity
@@ -143,8 +156,16 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
         node.filter(function (d) {
             if (d.toxicity_level !== 0) d.highlighted = 0;
             return (d.toxicity_level !== 0);
-        }).style("opacity", opacityValue);
-
+        })
+            //.select("image:not(.backgroundCircle)")
+            //.select(".nodeCircle, .featInsult, .nodeText")
+           /* .style("position", "relative")
+            .style("z-index", 1)*/
+            .style("opacity", opacityValue)
+            /*.select('[class^="feat-"]')
+            .style("opacity", opacityValue)
+            .select('[class^="target-"]')
+            .style("opacity", opacityValue)*/;
     }
 
     //Toxicity not 1
@@ -152,7 +173,11 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
         node.filter(function (d) {
             if (d.toxicity_level !== 1) d.highlighted = 0;
             return (d.toxicity_level !== 1);
-        }).style("opacity", opacityValue);
+        })
+            // .select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
     }
 
     //Toxicity not 2
@@ -160,7 +185,11 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
         node.filter(function (d) {
             if (d.toxicity_level !== 2) d.highlighted = 0;
             return (d.toxicity_level !== 2);
-        }).style("opacity", opacityValue);
+        })
+            // .select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
     }
 
     //Toxicity not 3
@@ -168,7 +197,11 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
         node.filter(function (d) {
             if (d.toxicity_level !== 3) d.highlighted = 0;
             return (d.toxicity_level !== 3);
-        }).style("opacity", opacityValue);
+        })
+            // .select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
     }
 
 }
@@ -206,7 +239,10 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2){
         node.filter(function (d) {
             if (d.positive_stance || d.negative_stance) d.highlighted = 0;
             return (d.positive_stance || d.negative_stance);
-        }).style("opacity", opacityValue);
+        })//.select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
     }
 
     //Positive stance CB is checked
@@ -214,7 +250,10 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2){
         node.filter(function (d) {
             if (!d.positive_stance) d.highlighted = 0;
             return (!d.positive_stance);
-        }).style("opacity", opacityValue);
+        })//.select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
     }
 
     //Negative stance CB is checked
@@ -222,7 +261,10 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2){
         node.filter(function (d) {
             if (!d.negative_stance) d.highlighted = 0;
             return (!d.negative_stance);
-        }).style("opacity", opacityValue);
+        })//.select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
     }
 
 }
@@ -442,7 +484,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
         colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue", colourCollapsed1Son = "lightsteelblue";
 
-    var rootPath = pr;
+
     var objRoot = {
         class: "rootNode",
         id: "rootNode",
@@ -2764,6 +2806,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 return tooltip.style("visibility", "hidden");
             });
 
+        nodeEnter.append("image")
+            .attr('class', 'backgroundCircle')
+            .attr('id', "backgroundCircle");
+
         nodeEnter.append("circle")
             .attr('class', 'nodeCircle')
             .attr("r", "10.5")
@@ -3027,6 +3073,23 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     }
                 }
             });
+
+        node.select("image.backgroundCircle")
+            .attr("x", function (d) {
+                return - d.radius;
+            })
+            .attr("y", function (d) {
+                return - d.radius;
+            })
+            .attr("height", function (d) {
+                return d.radius * 2;
+            })
+            .attr("width", function (d) {
+                return d.radius * 2;
+            })
+            .attr("href", pr + "circle-background.png")
+            .style("position", "relative")
+            .style("z-index", -1);
 
         visualiseRootIcon(node); //Draw an icon for the root node
 
