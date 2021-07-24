@@ -31,7 +31,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 function computeNodeRadius(d, edgeLength = 300) {
     /*
         If node has children,
-        more than 2: new radius = 16 + 4 * (#children - 2)
+        more than 2: new radius = 16 + 3 * (#children - 2)
         2 children: new radius = 16
         1 child: new radius = 13
         0 children: new radius = 10
@@ -41,9 +41,10 @@ function computeNodeRadius(d, edgeLength = 300) {
 
     var children =  d.children ?? d._children; //Assign children collapsed or not
 
-    children.length > 2 ? d.radius = 16 + 4 * (children.length - 2) // more than 2 children
+    children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
         : children.length  === 2 ? d.radius = 16 //2 children
         : d.radius = 13; //One child
+    //Avoid the root node from being so large that overlaps/hides its children
     if(d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
     return d.radius;
 }
@@ -2770,7 +2771,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 if (a.radius === undefined) a.radius = computeNodeRadius(a);
                 if(b.radius === undefined) b.radius = computeNodeRadius(b);
 
-                return Math.ceil( (a.radius + b.radius) / separationHeight ) + 1;
+                return Math.ceil( (a.radius + b.radius) / separationHeight ) + 0.5;
             });
 
         // Compute the new tree layout.
