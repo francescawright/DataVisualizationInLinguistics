@@ -28,15 +28,15 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 /**
  * Compute the radius of the node based on the number of children it has
  * */
-function computeNodeRadius(d, edgeLength = 300) {
+function computeNodeRadius(d, edgeLength = 300, minRadius = 10) {
     /*
         If node has children,
         more than 2: new radius = 16 + 3 * (#children - 2)
         2 children: new radius = 16
         1 child: new radius = 13
-        0 children: new radius = 10
+        0 children: new radius = minRadius
     * */
-    d.radius = 10;
+    d.radius = minRadius;
     if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 10
 
     var children =  d.children ?? d._children; //Assign children collapsed or not
@@ -413,7 +413,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     var groupDrawn = false, personDrawn = false;
     var opacityValue = 0.2;
-    var circleRadius = 8.7;
+    var circleRadius = 8.7, minRadius = 10;
 
     /* Colours
    * */
@@ -874,6 +874,22 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
     /* SECTION TO DRAW TARGETS */
+
+    /**
+     * Compute the position of an associated image to be centered on the node
+     * that is a radiusPercentage smaller than it
+     * */
+    function positionImage(nodeRadius, radiusPercentage = imgRatio) {
+        return nodeRadius * (radiusPercentage / 100.0 - 1);
+    }
+
+    /**
+     * Compute the size of an associated image to be a radiusPercentage smaller than the node
+     * */
+    function sizeImage(nodeRadius, radiusPercentage = imgRatio){
+        return 2 * nodeRadius * (1 - radiusPercentage / 100.0);
+    }
+
     /**
      * Remove all the target icon or images of the given node
      * */
@@ -1013,10 +1029,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
-                    .attr("x", targets[i].x)
-                    .attr("y", targets[i].y)
-                    .attr("height", targets[i].height)
-                    .attr("width", targets[i].width)
+                    .attr("x", - (minRadius + sizeImage(minRadius, 0) * (i + 1)) )
+                    .attr("y", - minRadius)
+                    .attr("height", function (d) {
+                        return sizeImage(minRadius, 0);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(minRadius, 0);
+                    })
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
