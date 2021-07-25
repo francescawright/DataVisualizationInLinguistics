@@ -432,6 +432,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         id: "rootNode",
         fileName: "root.png"  };
 
+    var imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
+
     /* Targets: size, position, local path, objects to draw the target as ring
     * */
     var drawingAllInOne = false; //if we are drawing all together or separated
@@ -621,6 +623,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             selected: enabledTargets.indexOf("target-group"),
             x: -30,
             y: -10,
+            xInside: -0.9,
+            yInside: -0.8,
             height: targetIconHeight,
             width: targetIconWidth,
             fileName: "Group.png"
@@ -631,6 +635,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             selected: enabledTargets.indexOf("target-person"),
             x: -50,
             y: -10,
+            xInside: -0.5,
+            yInside: 0,
             height: targetIconHeight,
             width: targetIconWidth,
             fileName: "Person.png"
@@ -641,6 +647,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             selected: enabledTargets.indexOf("target-stereotype"),
             x: -70,
             y: -10,
+            xInside: -0.1,
+            yInside: -0.8,
             height: targetIconHeight,
             width: targetIconWidth,
             fileName: "Stereotype.png"
@@ -950,10 +958,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
-                    .attr("x", targets[i].x)
-                    .attr("y", targets[i].y)
-                    .attr("height", targets[i].height)
-                    .attr("width", targets[i].width)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius);
+                    })
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
@@ -995,7 +1011,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     drawTargets(nodeEnter, "newOption2/")
                     break;
                 //draw as ring outside of the node
-                case "rings":
+                case "ring-on-node":
                     drawTargetRings(nodeEnter, "rings/")
                     break;
                 //draw as an icon if 1, as rings if more options checked
@@ -1053,6 +1069,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      *
      * The icon used is from the local path passed by parameter
      * The css values are from the target objects that are icons
+     *
+     * Draw in a triangle Group --- Stereotype
+     *                          \ /
+     *                         Person
      * */
     function drawTargetsInside(nodeEnter, localPath) {
         removeThisTargets(nodeEnter);
@@ -1065,10 +1085,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
-                    .attr("x", -8.0)
-                    .attr("y", targets[i].y)
-                    .attr("height", targets[i].height)
-                    .attr("width", targets[i].width)
+                    .attr("x", function (d) {
+                        return d.radius * targets[i].xInside;
+                    })
+                    .attr("y", function (d) {
+                        return d.radius * targets[i].yInside;
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius)/2.0;
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius)/2.0;
+                    })
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
