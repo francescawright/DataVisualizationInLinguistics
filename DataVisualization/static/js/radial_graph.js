@@ -50,6 +50,66 @@ function computeNodeRadius(d, edgeLength = 300, minRadius = 10) {
 }
 
 /**
+ * Computes the borders of a box containing our nodes
+ * */
+function computeDimensions(nodes){
+    /* Note our coordinate system:
+    * in radian coordinates
+    * q4    |       q1
+    * ------|---------
+    * q3    |       q2
+    * */
+    var maxYq1 = -Infinity, maxYq2 = -Infinity, maxYq3 = -Infinity, maxYq4 = -Infinity;
+    var xQ1, xQ2, xQ3, xQ4;
+
+    for(const n of nodes){
+        //Quadrant 1
+        if ( 0 <= n.x && n.x < 90 && n.y > maxYq1) {
+            maxYq1 = n.y;
+            xQ1 = n.x;
+        }
+
+        //Quadrant 2
+        if ( 90 <= n.x && n.x < 180 && n.y > maxYq2) {
+            maxYq2 = n.y;
+            xQ2 = n.x;
+        }
+        if ( -270 <= n.x && n.x < -180 && n.y > maxYq2) {
+            maxYq2 = n.y;
+            xQ2 = n.x;
+        }
+
+        //Quadrant 3
+        if ( 180 <= n.x && n.x < 270 && n.y > maxYq3) {
+            maxYq3 = n.y;
+            xQ3 = n.x;
+        }
+        if ( -180 <= n.x && n.x < -90 && n.y > maxYq3) {
+            maxYq3 = n.y;
+            xQ3 = n.x;
+        }
+
+        //Quadrant 4
+        if ( -90 <= n.x && n.x < 0 && n.y > maxYq4) {
+            maxYq4 = n.y;
+            xQ4 = n.x;
+        }
+    }
+    return {maxYq1: maxYq1, maxYq2: maxYq2, maxYq3: maxYq3, maxYq4: maxYq4,
+            xQ1: xQ1, xQ2: xQ2, xQ3: xQ3, xQ4: xQ4};
+}
+
+/**
+ * Center graph and zoom to fit the whole graph visualization in our canvas
+ * */
+function zoomToFit() {
+    //By default, the (0,0) (our root node) is displayed on the top left corner
+    //We need to center the graph in the canvas
+
+}
+
+
+/**
  * Highlights nodes by category of Toxicity
  * */
 function highlightToxicityOR(node, enabledHighlight){
@@ -2306,12 +2366,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 return "translate(" + radialPoint(source.x0, source.y0) + ")";
             })
             .on('click', function (d) {
-                console.log("Node positions when clicked ON CLICK: ", source.x, source.y);
-                console.log("maybe: ", radialPoint(d, source.x0, source.y0));
                 click(d);
             })
             .on('mouseover', function (d) {
                 console.log("coordinates ", d.x, d.y);
+                //console.log("Before transforming coordenates: ", source.x0, source.y0);
+                var aux = (d.x < 0) ? 360 + d.x : d.x;
+                console.log("something radial?", radialPoint(aux, d.y));
                 if (d !== root) {
                     writeTooltipText(d);
                     tooltip.style("visibility", "visible")
@@ -2633,7 +2694,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     // Layout the tree initially and center on the root node.
     update(root);
-    centerNode(root);
+    //centerNode(root);
+    var box = computeDimensions(nodes);
+    console.log("box containing Y ", box);
 
     /**
      * Wrap call to compute statistics and to write them in a hover text
