@@ -1335,15 +1335,78 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', allObjectsInNode[i].class)
                     .attr('id', allObjectsInNode[i].id)
-                    .attr("x", localPosition - 17.53)
-                    .attr("y", -27.45)
-                    .attr("height", 55)
-                    .attr("width", 55)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius, 0);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius, 0);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius, 0);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius, 0);
+                    })
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
+
+                        listOpacity = [d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
+                            d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
+                            d.target_group, d.target_person, d.stereotype];
+
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+    /**
+     * Hide all previous features and targets
+     * Draw everything inside of the node
+     * */
+    function drawFeatureAsRectangularGlyph(nodeEnter, localPath, localPosition) {
+        removeThisFeatures(nodeEnter);
+        removeThisTargets(nodeEnter);
+        removeToxicities(nodeEnter);
+
+        var allObjectsInNode = [objToxicity0, objToxicity1, objToxicity2, objToxicity3,
+            objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness,
+            objTargetGroup, objTargetPerson, objTargetStereotype];
+        var listOpacity;
+
+        //Better done than perfect
+        var cbShowTargets = [1, 1, 1, 1,
+            enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+            enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
+            enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness"),
+            enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
+
+
+        for (var i = 0; i < allObjectsInNode.length; i++) {
+            if (cbShowTargets[i] > -1) { //If the checkbox is checked, display it if it has the property
+                nodeEnter.append("image")
+                    .attr('class', allObjectsInNode[i].class)
+                    .attr('id', allObjectsInNode[i].id)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius + d.radius / 5.0, 0);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius + d.radius / 5.0, 0);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius + d.radius / 5.0, 0);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius + d.radius / 5.0, 0);
+                    })
+                    .style("stroke", "black")
+                    .style("stroke-width", "0.5px")
+                    .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.parent === null) return 0;
 
                         listOpacity = [d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
                             d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
@@ -1386,10 +1449,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', allObjectsInNode[i].class)
                     .attr('id', allObjectsInNode[i].id)
-                    .attr("x", localPosition - 17.53)
-                    .attr("y", -27.45)
-                    .attr("height", 55)
-                    .attr("width", 55)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius, 0);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius, 0);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius, 0);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius, 0);
+                    })
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
@@ -1449,7 +1520,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 drawingAllInOne = true;
                 //Deletes the targets and draws them again but INSIDE of the node
                 document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
-                drawFeatureAsGlyph(nodeEnter, "Rectangular/", localPosition);
+                drawFeatureAsRectangularGlyph(nodeEnter, "Rectangular/", localPosition);
                 break;
 
             default:
