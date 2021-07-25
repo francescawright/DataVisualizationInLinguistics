@@ -1256,10 +1256,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         nodeEnter.append("image")
             .attr('class', objFeatGray.class)
             .attr('id', objFeatGray.id)
-            .attr("x", objFeatGray.x) //NOTE: it is always displayed at the left side!!
-            .attr("y", objFeatGray.y)
-            .attr("height", objFeatGray.height)
-            .attr("width", objFeatGray.width)
+            .attr("x", function (d) {
+                return positionImage(d.radius);
+            })
+            .attr("y", function (d) {
+                return positionImage(d.radius);
+            })
+            .attr("height", function (d) {
+                return sizeImage(d.radius);
+            })
+            .attr("width", function (d) {
+                return sizeImage(d.radius);
+            })
             .attr("href", pathFeatures + localPath + objFeatGray.fileName)
             .attr("opacity", function (d) {
                 if (d.parent === undefined) return 0;
@@ -1278,10 +1286,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
-                    .attr("x", features[i].x)
-                    .attr("y", features[i].y)
-                    .attr("height", 55)
-                    .attr("width", 55)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius);
+                    })
                     .attr("href", pathFeatures + localPath + features[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
@@ -1410,7 +1426,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 selectTargetVisualization(nodeEnter); //draw the targets if necessary
                 drawFeatureDots(nodeEnter); //Always drawn on the right side
                 break;
-            case "trivial-cheese":
+            case "trivial-cheese-on-node":
                 selectTargetVisualization(nodeEnter); //draw the targets if necessary
                 drawFeatureAsCheese(nodeEnter, "trivialCheese/"); //Always drawn on the right side
                 break;
