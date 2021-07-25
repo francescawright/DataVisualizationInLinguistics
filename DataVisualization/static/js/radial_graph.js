@@ -25,6 +25,29 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
+/**
+ * Compute the radius of the node based on the number of children it has
+ * */
+function computeNodeRadius(d, edgeLength = 300) {
+    /*
+        If node has children,
+        more than 2: new radius = 16 + 3 * (#children - 2)
+        2 children: new radius = 16
+        1 child: new radius = 13
+        0 children: new radius = 10
+    * */
+    d.radius = 10;
+    if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 10
+
+    var children =  d.children ?? d._children; //Assign children collapsed or not
+
+    children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
+        : children.length  === 2 ? d.radius = 16 //2 children
+        : d.radius = 13; //One child
+    //Avoid the root node from being so large that overlaps/hides its children
+    if(d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
+    return d.radius;
+}
 
 // Get JSON data
 treeJSON = d3.json(dataset, function (error, treeData) {
@@ -52,6 +75,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var colorFeature = ["#a1d99b", "#31a354",
         "#fee5d9", "#fcbba1", "#fc9272",
         "#fb6a4a", "#de2d26", "#a50f15"];
+
+    /* Root icon */
+    var rootPath = pr;
+    var objRoot = {
+        class: "rootNode",
+        id: "rootNode",
+        fileName: "root.png"  };
 
     /* Targets: size, position, local path, objects to draw the target as ring
     * */
@@ -124,7 +154,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var tree = d3.layout.tree()
         .nodeSize(root.children.length, 0) //NOTE the width is overwritten later
         .sort(function (a, b) {
-            console.log(a, b);
             if (a.toxicity_level === b.toxicity_level) {
 
                 var childrenOfA = a.children ? a.children : a._children;
@@ -1194,6 +1223,24 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     /* END section*/
 
+    /**
+     * Draw an icon for the root node
+     * */
+    function visualiseRootIcon(node){
+        //Filter the nodes and append an icon just for the root node
+        node.filter(function (d) {
+            return d.parent === undefined;
+        }).append("image")
+            .attr('class', objRoot.class)
+            .attr('id', objRoot.id)
+            .attr("x", root.x - root.radius)
+            .attr("y", root.y - root.radius)
+            .attr("height", root.radius * 2)
+            .attr("width", root.radius * 2)
+            .attr("href", rootPath + objRoot.fileName)
+            .attr("opacity", 1);
+    }
+
     /*SECTION highlighting */
     function highlightByPropertyOR(node, link) {
         node.style("opacity", 0.2);
@@ -1962,14 +2009,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         // Change the circle fill depending on whether it has children and is collapsed
         node.select("circle.nodeCircle")
             .attr("r", function (d) {
-                if (d._children)
-                    if (d._children.length > 2)
-                        return radiusFactor * d._children.length * 4
-                    else if (d._children.length === 2)
-                        return 8.7 * radiusFactor
-                    else
-                        return 7.7 * radiusFactor;
-                return 8.7;
+                return computeNodeRadius(d);
             })
             .style("fill", function (d) {
                 if (d._children && d._children.length === 1) return colourCollapsed1Son; //If it is collapsed and just has one children
@@ -1983,6 +2023,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     }
                 }
             });
+
+        visualiseRootIcon(node); //Draw an icon for the root node
 
         // Transition nodes to their new position.
         var nodeUpdate = node.transition()
