@@ -125,11 +125,27 @@ def testD3(request):
     # print(request)
     print("POST", request.POST)
     selected_data = Document.objects.first().description
+
+    targets = ["target_group", "target_person", "target_stereotype"]
+    features = ["argumentation", "constructiveness", "sarcasm", "mockery", "intolerance",
+                "improper_language", "insult",
+                "aggressiveness"]
+    cbTargets = {target: 0 for target in targets}
+    cbFeatures = {feature: 0 for feature in features}
+    cbFeatures["feature_group"] = 0
+
     if "from_button" in request.POST.keys():
         selected_data = request.POST['from_button']
-    elif "selected_data" in request.POST.keys():
+    if "selected_data" in request.POST.keys():
         selected_data = request.POST["selected_data"]
-
+    if "cbTargets" in request.POST.keys():
+        for target in request.POST.getlist("cbTargets"):
+            cbTargets[target.replace('-', '_')] = 1
+    if "cbFeatures" in request.POST.keys():
+        for feature in request.POST.getlist("cbFeatures"):
+            cbFeatures[feature] = 1
+    if "cbFeatureMenu" in request.POST.keys():
+        cbFeatures[request.POST["cbFeatureMenu"].replace('-', '_')] = 1
     try:
         doc = Document.objects.filter(description=selected_data).first()
         selected_item = selected_data
@@ -180,10 +196,13 @@ def testD3(request):
         .annotate(positive_stance=Count('positive_stance', filter=Q(positive_stance=1))) \
         .annotate(negative_stance=Count('negative_stance', filter=Q(negative_stance=1)))
 
+    print(cbTargets)
+    print(cbFeatures)
     return render(request, template,
                   {'dataset': 'output.json', 'options': Document.objects.all(), 'layouts': layouts,
                    'selected_layout': selected_layout,
-                   'selected_item': selected_item, "d1": d1, "d2": d2})
+                   'selected_item': selected_item, "d1": d1, "d2": d2,
+                   'cbTargets': cbTargets, 'cbFeatures': cbFeatures})
 
 
 def upload_file(request):
