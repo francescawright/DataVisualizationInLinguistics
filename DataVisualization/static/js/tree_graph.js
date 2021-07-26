@@ -1229,7 +1229,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
-                    .attr("x", targets[i].x)
+                    .attr("x", function (d) {
+                        return targets[i].x - d.radius;
+                    })
                     .attr("y", targets[i].y)
                     .attr("height", targets[i].height)
                     .attr("width", targets[i].width)
@@ -1499,10 +1501,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
                     .attr("r", "10.5")
-                    /*.attr("transform", function (d) {
-                        return "translate(" + (d.radius + 10.5 + i * (10.5*2)) + "," + 0 + ")";
-                    })*/
-                    .attr("transform", "translate(" + (35 + i * (10.5*2)) + "," + 0 + ")")
+                    .attr("transform", function (d) {
+                        return "translate(" + (d.radius + (i + 1) * (10.5*2)) + "," + 0 + ")";
+                    })
                     .attr("fill", colorFeature[i])
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
