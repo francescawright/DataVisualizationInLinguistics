@@ -474,6 +474,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var groupDrawn = false, personDrawn = false;
     var opacityValue = 0.2;
     var circleRadius = 8.7, minRadius = 10;
+    const dotRadius = 10.5;
 
     /* Colours
    * */
@@ -1105,7 +1106,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
-                    .attr("x", - (minRadius + sizeImage(minRadius, 0) * (i + 1)) )
+                    .attr("x", function (d) {
+                        return - (d.radius + sizeImage(minRadius, 0) * (i + 1));
+                    })
                     .attr("y", - minRadius)
                     .attr("height", function (d) {
                         return sizeImage(minRadius, 0);
@@ -1293,8 +1296,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("circle")
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
-                    .attr("r", "4.5")
-                    .attr("transform", "translate(" + (35 + i * 10) + "," + 0 + ")")
+                    .attr("r", dotRadius)
+                    .attr("transform",function (d) {
+                        return  "translate(" + (d.radius + (i + 1) * (dotRadius*2)) + "," + 0 + ")"
+                    })
                     .attr("fill", colorFeature[i])
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
@@ -1466,7 +1471,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .style("stroke-width", "0.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
                     .attr("opacity", function (d) {
-                        if (d.parent === null) return 0;
+                        if (d.parent === undefined) return 0;
 
                         listOpacity = [d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
                             d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
