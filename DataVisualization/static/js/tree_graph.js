@@ -996,6 +996,38 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
     /**
+     * Draws an object if the checkbox is selected and the node presents that property
+     *
+     * @param {d3-node} nodeEnter Node to which we append the image
+     * @param {object} object The object of a property
+     * @param {boolean} show If the checkbox is selected
+     * @param {number} present If the property is present in the node
+     * @param {string} path The path of the image
+     * @param {number} x The x position relative to the node where the image starts being drawn
+     * @param {number} y The y position relative to the node where the image starts being drawn
+     * @param {number} height The height of the image
+     * @param {number} width The width of the image
+     * */
+    function drawObject(nodeEnter, object, show, present,
+                        path,
+                        x, y, height, width){
+        if (show){
+            nodeEnter.append("image")
+                .attr('class', object.class)
+                .attr('id', object.id)
+                .attr("x", x)
+                .attr("y", y)
+                .attr("height", height)
+                .attr("width", width)
+                .attr("href", path + object.fileName)
+                .attr("opacity", function (d) {
+                    if (d.parent === undefined) return 0;
+                    return present;
+                });
+        }
+    }
+
+    /**
      * Draws the 3 targets of a node if the checkbox is checked
      * and if the node has that target (sets the opacity to visible)
      *
@@ -1087,6 +1119,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var listOpacity;
         var targets = [objTargetGrayRing, objTargetGroupRing, objTargetPersonRing, objTargetStereotypeRing];
 
+        console.log("This is your node enter: ", nodeEnter);
+        console.log("This is your node radius: ", nodeEnter.radius);
+        console.log("This is your node datum? : ", nodeEnter.__data__);
+
         for (let i = 0; i < targets.length; i++) {
             if (cbShowTargets[i] > -1) {
                 nodeEnter.append("image")
@@ -1112,6 +1148,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     });
             }
         }
+    }
+
+    function drawTargetRingsCompact(nodeEnter, localPath){
+        removeThisTargets(nodeEnter);
+
+        drawObject(nodeEnter, objTargetGrayRing, true, 0.5, pathTargets + localPath);
     }
 
     /**
