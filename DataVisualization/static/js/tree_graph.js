@@ -1507,6 +1507,64 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
     /**
+     * Draw features as portions inspired in the Trivial Pursuit game
+     * */
+    function drawFeatureAsCheeseInsideCompact(nodeEnter, localPath){
+        removeThisFeatures(nodeEnter);
+        removeToxicities(nodeEnter); //Remove all the pngs for toxicity
+
+        drawObjectWithSizeAndPosition(nodeEnter, objFeatGray, 8, true, pathFeatures + localPath);
+        drawObjectWithSizeAndPosition(nodeEnter, objFeatArgumentation, 0, enabledFeatures.indexOf("argumentation") > -1, pathFeatures + localPath);
+        drawObjectWithSizeAndPosition(nodeEnter, objFeatConstructiveness, 1, enabledFeatures.indexOf("constructiveness") > -1, pathFeatures + localPath);
+
+        drawObjectWithSizeAndPosition(nodeEnter, objFeatSarcasm, 2, enabledFeatures.indexOf("sarcasm") > -1, pathFeatures + localPath);
+        drawObjectWithSizeAndPosition(nodeEnter, objFeatMockery, 3, enabledFeatures.indexOf("mockery") > -1, pathFeatures + localPath);
+        drawObjectWithSizeAndPosition(nodeEnter, objFeatIntolerance, 4, enabledFeatures.indexOf("intolerance") > -1, pathFeatures + localPath);
+
+        drawObjectWithSizeAndPosition(nodeEnter, objFeatImproper, 5, enabledFeatures.indexOf("improper_language") > -1, pathFeatures + localPath);
+        drawObjectWithSizeAndPosition(nodeEnter, objFeatInsult, 6, enabledFeatures.indexOf("insult") > -1, pathFeatures + localPath);
+        drawObjectWithSizeAndPosition(nodeEnter, objFeatAggressiveness, 7, enabledFeatures.indexOf("aggressiveness") > -1, pathFeatures + localPath);
+    }
+
+    /**
+     * Draw an image centered on the node a imgRatio smaller conditionally
+     *
+     * @param {d3-node} nodeEnter Node to which we append the image
+     * @param {object} object The object of a property
+     * @param {number} itemOrder Presence of the object in the array
+     * @param {boolean} show If the image must be shown
+     * @param {string} path The path of the image
+     * */
+    function drawObjectWithSizeAndPosition(nodeEnter, object, itemOrder, show, path){
+
+        if(show){
+            var listOpacity;
+            nodeEnter.append("image")
+                .attr('class', object.class)
+                .attr('id', object.id)
+                .attr("x", function (d) {
+                    return positionImage(d.radius);
+                })
+                .attr("y", function (d) {
+                    return positionImage(d.radius);
+                })
+                .attr("height", function (d) {
+                    return sizeImage(d.radius);
+                })
+                .attr("width", function (d) {
+                    return sizeImage(d.radius);
+                })
+                .attr("href",path + object.fileName)
+                .attr("opacity", function (d) {
+                    if (d.parent === undefined) return 0;
+                    listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness, 0.5];
+                    return listOpacity[itemOrder];
+                });
+        }
+
+    }
+
+    /**
      * Hide all previous features and targets
      * Draw everything inside of the node
      * */
@@ -1638,7 +1696,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 break;
             case "trivial-cheese-on-node":
                 selectTargetVisualization(nodeEnter); //draw the targets if necessary
-                drawFeatureAsCheeseInside(nodeEnter, "trivialCheese/"); //Always drawn on the right side
+                //drawFeatureAsCheeseInside(nodeEnter, "trivialCheese/"); //Always drawn on the right side
+                drawFeatureAsCheeseInsideCompact(nodeEnter, "trivialCheese/"); //Always drawn on the right side
                 break;
             case "trivial-cheese-outside-node":
                 selectTargetVisualization(nodeEnter); //draw the targets if necessary
