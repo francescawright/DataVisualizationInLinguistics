@@ -59,15 +59,62 @@ const colorFeature = ["#a1d99b", "#31a354",
     "#fee5d9", "#fcbba1", "#fc9272",
     "#fb6a4a", "#de2d26", "#a50f15"];
 
-/* Targets: size, position
-   * */
+//Targets: size, position
 const targetIconHeight = 15, targetIconWidth = 15, targetIconGroupX = -30, targetIconPersonX = -50,
     targetIconStereotypeX = -70, targetIconY = -10; //Size and relative position of targets drawn as icons
 
-/* Features: size, position
-* */
+//Features: size, position
 const cheeseX = 15, cheeseY = -10, cheeseHeight = 20, cheeseWidth = 20;
 
+
+const objRoot = {
+    class: "rootNode",
+    id: "rootNode",
+    fileName: "root.png"  };
+
+// Objects to draw the target as ring
+const objTargetGroupRing = {
+        class: "targetGroup",
+        id: "targetGroup",
+        x: -10,
+        y: -10,
+        height: 20,
+        width: 20,
+        fileName: "Group.png"
+    },
+    objTargetPersonRing = {
+        class: "targetPerson",
+        id: "targetPerson",
+        x: -10,
+        y: -10,
+        height: 20,
+        width: 20,
+        fileName: "Person.png"
+    },
+    objTargetStereotypeRing = {
+        class: "targetStereotype",
+        id: "targetStereotype",
+        x: -10,
+        y: -10,
+        height: 20,
+        width: 20,
+        fileName: "Stereotype.png"
+    },
+    objTargetGrayRing = {
+        class: "targetGray",
+        id: "targetGray",
+        x: -10,
+        y: -10,
+        height: 20,
+        width: 20,
+        fileName: "Gray.png"
+    };
+
+// Objects for toxicities for Ecem tests
+var objToxicity0 = {class: "toxicity0", id: "toxicity0", selected: 1, fileName: "Level0.svg"},
+    objToxicity1 = {class: "toxicity1", id: "toxicity1", selected: 1, fileName: "Level1.svg"},
+    objToxicity2 = {class: "toxicity2", id: "toxicity2", selected: 1, fileName: "Level2.svg"},
+    objToxicity3 = {class: "toxicity3", id: "toxicity3", selected: 1, fileName: "Level3.svg"};
 
 
 /**
@@ -545,55 +592,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     let root, nodes;
     var initialZoom, initialX, initialY; //Initial zoom and central coordinates of the first visualization of the graph
-
-    var objRoot = {
-        class: "rootNode",
-        id: "rootNode",
-        fileName: "root.png"  };
-
-    // Objects to draw the target as ring
-    var objTargetGroupRing = {
-            class: "targetGroup",
-            id: "targetGroup",
-            x: -10,
-            y: -10,
-            height: 20,
-            width: 20,
-            fileName: "Group.png"
-        },
-        objTargetPersonRing = {
-            class: "targetPerson",
-            id: "targetPerson",
-            x: -10,
-            y: -10,
-            height: 20,
-            width: 20,
-            fileName: "Person.png"
-        },
-        objTargetStereotypeRing = {
-            class: "targetStereotype",
-            id: "targetStereotype",
-            x: -10,
-            y: -10,
-            height: 20,
-            width: 20,
-            fileName: "Stereotype.png"
-        },
-        objTargetGrayRing = {
-            class: "targetGray",
-            id: "targetGray",
-            x: -10,
-            y: -10,
-            height: 20,
-            width: 20,
-            fileName: "Gray.png"
-        };
-
-    // Objects for toxicities for Ecem tests
-    var objToxicity0 = {class: "toxicity0", id: "toxicity0", selected: 1, fileName: "Level0.svg"},
-        objToxicity1 = {class: "toxicity1", id: "toxicity1", selected: 1, fileName: "Level1.svg"},
-        objToxicity2 = {class: "toxicity2", id: "toxicity2", selected: 1, fileName: "Level2.svg"},
-        objToxicity3 = {class: "toxicity3", id: "toxicity3", selected: 1, fileName: "Level3.svg"};
 
     var drawingAllInOne = false; //if we are drawing all together or separated
 
