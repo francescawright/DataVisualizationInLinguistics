@@ -753,6 +753,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var objFeatArgumentation = {
             class: "featArgumentation",
             id: "featArgumentation",
+            color: "#a1d99b",
             selected: enabledFeatures.indexOf("argumentation"),
             x: cheeseX,
             y: cheeseY,
@@ -763,6 +764,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         objFeatConstructiveness = {
             class: "featConstructiveness",
             id: "featConstructiveness",
+            color: "#31a354",
             selected: enabledFeatures.indexOf("constructiveness"),
             x: cheeseX,
             y: cheeseY,
@@ -773,6 +775,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         objFeatSarcasm = {
             class: "featSarcasm",
             id: "featSarcasm",
+            color: "#fee5d9",
             selected: enabledFeatures.indexOf("sarcasm"),
             x: cheeseX,
             y: cheeseY,
@@ -783,6 +786,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         objFeatMockery = {
             class: "featMockery",
             id: "featMockery",
+            color: "#fcbba1",
             selected: enabledFeatures.indexOf("mockery"),
             x: cheeseX,
             y: cheeseY,
@@ -793,6 +797,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         objFeatIntolerance = {
             class: "featIntolerance",
             id: "featIntolerance",
+            color: "#fc9272",
             selected: enabledFeatures.indexOf("intolerance"),
             x: cheeseX,
             y: cheeseY,
@@ -803,6 +808,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         objFeatImproper = {
             class: "featImproper",
             id: "featImproper",
+            color: "#fb6a4a",
             selected: enabledFeatures.indexOf("improper_language"),
             x: cheeseX,
             y: cheeseY,
@@ -813,6 +819,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         objFeatInsult = {
             class: "featInsult",
             id: "featInsult",
+            color: "#de2d26",
             selected: enabledFeatures.indexOf("insult"),
             x: cheeseX,
             y: cheeseY,
@@ -822,8 +829,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         },
         objFeatAggressiveness = {
             class: "featAggressiveness",
-            selected: enabledFeatures.indexOf("aggressiveness"),
             id: "featAggressiveness",
+            color: "#a50f15",
+            selected: enabledFeatures.indexOf("aggressiveness"),
             x: cheeseX,
             y: cheeseY,
             height: cheeseHeight,
@@ -1345,6 +1353,55 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
+    /**
+     * Draw features as dots
+     * */
+    function drawFeatureDotsCompact(nodeEnter){
+        removeThisFeatures(nodeEnter);
+        removeToxicities(nodeEnter); //Remove all the pngs for toxicity
+
+        drawObjectAsDot(nodeEnter, objFeatArgumentation, 0, enabledFeatures.indexOf("argumentation") > -1);
+        drawObjectAsDot(nodeEnter, objFeatConstructiveness, 1, enabledFeatures.indexOf("constructiveness") > -1);
+
+        drawObjectAsDot(nodeEnter, objFeatSarcasm, 2, enabledFeatures.indexOf("sarcasm") > -1);
+        drawObjectAsDot(nodeEnter, objFeatMockery, 3, enabledFeatures.indexOf("mockery") > -1);
+        drawObjectAsDot(nodeEnter, objFeatIntolerance, 4, enabledFeatures.indexOf("intolerance") > -1);
+
+        drawObjectAsDot(nodeEnter, objFeatImproper, 5, enabledFeatures.indexOf("improper_language") > -1);
+        drawObjectAsDot(nodeEnter, objFeatInsult, 6, enabledFeatures.indexOf("insult") > -1);
+        drawObjectAsDot(nodeEnter, objFeatAggressiveness, 7, enabledFeatures.indexOf("aggressiveness") > -1);
+
+    }
+
+    /**
+     * Draws a circle conditionally
+     *
+     * @param {d3-node} nodeEnter Node to which we append the image
+     * @param {object} object The object of a property
+     * @param {boolean} show If the checkbox is selected
+     * @param {number} itemOrder Order in which the circles is drawn (away from the node)
+     * */
+    function drawObjectAsDot(nodeEnter, object, itemOrder, show) {
+        if(show){
+            let listOpacity;
+            nodeEnter.append("circle")
+                .attr('class', object.class)
+                .attr('id', object.id)
+                .attr("r", "10.5")
+                .attr("transform", function (d) {
+                    return "translate(" + (d.radius + (itemOrder + 1) * (10.5*2)) + "," + 0 + ")";
+                })
+                .attr("fill", object.color)
+                .style("stroke", "black")
+                .style("stroke-width", "0.5px")
+                .attr("opacity", function (d) {
+                    if (d.parent === undefined) return 0;
+                    listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
+                    return listOpacity[itemOrder];
+                });
+        }
+    }
+
     function drawFeatureAsCheeseOutside(nodeEnter, localPath) {
         removeThisFeatures(nodeEnter);
         removeToxicities(nodeEnter); //Remove all the pngs for toxicity
@@ -1576,7 +1633,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         switch (option) {
             case "dots":
                 selectTargetVisualization(nodeEnter); //draw the targets if necessary
-                drawFeatureDots(nodeEnter); //Always drawn on the right side
+                //drawFeatureDots(nodeEnter); //Always drawn on the right side
+                drawFeatureDotsCompact(nodeEnter); //Always drawn on the right side
                 break;
             case "trivial-cheese-on-node":
                 selectTargetVisualization(nodeEnter); //draw the targets if necessary
