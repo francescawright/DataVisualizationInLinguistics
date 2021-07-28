@@ -25,10 +25,55 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
+/* Constant
+ * */
+const duration = 750; //Duration of the animation of a transition
+
+//Graph
+const edgeLength = 300; //Horizontal length of an edge between a parent node and its child node
+const separationHeight = 10; //Desired separation between two node brothers
+const canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
+
+//
+const radiusFactor = 3; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
+const opacityValue = 0.2; // Opacity when a value is not highlighted
+const imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
+
+//Paths
+const rootPath = pr; //Path for the image related to the root
+const pathTargets = pt;
+const pathFeatures = pf;
+
+//Colours
+const colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
+    colourNeutralStance = "#2b2727";
+
+const colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
+    colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue", colourCollapsed1Son = "lightsteelblue";
+
+const colourUnhighlightedToxicity0 = "#f0f0f0", colourUnhighlightedToxicity1 = "#d6d6d6",
+    colourUnhighlightedToxicity2 = "#ababab", colourUnhighlightedToxicity3 = "#6b6b6b",
+    colourUnhighlightedCollapsed1Son = "cfdbeb";
+
+const colorFeature = ["#a1d99b", "#31a354",
+    "#fee5d9", "#fcbba1", "#fc9272",
+    "#fb6a4a", "#de2d26", "#a50f15"];
+
+/* Targets: size, position
+   * */
+const targetIconHeight = 15, targetIconWidth = 15, targetIconGroupX = -30, targetIconPersonX = -50,
+    targetIconStereotypeX = -70, targetIconY = -10; //Size and relative position of targets drawn as icons
+
+/* Features: size, position
+* */
+const cheeseX = 15, cheeseY = -10, cheeseHeight = 20, cheeseWidth = 20;
+
+
+
 /**
  * Compute the radius of the node based on the number of children it has
  * */
-function computeNodeRadius(d, edgeLength = 300) {
+function computeNodeRadius(d) {
     /*
         If node has children,
         more than 2: new radius = 16 + 3 * (#children - 2)
@@ -41,7 +86,7 @@ function computeNodeRadius(d, edgeLength = 300) {
 
     var children =  d.children ?? d._children; //Assign children collapsed or not
 
-    children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
+    children.length > 2 ? d.radius = 16 + radiusFactor * (children.length - 2) // more than 2 children
         : children.length  === 2 ? d.radius = 16 //2 children
         : d.radius = 13; //One child
     //Avoid the root node from being so large that overlaps/hides its children
@@ -75,10 +120,7 @@ function computeDimensions(nodes){
 /**
  * Center graph and zoom to fit the whole graph visualization in our canvas
  * */
-function zoomToFitGraph(minX, minY, maxX, maxY,
-                        root,
-                        canvasHeight = 900, canvasWidth = 2200,
-                        duration = 750) {
+function zoomToFitGraph(minX, minY, maxX, maxY, root) {
     /* Note our coordinate system:
     *
     *
@@ -118,11 +160,6 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
         initialY: newX,
         initialX: newY}
 }
-
-var rootPath = pr;
-var colourUnhighlightedToxicity0 = "#f0f0f0", colourUnhighlightedToxicity1 = "#d6d6d6",
-    colourUnhighlightedToxicity2 = "#ababab", colourUnhighlightedToxicity3 = "#6b6b6b",
-    colourUnhighlightedCollapsed1Son = "cfdbeb";
 
 function colourUnhighlightedNode(d) {
     if (d._children?.length === 1) return colourUnhighlightedCollapsed1Son;
@@ -503,42 +540,18 @@ function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2){
 // Get JSON data
 treeJSON = d3.json(dataset, function (error, treeData) {
 
-    // Calculate total nodes, max label length
-    var totalNodes = 0;
-    var edgeLength = 300;
+    let totalNodes = 0; //Total number of nodes
+    let i = 0; //Alternative node ID
 
-    // Misc. variables
-    var i = 0;
-    var duration = 750;
-    var root, rootName = "News Article";
-    var nodes;
-
-    /* Colours
-    * */
-    var colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
-        colourNeutralStance = "#2b2727";
-
-    var colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
-        colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue", colourCollapsed1Son = "lightsteelblue";
-
+    let root, nodes;
+    var initialZoom, initialX, initialY; //Initial zoom and central coordinates of the first visualization of the graph
 
     var objRoot = {
         class: "rootNode",
         id: "rootNode",
         fileName: "root.png"  };
-    var imageOffset = 4; //Radii size difference between a node and its associated image
-    var imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
 
-    var colorFeature = ["#a1d99b", "#31a354",
-        "#fee5d9", "#fcbba1", "#fc9272",
-        "#fb6a4a", "#de2d26", "#a50f15"];
-
-    /* Targets: size, position, local path, objects to draw the target as ring
-    * */
-    var targetIconHeight = 15, targetIconWidth = 15, targetIconGroupX = -30, targetIconPersonX = -50,
-        targetIconStereotypeX = -70, targetIconY = -10; //Size and relative position of targets drawn as icons
-    var pathTargets = pt;
-
+    // Objects to draw the target as ring
     var objTargetGroupRing = {
             class: "targetGroup",
             id: "targetGroup",
@@ -576,31 +589,16 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             fileName: "Gray.png"
         };
 
-    /* Features: size, position, local path
-    * */
-    var cheeseX = 15, cheeseY = -10, cheeseHeight = 20, cheeseWidth = 20;
-    var pathFeatures = pf;
-
     // Objects for toxicities for Ecem tests
     var objToxicity0 = {class: "toxicity0", id: "toxicity0", selected: 1, fileName: "Level0.svg"},
         objToxicity1 = {class: "toxicity1", id: "toxicity1", selected: 1, fileName: "Level1.svg"},
         objToxicity2 = {class: "toxicity2", id: "toxicity2", selected: 1, fileName: "Level2.svg"},
         objToxicity3 = {class: "toxicity3", id: "toxicity3", selected: 1, fileName: "Level3.svg"};
+
     var drawingAllInOne = false; //if we are drawing all together or separated
 
 
-    // size of the diagram
-    var viewerWidth = 100;
-    var viewerHeight = 400;
-
-    var canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
-    var initialZoom, initialX, initialY; //Initial zoom and central coordinates of the first visualization of the graph
-
-    var separationHeight = 10; //Desired separation between two node brothers
-    var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
-
-    var opacityValue = 0.2; // Opacity when a value is not highlighted
-    var tooltipText; // The variable displaying the information of a node inside a floating rectangle
+    let tooltipText; // The variable displaying the information of a node inside a floating rectangle
 
     root = treeData; //Define the root
 
@@ -859,7 +857,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var children = childrenFn(parent);
         if (children) {
             var count = children.length;
-            for (var i = 0; i < count; i++) {
+            for (let i = 0; i < count; i++) {
                 visit(children[i], visitFn, childrenFn);
             }
         }
@@ -915,38 +913,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .call(zoomListener);
 
 
-    /**
-     * Center the screen to the position of the given node
-     * */
-    function centerNode(source) {
-        scale = zoomListener.scale();
-        x = -source.y0;
-        y = -source.x0;
-        x = x * scale + viewerWidth / 2;
-        y = y * scale + viewerHeight / 2;
-        d3.select('g').transition()
-            .duration(duration)
-            .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
-        zoomListener.scale(scale);
-        zoomListener.translate([x, y]);
-    }
-
-    /**
-     * Center the screen to the position of the given link
-     * */
-    function centerLink(link) {
-        scale = zoomListener.scale();
-        x = -(link.source.y0 + link.target.y0) / 2;
-        y = -(link.source.x0 + link.target.x0) / 2;
-        x = x * scale + viewerWidth / 2;
-        y = y * scale + viewerHeight / 2;
-        d3.select('g').transition()
-            .duration(duration)
-            .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
-        zoomListener.scale(scale);
-        zoomListener.translate([x, y]);
-    }
-
     // Toggle children function
     function toggleChildren(d) {
         if (d.children) {
@@ -981,14 +947,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         //centerNode(d); We deactivated because is annoying when we collapse a thread to appear
     }
 
-    /**
-     * Clicked link behaviour
-     * */
-    function clickLink(l) {
-        if (d3.event.defaultPrevented) return; // click suppressed
-        console.log("Link clicked");
-        centerLink(l);
-    }
 
     /*SECTION draw svgs from checboxes*/
 
@@ -1020,7 +978,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var listOpacity;
         var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
 
-        for (var i = 0; i < targets.length; i++) {
+        for (let i = 0; i < targets.length; i++) {
             if (cbShowTargets[i] > -1) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
@@ -1052,7 +1010,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var listOpacity;
         var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
 
-        for (var i = 0; i < targets.length; i++) {
+        for (let i = 0; i < targets.length; i++) {
             if (cbShowTargets[i] > -1) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
@@ -1091,7 +1049,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var listOpacity;
         var targets = [objTargetGroupInside, objTargetPersonInside, objTargetStereotypeInside];
 
-        for (var i = 0; i < targets.length; i++) {
+        for (let i = 0; i < targets.length; i++) {
             if (cbShowTargets[i] > -1) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
@@ -1131,7 +1089,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var listOpacity;
         var targets = [objTargetGrayRing, objTargetGroupRing, objTargetPersonRing, objTargetStereotypeRing];
 
-        for (var i = 0; i < targets.length; i++) {
+        for (let i = 0; i < targets.length; i++) {
             if (cbShowTargets[i] > -1) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
@@ -1326,7 +1284,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
         var listOpacity;
 
-        for (var i = 0; i < 8; i++) {
+        for (let i = 0; i < 8; i++) {
             if (cbFeatureEnabled[i] > -1) {
                 nodeEnter.append("circle")
                     .attr('class', features[i].class)
@@ -1372,7 +1330,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
         var listOpacity;
 
-        for (var i = 0; i < features.length; i++) {
+        for (let i = 0; i < features.length; i++) {
             if (cbFeatureEnabled[i] > -1) {
                 nodeEnter.append("image")
                     .attr('class', features[i].class)
@@ -1424,7 +1382,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
         var listOpacity;
 
-        for (var i = 0; i < features.length; i++) {
+        for (let i = 0; i < features.length; i++) {
             if (cbFeatureEnabled[i] > -1) {
                 nodeEnter.append("image")
                     .attr('class', features[i].class)
@@ -1473,7 +1431,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
 
 
-        for (var i = 0; i < allObjectsInNode.length; i++) {
+        for (let i = 0; i < allObjectsInNode.length; i++) {
             if (cbShowTargets[i] > -1) { //If the checkbox is checked, display it if it has the property
                 nodeEnter.append("image")
                     .attr('class', allObjectsInNode[i].class)
@@ -1522,7 +1480,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
 
 
-        for (var i = 0; i < allObjectsInNode.length; i++) {
+        for (let i = 0; i < allObjectsInNode.length; i++) {
             if (cbShowTargets[i] > -1) { //If the checkbox is checked, display it if it has the property
                 nodeEnter.append("image")
                     .attr('class', allObjectsInNode[i].class)
@@ -2940,7 +2898,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 else if (d.target.negative_stance === 1)  return colourNegativeStance; //Against
                 else return colourNeutralStance; //Neutral comment
             })
-            .on('click', clickLink);
+            /*.on('click', clickLink)*/;
 
         // Transition links to their new position.
         link.transition()
@@ -2976,12 +2934,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var svgGroup = baseSvg.append("g");
 
     // Define the root position
-    root.x0 = viewerHeight / 2;
+    root.x0 = 0;
     root.y0 = 0;
 
     // Layout the tree initially and center on the root node.
     update(root);
-    centerNode(root);
 
     var box = computeDimensions(nodes);
     var initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root);
