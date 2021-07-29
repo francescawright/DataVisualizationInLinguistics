@@ -758,6 +758,36 @@ function sizeImage(nodeRadius, radiusPercentage = imgRatio){
 //Hide features, targets and toxicities
 
 /**
+ * Removes the features of all the nodes
+ * */
+function removeAllFeatures() {
+    d3.selectAll("#featGray").remove();
+    d3.selectAll("#featArgumentation").remove();
+    d3.selectAll("#featConstructiveness").remove();
+    d3.selectAll("#featSarcasm").remove();
+    d3.selectAll("#featMockery").remove();
+    d3.selectAll("#featIntolerance").remove();
+    d3.selectAll("#featImproper").remove();
+    d3.selectAll("#featInsult").remove();
+    d3.selectAll("#featAggressiveness").remove();
+}
+
+/**
+ * Revove all toxicities of all nodes
+ * */
+function removeAllToxicities() {
+    d3.selectAll("#toxicity0").remove();
+    d3.selectAll("#toxicity1").remove();
+    d3.selectAll("#toxicity2").remove();
+    d3.selectAll("#toxicity3").remove();
+}
+
+function hideFeatureImages(){
+    removeAllFeatures();
+    removeAllToxicities();
+}
+
+/**
  * Removes the features of the node given
  * */
 function removeThisFeatures(nodeEnter) {
@@ -968,6 +998,58 @@ function drawFeatureAsCircularGlyphCompact(nodeEnter, localPath, enabledFeatures
     if(enabledFeatures.indexOf("target-group") > -1) drawObjectGlyph(nodeEnter, objTargetGroup, 13, percentage, path);
     if(enabledFeatures.indexOf("target-person") > -1) drawObjectGlyph(nodeEnter, objTargetPerson, 14, percentage, path);
     if(enabledFeatures.indexOf("target-stereotype") > -1) drawObjectGlyph(nodeEnter, objTargetStereotype, 15, percentage, path);
+}
+
+
+//Draw targets
+/**
+ * Draw an image centered on the node a imgRatio smaller conditionally
+ *
+ * @param {d3-node} nodeEnter Node to which we append the image
+ * @param {object} object The object of a property
+ * @param {number} itemOrder Presence of the object in the array
+ * @param {string} path The path of the image
+ * */
+function drawObjectTargetRing(nodeEnter, object, itemOrder, path){
+    let listOpacity;
+
+    nodeEnter.append("image")
+        .attr('class', object.class)
+        .attr('id', object.id)
+        .attr("x", function (d) {
+            return positionImage(d.radius);
+        })
+        .attr("y", function (d) {
+            return positionImage(d.radius);
+        })
+        .attr("height", function (d) {
+            return sizeImage(d.radius);
+        })
+        .attr("width", function (d) {
+            return sizeImage(d.radius);
+        })
+        .attr("href", path + object.fileName)
+        .attr("opacity", function (d) {
+            if (d.parent === undefined) return 0;
+            listOpacity = [0.5, d.target_group, d.target_person, d.stereotype]; //Note: the opacity of the gray ring
+            return listOpacity[itemOrder];
+        });
+}
+
+/**
+ * Draws the 3 targets of a node if the checkbox is checked
+ * and if the node has that target (sets the opacity to visible)
+ * */
+function drawTargetRingsCompact(nodeEnter, localPath, enabledTargets){
+    removeThisTargets(nodeEnter);
+
+    let path = pathTargets + localPath;
+
+    drawObjectTargetRing(nodeEnter, objTargetGrayRing, 0, path);
+    if(enabledTargets.indexOf("target-group") > -1) drawObjectTargetRing(nodeEnter, objTargetGroupRing, 1, path);
+    if(enabledTargets.indexOf("target-person") > -1) drawObjectTargetRing(nodeEnter, objTargetPersonRing, 2, path);
+    if(enabledTargets.indexOf("target-stereotype") > -1) drawObjectTargetRing(nodeEnter, objTargetStereotypeRing, 3, path);
+
 }
 
 
@@ -1217,7 +1299,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      * Compute descendants information
      * Toggle children on click.
      * */
-    function click(d, nodeEnter) {
+    function click(d) {
         if (d3.event.defaultPrevented) return; // click suppressed
 
         //Compute children data (quantity and how many with each toxicity) before collapsing the node
@@ -1231,7 +1313,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         d = toggleChildren(d); //Collapse node
         update(d); //NOTE: we are passing each sun that was collapsed
-        //centerNode(d); We deactivated because is annoying when we collapse a thread to appear
     }
 
 
@@ -1380,51 +1461,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
-    /**
-     * Draws the 3 targets of a node if the checkbox is checked
-     * and if the node has that target (sets the opacity to visible)
-     *
-     * The icon used is from the local path passed by parameter
-     * The css values are from the target objects that are rings
-     * */
-    function drawTargetRings(nodeEnter, localPath) {
-        removeThisTargets(nodeEnter);
-        var cbShowTargets = [1, enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")]; //Note: we will always display the gray ring
-        var listOpacity;
-        var targets = [objTargetGrayRing, objTargetGroupRing, objTargetPersonRing, objTargetStereotypeRing];
-
-        for (let i = 0; i < targets.length; i++) {
-            if (cbShowTargets[i] > -1) {
-                nodeEnter.append("image")
-                    .attr('class', targets[i].class)
-                    .attr('id', targets[i].id)
-                    .attr("x", function (d) {
-                        return positionImage(d.radius);
-                    })
-                    .attr("y", function (d) {
-                        return positionImage(d.radius);
-                    })
-                    .attr("height", function (d) {
-                        return sizeImage(d.radius);
-                    })
-                    .attr("width", function (d) {
-                        return sizeImage(d.radius);
-                    })
-                    .attr("href", pathTargets + localPath + targets[i].fileName)
-                    .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
-                        listOpacity = [0.5, d.target_group, d.target_person, d.stereotype]; //Note: the opacity of the gray ring
-                        return listOpacity[i];
-                    });
-            }
-        }
-    }
-
-    function drawTargetRingsCompact(nodeEnter, localPath){
-        removeThisTargets(nodeEnter);
-
-        drawObject(nodeEnter, objTargetGrayRing, true, 0.5, pathTargets + localPath);
-    }
 
     /**
      * Determines the type of visualization for the targets
@@ -1459,11 +1495,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     break;
                 //draw as ring outside of the node
                 case "ring-on-node":
-                    drawTargetRings(nodeEnter, "rings/")
+                    drawTargetRingsCompact(nodeEnter, "rings/", enabledTargets)
                     break;
                 //draw as an icon if 1, as rings if more options checked
                 case "one-icon-or-rings":
-                    enabledTargets.length > 1 ? drawTargetRings(nodeEnter, "rings/") : drawTargets(nodeEnter, "icons/");
+                    enabledTargets.length > 1 ? drawTargetRingsCompact(nodeEnter, "rings/", enabledTargets) : drawTargets(nodeEnter, "icons/");
                     break;
 
                 default:
@@ -1474,20 +1510,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
     //Feature section
-    /**
-     * Removes the features of all the nodes
-     * */
-    function removeAllFeatures() {
-        d3.selectAll("#featGray").remove();
-        d3.selectAll("#featArgumentation").remove();
-        d3.selectAll("#featConstructiveness").remove();
-        d3.selectAll("#featSarcasm").remove();
-        d3.selectAll("#featMockery").remove();
-        d3.selectAll("#featIntolerance").remove();
-        d3.selectAll("#featImproper").remove();
-        d3.selectAll("#featInsult").remove();
-        d3.selectAll("#featAggressiveness").remove();
-    }
+
 
     function checkUncheckAll() {
         checkboxes.forEach(cb => cb.checked = !cb.checked);
@@ -1970,7 +1993,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     }
                 );
 
-                removeAllFeatures(); //Hide all features when the cb is unchecked
+                hideFeatureImages(); //Hide all images associated with the features
             }
         });
 
@@ -2077,8 +2100,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         - highlight nodes and edges
         * */
         selectTargetVisualization(nodeEnter);
-        checkboxFeatureMenu.checked ? selectFeatureVisualization(nodeEnter) : removeAllFeatures();
-        /*if(checkboxFeatureMenu.checked) checkboxFeatureCheese.checked ? drawFeaturesCheese(nodeEnter) : drawFeatures(nodeEnter);*/
+        checkboxFeatureMenu.checked ? selectFeatureVisualization(nodeEnter) : hideFeatureImages();
 
         // Update the text to reflect whether node has children or not.
         node.select('text')
