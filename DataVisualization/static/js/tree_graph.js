@@ -1204,6 +1204,236 @@ function drawTargetsInsideCompact(nodeEnter, localPath, enabledTargets){
 }
 
 
+/********* Unused functions right now in this layout *****************/
+
+/**
+ * Draws the 3 targets of a node if the checkbox is checked
+ * and if the node has that target (sets the opacity to visible)
+ *
+ * The icon used is from the local path passed by parameter
+ * The css values are from the target objects that are icons
+ * */
+function drawTargets(nodeEnter, localPath, enabledTargets) {
+    removeThisTargets(nodeEnter);
+    var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
+    var listOpacity;
+    var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
+
+    for (let i = 0; i < targets.length; i++) {
+        if (cbShowTargets[i] > -1) {
+            nodeEnter.append("image")
+                .attr('class', targets[i].class)
+                .attr('id', targets[i].id)
+                .attr("x", targets[i].x)
+                .attr("y", targets[i].y)
+                .attr("height", targets[i].height)
+                .attr("width", targets[i].width)
+                .attr("href", pathTargets + localPath + targets[i].fileName)
+                .attr("opacity", function (d) {
+                    if (d.parent === undefined) return 0;
+                    listOpacity = [d.target_group, d.target_person, d.stereotype];
+                    return listOpacity[i];
+                });
+        }
+    }
+}
+
+//Deprecated
+function drawFeatureAsCheeseOutside(nodeEnter, localPath, enabledFeatures) {
+    removeThisFeatures(nodeEnter);
+    removeToxicities(nodeEnter); //Remove all the pngs for toxicity
+
+    //Add the gray cheese
+    nodeEnter.append("image")
+        .attr('class', objFeatGray.class)
+        .attr('id', objFeatGray.id)
+        .attr("x", objFeatGray.x) //NOTE: it is always displayed at the left side!!
+        .attr("y", objFeatGray.y)
+        .attr("height", objFeatGray.height)
+        .attr("width", objFeatGray.width)
+        .attr("href", pathFeatures + localPath + objFeatGray.fileName)
+        .attr("opacity", function (d) {
+            if (d.parent === undefined) return 0;
+            return 0.5;
+        });
+
+    var cbFeatureEnabled = [enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+        enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
+        enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness")];
+
+    var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
+    var listOpacity;
+
+    for (let i = 0; i < features.length; i++) {
+        if (cbFeatureEnabled[i] > -1) {
+            nodeEnter.append("image")
+                .attr('class', features[i].class)
+                .attr('id', features[i].id)
+                .attr("x", features[i].x)
+                .attr("y", features[i].y)
+                .attr("height", features[i].height)
+                .attr("width", features[i].width)
+                .attr("href", pathFeatures + localPath + features[i].fileName)
+                .attr("opacity", function (d) {
+                    if (d.parent === undefined) return 0;
+                    listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
+                    return listOpacity[i];
+                });
+        }
+    }
+}
+
+
+/**
+ * Hide all previous features and targets
+ * Draw everything inside of the node
+ * */
+function drawFeatureAsGlyph(nodeEnter, localPath, localPosition, enabledFeatures, enabledTargets) {
+    removeThisFeatures(nodeEnter);
+    removeThisTargets(nodeEnter);
+    removeToxicities(nodeEnter);
+
+    var allObjectsInNode = [objToxicity0, objToxicity1, objToxicity2, objToxicity3,
+        objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness,
+        objTargetGroup, objTargetPerson, objTargetStereotype];
+    var listOpacity;
+
+    //Better done than perfect
+    var cbShowTargets = [1, 1, 1, 1,
+        enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+        enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
+        enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness"),
+        enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
+
+
+    for (let i = 0; i < allObjectsInNode.length; i++) {
+        if (cbShowTargets[i] > -1) { //If the checkbox is checked, display it if it has the property
+            nodeEnter.append("image")
+                .attr('class', allObjectsInNode[i].class)
+                .attr('id', allObjectsInNode[i].id)
+                .attr("x", localPosition)
+                .attr("y", -10)
+                .attr("height", 20)
+                .attr("width", 20)
+                .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
+                .attr("opacity", function (d) {
+                    if (d.parent === undefined) return 0;
+
+                    listOpacity = [d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
+                        d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
+                        d.target_group, d.target_person, d.stereotype];
+
+                    return listOpacity[i];
+                });
+        }
+    }
+}
+
+/**************************/
+
+
+/**
+ * Determines the type of visualization for the targets
+ * determinated by the drop down menu
+ *
+ *
+ * */
+function selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets,
+                                   dropdownFeatures, cbFeatureInside, enabledFeatures) {
+    var option = dropdownTargets.value;
+
+    //If we are displaying all in one, call that function
+    if (drawingAllInOne) selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
+        cbFeatureInside, enabledFeatures, enabledTargets);
+    else {
+        switch (option) {
+            //draw as icons on the left side of the node
+            case "icons":
+                drawTargets(nodeEnter, "icons/", enabledTargets);
+                break;
+
+            case "icon-outside-node":
+                drawTargetsOutsideCompact(nodeEnter, "icons/", enabledTargets);
+                break;
+
+            case "icon-on-node":
+                drawTargetsInsideCompact(nodeEnter, "icons/", enabledTargets);
+                break;
+            case "directory-1":
+                drawTargets(nodeEnter, "newOption1/", enabledTargets)
+                break;
+            case "directory-2":
+                drawTargets(nodeEnter, "newOption2/", enabledTargets)
+                break;
+            //draw as ring outside of the node
+            case "ring-on-node":
+                drawTargetRingsCompact(nodeEnter, "rings/", enabledTargets)
+                break;
+            //draw as an icon if 1, as rings if more options checked
+            case "one-icon-or-rings":
+                enabledTargets.length > 1 ? drawTargetRingsCompact(nodeEnter, "rings/", enabledTargets) : drawTargets(nodeEnter, "icons/", enabledTargets);
+                break;
+
+            default:
+                console.log("default option", option);
+                break;
+        }
+    }
+}
+
+
+/**
+ * Determines the type of visualization for the features
+ * determinated by the drop down menu
+ * */
+function selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
+                                    cbFeatureInside, enabledFeatures, enabledTargets) {
+    var option = dropdownFeatures.value;
+    document.getElementById("feature-over-node-or-outside").style.display = "none"; //Hide the dropdown menu
+    drawingAllInOne = false;
+    let localPosition;
+    cbFeatureInside.checked ? localPosition = -10 : localPosition = 30;
+    switch (option) {
+        case "dots":
+            selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures); //draw the targets if necessary
+            drawFeatureDotsCompact(nodeEnter, enabledFeatures); //Always drawn on the right side
+            break;
+        case "trivial-cheese-on-node":
+            selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures); //draw the targets if necessary
+            drawFeatureAsCheeseInsideCompact(nodeEnter, "trivialCheese/", enabledFeatures); //Always drawn on the right side
+            break;
+        case "trivial-cheese-outside-node":
+            selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures); //draw the targets if necessary
+            drawFeatureAsCheeseOutside(nodeEnter, "trivialCheese/", enabledFeatures); //Always drawn on the right side
+            break;
+
+        case "directory-1": //"All for one and one for all" we will draw the features inside of the circle, the targets outside will be hidden and the level of toxicity in blue
+            drawingAllInOne = true;
+            //Deletes the targets and draws them again but INSIDE of the node
+            document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
+
+            drawFeatureAsGlyph(nodeEnter, "Bubble/", localPosition, enabledFeatures, enabledTargets);
+            break;
+        case "directory-2":
+            drawingAllInOne = true;
+            //Deletes the targets and draws them again but INSIDE of the node
+            document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
+            drawFeatureAsCircularGlyphCompact(nodeEnter, "Circular/", enabledFeatures);
+            break;
+
+        case "directory-3":
+            drawingAllInOne = true;
+            //Deletes the targets and draws them again but INSIDE of the node
+            document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
+            drawFeatureAsGlyph(nodeEnter, "Rectangular/", localPosition, enabledFeatures, enabledTargets);
+            break;
+
+        default:
+            console.log("default option", option);
+            break;
+    }
+}
+
 // Get JSON data
 treeJSON = d3.json(dataset, function (error, treeData) {
 
@@ -1401,240 +1631,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         update(d); //NOTE: we are passing each sun that was collapsed
     }
 
-
-    /*SECTION draw svgs from checboxes*/
-
-    /**
-     * Draws the 3 targets of a node if the checkbox is checked
-     * and if the node has that target (sets the opacity to visible)
-     *
-     * The icon used is from the local path passed by parameter
-     * The css values are from the target objects that are icons
-     * */
-    function drawTargets(nodeEnter, localPath) {
-        removeThisTargets(nodeEnter);
-        var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
-        var listOpacity;
-        var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
-
-        for (let i = 0; i < targets.length; i++) {
-            if (cbShowTargets[i] > -1) {
-                nodeEnter.append("image")
-                    .attr('class', targets[i].class)
-                    .attr('id', targets[i].id)
-                    .attr("x", targets[i].x)
-                    .attr("y", targets[i].y)
-                    .attr("height", targets[i].height)
-                    .attr("width", targets[i].width)
-                    .attr("href", pathTargets + localPath + targets[i].fileName)
-                    .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
-                        listOpacity = [d.target_group, d.target_person, d.stereotype];
-                        return listOpacity[i];
-                    });
-            }
-        }
-    }
-
-
-    /**
-     * Determines the type of visualization for the targets
-     * determinated by the drop down menu
-     *
-     *
-     * */
-    function selectTargetVisualization(nodeEnter) {
-        var option = dropdownTargets.value;
-
-        //If we are displaying all in one, call that function
-        if (drawingAllInOne) selectFeatureVisualization(nodeEnter);
-        else {
-            switch (option) {
-                //draw as icons on the left side of the node
-                case "icons":
-                    drawTargets(nodeEnter, "icons/");
-                    break;
-
-                case "icon-outside-node":
-                    drawTargetsOutsideCompact(nodeEnter, "icons/", enabledTargets);
-                    break;
-
-                case "icon-on-node":
-                    drawTargetsInsideCompact(nodeEnter, "icons/", enabledTargets);
-                    break;
-                case "directory-1":
-                    drawTargets(nodeEnter, "newOption1/")
-                    break;
-                case "directory-2":
-                    drawTargets(nodeEnter, "newOption2/")
-                    break;
-                //draw as ring outside of the node
-                case "ring-on-node":
-                    drawTargetRingsCompact(nodeEnter, "rings/", enabledTargets)
-                    break;
-                //draw as an icon if 1, as rings if more options checked
-                case "one-icon-or-rings":
-                    enabledTargets.length > 1 ? drawTargetRingsCompact(nodeEnter, "rings/", enabledTargets) : drawTargets(nodeEnter, "icons/");
-                    break;
-
-                default:
-                    console.log("default option", option);
-                    break;
-            }
-        }
-    }
-
-    //Feature section
-
-
     function checkUncheckAll() {
         checkboxes.forEach(cb => cb.checked = !cb.checked);
     }
-
-
-    //Deprecated
-    function drawFeatureAsCheeseOutside(nodeEnter, localPath) {
-        removeThisFeatures(nodeEnter);
-        removeToxicities(nodeEnter); //Remove all the pngs for toxicity
-
-        //Add the gray cheese
-        nodeEnter.append("image")
-            .attr('class', objFeatGray.class)
-            .attr('id', objFeatGray.id)
-            .attr("x", objFeatGray.x) //NOTE: it is always displayed at the left side!!
-            .attr("y", objFeatGray.y)
-            .attr("height", objFeatGray.height)
-            .attr("width", objFeatGray.width)
-            .attr("href", pathFeatures + localPath + objFeatGray.fileName)
-            .attr("opacity", function (d) {
-                if (d.parent === undefined) return 0;
-                return 0.5;
-            });
-
-        var cbFeatureEnabled = [enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
-            enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
-            enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness")];
-
-        var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
-        var listOpacity;
-
-        for (let i = 0; i < features.length; i++) {
-            if (cbFeatureEnabled[i] > -1) {
-                nodeEnter.append("image")
-                    .attr('class', features[i].class)
-                    .attr('id', features[i].id)
-                    .attr("x", features[i].x)
-                    .attr("y", features[i].y)
-                    .attr("height", features[i].height)
-                    .attr("width", features[i].width)
-                    .attr("href", pathFeatures + localPath + features[i].fileName)
-                    .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
-                        listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
-                        return listOpacity[i];
-                    });
-            }
-        }
-    }
-
-    /**
-     * Hide all previous features and targets
-     * Draw everything inside of the node
-     * */
-    function drawFeatureAsGlyph(nodeEnter, localPath, localPosition) {
-        removeThisFeatures(nodeEnter);
-        removeThisTargets(nodeEnter);
-        removeToxicities(nodeEnter);
-
-        var allObjectsInNode = [objToxicity0, objToxicity1, objToxicity2, objToxicity3,
-            objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness,
-            objTargetGroup, objTargetPerson, objTargetStereotype];
-        var listOpacity;
-
-        //Better done than perfect
-        var cbShowTargets = [1, 1, 1, 1,
-            enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
-            enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
-            enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness"),
-            enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
-
-
-        for (let i = 0; i < allObjectsInNode.length; i++) {
-            if (cbShowTargets[i] > -1) { //If the checkbox is checked, display it if it has the property
-                nodeEnter.append("image")
-                    .attr('class', allObjectsInNode[i].class)
-                    .attr('id', allObjectsInNode[i].id)
-                    .attr("x", localPosition)
-                    .attr("y", -10)
-                    .attr("height", 20)
-                    .attr("width", 20)
-                    .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
-                    .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
-
-                        listOpacity = [d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
-                            d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
-                            d.target_group, d.target_person, d.stereotype];
-
-                        return listOpacity[i];
-                    });
-            }
-        }
-    }
-
-
-    /**
-     * Determines the type of visualization for the features
-     * determinated by the drop down menu
-     * */
-    function selectFeatureVisualization(nodeEnter) {
-        var option = dropdownFeatures.value;
-        document.getElementById("feature-over-node-or-outside").style.display = "none"; //Hide the dropdown menu
-        drawingAllInOne = false;
-        var localPosition;
-        cbFeatureInside.checked ? localPosition = -10 : localPosition = 30;
-        switch (option) {
-            case "dots":
-                selectTargetVisualization(nodeEnter); //draw the targets if necessary
-                drawFeatureDotsCompact(nodeEnter, enabledFeatures); //Always drawn on the right side
-                break;
-            case "trivial-cheese-on-node":
-                selectTargetVisualization(nodeEnter); //draw the targets if necessary
-                drawFeatureAsCheeseInsideCompact(nodeEnter, "trivialCheese/", enabledFeatures); //Always drawn on the right side
-                break;
-            case "trivial-cheese-outside-node":
-                selectTargetVisualization(nodeEnter); //draw the targets if necessary
-                drawFeatureAsCheeseOutside(nodeEnter, "trivialCheese/"); //Always drawn on the right side
-                break;
-
-            case "directory-1": //"All for one and one for all" we will draw the features inside of the circle, the targets outside will be hidden and the level of toxicity in blue
-                drawingAllInOne = true;
-                //Deletes the targets and draws them again but INSIDE of the node
-                document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
-
-                drawFeatureAsGlyph(nodeEnter, "Bubble/", localPosition);
-                break;
-            case "directory-2":
-                drawingAllInOne = true;
-                //Deletes the targets and draws them again but INSIDE of the node
-                document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
-                drawFeatureAsCircularGlyphCompact(nodeEnter, "Circular/", enabledFeatures);
-                break;
-
-            case "directory-3":
-                drawingAllInOne = true;
-                //Deletes the targets and draws them again but INSIDE of the node
-                document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
-                drawFeatureAsGlyph(nodeEnter, "Rectangular/", localPosition);
-                break;
-
-            default:
-                console.log("default option", option);
-                break;
-        }
-    }
-    /*END SECTION*/
-
 
     function writeIdLabel(nodeEnter) {
         nodeEnter.append("text")
@@ -1893,10 +1892,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         //Dropdown menus
         dropdownTargets.addEventListener("change", function () {
-            selectTargetVisualization(nodeEnter);
+            selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures);
         });
         dropdownFeatures.addEventListener("change", function () {
-            selectFeatureVisualization(nodeEnter);
+            selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
+                cbFeatureInside, enabledFeatures, enabledTargets);
         });
 
         /*SECTION checkboxes listener*/
@@ -1914,7 +1914,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
                 console.log(enabledTargets);
-                selectTargetVisualization(nodeEnter);
+                selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures);
             })
         });
 
@@ -1948,7 +1948,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 if (!document.querySelector("input[value=on-node]").checked && !document.querySelector("input[value=node-outside]").checked) {
                     document.querySelector("input[value=on-node]").checked = true;
                 }
-                selectFeatureVisualization(nodeEnter);
+                selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
+                    cbFeatureInside, enabledFeatures, enabledTargets);
 
             } else { //Disable checkboxes and dropdown menu + remove all the features
                 checkboxesPropertyFeature.forEach(function (checkboxItem) {
@@ -1975,12 +1976,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         // if DOT is checked, uncheck OR
         cbFeatureInside.addEventListener('change', function () {
             this.checked ? cbFeatureOutside.checked = false : cbFeatureOutside.checked = true;
-            selectFeatureVisualization(nodeEnter);
+            selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
+                cbFeatureInside, enabledFeatures, enabledTargets);
         });
         // if CHEESE is checked, uncheck AND
         cbFeatureOutside.addEventListener('change', function () {
             this.checked ? cbFeatureInside.checked = false : cbFeatureInside.checked = true;
-            selectFeatureVisualization(nodeEnter);
+            selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
+                cbFeatureInside, enabledFeatures, enabledTargets);
         });
 
         // Use Array.forEach to add an event listener to each checkbox.
@@ -1993,7 +1996,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
                 console.log(enabledFeatures);
-                selectFeatureVisualization(nodeEnter);
+                selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
+                    cbFeatureInside, enabledFeatures, enabledTargets);
             })
         });
 
@@ -2074,8 +2078,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         - show the features if necessary
         - highlight nodes and edges
         * */
-        selectTargetVisualization(nodeEnter);
-        checkboxFeatureMenu.checked ? selectFeatureVisualization(nodeEnter) : hideFeatureImages();
+        selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures);
+        checkboxFeatureMenu.checked ? selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
+            cbFeatureInside, enabledFeatures, enabledTargets) : hideFeatureImages();
 
         // Update the text to reflect whether node has children or not.
         node.select('text')
