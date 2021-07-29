@@ -209,7 +209,23 @@ var objFeatArgumentation = {
         fileName: "Gray.svg"
     };
 
-
+/**
+ * Draw an icon for the root node
+ * */
+function visualiseRootIcon(node, root){
+    //Filter the nodes and append an icon just for the root node
+    node.filter(function (d) {
+        return d.parent === undefined;
+    }).append("image")
+        .attr('class', objRoot.class)
+        .attr('id', objRoot.id)
+        .attr("x", root.x - root.radius)
+        .attr("y", root.y - root.radius)
+        .attr("height", root.radius * 2)
+        .attr("width", root.radius * 2)
+        .attr("href", rootPath + objRoot.fileName)
+        .attr("opacity", 1);
+}
 
 /**
  * Compute the radius of the node based on the number of children it has
@@ -677,6 +693,52 @@ function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2){
     }
 }
 
+function highlightNodesByPropertyOR(node, link, nodes, enabledHighlight){
+    if (enabledHighlight.length === 0){ //If no tag (toxicity, stance,...) checkbox is selected: highlight all
+        nodes.forEach(function (d) {
+            d.highlighted = 1;
+        });
+        node.style("opacity", 1);
+    }
+    else { //If some tag checkbox is selected behave as expected
+        //First, unhighlight everything and set the parameter highlighted to 0
+        nodes.forEach(function (d) {
+            d.highlighted = 0;
+        });
+        node.style("opacity", opacityValue);
+
+        //Then highlight by property OR
+        highlightToxicityOR(node, enabledHighlight);
+        highlightStanceOR(node, enabledHighlight);
+        highlightTargetOR(node, enabledHighlight);
+        highlightPositiveOR(node, enabledHighlight);
+        highlightNegativeOR(node, enabledHighlight);
+    }
+    //Highlight only the edges whose both endpoints are highlighted
+    link.style("opacity", function (d) {
+        return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+    });
+}
+
+function highlightNodesByPropertyAND(node, link, nodes, enabledHighlight) {
+    nodes.forEach(function (d) {
+        d.highlighted = 1;
+    });
+    node.style("opacity", 1);
+
+    //Then unhighlight by property AND
+    highlightToxicityAND(node, enabledHighlight);
+    highlightStanceAND(node, enabledHighlight);
+    highlightTargetAND(node, enabledHighlight);
+    highlightPositiveAND(node, enabledHighlight);
+    highlightNegativeAND(node, enabledHighlight);
+
+    //Highlight only the edges whose both endpoints are highlighted
+    link.style("opacity", function (d) {
+        return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+    });
+}
+
 
 /**
  * Compute the position of an associated image to be centered on the node
@@ -974,7 +1036,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var checkboxId = document.querySelector("input[name=cbId]");
 
     //Check the values of the checkboxes and do something
-    var checkbox = document.querySelector("input[name=cbTargets]");
     var checkboxesTargets = [document.getElementById("target-group"), document.getElementById("target-person"), document.getElementById("target-stereotype")];//document.querySelectorAll("input[type=checkbox][name=cbTargets]");
     // for (var i = 0; i < checkboxesTargets.length; i++) {
     //     checkboxesTargets[i] = "target-" + checkboxesTargets[i];
@@ -989,8 +1050,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     // Select how to display the features: svg circles or trivial cheese
     var checkboxesPropertyFeature = document.querySelectorAll("input[type=checkbox][name=cbFeatureProperty]");
-    var checkboxFeatureDot = document.querySelector("input[type=checkbox][name=cbFeatureProperty][value=dot-feat]");
-    var checkboxFeatureCheese = document.querySelector("input[type=checkbox][name=cbFeatureProperty][value=cheese-feat]");
 
     //Dropdown menu
     var checkboxesPositioningFeature = document.querySelectorAll("input[type=checkbox][name=cbFeaturePositioning]");
@@ -1097,10 +1156,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     visit(treeData, function (d) {
         totalNodes++;
     }, function (d) {
-        return d.children && d.children.length > 0 ? d.children : null;
+        return d.children?.length > 0 ? d.children : null;
     });
-
-
 
 
     /**
@@ -1179,8 +1236,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
 
     /*SECTION draw svgs from checboxes*/
-
-
 
     /**
      * Draws the 3 targets of a node if the checkbox is checked
@@ -1418,12 +1473,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
-
-
-
     //Feature section
-
-
     /**
      * Removes the features of all the nodes
      * */
@@ -1538,8 +1588,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     /**
      * Determines the type of visualization for the features
      * determinated by the drop down menu
-     *
-     *
      * */
     function selectFeatureVisualization(nodeEnter) {
         var option = dropdownFeatures.value;
@@ -1587,77 +1635,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 break;
         }
     }
-
-
     /*END SECTION*/
 
-    /**
-     * Draw an icon for the root node
-     * */
-    function visualiseRootIcon(node){
-        //Filter the nodes and append an icon just for the root node
-        node.filter(function (d) {
-            return d.parent === undefined;
-        }).append("image")
-            .attr('class', objRoot.class)
-            .attr('id', objRoot.id)
-            .attr("x", root.x - root.radius)
-            .attr("y", root.y - root.radius)
-            .attr("height", root.radius * 2)
-            .attr("width", root.radius * 2)
-            .attr("href", rootPath + objRoot.fileName)
-            .attr("opacity", 1);
-    }
-
-    /*SECTION highlighting */
-
-    function highlightNodesByPropertyOR(node, link){
-        if (enabledHighlight.length === 0){ //If no tag (toxicity, stance,...) checkbox is selected: highlight all
-            nodes.forEach(function (d) {
-                d.highlighted = 1;
-            });
-            node.style("opacity", 1);
-        }
-        else { //If some tag checkbox is selected behave as expected
-            //First, unhighlight everything and set the parameter highlighted to 0
-            nodes.forEach(function (d) {
-                d.highlighted = 0;
-            });
-            node.style("opacity", opacityValue);
-
-            //Then highlight by property OR
-            highlightToxicityOR(node, enabledHighlight);
-            highlightStanceOR(node, enabledHighlight);
-            highlightTargetOR(node, enabledHighlight);
-            highlightPositiveOR(node, enabledHighlight);
-            highlightNegativeOR(node, enabledHighlight);
-        }
-        //Highlight only the edges whose both endpoints are highlighted
-        link.style("opacity", function (d) {
-            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
-        });
-    }
-
-    function highlightNodesByPropertyAND(node, link) {
-        nodes.forEach(function (d) {
-            d.highlighted = 1;
-        });
-        node.style("opacity", 1);
-
-        //Then unhighlight by property AND
-        highlightToxicityAND(node, enabledHighlight);
-        highlightStanceAND(node, enabledHighlight);
-        highlightTargetAND(node, enabledHighlight);
-        highlightPositiveAND(node, enabledHighlight);
-        highlightNegativeAND(node, enabledHighlight);
-
-        //Highlight only the edges whose both endpoints are highlighted
-        link.style("opacity", function (d) {
-            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
-        });
-    }
-
-    /*END section */
 
     function writeIdLabel(nodeEnter) {
         nodeEnter.append("text")
@@ -2032,9 +2011,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
                 if (!document.querySelector("input[value=and-group]").checked && !document.querySelector("input[value=or-group]").checked) {
                     document.querySelector("input[value=and-group]").checked = true;
-                    highlightNodesByPropertyAND(node, link);
+                    highlightNodesByPropertyAND(node, link, nodes, enabledHighlight);
                 } else {
-                    checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
+                    checkboxAND.checked ? highlightNodesByPropertyAND(node, link, nodes, enabledHighlight) : highlightNodesByPropertyOR(node, link, nodes, enabledHighlight);
                     console.log(enabledHighlight);
                 }
 
@@ -2057,20 +2036,20 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         checkboxAND.addEventListener('change', function () {
             if (this.checked) {
                 checkboxOR.checked = false;
-                highlightNodesByPropertyAND(node, link);
+                highlightNodesByPropertyAND(node, link, nodes, enabledHighlight);
             } else {
                 checkboxOR.checked = true;
-                highlightNodesByPropertyOR(node, link);
+                highlightNodesByPropertyOR(node, link, nodes, enabledHighlight);
             }
         });
         // If OR is selected, uncheck the AND and highlight by property OR
         checkboxOR.addEventListener('change', function () {
             if (this.checked) {
                 checkboxAND.checked = false;
-                highlightNodesByPropertyOR(node, link);
+                highlightNodesByPropertyOR(node, link, nodes, enabledHighlight);
             } else {
                 checkboxAND.checked = true;
-                highlightNodesByPropertyAND(node, link);
+                highlightNodesByPropertyAND(node, link, nodes, enabledHighlight);
             }
         });
 
@@ -2083,7 +2062,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
                 console.log(enabledHighlight);
-                checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
+                checkboxOR.checked ? highlightNodesByPropertyOR(node, link, nodes, enabledHighlight) : highlightNodesByPropertyAND(node, link, nodes, enabledHighlight);
             })
         });
 
@@ -2116,15 +2095,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 return computeNodeRadius(d);
             })
             .style("fill", function (d) {
-                if (d._children && d._children.length === 1) return colourCollapsed1Son; //If it is collapsed and just has one children
-                else { //Otherwise, colour the node according to its level of toxicity
-                    switch (d.toxicity_level) {
-                        case 0: return colourToxicity0;
-                        case 1: return colourToxicity1;
-                        case 2: return colourToxicity2;
-                        case 3: return colourToxicity3;
-                        default: return colourNewsArticle;
-                    }
+                if (d._children?.length === 1) return colourCollapsed1Son; //If it is collapsed and just has one children
+                switch (d.toxicity_level) { //Otherwise, colour the node according to its level of toxicity
+                    case 0: return colourToxicity0;
+                    case 1: return colourToxicity1;
+                    case 2: return colourToxicity2;
+                    case 3: return colourToxicity3;
+                    default: return colourNewsArticle;
                 }
             });
 
@@ -2145,7 +2122,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .style("position", "relative")
             .style("z-index", -1);
 
-        visualiseRootIcon(node); //Draw an icon for the root node
+        visualiseRootIcon(node, root); //Draw an icon for the root node
 
         // Transition nodes to their new position.
         var nodeUpdate = node.transition()
@@ -2204,7 +2181,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .duration(duration)
             .attr("d", diagonal);
 
-        if (checkboxHighlightMenu.checked && source.children) checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
+        if (checkboxHighlightMenu.checked && source.children)
+            checkboxOR.checked ? highlightNodesByPropertyOR(node, link, nodes, enabledHighlight) : highlightNodesByPropertyAND(node, link, nodes, enabledHighlight);
 
 
         // Transition exiting nodes to the parent's new position.
