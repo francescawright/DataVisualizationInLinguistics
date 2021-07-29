@@ -797,6 +797,18 @@ function highlightNodesByPropertyAND(node, link, nodes, enabledHighlight) {
     });
 }
 
+function writeIdLabel(nodeEnter) {
+    nodeEnter.append("text")
+        .attr("x", 25)
+        .attr("dy", ".35em")
+        .attr('class', 'nodeText')
+        .attr('id', 'nodeText')
+        .attr("text-anchor", "end")
+        .text(function (d) {
+            return d.name;
+        })
+        .style("opacity", 1);
+}
 
 /**
  * Compute the position of an associated image to be centered on the node
@@ -1434,6 +1446,197 @@ function selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets
     }
 }
 
+//Statistic functions
+
+/**
+ * Recursive function to count the total number of descendants and
+ * the total number of nodes by toxicity
+ * */
+function getDescendants(node) {
+
+    if (!node.children && !node._children) {
+        return {
+            children: 0,
+            toxicityLevel: node.toxicity_level,
+            toxicity0: 0,
+            toxicity1: 0,
+            toxicity2: 0,
+            toxicity3: 0
+        };
+    }
+    let total = 0, childrenList = [], totalToxic0 = 0, totalToxic1 = 0, totalToxic2 = 0, totalToxic3 = 0;
+
+    let children = node.children ?? node._children;
+
+    if (children) {
+        children.forEach(function (d) {
+
+            childrenList = getDescendants(d);
+            total += childrenList.children + 1;
+
+            totalToxic0 += childrenList.toxicity0;
+            totalToxic1 += childrenList.toxicity1;
+            totalToxic2 += childrenList.toxicity2;
+            totalToxic3 += childrenList.toxicity3;
+
+            switch (childrenList.toxicityLevel) {
+                case 0: totalToxic0 += 1; break;
+                case 1: totalToxic1 += 1; break;
+                case 2: totalToxic2 += 1; break;
+                case 3: totalToxic3 += 1; break;
+            }
+        })
+    }
+
+    return {
+        children: total,
+        toxicityLevel: node.toxicity_level,
+        toxicity0: totalToxic0,
+        toxicity1: totalToxic1,
+        toxicity2: totalToxic2,
+        toxicity3: totalToxic3
+    };
+}
+
+/**
+ * Recursive function to compute the global statistics
+ * counts nodes by toxicity and by targets
+ * */
+function getStatisticValues(node) {
+    if (!node.children) {
+        return {
+            children: 0,
+            toxicityLevel: node.toxicity_level,
+            toxicity0: 0,
+            toxicity1: 0,
+            toxicity2: 0,
+            toxicity3: 0,
+            totalTargGroup: 0,
+            totalTargPerson: 0,
+            totalTargStereotype: 0,
+            totalTargNone: 0,
+            targGroup: node.target_group,
+            targPerson: node.target_person,
+            targStereotype: node.stereotype,
+            targNone: 0
+        };
+    }
+    let total = 0, childrenList = [],
+        totalToxic0 = 0, totalToxic1 = 0, totalToxic2 = 0, totalToxic3 = 0,
+        totalTargGroup = 0, totalTargPerson = 0, totalTargStereotype = 0, totalTargNone = 0;
+
+    if (node.children) {
+        node.children.forEach(function (d) {
+            childrenList = getStatisticValues(d);
+            total += childrenList.children + 1;
+
+            totalToxic0 += childrenList.toxicity0;
+            totalToxic1 += childrenList.toxicity1;
+            totalToxic2 += childrenList.toxicity2;
+            totalToxic3 += childrenList.toxicity3;
+
+            switch (childrenList.toxicityLevel) {
+                case 0: totalToxic0 += 1; break;
+                case 1: totalToxic1 += 1; break;
+                case 2: totalToxic2 += 1; break;
+                case 3: totalToxic3 += 1; break;
+            }
+
+            //Targets are not exclusive
+            childrenList.targGroup ? totalTargGroup += childrenList.totalTargGroup + 1 : totalTargGroup += childrenList.totalTargGroup;
+            childrenList.targPerson ? totalTargPerson += childrenList.totalTargPerson + 1 : totalTargPerson += childrenList.totalTargPerson;
+            childrenList.targStereotype ? totalTargStereotype += childrenList.totalTargStereotype + 1 : totalTargStereotype += childrenList.totalTargStereotype;
+            (!childrenList.targGroup && !childrenList.targPerson && !childrenList.targStereotype) ? totalTargNone += childrenList.totalTargNone + 1 : totalTargNone += childrenList.totalTargNone;
+        })
+    }
+
+    return {
+        children: total,
+        toxicityLevel: node.toxicity_level,
+        toxicity0: totalToxic0,
+        toxicity1: totalToxic1,
+        toxicity2: totalToxic2,
+        toxicity3: totalToxic3,
+        totalTargGroup: totalTargGroup,
+        totalTargPerson: totalTargPerson,
+        totalTargStereotype: totalTargStereotype,
+        totalTargNone: totalTargNone,
+        targGroup: node.target_group,
+        targPerson: node.target_person,
+        targStereotype: node.stereotype,
+        targNone: 0
+    };
+}
+
+function writeStatisticText(totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic,
+                            totalGroup, totalPerson, totalStereotype, totalNone) {
+    let statisticText = "<table style='width: 500px;'>";
+
+    let statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
+    let statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
+    let statValuesTox = [totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic];
+    let statValuesTarg = [totalGroup, totalPerson, totalStereotype, totalNone];
+    let targetImagesPath = ["icons/Group.png", "icons/Person.png", "icons/Stereotype.png", "/icons/Blank.png"];
+    let toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
+
+    for (let i = 0; i < statTitlesToxicity.length; i++) {
+        statisticText += "<tr style='font-size: 20px;'>"; //Start table line
+
+        //Write toxicity and target line
+        statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td style='padding-right: 55px;'>" + statValuesTox[i].toString() + "</td>";
+        statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
+
+        statisticText += "</tr>"; //End table line
+    }
+
+    statisticText += "</table>";
+    return statisticText;
+}
+
+function writeTooltipText(d, tooltipText) {
+
+    //I want to show Argument and Constructiveness in one line, I add a dummy space to keep that in the loop
+    var jsonValues = [d.name, d.toxicity_level, d.depth,
+        d.argumentation, d.constructiveness, -1,
+        d.sarcasm, d.mockery, d.intolerance,
+        d.improper_language, d.insult, d.aggressiveness,
+        d.target_group, d.target_person, d.stereotype];
+    var jsonNames = ["Comment ID", "Toxicity level", "Comment level",
+        "Argument", "Constructiveness", " ",
+        "Sarcasm", "Mockery", "Intolerance",
+        "Improper language", "Insult", "Aggressiveness",
+        "Target group", "Target person", "Stereotype"];
+    let i = 0;
+    tooltipText = "<table>";
+
+    for (i = 0; i < jsonValues.length; i++) {
+        if (i === 3 || i === 12) tooltipText += "<tr><td></td></tr>"; // I want a break between the first line and the features and the targets
+        if (i % 3 === 0) tooltipText += "<tr>"; //Start table line
+        if (i < 3) tooltipText += "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>"; //First ones without bold
+        else if (jsonValues[i] !== -1) jsonValues[i] ? tooltipText += "<td><b>" + jsonNames[i] + ": " + jsonValues[i] + "</b></td>" : tooltipText += "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>";
+        if ((i + 1) % 3 === 0) tooltipText += "</tr>"; //End table line
+    }
+
+    tooltipText += "</table>";
+
+    tooltipText += "<br> <table>";
+    //If node is collapsed, we also want to add some information about its sons
+    if (d._children) {
+        var sonTitles = ["Direct comments", "Total number of generated comments", "Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
+        var sonValues = [d._children.length, d.numberOfDescendants, d.descendantsWithToxicity0, d.descendantsWithToxicity1, d.descendantsWithToxicity2, d.descendantsWithToxicity3];
+
+        for (i = 0; i < sonValues.length; i++) {
+            if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
+            tooltipText += "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
+            if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
+        }
+
+    }
+    tooltipText += "</table>";
+    tooltipText += "<br>" + d.coment;
+    return tooltipText;
+}
+
 // Get JSON data
 treeJSON = d3.json(dataset, function (error, treeData) {
 
@@ -1443,7 +1646,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     let root, nodes;
     var initialZoom, initialX, initialY; //Initial zoom and central coordinates of the first visualization of the graph
 
-    var drawingAllInOne = false; //if we are drawing all together or separated
+    let drawingAllInOne = false; //if we are drawing all together or separated
 
 
     let tooltipText; // The variable displaying the information of a node inside a floating rectangle
@@ -1573,16 +1776,16 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         * If the scale is 0, we will not see the graph
         * Define the scale to be at least 0.1 and set it to the initialZoom + the difference of the listener and the d3.event initial scale
         * */
-        var newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1); //Avoid the graph to be seen mirrored.
+        let newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1); //Avoid the graph to be seen mirrored.
 
         /*
         * NOTE: Add to the initial position values (initialX and initialY) the movement registered by d3.
         * d3.event.translate returns an array [x,y] with starting values [50, 200]
         * The values X and Y are swapped in zoomToFit() and we need to take that into account to give the new coordinates
         * */
-        var movement = d3.event.translate;
-        var newX = initialX + (movement[1]-200);
-        var newY = initialY + (movement[0]-50);
+        let movement = d3.event.translate;
+        let newX = initialX + (movement[1]-200);
+        let newY = initialY + (movement[0]-50);
         svgGroup.attr("transform", "translate(" + [newY, newX] + ")scale(" + newScale + ")");
     }
 
@@ -1635,182 +1838,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         checkboxes.forEach(cb => cb.checked = !cb.checked);
     }
 
-    function writeIdLabel(nodeEnter) {
-        nodeEnter.append("text")
-            .attr("x", 25)
-            .attr("dy", ".35em")
-            .attr('class', 'nodeText')
-            .attr('id', 'nodeText')
-            .attr("text-anchor", "end")
-            .text(function (d) {
-                return d.name;
-            })
-            .style("opacity", 1);
-    }
-
-
-    /**
-     * Recursive function to count the total number of descendants and
-     * the total number of nodes by toxicity
-     * */
-    function getDescendants(node) {
-
-        if (!node.children && !node._children) {
-            return {
-                children: 0,
-                toxicityLevel: node.toxicity_level,
-                toxicity0: 0,
-                toxicity1: 0,
-                toxicity2: 0,
-                toxicity3: 0
-            };
-        }
-        var total = 0, childrenList = [], totalToxic0 = 0, totalToxic1 = 0, totalToxic2 = 0, totalToxic3 = 0;
-
-        var children = node.children ?? node._children;
-
-        if (children) {
-            children.forEach(function (d) {
-
-                childrenList = getDescendants(d);
-                total += childrenList.children + 1;
-
-                totalToxic0 += childrenList.toxicity0;
-                totalToxic1 += childrenList.toxicity1;
-                totalToxic2 += childrenList.toxicity2;
-                totalToxic3 += childrenList.toxicity3;
-
-                switch (childrenList.toxicityLevel) {
-                    case 0: totalToxic0 += 1; break;
-                    case 1: totalToxic1 += 1; break;
-                    case 2: totalToxic2 += 1; break;
-                    case 3: totalToxic3 += 1; break;
-                }
-            })
-        }
-
-        return {
-            children: total,
-            toxicityLevel: node.toxicity_level,
-            toxicity0: totalToxic0,
-            toxicity1: totalToxic1,
-            toxicity2: totalToxic2,
-            toxicity3: totalToxic3
-        };
-    }
-
-    /**
-     * Recursive function to compute the global statistics
-     * counts nodes by toxicity and by targets
-     * */
-    function getStatisticValues(node) {
-        if (!node.children) {
-            return {
-                children: 0,
-                toxicityLevel: node.toxicity_level,
-                toxicity0: 0,
-                toxicity1: 0,
-                toxicity2: 0,
-                toxicity3: 0,
-                totalTargGroup: 0,
-                totalTargPerson: 0,
-                totalTargStereotype: 0,
-                totalTargNone: 0,
-                targGroup: node.target_group,
-                targPerson: node.target_person,
-                targStereotype: node.stereotype,
-                targNone: 0
-            };
-        }
-        var total = 0, childrenList = [],
-            totalToxic0 = 0, totalToxic1 = 0, totalToxic2 = 0, totalToxic3 = 0,
-            totalTargGroup = 0, totalTargPerson = 0, totalTargStereotype = 0, totalTargNone = 0;
-
-        if (node.children) {
-            node.children.forEach(function (d) {
-                childrenList = getStatisticValues(d);
-                total += childrenList.children + 1;
-
-                totalToxic0 += childrenList.toxicity0;
-                totalToxic1 += childrenList.toxicity1;
-                totalToxic2 += childrenList.toxicity2;
-                totalToxic3 += childrenList.toxicity3;
-
-                switch (childrenList.toxicityLevel) {
-                    case 0: totalToxic0 += 1; break;
-                    case 1: totalToxic1 += 1; break;
-                    case 2: totalToxic2 += 1; break;
-                    case 3: totalToxic3 += 1; break;
-                }
-
-                //Targets are not exclusive
-                childrenList.targGroup ? totalTargGroup += childrenList.totalTargGroup + 1 : totalTargGroup += childrenList.totalTargGroup;
-                childrenList.targPerson ? totalTargPerson += childrenList.totalTargPerson + 1 : totalTargPerson += childrenList.totalTargPerson;
-                childrenList.targStereotype ? totalTargStereotype += childrenList.totalTargStereotype + 1 : totalTargStereotype += childrenList.totalTargStereotype;
-                (!childrenList.targGroup && !childrenList.targPerson && !childrenList.targStereotype) ? totalTargNone += childrenList.totalTargNone + 1 : totalTargNone += childrenList.totalTargNone;
-            })
-        }
-
-        return {
-            children: total,
-            toxicityLevel: node.toxicity_level,
-            toxicity0: totalToxic0,
-            toxicity1: totalToxic1,
-            toxicity2: totalToxic2,
-            toxicity3: totalToxic3,
-            totalTargGroup: totalTargGroup,
-            totalTargPerson: totalTargPerson,
-            totalTargStereotype: totalTargStereotype,
-            totalTargNone: totalTargNone,
-            targGroup: node.target_group,
-            targPerson: node.target_person,
-            targStereotype: node.stereotype,
-            targNone: 0
-        };
-    }
-
-    function writeTooltipText(d) {
-
-        //I want to show Argument and Constructiveness in one line, I add a dummy space to keep that in the loop
-        var jsonValues = [d.name, d.toxicity_level, d.depth,
-            d.argumentation, d.constructiveness, -1,
-            d.sarcasm, d.mockery, d.intolerance,
-            d.improper_language, d.insult, d.aggressiveness,
-            d.target_group, d.target_person, d.stereotype];
-        var jsonNames = ["Comment ID", "Toxicity level", "Comment level",
-            "Argument", "Constructiveness", " ",
-            "Sarcasm", "Mockery", "Intolerance",
-            "Improper language", "Insult", "Aggressiveness",
-            "Target group", "Target person", "Stereotype"];
-        var i = 0;
-        tooltipText = "<table>";
-
-        for (i = 0; i < jsonValues.length; i++) {
-            if (i === 3 || i === 12) tooltipText += "<tr><td></td></tr>"; // I want a break between the first line and the features and the targets
-            if (i % 3 === 0) tooltipText += "<tr>"; //Start table line
-            if (i < 3) tooltipText += "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>"; //First ones without bold
-            else if (jsonValues[i] !== -1) jsonValues[i] ? tooltipText += "<td><b>" + jsonNames[i] + ": " + jsonValues[i] + "</b></td>" : tooltipText += "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>";
-            if ((i + 1) % 3 === 0) tooltipText += "</tr>"; //End table line
-        }
-
-        tooltipText += "</table>";
-
-        tooltipText += "<br> <table>";
-        //If node is collapsed, we also want to add some information about its sons
-        if (d._children) {
-            var sonTitles = ["Direct comments", "Total number of generated comments", "Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
-            var sonValues = [d._children.length, d.numberOfDescendants, d.descendantsWithToxicity0, d.descendantsWithToxicity1, d.descendantsWithToxicity2, d.descendantsWithToxicity3];
-
-            for (i = 0; i < sonValues.length; i++) {
-                if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
-                tooltipText += "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
-                if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
-            }
-
-        }
-        tooltipText += "</table>";
-        tooltipText += "<br>" + d.coment;
-    }
 
     function update(source) {
 
@@ -1850,9 +1877,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
             .on('mouseover', function (d) {
                 if (d !== root) {
-                    writeTooltipText(d);
                     tooltip.style("visibility", "visible")
-                        .html(tooltipText);
+                        .html(writeTooltipText(d, tooltipText));
                 }
             })
             .on("mousemove", function (d) {
@@ -2219,52 +2245,29 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     // Layout the tree initially and center on the root node.
     update(root);
 
-    var box = computeDimensions(nodes);
-    var initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root);
+    let box = computeDimensions(nodes);
+    let initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root);
     initialZoom = initialSight.initialZoom;
     initialX = initialSight.initialX;
     initialY = initialSight.initialY;
 
     //I compute the values for the statistic data showing in the background
-    var listStatistics = getStatisticValues(root);
-    var totalNumberOfNodes = listStatistics.children;
+    const listStatistics = getStatisticValues(root);
+    const totalNumberOfNodes = listStatistics.children;
 
-    var totalNotToxic = listStatistics.toxicity0,
+    const totalNotToxic = listStatistics.toxicity0,
         totalMildlyToxic = listStatistics.toxicity1,
         totalToxic = listStatistics.toxicity2,
         totalVeryToxic = listStatistics.toxicity3;
 
-    var totalGroup = listStatistics.totalTargGroup,
+    const totalGroup = listStatistics.totalTargGroup,
         totalPerson = listStatistics.totalTargPerson,
         totalStereotype = listStatistics.totalTargStereotype,
         totalNone = listStatistics.totalTargNone;
 
-    var statisticTitle = "<span style='font-size: 22px;'> Static values of " + sel_item.split('/')[2] + "</span>";
+    let statisticTitle = "<span style='font-size: 22px;'> Static values of " + sel_item.split('/')[2] + "</span>";
     statisticTitleBackground.style("visibility", "visible").html(statisticTitle);
-    statisticBackground.style("visibility", "visible").html(writeStatisticText());
-
-    function writeStatisticText() {
-        var statisticText = "<table style='width: 500px;'>";
-
-        var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
-        var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
-        var statValuesTox = [totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic];
-        var statValuesTarg = [totalGroup, totalPerson, totalStereotype, totalNone];
-        var targetImagesPath = ["icons/Group.png", "icons/Person.png", "icons/Stereotype.png", "/icons/Blank.png"];
-        var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
-
-        for (var i = 0; i < statTitlesToxicity.length; i++) {
-            statisticText += "<tr style='font-size: 20px;'>"; //Start table line
-
-            //Write toxicity and target line
-            statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td style='padding-right: 55px;'>" + statValuesTox[i].toString() + "</td>";
-            statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
-
-            statisticText += "</tr>"; //End table line
-        }
-
-        statisticText += "</table>";
-        return statisticText;
-    }
+    statisticBackground.style("visibility", "visible").html(writeStatisticText(totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic,
+        totalGroup, totalPerson, totalStereotype, totalNone));
 
 });
