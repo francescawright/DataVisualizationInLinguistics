@@ -110,6 +110,7 @@ const objTargetGroupRing = {
         fileName: "Gray.png"
     };
 
+// Objects to draw the target on the left side
 const objTargetGroup = {
         class: "targetGroup",
         id: "targetGroup",
@@ -133,6 +134,35 @@ const objTargetGroup = {
         id: "targetStereotype",
         x: -70,
         y: -10,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Stereotype.svg"
+    };
+
+// Objects to draw the target inside of the node in a triangle
+const objTargetGroupInside = {
+        class: "targetGroup",
+        id: "targetGroup",
+        x: -0.9,
+        y: -0.8,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Group.svg"
+    },
+    objTargetPersonInside = {
+        class: "targetPerson",
+        id: "targetPerson",
+        x: -0.5,
+        y: 0,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Person.svg"
+    },
+    objTargetStereotypeInside = {
+        class: "targetStereotype",
+        id: "targetStereotype",
+        x: -0.1,
+        y: -0.8,
         height: targetIconHeight,
         width: targetIconWidth,
         fileName: "Stereotype.svg"
@@ -1121,6 +1151,57 @@ function drawTargetsOutsideCompact(nodeEnter, localPath, enabledTargets){
     if(enabledTargets.indexOf("target-stereotype") > -1) drawObjectTargetOutside(nodeEnter, objTargetStereotype, 2, path);
 }
 
+/**
+ * Draw an image inside a node scaled and positioned in a triangle
+ *
+ * @param {d3-node} nodeEnter Node to which we append the image
+ * @param {object} object The object of a property
+ * @param {number} itemOrder Presence of the object in the array
+ * @param {string} path The path of the image
+ * */
+function drawObjectTargetInside(nodeEnter, object, itemOrder, path){
+    let listOpacity;
+
+    nodeEnter.append("image")
+        .attr('class', object.class)
+        .attr('id', object.id)
+        .attr("x", function (d) {
+            return d.radius * object.x;
+        })
+        .attr("y", function (d) {
+            return d.radius * object.y;
+        })
+        .attr("height", function (d) {
+            return sizeImage(d.radius)/2.0;
+        })
+        .attr("width", function (d) {
+            return sizeImage(d.radius)/2.0;
+        })
+        .attr("href", path + object.fileName)
+        .attr("opacity", function (d) {
+            if (d.parent === undefined) return 0;
+            listOpacity = [d.target_group, d.target_person, d.stereotype];
+            return listOpacity[itemOrder];
+        });
+}
+
+/**
+ * Draws the 3 targets of a node if the checkbox is checked
+ * and if the node has that target (sets the opacity to visible)
+ *
+ * Draw in a triangle Group --- Stereotype
+ *                          \ /
+ *                         Person
+ * */
+function drawTargetsInsideCompact(nodeEnter, localPath, enabledTargets){
+    removeThisTargets(nodeEnter);
+
+    let path = pathTargets + localPath;
+
+    if(enabledTargets.indexOf("target-group") > -1) drawObjectTargetInside(nodeEnter, objTargetGroupInside, 0, path);
+    if(enabledTargets.indexOf("target-person") > -1) drawObjectTargetInside(nodeEnter, objTargetPersonInside, 1, path);
+    if(enabledTargets.indexOf("target-stereotype") > -1) drawObjectTargetInside(nodeEnter, objTargetStereotypeInside, 2, path);
+}
 
 
 // Get JSON data
@@ -1219,39 +1300,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     /*END SECTION checkboxes*/
 
     var checkButtons = document.querySelectorAll("input[name=check_button_features]");
-
-    // Objects for target images
-    var objTargetGroupInside = {
-            class: "targetGroup",
-            id: "targetGroup",
-            selected: enabledTargets.indexOf("target-group"),
-            x: -0.9,
-            y: -0.8,
-            height: targetIconHeight,
-            width: targetIconWidth,
-            fileName: "Group.svg"
-        },
-        objTargetPersonInside = {
-            class: "targetPerson",
-            id: "targetPerson",
-            selected: enabledTargets.indexOf("target-person"),
-            x: -0.5,
-            y: 0,
-            height: targetIconHeight,
-            width: targetIconWidth,
-            fileName: "Person.svg"
-        },
-        objTargetStereotypeInside = {
-            class: "targetStereotype",
-            id: "targetStereotype",
-            selected: enabledTargets.indexOf("target-stereotype"),
-            x: -0.1,
-            y: -0.8,
-            height: targetIconHeight,
-            width: targetIconWidth,
-            fileName: "Stereotype.svg"
-        };
-
 
     var dropdownTargets = document.getElementById("dropdown-targets");
     var dropdownFeatures = document.getElementById("dropdown-features");
@@ -1389,52 +1437,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
 
-
-    /**
-     * Draws the 3 targets of a node if the checkbox is checked
-     * and if the node has that target (sets the opacity to visible)
-     *
-     * The icon used is from the local path passed by parameter
-     * The css values are from the target objects that are icons
-     *
-     * Draw in a triangle Group --- Stereotype
-     *                          \ /
-     *                         Person
-     * */
-    function drawTargetsInside(nodeEnter, localPath) {
-        removeThisTargets(nodeEnter);
-        var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
-        var listOpacity;
-        var targets = [objTargetGroupInside, objTargetPersonInside, objTargetStereotypeInside];
-
-        for (let i = 0; i < targets.length; i++) {
-            if (cbShowTargets[i] > -1) {
-                nodeEnter.append("image")
-                    .attr('class', targets[i].class)
-                    .attr('id', targets[i].id)
-                    .attr("x", function (d) {
-                        return d.radius * targets[i].x;
-                    })
-                    .attr("y", function (d) {
-                        return d.radius * targets[i].y;
-                    })
-                    .attr("height", function (d) {
-                        return sizeImage(d.radius)/2.0;
-                    })
-                    .attr("width", function (d) {
-                        return sizeImage(d.radius)/2.0;
-                    })
-                    .attr("href", pathTargets + localPath + targets[i].fileName)
-                    .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
-                        listOpacity = [d.target_group, d.target_person, d.stereotype];
-                        return listOpacity[i];
-                    });
-            }
-        }
-    }
-
-
     /**
      * Determines the type of visualization for the targets
      * determinated by the drop down menu
@@ -1458,7 +1460,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     break;
 
                 case "icon-on-node":
-                    drawTargetsInside(nodeEnter, "icons/");
+                    drawTargetsInsideCompact(nodeEnter, "icons/", enabledTargets);
                     break;
                 case "directory-1":
                     drawTargets(nodeEnter, "newOption1/")
