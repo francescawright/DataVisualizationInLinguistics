@@ -53,7 +53,7 @@ const colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 
 
 const colourUnhighlightedToxicity0 = "#f0f0f0", colourUnhighlightedToxicity1 = "#d6d6d6",
     colourUnhighlightedToxicity2 = "#ababab", colourUnhighlightedToxicity3 = "#6b6b6b",
-    colourUnhighlightedCollapsed1Son = "cfdbeb";
+    colourUnhighlightedCollapsed1Son = "#cfdbeb";
 
 const colorFeature = ["#a1d99b", "#31a354",
     "#fee5d9", "#fcbba1", "#fc9272",
@@ -110,15 +110,43 @@ const objTargetGroupRing = {
         fileName: "Gray.png"
     };
 
+const objTargetGroup = {
+        class: "targetGroup",
+        id: "targetGroup",
+        x: -30,
+        y: -10,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Group.svg"
+    },
+    objTargetPerson = {
+        class: "targetPerson",
+        id: "targetPerson",
+        x: -50,
+        y: -10,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Person.svg"
+    },
+    objTargetStereotype = {
+        class: "targetStereotype",
+        id: "targetStereotype",
+        x: -70,
+        y: -10,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Stereotype.svg"
+    };
+
 // Objects for toxicities for Ecem tests
-var objToxicity0 = {class: "toxicity0", id: "toxicity0", selected: 1, fileName: "Level0.svg"},
-    objToxicity1 = {class: "toxicity1", id: "toxicity1", selected: 1, fileName: "Level1.svg"},
-    objToxicity2 = {class: "toxicity2", id: "toxicity2", selected: 1, fileName: "Level2.svg"},
-    objToxicity3 = {class: "toxicity3", id: "toxicity3", selected: 1, fileName: "Level3.svg"};
+const objToxicity0 = {class: "toxicity0", id: "toxicity0", fileName: "Level0.svg"},
+    objToxicity1 = {class: "toxicity1", id: "toxicity1", fileName: "Level1.svg"},
+    objToxicity2 = {class: "toxicity2", id: "toxicity2", fileName: "Level2.svg"},
+    objToxicity3 = {class: "toxicity3", id: "toxicity3", fileName: "Level3.svg"};
 
 
 // Objects for feature images
-var objFeatArgumentation = {
+const objFeatArgumentation = {
         class: "featArgumentation",
         id: "featArgumentation",
         color: "#a1d99b",
@@ -1049,8 +1077,50 @@ function drawTargetRingsCompact(nodeEnter, localPath, enabledTargets){
     if(enabledTargets.indexOf("target-group") > -1) drawObjectTargetRing(nodeEnter, objTargetGroupRing, 1, path);
     if(enabledTargets.indexOf("target-person") > -1) drawObjectTargetRing(nodeEnter, objTargetPersonRing, 2, path);
     if(enabledTargets.indexOf("target-stereotype") > -1) drawObjectTargetRing(nodeEnter, objTargetStereotypeRing, 3, path);
-
 }
+
+/**
+ * Draw an image on the left side of a node displaced by object.x pixels
+ *
+ * @param {d3-node} nodeEnter Node to which we append the image
+ * @param {object} object The object of a property
+ * @param {number} itemOrder Presence of the object in the array
+ * @param {string} path The path of the image
+ * */
+function drawObjectTargetOutside(nodeEnter, object, itemOrder, path){
+    let listOpacity;
+
+    nodeEnter.append("image")
+        .attr('class', object.class)
+        .attr('id', object.id)
+        .attr("x", function (d) {
+            return object.x - d.radius;
+        })
+        .attr("y", object.y)
+        .attr("height", object.height)
+        .attr("width", object.width)
+        .attr("href", path + object.fileName)
+        .attr("opacity", function (d) {
+            if (d.parent === undefined) return 0;
+            listOpacity = [d.target_group, d.target_person, d.stereotype];
+            return listOpacity[itemOrder];
+        });
+}
+
+/**
+ * Draws the 3 targets of a node on the left side horizontally if the checkbox is checked
+ * and if the node has that target (sets the opacity to visible)
+ * */
+function drawTargetsOutsideCompact(nodeEnter, localPath, enabledTargets){
+    removeThisTargets(nodeEnter);
+
+    let path = pathTargets + localPath;
+
+    if(enabledTargets.indexOf("target-group") > -1) drawObjectTargetOutside(nodeEnter, objTargetGroup, 0, path);
+    if(enabledTargets.indexOf("target-person") > -1) drawObjectTargetOutside(nodeEnter, objTargetPerson, 1, path);
+    if(enabledTargets.indexOf("target-stereotype") > -1) drawObjectTargetOutside(nodeEnter, objTargetStereotype, 2, path);
+}
+
 
 
 // Get JSON data
@@ -1151,38 +1221,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var checkButtons = document.querySelectorAll("input[name=check_button_features]");
 
     // Objects for target images
-    var objTargetGroup = {
-            class: "targetGroup",
-            id: "targetGroup",
-            selected: enabledTargets.indexOf("target-group"),
-            x: -30,
-            y: -10,
-            height: targetIconHeight,
-            width: targetIconWidth,
-            fileName: "Group.svg"
-        },
-        objTargetPerson = {
-            class: "targetPerson",
-            id: "targetPerson",
-            selected: enabledTargets.indexOf("target-person"),
-            x: -50,
-            y: -10,
-            height: targetIconHeight,
-            width: targetIconWidth,
-            fileName: "Person.svg"
-        },
-        objTargetStereotype = {
-            class: "targetStereotype",
-            id: "targetStereotype",
-            selected: enabledTargets.indexOf("target-stereotype"),
-            x: -70,
-            y: -10,
-            height: targetIconHeight,
-            width: targetIconWidth,
-            fileName: "Stereotype.svg"
-        };
-
-
     var objTargetGroupInside = {
             class: "targetGroup",
             id: "targetGroup",
@@ -1350,71 +1388,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
-    /**
-     * Draws an object if the checkbox is selected and the node presents that property
-     *
-     * @param {d3-node} nodeEnter Node to which we append the image
-     * @param {object} object The object of a property
-     * @param {boolean} show If the checkbox is selected
-     * @param {number} present If the property is present in the node
-     * @param {string} path The path of the image
-     * @param {number} x The x position relative to the node where the image starts being drawn
-     * @param {number} y The y position relative to the node where the image starts being drawn
-     * @param {number} height The height of the image
-     * @param {number} width The width of the image
-     * */
-    function drawObject(nodeEnter, object, show, present,
-                        path,
-                        x, y, height, width){
-        if (show){
-            nodeEnter.append("image")
-                .attr('class', object.class)
-                .attr('id', object.id)
-                .attr("x", x)
-                .attr("y", y)
-                .attr("height", height)
-                .attr("width", width)
-                .attr("href", path + object.fileName)
-                .attr("opacity", function (d) {
-                    if (d.parent === undefined) return 0;
-                    return present;
-                });
-        }
-    }
-
-    /**
-     * Draws the 3 targets of a node if the checkbox is checked
-     * and if the node has that target (sets the opacity to visible)
-     *
-     * The icon used is from the local path passed by parameter
-     * The css values are from the target objects that are icons
-     * */
-    function drawTargetsOutside(nodeEnter, localPath) {
-        removeThisTargets(nodeEnter);
-        var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
-        var listOpacity;
-        var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
-
-        for (let i = 0; i < targets.length; i++) {
-            if (cbShowTargets[i] > -1) {
-                nodeEnter.append("image")
-                    .attr('class', targets[i].class)
-                    .attr('id', targets[i].id)
-                    .attr("x", function (d) {
-                        return targets[i].x - d.radius;
-                    })
-                    .attr("y", targets[i].y)
-                    .attr("height", targets[i].height)
-                    .attr("width", targets[i].width)
-                    .attr("href", pathTargets + localPath + targets[i].fileName)
-                    .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
-                        listOpacity = [d.target_group, d.target_person, d.stereotype];
-                        return listOpacity[i];
-                    });
-            }
-        }
-    }
 
 
     /**
@@ -1481,7 +1454,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     break;
 
                 case "icon-outside-node":
-                    drawTargetsOutside(nodeEnter, "icons/");
+                    drawTargetsOutsideCompact(nodeEnter, "icons/", enabledTargets);
                     break;
 
                 case "icon-on-node":
