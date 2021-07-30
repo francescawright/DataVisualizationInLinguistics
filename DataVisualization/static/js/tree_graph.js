@@ -1295,7 +1295,7 @@ function drawFeatureAsCheeseOutside(nodeEnter, localPath, enabledFeatures) {
     }
 }
 
-
+//Deprecated
 /**
  * Hide all previous features and targets
  * Draw everything inside of the node
@@ -2201,8 +2201,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 else if (d.target.positive_stance === 1) return colourPositiveStance; //In favour
                 else if (d.target.negative_stance === 1)  return colourNegativeStance; //Against
                 else return colourNeutralStance; //Neutral comment
-            })
-            /*.on('click', clickLink)*/;
+            });
 
         // Transition links to their new position.
         link.transition()
@@ -2252,22 +2251,16 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     initialY = initialSight.initialY;
 
     //I compute the values for the statistic data showing in the background
-    const listStatistics = getStatisticValues(root);
-    const totalNumberOfNodes = listStatistics.children;
+    const {children, toxicityLevel,
+        toxicity0, toxicity1, toxicity2, toxicity3,
+        totalTargGroup,totalTargPerson, totalTargStereotype, totalTargNone,
+        ...rest} = getStatisticValues(root);
 
-    const totalNotToxic = listStatistics.toxicity0,
-        totalMildlyToxic = listStatistics.toxicity1,
-        totalToxic = listStatistics.toxicity2,
-        totalVeryToxic = listStatistics.toxicity3;
-
-    const totalGroup = listStatistics.totalTargGroup,
-        totalPerson = listStatistics.totalTargPerson,
-        totalStereotype = listStatistics.totalTargStereotype,
-        totalNone = listStatistics.totalTargNone;
+    // (({ a, c }) => ({ a, c }))(object);
 
     let statisticTitle = "<span style='font-size: 22px;'> Static values of " + sel_item.split('/')[2] + "</span>";
     statisticTitleBackground.style("visibility", "visible").html(statisticTitle);
-    statisticBackground.style("visibility", "visible").html(writeStatisticText(totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic,
-        totalGroup, totalPerson, totalStereotype, totalNone));
+    statisticBackground.style("visibility", "visible").html(writeStatisticText(toxicity0, toxicity1, toxicity2, toxicity3,
+        totalTargGroup, totalTargPerson, totalTargStereotype, totalTargNone));
 
 });
