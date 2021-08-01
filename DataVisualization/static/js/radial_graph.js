@@ -25,6 +25,13 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
+/* Constant
+ * */
+const duration = 750; //Duration of the animation of a transition
+
+//Graph
+const canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
+
 /**
  * Compute the radius of the node based on the number of children it has
  * */
@@ -65,33 +72,33 @@ function computeDimensions(nodes){
     for(const n of nodes){
         //Quadrant 1
         if ( 0 <= n.x && n.x < 90 && n.y > maxYq1) {
-            maxYq1 = n.y;
+            maxYq1 = n.y + n.radius;
             xQ1 = n.x;
         }
 
         //Quadrant 2
         if ( 90 <= n.x && n.x < 180 && n.y > maxYq2) {
-            maxYq2 = n.y;
+            maxYq2 = n.y + n.radius;
             xQ2 = n.x;
         }
         if ( -270 <= n.x && n.x < -180 && n.y > maxYq2) {
-            maxYq2 = n.y;
+            maxYq2 = n.y + n.radius;
             xQ2 = n.x;
         }
 
         //Quadrant 3
         if ( 180 <= n.x && n.x < 270 && n.y > maxYq3) {
-            maxYq3 = n.y;
+            maxYq3 = n.y + n.radius;
             xQ3 = n.x;
         }
         if ( -180 <= n.x && n.x < -90 && n.y > maxYq3) {
-            maxYq3 = n.y;
+            maxYq3 = n.y + n.radius;
             xQ3 = n.x;
         }
 
         //Quadrant 4
         if ( -90 <= n.x && n.x < 0 && n.y > maxYq4) {
-            maxYq4 = n.y;
+            maxYq4 = n.y + n.radius;
             xQ4 = n.x;
         }
     }
@@ -101,11 +108,41 @@ function computeDimensions(nodes){
 
 /**
  * Center graph and zoom to fit the whole graph visualization in our canvas
+ *
+ * @param {{maxYq1: number}, {maxYq2: number}, {maxYq3: number}, {maxYq4: number}}
+ *      maxYq1: The maximum radius of quadrant Q1.
+ *      maxYq2: The maximum radius of quadrant Q2.
+ *      maxYq3: The maximum radius of quadrant Q3.
+ *      maxYq4: The maximum radius of quadrant Q4.
+ * @return {{initialZoom: number}, {initialX: number}, {initialY: number}}
  * */
-function zoomToFit() {
+function zoomToFit({maxYq1, maxYq2,maxYq3, maxYq4}) {
     //By default, the (0,0) (our root node) is displayed on the top left corner
     //We need to center the graph in the canvas
 
+    //First approach
+    let top =  Math.max(maxYq1, maxYq4),
+        bottom = Math.max(maxYq2, maxYq3);
+
+    let right = Math.max(maxYq1, maxYq2),
+        left = Math.max(maxYq3, maxYq4);
+
+    let width = right + left;
+    let height = top + bottom;
+
+    let scale = Math.min(canvasWidth/width, canvasHeight/height);
+
+    let initialX = (right - left)/2.0,
+        initialY = (top - bottom)/2.0;
+
+    let x = canvasWidth / 2.0 +  initialX * scale,
+        y = canvasHeight / 2.0 + initialY * scale;
+
+    d3.select('g').transition()
+        .duration(duration)
+        .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
+
+    return {initialZoom: scale, initialX: x, initialY: y};
 }
 
 
@@ -470,6 +507,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var root, rootName = "News Article";
     var nodes;
 
+    let initialZoom, initialX, initialY; //Initial zoom and central coordinates of the first visualization of the graph
 
     var groupDrawn = false, personDrawn = false;
     var opacityValue = 0.2;
@@ -605,6 +643,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      *
      * @return rectangular coordinates
      *
+     * 0 degrees at 12 o'clock, continue clockwise
      * This is from the official library https://github.com/d3/d3-shape/blob/master/src/pointRadial.js
      * */
     function radialPoint(x, y) {
@@ -829,9 +868,15 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     });
 
 
-    // Define the zoom function for the zoomable tree
+    /**
+     * Define zoom and translation
+     * */
     function zoom() {
-        svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        let newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1);;
+        let movement = d3.event.translate;
+        let translatedX = initialX + movement[0]
+            translatedY = initialY + movement[1];
+        svgGroup.attr("transform", "translate(" + [translatedX, translatedY] + ")scale(" + newScale + ")");
     }
 
     // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
@@ -840,8 +885,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     // define the baseSvg, attaching a class for styling and the zoomListener
     var baseSvg = d3.select("#tree-container").append("svg")
-        .attr("width", 2200)
-        .attr("height", 900)
+        .attr("width", canvasWidth)
+        .attr("height", canvasHeight)
         .attr("class", "overlay")
         .call(zoomListener);
 
@@ -2374,10 +2419,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 click(d);
             })
             .on('mouseover', function (d) {
-                console.log("coordinates ", d.x, d.y);
+                console.log("polar coordinates ", d.x, d.y);
                 //console.log("Before transforming coordenates: ", source.x0, source.y0);
                 var aux = (d.x < 0) ? 360 + d.x : d.x;
                 console.log("something radial?", radialPoint(aux, d.y));
+                console.log("**************************");
                 if (d !== root) {
                     writeTooltipText(d);
                     tooltip.style("visibility", "visible")
@@ -2699,9 +2745,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     // Layout the tree initially and center on the root node.
     update(root);
-    //centerNode(root);
     var box = computeDimensions(nodes);
-    console.log("box containing Y ", box);
+    ({initialZoom, initialX, initialY} = zoomToFit(box));
 
     /**
      * Wrap call to compute statistics and to write them in a hover text
