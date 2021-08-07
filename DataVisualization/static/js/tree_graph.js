@@ -76,6 +76,7 @@ const objRoot = {
 const objTargetGroupRing = {
         class: "targetGroup",
         id: "targetGroup",
+        name: "target-group",
         x: -10,
         y: -10,
         height: 20,
@@ -85,6 +86,7 @@ const objTargetGroupRing = {
     objTargetPersonRing = {
         class: "targetPerson",
         id: "targetPerson",
+        name: "target-person",
         x: -10,
         y: -10,
         height: 20,
@@ -94,6 +96,7 @@ const objTargetGroupRing = {
     objTargetStereotypeRing = {
         class: "targetStereotype",
         id: "targetStereotype",
+        name: "target-stereotype",
         x: -10,
         y: -10,
         height: 20,
@@ -103,6 +106,7 @@ const objTargetGroupRing = {
     objTargetGrayRing = {
         class: "targetGray",
         id: "targetGray",
+        name: "gray-ring",
         x: -10,
         y: -10,
         height: 20,
@@ -114,6 +118,7 @@ const objTargetGroupRing = {
 const objTargetGroup = {
         class: "targetGroup",
         id: "targetGroup",
+        name: "target-group",
         x: -30,
         y: -10,
         height: targetIconHeight,
@@ -123,6 +128,7 @@ const objTargetGroup = {
     objTargetPerson = {
         class: "targetPerson",
         id: "targetPerson",
+        name: "target-person",
         x: -50,
         y: -10,
         height: targetIconHeight,
@@ -132,6 +138,7 @@ const objTargetGroup = {
     objTargetStereotype = {
         class: "targetStereotype",
         id: "targetStereotype",
+        name: "target-stereotype",
         x: -70,
         y: -10,
         height: targetIconHeight,
@@ -143,6 +150,7 @@ const objTargetGroup = {
 const objTargetGroupInside = {
         class: "targetGroup",
         id: "targetGroup",
+        name: "target-group",
         x: -0.9,
         y: -0.8,
         height: targetIconHeight,
@@ -152,6 +160,7 @@ const objTargetGroupInside = {
     objTargetPersonInside = {
         class: "targetPerson",
         id: "targetPerson",
+        name: "target-person",
         x: -0.5,
         y: 0,
         height: targetIconHeight,
@@ -161,6 +170,7 @@ const objTargetGroupInside = {
     objTargetStereotypeInside = {
         class: "targetStereotype",
         id: "targetStereotype",
+        name: "target-stereotype",
         x: -0.1,
         y: -0.8,
         height: targetIconHeight,
@@ -169,16 +179,16 @@ const objTargetGroupInside = {
     };
 
 // Objects for toxicities for Ecem tests
-const objToxicity0 = {class: "toxicity0", id: "toxicity0", fileName: "Level0.svg"},
-    objToxicity1 = {class: "toxicity1", id: "toxicity1", fileName: "Level1.svg"},
-    objToxicity2 = {class: "toxicity2", id: "toxicity2", fileName: "Level2.svg"},
-    objToxicity3 = {class: "toxicity3", id: "toxicity3", fileName: "Level3.svg"};
-
+const objToxicity0 = {class: "toxicity0", id: "toxicity0", name: "toxicity-0", fileName: "Level0.svg"},
+    objToxicity1 = {class: "toxicity1", id: "toxicity1", name: "toxicity-1", fileName: "Level1.svg"},
+    objToxicity2 = {class: "toxicity2", id: "toxicity2", name: "toxicity-2",fileName: "Level2.svg"},
+    objToxicity3 = {class: "toxicity3", id: "toxicity3", name: "toxicity-3",fileName: "Level3.svg"};
 
 // Objects for feature images
 const objFeatArgumentation = {
         class: "featArgumentation",
         id: "featArgumentation",
+        name: "argumentation",
         color: "#a1d99b",
         x: cheeseX,
         y: cheeseY,
@@ -189,6 +199,7 @@ const objFeatArgumentation = {
     objFeatConstructiveness = {
         class: "featConstructiveness",
         id: "featConstructiveness",
+        name: "constructiveness",
         color: "#31a354",
         x: cheeseX,
         y: cheeseY,
@@ -199,6 +210,7 @@ const objFeatArgumentation = {
     objFeatSarcasm = {
         class: "featSarcasm",
         id: "featSarcasm",
+        name: "sarcasm",
         color: "#fee5d9",
         x: cheeseX,
         y: cheeseY,
@@ -209,6 +221,7 @@ const objFeatArgumentation = {
     objFeatMockery = {
         class: "featMockery",
         id: "featMockery",
+        name: "mockery",
         color: "#fcbba1",
         x: cheeseX,
         y: cheeseY,
@@ -219,6 +232,7 @@ const objFeatArgumentation = {
     objFeatIntolerance = {
         class: "featIntolerance",
         id: "featIntolerance",
+        name: "intolerance",
         color: "#fc9272",
         x: cheeseX,
         y: cheeseY,
@@ -229,6 +243,7 @@ const objFeatArgumentation = {
     objFeatImproper = {
         class: "featImproper",
         id: "featImproper",
+        name: "improper_language",
         color: "#fb6a4a",
         x: cheeseX,
         y: cheeseY,
@@ -239,6 +254,7 @@ const objFeatArgumentation = {
     objFeatInsult = {
         class: "featInsult",
         id: "featInsult",
+        name: "insult",
         color: "#de2d26",
         x: cheeseX,
         y: cheeseY,
@@ -249,6 +265,7 @@ const objFeatArgumentation = {
     objFeatAggressiveness = {
         class: "featAggressiveness",
         id: "featAggressiveness",
+        name: "aggressiveness",
         color: "#a50f15",
         x: cheeseX,
         y: cheeseY,
@@ -259,6 +276,7 @@ const objFeatArgumentation = {
     objFeatGray = {
         class: "featGray",
         id: "featGray",
+        name: "gray",
         selected: 1,
         x: cheeseX,
         y: cheeseY,
@@ -465,7 +483,6 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
             if (d.toxicity_level !== 1) d.highlighted = 0;
             return (d.toxicity_level !== 1);
         })
-            // .select("circle.nodeCircle")
             .style("position", "relative")
             .style("z-index", 1)
             .style("opacity", opacityValue);
@@ -477,7 +494,6 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
             if (d.toxicity_level !== 2) d.highlighted = 0;
             return (d.toxicity_level !== 2);
         })
-            // .select("circle.nodeCircle")
             .style("position", "relative")
             .style("z-index", 1)
             .style("opacity", opacityValue);
@@ -489,7 +505,6 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
             if (d.toxicity_level !== 3) d.highlighted = 0;
             return (d.toxicity_level !== 3);
         })
-            // .select("circle.nodeCircle")
             .style("position", "relative")
             .style("z-index", 1)
             .style("opacity", opacityValue);
@@ -891,17 +906,52 @@ function removeToxicities(nodeEnter) {
 
 //Draw features, targets and toxicities
 
+
+/**
+ * Return the value of a property (set from the JSON) of the given node
+ *
+ * @param d Datum of a node
+ * @param {string} propertyNameToRetrieve The property whose value is returned
+ * */
+function retrieveAttributeFromComment(d, propertyNameToRetrieve){
+    switch (propertyNameToRetrieve) {
+        //Features
+        case "argumentation": return d.argumentation;
+        case "constructiveness": return d.constructiveness;
+        case "sarcasm": return d.sarcasm;
+        case "mockery": return d.mockery;
+        case "intolerance": return d.intolerance;
+        case "improper_language": return d.improper_language;
+        case "insult": return d.insult;
+        case "aggressiveness": return d.aggressiveness;
+        case "gray": return 1;
+        case "gray-ring": return 0.5;
+
+        //Targets
+        case "target-group": return  d.target_group;
+        case "target-person": return d.target_person;
+        case "target-stereotype": return d.stereotype;
+
+        //Toxicity
+        case "toxicity-0": return d.toxicity_level === 0 ? 1 : 0;
+        case "toxicity-1": return d.toxicity_level === 1 ? 1 : 0;
+        case "toxicity-2": return d.toxicity_level === 2 ? 1 : 0;
+        case "toxicity-3": return d.toxicity_level === 3 ? 1 : 0;
+
+        default:
+            console.log("An attribute could not be retrieved because the key word did not match any case...");
+            break;
+    }
+}
+
 /**
  * Draws a circle in an horizontal line at the right of the node
  *
  * @param {d3-node} nodeEnter Node to which we append the image
  * @param {object} object The object of a property
- * @param {boolean} show If the checkbox is selected
  * @param {number} itemOrder Order in which the circles is drawn (away from the node)
  * */
 function drawObjectAsDot(nodeEnter, object, itemOrder) {
-
-    let listOpacity;
     nodeEnter.append("circle")
         .attr('class', object.class)
         .attr('id', object.id)
@@ -914,49 +964,28 @@ function drawObjectAsDot(nodeEnter, object, itemOrder) {
         .style("stroke-width", "0.5px")
         .attr("opacity", function (d) {
             if (d.parent === undefined) return 0;
-            listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
-            return listOpacity[itemOrder];
+            return retrieveAttributeFromComment(d, object.name);
         });
 }
 
 /**
  * Draw features as dots
  * */
-function drawFeatureDotsCompact(nodeEnter, enabledFeatures){
+function drawFeatureDots(nodeEnter, enabledFeatures){
     removeThisFeatures(nodeEnter);
     removeToxicities(nodeEnter); //Remove all the pngs for toxicity
 
-    if(enabledFeatures.indexOf("argumentation") > -1) drawObjectAsDot(nodeEnter, objFeatArgumentation, 0);
-    if(enabledFeatures.indexOf("constructiveness") > -1) drawObjectAsDot(nodeEnter, objFeatConstructiveness, 1);
+    let index = 0;
+    if(enabledFeatures.indexOf("argumentation") > -1) drawObjectAsDot(nodeEnter, objFeatArgumentation, index);
+    if(enabledFeatures.indexOf("constructiveness") > -1) drawObjectAsDot(nodeEnter, objFeatConstructiveness, ++index);
 
-    if(enabledFeatures.indexOf("sarcasm") > -1) drawObjectAsDot(nodeEnter, objFeatSarcasm, 2);
-    if(enabledFeatures.indexOf("mockery") > -1) drawObjectAsDot(nodeEnter, objFeatMockery, 3);
-    if(enabledFeatures.indexOf("intolerance") > -1) drawObjectAsDot(nodeEnter, objFeatIntolerance, 4);
+    if(enabledFeatures.indexOf("sarcasm") > -1) drawObjectAsDot(nodeEnter, objFeatSarcasm, ++index);
+    if(enabledFeatures.indexOf("mockery") > -1) drawObjectAsDot(nodeEnter, objFeatMockery, ++index);
+    if(enabledFeatures.indexOf("intolerance") > -1) drawObjectAsDot(nodeEnter, objFeatIntolerance, ++index);
 
-    if(enabledFeatures.indexOf("improper_language") > -1)  drawObjectAsDot(nodeEnter, objFeatImproper, 5);
-    if(enabledFeatures.indexOf("insult") > -1)  drawObjectAsDot(nodeEnter, objFeatInsult, 6);
-    if(enabledFeatures.indexOf("aggressiveness") > -1)  drawObjectAsDot(nodeEnter, objFeatAggressiveness, 7);
-}
-
-
-/**
- * Draw features as portions inspired in the Trivial Pursuit game
- * */
-function drawFeatureAsCheeseInsideCompact(nodeEnter, localPath, enabledFeatures){
-    removeThisFeatures(nodeEnter);
-    removeToxicities(nodeEnter); //Remove all the pngs for toxicity
-
-    drawObjectWithSizeAndPosition(nodeEnter, objFeatGray, 8, pathFeatures + localPath);
-    if(enabledFeatures.indexOf("argumentation") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatArgumentation, 0, pathFeatures + localPath);
-    if(enabledFeatures.indexOf("constructiveness") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatConstructiveness, 1, pathFeatures + localPath);
-
-    if(enabledFeatures.indexOf("sarcasm") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatSarcasm, 2,  pathFeatures + localPath);
-    if(enabledFeatures.indexOf("mockery") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatMockery, 3,  pathFeatures + localPath);
-    if(enabledFeatures.indexOf("intolerance") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatIntolerance, 4, pathFeatures + localPath);
-
-    if(enabledFeatures.indexOf("improper_language") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatImproper, 5, pathFeatures + localPath);
-    if(enabledFeatures.indexOf("insult") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatInsult, 6, pathFeatures + localPath);
-    if(enabledFeatures.indexOf("aggressiveness") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatAggressiveness, 7, pathFeatures + localPath);
+    if(enabledFeatures.indexOf("improper_language") > -1)  drawObjectAsDot(nodeEnter, objFeatImproper, ++index);
+    if(enabledFeatures.indexOf("insult") > -1)  drawObjectAsDot(nodeEnter, objFeatInsult, ++index);
+    if(enabledFeatures.indexOf("aggressiveness") > -1)  drawObjectAsDot(nodeEnter, objFeatAggressiveness, ++index);
 }
 
 /**
@@ -964,13 +993,10 @@ function drawFeatureAsCheeseInsideCompact(nodeEnter, localPath, enabledFeatures)
  *
  * @param {d3-node} nodeEnter Node to which we append the image
  * @param {object} object The object of a property
- * @param {number} itemOrder Presence of the object in the array
  * @param {boolean} show If the image must be shown
  * @param {string} path The path of the image
  * */
-function drawObjectWithSizeAndPosition(nodeEnter, object, itemOrder, path){
-
-    var listOpacity;
+function drawObjectWithSizeAndPosition(nodeEnter, object, path){
     nodeEnter.append("image")
         .attr('class', object.class)
         .attr('id', object.id)
@@ -989,9 +1015,28 @@ function drawObjectWithSizeAndPosition(nodeEnter, object, itemOrder, path){
         .attr("href", path + object.fileName)
         .attr("opacity", function (d) {
             if (d.parent === undefined) return 0;
-            listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness, 0.5];
-            return listOpacity[itemOrder];
+            return retrieveAttributeFromComment(d, object.name);
         });
+}
+
+/**
+ * Draw features as portions inspired in the Trivial Pursuit game
+ * */
+function drawFeatureAsCheeseInside(nodeEnter, localPath, enabledFeatures){
+    removeThisFeatures(nodeEnter);
+    removeToxicities(nodeEnter); //Remove all the pngs for toxicity
+
+    drawObjectWithSizeAndPosition(nodeEnter, objFeatGray,pathFeatures + localPath);
+    if(enabledFeatures.indexOf("argumentation") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatArgumentation,  pathFeatures + localPath);
+    if(enabledFeatures.indexOf("constructiveness") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatConstructiveness,  pathFeatures + localPath);
+
+    if(enabledFeatures.indexOf("sarcasm") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatSarcasm,   pathFeatures + localPath);
+    if(enabledFeatures.indexOf("mockery") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatMockery, pathFeatures + localPath);
+    if(enabledFeatures.indexOf("intolerance") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatIntolerance,  pathFeatures + localPath);
+
+    if(enabledFeatures.indexOf("improper_language") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatImproper,  pathFeatures + localPath);
+    if(enabledFeatures.indexOf("insult") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatInsult,  pathFeatures + localPath);
+    if(enabledFeatures.indexOf("aggressiveness") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatAggressiveness,  pathFeatures + localPath);
 }
 
 /**
@@ -1000,12 +1045,10 @@ function drawObjectWithSizeAndPosition(nodeEnter, object, itemOrder, path){
  *
  * @param {d3-node} nodeEnter Node to which we append the image
  * @param {object} object The object of a property
- * @param {number} itemOrder Presence of the object in the array
  * @param {number} percentage Percentage smaller than the node
  * @param {string} path The path of the image
  * */
-function drawObjectGlyph(nodeEnter, object, itemOrder, percentage = 0 , path){
-    let listOpacity;
+function drawObjectGlyph(nodeEnter, object, percentage = 0 , path){
     nodeEnter.append("image")
         .attr('class', object.class)
         .attr('id', object.id)
@@ -1026,13 +1069,7 @@ function drawObjectGlyph(nodeEnter, object, itemOrder, percentage = 0 , path){
         .attr("href", path + object.fileName)
         .attr("opacity", function (d) {
             if (d.parent === undefined) return 0;
-
-            listOpacity = [1,
-                d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
-                d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
-                d.target_group, d.target_person, d.stereotype];
-
-            return listOpacity[itemOrder];
+            return retrieveAttributeFromComment(d, object.name);
         });
 }
 
@@ -1047,27 +1084,27 @@ function drawFeatureAsCircularGlyphCompact(nodeEnter, localPath, enabledFeatures
     let path = pathFeatures + localPath;
     let percentage = 0;
 
-    drawObjectGlyph(nodeEnter, objFeatGray, 0, percentage, path);
+    drawObjectGlyph(nodeEnter, objFeatGray, percentage, path);
 
-    if(enabledFeatures.indexOf("argumentation") > -1) drawObjectGlyph(nodeEnter, objFeatArgumentation, 1, percentage, path);
-    if(enabledFeatures.indexOf("constructiveness") > -1) drawObjectGlyph(nodeEnter, objFeatConstructiveness, 2, percentage, path);
+    if(enabledFeatures.indexOf("argumentation") > -1) drawObjectGlyph(nodeEnter, objFeatArgumentation, percentage, path);
+    if(enabledFeatures.indexOf("constructiveness") > -1) drawObjectGlyph(nodeEnter, objFeatConstructiveness, percentage, path);
 
-    if(enabledFeatures.indexOf("sarcasm") > -1) drawObjectGlyph(nodeEnter, objFeatSarcasm, 3, percentage, path);
-    if(enabledFeatures.indexOf("mockery") > -1) drawObjectGlyph(nodeEnter, objFeatMockery, 4, percentage, path);
-    if(enabledFeatures.indexOf("intolerance") > -1) drawObjectGlyph(nodeEnter, objFeatIntolerance, 5, percentage, path);
+    if(enabledFeatures.indexOf("sarcasm") > -1) drawObjectGlyph(nodeEnter, objFeatSarcasm, percentage, path);
+    if(enabledFeatures.indexOf("mockery") > -1) drawObjectGlyph(nodeEnter, objFeatMockery, percentage, path);
+    if(enabledFeatures.indexOf("intolerance") > -1) drawObjectGlyph(nodeEnter, objFeatIntolerance, percentage, path);
 
-    if(enabledFeatures.indexOf("improper_language") > -1) drawObjectGlyph(nodeEnter, objFeatImproper, 6, percentage, path);
-    if(enabledFeatures.indexOf("insult") > -1) drawObjectGlyph(nodeEnter, objFeatInsult, 7, percentage, path);
-    if(enabledFeatures.indexOf("aggressiveness") > -1) drawObjectGlyph(nodeEnter, objFeatAggressiveness, 8, percentage,  path);
+    if(enabledFeatures.indexOf("improper_language") > -1) drawObjectGlyph(nodeEnter, objFeatImproper, percentage, path);
+    if(enabledFeatures.indexOf("insult") > -1) drawObjectGlyph(nodeEnter, objFeatInsult, percentage, path);
+    if(enabledFeatures.indexOf("aggressiveness") > -1) drawObjectGlyph(nodeEnter, objFeatAggressiveness, percentage,  path);
 
-    drawObjectGlyph(nodeEnter, objToxicity0, 9, percentage, path);
-    drawObjectGlyph(nodeEnter, objToxicity1, 10, percentage, path);
-    drawObjectGlyph(nodeEnter, objToxicity2, 11, percentage, path);
-    drawObjectGlyph(nodeEnter, objToxicity3, 12, percentage, path);
+    drawObjectGlyph(nodeEnter, objToxicity0, percentage, path);
+    drawObjectGlyph(nodeEnter, objToxicity1, percentage, path);
+    drawObjectGlyph(nodeEnter, objToxicity2, percentage, path);
+    drawObjectGlyph(nodeEnter, objToxicity3, percentage, path);
 
-    if(enabledFeatures.indexOf("target-group") > -1) drawObjectGlyph(nodeEnter, objTargetGroup, 13, percentage, path);
-    if(enabledFeatures.indexOf("target-person") > -1) drawObjectGlyph(nodeEnter, objTargetPerson, 14, percentage, path);
-    if(enabledFeatures.indexOf("target-stereotype") > -1) drawObjectGlyph(nodeEnter, objTargetStereotype, 15, percentage, path);
+    if(enabledFeatures.indexOf("target-group") > -1) drawObjectGlyph(nodeEnter, objTargetGroup, percentage, path);
+    if(enabledFeatures.indexOf("target-person") > -1) drawObjectGlyph(nodeEnter, objTargetPerson, percentage, path);
+    if(enabledFeatures.indexOf("target-stereotype") > -1) drawObjectGlyph(nodeEnter, objTargetStereotype, percentage, path);
 }
 
 
@@ -1077,12 +1114,9 @@ function drawFeatureAsCircularGlyphCompact(nodeEnter, localPath, enabledFeatures
  *
  * @param {d3-node} nodeEnter Node to which we append the image
  * @param {object} object The object of a property
- * @param {number} itemOrder Presence of the object in the array
  * @param {string} path The path of the image
  * */
-function drawObjectTargetRing(nodeEnter, object, itemOrder, path){
-    let listOpacity;
-
+function drawObjectTargetRing(nodeEnter, object, path){
     nodeEnter.append("image")
         .attr('class', object.class)
         .attr('id', object.id)
@@ -1101,8 +1135,7 @@ function drawObjectTargetRing(nodeEnter, object, itemOrder, path){
         .attr("href", path + object.fileName)
         .attr("opacity", function (d) {
             if (d.parent === undefined) return 0;
-            listOpacity = [0.5, d.target_group, d.target_person, d.stereotype]; //Note: the opacity of the gray ring
-            return listOpacity[itemOrder];
+            return retrieveAttributeFromComment(d, object.name);
         });
 }
 
@@ -1115,10 +1148,10 @@ function drawTargetRingsCompact(nodeEnter, localPath, enabledTargets){
 
     let path = pathTargets + localPath;
 
-    drawObjectTargetRing(nodeEnter, objTargetGrayRing, 0, path);
-    if(enabledTargets.indexOf("target-group") > -1) drawObjectTargetRing(nodeEnter, objTargetGroupRing, 1, path);
-    if(enabledTargets.indexOf("target-person") > -1) drawObjectTargetRing(nodeEnter, objTargetPersonRing, 2, path);
-    if(enabledTargets.indexOf("target-stereotype") > -1) drawObjectTargetRing(nodeEnter, objTargetStereotypeRing, 3, path);
+    drawObjectTargetRing(nodeEnter, objTargetGrayRing, path);
+    if(enabledTargets.indexOf("target-group") > -1) drawObjectTargetRing(nodeEnter, objTargetGroupRing, path);
+    if(enabledTargets.indexOf("target-person") > -1) drawObjectTargetRing(nodeEnter, objTargetPersonRing, path);
+    if(enabledTargets.indexOf("target-stereotype") > -1) drawObjectTargetRing(nodeEnter, objTargetStereotypeRing, path);
 }
 
 /**
@@ -1126,12 +1159,9 @@ function drawTargetRingsCompact(nodeEnter, localPath, enabledTargets){
  *
  * @param {d3-node} nodeEnter Node to which we append the image
  * @param {object} object The object of a property
- * @param {number} itemOrder Presence of the object in the array
  * @param {string} path The path of the image
  * */
-function drawObjectTargetOutside(nodeEnter, object, itemOrder, path){
-    let listOpacity;
-
+function drawObjectTargetOutside(nodeEnter, object, path){
     nodeEnter.append("image")
         .attr('class', object.class)
         .attr('id', object.id)
@@ -1144,8 +1174,7 @@ function drawObjectTargetOutside(nodeEnter, object, itemOrder, path){
         .attr("href", path + object.fileName)
         .attr("opacity", function (d) {
             if (d.parent === undefined) return 0;
-            listOpacity = [d.target_group, d.target_person, d.stereotype];
-            return listOpacity[itemOrder];
+            return retrieveAttributeFromComment(d, object.name);
         });
 }
 
@@ -1158,9 +1187,9 @@ function drawTargetsOutsideCompact(nodeEnter, localPath, enabledTargets){
 
     let path = pathTargets + localPath;
 
-    if(enabledTargets.indexOf("target-group") > -1) drawObjectTargetOutside(nodeEnter, objTargetGroup, 0, path);
-    if(enabledTargets.indexOf("target-person") > -1) drawObjectTargetOutside(nodeEnter, objTargetPerson, 1, path);
-    if(enabledTargets.indexOf("target-stereotype") > -1) drawObjectTargetOutside(nodeEnter, objTargetStereotype, 2, path);
+    if(enabledTargets.indexOf("target-group") > -1) drawObjectTargetOutside(nodeEnter, objTargetGroup, path);
+    if(enabledTargets.indexOf("target-person") > -1) drawObjectTargetOutside(nodeEnter, objTargetPerson, path);
+    if(enabledTargets.indexOf("target-stereotype") > -1) drawObjectTargetOutside(nodeEnter, objTargetStereotype, path);
 }
 
 /**
@@ -1168,12 +1197,9 @@ function drawTargetsOutsideCompact(nodeEnter, localPath, enabledTargets){
  *
  * @param {d3-node} nodeEnter Node to which we append the image
  * @param {object} object The object of a property
- * @param {number} itemOrder Presence of the object in the array
  * @param {string} path The path of the image
  * */
-function drawObjectTargetInside(nodeEnter, object, itemOrder, path){
-    let listOpacity;
-
+function drawObjectTargetInside(nodeEnter, object, path){
     nodeEnter.append("image")
         .attr('class', object.class)
         .attr('id', object.id)
@@ -1192,8 +1218,7 @@ function drawObjectTargetInside(nodeEnter, object, itemOrder, path){
         .attr("href", path + object.fileName)
         .attr("opacity", function (d) {
             if (d.parent === undefined) return 0;
-            listOpacity = [d.target_group, d.target_person, d.stereotype];
-            return listOpacity[itemOrder];
+            return retrieveAttributeFromComment(d, object.name);
         });
 }
 
@@ -1210,9 +1235,9 @@ function drawTargetsInsideCompact(nodeEnter, localPath, enabledTargets){
 
     let path = pathTargets + localPath;
 
-    if(enabledTargets.indexOf("target-group") > -1) drawObjectTargetInside(nodeEnter, objTargetGroupInside, 0, path);
-    if(enabledTargets.indexOf("target-person") > -1) drawObjectTargetInside(nodeEnter, objTargetPersonInside, 1, path);
-    if(enabledTargets.indexOf("target-stereotype") > -1) drawObjectTargetInside(nodeEnter, objTargetStereotypeInside, 2, path);
+    if(enabledTargets.indexOf("target-group") > -1) drawObjectTargetInside(nodeEnter, objTargetGroupInside, path);
+    if(enabledTargets.indexOf("target-person") > -1) drawObjectTargetInside(nodeEnter, objTargetPersonInside, path);
+    if(enabledTargets.indexOf("target-stereotype") > -1) drawObjectTargetInside(nodeEnter, objTargetStereotypeInside, path);
 }
 
 
@@ -1408,11 +1433,11 @@ function selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets
     switch (option) {
         case "dots":
             selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures); //draw the targets if necessary
-            drawFeatureDotsCompact(nodeEnter, enabledFeatures); //Always drawn on the right side
+            drawFeatureDots(nodeEnter, enabledFeatures); //Always drawn on the right side
             break;
         case "trivial-cheese-on-node":
             selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures); //draw the targets if necessary
-            drawFeatureAsCheeseInsideCompact(nodeEnter, "trivialCheese/", enabledFeatures); //Always drawn on the right side
+            drawFeatureAsCheeseInside(nodeEnter, "trivialCheese/", enabledFeatures); //Always drawn on the right side
             break;
         case "trivial-cheese-outside-node":
             selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures); //draw the targets if necessary
@@ -1939,7 +1964,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-                console.log(enabledTargets);
                 selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures);
             })
         });
@@ -2021,7 +2045,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-                console.log(enabledFeatures);
                 selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
                     cbFeatureInside, enabledFeatures, enabledTargets);
             })
