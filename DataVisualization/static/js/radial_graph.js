@@ -25,6 +25,10 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
+
+//Graph
+const canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
+
 /**
  * Compute the radius of the node based on the number of children it has
  * */
@@ -563,29 +567,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
 
     root = treeData; //Define the root
+
     var tree = d3.layout.tree()
-        .nodeSize(root.children.length, 0) //NOTE the width is overwritten later
+        .size([360, Math.min(canvasWidth, canvasHeight) / 2 - 120])
+        .separation(function(a, b) {
+            return a.depth === 0 ? 1 : (a.parent === b.parent ? 1 : 2) / a.depth;
+        })
         .sort(function (a, b) {
-            if (a.toxicity_level === b.toxicity_level) {
-
-                var childrenOfA = a.children ? a.children : a._children;
-                var childrenOfB = b.children ? b.children : b._children;
-
-                if (childrenOfA && childrenOfB) { //If it has children or collapsed children
-                    var aNumChildren = childrenOfA.length,
-                        bNumChildren = childrenOfB.length;
-                    return aNumChildren < bNumChildren ? 1 : aNumChildren > bNumChildren ? 2 : 0;
-                }
-
-                if (!childrenOfA && !childrenOfB) return 0; //None of them has children nor collapsed children
-
-                if (childrenOfA || childrenOfB) {  // If just one of them has children
-                    return (a.children || a._children) ? -1 : 1;
-                }
-            }
-            //If they have different toxicities: sort by toxicities
-            return a.toxicity_level < b.toxicity_level ? -3 : a.toxicity_level > b.toxicity_level ? 3 : a.toxicity_level === b.toxicity_level ? 0 : NaN;
-            //return d3.ascending(a.toxicity_level, b.toxicity_level); //NOTE: this avoids the tree being sorted and changed when collapsing a node
+            return d3.ascending(a.toxicity_level, b.toxicity_level);
         });
 
     // define a d3 diagonal projection for use by the node paths later on.
@@ -840,8 +829,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     // define the baseSvg, attaching a class for styling and the zoomListener
     var baseSvg = d3.select("#tree-container").append("svg")
-        .attr("width", 2200)
-        .attr("height", 900)
+        .attr("width", canvasWidth)
+        .attr("height", canvasHeight)
         .attr("class", "overlay")
         .call(zoomListener);
 
@@ -2340,14 +2329,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
     function update(source) {
-        tree = tree.nodeSize([separationHeight, 0]) //heigth and width of the rectangles that define the node space
-            .separation(function (a, b) {
-                if (a.depth === 1 && b.depth === 1) {
-                    return (360.0 / root.children.length) / separationHeight;
-                }
-                if (a.depth === 2 && b.depth === 2) return Math.min((360.0 / root.children.length) / separationHeight, (a.parent === b.parent ? 1 / (a.depth * a.depth) : 2 / (a.depth * a.depth)));
-                return (a.parent === b.parent ? 1 / (a.depth * a.depth) : 2 / (a.depth * a.depth));
-            });
 
         // Compute the new tree layout.
         nodes = tree.nodes(root).reverse();
@@ -2418,7 +2399,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-                console.log(enabledTargets);
                 selectTargetVisualization(nodeEnter);
             })
         });
@@ -2519,9 +2499,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-                console.log(enabledFeatures);
                 selectFeatureVisualization(nodeEnter);
-
             })
         });
 
