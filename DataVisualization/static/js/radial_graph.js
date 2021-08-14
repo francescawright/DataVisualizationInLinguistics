@@ -27,7 +27,9 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
 
 //Graph
+const edgeLength = 22 * 20;
 const canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
+
 
 /**
  * Compute the radius of the node based on the number of children it has
@@ -43,7 +45,7 @@ function computeNodeRadius(d, edgeLength = 300, minRadius = 10) {
     d.radius = minRadius;
     if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 10
 
-    var children =  d.children ?? d._children; //Assign children collapsed or not
+    const children =  d.children ?? d._children; //Assign children collapsed or not
 
     children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
         : children.length  === 2 ? d.radius = 16 //2 children
@@ -466,7 +468,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     // Calculate total nodes, max label length
     var totalNodes = 0;
-    var maxLabelLength = 22;
 
     // Misc. variables
     var i = 0;
@@ -568,10 +569,29 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     root = treeData; //Define the root
 
-    var tree = d3.layout.tree()
-        .size([360, Math.min(canvasWidth, canvasHeight) / 2 - 120])
+    // The edge length is overwritten in the update()
+    let tree = d3.layout.tree()
+        .size([360, 0]) // breadth (x) is measured in degrees and the depth (y) is a radius r in pixels, say [360, r].
         .separation(function(a, b) {
-            return a.depth === 0 ? 1 : (a.parent === b.parent ? 1 : 2) / a.depth;
+            let separation;
+
+            if (a.depth === 0) separation = 1;
+            else if (a.parent !== b.parent) separation = 2 / a.depth;
+            else {
+                /*let aChildren, bChildren;
+                aChildren = a.children && a._children;
+                bChildren = b.children && b._children;
+                console.log(aChildren?.length, bChildren?.length);
+
+                if (aChildren?.length >= 5 || bChildren?.length >= 5) {
+                    console.log("Some node has 5 children or more!")
+                    separation = 3 / a.depth; // if 5 children or more collapsed
+                }*/
+                if (a._children?.length >= 5 || b._children?.length >= 5) separation = 3 / a.depth; // if 5 children or more collapsed
+                else separation = 1 / a.depth;
+            }
+            console.log(a,b, separation);
+            return separation;
         })
         .sort(function (a, b) {
             return d3.ascending(a.toxicity_level, b.toxicity_level);
@@ -810,7 +830,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
-    // Call visit function to establish maxLabelLength
+    // Call visit function to establish edgeLength
     visit(treeData, function (d) {
         totalNodes++;
     }, function (d) {
@@ -2336,7 +2356,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         // Set widths between levels
         nodes.forEach(function (d) {
-            d.y = (d.depth * (maxLabelLength * 20));
+            d.y = (d.depth * edgeLength);
         });
 
         // Update the nodes…
@@ -2355,10 +2375,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 click(d);
             })
             .on('mouseover', function (d) {
-                console.log("coordinates ", d.x, d.y);
+                //console.log("coordinates ", d.x, d.y);
                 //console.log("Before transforming coordenates: ", source.x0, source.y0);
                 var aux = (d.x < 0) ? 360 + d.x : d.x;
-                console.log("something radial?", radialPoint(aux, d.y));
+                //console.log("something radial?", radialPoint(aux, d.y));
                 if (d !== root) {
                     writeTooltipText(d);
                     tooltip.style("visibility", "visible")
