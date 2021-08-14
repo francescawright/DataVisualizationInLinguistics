@@ -993,90 +993,98 @@ function drawFeatureDots(nodeEnter, enabledFeatures){
  *
  * @param {d3-node} nodeEnter Node to which we append the image
  * @param {object} object The object of a property
- * @param {boolean} show If the image must be shown
  * @param {string} path The path of the image
+ * @param {number} percentage The percentage of the difference of radii between the node and the image
  * */
-function drawObjectWithSizeAndPosition(nodeEnter, object, path){
+function drawImageOnNode(nodeEnter, object, path, percentage = imgRatio){
     nodeEnter.append("image")
         .attr('class', object.class)
         .attr('id', object.id)
         .attr("x", function (d) {
-            return positionImage(d.radius);
+            return positionImage(d.radius, percentage);
         })
         .attr("y", function (d) {
-            return positionImage(d.radius);
+            return positionImage(d.radius, percentage);
         })
         .attr("height", function (d) {
-            return sizeImage(d.radius);
+            return sizeImage(d.radius, percentage);
         })
         .attr("width", function (d) {
-            return sizeImage(d.radius);
+            return sizeImage(d.radius, percentage);
         })
         .attr("href", path + object.fileName)
         .attr("opacity", function (d) {
             if (d.parent === undefined) return 0;
             return retrieveAttributeFromComment(d, object.name);
         });
+}
+
+/**
+ * Call to draw all the features
+ *
+ * @param {d3-node} nodeEnter Node to which we append the image
+ * @param {string} path The path of the image
+ * @param {array} enabledFeatures The array containing which checkboxes are selected
+ * @param {number} percentage The percentage of the difference of radii between the node and the image
+ * */
+function drawFeatures(nodeEnter, path, enabledFeatures, percentage = imgRatio) {
+    if(enabledFeatures.indexOf("argumentation") > -1) drawImageOnNode(nodeEnter, objFeatArgumentation, path, percentage);
+    if(enabledFeatures.indexOf("constructiveness") > -1) drawImageOnNode(nodeEnter, objFeatConstructiveness, path, percentage);
+
+    if(enabledFeatures.indexOf("sarcasm") > -1) drawImageOnNode(nodeEnter, objFeatSarcasm, path, percentage);
+    if(enabledFeatures.indexOf("mockery") > -1) drawImageOnNode(nodeEnter, objFeatMockery, path, percentage);
+    if(enabledFeatures.indexOf("intolerance") > -1) drawImageOnNode(nodeEnter, objFeatIntolerance, path, percentage);
+
+    if(enabledFeatures.indexOf("improper_language") > -1) drawImageOnNode(nodeEnter, objFeatImproper, path, percentage);
+    if(enabledFeatures.indexOf("insult") > -1) drawImageOnNode(nodeEnter, objFeatInsult, path, percentage);
+    if(enabledFeatures.indexOf("aggressiveness") > -1) drawImageOnNode(nodeEnter, objFeatAggressiveness, path, percentage);
+}
+
+/**
+ * Call to draw all the targets
+ *
+ * @param {d3-node} nodeEnter Node to which we append the image
+ * @param {string} path The path of the image
+ * @param {array} enabledTargets The array containing which checkboxes are selected
+ * @param {object} target The object containing the objects to draw
+ * @param {callback} draw The function to call to draw the object
+ * @param {number} percentage The percentage of the difference of radii between the node and the image
+ * */
+function drawTargetsGeneral(nodeEnter, path, enabledTargets, target, draw, percentage = imgRatio) {
+    if(enabledTargets.indexOf("target-group") > -1) draw(nodeEnter, target.group, path, percentage);
+    if(enabledTargets.indexOf("target-person") > -1) draw(nodeEnter, target.person, path, percentage);
+    if(enabledTargets.indexOf("target-stereotype") > -1) draw(nodeEnter, target.stereotype, path, percentage);
+}
+
+/**
+ * Call to draw all the toxicities
+ *
+ * @param {d3-node} nodeEnter Node to which we append the image
+ * @param {string} path The path of the image
+ * @param {number} percentage The percentage of the difference of radii between the node and the image
+ * */
+function drawToxicities(nodeEnter, path, percentage = imgRatio) {
+    drawImageOnNode(nodeEnter, objToxicity0, path, percentage);
+    drawImageOnNode(nodeEnter, objToxicity1, path, percentage);
+    drawImageOnNode(nodeEnter, objToxicity2, path, percentage);
+    drawImageOnNode(nodeEnter, objToxicity3, path, percentage);
 }
 
 /**
  * Draw features as portions inspired in the Trivial Pursuit game
  * */
-function drawFeatureAsCheeseInside(nodeEnter, localPath, enabledFeatures){
+function drawFeaturesAsCheeseInside(nodeEnter, localPath, enabledFeatures){
     removeThisFeatures(nodeEnter);
     removeToxicities(nodeEnter); //Remove all the pngs for toxicity
 
-    drawObjectWithSizeAndPosition(nodeEnter, objFeatGray,pathFeatures + localPath);
-    if(enabledFeatures.indexOf("argumentation") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatArgumentation,  pathFeatures + localPath);
-    if(enabledFeatures.indexOf("constructiveness") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatConstructiveness,  pathFeatures + localPath);
-
-    if(enabledFeatures.indexOf("sarcasm") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatSarcasm,   pathFeatures + localPath);
-    if(enabledFeatures.indexOf("mockery") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatMockery, pathFeatures + localPath);
-    if(enabledFeatures.indexOf("intolerance") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatIntolerance,  pathFeatures + localPath);
-
-    if(enabledFeatures.indexOf("improper_language") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatImproper,  pathFeatures + localPath);
-    if(enabledFeatures.indexOf("insult") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatInsult,  pathFeatures + localPath);
-    if(enabledFeatures.indexOf("aggressiveness") > -1) drawObjectWithSizeAndPosition(nodeEnter, objFeatAggressiveness,  pathFeatures + localPath);
-}
-
-/**
- * Draw an image centered on the node a percentage smaller
- * for the list of features
- *
- * @param {d3-node} nodeEnter Node to which we append the image
- * @param {object} object The object of a property
- * @param {number} percentage Percentage smaller than the node
- * @param {string} path The path of the image
- * */
-function drawObjectGlyph(nodeEnter, object, percentage = 0 , path){
-    nodeEnter.append("image")
-        .attr('class', object.class)
-        .attr('id', object.id)
-        .attr("x", function (d) {
-            return positionImage(d.radius, percentage);
-        })
-        .attr("y", function (d) {
-            return positionImage(d.radius, percentage);
-        })
-        .attr("height", function (d) {
-            return sizeImage(d.radius, percentage);
-        })
-        .attr("width", function (d) {
-            return sizeImage(d.radius, percentage);
-        })
-        .style("stroke", "black")
-        .style("stroke-width", "0.5px")
-        .attr("href", path + object.fileName)
-        .attr("opacity", function (d) {
-            if (d.parent === undefined) return 0;
-            return retrieveAttributeFromComment(d, object.name);
-        });
+    drawImageOnNode(nodeEnter, objFeatGray,pathFeatures + localPath);
+    drawFeatures(nodeEnter, pathFeatures + localPath, enabledFeatures);
 }
 
 /**
  * Draw features in a circular glyph
  * */
-function drawFeatureAsCircularGlyphCompact(nodeEnter, localPath, enabledFeatures){
+function drawFeaturesAsCircularGlyph(nodeEnter, localPath, enabledFeatures, enabledTargets){
     removeThisFeatures(nodeEnter);
     removeThisTargets(nodeEnter);
     removeToxicities(nodeEnter);
@@ -1084,74 +1092,30 @@ function drawFeatureAsCircularGlyphCompact(nodeEnter, localPath, enabledFeatures
     let path = pathFeatures + localPath;
     let percentage = 0;
 
-    drawObjectGlyph(nodeEnter, objFeatGray, percentage, path);
+    drawImageOnNode(nodeEnter, objFeatGray, path, percentage);
+    drawFeatures(nodeEnter, path, enabledFeatures, 0);
 
-    if(enabledFeatures.indexOf("argumentation") > -1) drawObjectGlyph(nodeEnter, objFeatArgumentation, percentage, path);
-    if(enabledFeatures.indexOf("constructiveness") > -1) drawObjectGlyph(nodeEnter, objFeatConstructiveness, percentage, path);
+    drawToxicities(nodeEnter, path, 0);
 
-    if(enabledFeatures.indexOf("sarcasm") > -1) drawObjectGlyph(nodeEnter, objFeatSarcasm, percentage, path);
-    if(enabledFeatures.indexOf("mockery") > -1) drawObjectGlyph(nodeEnter, objFeatMockery, percentage, path);
-    if(enabledFeatures.indexOf("intolerance") > -1) drawObjectGlyph(nodeEnter, objFeatIntolerance, percentage, path);
-
-    if(enabledFeatures.indexOf("improper_language") > -1) drawObjectGlyph(nodeEnter, objFeatImproper, percentage, path);
-    if(enabledFeatures.indexOf("insult") > -1) drawObjectGlyph(nodeEnter, objFeatInsult, percentage, path);
-    if(enabledFeatures.indexOf("aggressiveness") > -1) drawObjectGlyph(nodeEnter, objFeatAggressiveness, percentage,  path);
-
-    drawObjectGlyph(nodeEnter, objToxicity0, percentage, path);
-    drawObjectGlyph(nodeEnter, objToxicity1, percentage, path);
-    drawObjectGlyph(nodeEnter, objToxicity2, percentage, path);
-    drawObjectGlyph(nodeEnter, objToxicity3, percentage, path);
-
-    if(enabledFeatures.indexOf("target-group") > -1) drawObjectGlyph(nodeEnter, objTargetGroup, percentage, path);
-    if(enabledFeatures.indexOf("target-person") > -1) drawObjectGlyph(nodeEnter, objTargetPerson, percentage, path);
-    if(enabledFeatures.indexOf("target-stereotype") > -1) drawObjectGlyph(nodeEnter, objTargetStereotype, percentage, path);
+    let target = {group: objTargetGroup, person: objTargetPerson, stereotype: objTargetStereotype};
+    drawTargetsGeneral(nodeEnter, path, enabledTargets, target, drawImageOnNode,0);
 }
-
 
 //Draw targets
-/**
- * Draw an image centered on the node a imgRatio smaller conditionally
- *
- * @param {d3-node} nodeEnter Node to which we append the image
- * @param {object} object The object of a property
- * @param {string} path The path of the image
- * */
-function drawObjectTargetRing(nodeEnter, object, path){
-    nodeEnter.append("image")
-        .attr('class', object.class)
-        .attr('id', object.id)
-        .attr("x", function (d) {
-            return positionImage(d.radius);
-        })
-        .attr("y", function (d) {
-            return positionImage(d.radius);
-        })
-        .attr("height", function (d) {
-            return sizeImage(d.radius);
-        })
-        .attr("width", function (d) {
-            return sizeImage(d.radius);
-        })
-        .attr("href", path + object.fileName)
-        .attr("opacity", function (d) {
-            if (d.parent === undefined) return 0;
-            return retrieveAttributeFromComment(d, object.name);
-        });
-}
 
 /**
  * Draws the 3 targets of a node if the checkbox is checked
  * and if the node has that target (sets the opacity to visible)
  * */
-function drawTargetRingsCompact(nodeEnter, localPath, enabledTargets){
+function drawTargetsAsRings(nodeEnter, localPath, enabledTargets){
     removeThisTargets(nodeEnter);
 
     let path = pathTargets + localPath;
 
-    drawObjectTargetRing(nodeEnter, objTargetGrayRing, path);
-    if(enabledTargets.indexOf("target-group") > -1) drawObjectTargetRing(nodeEnter, objTargetGroupRing, path);
-    if(enabledTargets.indexOf("target-person") > -1) drawObjectTargetRing(nodeEnter, objTargetPersonRing, path);
-    if(enabledTargets.indexOf("target-stereotype") > -1) drawObjectTargetRing(nodeEnter, objTargetStereotypeRing, path);
+    drawImageOnNode(nodeEnter, objTargetGrayRing, path);
+
+    let target = {group: objTargetGroupRing, person: objTargetPersonRing, stereotype: objTargetStereotypeRing};
+    drawTargetsGeneral(nodeEnter, path, enabledTargets, target, drawImageOnNode);
 }
 
 /**
@@ -1182,14 +1146,12 @@ function drawObjectTargetOutside(nodeEnter, object, path){
  * Draws the 3 targets of a node on the left side horizontally if the checkbox is checked
  * and if the node has that target (sets the opacity to visible)
  * */
-function drawTargetsOutsideCompact(nodeEnter, localPath, enabledTargets){
+function drawTargetsAsIconOutside(nodeEnter, localPath, enabledTargets){
     removeThisTargets(nodeEnter);
 
     let path = pathTargets + localPath;
-
-    if(enabledTargets.indexOf("target-group") > -1) drawObjectTargetOutside(nodeEnter, objTargetGroup, path);
-    if(enabledTargets.indexOf("target-person") > -1) drawObjectTargetOutside(nodeEnter, objTargetPerson, path);
-    if(enabledTargets.indexOf("target-stereotype") > -1) drawObjectTargetOutside(nodeEnter, objTargetStereotype, path);
+    let target = {group: objTargetGroup, person: objTargetPerson, stereotype: objTargetStereotype};
+    drawTargetsGeneral(nodeEnter, path, enabledTargets, target, drawObjectTargetOutside);
 }
 
 /**
@@ -1230,14 +1192,12 @@ function drawObjectTargetInside(nodeEnter, object, path){
  *                          \ /
  *                         Person
  * */
-function drawTargetsInsideCompact(nodeEnter, localPath, enabledTargets){
+function drawTargetsAsIconInside(nodeEnter, localPath, enabledTargets){
     removeThisTargets(nodeEnter);
 
     let path = pathTargets + localPath;
-
-    if(enabledTargets.indexOf("target-group") > -1) drawObjectTargetInside(nodeEnter, objTargetGroupInside, path);
-    if(enabledTargets.indexOf("target-person") > -1) drawObjectTargetInside(nodeEnter, objTargetPersonInside, path);
-    if(enabledTargets.indexOf("target-stereotype") > -1) drawObjectTargetInside(nodeEnter, objTargetStereotypeInside, path);
+    let target = {group: objTargetGroupInside, person: objTargetPersonInside, stereotype: objTargetStereotypeInside};
+    drawTargetsGeneral(nodeEnter, path, enabledTargets, target, drawObjectTargetInside);
 }
 
 
@@ -1390,11 +1350,11 @@ function selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, 
                 break;
 
             case "icon-outside-node":
-                drawTargetsOutsideCompact(nodeEnter, "icons/", enabledTargets);
+                drawTargetsAsIconOutside(nodeEnter, "icons/", enabledTargets);
                 break;
 
             case "icon-on-node":
-                drawTargetsInsideCompact(nodeEnter, "icons/", enabledTargets);
+                drawTargetsAsIconInside(nodeEnter, "icons/", enabledTargets);
                 break;
             case "directory-1":
                 drawTargets(nodeEnter, "newOption1/", enabledTargets)
@@ -1404,11 +1364,11 @@ function selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, 
                 break;
             //draw as ring outside of the node
             case "ring-on-node":
-                drawTargetRingsCompact(nodeEnter, "rings/", enabledTargets)
+                drawTargetsAsRings(nodeEnter, "rings/", enabledTargets)
                 break;
             //draw as an icon if 1, as rings if more options checked
             case "one-icon-or-rings":
-                enabledTargets.length > 1 ? drawTargetRingsCompact(nodeEnter, "rings/", enabledTargets) : drawTargets(nodeEnter, "icons/", enabledTargets);
+                enabledTargets.length > 1 ? drawTargetsAsRings(nodeEnter, "rings/", enabledTargets) : drawTargets(nodeEnter, "icons/", enabledTargets);
                 break;
 
             default:
@@ -1437,7 +1397,7 @@ function selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets
             break;
         case "trivial-cheese-on-node":
             selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures); //draw the targets if necessary
-            drawFeatureAsCheeseInside(nodeEnter, "trivialCheese/", enabledFeatures); //Always drawn on the right side
+            drawFeaturesAsCheeseInside(nodeEnter, "trivialCheese/", enabledFeatures); //Always drawn on the right side
             break;
         case "trivial-cheese-outside-node":
             selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures); //draw the targets if necessary
@@ -1455,7 +1415,7 @@ function selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets
             drawingAllInOne = true;
             //Deletes the targets and draws them again but INSIDE of the node
             document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
-            drawFeatureAsCircularGlyphCompact(nodeEnter, "Circular/", enabledFeatures);
+            drawFeaturesAsCircularGlyph(nodeEnter, "Circular/", enabledFeatures, enabledTargets);
             break;
 
         case "directory-3":
