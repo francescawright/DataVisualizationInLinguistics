@@ -25,6 +25,437 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
+/**
+ * Compute the radius of the node based on the number of children it has
+ * */
+function computeNodeRadius(d, edgeLength = 300, minRadius = 10) {
+    /*
+        If node has children,
+        more than 2: new radius = 16 + 3 * (#children - 2)
+        2 children: new radius = 16
+        1 child: new radius = 13
+        0 children: new radius = minRadius
+    * */
+    d.radius = minRadius;
+    if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 10
+
+    var children =  d.children ?? d._children; //Assign children collapsed or not
+
+    children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
+        : children.length  === 2 ? d.radius = 16 //2 children
+        : d.radius = 13; //One child
+    //Avoid the root node from being so large that overlaps/hides its children
+    if(d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
+    return d.radius;
+}
+
+/**
+ * Computes the borders of a box containing our nodes
+ * */
+function computeDimensions(nodes){
+    /* Note our coordinate system:
+    * in radian coordinates
+    * q4    |       q1
+    * ------|---------
+    * q3    |       q2
+    * */
+    var maxYq1 = -Infinity, maxYq2 = -Infinity, maxYq3 = -Infinity, maxYq4 = -Infinity;
+    var xQ1, xQ2, xQ3, xQ4;
+
+    for(const n of nodes){
+        //Quadrant 1
+        if ( 0 <= n.x && n.x < 90 && n.y > maxYq1) {
+            maxYq1 = n.y;
+            xQ1 = n.x;
+        }
+
+        //Quadrant 2
+        if ( 90 <= n.x && n.x < 180 && n.y > maxYq2) {
+            maxYq2 = n.y;
+            xQ2 = n.x;
+        }
+        if ( -270 <= n.x && n.x < -180 && n.y > maxYq2) {
+            maxYq2 = n.y;
+            xQ2 = n.x;
+        }
+
+        //Quadrant 3
+        if ( 180 <= n.x && n.x < 270 && n.y > maxYq3) {
+            maxYq3 = n.y;
+            xQ3 = n.x;
+        }
+        if ( -180 <= n.x && n.x < -90 && n.y > maxYq3) {
+            maxYq3 = n.y;
+            xQ3 = n.x;
+        }
+
+        //Quadrant 4
+        if ( -90 <= n.x && n.x < 0 && n.y > maxYq4) {
+            maxYq4 = n.y;
+            xQ4 = n.x;
+        }
+    }
+    return {maxYq1: maxYq1, maxYq2: maxYq2, maxYq3: maxYq3, maxYq4: maxYq4,
+            xQ1: xQ1, xQ2: xQ2, xQ3: xQ3, xQ4: xQ4};
+}
+
+/**
+ * Center graph and zoom to fit the whole graph visualization in our canvas
+ * */
+function zoomToFit() {
+    //By default, the (0,0) (our root node) is displayed on the top left corner
+    //We need to center the graph in the canvas
+
+}
+
+
+/**
+ * Highlights nodes by category of Toxicity
+ * */
+function highlightToxicityOR(node, enabledHighlight){
+    //Toxicity 0
+    if (enabledHighlight.indexOf("highlight-toxicity-0") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level === 0) d.highlighted = 1;
+            return (d.toxicity_level === 0);
+        }).style("opacity", 1);
+    }
+
+    //Toxicity 1
+    if (enabledHighlight.indexOf("highlight-toxicity-1") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level === 1) d.highlighted = 1;
+            return (d.toxicity_level === 1);
+        }).style("opacity", 1);
+    }
+
+    //Toxicity 2
+    if (enabledHighlight.indexOf("highlight-toxicity-2") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level === 2) d.highlighted = 1;
+            console.log(d);
+            return (d.toxicity_level === 2);
+        }).style("opacity", 1);
+    }
+
+    //Toxicity 3
+    if (enabledHighlight.indexOf("highlight-toxicity-3") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level === 3) d.highlighted = 1;
+            console.log(d);
+            return (d.toxicity_level === 3);
+        }).style("opacity", 1);
+    }
+
+}
+
+/**
+ * Highlights nodes and edges by category of Toxicity belonging to the intersection of selected values
+ *
+ * Unhighlights nodes that do not have the selected property
+ * */
+function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
+    //Toxicity not 0
+    if (enabledHighlight.indexOf("highlight-toxicity-0") > -1) {
+        var unhighlightNodes = node.filter(function (d) {
+            if (d.toxicity_level !== 0) d.highlighted = 0;
+            return (d.toxicity_level !== 0);
+        });
+        unhighlightNodes.style("opacity", opacityValue);
+        unhighlightNodes.select("g.node.backgroundCircle").style("opacity", 1);
+    }
+
+    //Toxicity not 1
+    if (enabledHighlight.indexOf("highlight-toxicity-1") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level !== 1) d.highlighted = 0;
+            return (d.toxicity_level !== 1);
+        })
+            // .select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
+    }
+
+    //Toxicity not 2
+    if (enabledHighlight.indexOf("highlight-toxicity-2") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level !== 2) d.highlighted = 0;
+            return (d.toxicity_level !== 2);
+        })
+            // .select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
+    }
+
+    //Toxicity not 3
+    if (enabledHighlight.indexOf("highlight-toxicity-3") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level !== 3) d.highlighted = 0;
+            return (d.toxicity_level !== 3);
+        })
+            // .select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
+    }
+
+}
+
+function highlightStanceOR(node, enabledHighlight){
+    //Neutral stance CB is checked
+    if (enabledHighlight.indexOf("highlight-neutral") > -1) {
+        node.filter(function (d) {
+            if (!d.positive_stance && !d.negative_stance) d.highlighted = 1;
+            return (!d.positive_stance && !d.negative_stance);
+        }).style("opacity", 1);
+    }
+
+    //Positive stance CB is checked
+    if (enabledHighlight.indexOf("highlight-positive") > -1) {
+        node.filter(function (d) {
+            if (d.positive_stance) d.highlighted = 1;
+            return (d.positive_stance);
+        }).style("opacity", 1);
+    }
+
+    //Negative stance CB is checked
+    if (enabledHighlight.indexOf("highlight-negative") > -1) {
+        node.filter(function (d) {
+            if (d.negative_stance) d.highlighted = 1;
+            return (d.negative_stance);
+        }).style("opacity", 1);
+    }
+
+}
+
+function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2){
+    //Neutral stance CB is checked
+    if (enabledHighlight.indexOf("highlight-neutral") > -1) {
+        node.filter(function (d) {
+            if (d.positive_stance || d.negative_stance) d.highlighted = 0;
+            return (d.positive_stance || d.negative_stance);
+        })//.select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
+    }
+
+    //Positive stance CB is checked
+    if (enabledHighlight.indexOf("highlight-positive") > -1) {
+        node.filter(function (d) {
+            if (!d.positive_stance) d.highlighted = 0;
+            return (!d.positive_stance);
+        })//.select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
+    }
+
+    //Negative stance CB is checked
+    if (enabledHighlight.indexOf("highlight-negative") > -1) {
+        node.filter(function (d) {
+            if (!d.negative_stance) d.highlighted = 0;
+            return (!d.negative_stance);
+        })//.select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
+    }
+
+}
+
+function highlightTargetOR(node, enabledHighlight){
+    //Target group CB is checked
+    if (enabledHighlight.indexOf("highlight-group") > -1) {
+        node.filter(function (d) {
+            if (d.target_group) d.highlighted = 1;
+            return (d.target_group);
+        }).style("opacity", 1);
+    }
+
+    //Target person CB is checked
+    if (enabledHighlight.indexOf("highlight-person") > -1) {
+        node.filter(function (d) {
+            if (d.target_person) d.highlighted = 1;
+            return (d.target_person);
+        }).style("opacity", 1);
+    }
+
+    //Stereotype CB is checked
+    if (enabledHighlight.indexOf("highlight-stereotype") > -1) {
+        node.filter(function (d) {
+            if (d.stereotype) d.highlighted = 1;
+            return (d.stereotype);
+        }).style("opacity", 1);
+    }
+}
+
+function highlightTargetAND(node, enabledHighlight, opacityValue = 0.2){
+    //Target group CB is checked
+    if (enabledHighlight.indexOf("highlight-group") > -1) {
+        node.filter(function (d) {
+            if (!d.target_group) d.highlighted = 0;
+            return (!d.target_group);
+        }).style("opacity", opacityValue);
+
+    }
+
+    //Target person CB is checked
+    if (enabledHighlight.indexOf("highlight-person") > -1) {
+        node.filter(function (d) {
+            if (!d.target_person) d.highlighted = 0;
+            return (!d.target_person);
+        }).style("opacity", opacityValue);
+    }
+
+    //Stereotype CB is checked
+    if (enabledHighlight.indexOf("highlight-stereotype") > -1) {
+        node.filter(function (d) {
+            if (!d.stereotype) d.highlighted = 0;
+            return (!d.stereotype);
+        }).style("opacity", opacityValue);
+    }
+}
+
+function highlightPositiveOR(node, enabledHighlight){
+    //Argumentation CB is checked
+    if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
+        node.filter(function (d) {
+            if (d.argumentation) d.highlighted = 1;
+            return (d.argumentation);
+        }).style("opacity", 1);
+    }
+
+    //Constructiveness CB is checked
+    if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
+        node.filter(function (d) {
+            if (d.constructiveness) d.highlighted = 1;
+            return (d.constructiveness);
+        }).style("opacity", 1);
+    }
+
+}
+
+function highlightPositiveAND(node, enabledHighlight, opacityValue = 0.2){
+    //Argumentation CB is checked
+    if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
+        node.filter(function (d) {
+            if (!d.argumentation); d.highlighted = 0;
+            return (!d.argumentation);
+        }).style("opacity", opacityValue);
+    }
+
+    //Constructiveness CB is checked
+    if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
+        node.filter(function (d) {
+            if (!d.constructiveness); d.highlighted = 0;
+            return (!d.constructiveness);
+        }).style("opacity", opacityValue);
+    }
+
+}
+
+function highlightNegativeOR(node, enabledHighlight){
+    //Sarcasm CB is checked
+    if (enabledHighlight.indexOf("highlight-sarcasm") > -1) {
+        node.filter(function (d) {
+            if (d.sarcasm) d.highlighted = 1;
+            return (d.sarcasm);
+        }).style("opacity", 1);
+    }
+
+    //Mockery CB is checked
+    if (enabledHighlight.indexOf("highlight-mockery") > -1) {
+        node.filter(function (d) {
+            if (d.mockery) d.highlighted = 1;
+            return (d.mockery);
+        }).style("opacity", 1);
+    }
+
+    //Intolerance CB is checked
+    if (enabledHighlight.indexOf("highlight-intolerance") > -1) {
+        node.filter(function (d) {
+            if (d.intolerance) d.highlighted = 1;
+            return (d.intolerance);
+        }).style("opacity", 1);
+    }
+
+    //Improper language CB is checked
+    if (enabledHighlight.indexOf("highlight-improper-language") > -1) {
+        node.filter(function (d) {
+            if (d.improper_language) d.highlighted = 1;
+            return (d.improper_language);
+        }).style("opacity", 1);
+    }
+
+    //Insult language CB is checked
+    if (enabledHighlight.indexOf("highlight-insult") > -1) {
+        node.filter(function (d) {
+            if (d.insult) d.highlighted = 1;
+            return (d.insult);
+        }).style("opacity", 1);
+    }
+
+    //Aggressiveness language CB is checked
+    if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) {
+        node.filter(function (d) {
+            if (d.aggressiveness) d.highlighted = 1;
+            return (d.aggressiveness);
+        }).style("opacity", 1);
+    }
+}
+
+function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2){
+    //Sarcasm CB is checked
+    if (enabledHighlight.indexOf("highlight-sarcasm") > -1) {
+        node.filter(function (d) {
+            if (!d.sarcasm) d.highlighted = 0;
+            return (!d.sarcasm);
+        }).style("opacity", opacityValue);
+    }
+
+    //Mockery CB is checked
+    if (enabledHighlight.indexOf("highlight-mockery") > -1) {
+        node.filter(function (d) {
+            if (!d.mockery) d.highlighted = 0;
+            return (!d.mockery);
+        }).style("opacity", opacityValue);
+    }
+
+    //Intolerance CB is checked
+    if (enabledHighlight.indexOf("highlight-intolerance") > -1) {
+        node.filter(function (d) {
+            if (!d.intolerance) d.highlighted = 0;
+            return (!d.intolerance);
+        }).style("opacity", opacityValue);
+    }
+
+    //Improper language CB is checked
+    if (enabledHighlight.indexOf("highlight-improper-language") > -1) {
+        node.filter(function (d) {
+            if (!d.improper_language) d.highlighted = 0;
+            return (!d.improper_language);
+        }).style("opacity", opacityValue);
+    }
+
+    //Insult language CB is checked
+    if (enabledHighlight.indexOf("highlight-insult") > -1) {
+        node.filter(function (d) {
+            if (!d.insult) d.highlighted = 0;
+            return (!d.insult);
+        }).style("opacity", opacityValue);
+    }
+
+    //Aggressiveness language CB is checked
+    if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) {
+        node.filter(function (d) {
+            if (!d.aggressiveness) d.highlighted = 0;
+            return (!d.aggressiveness);
+        }).style("opacity", opacityValue);
+    }
+}
 
 // Get JSON data
 treeJSON = d3.json(dataset, function (error, treeData) {
@@ -37,11 +468,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var i = 0;
     var duration = 750;
     var root, rootName = "News Article";
+    var nodes;
 
 
     var groupDrawn = false, personDrawn = false;
     var opacityValue = 0.2;
-    var circleRadius = 8.7;
+    var circleRadius = 8.7, minRadius = 10;
+    const dotRadius = 10.5;
 
     /* Colours
    * */
@@ -52,6 +485,15 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var colorFeature = ["#a1d99b", "#31a354",
         "#fee5d9", "#fcbba1", "#fc9272",
         "#fb6a4a", "#de2d26", "#a50f15"];
+
+    /* Root icon */
+    var rootPath = pr;
+    var objRoot = {
+        class: "rootNode",
+        id: "rootNode",
+        fileName: "root.png"  };
+
+    var imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
 
     /* Targets: size, position, local path, objects to draw the target as ring
     * */
@@ -124,7 +566,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var tree = d3.layout.tree()
         .nodeSize(root.children.length, 0) //NOTE the width is overwritten later
         .sort(function (a, b) {
-            console.log(a, b);
             if (a.toxicity_level === b.toxicity_level) {
 
                 var childrenOfA = a.children ? a.children : a._children;
@@ -244,6 +685,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             selected: enabledTargets.indexOf("target-group"),
             x: -30,
             y: -10,
+            xInside: -0.9,
+            yInside: -0.8,
             height: targetIconHeight,
             width: targetIconWidth,
             fileName: "Group.png"
@@ -254,6 +697,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             selected: enabledTargets.indexOf("target-person"),
             x: -50,
             y: -10,
+            xInside: -0.5,
+            yInside: 0,
             height: targetIconHeight,
             width: targetIconWidth,
             fileName: "Person.png"
@@ -264,6 +709,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             selected: enabledTargets.indexOf("target-stereotype"),
             x: -70,
             y: -10,
+            xInside: -0.1,
+            yInside: -0.8,
             height: targetIconHeight,
             width: targetIconWidth,
             fileName: "Stereotype.png"
@@ -497,6 +944,22 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
     /* SECTION TO DRAW TARGETS */
+
+    /**
+     * Compute the position of an associated image to be centered on the node
+     * that is a radiusPercentage smaller than it
+     * */
+    function positionImage(nodeRadius, radiusPercentage = imgRatio) {
+        return nodeRadius * (radiusPercentage / 100.0 - 1);
+    }
+
+    /**
+     * Compute the size of an associated image to be a radiusPercentage smaller than the node
+     * */
+    function sizeImage(nodeRadius, radiusPercentage = imgRatio){
+        return 2 * nodeRadius * (1 - radiusPercentage / 100.0);
+    }
+
     /**
      * Remove all the target icon or images of the given node
      * */
@@ -557,10 +1020,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
-                    .attr("x", targets[i].x)
-                    .attr("y", targets[i].y)
-                    .attr("height", targets[i].height)
-                    .attr("width", targets[i].width)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius);
+                    })
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
@@ -602,7 +1073,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     drawTargets(nodeEnter, "newOption2/")
                     break;
                 //draw as ring outside of the node
-                case "rings":
+                case "ring-on-node":
                     drawTargetRings(nodeEnter, "rings/")
                     break;
                 //draw as an icon if 1, as rings if more options checked
@@ -636,10 +1107,16 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
-                    .attr("x", targets[i].x)
-                    .attr("y", targets[i].y)
-                    .attr("height", targets[i].height)
-                    .attr("width", targets[i].width)
+                    .attr("x", function (d) {
+                        return - (d.radius + sizeImage(minRadius, 0) * (i + 1));
+                    })
+                    .attr("y", - minRadius)
+                    .attr("height", function (d) {
+                        return sizeImage(minRadius, 0);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(minRadius, 0);
+                    })
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
@@ -656,6 +1133,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      *
      * The icon used is from the local path passed by parameter
      * The css values are from the target objects that are icons
+     *
+     * Draw in a triangle Group --- Stereotype
+     *                          \ /
+     *                         Person
      * */
     function drawTargetsInside(nodeEnter, localPath) {
         removeThisTargets(nodeEnter);
@@ -668,10 +1149,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
-                    .attr("x", -8.0)
-                    .attr("y", targets[i].y)
-                    .attr("height", targets[i].height)
-                    .attr("width", targets[i].width)
+                    .attr("x", function (d) {
+                        return d.radius * targets[i].xInside;
+                    })
+                    .attr("y", function (d) {
+                        return d.radius * targets[i].yInside;
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius)/2.0;
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius)/2.0;
+                    })
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
@@ -808,8 +1297,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("circle")
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
-                    .attr("r", "4.5")
-                    .attr("transform", "translate(" + (35 + i * 10) + "," + 0 + ")")
+                    .attr("r", dotRadius)
+                    .attr("transform",function (d) {
+                        return  "translate(" + (d.radius + (i + 1) * (dotRadius*2)) + "," + 0 + ")"
+                    })
                     .attr("fill", colorFeature[i])
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
@@ -831,10 +1322,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         nodeEnter.append("image")
             .attr('class', objFeatGray.class)
             .attr('id', objFeatGray.id)
-            .attr("x", objFeatGray.x) //NOTE: it is always displayed at the left side!!
-            .attr("y", objFeatGray.y)
-            .attr("height", objFeatGray.height)
-            .attr("width", objFeatGray.width)
+            .attr("x", function (d) {
+                return positionImage(d.radius);
+            })
+            .attr("y", function (d) {
+                return positionImage(d.radius);
+            })
+            .attr("height", function (d) {
+                return sizeImage(d.radius);
+            })
+            .attr("width", function (d) {
+                return sizeImage(d.radius);
+            })
             .attr("href", pathFeatures + localPath + objFeatGray.fileName)
             .attr("opacity", function (d) {
                 if (d.parent === undefined) return 0;
@@ -853,10 +1352,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
-                    .attr("x", features[i].x)
-                    .attr("y", features[i].y)
-                    .attr("height", 55)
-                    .attr("width", 55)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius);
+                    })
                     .attr("href", pathFeatures + localPath + features[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
@@ -894,10 +1401,73 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', allObjectsInNode[i].class)
                     .attr('id', allObjectsInNode[i].id)
-                    .attr("x", localPosition - 17.53)
-                    .attr("y", -27.45)
-                    .attr("height", 55)
-                    .attr("width", 55)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius, 0);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius, 0);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius, 0);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius, 0);
+                    })
+                    .style("stroke", "black")
+                    .style("stroke-width", "0.5px")
+                    .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.parent === undefined) return 0;
+
+                        listOpacity = [d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
+                            d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
+                            d.target_group, d.target_person, d.stereotype];
+
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+    /**
+     * Hide all previous features and targets
+     * Draw everything inside of the node
+     * */
+    function drawFeatureAsRectangularGlyph(nodeEnter, localPath, localPosition) {
+        removeThisFeatures(nodeEnter);
+        removeThisTargets(nodeEnter);
+        removeToxicities(nodeEnter);
+
+        var allObjectsInNode = [objToxicity0, objToxicity1, objToxicity2, objToxicity3,
+            objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness,
+            objTargetGroup, objTargetPerson, objTargetStereotype];
+        var listOpacity;
+
+        //Better done than perfect
+        var cbShowTargets = [1, 1, 1, 1,
+            enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+            enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
+            enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness"),
+            enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
+
+
+        for (var i = 0; i < allObjectsInNode.length; i++) {
+            if (cbShowTargets[i] > -1) { //If the checkbox is checked, display it if it has the property
+                nodeEnter.append("image")
+                    .attr('class', allObjectsInNode[i].class)
+                    .attr('id', allObjectsInNode[i].id)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius + d.radius / 5.0, 0);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius + d.radius / 5.0, 0);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius + d.radius / 5.0, 0);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius + d.radius / 5.0, 0);
+                    })
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
@@ -945,10 +1515,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', allObjectsInNode[i].class)
                     .attr('id', allObjectsInNode[i].id)
-                    .attr("x", localPosition - 17.53)
-                    .attr("y", -27.45)
-                    .attr("height", 55)
-                    .attr("width", 55)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius, 0);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius, 0);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius, 0);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius, 0);
+                    })
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
@@ -985,7 +1563,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 selectTargetVisualization(nodeEnter); //draw the targets if necessary
                 drawFeatureDots(nodeEnter); //Always drawn on the right side
                 break;
-            case "trivial-cheese":
+            case "trivial-cheese-on-node":
                 selectTargetVisualization(nodeEnter); //draw the targets if necessary
                 drawFeatureAsCheese(nodeEnter, "trivialCheese/"); //Always drawn on the right side
                 break;
@@ -1008,7 +1586,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 drawingAllInOne = true;
                 //Deletes the targets and draws them again but INSIDE of the node
                 document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
-                drawFeatureAsGlyph(nodeEnter, "Rectangular/", localPosition);
+                drawFeatureAsRectangularGlyph(nodeEnter, "Rectangular/", localPosition);
                 break;
 
             default:
@@ -1194,6 +1772,24 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
     /* END section*/
+
+    /**
+     * Draw an icon for the root node
+     * */
+    function visualiseRootIcon(node){
+        //Filter the nodes and append an icon just for the root node
+        node.filter(function (d) {
+            return d.parent === undefined;
+        }).append("image")
+            .attr('class', objRoot.class)
+            .attr('id', objRoot.id)
+            .attr("x", root.x - root.radius)
+            .attr("y", root.y - root.radius)
+            .attr("height", root.radius * 2)
+            .attr("width", root.radius * 2)
+            .attr("href", rootPath + objRoot.fileName)
+            .attr("opacity", 1);
+    }
 
     /*SECTION highlighting */
     function highlightByPropertyOR(node, link) {
@@ -1599,6 +2195,52 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
+    function highlightNodesByPropertyOR(node, link){
+        if (enabledHighlight.length === 0){ //If no tag (toxicity, stance,...) checkbox is selected: highlight all
+            nodes.forEach(function (d) {
+                d.highlighted = 1;
+            });
+            node.style("opacity", 1);
+        }
+        else { //If some tag checkbox is selected behave as expected
+            //First, unhighlight everything and set the parameter highlighted to 0
+            nodes.forEach(function (d) {
+                d.highlighted = 0;
+            });
+            node.style("opacity", opacityValue);
+
+            //Then highlight by property OR
+            highlightToxicityOR(node, enabledHighlight);
+            highlightStanceOR(node, enabledHighlight);
+            highlightTargetOR(node, enabledHighlight);
+            highlightPositiveOR(node, enabledHighlight);
+            highlightNegativeOR(node, enabledHighlight);
+        }
+        //Highlight only the edges whose both endpoints are highlighted
+        link.style("opacity", function (d) {
+            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+        });
+    }
+
+    function highlightNodesByPropertyAND(node, link) {
+        nodes.forEach(function (d) {
+            d.highlighted = 1;
+        });
+        node.style("opacity", 1);
+
+        //Then unhighlight by property AND
+        highlightToxicityAND(node, enabledHighlight);
+        highlightStanceAND(node, enabledHighlight);
+        highlightTargetAND(node, enabledHighlight);
+        highlightPositiveAND(node, enabledHighlight);
+        highlightNegativeAND(node, enabledHighlight);
+
+        //Highlight only the edges whose both endpoints are highlighted
+        link.style("opacity", function (d) {
+            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+        });
+    }
+
     /*END section */
 
 
@@ -1717,8 +2359,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             });
 
         // Compute the new tree layout.
-        var nodes = tree.nodes(root).reverse(),
-            links = tree.links(nodes);
+        nodes = tree.nodes(root).reverse();
+        var links = tree.links(nodes);
 
         // Set widths between levels
         nodes.forEach(function (d) {
@@ -1738,12 +2380,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 return "translate(" + radialPoint(source.x0, source.y0) + ")";
             })
             .on('click', function (d) {
-                console.log("Node positions when clicked ON CLICK: ", source.x, source.y);
-                console.log("maybe: ", radialPoint(d, source.x0, source.y0));
                 click(d);
             })
             .on('mouseover', function (d) {
                 console.log("coordinates ", d.x, d.y);
+                //console.log("Before transforming coordenates: ", source.x0, source.y0);
+                var aux = (d.x < 0) ? 360 + d.x : d.x;
+                console.log("something radial?", radialPoint(aux, d.y));
                 if (d !== root) {
                     writeTooltipText(d);
                     tooltip.style("visibility", "visible")
@@ -1907,9 +2550,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
                 if (!document.querySelector("input[value=and-group]").checked && !document.querySelector("input[value=or-group]").checked) {
                     document.querySelector("input[value=and-group]").checked = true;
-                    highlightByPropertyAND(node, link);
+                    highlightNodesByPropertyAND(node, link);
                 } else {
-                    checkboxAND.checked ? highlightByPropertyAND(node, link) : highlightByPropertyOR(node, link);
+                    checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
                     console.log(enabledHighlight);
                 }
 
@@ -1929,10 +2572,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         checkboxAND.addEventListener('change', function () {
             if (this.checked) {
                 checkboxOR.checked = false;
-                highlightByPropertyAND(node, link);
+                highlightNodesByPropertyAND(node, link);
             } else {
                 checkboxOR.checked = true;
-                highlightByPropertyOR(node, link);
+                highlightNodesByPropertyOR(node, link);
             }
 
         });
@@ -1940,10 +2583,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         checkboxOR.addEventListener('change', function () {
             if (this.checked) {
                 checkboxAND.checked = false;
-                highlightByPropertyOR(node, link);
+                highlightNodesByPropertyOR(node, link);
             } else {
                 checkboxAND.checked = true;
-                highlightByPropertyAND(node, link);
+                highlightNodesByPropertyAND(node, link);
             }
         });
 
@@ -1956,7 +2599,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
                 console.log(enabledHighlight);
-                checkboxOR.checked ? highlightByPropertyOR(node, link) : highlightByPropertyAND(node, link);
+                checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
             })
         });
 
@@ -1975,14 +2618,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         // Change the circle fill depending on whether it has children and is collapsed
         node.select("circle.nodeCircle")
             .attr("r", function (d) {
-                if (d._children)
-                    if (d._children.length > 2)
-                        return radiusFactor * d._children.length * 4
-                    else if (d._children.length === 2)
-                        return 8.7 * radiusFactor
-                    else
-                        return 7.7 * radiusFactor;
-                return 8.7;
+                return computeNodeRadius(d);
             })
             .style("fill", function (d) {
                 if (d._children && d._children.length === 1) return colourCollapsed1Son; //If it is collapsed and just has one children
@@ -2001,6 +2637,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     }
                 }
             });
+
+        visualiseRootIcon(node); //Draw an icon for the root node
 
         // Transition nodes to their new position.
         var nodeUpdate = node.transition()
@@ -2049,7 +2687,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .attr("d", diagonal);
 
         //Highlight nodes if necessary NOTE: it needs to be after the definition of the link
-        if (checkboxHighlightMenu.checked && source.children) checkboxOR.checked ? highlightByPropertyOR(node, link) : highlightByPropertyAND(node, link);
+        if (checkboxHighlightMenu.checked && source.children) checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
 
         // Transition exiting nodes to the parent's new position.
         link.exit().transition()
@@ -2079,7 +2717,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     // Layout the tree initially and center on the root node.
     update(root);
-    centerNode(root);
+    //centerNode(root);
+    var box = computeDimensions(nodes);
+    console.log("box containing Y ", box);
 
     /**
      * Wrap call to compute statistics and to write them in a hover text
