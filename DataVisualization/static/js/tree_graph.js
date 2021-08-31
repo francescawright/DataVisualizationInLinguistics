@@ -25,13 +25,487 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
+/**
+ * Compute the radius of the node based on the number of children it has
+ * */
+function computeNodeRadius(d, edgeLength = 300) {
+    /*
+        If node has children,
+        more than 2: new radius = 16 + 3 * (#children - 2)
+        2 children: new radius = 16
+        1 child: new radius = 13
+        0 children: new radius = 10
+    * */
+    d.radius = 10;
+    if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 10
+
+    var children =  d.children ?? d._children; //Assign children collapsed or not
+
+    children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
+        : children.length  === 2 ? d.radius = 16 //2 children
+        : d.radius = 13; //One child
+    //Avoid the root node from being so large that overlaps/hides its children
+    if(d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
+    return d.radius;
+}
+
+/**
+ * Computes the borders of a box containing our nodes
+ * */
+function computeDimensions(nodes){
+    /* Note our coordinate system:
+    *
+    *                     | X negative
+    *                     |
+    * Y negative <--------|-------> Y positive
+    *                     |
+    *                     | X positive
+    * And note we need to take into account the radius of the node
+    * */
+    var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for(const n of nodes){
+        if((n.x - n.radius) < minX) minX = n.x - n.radius;
+        if((n.y - n.radius) < minY) minY = n.y - n.radius;
+        if((n.x + n.radius) > maxX) maxX = n.x + n.radius;
+        if((n.y + n.radius) > maxY) maxY = n.y + n.radius;
+    }
+    return {minX: minX, minY: minY, maxX: maxX, maxY: maxY};
+}
+
+/**
+ * Center graph and zoom to fit the whole graph visualization in our canvas
+ * */
+function zoomToFitGraph(minX, minY, maxX, maxY,
+                        root,
+                        canvasHeight = 900, canvasWidth = 2200,
+                        duration = 750) {
+    /* Note our coordinate system:
+    *
+    *
+    *                     | X negative
+    *                     |
+    * Y negative <--------|-------> Y positive
+    *                     |
+    *                     | X positive
+    * Due to the D3 algorithm we are expecting: minX = - maxX
+    * and due to the assignment of the root positions: minY = 0
+    * */
+    var boxWidth = maxY - minY,
+        boxHeight = maxX - minX;
+
+    var midY = boxWidth / 2.0,
+        midX = boxHeight / 2.0;
+
+    scale = Math.min(canvasWidth/boxWidth, canvasHeight/boxHeight);
+
+    var newX = canvasWidth/2.0,
+        newY = canvasHeight/2.0;
+
+    if(canvasWidth/boxWidth < canvasHeight/boxHeight) {
+        newY -= midX * scale;
+        newX -= midY * scale;
+    }
+    else newX -= midY * scale;
+
+    //For nodes wider than tall, we need to displace them to the middle of the graph
+    if(newY < boxHeight*scale && boxHeight*scale < canvasHeight) newY =  canvasHeight / 2.0;
+
+    d3.select('g').transition()
+        .duration(duration)
+        .attr("transform", "translate(" + (newX + root.radius*scale) + "," + newY + ")scale(" + scale + ")");
+
+    return {initialZoom: scale,
+        initialY: newX,
+        initialX: newY}
+}
+
+var rootPath = pr;
+var colourUnhighlightedToxicity0 = "#f0f0f0", colourUnhighlightedToxicity1 = "#d6d6d6",
+    colourUnhighlightedToxicity2 = "#ababab", colourUnhighlightedToxicity3 = "#6b6b6b",
+    colourUnhighlightedCollapsed1Son = "cfdbeb";
+
+function colourUnhighlightedNode(d) {
+    if (d._children?.length === 1) return colourUnhighlightedCollapsed1Son;
+    switch (d.toxicity_level) {
+        case 0: return colourUnhighlightedToxicity0;
+        case 1: return colourUnhighlightedToxicity1;
+        case 2: return colourUnhighlightedToxicity2;
+        case 3: return colourUnhighlightedToxicity3;
+    }
+}
+
+/**
+ * Highlights nodes by category of Toxicity
+ * */
+function highlightToxicityOR(node, enabledHighlight){
+    //Toxicity 0
+    if (enabledHighlight.indexOf("highlight-toxicity-0") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level === 0) d.highlighted = 1;
+            console.log(d);
+            return (d.toxicity_level === 0);
+        }).style("opacity", 1);
+    }
+
+    //Toxicity 1
+    if (enabledHighlight.indexOf("highlight-toxicity-1") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level === 1) d.highlighted = 1;
+            console.log(d);
+            return (d.toxicity_level === 1);
+        }).style("opacity", 1);
+    }
+
+    //Toxicity 2
+    if (enabledHighlight.indexOf("highlight-toxicity-2") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level === 2) d.highlighted = 1;
+            console.log(d);
+            return (d.toxicity_level === 2);
+        }).style("opacity", 1);
+    }
+
+    //Toxicity 3
+    if (enabledHighlight.indexOf("highlight-toxicity-3") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level === 3) d.highlighted = 1;
+            console.log(d);
+            return (d.toxicity_level === 3);
+        }).style("opacity", 1);
+    }
+
+}
+
+/**
+ * Highlights nodes and edges by category of Toxicity belonging to the intersection of selected values
+ *
+ * Unhighlights nodes that do not have the selected property
+ * */
+function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
+    //Toxicity not 0
+    if (enabledHighlight.indexOf("highlight-toxicity-0") > -1) {
+        var unhighlightNodes = node.filter(function (d) {
+            if (d.toxicity_level !== 0) d.highlighted = 0;
+            return (d.toxicity_level !== 0);
+        });
+        unhighlightNodes.style("opacity", opacityValue);
+        unhighlightNodes.select("g.node.backgroundCircle").style("opacity", 1);
+        /*for(const n of unhighlightNodes){
+            console.log("something", n.firstChild);
+        }*/
+        //unhighlightNodes.select("image.backgroundCircle").style("opacity", 1);
+
+        //unhighlightNodes.selectAll("#backgroundCircle").style("opacity", 1);
+            //.select("image:not(.backgroundCircle)")
+            //.select(".nodeCircle, .featInsult, .nodeText")
+           /* .style("position", "relative")
+            .style("z-index", 1)*/
+
+            /*.select('[class^="feat-"]')
+            .style("opacity", opacityValue)
+            .select('[class^="target-"]')
+            .style("opacity", opacityValue)*/
+    }
+
+    //Toxicity not 1
+    if (enabledHighlight.indexOf("highlight-toxicity-1") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level !== 1) d.highlighted = 0;
+            return (d.toxicity_level !== 1);
+        })
+            // .select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
+    }
+
+    //Toxicity not 2
+    if (enabledHighlight.indexOf("highlight-toxicity-2") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level !== 2) d.highlighted = 0;
+            return (d.toxicity_level !== 2);
+        })
+            // .select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
+    }
+
+    //Toxicity not 3
+    if (enabledHighlight.indexOf("highlight-toxicity-3") > -1) {
+        node.filter(function (d) {
+            if (d.toxicity_level !== 3) d.highlighted = 0;
+            return (d.toxicity_level !== 3);
+        })
+            // .select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
+    }
+
+}
+
+function highlightStanceOR(node, enabledHighlight){
+    //Neutral stance CB is checked
+    if (enabledHighlight.indexOf("highlight-neutral") > -1) {
+        node.filter(function (d) {
+            if (!d.positive_stance && !d.negative_stance) d.highlighted = 1;
+            return (!d.positive_stance && !d.negative_stance);
+        }).style("opacity", 1);
+    }
+
+    //Positive stance CB is checked
+    if (enabledHighlight.indexOf("highlight-positive") > -1) {
+        node.filter(function (d) {
+            if (d.positive_stance) d.highlighted = 1;
+            return (d.positive_stance);
+        }).style("opacity", 1);
+    }
+
+    //Negative stance CB is checked
+    if (enabledHighlight.indexOf("highlight-negative") > -1) {
+        node.filter(function (d) {
+            if (d.negative_stance) d.highlighted = 1;
+            return (d.negative_stance);
+        }).style("opacity", 1);
+    }
+
+}
+
+function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2){
+    //Neutral stance CB is checked
+    if (enabledHighlight.indexOf("highlight-neutral") > -1) {
+        node.filter(function (d) {
+            if (d.positive_stance || d.negative_stance) d.highlighted = 0;
+            return (d.positive_stance || d.negative_stance);
+        })//.select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
+    }
+
+    //Positive stance CB is checked
+    if (enabledHighlight.indexOf("highlight-positive") > -1) {
+        node.filter(function (d) {
+            if (!d.positive_stance) d.highlighted = 0;
+            return (!d.positive_stance);
+        })//.select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
+    }
+
+    //Negative stance CB is checked
+    if (enabledHighlight.indexOf("highlight-negative") > -1) {
+        node.filter(function (d) {
+            if (!d.negative_stance) d.highlighted = 0;
+            return (!d.negative_stance);
+        })//.select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
+    }
+
+}
+
+function highlightTargetOR(node, enabledHighlight){
+    //Target group CB is checked
+    if (enabledHighlight.indexOf("highlight-group") > -1) {
+        node.filter(function (d) {
+            if (d.target_group) d.highlighted = 1;
+            return (d.target_group);
+        }).style("opacity", 1);
+    }
+
+    //Target person CB is checked
+    if (enabledHighlight.indexOf("highlight-person") > -1) {
+        node.filter(function (d) {
+            if (d.target_person) d.highlighted = 1;
+            return (d.target_person);
+        }).style("opacity", 1);
+    }
+
+    //Stereotype CB is checked
+    if (enabledHighlight.indexOf("highlight-stereotype") > -1) {
+        node.filter(function (d) {
+            if (d.stereotype) d.highlighted = 1;
+            return (d.stereotype);
+        }).style("opacity", 1);
+    }
+}
+
+function highlightTargetAND(node, enabledHighlight, opacityValue = 0.2){
+    //Target group CB is checked
+    if (enabledHighlight.indexOf("highlight-group") > -1) {
+        node.filter(function (d) {
+            if (!d.target_group) d.highlighted = 0;
+            return (!d.target_group);
+        }).style("opacity", opacityValue);
+
+    }
+
+    //Target person CB is checked
+    if (enabledHighlight.indexOf("highlight-person") > -1) {
+        node.filter(function (d) {
+            if (!d.target_person) d.highlighted = 0;
+            return (!d.target_person);
+        }).style("opacity", opacityValue);
+    }
+
+    //Stereotype CB is checked
+    if (enabledHighlight.indexOf("highlight-stereotype") > -1) {
+        node.filter(function (d) {
+            if (!d.stereotype) d.highlighted = 0;
+            return (!d.stereotype);
+        }).style("opacity", opacityValue);
+    }
+}
+
+function highlightPositiveOR(node, enabledHighlight){
+    //Argumentation CB is checked
+    if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
+        node.filter(function (d) {
+            if (d.argumentation) d.highlighted = 1;
+            return (d.argumentation);
+        }).style("opacity", 1);
+    }
+
+    //Constructiveness CB is checked
+    if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
+        node.filter(function (d) {
+            if (d.constructiveness) d.highlighted = 1;
+            return (d.constructiveness);
+        }).style("opacity", 1);
+    }
+
+}
+
+function highlightPositiveAND(node, enabledHighlight, opacityValue = 0.2){
+    //Argumentation CB is checked
+    if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
+        node.filter(function (d) {
+            if (!d.argumentation); d.highlighted = 0;
+            return (!d.argumentation);
+        }).style("opacity", opacityValue);
+    }
+
+    //Constructiveness CB is checked
+    if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
+        node.filter(function (d) {
+            if (!d.constructiveness); d.highlighted = 0;
+            return (!d.constructiveness);
+        }).style("opacity", opacityValue);
+    }
+
+}
+
+function highlightNegativeOR(node, enabledHighlight){
+    //Sarcasm CB is checked
+    if (enabledHighlight.indexOf("highlight-sarcasm") > -1) {
+        node.filter(function (d) {
+            if (d.sarcasm) d.highlighted = 1;
+            return (d.sarcasm);
+        }).style("opacity", 1);
+    }
+
+    //Mockery CB is checked
+    if (enabledHighlight.indexOf("highlight-mockery") > -1) {
+        node.filter(function (d) {
+            if (d.mockery) d.highlighted = 1;
+            return (d.mockery);
+        }).style("opacity", 1);
+    }
+
+    //Intolerance CB is checked
+    if (enabledHighlight.indexOf("highlight-intolerance") > -1) {
+        node.filter(function (d) {
+            if (d.intolerance) d.highlighted = 1;
+            return (d.intolerance);
+        }).style("opacity", 1);
+    }
+
+    //Improper language CB is checked
+    if (enabledHighlight.indexOf("highlight-improper-language") > -1) {
+        node.filter(function (d) {
+            if (d.improper_language) d.highlighted = 1;
+            return (d.improper_language);
+        }).style("opacity", 1);
+    }
+
+    //Insult language CB is checked
+    if (enabledHighlight.indexOf("highlight-insult") > -1) {
+        node.filter(function (d) {
+            if (d.insult) d.highlighted = 1;
+            return (d.insult);
+        }).style("opacity", 1);
+    }
+
+    //Aggressiveness language CB is checked
+    if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) {
+        node.filter(function (d) {
+            if (d.aggressiveness) d.highlighted = 1;
+            return (d.aggressiveness);
+        }).style("opacity", 1);
+    }
+}
+
+function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2){
+    //Sarcasm CB is checked
+    if (enabledHighlight.indexOf("highlight-sarcasm") > -1) {
+        node.filter(function (d) {
+            if (!d.sarcasm) d.highlighted = 0;
+            return (!d.sarcasm);
+        }).style("opacity", opacityValue);
+    }
+
+    //Mockery CB is checked
+    if (enabledHighlight.indexOf("highlight-mockery") > -1) {
+        node.filter(function (d) {
+            if (!d.mockery) d.highlighted = 0;
+            return (!d.mockery);
+        }).style("opacity", opacityValue);
+    }
+
+    //Intolerance CB is checked
+    if (enabledHighlight.indexOf("highlight-intolerance") > -1) {
+        node.filter(function (d) {
+            if (!d.intolerance) d.highlighted = 0;
+            return (!d.intolerance);
+        }).style("opacity", opacityValue);
+    }
+
+    //Improper language CB is checked
+    if (enabledHighlight.indexOf("highlight-improper-language") > -1) {
+        node.filter(function (d) {
+            if (!d.improper_language) d.highlighted = 0;
+            return (!d.improper_language);
+        }).style("opacity", opacityValue);
+    }
+
+    //Insult language CB is checked
+    if (enabledHighlight.indexOf("highlight-insult") > -1) {
+        node.filter(function (d) {
+            if (!d.insult) d.highlighted = 0;
+            return (!d.insult);
+        }).style("opacity", opacityValue);
+    }
+
+    //Aggressiveness language CB is checked
+    if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) {
+        node.filter(function (d) {
+            if (!d.aggressiveness) d.highlighted = 0;
+            return (!d.aggressiveness);
+        }).style("opacity", opacityValue);
+    }
+}
+
 
 // Get JSON data
 treeJSON = d3.json(dataset, function (error, treeData) {
 
     // Calculate total nodes, max label length
     var totalNodes = 0;
-    var maxLabelLength = 22;
+    var edgeLength = 300;
 
     // Misc. variables
     var i = 0;
@@ -45,7 +519,15 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         colourNeutralStance = "#2b2727";
 
     var colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
-        colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue";
+        colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue", colourCollapsed1Son = "lightsteelblue";
+
+
+    var objRoot = {
+        class: "rootNode",
+        id: "rootNode",
+        fileName: "root.png"  };
+    var imageOffset = 4; //Radii size difference between a node and its associated image
+    var imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
 
     var colorFeature = ["#a1d99b", "#31a354",
         "#fee5d9", "#fcbba1", "#fc9272",
@@ -110,7 +592,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     // size of the diagram
     var viewerWidth = 100;
     var viewerHeight = 400;
-    var separationHeight = 100; //Desired separation between two node brothers
+
+    var canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
+    var initialZoom, initialX, initialY; //Initial zoom and central coordinates of the first visualization of the graph
+
+    var separationHeight = 10; //Desired separation between two node brothers
     var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
 
     var opacityValue = 0.2; // Opacity when a value is not highlighted
@@ -234,6 +720,39 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             fileName: "Stereotype.svg"
         };
 
+
+    var objTargetGroupInside = {
+            class: "targetGroup",
+            id: "targetGroup",
+            selected: enabledTargets.indexOf("target-group"),
+            x: -0.9,
+            y: -0.8,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Group.svg"
+        },
+        objTargetPersonInside = {
+            class: "targetPerson",
+            id: "targetPerson",
+            selected: enabledTargets.indexOf("target-person"),
+            x: -0.5,
+            y: 0,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Person.svg"
+        },
+        objTargetStereotypeInside = {
+            class: "targetStereotype",
+            id: "targetStereotype",
+            selected: enabledTargets.indexOf("target-stereotype"),
+            x: -0.1,
+            y: -0.8,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Stereotype.svg"
+        };
+
+
     // Objects for feature images
     var objFeatArgumentation = {
             class: "featArgumentation",
@@ -346,7 +865,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
-    // Call visit function to establish maxLabelLength
+    // Call visit function to establish edgeLength
     visit(treeData, function (d) {
         totalNodes++;
     }, function (d) {
@@ -354,9 +873,34 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     });
 
 
-    // Define the zoom function for the zoomable tree
+
+
+    /**
+     * Define zoom and translation
+     * */
     function zoom() {
-        svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        /* The initial d3 events for scale and translation have initial values 1 and [x,y] = [50, 200] respectively
+        * Therefore we need to take this into account and sum the difference to our initial scale and position attributes
+        * defined in zoomToFit()
+        * */
+
+        /*
+        * NOTE:
+        * If the scale is negative, we will see the graph upside-down and left-right swapped
+        * If the scale is 0, we will not see the graph
+        * Define the scale to be at least 0.1 and set it to the initialZoom + the difference of the listener and the d3.event initial scale
+        * */
+        var newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1); //Avoid the graph to be seen mirrored.
+
+        /*
+        * NOTE: Add to the initial position values (initialX and initialY) the movement registered by d3.
+        * d3.event.translate returns an array [x,y] with starting values [50, 200]
+        * The values X and Y are swapped in zoomToFit() and we need to take that into account to give the new coordinates
+        * */
+        var movement = d3.event.translate;
+        var newX = initialX + (movement[1]-200);
+        var newY = initialY + (movement[0]-50);
+        svgGroup.attr("transform", "translate(" + [newY, newX] + ")scale(" + newScale + ")");
     }
 
     // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
@@ -365,8 +909,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     // define the baseSvg, attaching a class for styling and the zoomListener
     var baseSvg = d3.select("#tree-container").append("svg")
-        .attr("width", 2200)
-        .attr("height", 900)
+        .attr("width", canvasWidth)
+        .attr("height", canvasHeight)
         .attr("class", "overlay")
         .call(zoomListener);
 
@@ -449,6 +993,21 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     /*SECTION draw svgs from checboxes*/
 
     /**
+     * Compute the position of an associated image to be centered on the node
+     * that is a radiusPercentage smaller than it
+     * */
+    function positionImage(nodeRadius, radiusPercentage = imgRatio) {
+        return nodeRadius * (radiusPercentage / 100.0 - 1);
+    }
+
+    /**
+     * Compute the size of an associated image to be a radiusPercentage smaller than the node
+     * */
+    function sizeImage(nodeRadius, radiusPercentage = imgRatio){
+        return 2 * nodeRadius * (1 - radiusPercentage / 100.0);
+    }
+
+    /**
      * Draws the 3 targets of a node if the checkbox is checked
      * and if the node has that target (sets the opacity to visible)
      *
@@ -498,7 +1057,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
-                    .attr("x", targets[i].x)
+                    .attr("x", function (d) {
+                        return targets[i].x - d.radius;
+                    })
                     .attr("y", targets[i].y)
                     .attr("height", targets[i].height)
                     .attr("width", targets[i].width)
@@ -519,22 +1080,34 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      *
      * The icon used is from the local path passed by parameter
      * The css values are from the target objects that are icons
+     *
+     * Draw in a triangle Group --- Stereotype
+     *                          \ /
+     *                         Person
      * */
     function drawTargetsInside(nodeEnter, localPath) {
         removeThisTargets(nodeEnter);
         var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
         var listOpacity;
-        var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
+        var targets = [objTargetGroupInside, objTargetPersonInside, objTargetStereotypeInside];
 
         for (var i = 0; i < targets.length; i++) {
             if (cbShowTargets[i] > -1) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
-                    .attr("x", -8.0)
-                    .attr("y", targets[i].y)
-                    .attr("height", targets[i].height)
-                    .attr("width", targets[i].width)
+                    .attr("x", function (d) {
+                        return d.radius * targets[i].x;
+                    })
+                    .attr("y", function (d) {
+                        return d.radius * targets[i].y;
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius)/2.0;
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius)/2.0;
+                    })
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
@@ -563,10 +1136,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
-                    .attr("x", targets[i].x)
-                    .attr("y", targets[i].y)
-                    .attr("height", targets[i].height)
-                    .attr("width", targets[i].width)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius);
+                    })
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
@@ -747,12 +1328,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         for (var i = 0; i < 8; i++) {
             if (cbFeatureEnabled[i] > -1) {
-                console.log(35 + i * 10)
                 nodeEnter.append("circle")
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
                     .attr("r", "10.5")
-                    .attr("transform", "translate(" + (35 + i * 10) + "," + 0 + ")")
+                    .attr("transform", function (d) {
+                        return "translate(" + (d.radius + (i + 1) * (10.5*2)) + "," + 0 + ")";
+                    })
                     .attr("fill", colorFeature[i])
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
@@ -817,10 +1399,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         nodeEnter.append("image")
             .attr('class', objFeatGray.class)
             .attr('id', objFeatGray.id)
-            .attr("x", -10)
-            .attr("y", objFeatGray.y)
-            .attr("height", objFeatGray.height)
-            .attr("width", objFeatGray.width)
+            .attr("x", function (d) {
+                return positionImage(d.radius);
+            })
+            .attr("y", function (d) {
+                return positionImage(d.radius);
+            })
+            .attr("height", function (d) {
+                return sizeImage(d.radius);
+            })
+            .attr("width", function (d) {
+                return sizeImage(d.radius);
+            })
             .attr("href", pathFeatures + localPath + objFeatGray.fileName)
             .attr("opacity", function (d) {
                 if (d.parent === undefined) return 0;
@@ -839,10 +1429,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
-                    .attr("x", -10)
-                    .attr("y", features[i].y)
-                    .attr("height", features[i].height)
-                    .attr("width", features[i].width)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius);
+                    })
                     .attr("href", pathFeatures + localPath + features[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
@@ -929,10 +1527,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 nodeEnter.append("image")
                     .attr('class', allObjectsInNode[i].class)
                     .attr('id', allObjectsInNode[i].id)
-                    .attr("x", localPosition - 17.53)
-                    .attr("y", -27.45)
-                    .attr("height", 40)
-                    .attr("width", 40)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius, 0);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius, 0);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius, 0);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius, 0);
+                    })
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
@@ -1300,6 +1906,24 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
     /*END SECTION*/
+
+    /**
+     * Draw an icon for the root node
+     * */
+    function visualiseRootIcon(node){
+        //Filter the nodes and append an icon just for the root node
+        node.filter(function (d) {
+            return d.parent === undefined;
+        }).append("image")
+            .attr('class', objRoot.class)
+            .attr('id', objRoot.id)
+            .attr("x", root.x - root.radius)
+            .attr("y", root.y - root.radius)
+            .attr("height", root.radius * 2)
+            .attr("width", root.radius * 2)
+            .attr("href", rootPath + objRoot.fileName)
+            .attr("opacity", 1);
+    }
 
     /*SECTION highlighting */
     function highlightByPropertyOR(node, link) {
@@ -1705,6 +2329,53 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
+
+    function highlightNodesByPropertyOR(node, link){
+        if (enabledHighlight.length === 0){ //If no tag (toxicity, stance,...) checkbox is selected: highlight all
+            nodes.forEach(function (d) {
+                d.highlighted = 1;
+            });
+            node.style("opacity", 1);
+        }
+        else { //If some tag checkbox is selected behave as expected
+            //First, unhighlight everything and set the parameter highlighted to 0
+            nodes.forEach(function (d) {
+                d.highlighted = 0;
+            });
+            node.style("opacity", opacityValue);
+
+            //Then highlight by property OR
+            highlightToxicityOR(node, enabledHighlight);
+            highlightStanceOR(node, enabledHighlight);
+            highlightTargetOR(node, enabledHighlight);
+            highlightPositiveOR(node, enabledHighlight);
+            highlightNegativeOR(node, enabledHighlight);
+        }
+        //Highlight only the edges whose both endpoints are highlighted
+        link.style("opacity", function (d) {
+            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+        });
+    }
+
+    function highlightNodesByPropertyAND(node, link) {
+        nodes.forEach(function (d) {
+            d.highlighted = 1;
+        });
+        node.style("opacity", 1);
+
+        //Then unhighlight by property AND
+        highlightToxicityAND(node, enabledHighlight);
+        highlightStanceAND(node, enabledHighlight);
+        highlightTargetAND(node, enabledHighlight);
+        highlightPositiveAND(node, enabledHighlight);
+        highlightNegativeAND(node, enabledHighlight);
+
+        //Highlight only the edges whose both endpoints are highlighted
+        link.style("opacity", function (d) {
+            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+        });
+    }
+
     /*END section */
 
     function writeIdLabel(nodeEnter) {
@@ -1888,34 +2559,25 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         tree = tree.nodeSize([separationHeight, 0]) //heigth and width of the rectangles that define the node space
             .separation(function (a, b) {
-                if (a._children && b._children) { //Both nodes have children
-                    return Math.ceil((a._children.length * radiusFactor / separationHeight)) +
-                        Math.ceil((b._children.length * radiusFactor / separationHeight));
-                }
-                if (a._children) { // Only node a has children
-                    if (a._children.length === 1) return 1;
-                    if (a._children.length * radiusFactor < separationHeight) return 2;
-                    return Math.ceil(a._children.length * radiusFactor / separationHeight) + 1;
-                }
-                if (b._children) { //Only node b has children
-                    if (b._children.length === 1) return 1;
-                    if (b._children.length * radiusFactor < separationHeight) return 2;
-                    return Math.ceil(b._children.length * radiusFactor / separationHeight) + 1;
-                }
-                return 1;
+                //Compute the radius of the node for the first visualization of the graph
+                if (a.radius === undefined) a.radius = computeNodeRadius(a);
+                if(b.radius === undefined) b.radius = computeNodeRadius(b);
+
+                return Math.ceil( (a.radius + b.radius) / separationHeight ) + 0.5;
             });
 
         // Compute the new tree layout.
         nodes = tree.nodes(root).reverse();
+        //nodes = tree.nodes(root);
         var links = tree.links(nodes);
 
-        // Set widths between levels based on maxLabelLength.
+        // Set widths between levels based on edgeLength.
         nodes.forEach(function (d) {
-            d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
+            d.y = (d.depth * edgeLength);
         });
 
         // Update the nodes…
-        node = svgGroup.selectAll("g.node")
+        var node = svgGroup.selectAll("g.node")
             .data(nodes, function (d) {
                 return d.id || (d.id = ++i);
             });
@@ -1944,6 +2606,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .on("mouseout", function () {
                 return tooltip.style("visibility", "hidden");
             });
+
+        nodeEnter.append("image")
+            .attr('class', 'backgroundCircle')
+            .attr('id', "backgroundCircle")
+            .style("position", "relative")
+            .style("z-index", -1)
+            .style("opacity", 1);
 
         nodeEnter.append("circle")
             .attr('class', 'nodeCircle')
@@ -2106,9 +2775,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
                 if (!document.querySelector("input[value=and-group]").checked && !document.querySelector("input[value=or-group]").checked) {
                     document.querySelector("input[value=and-group]").checked = true;
-                    highlightByPropertyAND(node, link);
+                    highlightNodesByPropertyAND(node, link);
                 } else {
-                    checkboxAND.checked ? highlightByPropertyAND(node, link) : highlightByPropertyOR(node, link);
+                    checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
                     console.log(enabledHighlight);
                 }
 
@@ -2131,20 +2800,20 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         checkboxAND.addEventListener('change', function () {
             if (this.checked) {
                 checkboxOR.checked = false;
-                highlightByPropertyAND(node, link);
+                highlightNodesByPropertyAND(node, link);
             } else {
                 checkboxOR.checked = true;
-                highlightByPropertyOR(node, link);
+                highlightNodesByPropertyOR(node, link);
             }
         });
         // If OR is selected, uncheck the AND and highlight by property OR
         checkboxOR.addEventListener('change', function () {
             if (this.checked) {
                 checkboxAND.checked = false;
-                highlightByPropertyOR(node, link);
+                highlightNodesByPropertyOR(node, link);
             } else {
                 checkboxAND.checked = true;
-                highlightByPropertyAND(node, link);
+                highlightNodesByPropertyAND(node, link);
             }
         });
 
@@ -2157,7 +2826,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
                 console.log(enabledHighlight);
-                checkboxOR.checked ? highlightByPropertyOR(node, link) : highlightByPropertyAND(node, link);
+                checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
             })
         });
 
@@ -2187,22 +2856,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         node.select("circle.nodeCircle")
             //.attr("r", 4.5)
             .attr("r", function (d) {
-                /*
-                    If node has children,
-                    more than 2: new radius = 2 * #children
-                    2: new radius = 5.5
-                    1: new radius = 4.5 (as usual)
-
-                    If no children, new radius = 4.5 (as usual)
-                * */
-                if (d._children)
-                    if (d._children.length > 2)
-                        return radiusFactor * d._children.length * 4
-                    else if (d._children.length === 2)
-                        return 8.7 * radiusFactor
-                    else
-                        return 7.7 * radiusFactor;
-                return 8.7;
+                return computeNodeRadius(d);
             })
             .style("fill", function (d) {
                 if (d._children && d._children.length === 1) return colourCollapsed1Son; //If it is collapsed and just has one children
@@ -2216,6 +2870,25 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     }
                 }
             });
+
+        node.select("image.backgroundCircle")
+            .attr("x", function (d) {
+                return - d.radius;
+            })
+            .attr("y", function (d) {
+                return - d.radius;
+            })
+            .attr("height", function (d) {
+                return d.radius * 2;
+            })
+            .attr("width", function (d) {
+                return d.radius * 2;
+            })
+            .attr("href", pr + "circle-background.png")
+            .style("position", "relative")
+            .style("z-index", -1);
+
+        visualiseRootIcon(node); //Draw an icon for the root node
 
         // Transition nodes to their new position.
         var nodeUpdate = node.transition()
@@ -2274,7 +2947,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .duration(duration)
             .attr("d", diagonal);
 
-        if (checkboxHighlightMenu.checked && source.children) checkboxOR.checked ? highlightByPropertyOR(node, link) : highlightByPropertyAND(node, link);
+        if (checkboxHighlightMenu.checked && source.children) checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
 
 
         // Transition exiting nodes to the parent's new position.
@@ -2309,6 +2982,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     // Layout the tree initially and center on the root node.
     update(root);
     centerNode(root);
+
+    var box = computeDimensions(nodes);
+    var initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root);
+    initialZoom = initialSight.initialZoom;
+    initialX = initialSight.initialX;
+    initialY = initialSight.initialY;
 
     //I compute the values for the statistic data showing in the background
     var listStatistics = getStatisticValues(root);
