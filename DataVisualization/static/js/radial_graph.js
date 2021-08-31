@@ -199,6 +199,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     /*SECTION checkboxes*/
     //Check the values of the checkboxes and do something
     var checkbox = document.querySelector("input[name=cbTargets]");
+    var checkboxStaticValues = document.querySelector("input[name=cbStaticValues]");
     var checkboxesTargets = [document.getElementById("target-group"), document.getElementById("target-person"), document.getElementById("target-stereotype")];
     let enabledTargets = []; //Variable which contains the string of the enabled options to display targets
 
@@ -1633,10 +1634,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 totalToxic3 += childrenList.toxicity3;
 
                 switch (childrenList.toxicityLevel) {
-                    case 0: totalToxic0 += 1; break;
-                    case 1: totalToxic1 += 1; break;
-                    case 2: totalToxic2 += 1; break;
-                    case 3: totalToxic3 += 1; break;
+                    case 0:
+                        totalToxic0 += 1;
+                        break;
+                    case 1:
+                        totalToxic1 += 1;
+                        break;
+                    case 2:
+                        totalToxic2 += 1;
+                        break;
+                    case 3:
+                        totalToxic3 += 1;
+                        break;
                 }
             })
         }
@@ -1778,6 +1787,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 console.log(enabledTargets);
                 selectTargetVisualization(nodeEnter);
             })
+        });
+
+        checkboxStaticValues.addEventListener('change', function () {
+            this.checked ? statisticBackground.style("visibility", "visible").html(writeStatisticText()) : statisticBackground.style("visibility", "hidden").html(writeStatisticText());
         });
 
         //Listener related to the visualization of features
@@ -1975,11 +1988,16 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 if (d._children && d._children.length === 1) return colourCollapsed1Son; //If it is collapsed and just has one children
                 else { //Otherwise, colour the node according to its level of toxicity
                     switch (d.toxicity_level) {
-                        case 0: return colourToxicity0;
-                        case 1: return colourToxicity1;
-                        case 2: return colourToxicity2;
-                        case 3: return colourToxicity3;
-                        default: return colourNewsArticle;
+                        case 0:
+                            return colourToxicity0;
+                        case 1:
+                            return colourToxicity1;
+                        case 2:
+                            return colourToxicity2;
+                        case 3:
+                            return colourToxicity3;
+                        default:
+                            return colourNewsArticle;
                     }
                 }
             });
@@ -2020,7 +2038,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .style("stroke", function (d) {
                 if (d.target.positive_stance && d.target.negative_stance) return colourBothStances; //Both against and in favour
                 else if (d.target.positive_stance === 1) return colourPositiveStance; //In favour
-                else if (d.target.negative_stance === 1)  return colourNegativeStance; //Against
+                else if (d.target.negative_stance === 1) return colourNegativeStance; //Against
                 else return colourNeutralStance; //Neutral comment
             })
             .on('click', clickLink);
@@ -2125,10 +2143,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 totalToxic3 += childrenList.toxicity3;
 
                 switch (childrenList.toxicityLevel) {
-                    case 0: totalToxic0 += 1; break;
-                    case 1: totalToxic1 += 1; break;
-                    case 2: totalToxic2 += 1; break;
-                    case 3: totalToxic3 += 1; break;
+                    case 0:
+                        totalToxic0 += 1;
+                        break;
+                    case 1:
+                        totalToxic1 += 1;
+                        break;
+                    case 2:
+                        totalToxic2 += 1;
+                        break;
+                    case 3:
+                        totalToxic3 += 1;
+                        break;
                 }
 
                 //Targets are not exclusive
@@ -2171,12 +2197,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         totalStereotype = listStatistics.totalTargStereotype,
         totalNone = listStatistics.totalTargNone;
 
-    var statisticTitle = "<span style='font-size: 22px;'> Static values of " + sel_item.split('/')[2] + "</span>";
-    statisticTitleBackground.style("visibility", "visible").html(statisticTitle);
     statisticBackground.style("visibility", "visible").html(writeStatisticText());
 
     function writeStatisticText() {
-        var statisticText = "<table style='width: 500px;'>";
+        var statisticText = "<span style='font-size: 22px;'> Static values of " + sel_item.split('/')[2] + "</span>";
+
+        statisticText += "<table style='width: 500px;'>";
 
         var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
