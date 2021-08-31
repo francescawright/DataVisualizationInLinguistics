@@ -139,7 +139,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         });
 
     // Hover rectangle in which the information of a node is displayed
-    var tooltip = d3.select("#tree-container")
+    var tooltip = d3.select(container)
         .append("div")
         .attr("class", "my-tooltip") //add the tooltip class
         .style("position", "absolute")
@@ -147,15 +147,22 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .style("visibility", "hidden");
 
     // Div where the title of the "Static Values" is displayed
-    var statisticBackground = d3.select("#tree-container")
+    var statisticBackground = d3.select(container)
         .append("div")
         .attr("class", "my-statistic") //add the tooltip class
         .style("position", "absolute")
         .style("z-index", "0") //it has no change
         .style("visibility", "visible");
 
+    // Div where the zoom buttons are displayed
+    var zoomBackground = d3.select(container)
+        .append("div")
+        .style("position", "absolute")
+        .style("z-index", "0") //it has no change
+        .style("visibility", "visible");
+
     // Div where the sum up information of "Static Values" is displayed
-    var statisticTitleBackground = d3.select("#tree-container")
+    var statisticTitleBackground = d3.select(container)
         .append("div")
         .attr("class", "my-statistic-title") //add the tooltip class
         .style("position", "absolute")
@@ -163,8 +170,16 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .style("visibility", "visible");
 
 
+    /* SECTION Zoom*/
+    var zoomInButton = document.querySelector("input[name=zoom_in_icon]");
+    var zoomOutButton = document.querySelector("input[name=zoom_out_icon]");
+    var zoomOutReset = document.querySelector("input[name=zoom_reset_icon]");
+    var zoomLabel = document.getElementById("zoom_level");
+
     /*SECTION checkboxes*/
     var checkboxId = document.querySelector("input[name=cbId]");
+
+    var checkboxStaticValues = document.querySelector("input[name=cbStaticValues]");
 
     //Check the values of the checkboxes and do something
     var checkbox = document.querySelector("input[name=cbTargets]");
@@ -354,17 +369,24 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     });
 
 
+    var currentX, currentY, currentScale;
+
     // Define the zoom function for the zoomable tree
     function zoom() {
         svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        currentX = d3.event.translate[0];
+        currentY = d3.event.translate[1];
+        currentScale = d3.event.scale;
+        drawZoomValue(d3.event.scale);
     }
 
     // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
     var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
 
+    drawZoomValue(zoomListener.scale());
 
     // define the baseSvg, attaching a class for styling and the zoomListener
-    var baseSvg = d3.select("#tree-container").append("svg")
+    var baseSvg = d3.select(container).append("svg")
         .attr("width", 2200)
         .attr("height", 900)
         .attr("class", "overlay")
@@ -1753,10 +1775,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 totalToxic3 += childrenList.toxicity3;
 
                 switch (childrenList.toxicityLevel) {
-                    case 0: totalToxic0 += 1; break;
-                    case 1: totalToxic1 += 1; break;
-                    case 2: totalToxic2 += 1; break;
-                    case 3: totalToxic3 += 1; break;
+                    case 0:
+                        totalToxic0 += 1;
+                        break;
+                    case 1:
+                        totalToxic1 += 1;
+                        break;
+                    case 2:
+                        totalToxic2 += 1;
+                        break;
+                    case 3:
+                        totalToxic3 += 1;
+                        break;
                 }
             })
         }
@@ -1809,10 +1839,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 totalToxic3 += childrenList.toxicity3;
 
                 switch (childrenList.toxicityLevel) {
-                    case 0: totalToxic0 += 1; break;
-                    case 1: totalToxic1 += 1; break;
-                    case 2: totalToxic2 += 1; break;
-                    case 3: totalToxic3 += 1; break;
+                    case 0:
+                        totalToxic0 += 1;
+                        break;
+                    case 1:
+                        totalToxic1 += 1;
+                        break;
+                    case 2:
+                        totalToxic2 += 1;
+                        break;
+                    case 3:
+                        totalToxic3 += 1;
+                        break;
                 }
 
                 //Targets are not exclusive
@@ -1975,6 +2013,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         /*SECTION checkboxes listener*/
         checkboxId.addEventListener('change', function () {
             this.checked ? writeIdLabel(nodeEnter) : d3.selectAll("#nodeText").remove();
+        });
+
+        checkboxStaticValues.addEventListener('change', function () {
+            this.checked ? statisticBackground.style("visibility", "visible").html(writeStatisticText()) : statisticBackground.style("visibility", "hidden").html(writeStatisticText());
         });
 
         // Use Array.forEach to add an event listener to each checkbox.
@@ -2148,6 +2190,31 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             }
         });
 
+        d3.select("#zoom_in_icon").on("click", function () {
+            console.log("zoom in");
+            currentScale = Math.min(3.0, currentScale + 0.1);
+            svgGroup.attr("transform", "translate(" + [currentX, currentY] + ")scale(" + currentScale + ")");
+            drawZoomValue(currentScale);
+            svgGroup.refresh();
+
+        });
+        d3.select("#zoom_out_icon").on("click", function () {
+            console.log("zoom out");
+            currentScale = Math.max(0.1, currentScale - 0.1);
+            svgGroup.attr("transform", "translate(" + [currentX, currentY] + ")scale(" + currentScale + ")");
+            drawZoomValue(currentScale);
+            svgGroup.refresh();
+        });
+
+        d3.select("#zoom_reset_icon").on("click", function () {
+            console.log("zoom reset");
+            currentScale = 0.4;
+            svgGroup.attr("transform", "translate(" + [currentX, currentY] + ")scale(" + currentScale + ")");
+            drawZoomValue(currentScale);
+            svgGroup.refresh();
+        });
+
+
         // Use Array.forEach to add an event listener to each checkbox.
         checkboxesHighlightGroup.forEach(function (checkboxItem) {
             checkboxItem.addEventListener('change', function () {
@@ -2208,11 +2275,16 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 if (d._children && d._children.length === 1) return colourCollapsed1Son; //If it is collapsed and just has one children
                 else { //Otherwise, colour the node according to its level of toxicity
                     switch (d.toxicity_level) {
-                        case 0: return colourToxicity0;
-                        case 1: return colourToxicity1;
-                        case 2: return colourToxicity2;
-                        case 3: return colourToxicity3;
-                        default: return colourNewsArticle;
+                        case 0:
+                            return colourToxicity0;
+                        case 1:
+                            return colourToxicity1;
+                        case 2:
+                            return colourToxicity2;
+                        case 3:
+                            return colourToxicity3;
+                        default:
+                            return colourNewsArticle;
                     }
                 }
             });
@@ -2264,7 +2336,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .style("stroke", function (d) {
                 if (d.target.positive_stance && d.target.negative_stance) return colourBothStances; //Both against and in favour
                 else if (d.target.positive_stance === 1) return colourPositiveStance; //In favour
-                else if (d.target.negative_stance === 1)  return colourNegativeStance; //Against
+                else if (d.target.negative_stance === 1) return colourNegativeStance; //Against
                 else return colourNeutralStance; //Neutral comment
             })
             .on('click', clickLink);
@@ -2324,12 +2396,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         totalStereotype = listStatistics.totalTargStereotype,
         totalNone = listStatistics.totalTargNone;
 
-    var statisticTitle = "<span style='font-size: 22px;'> Static values of " + sel_item.split('/')[2] + "</span>";
-    statisticTitleBackground.style("visibility", "visible").html(statisticTitle);
     statisticBackground.style("visibility", "visible").html(writeStatisticText());
+    zoomBackground.style("visibility", "visible").html(drawZoomIcons());
+
+    function drawStaticStuff() {
+        writeStatisticText();
+        drawZoomIcons();
+    }
 
     function writeStatisticText() {
-        var statisticText = "<table style='width: 500px;'>";
+        var statisticText = "<span style='font-size: 22px;'> Static values of " + sel_item.split('/')[2] + "</span>";
+
+        statisticText += "<table style='width: 500px;'>";
 
         var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
@@ -2351,5 +2429,17 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         statisticText += "</table>";
         return statisticText;
     }
+
+    function drawZoomValue(zoomLevel) {
+        console.log(zoomLevel);
+        zoomLabel.textContent = "Zoom: " + (((zoomLevel - 0.1) / 2.9) * 100).toFixed(2) + '%';
+    }
+
+    function drawZoomIcons() {
+        // var zoomIcons = "<a><img src=" + pm + "zoom_in.svg" + " style='width: 35px; position: absolute; left: 1400px; top: 850px;'></a>";
+        // zoomIcons += "<a><img src=" + pm + "zoom_out.svg" + " style='width: 35px; position: absolute; left: 1450px; top: 850px;'></a>";
+        // return zoomIcons;
+    }
+
 
 });
