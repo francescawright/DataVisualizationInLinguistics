@@ -896,23 +896,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         });
 
 
-        // <
-        // <
-        // <
-        // <
-        // <
-        // << HEAD
-        //     var currentX, currentY, currentScale;
-
-        // Define the zoom function for the zoomable tree
-        // function zoom() {
-        //     svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-        //     currentX = d3.event.translate[0];
-        //     currentY = d3.event.translate[1];
-        //     currentScale = d3.event.scale;
-        //     drawZoomValue(d3.event.scale);
-        // ======
-        
+        var currentX = initialX;
+        var currentY = initialY;
+        var currentScale = initialZoom;
 
         /**
          * Define zoom and translation
@@ -940,8 +926,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             var newX = initialX + (movement[1] - 200);
             var newY = initialY + (movement[0] - 50);
             svgGroup.attr("transform", "translate(" + [newY, newX] + ")scale(" + newScale + ")");
-            // >>>>>>>
-            //     b87fa946025eb71e0b3343f464906c4e40d7317f
+            currentX = newX;
+            currentY = newY;
+            currentScale = newScale;
+            drawZoomValue(d3.event.scale);
+
         }
 
         // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
