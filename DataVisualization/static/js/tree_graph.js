@@ -25,288 +25,10 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
-/* Constant
- * */
-const duration = 750; //Duration of the animation of a transition
-
-//Graph
-const edgeLength = 300; //Horizontal length of an edge between a parent node and its child node
-const separationHeight = 10; //Desired separation between two node brothers
-const canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
-
-//
-const radiusFactor = 3; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
-const opacityValue = 0.2; // Opacity when a value is not highlighted
-const imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
-
-//Paths
-const rootPath = pr; //Path for the image related to the root
-const pathTargets = pt;
-const pathFeatures = pf;
-
-//Colours
-const colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
-    colourNeutralStance = "#2b2727";
-
-const colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
-    colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue", colourCollapsed1Son = "lightsteelblue";
-
-const colourUnhighlightedToxicity0 = "#f0f0f0", colourUnhighlightedToxicity1 = "#d6d6d6",
-    colourUnhighlightedToxicity2 = "#ababab", colourUnhighlightedToxicity3 = "#6b6b6b",
-    colourUnhighlightedCollapsed1Son = "#cfdbeb";
-
-const colorFeature = ["#a1d99b", "#31a354",
-    "#fee5d9", "#fcbba1", "#fc9272",
-    "#fb6a4a", "#de2d26", "#a50f15"];
-
-//Targets: size, position
-const targetIconHeight = 15, targetIconWidth = 15, targetIconGroupX = -30, targetIconPersonX = -50,
-    targetIconStereotypeX = -70, targetIconY = -10; //Size and relative position of targets drawn as icons
-
-//Features: size, position
-const cheeseX = 15, cheeseY = -10, cheeseHeight = 20, cheeseWidth = 20;
-
-
-const objRoot = {
-    class: "rootNode",
-    id: "rootNode",
-    fileName: "root.png"  };
-
-// Objects to draw the target as ring
-const objTargetGroupRing = {
-        class: "targetGroup",
-        id: "targetGroup",
-        name: "target-group",
-        x: -10,
-        y: -10,
-        height: 20,
-        width: 20,
-        fileName: "Group.png"
-    },
-    objTargetPersonRing = {
-        class: "targetPerson",
-        id: "targetPerson",
-        name: "target-person",
-        x: -10,
-        y: -10,
-        height: 20,
-        width: 20,
-        fileName: "Person.png"
-    },
-    objTargetStereotypeRing = {
-        class: "targetStereotype",
-        id: "targetStereotype",
-        name: "target-stereotype",
-        x: -10,
-        y: -10,
-        height: 20,
-        width: 20,
-        fileName: "Stereotype.png"
-    },
-    objTargetGrayRing = {
-        class: "targetGray",
-        id: "targetGray",
-        name: "gray-ring",
-        x: -10,
-        y: -10,
-        height: 20,
-        width: 20,
-        fileName: "Gray.png"
-    };
-
-// Objects to draw the target on the left side
-const objTargetGroup = {
-        class: "targetGroup",
-        id: "targetGroup",
-        name: "target-group",
-        x: -30,
-        y: -10,
-        height: targetIconHeight,
-        width: targetIconWidth,
-        fileName: "Group.svg"
-    },
-    objTargetPerson = {
-        class: "targetPerson",
-        id: "targetPerson",
-        name: "target-person",
-        x: -50,
-        y: -10,
-        height: targetIconHeight,
-        width: targetIconWidth,
-        fileName: "Person.svg"
-    },
-    objTargetStereotype = {
-        class: "targetStereotype",
-        id: "targetStereotype",
-        name: "target-stereotype",
-        x: -70,
-        y: -10,
-        height: targetIconHeight,
-        width: targetIconWidth,
-        fileName: "Stereotype.svg"
-    };
-
-// Objects to draw the target inside of the node in a triangle
-const objTargetGroupInside = {
-        class: "targetGroup",
-        id: "targetGroup",
-        name: "target-group",
-        x: -0.9,
-        y: -0.8,
-        height: targetIconHeight,
-        width: targetIconWidth,
-        fileName: "Group.svg"
-    },
-    objTargetPersonInside = {
-        class: "targetPerson",
-        id: "targetPerson",
-        name: "target-person",
-        x: -0.5,
-        y: 0,
-        height: targetIconHeight,
-        width: targetIconWidth,
-        fileName: "Person.svg"
-    },
-    objTargetStereotypeInside = {
-        class: "targetStereotype",
-        id: "targetStereotype",
-        name: "target-stereotype",
-        x: -0.1,
-        y: -0.8,
-        height: targetIconHeight,
-        width: targetIconWidth,
-        fileName: "Stereotype.svg"
-    };
-
-// Objects for toxicities for Ecem tests
-const objToxicity0 = {class: "toxicity0", id: "toxicity0", name: "toxicity-0", fileName: "Level0.svg"},
-    objToxicity1 = {class: "toxicity1", id: "toxicity1", name: "toxicity-1", fileName: "Level1.svg"},
-    objToxicity2 = {class: "toxicity2", id: "toxicity2", name: "toxicity-2",fileName: "Level2.svg"},
-    objToxicity3 = {class: "toxicity3", id: "toxicity3", name: "toxicity-3",fileName: "Level3.svg"};
-
-// Objects for feature images
-const objFeatArgumentation = {
-        class: "featArgumentation",
-        id: "featArgumentation",
-        name: "argumentation",
-        color: "#a1d99b",
-        x: cheeseX,
-        y: cheeseY,
-        height: cheeseHeight,
-        width: cheeseWidth,
-        fileName: "Argumentation.svg"
-    },
-    objFeatConstructiveness = {
-        class: "featConstructiveness",
-        id: "featConstructiveness",
-        name: "constructiveness",
-        color: "#31a354",
-        x: cheeseX,
-        y: cheeseY,
-        height: cheeseHeight,
-        width: cheeseWidth,
-        fileName: "Constructiveness.svg"
-    },
-    objFeatSarcasm = {
-        class: "featSarcasm",
-        id: "featSarcasm",
-        name: "sarcasm",
-        color: "#fee5d9",
-        x: cheeseX,
-        y: cheeseY,
-        height: cheeseHeight,
-        width: cheeseWidth,
-        fileName: "Sarcasm.svg"
-    },
-    objFeatMockery = {
-        class: "featMockery",
-        id: "featMockery",
-        name: "mockery",
-        color: "#fcbba1",
-        x: cheeseX,
-        y: cheeseY,
-        height: cheeseHeight,
-        width: cheeseWidth,
-        fileName: "Mockery.svg"
-    },
-    objFeatIntolerance = {
-        class: "featIntolerance",
-        id: "featIntolerance",
-        name: "intolerance",
-        color: "#fc9272",
-        x: cheeseX,
-        y: cheeseY,
-        height: cheeseHeight,
-        width: cheeseWidth,
-        fileName: "Intolerance.svg"
-    },
-    objFeatImproper = {
-        class: "featImproper",
-        id: "featImproper",
-        name: "improper_language",
-        color: "#fb6a4a",
-        x: cheeseX,
-        y: cheeseY,
-        height: cheeseHeight,
-        width: cheeseWidth,
-        fileName: "Improper.svg"
-    },
-    objFeatInsult = {
-        class: "featInsult",
-        id: "featInsult",
-        name: "insult",
-        color: "#de2d26",
-        x: cheeseX,
-        y: cheeseY,
-        height: cheeseHeight,
-        width: cheeseWidth,
-        fileName: "Insult.svg"
-    },
-    objFeatAggressiveness = {
-        class: "featAggressiveness",
-        id: "featAggressiveness",
-        name: "aggressiveness",
-        color: "#a50f15",
-        x: cheeseX,
-        y: cheeseY,
-        height: cheeseHeight,
-        width: cheeseWidth,
-        fileName: "Aggressiveness.svg"
-    },
-    objFeatGray = {
-        class: "featGray",
-        id: "featGray",
-        name: "gray",
-        selected: 1,
-        x: cheeseX,
-        y: cheeseY,
-        height: cheeseHeight,
-        width: cheeseWidth,
-        fileName: "Gray.svg"
-    };
-
-/**
- * Draw an icon for the root node
- * */
-function visualiseRootIcon(node, root){
-    //Filter the nodes and append an icon just for the root node
-    node.filter(function (d) {
-        return d.parent === undefined;
-    }).append("image")
-        .attr('class', objRoot.class)
-        .attr('id', objRoot.id)
-        .attr("x", root.x - root.radius)
-        .attr("y", root.y - root.radius)
-        .attr("height", root.radius * 2)
-        .attr("width", root.radius * 2)
-        .attr("href", rootPath + objRoot.fileName)
-        .attr("opacity", 1);
-}
-
 /**
  * Compute the radius of the node based on the number of children it has
  * */
-function computeNodeRadius(d) {
+function computeNodeRadius(d, edgeLength = 300) {
     /*
         If node has children,
         more than 2: new radius = 16 + 3 * (#children - 2)
@@ -319,7 +41,7 @@ function computeNodeRadius(d) {
 
     var children =  d.children ?? d._children; //Assign children collapsed or not
 
-    children.length > 2 ? d.radius = 16 + radiusFactor * (children.length - 2) // more than 2 children
+    children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
         : children.length  === 2 ? d.radius = 16 //2 children
         : d.radius = 13; //One child
     //Avoid the root node from being so large that overlaps/hides its children
@@ -353,7 +75,10 @@ function computeDimensions(nodes){
 /**
  * Center graph and zoom to fit the whole graph visualization in our canvas
  * */
-function zoomToFitGraph(minX, minY, maxX, maxY, root) {
+function zoomToFitGraph(minX, minY, maxX, maxY,
+                        root,
+                        canvasHeight = 900, canvasWidth = 2200,
+                        duration = 750) {
     /* Note our coordinate system:
     *
     *
@@ -393,6 +118,11 @@ function zoomToFitGraph(minX, minY, maxX, maxY, root) {
         initialY: newX,
         initialX: newY}
 }
+
+var rootPath = pr;
+var colourUnhighlightedToxicity0 = "#f0f0f0", colourUnhighlightedToxicity1 = "#d6d6d6",
+    colourUnhighlightedToxicity2 = "#ababab", colourUnhighlightedToxicity3 = "#6b6b6b",
+    colourUnhighlightedCollapsed1Son = "cfdbeb";
 
 function colourUnhighlightedNode(d) {
     if (d._children?.length === 1) return colourUnhighlightedCollapsed1Son;
@@ -483,11 +213,11 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
             if (d.toxicity_level !== 1) d.highlighted = 0;
             return (d.toxicity_level !== 1);
         })
+            // .select("circle.nodeCircle")
             .style("position", "relative")
             .style("z-index", 1)
             .style("opacity", opacityValue);
     }
-
 
     //Toxicity not 2
     if (enabledHighlight.indexOf("highlight-toxicity-2") > -1) {
@@ -495,6 +225,7 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
             if (d.toxicity_level !== 2) d.highlighted = 0;
             return (d.toxicity_level !== 2);
         })
+            // .select("circle.nodeCircle")
             .style("position", "relative")
             .style("z-index", 1)
             .style("opacity", opacityValue);
@@ -506,13 +237,13 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
             if (d.toxicity_level !== 3) d.highlighted = 0;
             return (d.toxicity_level !== 3);
         })
+            // .select("circle.nodeCircle")
             .style("position", "relative")
             .style("z-index", 1)
             .style("opacity", opacityValue);
     }
 
 }
-
 
 function highlightStanceOR(node, enabledHighlight){
     //Neutral stance CB is checked
@@ -529,7 +260,6 @@ function highlightStanceOR(node, enabledHighlight){
             if (d.positive_stance) d.highlighted = 1;
             return (d.positive_stance);
         }).style("opacity", 1);
-
     }
 
     //Negative stance CB is checked
@@ -638,7 +368,6 @@ function highlightPositiveOR(node, enabledHighlight){
             if (d.argumentation) d.highlighted = 1;
             return (d.argumentation);
         }).style("opacity", 1);
-
     }
 
     //Constructiveness CB is checked
@@ -770,874 +499,108 @@ function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2){
     }
 }
 
-function highlightNodesByPropertyOR(node, link, nodes, enabledHighlight){
-    if (enabledHighlight.length === 0){ //If no tag (toxicity, stance,...) checkbox is selected: highlight all
-        nodes.forEach(function (d) {
-            d.highlighted = 1;
-        });
-        node.style("opacity", 1);
-    }
-    else { //If some tag checkbox is selected behave as expected
-        //First, unhighlight everything and set the parameter highlighted to 0
-        nodes.forEach(function (d) {
-            d.highlighted = 0;
-        });
-        node.style("opacity", opacityValue);
-
-        //Then highlight by property OR
-        highlightToxicityOR(node, enabledHighlight);
-        highlightStanceOR(node, enabledHighlight);
-        highlightTargetOR(node, enabledHighlight);
-        highlightPositiveOR(node, enabledHighlight);
-        highlightNegativeOR(node, enabledHighlight);
-    }
-    //Highlight only the edges whose both endpoints are highlighted
-    link.style("opacity", function (d) {
-        return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
-    });
-}
-
-function highlightNodesByPropertyAND(node, link, nodes, enabledHighlight) {
-    nodes.forEach(function (d) {
-        d.highlighted = 1;
-    });
-    node.style("opacity", 1);
-
-    //Then unhighlight by property AND
-    highlightToxicityAND(node, enabledHighlight);
-    highlightStanceAND(node, enabledHighlight);
-    highlightTargetAND(node, enabledHighlight);
-    highlightPositiveAND(node, enabledHighlight);
-    highlightNegativeAND(node, enabledHighlight);
-
-    //Highlight only the edges whose both endpoints are highlighted
-    link.style("opacity", function (d) {
-        return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
-    });
-}
-
-function writeIdLabel(nodeEnter) {
-    nodeEnter.append("text")
-        .attr("x", 25)
-        .attr("dy", ".35em")
-        .attr('class', 'nodeText')
-        .attr('id', 'nodeText')
-        .attr("text-anchor", "end")
-        .text(function (d) {
-            return d.name;
-        })
-        .style("opacity", 1);
-}
-
-/**
- * Compute the position of an associated image to be centered on the node
- * that is a radiusPercentage smaller than it
- * */
-function positionImage(nodeRadius, radiusPercentage = imgRatio) {
-    return nodeRadius * (radiusPercentage / 100.0 - 1);
-}
-
-/**
- * Compute the size of an associated image to be a radiusPercentage smaller than the node
- * */
-function sizeImage(nodeRadius, radiusPercentage = imgRatio){
-    return 2 * nodeRadius * (1 - radiusPercentage / 100.0);
-}
-
-//Hide features, targets and toxicities
-
-/**
- * Removes the features of all the nodes
- * */
-function removeAllFeatures() {
-    d3.selectAll("#featGray").remove();
-    d3.selectAll("#featArgumentation").remove();
-    d3.selectAll("#featConstructiveness").remove();
-    d3.selectAll("#featSarcasm").remove();
-    d3.selectAll("#featMockery").remove();
-    d3.selectAll("#featIntolerance").remove();
-    d3.selectAll("#featImproper").remove();
-    d3.selectAll("#featInsult").remove();
-    d3.selectAll("#featAggressiveness").remove();
-}
-
-/**
- * Revove all toxicities of all nodes
- * */
-function removeAllToxicities() {
-    d3.selectAll("#toxicity0").remove();
-    d3.selectAll("#toxicity1").remove();
-    d3.selectAll("#toxicity2").remove();
-    d3.selectAll("#toxicity3").remove();
-}
-
-function hideFeatureImages(){
-    removeAllFeatures();
-    removeAllToxicities();
-}
-
-/**
- * Removes the features of the node given
- * */
-function removeThisFeatures(nodeEnter) {
-    nodeEnter.selectAll("#featGray").remove();
-    nodeEnter.selectAll("#featArgumentation").remove();
-    nodeEnter.selectAll("#featConstructiveness").remove();
-    nodeEnter.selectAll("#featSarcasm").remove();
-    nodeEnter.selectAll("#featMockery").remove();
-    nodeEnter.selectAll("#featIntolerance").remove();
-    nodeEnter.selectAll("#featImproper").remove();
-    nodeEnter.selectAll("#featInsult").remove();
-    nodeEnter.selectAll("#featAggressiveness").remove();
-}
-
-/**
- * Remove all the target icon or images of the given node
- * */
-function removeThisTargets(nodeEnter) {
-    nodeEnter.select("#targetGroup").remove();
-    nodeEnter.select("#targetPerson").remove();
-    nodeEnter.select("#targetStereotype").remove();
-    nodeEnter.select("#targetGray").remove();
-}
-
-function removeToxicities(nodeEnter) {
-    nodeEnter.selectAll("#toxicity0").remove();
-    nodeEnter.selectAll("#toxicity1").remove();
-    nodeEnter.selectAll("#toxicity2").remove();
-    nodeEnter.selectAll("#toxicity3").remove();
-}
-
-//Draw features, targets and toxicities
-
-
-/**
- * Return the value of a property (set from the JSON) of the given node
- *
- * @param d Datum of a node
- * @param {string} propertyNameToRetrieve The property whose value is returned
- * */
-function retrieveAttributeFromComment(d, propertyNameToRetrieve){
-    switch (propertyNameToRetrieve) {
-        //Features
-        case "argumentation": return d.argumentation;
-        case "constructiveness": return d.constructiveness;
-        case "sarcasm": return d.sarcasm;
-        case "mockery": return d.mockery;
-        case "intolerance": return d.intolerance;
-        case "improper_language": return d.improper_language;
-        case "insult": return d.insult;
-        case "aggressiveness": return d.aggressiveness;
-        case "gray": return 1;
-        case "gray-ring": return 0.5;
-
-        //Targets
-        case "target-group": return  d.target_group;
-        case "target-person": return d.target_person;
-        case "target-stereotype": return d.stereotype;
-
-        //Toxicity
-        case "toxicity-0": return d.toxicity_level === 0 ? 1 : 0;
-        case "toxicity-1": return d.toxicity_level === 1 ? 1 : 0;
-        case "toxicity-2": return d.toxicity_level === 2 ? 1 : 0;
-        case "toxicity-3": return d.toxicity_level === 3 ? 1 : 0;
-
-        default:
-            console.log("An attribute could not be retrieved because the key word did not match any case...");
-            break;
-    }
-}
-
-/**
- * Draws a circle in an horizontal line at the right of the node
- *
- * @param {d3-node} nodeEnter Node to which we append the image
- * @param {object} object The object of a property
- * @param {number} itemOrder Order in which the circles is drawn (away from the node)
- * */
-function drawObjectAsDot(nodeEnter, object, itemOrder) {
-    nodeEnter.append("circle")
-        .attr('class', object.class)
-        .attr('id', object.id)
-        .attr("r", "10.5")
-        .attr("transform", function (d) {
-            return "translate(" + (d.radius + (itemOrder + 1) * (10.5*2)) + "," + 0 + ")";
-        })
-        .attr("fill", object.color)
-        .style("stroke", "black")
-        .style("stroke-width", "0.5px")
-        .attr("opacity", function (d) {
-            if (d.parent === undefined) return 0;
-            return retrieveAttributeFromComment(d, object.name);
-        });
-}
-
-/**
- * Draw features as dots
- * */
-function drawFeatureDots(nodeEnter, enabledFeatures){
-    removeThisFeatures(nodeEnter);
-    removeToxicities(nodeEnter); //Remove all the pngs for toxicity
-
-    let index = 0;
-    if(enabledFeatures.indexOf("argumentation") > -1) drawObjectAsDot(nodeEnter, objFeatArgumentation, index);
-    if(enabledFeatures.indexOf("constructiveness") > -1) drawObjectAsDot(nodeEnter, objFeatConstructiveness, ++index);
-
-    if(enabledFeatures.indexOf("sarcasm") > -1) drawObjectAsDot(nodeEnter, objFeatSarcasm, ++index);
-    if(enabledFeatures.indexOf("mockery") > -1) drawObjectAsDot(nodeEnter, objFeatMockery, ++index);
-    if(enabledFeatures.indexOf("intolerance") > -1) drawObjectAsDot(nodeEnter, objFeatIntolerance, ++index);
-
-    if(enabledFeatures.indexOf("improper_language") > -1)  drawObjectAsDot(nodeEnter, objFeatImproper, ++index);
-    if(enabledFeatures.indexOf("insult") > -1)  drawObjectAsDot(nodeEnter, objFeatInsult, ++index);
-    if(enabledFeatures.indexOf("aggressiveness") > -1)  drawObjectAsDot(nodeEnter, objFeatAggressiveness, ++index);
-}
-
-/**
- * Draw an image centered on the node a imgRatio smaller conditionally
- *
- * @param {d3-node} nodeEnter Node to which we append the image
- * @param {object} object The object of a property
- * @param {string} path The path of the image
- * @param {number} percentage The percentage of the difference of radii between the node and the image
- * */
-function drawImageOnNode(nodeEnter, object, path, percentage = imgRatio){
-    nodeEnter.append("image")
-        .attr('class', object.class)
-        .attr('id', object.id)
-        .attr("x", function (d) {
-            return positionImage(d.radius, percentage);
-        })
-        .attr("y", function (d) {
-            return positionImage(d.radius, percentage);
-        })
-        .attr("height", function (d) {
-            return sizeImage(d.radius, percentage);
-        })
-        .attr("width", function (d) {
-            return sizeImage(d.radius, percentage);
-        })
-        .attr("href", path + object.fileName)
-        .attr("opacity", function (d) {
-            if (d.parent === undefined) return 0;
-            return retrieveAttributeFromComment(d, object.name);
-        });
-}
-
-/**
- * Call to draw all the features
- *
- * @param {d3-node} nodeEnter Node to which we append the image
- * @param {string} path The path of the image
- * @param {array} enabledFeatures The array containing which checkboxes are selected
- * @param {number} percentage The percentage of the difference of radii between the node and the image
- * */
-function drawFeatures(nodeEnter, path, enabledFeatures, percentage = imgRatio) {
-    if(enabledFeatures.indexOf("argumentation") > -1) drawImageOnNode(nodeEnter, objFeatArgumentation, path, percentage);
-    if(enabledFeatures.indexOf("constructiveness") > -1) drawImageOnNode(nodeEnter, objFeatConstructiveness, path, percentage);
-
-    if(enabledFeatures.indexOf("sarcasm") > -1) drawImageOnNode(nodeEnter, objFeatSarcasm, path, percentage);
-    if(enabledFeatures.indexOf("mockery") > -1) drawImageOnNode(nodeEnter, objFeatMockery, path, percentage);
-    if(enabledFeatures.indexOf("intolerance") > -1) drawImageOnNode(nodeEnter, objFeatIntolerance, path, percentage);
-
-    if(enabledFeatures.indexOf("improper_language") > -1) drawImageOnNode(nodeEnter, objFeatImproper, path, percentage);
-    if(enabledFeatures.indexOf("insult") > -1) drawImageOnNode(nodeEnter, objFeatInsult, path, percentage);
-    if(enabledFeatures.indexOf("aggressiveness") > -1) drawImageOnNode(nodeEnter, objFeatAggressiveness, path, percentage);
-}
-
-/**
- * Call to draw all the targets
- *
- * @param {d3-node} nodeEnter Node to which we append the image
- * @param {string} path The path of the image
- * @param {array} enabledTargets The array containing which checkboxes are selected
- * @param {object} target The object containing the objects to draw
- * @param {callback} draw The function to call to draw the object
- * @param {number} percentage The percentage of the difference of radii between the node and the image
- * */
-function drawTargetsGeneral(nodeEnter, path, enabledTargets, target, draw, percentage = imgRatio) {
-    if(enabledTargets.indexOf("target-group") > -1) draw(nodeEnter, target.group, path, percentage);
-    if(enabledTargets.indexOf("target-person") > -1) draw(nodeEnter, target.person, path, percentage);
-    if(enabledTargets.indexOf("target-stereotype") > -1) draw(nodeEnter, target.stereotype, path, percentage);
-}
-
-/**
- * Call to draw all the toxicities
- *
- * @param {d3-node} nodeEnter Node to which we append the image
- * @param {string} path The path of the image
- * @param {number} percentage The percentage of the difference of radii between the node and the image
- * */
-function drawToxicities(nodeEnter, path, percentage = imgRatio) {
-    drawImageOnNode(nodeEnter, objToxicity0, path, percentage);
-    drawImageOnNode(nodeEnter, objToxicity1, path, percentage);
-    drawImageOnNode(nodeEnter, objToxicity2, path, percentage);
-    drawImageOnNode(nodeEnter, objToxicity3, path, percentage);
-}
-
-/**
- * Draw features as portions inspired in the Trivial Pursuit game
- * */
-function drawFeaturesAsCheeseInside(nodeEnter, localPath, enabledFeatures){
-    removeThisFeatures(nodeEnter);
-    removeToxicities(nodeEnter); //Remove all the pngs for toxicity
-
-    drawImageOnNode(nodeEnter, objFeatGray,pathFeatures + localPath);
-    drawFeatures(nodeEnter, pathFeatures + localPath, enabledFeatures);
-}
-
-/**
- * Draw features in a circular glyph
- * */
-function drawFeaturesAsCircularGlyph(nodeEnter, localPath, enabledFeatures, enabledTargets){
-    removeThisFeatures(nodeEnter);
-    removeThisTargets(nodeEnter);
-    removeToxicities(nodeEnter);
-
-    let path = pathFeatures + localPath;
-    let percentage = 0;
-
-    drawImageOnNode(nodeEnter, objFeatGray, path, percentage);
-    drawFeatures(nodeEnter, path, enabledFeatures, 0);
-
-    drawToxicities(nodeEnter, path, 0);
-
-    let target = {group: objTargetGroup, person: objTargetPerson, stereotype: objTargetStereotype};
-    drawTargetsGeneral(nodeEnter, path, enabledTargets, target, drawImageOnNode,0);
-}
-
-//Draw targets
-
-/**
- * Draws the 3 targets of a node if the checkbox is checked
- * and if the node has that target (sets the opacity to visible)
- * */
-function drawTargetsAsRings(nodeEnter, localPath, enabledTargets){
-    removeThisTargets(nodeEnter);
-
-    let path = pathTargets + localPath;
-
-    drawImageOnNode(nodeEnter, objTargetGrayRing, path);
-
-    let target = {group: objTargetGroupRing, person: objTargetPersonRing, stereotype: objTargetStereotypeRing};
-    drawTargetsGeneral(nodeEnter, path, enabledTargets, target, drawImageOnNode);
-}
-
-/**
- * Draw an image on the left side of a node displaced by object.x pixels
- *
- * @param {d3-node} nodeEnter Node to which we append the image
- * @param {object} object The object of a property
- * @param {string} path The path of the image
- * */
-function drawObjectTargetOutside(nodeEnter, object, path){
-    nodeEnter.append("image")
-        .attr('class', object.class)
-        .attr('id', object.id)
-        .attr("x", function (d) {
-            return object.x - d.radius;
-        })
-        .attr("y", object.y)
-        .attr("height", object.height)
-        .attr("width", object.width)
-        .attr("href", path + object.fileName)
-        .attr("opacity", function (d) {
-            if (d.parent === undefined) return 0;
-            return retrieveAttributeFromComment(d, object.name);
-        });
-}
-
-/**
- * Draws the 3 targets of a node on the left side horizontally if the checkbox is checked
- * and if the node has that target (sets the opacity to visible)
- * */
-function drawTargetsAsIconOutside(nodeEnter, localPath, enabledTargets){
-    removeThisTargets(nodeEnter);
-
-    let path = pathTargets + localPath;
-    let target = {group: objTargetGroup, person: objTargetPerson, stereotype: objTargetStereotype};
-    drawTargetsGeneral(nodeEnter, path, enabledTargets, target, drawObjectTargetOutside);
-}
-
-/**
- * Draw an image inside a node scaled and positioned in a triangle
- *
- * @param {d3-node} nodeEnter Node to which we append the image
- * @param {object} object The object of a property
- * @param {string} path The path of the image
- * */
-function drawObjectTargetInside(nodeEnter, object, path){
-    nodeEnter.append("image")
-        .attr('class', object.class)
-        .attr('id', object.id)
-        .attr("x", function (d) {
-            return d.radius * object.x;
-        })
-        .attr("y", function (d) {
-            return d.radius * object.y;
-        })
-        .attr("height", function (d) {
-            return sizeImage(d.radius)/2.0;
-        })
-        .attr("width", function (d) {
-            return sizeImage(d.radius)/2.0;
-        })
-        .attr("href", path + object.fileName)
-        .attr("opacity", function (d) {
-            if (d.parent === undefined) return 0;
-            return retrieveAttributeFromComment(d, object.name);
-        });
-}
-
-/**
- * Draws the 3 targets of a node if the checkbox is checked
- * and if the node has that target (sets the opacity to visible)
- *
- * Draw in a triangle Group --- Stereotype
- *                          \ /
- *                         Person
- * */
-function drawTargetsAsIconInside(nodeEnter, localPath, enabledTargets){
-    removeThisTargets(nodeEnter);
-
-    let path = pathTargets + localPath;
-    let target = {group: objTargetGroupInside, person: objTargetPersonInside, stereotype: objTargetStereotypeInside};
-    drawTargetsGeneral(nodeEnter, path, enabledTargets, target, drawObjectTargetInside);
-}
-
-
-/********* Unused functions right now in this layout *****************/
-
-/**
- * Draws the 3 targets of a node if the checkbox is checked
- * and if the node has that target (sets the opacity to visible)
- *
- * The icon used is from the local path passed by parameter
- * The css values are from the target objects that are icons
- * */
-function drawTargets(nodeEnter, localPath, enabledTargets) {
-    removeThisTargets(nodeEnter);
-    var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
-    var listOpacity;
-    var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
-
-    for (let i = 0; i < targets.length; i++) {
-        if (cbShowTargets[i] > -1) {
-            nodeEnter.append("image")
-                .attr('class', targets[i].class)
-                .attr('id', targets[i].id)
-                .attr("x", targets[i].x)
-                .attr("y", targets[i].y)
-                .attr("height", targets[i].height)
-                .attr("width", targets[i].width)
-                .attr("href", pathTargets + localPath + targets[i].fileName)
-                .attr("opacity", function (d) {
-                    if (d.parent === undefined) return 0;
-                    listOpacity = [d.target_group, d.target_person, d.stereotype];
-                    return listOpacity[i];
-                });
-        }
-    }
-}
-
-//Deprecated
-function drawFeatureAsCheeseOutside(nodeEnter, localPath, enabledFeatures) {
-    removeThisFeatures(nodeEnter);
-    removeToxicities(nodeEnter); //Remove all the pngs for toxicity
-
-    //Add the gray cheese
-    nodeEnter.append("image")
-        .attr('class', objFeatGray.class)
-        .attr('id', objFeatGray.id)
-        .attr("x", objFeatGray.x) //NOTE: it is always displayed at the left side!!
-        .attr("y", objFeatGray.y)
-        .attr("height", objFeatGray.height)
-        .attr("width", objFeatGray.width)
-        .attr("href", pathFeatures + localPath + objFeatGray.fileName)
-        .attr("opacity", function (d) {
-            if (d.parent === undefined) return 0;
-            return 0.5;
-        });
-
-    var cbFeatureEnabled = [enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
-        enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
-        enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness")];
-
-    var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
-    var listOpacity;
-
-    for (let i = 0; i < features.length; i++) {
-        if (cbFeatureEnabled[i] > -1) {
-            nodeEnter.append("image")
-                .attr('class', features[i].class)
-                .attr('id', features[i].id)
-                .attr("x", features[i].x)
-                .attr("y", features[i].y)
-                .attr("height", features[i].height)
-                .attr("width", features[i].width)
-                .attr("href", pathFeatures + localPath + features[i].fileName)
-                .attr("opacity", function (d) {
-                    if (d.parent === undefined) return 0;
-                    listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
-                    return listOpacity[i];
-                });
-        }
-    }
-}
-
-//Deprecated
-/**
- * Hide all previous features and targets
- * Draw everything inside of the node
- * */
-function drawFeatureAsGlyph(nodeEnter, localPath, localPosition, enabledFeatures, enabledTargets) {
-    removeThisFeatures(nodeEnter);
-    removeThisTargets(nodeEnter);
-    removeToxicities(nodeEnter);
-
-    var allObjectsInNode = [objToxicity0, objToxicity1, objToxicity2, objToxicity3,
-        objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness,
-        objTargetGroup, objTargetPerson, objTargetStereotype];
-    var listOpacity;
-
-    //Better done than perfect
-    var cbShowTargets = [1, 1, 1, 1,
-        enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
-        enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
-        enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness"),
-        enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
-
-
-    for (let i = 0; i < allObjectsInNode.length; i++) {
-        if (cbShowTargets[i] > -1) { //If the checkbox is checked, display it if it has the property
-            nodeEnter.append("image")
-                .attr('class', allObjectsInNode[i].class)
-                .attr('id', allObjectsInNode[i].id)
-                .attr("x", localPosition)
-                .attr("y", -10)
-                .attr("height", 20)
-                .attr("width", 20)
-                .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
-                .attr("opacity", function (d) {
-                    if (d.parent === undefined) return 0;
-
-                    listOpacity = [d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
-                        d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
-                        d.target_group, d.target_person, d.stereotype];
-                    return listOpacity[i];
-                });
-        }
-    }
-}
-
-/**************************/
-
-
-/**
- * Determines the type of visualization for the targets
- * determinated by the drop down menu
- *
- *
- * */
-function selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets,
-                                   dropdownFeatures, cbFeatureInside, enabledFeatures) {
-    var option = dropdownTargets.value;
-
-    //If we are displaying all in one, call that function
-    if (drawingAllInOne) selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
-        cbFeatureInside, enabledFeatures, enabledTargets);
-    else {
-        switch (option) {
-            //draw as icons on the left side of the node
-            case "icons":
-                drawTargets(nodeEnter, "icons/", enabledTargets);
-                break;
-
-            case "icon-outside-node":
-                drawTargetsAsIconOutside(nodeEnter, "icons/", enabledTargets);
-                break;
-
-            case "icon-on-node":
-                drawTargetsAsIconInside(nodeEnter, "icons/", enabledTargets);
-                break;
-            case "directory-1":
-                drawTargets(nodeEnter, "newOption1/", enabledTargets)
-                break;
-            case "directory-2":
-                drawTargets(nodeEnter, "newOption2/", enabledTargets)
-                break;
-            //draw as ring outside of the node
-            case "ring-on-node":
-                drawTargetsAsRings(nodeEnter, "rings/", enabledTargets)
-                break;
-            //draw as an icon if 1, as rings if more options checked
-            case "one-icon-or-rings":
-                enabledTargets.length > 1 ? drawTargetsAsRings(nodeEnter, "rings/", enabledTargets) : drawTargets(nodeEnter, "icons/", enabledTargets);
-                break;
-
-            default:
-                console.log("default option", option);
-                break;
-        }
-    }
-}
-
-
-/**
- * Determines the type of visualization for the features
- * determinated by the drop down menu
- * */
-function selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
-                                    cbFeatureInside, enabledFeatures, enabledTargets) {
-    var option = dropdownFeatures.value;
-    document.getElementById("feature-over-node-or-outside").style.display = "none"; //Hide the dropdown menu
-    drawingAllInOne = false;
-    let localPosition;
-    cbFeatureInside.checked ? localPosition = -10 : localPosition = 30;
-    switch (option) {
-        case "dots":
-            selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures); //draw the targets if necessary
-            drawFeatureDots(nodeEnter, enabledFeatures); //Always drawn on the right side
-            break;
-        case "trivial-cheese-on-node":
-            selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures); //draw the targets if necessary
-            drawFeaturesAsCheeseInside(nodeEnter, "trivialCheese/", enabledFeatures); //Always drawn on the right side
-            break;
-        case "trivial-cheese-outside-node":
-            selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures); //draw the targets if necessary
-            drawFeatureAsCheeseOutside(nodeEnter, "trivialCheese/", enabledFeatures); //Always drawn on the right side
-            break;
-
-        case "directory-1": //"All for one and one for all" we will draw the features inside of the circle, the targets outside will be hidden and the level of toxicity in blue
-            drawingAllInOne = true;
-            //Deletes the targets and draws them again but INSIDE of the node
-            document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
-
-            drawFeatureAsGlyph(nodeEnter, "Bubble/", localPosition, enabledFeatures, enabledTargets);
-            break;
-        case "directory-2":
-            drawingAllInOne = true;
-            //Deletes the targets and draws them again but INSIDE of the node
-            document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
-            drawFeaturesAsCircularGlyph(nodeEnter, "Circular/", enabledFeatures, enabledTargets);
-            break;
-
-        case "directory-3":
-            drawingAllInOne = true;
-            //Deletes the targets and draws them again but INSIDE of the node
-            document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
-            drawFeatureAsGlyph(nodeEnter, "Rectangular/", localPosition, enabledFeatures, enabledTargets);
-            break;
-
-        default:
-            console.log("default option", option);
-            break;
-    }
-}
-
-//Statistic functions
-
-/**
- * Recursive function to count the total number of descendants and
- * the total number of nodes by toxicity
- * */
-function getDescendants(node) {
-
-    if (!node.children && !node._children) {
-        return {
-            children: 0,
-            toxicityLevel: node.toxicity_level,
-            toxicity0: 0,
-            toxicity1: 0,
-            toxicity2: 0,
-            toxicity3: 0
-        };
-    }
-    let total = 0, childrenList = [], totalToxic0 = 0, totalToxic1 = 0, totalToxic2 = 0, totalToxic3 = 0;
-
-    let children = node.children ?? node._children;
-
-    if (children) {
-        children.forEach(function (d) {
-
-            childrenList = getDescendants(d);
-            total += childrenList.children + 1;
-
-            totalToxic0 += childrenList.toxicity0;
-            totalToxic1 += childrenList.toxicity1;
-            totalToxic2 += childrenList.toxicity2;
-            totalToxic3 += childrenList.toxicity3;
-
-            switch (childrenList.toxicityLevel) {
-                case 0: totalToxic0 += 1; break;
-                case 1: totalToxic1 += 1; break;
-                case 2: totalToxic2 += 1; break;
-                case 3: totalToxic3 += 1; break;
-            }
-        })
-    }
-
-    return {
-        children: total,
-        toxicityLevel: node.toxicity_level,
-        toxicity0: totalToxic0,
-        toxicity1: totalToxic1,
-        toxicity2: totalToxic2,
-        toxicity3: totalToxic3
-    };
-}
-
-/**
- * Recursive function to compute the global statistics
- * counts nodes by toxicity and by targets
- * */
-function getStatisticValues(node) {
-    if (!node.children) {
-        return {
-            children: 0,
-            toxicityLevel: node.toxicity_level,
-            toxicity0: 0,
-            toxicity1: 0,
-            toxicity2: 0,
-            toxicity3: 0,
-            totalTargGroup: 0,
-            totalTargPerson: 0,
-            totalTargStereotype: 0,
-            totalTargNone: 0,
-            targGroup: node.target_group,
-            targPerson: node.target_person,
-            targStereotype: node.stereotype,
-            targNone: 0
-        };
-    }
-    let total = 0, childrenList = [],
-        totalToxic0 = 0, totalToxic1 = 0, totalToxic2 = 0, totalToxic3 = 0,
-        totalTargGroup = 0, totalTargPerson = 0, totalTargStereotype = 0, totalTargNone = 0;
-
-    if (node.children) {
-        node.children.forEach(function (d) {
-            childrenList = getStatisticValues(d);
-            total += childrenList.children + 1;
-
-            totalToxic0 += childrenList.toxicity0;
-            totalToxic1 += childrenList.toxicity1;
-            totalToxic2 += childrenList.toxicity2;
-            totalToxic3 += childrenList.toxicity3;
-
-            switch (childrenList.toxicityLevel) {
-                case 0: totalToxic0 += 1; break;
-                case 1: totalToxic1 += 1; break;
-                case 2: totalToxic2 += 1; break;
-                case 3: totalToxic3 += 1; break;
-            }
-
-            //Targets are not exclusive
-            childrenList.targGroup ? totalTargGroup += childrenList.totalTargGroup + 1 : totalTargGroup += childrenList.totalTargGroup;
-            childrenList.targPerson ? totalTargPerson += childrenList.totalTargPerson + 1 : totalTargPerson += childrenList.totalTargPerson;
-            childrenList.targStereotype ? totalTargStereotype += childrenList.totalTargStereotype + 1 : totalTargStereotype += childrenList.totalTargStereotype;
-            (!childrenList.targGroup && !childrenList.targPerson && !childrenList.targStereotype) ? totalTargNone += childrenList.totalTargNone + 1 : totalTargNone += childrenList.totalTargNone;
-        })
-    }
-
-    return {
-        children: total,
-        toxicityLevel: node.toxicity_level,
-        toxicity0: totalToxic0,
-        toxicity1: totalToxic1,
-        toxicity2: totalToxic2,
-        toxicity3: totalToxic3,
-        totalTargGroup: totalTargGroup,
-        totalTargPerson: totalTargPerson,
-        totalTargStereotype: totalTargStereotype,
-        totalTargNone: totalTargNone,
-        targGroup: node.target_group,
-        targPerson: node.target_person,
-        targStereotype: node.stereotype,
-        targNone: 0
-    };
-}
-
-function writeStatisticText(totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic,
-                            totalGroup, totalPerson, totalStereotype, totalNone) {
-    let statisticText = "<table style='width: 500px;'>";
-
-    let statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
-    let statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
-    let statValuesTox = [totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic];
-    let statValuesTarg = [totalGroup, totalPerson, totalStereotype, totalNone];
-    let targetImagesPath = ["icons/Group.png", "icons/Person.png", "icons/Stereotype.png", "/icons/Blank.png"];
-    let toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
-
-    for (let i = 0; i < statTitlesToxicity.length; i++) {
-        statisticText += "<tr style='font-size: 20px;'>"; //Start table line
-
-        //Write toxicity and target line
-        statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td style='padding-right: 55px;'>" + statValuesTox[i].toString() + "</td>";
-        statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
-
-        statisticText += "</tr>"; //End table line
-    }
-
-    statisticText += "</table>";
-    return statisticText;
-}
-
-function writeTooltipText(d, tooltipText) {
-
-    //I want to show Argument and Constructiveness in one line, I add a dummy space to keep that in the loop
-    var jsonValues = [d.name, d.toxicity_level, d.depth,
-        d.argumentation, d.constructiveness, -1,
-        d.sarcasm, d.mockery, d.intolerance,
-        d.improper_language, d.insult, d.aggressiveness,
-        d.target_group, d.target_person, d.stereotype];
-    var jsonNames = ["Comment ID", "Toxicity level", "Comment level",
-        "Argument", "Constructiveness", " ",
-        "Sarcasm", "Mockery", "Intolerance",
-        "Improper language", "Insult", "Aggressiveness",
-        "Target group", "Target person", "Stereotype"];
-    let i = 0;
-    tooltipText = "<table>";
-
-    for (i = 0; i < jsonValues.length; i++) {
-        if (i === 3 || i === 12) tooltipText += "<tr><td></td></tr>"; // I want a break between the first line and the features and the targets
-        if (i % 3 === 0) tooltipText += "<tr>"; //Start table line
-        if (i < 3) tooltipText += "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>"; //First ones without bold
-        else if (jsonValues[i] !== -1) jsonValues[i] ? tooltipText += "<td><b>" + jsonNames[i] + ": " + jsonValues[i] + "</b></td>" : tooltipText += "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>";
-        if ((i + 1) % 3 === 0) tooltipText += "</tr>"; //End table line
-    }
-
-    tooltipText += "</table>";
-
-    tooltipText += "<br> <table>";
-    //If node is collapsed, we also want to add some information about its sons
-    if (d._children) {
-        var sonTitles = ["Direct comments", "Total number of generated comments", "Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
-        var sonValues = [d._children.length, d.numberOfDescendants, d.descendantsWithToxicity0, d.descendantsWithToxicity1, d.descendantsWithToxicity2, d.descendantsWithToxicity3];
-
-        for (i = 0; i < sonValues.length; i++) {
-            if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
-            tooltipText += "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
-            if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
-        }
-
-    }
-    tooltipText += "</table>";
-    tooltipText += "<br>" + d.coment;
-    return tooltipText;
-}
 
 // Get JSON data
 treeJSON = d3.json(dataset, function (error, treeData) {
 
-    let totalNodes = 0; //Total number of nodes
-    let i = 0; //Alternative node ID
+    // Calculate total nodes, max label length
+    var totalNodes = 0;
+    var edgeLength = 300;
 
-    let root, nodes;
+    // Misc. variables
+    var i = 0;
+    var duration = 750;
+    var root, rootName = "News Article";
+    var nodes;
+
+    /* Colours
+    * */
+    var colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
+        colourNeutralStance = "#2b2727";
+
+    var colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
+        colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue", colourCollapsed1Son = "lightsteelblue";
+
+
+    var objRoot = {
+        class: "rootNode",
+        id: "rootNode",
+        fileName: "root.png"  };
+    var imageOffset = 4; //Radii size difference between a node and its associated image
+    var imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
+
+    var colorFeature = ["#a1d99b", "#31a354",
+        "#fee5d9", "#fcbba1", "#fc9272",
+        "#fb6a4a", "#de2d26", "#a50f15"];
+
+    /* Targets: size, position, local path, objects to draw the target as ring
+    * */
+    var targetIconHeight = 15, targetIconWidth = 15, targetIconGroupX = -30, targetIconPersonX = -50,
+        targetIconStereotypeX = -70, targetIconY = -10; //Size and relative position of targets drawn as icons
+    var pathTargets = pt;
+
+    var objTargetGroupRing = {
+            class: "targetGroup",
+            id: "targetGroup",
+            x: -10,
+            y: -10,
+            height: 20,
+            width: 20,
+            fileName: "Group.png"
+        },
+        objTargetPersonRing = {
+            class: "targetPerson",
+            id: "targetPerson",
+            x: -10,
+            y: -10,
+            height: 20,
+            width: 20,
+            fileName: "Person.png"
+        },
+        objTargetStereotypeRing = {
+            class: "targetStereotype",
+            id: "targetStereotype",
+            x: -10,
+            y: -10,
+            height: 20,
+            width: 20,
+            fileName: "Stereotype.png"
+        },
+        objTargetGrayRing = {
+            class: "targetGray",
+            id: "targetGray",
+            x: -10,
+            y: -10,
+            height: 20,
+            width: 20,
+            fileName: "Gray.png"
+        };
+
+    /* Features: size, position, local path
+    * */
+    var cheeseX = 15, cheeseY = -10, cheeseHeight = 20, cheeseWidth = 20;
+    var pathFeatures = pf;
+
+    // Objects for toxicities for Ecem tests
+    var objToxicity0 = {class: "toxicity0", id: "toxicity0", selected: 1, fileName: "Level0.svg"},
+        objToxicity1 = {class: "toxicity1", id: "toxicity1", selected: 1, fileName: "Level1.svg"},
+        objToxicity2 = {class: "toxicity2", id: "toxicity2", selected: 1, fileName: "Level2.svg"},
+        objToxicity3 = {class: "toxicity3", id: "toxicity3", selected: 1, fileName: "Level3.svg"};
+    var drawingAllInOne = false; //if we are drawing all together or separated
+
+
+    // size of the diagram
+    var viewerWidth = 100;
+    var viewerHeight = 400;
+
+    var canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
     var initialZoom, initialX, initialY; //Initial zoom and central coordinates of the first visualization of the graph
 
-    let drawingAllInOne = false; //if we are drawing all together or separated
+    var separationHeight = 10; //Desired separation between two node brothers
+    var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
 
-
-    let tooltipText; // The variable displaying the information of a node inside a floating rectangle
+    var opacityValue = 0.2; // Opacity when a value is not highlighted
+    var tooltipText; // The variable displaying the information of a node inside a floating rectangle
 
     root = treeData; //Define the root
 
@@ -1690,6 +653,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var checkboxId = document.querySelector("input[name=cbId]");
 
     //Check the values of the checkboxes and do something
+    var checkbox = document.querySelector("input[name=cbTargets]");
     var checkboxesTargets = [document.getElementById("target-group"), document.getElementById("target-person"), document.getElementById("target-stereotype")];//document.querySelectorAll("input[type=checkbox][name=cbTargets]");
     // for (var i = 0; i < checkboxesTargets.length; i++) {
     //     checkboxesTargets[i] = "target-" + checkboxesTargets[i];
@@ -1704,6 +668,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     // Select how to display the features: svg circles or trivial cheese
     var checkboxesPropertyFeature = document.querySelectorAll("input[type=checkbox][name=cbFeatureProperty]");
+    var checkboxFeatureDot = document.querySelector("input[type=checkbox][name=cbFeatureProperty][value=dot-feat]");
+    var checkboxFeatureCheese = document.querySelector("input[type=checkbox][name=cbFeatureProperty][value=cheese-feat]");
 
     //Dropdown menu
     var checkboxesPositioningFeature = document.querySelectorAll("input[type=checkbox][name=cbFeaturePositioning]");
@@ -1722,6 +688,164 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     var checkButtons = document.querySelectorAll("input[name=check_button_features]");
 
+    // Objects for target images
+    var objTargetGroup = {
+            class: "targetGroup",
+            id: "targetGroup",
+            selected: enabledTargets.indexOf("target-group"),
+            x: -30,
+            y: -10,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Group.svg"
+        },
+        objTargetPerson = {
+            class: "targetPerson",
+            id: "targetPerson",
+            selected: enabledTargets.indexOf("target-person"),
+            x: -50,
+            y: -10,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Person.svg"
+        },
+        objTargetStereotype = {
+            class: "targetStereotype",
+            id: "targetStereotype",
+            selected: enabledTargets.indexOf("target-stereotype"),
+            x: -70,
+            y: -10,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Stereotype.svg"
+        };
+
+
+    var objTargetGroupInside = {
+            class: "targetGroup",
+            id: "targetGroup",
+            selected: enabledTargets.indexOf("target-group"),
+            x: -0.9,
+            y: -0.8,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Group.svg"
+        },
+        objTargetPersonInside = {
+            class: "targetPerson",
+            id: "targetPerson",
+            selected: enabledTargets.indexOf("target-person"),
+            x: -0.5,
+            y: 0,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Person.svg"
+        },
+        objTargetStereotypeInside = {
+            class: "targetStereotype",
+            id: "targetStereotype",
+            selected: enabledTargets.indexOf("target-stereotype"),
+            x: -0.1,
+            y: -0.8,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Stereotype.svg"
+        };
+
+
+    // Objects for feature images
+    var objFeatArgumentation = {
+            class: "featArgumentation",
+            id: "featArgumentation",
+            selected: enabledFeatures.indexOf("argumentation"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Argumentation.svg"
+        },
+        objFeatConstructiveness = {
+            class: "featConstructiveness",
+            id: "featConstructiveness",
+            selected: enabledFeatures.indexOf("constructiveness"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Constructiveness.svg"
+        },
+        objFeatSarcasm = {
+            class: "featSarcasm",
+            id: "featSarcasm",
+            selected: enabledFeatures.indexOf("sarcasm"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Sarcasm.svg"
+        },
+        objFeatMockery = {
+            class: "featMockery",
+            id: "featMockery",
+            selected: enabledFeatures.indexOf("mockery"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Mockery.svg"
+        },
+        objFeatIntolerance = {
+            class: "featIntolerance",
+            id: "featIntolerance",
+            selected: enabledFeatures.indexOf("intolerance"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Intolerance.svg"
+        },
+        objFeatImproper = {
+            class: "featImproper",
+            id: "featImproper",
+            selected: enabledFeatures.indexOf("improper_language"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Improper.svg"
+        },
+        objFeatInsult = {
+            class: "featInsult",
+            id: "featInsult",
+            selected: enabledFeatures.indexOf("insult"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Insult.svg"
+        },
+        objFeatAggressiveness = {
+            class: "featAggressiveness",
+            selected: enabledFeatures.indexOf("aggressiveness"),
+            id: "featAggressiveness",
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Aggressiveness.svg"
+        },
+        objFeatGray = {
+            class: "featGray",
+            id: "featGray",
+            selected: 1,
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Gray.svg"
+        };
+
+
     var dropdownTargets = document.getElementById("dropdown-targets");
     var dropdownFeatures = document.getElementById("dropdown-features");
 
@@ -1735,7 +859,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var children = childrenFn(parent);
         if (children) {
             var count = children.length;
-            for (let i = 0; i < count; i++) {
+            for (var i = 0; i < count; i++) {
                 visit(children[i], visitFn, childrenFn);
             }
         }
@@ -1745,8 +869,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     visit(treeData, function (d) {
         totalNodes++;
     }, function (d) {
-        return d.children?.length > 0 ? d.children : null;
+        return d.children && d.children.length > 0 ? d.children : null;
     });
+
+
 
 
     /**
@@ -1764,16 +890,16 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         * If the scale is 0, we will not see the graph
         * Define the scale to be at least 0.1 and set it to the initialZoom + the difference of the listener and the d3.event initial scale
         * */
-        let newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1); //Avoid the graph to be seen mirrored.
+        var newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1); //Avoid the graph to be seen mirrored.
 
         /*
         * NOTE: Add to the initial position values (initialX and initialY) the movement registered by d3.
         * d3.event.translate returns an array [x,y] with starting values [50, 200]
         * The values X and Y are swapped in zoomToFit() and we need to take that into account to give the new coordinates
         * */
-        let movement = d3.event.translate;
-        let newX = initialX + (movement[1]-200);
-        let newY = initialY + (movement[0]-50);
+        var movement = d3.event.translate;
+        var newX = initialX + (movement[1]-200);
+        var newY = initialY + (movement[0]-50);
         svgGroup.attr("transform", "translate(" + [newY, newX] + ")scale(" + newScale + ")");
     }
 
@@ -1788,6 +914,38 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .attr("class", "overlay")
         .call(zoomListener);
 
+
+    /**
+     * Center the screen to the position of the given node
+     * */
+    function centerNode(source) {
+        scale = zoomListener.scale();
+        x = -source.y0;
+        y = -source.x0;
+        x = x * scale + viewerWidth / 2;
+        y = y * scale + viewerHeight / 2;
+        d3.select('g').transition()
+            .duration(duration)
+            .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
+        zoomListener.scale(scale);
+        zoomListener.translate([x, y]);
+    }
+
+    /**
+     * Center the screen to the position of the given link
+     * */
+    function centerLink(link) {
+        scale = zoomListener.scale();
+        x = -(link.source.y0 + link.target.y0) / 2;
+        y = -(link.source.x0 + link.target.x0) / 2;
+        x = x * scale + viewerWidth / 2;
+        y = y * scale + viewerHeight / 2;
+        d3.select('g').transition()
+            .duration(duration)
+            .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
+        zoomListener.scale(scale);
+        zoomListener.translate([x, y]);
+    }
 
     // Toggle children function
     function toggleChildren(d) {
@@ -1806,7 +964,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      * Compute descendants information
      * Toggle children on click.
      * */
-    function click(d) {
+    function click(d, nodeEnter) {
         if (d3.event.defaultPrevented) return; // click suppressed
 
         //Compute children data (quantity and how many with each toxicity) before collapsing the node
@@ -1820,12 +978,1582 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         d = toggleChildren(d); //Collapse node
         update(d); //NOTE: we are passing each sun that was collapsed
+        //centerNode(d); We deactivated because is annoying when we collapse a thread to appear
+    }
+
+    /**
+     * Clicked link behaviour
+     * */
+    function clickLink(l) {
+        if (d3.event.defaultPrevented) return; // click suppressed
+        console.log("Link clicked");
+        centerLink(l);
+    }
+
+    /*SECTION draw svgs from checboxes*/
+
+    /**
+     * Compute the position of an associated image to be centered on the node
+     * that is a radiusPercentage smaller than it
+     * */
+    function positionImage(nodeRadius, radiusPercentage = imgRatio) {
+        return nodeRadius * (radiusPercentage / 100.0 - 1);
+    }
+
+    /**
+     * Compute the size of an associated image to be a radiusPercentage smaller than the node
+     * */
+    function sizeImage(nodeRadius, radiusPercentage = imgRatio){
+        return 2 * nodeRadius * (1 - radiusPercentage / 100.0);
+    }
+
+    /**
+     * Draws the 3 targets of a node if the checkbox is checked
+     * and if the node has that target (sets the opacity to visible)
+     *
+     * The icon used is from the local path passed by parameter
+     * The css values are from the target objects that are icons
+     * */
+    function drawTargets(nodeEnter, localPath) {
+        removeThisTargets(nodeEnter);
+        var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
+        var listOpacity;
+        var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
+
+        for (var i = 0; i < targets.length; i++) {
+            if (cbShowTargets[i] > -1) {
+                nodeEnter.append("image")
+                    .attr('class', targets[i].class)
+                    .attr('id', targets[i].id)
+                    .attr("x", targets[i].x)
+                    .attr("y", targets[i].y)
+                    .attr("height", targets[i].height)
+                    .attr("width", targets[i].width)
+                    .attr("href", pathTargets + localPath + targets[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.parent === undefined) return 0;
+                        listOpacity = [d.target_group, d.target_person, d.stereotype];
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+    /**
+     * Draws the 3 targets of a node if the checkbox is checked
+     * and if the node has that target (sets the opacity to visible)
+     *
+     * The icon used is from the local path passed by parameter
+     * The css values are from the target objects that are icons
+     * */
+    function drawTargetsOutside(nodeEnter, localPath) {
+        removeThisTargets(nodeEnter);
+        var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
+        var listOpacity;
+        var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
+
+        for (var i = 0; i < targets.length; i++) {
+            if (cbShowTargets[i] > -1) {
+                nodeEnter.append("image")
+                    .attr('class', targets[i].class)
+                    .attr('id', targets[i].id)
+                    .attr("x", function (d) {
+                        return targets[i].x - d.radius;
+                    })
+                    .attr("y", targets[i].y)
+                    .attr("height", targets[i].height)
+                    .attr("width", targets[i].width)
+                    .attr("href", pathTargets + localPath + targets[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.parent === undefined) return 0;
+                        listOpacity = [d.target_group, d.target_person, d.stereotype];
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+
+    /**
+     * Draws the 3 targets of a node if the checkbox is checked
+     * and if the node has that target (sets the opacity to visible)
+     *
+     * The icon used is from the local path passed by parameter
+     * The css values are from the target objects that are icons
+     *
+     * Draw in a triangle Group --- Stereotype
+     *                          \ /
+     *                         Person
+     * */
+    function drawTargetsInside(nodeEnter, localPath) {
+        removeThisTargets(nodeEnter);
+        var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
+        var listOpacity;
+        var targets = [objTargetGroupInside, objTargetPersonInside, objTargetStereotypeInside];
+
+        for (var i = 0; i < targets.length; i++) {
+            if (cbShowTargets[i] > -1) {
+                nodeEnter.append("image")
+                    .attr('class', targets[i].class)
+                    .attr('id', targets[i].id)
+                    .attr("x", function (d) {
+                        return d.radius * targets[i].x;
+                    })
+                    .attr("y", function (d) {
+                        return d.radius * targets[i].y;
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius)/2.0;
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius)/2.0;
+                    })
+                    .attr("href", pathTargets + localPath + targets[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.parent === undefined) return 0;
+                        listOpacity = [d.target_group, d.target_person, d.stereotype];
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+    /**
+     * Draws the 3 targets of a node if the checkbox is checked
+     * and if the node has that target (sets the opacity to visible)
+     *
+     * The icon used is from the local path passed by parameter
+     * The css values are from the target objects that are rings
+     * */
+    function drawTargetRings(nodeEnter, localPath) {
+        removeThisTargets(nodeEnter);
+        var cbShowTargets = [1, enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")]; //Note: we will always display the gray ring
+        var listOpacity;
+        var targets = [objTargetGrayRing, objTargetGroupRing, objTargetPersonRing, objTargetStereotypeRing];
+
+        for (var i = 0; i < targets.length; i++) {
+            if (cbShowTargets[i] > -1) {
+                nodeEnter.append("image")
+                    .attr('class', targets[i].class)
+                    .attr('id', targets[i].id)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius);
+                    })
+                    .attr("href", pathTargets + localPath + targets[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.parent === undefined) return 0;
+                        listOpacity = [0.5, d.target_group, d.target_person, d.stereotype]; //Note: the opacity of the gray ring
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+    /**
+     * Determines the type of visualization for the targets
+     * determinated by the drop down menu
+     *
+     *
+     * */
+    function selectTargetVisualization(nodeEnter) {
+        var option = dropdownTargets.value;
+
+        //If we are displaying all in one, call that function
+        if (drawingAllInOne) selectFeatureVisualization(nodeEnter);
+        else {
+            switch (option) {
+                //draw as icons on the left side of the node
+                case "icons":
+                    drawTargets(nodeEnter, "icons/");
+                    break;
+
+                case "icon-outside-node":
+                    drawTargetsOutside(nodeEnter, "icons/");
+                    break;
+
+                case "icon-on-node":
+                    drawTargetsInside(nodeEnter, "icons/");
+                    break;
+                case "directory-1":
+                    drawTargets(nodeEnter, "newOption1/")
+                    break;
+                case "directory-2":
+                    drawTargets(nodeEnter, "newOption2/")
+                    break;
+                //draw as ring outside of the node
+                case "ring-on-node":
+                    drawTargetRings(nodeEnter, "rings/")
+                    break;
+                //draw as an icon if 1, as rings if more options checked
+                case "one-icon-or-rings":
+                    enabledTargets.length > 1 ? drawTargetRings(nodeEnter, "rings/") : drawTargets(nodeEnter, "icons/");
+                    break;
+
+                default:
+                    console.log("default option", option);
+                    break;
+            }
+        }
+    }
+
+    function drawTargetGroup(nodeEnter) {
+        nodeEnter.append("image")
+            .attr('class', 'targetGroup')
+            .attr('id', 'targetGroup')
+            .attr("x", targetIconGroupX) //NOTE: it is always displayed at the left side!!
+            .attr("y", targetIconY)
+            .attr("height", targetIconHeight)
+            .attr("width", targetIconWidth)
+            .attr("href", "./icons/TargetGroup2.png")
+            .attr("opacity", function (d) {
+                if (d.target_group) return 1
+                return 0 //We need to set the opacity or it will always be displayed!
+            });
+    }
+
+    function drawTargetPerson(nodeEnter) {
+        nodeEnter.append("image")
+            .attr('class', 'targetPerson')
+            .attr('id', 'targetPerson')
+            .attr("x", targetIconPersonX) //NOTE: it is always displayed at the left side!!
+            .attr("y", targetIconY)
+            .attr("height", targetIconHeight)
+            .attr("width", targetIconWidth)
+            .attr("href", "./icons/TargetPerson3.png")
+            .attr("opacity", function (d) {
+                if (d.target_person) return 1
+                return 0
+            });
+    }
+
+    function drawTargeStereotype(nodeEnter) {
+        nodeEnter.append("image")
+            .attr('class', 'targetStereotype')
+            .attr('id', 'targetStereotype')
+            .attr("x", targetIconStereotypeX) //NOTE: it is always displayed at the left side!!
+            .attr("y", targetIconY)
+            .attr("height", targetIconHeight)
+            .attr("width", targetIconWidth)
+            .attr("href", "./icons/TargetStereotype.png")
+            .attr("opacity", function (d) {
+                if (d.stereotype) return 1
+                return 0
+            });
+    }
+
+    function visualiseTargets(nodeEnter) {
+        enabledTargets.indexOf("target-group") > -1 ? drawTargetGroup(nodeEnter) : d3.selectAll("#targetGroup").remove();
+        enabledTargets.indexOf("target-person") > -1 ? drawTargetPerson(nodeEnter) : d3.selectAll("#targetPerson").remove();
+        enabledTargets.indexOf("target-stereotype") > -1 ? drawTargeStereotype(nodeEnter) : d3.selectAll("#targetStereotype").remove();
+    }
+
+    function removeTargets() {
+        d3.selectAll("#targetGroup").remove();
+        d3.selectAll("#targetPerson").remove();
+        d3.selectAll("#targetStereotype").remove();
+        d3.selectAll("#targetGray").remove();
+    }
+
+    /**
+     * Remove all the target icon or images of the given node
+     * */
+    function removeThisTargets(nodeEnter) {
+        nodeEnter.select("#targetGroup").remove();
+        nodeEnter.select("#targetPerson").remove();
+        nodeEnter.select("#targetStereotype").remove();
+        nodeEnter.select("#targetGray").remove();
+    }
+
+
+    //Feature section
+    /**
+     * Removes the features of the node given
+     * */
+    function removeThisFeatures(nodeEnter) {
+        nodeEnter.selectAll("#featGray").remove();
+        nodeEnter.selectAll("#featArgumentation").remove();
+        nodeEnter.selectAll("#featConstructiveness").remove();
+        nodeEnter.selectAll("#featSarcasm").remove();
+        nodeEnter.selectAll("#featMockery").remove();
+        nodeEnter.selectAll("#featIntolerance").remove();
+        nodeEnter.selectAll("#featImproper").remove();
+        nodeEnter.selectAll("#featInsult").remove();
+        nodeEnter.selectAll("#featAggressiveness").remove();
+    }
+
+    /**
+     * Removes the features of all the nodes
+     * */
+    function removeAllFeatures() {
+        d3.selectAll("#featGray").remove();
+        d3.selectAll("#featArgumentation").remove();
+        d3.selectAll("#featConstructiveness").remove();
+        d3.selectAll("#featSarcasm").remove();
+        d3.selectAll("#featMockery").remove();
+        d3.selectAll("#featIntolerance").remove();
+        d3.selectAll("#featImproper").remove();
+        d3.selectAll("#featInsult").remove();
+        d3.selectAll("#featAggressiveness").remove();
     }
 
     function checkUncheckAll() {
         checkboxes.forEach(cb => cb.checked = !cb.checked);
     }
 
+    /**
+     * Delete the features of the node
+     * Redraw the features of the node
+     *
+     * Deleting the features firts helps us when the selected dropdown menu option changes
+     * */
+    function drawFeatureDots(nodeEnter) {
+        removeThisFeatures(nodeEnter);
+        removeToxicities(nodeEnter); //Remove all the pngs for toxicity
+
+        var cbFeatureEnabled = [enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+            enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
+            enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness")];
+
+        var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
+        var listOpacity;
+
+        for (var i = 0; i < 8; i++) {
+            if (cbFeatureEnabled[i] > -1) {
+                nodeEnter.append("circle")
+                    .attr('class', features[i].class)
+                    .attr('id', features[i].id)
+                    .attr("r", "10.5")
+                    .attr("transform", function (d) {
+                        return "translate(" + (d.radius + (i + 1) * (10.5*2)) + "," + 0 + ")";
+                    })
+                    .attr("fill", colorFeature[i])
+                    .style("stroke", "black")
+                    .style("stroke-width", "0.5px")
+                    .attr("opacity", function (d) {
+                        if (d.parent === undefined) return 0;
+                        listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+    function drawFeatureAsCheeseOutside(nodeEnter, localPath) {
+        removeThisFeatures(nodeEnter);
+        removeToxicities(nodeEnter); //Remove all the pngs for toxicity
+
+        //Add the gray cheese
+        nodeEnter.append("image")
+            .attr('class', objFeatGray.class)
+            .attr('id', objFeatGray.id)
+            .attr("x", objFeatGray.x) //NOTE: it is always displayed at the left side!!
+            .attr("y", objFeatGray.y)
+            .attr("height", objFeatGray.height)
+            .attr("width", objFeatGray.width)
+            .attr("href", pathFeatures + localPath + objFeatGray.fileName)
+            .attr("opacity", function (d) {
+                if (d.parent === undefined) return 0;
+                return 0.5;
+            });
+
+        var cbFeatureEnabled = [enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+            enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
+            enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness")];
+
+        var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
+        var listOpacity;
+
+        for (var i = 0; i < features.length; i++) {
+            if (cbFeatureEnabled[i] > -1) {
+                nodeEnter.append("image")
+                    .attr('class', features[i].class)
+                    .attr('id', features[i].id)
+                    .attr("x", features[i].x)
+                    .attr("y", features[i].y)
+                    .attr("height", features[i].height)
+                    .attr("width", features[i].width)
+                    .attr("href", pathFeatures + localPath + features[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.parent === undefined) return 0;
+                        listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+    function drawFeatureAsCheeseInside(nodeEnter, localPath) {
+        removeThisFeatures(nodeEnter);
+        removeToxicities(nodeEnter); //Remove all the pngs for toxicity
+
+        //Add the gray cheese
+        nodeEnter.append("image")
+            .attr('class', objFeatGray.class)
+            .attr('id', objFeatGray.id)
+            .attr("x", function (d) {
+                return positionImage(d.radius);
+            })
+            .attr("y", function (d) {
+                return positionImage(d.radius);
+            })
+            .attr("height", function (d) {
+                return sizeImage(d.radius);
+            })
+            .attr("width", function (d) {
+                return sizeImage(d.radius);
+            })
+            .attr("href", pathFeatures + localPath + objFeatGray.fileName)
+            .attr("opacity", function (d) {
+                if (d.parent === undefined) return 0;
+                return 0.5;
+            });
+
+        var cbFeatureEnabled = [enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+            enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
+            enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness")];
+
+        var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
+        var listOpacity;
+
+        for (var i = 0; i < features.length; i++) {
+            if (cbFeatureEnabled[i] > -1) {
+                nodeEnter.append("image")
+                    .attr('class', features[i].class)
+                    .attr('id', features[i].id)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius);
+                    })
+                    .attr("href", pathFeatures + localPath + features[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.parent === undefined) return 0;
+                        listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+    /**
+     * Hide all previous features and targets
+     * Draw everything inside of the node
+     * */
+    function drawFeatureAsGlyph(nodeEnter, localPath, localPosition) {
+        removeThisFeatures(nodeEnter);
+        removeThisTargets(nodeEnter);
+        removeToxicities(nodeEnter);
+
+        var allObjectsInNode = [objToxicity0, objToxicity1, objToxicity2, objToxicity3,
+            objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness,
+            objTargetGroup, objTargetPerson, objTargetStereotype];
+        var listOpacity;
+
+        //Better done than perfect
+        var cbShowTargets = [1, 1, 1, 1,
+            enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+            enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
+            enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness"),
+            enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
+
+
+        for (var i = 0; i < allObjectsInNode.length; i++) {
+            if (cbShowTargets[i] > -1) { //If the checkbox is checked, display it if it has the property
+                nodeEnter.append("image")
+                    .attr('class', allObjectsInNode[i].class)
+                    .attr('id', allObjectsInNode[i].id)
+                    .attr("x", localPosition)
+                    .attr("y", -10)
+                    .attr("height", 20)
+                    .attr("width", 20)
+                    .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.parent === undefined) return 0;
+
+                        listOpacity = [d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
+                            d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
+                            d.target_group, d.target_person, d.stereotype];
+
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+    /**
+     * Draw everything in a circular glyph
+     * Better done than perfect
+     *
+     * Due to pngs order, features need to be drawn first
+     * */
+    function drawFeatureAsCircularGlyph(nodeEnter, localPath, localPosition) {
+        removeThisFeatures(nodeEnter);
+        removeThisTargets(nodeEnter);
+        removeToxicities(nodeEnter);
+
+        var allObjectsInNode = [objFeatGray,
+            objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness,
+            objToxicity0, objToxicity1, objToxicity2, objToxicity3,
+            objTargetGroup, objTargetPerson, objTargetStereotype];
+        var listOpacity;
+
+        //Better done than perfect
+        var cbShowTargets = [1,
+            enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+            enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
+            enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness"),
+            1, 1, 1, 1,
+            enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
+
+
+        for (var i = 0; i < allObjectsInNode.length; i++) {
+            if (cbShowTargets[i] > -1) { //If the checkbox is checked, display it if it has the property
+                nodeEnter.append("image")
+                    .attr('class', allObjectsInNode[i].class)
+                    .attr('id', allObjectsInNode[i].id)
+                    .attr("x", function (d) {
+                        return positionImage(d.radius, 0);
+                    })
+                    .attr("y", function (d) {
+                        return positionImage(d.radius, 0);
+                    })
+                    .attr("height", function (d) {
+                        return sizeImage(d.radius, 0);
+                    })
+                    .attr("width", function (d) {
+                        return sizeImage(d.radius, 0);
+                    })
+                    .style("stroke", "black")
+                    .style("stroke-width", "0.5px")
+                    .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.parent === undefined) return 0;
+
+                        listOpacity = [1,
+                            d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
+                            d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
+                            d.target_group, d.target_person, d.stereotype];
+
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+    function removeToxicities(nodeEnter) {
+        nodeEnter.selectAll("#toxicity0").remove();
+        nodeEnter.selectAll("#toxicity1").remove();
+        nodeEnter.selectAll("#toxicity2").remove();
+        nodeEnter.selectAll("#toxicity3").remove();
+    }
+
+    /**
+     * Determines the type of visualization for the features
+     * determinated by the drop down menu
+     *
+     *
+     * */
+    function selectFeatureVisualization(nodeEnter) {
+        var option = dropdownFeatures.value;
+        document.getElementById("feature-over-node-or-outside").style.display = "none"; //Hide the dropdown menu
+        drawingAllInOne = false;
+        var localPosition;
+        cbFeatureInside.checked ? localPosition = -10 : localPosition = 30;
+        switch (option) {
+            case "dots":
+                selectTargetVisualization(nodeEnter); //draw the targets if necessary
+                drawFeatureDots(nodeEnter); //Always drawn on the right side
+                break;
+            case "trivial-cheese-on-node":
+                selectTargetVisualization(nodeEnter); //draw the targets if necessary
+                drawFeatureAsCheeseInside(nodeEnter, "trivialCheese/"); //Always drawn on the right side
+                break;
+            case "trivial-cheese-outside-node":
+                selectTargetVisualization(nodeEnter); //draw the targets if necessary
+                drawFeatureAsCheeseOutside(nodeEnter, "trivialCheese/"); //Always drawn on the right side
+                break;
+
+            case "directory-1": //"All for one and one for all" we will draw the features inside of the circle, the targets outside will be hidden and the level of toxicity in blue
+                drawingAllInOne = true;
+                //Deletes the targets and draws them again but INSIDE of the node
+                document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
+
+                drawFeatureAsGlyph(nodeEnter, "Bubble/", localPosition);
+                break;
+            case "directory-2":
+                drawingAllInOne = true;
+                //Deletes the targets and draws them again but INSIDE of the node
+                document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
+                drawFeatureAsCircularGlyph(nodeEnter, "Circular/", localPosition);
+                break;
+
+            case "directory-3":
+                drawingAllInOne = true;
+                //Deletes the targets and draws them again but INSIDE of the node
+                document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
+                drawFeatureAsGlyph(nodeEnter, "Rectangular/", localPosition);
+                break;
+
+            default:
+                console.log("default option", option);
+                break;
+        }
+    }
+
+    function drawFeaturesCheese(nodeEnter) {
+        hideFeatureDots();
+
+        nodeEnter.append("image")
+            .attr('class', 'grayCheese')
+            .attr('id', 'grayCheese')
+            .attr("x", cheeseX) //NOTE: it is always displayed at the left side!!
+            .attr("y", cheeseY)
+            .attr("height", cheeseHeight)
+            .attr("width", cheeseWidth)
+            .attr("href", "./featuresCheese/Gimp/grayCheese.png")
+            .attr("opacity", 0.5);
+
+        // Argumentation
+        if (enabledFeatures.indexOf("argumentation") > -1) {
+            nodeEnter.append("image")
+                .attr('class', 'cheeseArgumentation')
+                .attr('id', 'cheeseArgumentation')
+                .attr("x", cheeseX) //NOTE: it is always displayed at the left side!!
+                .attr("y", cheeseY)
+                .attr("height", cheeseHeight)
+                .attr("width", cheeseWidth)
+                .attr("href", "./featuresCheese/Gimp/Argumentation.png")
+                .attr("opacity", function (d) {
+                    if (d.argumentation) return 1
+                    return 0 //We need to set the opacity or it will always be displayed!
+                });
+        }
+        if (enabledFeatures.indexOf("constructiveness") > -1) {
+            // Constructiveness
+            nodeEnter.append("image")
+                .attr('class', 'cheeseConstructiveness')
+                .attr('id', 'cheeseConstructiveness')
+                .attr("x", cheeseX) //NOTE: it is always displayed at the left side!!
+                .attr("y", cheeseY)
+                .attr("height", cheeseHeight)
+                .attr("width", cheeseWidth)
+                .attr("href", "./featuresCheese/Gimp/Constructiveness.png")
+                .attr("opacity", function (d) {
+                    if (d.constructiveness) return 1
+                    return 0 //We need to set the opacity or it will always be displayed!
+                });
+        }
+
+        if (enabledFeatures.indexOf("sarcasm") > -1) {
+            // Sarcasm
+            nodeEnter.append("image")
+                .attr('class', 'cheeseSarcasm')
+                .attr('id', 'cheeseSarcasm')
+                .attr("x", cheeseX) //NOTE: it is always displayed at the left side!!
+                .attr("y", cheeseY)
+                .attr("height", cheeseHeight)
+                .attr("width", cheeseWidth)
+                .attr("href", "./featuresCheese/Gimp/Sarcasm.png")
+                .attr("opacity", function (d) {
+                    if (d.sarcasm) return 1
+                    return 0 //We need to set the opacity or it will always be displayed!
+                });
+        }
+        if (enabledFeatures.indexOf("mockery") > -1) {
+            // Mockery
+            nodeEnter.append("image")
+                .attr('class', 'cheeseMockery')
+                .attr('id', 'cheeseMockery')
+                .attr("x", cheeseX) //NOTE: it is always displayed at the left side!!
+                .attr("y", cheeseY)
+                .attr("height", cheeseHeight)
+                .attr("width", cheeseWidth)
+                .attr("href", "./featuresCheese/Gimp/Mockery.png")
+                .attr("opacity", function (d) {
+                    if (d.mockery) return 1
+                    return 0 //We need to set the opacity or it will always be displayed!
+                });
+        }
+        if (enabledFeatures.indexOf("intolerance") > -1) {
+            // Intolerance
+            nodeEnter.append("image")
+                .attr('class', 'cheeseIntolerance')
+                .attr('id', 'cheeseIntolerance')
+                .attr("x", cheeseX) //NOTE: it is always displayed at the left side!!
+                .attr("y", cheeseY)
+                .attr("height", cheeseHeight)
+                .attr("width", cheeseWidth)
+                .attr("href", "./featuresCheese/Gimp/Intolerance.png")
+                .attr("opacity", function (d) {
+                    if (d.intolerance) return 1
+                    return 0 //We need to set the opacity or it will always be displayed!
+                });
+        }
+
+        if (enabledFeatures.indexOf("improper_language") > -1) {
+            // Improper Language
+            nodeEnter.append("image")
+                .attr('class', 'cheeseImproper')
+                .attr('id', 'cheeseImproper')
+                .attr("x", cheeseX) //NOTE: it is always displayed at the left side!!
+                .attr("y", cheeseY)
+                .attr("height", cheeseHeight)
+                .attr("width", cheeseWidth)
+                .attr("href", "./featuresCheese/Gimp/Improper.png")
+                .attr("opacity", function (d) {
+                    if (d.improper_language) return 1
+                    return 0 //We need to set the opacity or it will always be displayed!
+                });
+        }
+        if (enabledFeatures.indexOf("insult") > -1) {
+            // Insult
+            nodeEnter.append("image")
+                .attr('class', 'cheeseInsult')
+                .attr('id', 'cheeseInsult')
+                .attr("x", cheeseX) //NOTE: it is always displayed at the left side!!
+                .attr("y", cheeseY)
+                .attr("height", cheeseHeight)
+                .attr("width", cheeseWidth)
+                .attr("href", "./featuresCheese/Gimp/Insult.png")
+                .attr("opacity", function (d) {
+                    if (d.insult) return 1
+                    return 0 //We need to set the opacity or it will always be displayed!
+                });
+        }
+        if (enabledFeatures.indexOf("aggressiveness") > -1) {
+            // Aggressiveness
+            nodeEnter.append("image")
+                .attr('class', 'cheeseAggressiveness')
+                .attr('id', 'cheeseAggressiveness')
+                .attr("x", cheeseX) //NOTE: it is always displayed at the left side!!
+                .attr("y", cheeseY)
+                .attr("height", cheeseHeight)
+                .attr("width", cheeseWidth)
+                .attr("href", "./featuresCheese/Gimp/Aggressiveness.png")
+                .attr("opacity", function (d) {
+                    if (d.aggressiveness) return 1
+                    return 0 //We need to set the opacity or it will always be displayed!
+                });
+        }
+
+    }
+
+    function drawFeatures(nodeEnter) {
+        hideCheese();
+        // Argumentation
+        if (enabledFeatures.indexOf("argumentation") > -1) {
+            nodeEnter.append("circle")
+                .attr('class', 'featureArgumentation')
+                .attr('id', 'featureArgumentation')
+                .attr("r", "4.5")
+                .attr("transform", "translate(" + 35 + "," + 0 + ")")
+                .attr("fill", colorFeature[0])
+                .style("stroke", "black")
+                .style("stroke-width", "0.5px")
+                .attr("opacity", function (d) {
+                    if (d.argumentation) return 1 //If node contains argumentation
+                    return 0 //We hide it if it has no argumentation
+                });
+        }
+
+        if (enabledFeatures.indexOf("constructiveness") > -1) {
+            // Constructiveness
+            nodeEnter.append("circle")
+                .attr('class', 'featureConstructiveness')
+                .attr('id', 'featureConstructiveness')
+                .attr("r", "4.5")
+                .attr("transform", "translate(" + 45 + "," + 0 + ")")
+                .attr("fill", colorFeature[1])
+                .style("stroke", "black")
+                .style("stroke-width", "0.5px")
+                .attr("opacity", function (d) {
+                    if (d.constructiveness) return 1
+                    return 0
+                });
+        }
+        if (enabledFeatures.indexOf("sarcasm") > -1) {
+            // Sarcasm
+            nodeEnter.append("circle")
+                .attr('class', 'featureSarcasm')
+                .attr('id', 'featureSarcasm')
+                .attr("r", "4.5")
+                .attr("transform", "translate(" + 55 + "," + 0 + ")")
+                .attr("fill", colorFeature[2])
+                .style("stroke", "black")
+                .style("stroke-width", "0.5px")
+                .attr("opacity", function (d) {
+                    if (d.sarcasm) return 1
+                    return 0
+                });
+        }
+        if (enabledFeatures.indexOf("mockery") > -1) {
+            // Mockery
+            nodeEnter.append("circle")
+                .attr('class', 'featureMockery')
+                .attr('id', 'featureMockery')
+                .attr("r", "4.5")
+                .attr("transform", "translate(" + 65 + "," + 0 + ")")
+                .attr("fill", colorFeature[3])
+                .style("stroke", "black")
+                .style("stroke-width", "0.5px")
+                .attr("opacity", function (d) {
+                    if (d.mockery) return 1
+                    return 0
+                });
+        }
+        if (enabledFeatures.indexOf("intolerance") > -1) {
+            // Intolerance
+            nodeEnter.append("circle")
+                .attr('class', 'featureIntolerance')
+                .attr('id', 'featureIntolerance')
+                .attr("r", "4.5")
+                .attr("transform", "translate(" + 75 + "," + 0 + ")")
+                .attr("fill", colorFeature[4])
+                .style("stroke", "black")
+                .style("stroke-width", "0.5px")
+                .attr("opacity", function (d) {
+                    if (d.intolerance) return 1
+                    return 0
+                });
+        }
+
+        if (enabledFeatures.indexOf("improper_language") > -1) {
+            // Improper Language
+            nodeEnter.append("circle")
+                .attr('class', 'featureImproperLanguage')
+                .attr('id', 'featureImproperLanguage')
+                .attr("r", "4.5")
+                .attr("transform", "translate(" + 95 + "," + 0 + ")")
+                .attr("fill", colorFeature[5])
+                .style("stroke", "black")
+                .style("stroke-width", "0.5px")
+                .attr("opacity", function (d) {
+                    if (d.improper_language) return 1
+                    return 0
+                });
+        }
+
+        if (enabledFeatures.indexOf("insult") > -1) {
+            // Insult
+            nodeEnter.append("circle")
+                .attr('class', 'featureInsult')
+                .attr('id', 'featureInsult')
+                .attr("r", "4.5")
+                .attr("transform", "translate(" + 105 + "," + 0 + ")")
+                .attr("fill", colorFeature[6])
+                .style("stroke", "black")
+                .style("stroke-width", "0.5px")
+                .attr("opacity", function (d) {
+                    if (d.insult) return 1
+                    return 0
+                });
+        }
+        if (enabledFeatures.indexOf("aggressiveness") > -1) {
+            // Aggressiveness
+            nodeEnter.append("circle")
+                .attr('class', 'featureAggressiveness')
+                .attr('id', 'featureAggressiveness')
+                .attr("r", "4.5")
+                .attr("transform", "translate(" + 115 + "," + 0 + ")")
+                .attr("fill", colorFeature[7])
+                .style("stroke", "black")
+                .style("stroke-width", "0.5px")
+                .attr("opacity", function (d) {
+                    if (d.aggressiveness) return 1
+                    return 0
+                });
+        }
+
+    }
+
+    function hideFeatureDots() {
+        d3.selectAll("#featureArgumentation").remove();
+        d3.selectAll("#featureConstructiveness").remove();
+        d3.selectAll("#featureSarcasm").remove();
+        d3.selectAll("#featureMockery").remove();
+        d3.selectAll("#featureIntolerance").remove();
+        d3.selectAll("#featureImproperLanguage").remove();
+        d3.selectAll("#featureInsult").remove();
+        d3.selectAll("#featureAggressiveness").remove();
+    }
+
+    function hideCheese() {
+        d3.selectAll("#grayCheese").remove();
+        d3.selectAll("#cheeseArgumentation").remove();
+        d3.selectAll("#cheeseConstructiveness").remove();
+        d3.selectAll("#cheeseSarcasm").remove();
+        d3.selectAll("#cheeseMockery").remove();
+        d3.selectAll("#cheeseIntolerance").remove();
+        d3.selectAll("#cheeseImproper").remove();
+        d3.selectAll("#cheeseInsult").remove();
+        d3.selectAll("#cheeseAggressiveness").remove();
+    }
+
+    /*END SECTION*/
+
+    /**
+     * Draw an icon for the root node
+     * */
+    function visualiseRootIcon(node){
+        //Filter the nodes and append an icon just for the root node
+        node.filter(function (d) {
+            return d.parent === undefined;
+        }).append("image")
+            .attr('class', objRoot.class)
+            .attr('id', objRoot.id)
+            .attr("x", root.x - root.radius)
+            .attr("y", root.y - root.radius)
+            .attr("height", root.radius * 2)
+            .attr("width", root.radius * 2)
+            .attr("href", rootPath + objRoot.fileName)
+            .attr("opacity", 1);
+    }
+
+    /*SECTION highlighting */
+    function highlightByPropertyOR(node, link) {
+        node.style("opacity", 0.2);
+        link.style("opacity", 0.2);
+
+        //Toxicity 0
+        if (enabledHighlight.indexOf("highlight-toxicity-0") > -1) {
+            node.filter(function (d) {
+                return (d.toxicity_level === 0);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.toxicity_level === 0);
+            }).style("opacity", 1);
+        }
+
+        //Toxicity 1
+        if (enabledHighlight.indexOf("highlight-toxicity-1") > -1) {
+            node.filter(function (d) {
+                return (d.toxicity_level === 1);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.toxicity_level === 1);
+            }).style("opacity", 1);
+        }
+
+        //Toxicity 2
+        if (enabledHighlight.indexOf("highlight-toxicity-2") > -1) {
+            node.filter(function (d) {
+                return (d.toxicity_level === 2);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.toxicity_level === 2);
+            }).style("opacity", 1);
+        }
+
+        //Toxicity 3
+        if (enabledHighlight.indexOf("highlight-toxicity-3") > -1) {
+            node.filter(function (d) {
+                return (d.toxicity_level === 3);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.toxicity_level === 3);
+            }).style("opacity", 1);
+        }
+
+
+        //Neutral stance CB is checked
+        if (enabledHighlight.indexOf("highlight-neutral") > -1) {
+            node.filter(function (d) {
+                return (!d.positive_stance && !d.negative_stance);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (!d.target.positive_stance && !d.target.negative_stance);
+            }).style("opacity", 1);
+        }
+
+        //Positive stance CB is checked
+        if (enabledHighlight.indexOf("highlight-positive") > -1) {
+            node.filter(function (d) {
+                return (d.positive_stance);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.positive_stance);
+            }).style("opacity", 1);
+        }
+
+        //Negative stance CB is checked
+        if (enabledHighlight.indexOf("highlight-negative") > -1) {
+            node.filter(function (d) {
+                return (d.negative_stance);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.negative_stance);
+            }).style("opacity", 1);
+        }
+
+        //Target group CB is checked
+        if (enabledHighlight.indexOf("highlight-group") > -1) {
+            node.filter(function (d) {
+                return (d.target_group);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.target_group);
+            }).style("opacity", 1);
+        }
+
+        //Target person CB is checked
+        if (enabledHighlight.indexOf("highlight-person") > -1) {
+            node.filter(function (d) {
+                return (d.target_person);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.target_person);
+            }).style("opacity", 1);
+        }
+
+        //Stereotype CB is checked
+        if (enabledHighlight.indexOf("highlight-stereotype") > -1) {
+            node.filter(function (d) {
+                return (d.stereotype);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.stereotype);
+            }).style("opacity", 1);
+        }
+
+        //Argumentation CB is checked
+        if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
+            node.filter(function (d) {
+                return (d.argumentation);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.argumentation);
+            }).style("opacity", 1);
+        }
+
+        //Constructiveness CB is checked
+        if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
+            node.filter(function (d) {
+                return (d.constructiveness);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.constructiveness);
+            }).style("opacity", 1);
+        }
+
+        //Sarcasm CB is checked
+        if (enabledHighlight.indexOf("highlight-sarcasm") > -1) {
+            node.filter(function (d) {
+                return (d.sarcasm);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.sarcasm);
+            }).style("opacity", 1);
+        }
+
+        //Mockery CB is checked
+        if (enabledHighlight.indexOf("highlight-mockery") > -1) {
+            node.filter(function (d) {
+                return (d.mockery);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.mockery);
+            }).style("opacity", 1);
+        }
+        //Intolerance CB is checked
+        if (enabledHighlight.indexOf("highlight-intolerance") > -1) {
+            node.filter(function (d) {
+                return (d.intolerance);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.intolerance);
+            }).style("opacity", 1);
+        }
+        //Improper language CB is checked
+        if (enabledHighlight.indexOf("highlight-improper-language") > -1) {
+            node.filter(function (d) {
+                return (d.improper_language);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.improper_language);
+            }).style("opacity", 1);
+        }
+
+        //Insult language CB is checked
+        if (enabledHighlight.indexOf("highlight-insult") > -1) {
+            node.filter(function (d) {
+                return (d.insult);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.insult);
+            }).style("opacity", 1);
+        }
+
+        //Aggressiveness language CB is checked
+        if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) {
+            node.filter(function (d) {
+                return (d.aggressiveness);
+            }).style("opacity", 1);
+
+            link.filter(function (d) {
+                return (d.target.aggressiveness);
+            }).style("opacity", 1);
+        }
+    }
+
+    function highlightByPropertyAND(node, link) {
+        node.style("opacity", 1);
+        link.style("opacity", 1);
+
+        //Toxicity not 0
+        if (enabledHighlight.indexOf("highlight-toxicity-0") > -1) {
+            node.filter(function (d) {
+                return (d.toxicity_level !== 0);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (d.target.toxicity_level !== 0);
+            }).style("opacity", opacityValue);
+        }
+
+        //Toxicity not 1
+        if (enabledHighlight.indexOf("highlight-toxicity-1") > -1) {
+            node.filter(function (d) {
+                return (d.toxicity_level !== 1);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (d.target.toxicity_level !== 1);
+            }).style("opacity", opacityValue);
+        }
+
+        //Toxicity not 2
+        if (enabledHighlight.indexOf("highlight-toxicity-2") > -1) {
+            node.filter(function (d) {
+                return (d.toxicity_level !== 2);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (d.target.toxicity_level !== 2);
+            }).style("opacity", opacityValue);
+        }
+
+        //Toxicity not 3
+        if (enabledHighlight.indexOf("highlight-toxicity-3") > -1) {
+            node.filter(function (d) {
+                return (d.toxicity_level !== 3);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (d.target.toxicity_level !== 3);
+            }).style("opacity", opacityValue);
+        }
+
+        //Neutral stance CB is checked
+        if (enabledHighlight.indexOf("highlight-neutral") > -1) {
+            node.filter(function (d) {
+                return (d.positive_stance || d.negative_stance);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (d.target.positive_stance || d.target.negative_stance);
+            }).style("opacity", opacityValue);
+        }
+
+        //Positive stance CB is checked
+        if (enabledHighlight.indexOf("highlight-positive") > -1) {
+            node.filter(function (d) {
+                return (!d.positive_stance);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (!d.target.positive_stance);
+            }).style("opacity", opacityValue);
+        }
+
+        //Negative stance CB is checked
+        if (enabledHighlight.indexOf("highlight-negative") > -1) {
+            node.filter(function (d) {
+                return (!d.negative_stance);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (!d.target.negative_stance);
+            }).style("opacity", opacityValue);
+        }
+
+        //Target group CB is checked
+        if (enabledHighlight.indexOf("highlight-group") > -1) {
+            node.filter(function (d) {
+                return (!d.target_group);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (!d.target.target_group);
+            }).style("opacity", opacityValue);
+        }
+
+        //Target person CB is checked
+        if (enabledHighlight.indexOf("highlight-person") > -1) {
+            node.filter(function (d) {
+                return (!d.target_person);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (!d.target.target_person);
+            }).style("opacity", opacityValue);
+        }
+
+        //Stereotype CB is checked
+        if (enabledHighlight.indexOf("highlight-stereotype") > -1) {
+            node.filter(function (d) {
+                return (!d.stereotype);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (!d.target.stereotype);
+            }).style("opacity", opacityValue);
+        }
+
+        //Argumentation CB is checked
+        if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
+            node.filter(function (d) {
+                return (!d.argumentation);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (!d.target.argumentation);
+            }).style("opacity", opacityValue);
+        }
+
+        //Constructiveness CB is checked
+        if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
+            node.filter(function (d) {
+                return (!d.constructiveness);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (!d.target.constructiveness);
+            }).style("opacity", opacityValue);
+        }
+
+        //Sarcasm CB is checked
+        if (enabledHighlight.indexOf("highlight-sarcasm") > -1) {
+            node.filter(function (d) {
+                return (!d.sarcasm);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (!d.target.sarcasm);
+            }).style("opacity", opacityValue);
+        }
+
+        //Mockery CB is checked
+        if (enabledHighlight.indexOf("highlight-mockery") > -1) {
+            node.filter(function (d) {
+                return (!d.mockery);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (!d.target.mockery);
+            }).style("opacity", opacityValue);
+        }
+        //Intolerance CB is checked
+        if (enabledHighlight.indexOf("highlight-intolerance") > -1) {
+            node.filter(function (d) {
+                return (!d.intolerance);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (!d.target.intolerance);
+            }).style("opacity", opacityValue);
+        }
+        //Improper language CB is checked
+        if (enabledHighlight.indexOf("highlight-improper-language") > -1) {
+            node.filter(function (d) {
+                return (!d.improper_language);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (!d.target.improper_language);
+            }).style("opacity", opacityValue);
+        }
+
+        //Insult language CB is checked
+        if (enabledHighlight.indexOf("highlight-insult") > -1) {
+            node.filter(function (d) {
+                return (!d.insult);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (!d.target.insult);
+            }).style("opacity", opacityValue);
+        }
+
+        //Aggressiveness language CB is checked
+        if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) {
+            node.filter(function (d) {
+                return (!d.aggressiveness);
+            }).style("opacity", opacityValue);
+
+            link.filter(function (d) {
+                return (!d.target.aggressiveness);
+            }).style("opacity", opacityValue);
+        }
+    }
+
+
+    function highlightNodesByPropertyOR(node, link){
+        if (enabledHighlight.length === 0){ //If no tag (toxicity, stance,...) checkbox is selected: highlight all
+            nodes.forEach(function (d) {
+                d.highlighted = 1;
+            });
+            node.style("opacity", 1);
+        }
+        else { //If some tag checkbox is selected behave as expected
+            //First, unhighlight everything and set the parameter highlighted to 0
+            nodes.forEach(function (d) {
+                d.highlighted = 0;
+            });
+            node.style("opacity", opacityValue);
+
+            //Then highlight by property OR
+            highlightToxicityOR(node, enabledHighlight);
+            highlightStanceOR(node, enabledHighlight);
+            highlightTargetOR(node, enabledHighlight);
+            highlightPositiveOR(node, enabledHighlight);
+            highlightNegativeOR(node, enabledHighlight);
+        }
+        //Highlight only the edges whose both endpoints are highlighted
+        link.style("opacity", function (d) {
+            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+        });
+    }
+
+    function highlightNodesByPropertyAND(node, link) {
+        nodes.forEach(function (d) {
+            d.highlighted = 1;
+        });
+        node.style("opacity", 1);
+
+        //Then unhighlight by property AND
+        highlightToxicityAND(node, enabledHighlight);
+        highlightStanceAND(node, enabledHighlight);
+        highlightTargetAND(node, enabledHighlight);
+        highlightPositiveAND(node, enabledHighlight);
+        highlightNegativeAND(node, enabledHighlight);
+
+        //Highlight only the edges whose both endpoints are highlighted
+        link.style("opacity", function (d) {
+            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+        });
+    }
+
+    /*END section */
+
+    function writeIdLabel(nodeEnter) {
+        nodeEnter.append("text")
+            .attr("x", 25)
+            .attr("dy", ".35em")
+            .attr('class', 'nodeText')
+            .attr('id', 'nodeText')
+            .attr("text-anchor", "end")
+            .text(function (d) {
+                return d.name;
+            })
+            .style("opacity", 1);
+    }
+
+
+    /**
+     * Recursive function to count the total number of descendants and
+     * the total number of nodes by toxicity
+     * */
+    function getDescendants(node) {
+
+        if (!node.children && !node._children) {
+            return {
+                children: 0,
+                toxicityLevel: node.toxicity_level,
+                toxicity0: 0,
+                toxicity1: 0,
+                toxicity2: 0,
+                toxicity3: 0
+            };
+        }
+        var total = 0, childrenList = [], totalToxic0 = 0, totalToxic1 = 0, totalToxic2 = 0, totalToxic3 = 0;
+
+        var children = node.children ?? node._children;
+
+        if (children) {
+            children.forEach(function (d) {
+
+                childrenList = getDescendants(d);
+                total += childrenList.children + 1;
+
+                totalToxic0 += childrenList.toxicity0;
+                totalToxic1 += childrenList.toxicity1;
+                totalToxic2 += childrenList.toxicity2;
+                totalToxic3 += childrenList.toxicity3;
+
+                switch (childrenList.toxicityLevel) {
+                    case 0: totalToxic0 += 1; break;
+                    case 1: totalToxic1 += 1; break;
+                    case 2: totalToxic2 += 1; break;
+                    case 3: totalToxic3 += 1; break;
+                }
+            })
+        }
+
+        return {
+            children: total,
+            toxicityLevel: node.toxicity_level,
+            toxicity0: totalToxic0,
+            toxicity1: totalToxic1,
+            toxicity2: totalToxic2,
+            toxicity3: totalToxic3
+        };
+    }
+
+    /**
+     * Recursive function to compute the global statistics
+     * counts nodes by toxicity and by targets
+     * */
+    function getStatisticValues(node) {
+        if (!node.children) {
+            return {
+                children: 0,
+                toxicityLevel: node.toxicity_level,
+                toxicity0: 0,
+                toxicity1: 0,
+                toxicity2: 0,
+                toxicity3: 0,
+                totalTargGroup: 0,
+                totalTargPerson: 0,
+                totalTargStereotype: 0,
+                totalTargNone: 0,
+                targGroup: node.target_group,
+                targPerson: node.target_person,
+                targStereotype: node.stereotype,
+                targNone: 0
+            };
+        }
+        var total = 0, childrenList = [],
+            totalToxic0 = 0, totalToxic1 = 0, totalToxic2 = 0, totalToxic3 = 0,
+            totalTargGroup = 0, totalTargPerson = 0, totalTargStereotype = 0, totalTargNone = 0;
+
+        if (node.children) {
+            node.children.forEach(function (d) {
+                childrenList = getStatisticValues(d);
+                total += childrenList.children + 1;
+
+                totalToxic0 += childrenList.toxicity0;
+                totalToxic1 += childrenList.toxicity1;
+                totalToxic2 += childrenList.toxicity2;
+                totalToxic3 += childrenList.toxicity3;
+
+                switch (childrenList.toxicityLevel) {
+                    case 0: totalToxic0 += 1; break;
+                    case 1: totalToxic1 += 1; break;
+                    case 2: totalToxic2 += 1; break;
+                    case 3: totalToxic3 += 1; break;
+                }
+
+                //Targets are not exclusive
+                childrenList.targGroup ? totalTargGroup += childrenList.totalTargGroup + 1 : totalTargGroup += childrenList.totalTargGroup;
+                childrenList.targPerson ? totalTargPerson += childrenList.totalTargPerson + 1 : totalTargPerson += childrenList.totalTargPerson;
+                childrenList.targStereotype ? totalTargStereotype += childrenList.totalTargStereotype + 1 : totalTargStereotype += childrenList.totalTargStereotype;
+                (!childrenList.targGroup && !childrenList.targPerson && !childrenList.targStereotype) ? totalTargNone += childrenList.totalTargNone + 1 : totalTargNone += childrenList.totalTargNone;
+            })
+        }
+
+        return {
+            children: total,
+            toxicityLevel: node.toxicity_level,
+            toxicity0: totalToxic0,
+            toxicity1: totalToxic1,
+            toxicity2: totalToxic2,
+            toxicity3: totalToxic3,
+            totalTargGroup: totalTargGroup,
+            totalTargPerson: totalTargPerson,
+            totalTargStereotype: totalTargStereotype,
+            totalTargNone: totalTargNone,
+            targGroup: node.target_group,
+            targPerson: node.target_person,
+            targStereotype: node.stereotype,
+            targNone: 0
+        };
+    }
+
+    function writeTooltipText(d) {
+
+        //I want to show Argument and Constructiveness in one line, I add a dummy space to keep that in the loop
+        var jsonValues = [d.name, d.toxicity_level, d.depth,
+            d.argumentation, d.constructiveness, -1,
+            d.sarcasm, d.mockery, d.intolerance,
+            d.improper_language, d.insult, d.aggressiveness,
+            d.target_group, d.target_person, d.stereotype];
+        var jsonNames = ["Comment ID", "Toxicity level", "Comment level",
+            "Argument", "Constructiveness", " ",
+            "Sarcasm", "Mockery", "Intolerance",
+            "Improper language", "Insult", "Aggressiveness",
+            "Target group", "Target person", "Stereotype"];
+        var i = 0;
+        tooltipText = "<table>";
+
+        for (i = 0; i < jsonValues.length; i++) {
+            if (i === 3 || i === 12) tooltipText += "<tr><td></td></tr>"; // I want a break between the first line and the features and the targets
+            if (i % 3 === 0) tooltipText += "<tr>"; //Start table line
+            if (i < 3) tooltipText += "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>"; //First ones without bold
+            else if (jsonValues[i] !== -1) jsonValues[i] ? tooltipText += "<td><b>" + jsonNames[i] + ": " + jsonValues[i] + "</b></td>" : tooltipText += "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>";
+            if ((i + 1) % 3 === 0) tooltipText += "</tr>"; //End table line
+        }
+
+        tooltipText += "</table>";
+
+        tooltipText += "<br> <table>";
+        //If node is collapsed, we also want to add some information about its sons
+        if (d._children) {
+            var sonTitles = ["Direct comments", "Total number of generated comments", "Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
+            var sonValues = [d._children.length, d.numberOfDescendants, d.descendantsWithToxicity0, d.descendantsWithToxicity1, d.descendantsWithToxicity2, d.descendantsWithToxicity3];
+
+            for (i = 0; i < sonValues.length; i++) {
+                if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
+                tooltipText += "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
+                if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
+            }
+
+        }
+        tooltipText += "</table>";
+        tooltipText += "<br>" + d.coment;
+    }
 
     function update(source) {
 
@@ -1865,8 +2593,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
             .on('mouseover', function (d) {
                 if (d !== root) {
+                    writeTooltipText(d);
                     tooltip.style("visibility", "visible")
-                        .html(writeTooltipText(d, tooltipText));
+                        .html(tooltipText);
                 }
             })
             .on("mousemove", function (d) {
@@ -1906,11 +2635,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         //Dropdown menus
         dropdownTargets.addEventListener("change", function () {
-            selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures);
+            selectTargetVisualization(nodeEnter);
         });
         dropdownFeatures.addEventListener("change", function () {
-            selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
-                cbFeatureInside, enabledFeatures, enabledTargets);
+            selectFeatureVisualization(nodeEnter);
         });
 
         /*SECTION checkboxes listener*/
@@ -1927,7 +2655,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-                selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures);
+                console.log(enabledTargets);
+                selectTargetVisualization(nodeEnter);
             })
         });
 
@@ -1961,8 +2690,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 if (!document.querySelector("input[value=on-node]").checked && !document.querySelector("input[value=node-outside]").checked) {
                     document.querySelector("input[value=on-node]").checked = true;
                 }
-                selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
-                    cbFeatureInside, enabledFeatures, enabledTargets);
+                selectFeatureVisualization(nodeEnter);
 
             } else { //Disable checkboxes and dropdown menu + remove all the features
                 checkboxesPropertyFeature.forEach(function (checkboxItem) {
@@ -1982,21 +2710,43 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     }
                 );
 
-                hideFeatureImages(); //Hide all images associated with the features
+                removeAllFeatures(); //Hide all features when the cb is unchecked
             }
         });
+
+        /*        // if DOT is checked, uncheck OR
+                checkboxFeatureDot.addEventListener('change', function() {
+                    if (this.checked){
+                        checkboxFeatureCheese.checked = false;
+                        drawFeatures(nodeEnter);
+                    }
+                    else {
+                        checkboxFeatureCheese.checked = true;
+                        drawFeaturesCheese(nodeEnter);
+                    }
+
+                });
+                // if CHEESE is checked, uncheck AND
+                checkboxFeatureCheese.addEventListener('change', function() {
+                    if (this.checked) {
+                        checkboxFeatureDot.checked = false;
+                        drawFeaturesCheese(nodeEnter);
+                    }
+                    else {
+                        checkboxFeatureDot.checked = true;
+                        drawFeatures(nodeEnter);
+                    }
+                });*/
 
         // if DOT is checked, uncheck OR
         cbFeatureInside.addEventListener('change', function () {
             this.checked ? cbFeatureOutside.checked = false : cbFeatureOutside.checked = true;
-            selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
-                cbFeatureInside, enabledFeatures, enabledTargets);
+            selectFeatureVisualization(nodeEnter);
         });
         // if CHEESE is checked, uncheck AND
         cbFeatureOutside.addEventListener('change', function () {
             this.checked ? cbFeatureInside.checked = false : cbFeatureInside.checked = true;
-            selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
-                cbFeatureInside, enabledFeatures, enabledTargets);
+            selectFeatureVisualization(nodeEnter);
         });
 
         // Use Array.forEach to add an event listener to each checkbox.
@@ -2008,8 +2758,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-                selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
-                    cbFeatureInside, enabledFeatures, enabledTargets);
+                console.log(enabledFeatures);
+                selectFeatureVisualization(nodeEnter);
             })
         });
 
@@ -2025,9 +2775,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
                 if (!document.querySelector("input[value=and-group]").checked && !document.querySelector("input[value=or-group]").checked) {
                     document.querySelector("input[value=and-group]").checked = true;
-                    highlightNodesByPropertyAND(node, link, nodes, enabledHighlight);
+                    highlightNodesByPropertyAND(node, link);
                 } else {
-                    checkboxAND.checked ? highlightNodesByPropertyAND(node, link, nodes, enabledHighlight) : highlightNodesByPropertyOR(node, link, nodes, enabledHighlight);
+                    checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
                     console.log(enabledHighlight);
                 }
 
@@ -2050,20 +2800,20 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         checkboxAND.addEventListener('change', function () {
             if (this.checked) {
                 checkboxOR.checked = false;
-                highlightNodesByPropertyAND(node, link, nodes, enabledHighlight);
+                highlightNodesByPropertyAND(node, link);
             } else {
                 checkboxOR.checked = true;
-                highlightNodesByPropertyOR(node, link, nodes, enabledHighlight);
+                highlightNodesByPropertyOR(node, link);
             }
         });
         // If OR is selected, uncheck the AND and highlight by property OR
         checkboxOR.addEventListener('change', function () {
             if (this.checked) {
                 checkboxAND.checked = false;
-                highlightNodesByPropertyOR(node, link, nodes, enabledHighlight);
+                highlightNodesByPropertyOR(node, link);
             } else {
                 checkboxAND.checked = true;
-                highlightNodesByPropertyAND(node, link, nodes, enabledHighlight);
+                highlightNodesByPropertyAND(node, link);
             }
         });
 
@@ -2074,8 +2824,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     Array.from(checkboxesHighlightGroup) // Convert checkboxes to an array to use filter and map.
                         .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
                 console.log(enabledHighlight);
-                checkboxOR.checked ? highlightNodesByPropertyOR(node, link, nodes, enabledHighlight) : highlightNodesByPropertyAND(node, link, nodes, enabledHighlight);
+                checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
             })
         });
 
@@ -2089,9 +2840,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         - show the features if necessary
         - highlight nodes and edges
         * */
-        selectTargetVisualization(nodeEnter, dropdownTargets, drawingAllInOne, enabledTargets, dropdownFeatures, cbFeatureInside, enabledFeatures);
-        checkboxFeatureMenu.checked ? selectFeatureVisualization(nodeEnter, dropdownFeatures, dropdownTargets, drawingAllInOne,
-            cbFeatureInside, enabledFeatures, enabledTargets) : hideFeatureImages();
+        selectTargetVisualization(nodeEnter);
+        checkboxFeatureMenu.checked ? selectFeatureVisualization(nodeEnter) : removeAllFeatures();
+        /*if(checkboxFeatureMenu.checked) checkboxFeatureCheese.checked ? drawFeaturesCheese(nodeEnter) : drawFeatures(nodeEnter);*/
 
         // Update the text to reflect whether node has children or not.
         node.select('text')
@@ -2108,13 +2859,15 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 return computeNodeRadius(d);
             })
             .style("fill", function (d) {
-                if (d._children?.length === 1) return colourCollapsed1Son; //If it is collapsed and just has one children
-                switch (d.toxicity_level) { //Otherwise, colour the node according to its level of toxicity
-                    case 0: return colourToxicity0;
-                    case 1: return colourToxicity1;
-                    case 2: return colourToxicity2;
-                    case 3: return colourToxicity3;
-                    default: return colourNewsArticle;
+                if (d._children && d._children.length === 1) return colourCollapsed1Son; //If it is collapsed and just has one children
+                else { //Otherwise, colour the node according to its level of toxicity
+                    switch (d.toxicity_level) {
+                        case 0: return colourToxicity0;
+                        case 1: return colourToxicity1;
+                        case 2: return colourToxicity2;
+                        case 3: return colourToxicity3;
+                        default: return colourNewsArticle;
+                    }
                 }
             });
 
@@ -2135,8 +2888,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .style("position", "relative")
             .style("z-index", -1);
 
-        visualiseRootIcon(node, root); //Draw an icon for the root node
-
+        visualiseRootIcon(node); //Draw an icon for the root node
 
         // Transition nodes to their new position.
         var nodeUpdate = node.transition()
@@ -2187,16 +2939,15 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 else if (d.target.positive_stance === 1) return colourPositiveStance; //In favour
                 else if (d.target.negative_stance === 1)  return colourNegativeStance; //Against
                 else return colourNeutralStance; //Neutral comment
-            });
+            })
+            .on('click', clickLink);
 
         // Transition links to their new position.
         link.transition()
             .duration(duration)
             .attr("d", diagonal);
 
-        if (checkboxHighlightMenu.checked && source.children)
-            checkboxOR.checked ? highlightNodesByPropertyOR(node, link, nodes, enabledHighlight) : highlightNodesByPropertyAND(node, link, nodes, enabledHighlight);
-
+        if (checkboxHighlightMenu.checked && source.children) checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
 
 
         // Transition exiting nodes to the parent's new position.
@@ -2225,30 +2976,59 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var svgGroup = baseSvg.append("g");
 
     // Define the root position
-    root.x0 = 0;
+    root.x0 = viewerHeight / 2;
     root.y0 = 0;
 
     // Layout the tree initially and center on the root node.
     update(root);
+    centerNode(root);
 
-    let box = computeDimensions(nodes);
-    let initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root);
+    var box = computeDimensions(nodes);
+    var initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root);
     initialZoom = initialSight.initialZoom;
     initialX = initialSight.initialX;
     initialY = initialSight.initialY;
 
-
     //I compute the values for the statistic data showing in the background
-    const {children, toxicityLevel,
-        toxicity0, toxicity1, toxicity2, toxicity3,
-        totalTargGroup,totalTargPerson, totalTargStereotype, totalTargNone,
-        ...rest} = getStatisticValues(root);
+    var listStatistics = getStatisticValues(root);
+    var totalNumberOfNodes = listStatistics.children;
 
-    // (({ a, c }) => ({ a, c }))(object);
+    var totalNotToxic = listStatistics.toxicity0,
+        totalMildlyToxic = listStatistics.toxicity1,
+        totalToxic = listStatistics.toxicity2,
+        totalVeryToxic = listStatistics.toxicity3;
 
-    let statisticTitle = "<span style='font-size: 22px;'> Static values of " + sel_item.split('/')[2] + "</span>";
+    var totalGroup = listStatistics.totalTargGroup,
+        totalPerson = listStatistics.totalTargPerson,
+        totalStereotype = listStatistics.totalTargStereotype,
+        totalNone = listStatistics.totalTargNone;
+
+    var statisticTitle = "<span style='font-size: 22px;'> Static values of " + sel_item.split('/')[2] + "</span>";
     statisticTitleBackground.style("visibility", "visible").html(statisticTitle);
-    statisticBackground.style("visibility", "visible").html(writeStatisticText(toxicity0, toxicity1, toxicity2, toxicity3,
-        totalTargGroup, totalTargPerson, totalTargStereotype, totalTargNone));
+    statisticBackground.style("visibility", "visible").html(writeStatisticText());
+
+    function writeStatisticText() {
+        var statisticText = "<table style='width: 500px;'>";
+
+        var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
+        var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
+        var statValuesTox = [totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic];
+        var statValuesTarg = [totalGroup, totalPerson, totalStereotype, totalNone];
+        var targetImagesPath = ["icons/Group.png", "icons/Person.png", "icons/Stereotype.png", "/icons/Blank.png"];
+        var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
+
+        for (var i = 0; i < statTitlesToxicity.length; i++) {
+            statisticText += "<tr style='font-size: 20px;'>"; //Start table line
+
+            //Write toxicity and target line
+            statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td style='padding-right: 55px;'>" + statValuesTox[i].toString() + "</td>";
+            statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
+
+            statisticText += "</tr>"; //End table line
+        }
+
+        statisticText += "</table>";
+        return statisticText;
+    }
 
 });
