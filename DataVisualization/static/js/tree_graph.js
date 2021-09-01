@@ -488,6 +488,7 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
             .style("opacity", opacityValue);
     }
 
+
     //Toxicity not 2
     if (enabledHighlight.indexOf("highlight-toxicity-2") > -1) {
         node.filter(function (d) {
@@ -512,6 +513,7 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
 
 }
 
+
 function highlightStanceOR(node, enabledHighlight){
     //Neutral stance CB is checked
     if (enabledHighlight.indexOf("highlight-neutral") > -1) {
@@ -527,6 +529,7 @@ function highlightStanceOR(node, enabledHighlight){
             if (d.positive_stance) d.highlighted = 1;
             return (d.positive_stance);
         }).style("opacity", 1);
+
     }
 
     //Negative stance CB is checked
@@ -635,6 +638,7 @@ function highlightPositiveOR(node, enabledHighlight){
             if (d.argumentation) d.highlighted = 1;
             return (d.argumentation);
         }).style("opacity", 1);
+
     }
 
     //Constructiveness CB is checked
@@ -1319,7 +1323,6 @@ function drawFeatureAsGlyph(nodeEnter, localPath, localPosition, enabledFeatures
                     listOpacity = [d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
                         d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
                         d.target_group, d.target_person, d.stereotype];
-
                     return listOpacity[i];
                 });
         }
@@ -2071,7 +2074,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     Array.from(checkboxesHighlightGroup) // Convert checkboxes to an array to use filter and map.
                         .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
-
                 console.log(enabledHighlight);
                 checkboxOR.checked ? highlightNodesByPropertyOR(node, link, nodes, enabledHighlight) : highlightNodesByPropertyAND(node, link, nodes, enabledHighlight);
             })
@@ -2135,6 +2137,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         visualiseRootIcon(node, root); //Draw an icon for the root node
 
+
         // Transition nodes to their new position.
         var nodeUpdate = node.transition()
             .duration(duration)
@@ -2195,6 +2198,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             checkboxOR.checked ? highlightNodesByPropertyOR(node, link, nodes, enabledHighlight) : highlightNodesByPropertyAND(node, link, nodes, enabledHighlight);
 
 
+
         // Transition exiting nodes to the parent's new position.
         link.exit().transition()
             .duration(duration)
@@ -2232,6 +2236,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     initialZoom = initialSight.initialZoom;
     initialX = initialSight.initialX;
     initialY = initialSight.initialY;
+
 
     //I compute the values for the statistic data showing in the background
     const {children, toxicityLevel,
