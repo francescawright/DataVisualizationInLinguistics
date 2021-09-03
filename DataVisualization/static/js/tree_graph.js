@@ -1634,6 +1634,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     drawFeatureAsCircularGlyph(nodeEnter, "Circular/", localPosition);
                     break;
 
+                case "new-circular":
+                    drawingAllInOne = true;
+                    //Deletes the targets and draws them again but INSIDE of the node
+                    document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
+                    drawFeatureAsCircularGlyph(nodeEnter, "NewCircular/", localPosition);
+                    break;
+
                 case "directory-3":
                     drawingAllInOne = true;
                     //Deletes the targets and draws them again but INSIDE of the node
@@ -3092,7 +3099,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         function writeStatisticText() {
-            var statisticText = "<span style='font-size: 22px;'> Static values of " + sel_item.split('/')[2] + "</span>";
+            var statisticText = "<span style='font-size: 23px;'> Summary of " + sel_item.split('/')[2] + "</span>";
 
             statisticText += "<table style='width: 500px;'>";
 
