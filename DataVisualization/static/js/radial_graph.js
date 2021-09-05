@@ -1791,10 +1791,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }).append("image")
             .attr('class', objRoot.class)
             .attr('id', objRoot.id)
-            .attr("x", root.x - root.radius)
-            .attr("y", root.y - root.radius)
-            .attr("height", root.radius * 2)
-            .attr("width", root.radius * 2)
+            .attr("x", positionImage(root.radius,0))
+            .attr("y", positionImage(root.radius,0))
+            .attr("height", sizeImage(root.radius,0))
+            .attr("width", sizeImage(root.radius,0))
             .attr("href", rootPath + objRoot.fileName)
             .attr("opacity", 1);
     }
