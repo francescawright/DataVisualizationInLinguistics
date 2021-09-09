@@ -16,10 +16,11 @@
         <img src="{% static 'images/app_icon.svg' %}"
              style="width: 40px;">
     </a>
-    <form style=" padding-left: 5px; padding-right: 45px; margin: 10px;">
-        <button style="margin-top: 4px;" class="btn btn-primary" formaction="{% url 'manage_data' %}">Manage Data
-        </button>
-    </form>
+    {#    <form style=" padding-left: 5px; padding-right: 45px; margin: 10px;">#}
+    {#        <button style="margin-top: 4px;" class="btn btn-primary" formaction="{% url 'manage_data' %}">Manage Data#}
+    {#        </button>#}
+    {#    </form>#}
+    <div style="margin-left: 150px;"></div>
     <form style="justify-content: center; vertical-align: center; padding-top: 4px; margin: 10px;"
           action="{% url 'selected_data' %}"
           id="dropdown_data"

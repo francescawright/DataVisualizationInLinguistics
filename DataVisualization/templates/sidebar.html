@@ -47,32 +47,88 @@
         </a>
         {{ title }}
     </div>
-    <div class="list-group list-group-flush">
-        <form style="justify-content: center; vertical-align: center; padding-top: 4px; margin: 10px;"
-              action="{% url 'selected_data' %}"
-              id="data_selection"
-              method="POST">
-            {% csrf_token %}
+    <div class="list-group list-group-flush" style="width: 300px;">
 
-            <button type="button" class="accordion">View Data</button>
-            {#        <a href="/view_data/" class="list-group-item list-group-item-action bg-light">View Data</a>#}
-            <div class="panel">
-                {% for document in documents_uploaded %}
-                    <button href="/view_data" class="list-group-item-action bg-light"
-                            name="from_button"
-                            value="{{ document.description }}"
-                            form="data_selection">{{ document.description }}</button><br>
-                    {% if not forloop.last %}{% endif %}{% endfor %}
+
+        <button type="button" class="accordion">View Data</button>
+        <div class="panel">
+            {% for document in documents_uploaded %}
+                <button href="/manage_data" class="list-group-item-action bg-light"
+                        name="from_button"
+                        style="width: 59%; margin-top: 10px; vertical-align: unset;"
+                        value="{{ document.description }}"
+                        form="data_selection">
+                    <form style="justify-content: center; vertical-align: center;"
+                          action="{% url 'selected_data' %}"
+                          id="data_selection"
+                          method="POST">
+                        {% csrf_token %}
+                    </form>
+                    {{ document.description }}</button>
+                <button style="width: 40px; height: 40px;"
+                        href="/delete_data"
+                        class="btn btn-danger error"
+                        name="delete_button" type="submit"
+                        value="{{ document.description }}" form="data_deletion">
+                    <form style="justify-content: center; vertical-align: center;"
+                          action="{% url 'delete_data' %}" id="data_deletion" method="POST">
+                        {% csrf_token %}
+                    </form>
+                    &#10005
+
+                </button>
+                <button style="width: 40px; height: 40px;" class="btn btn-primary"
+                        name="edit_button"
+                        value="{{ document.description }}" form="data_edit">
+                    <form style="justify-content: center; vertical-align: center;"
+                          action="{% url 'edit_data' %}" id="data_edit" method="POST">
+                        {% csrf_token %}
+                    </form>
+                    &#9998
+                </button>
+                {% if not forloop.last %}{% endif %}{% endfor %}
+            <div style="margin-top: 15px; margin-bottom: 15px;">
+                <a style="width: 250px;" type="button" href="/upload_file" class="btn btn-primary"
+                   value="Upload Document"
+                   name="upload_button">Upload Document</a>
             </div>
-            <a href="/manage_data/" class="list-group-item list-group-item-action bg-light">Manage Data</a>
-            {#        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>#}
-            {#        <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>#}
-            {#        <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>#}
-        </form>
+        </div>
+
+
+        <button type="button" class="accordion" style="margin-bottom: 5px;">Manage Projects</button>
+        <div class="panel">
+            {#            <a type="button" href="/upload_file" class="btn btn-primary" value="Upload Document"#}
+            {#               name="upload_button">Upload Document</a>#}
+            {#            <form method="POST" id="dropdown_delete">#}
+            {#                {% csrf_token %}#}
+            {#                <input type="submit" class="btn btn-danger error" value="Delete Data" name="delete_button"#}
+            {#                       id="delete_button">#}
+            {#                <select name="selected_data_delete" form="dropdown_delete">#}
+            {#                    {% for document in documents_uploaded %}#}
+            {#                        <option value="{{ document.description }}"#}
+            {#                                id="{{ document.description }}">{{ document.description }}</option>#}
+            {#                    {% endfor %}#}
+            {#                </select>#}
+            {#            </form>#}
+            <a href="" style="margin-top: 5px; width: 250px;" type="button" class="btn btn-primary"
+               value="Create new Project"
+               name="new_project_button">Create
+                new project</a>
+            <a href="" style="margin-top: 5px; margin-bottom: 15px; width: 250px;" type="button" class="btn btn-primary"
+               value="Load Project"
+               name="load_project_button">Load
+                project</a>
+        </div>
+
     </div>
 </div>
 </body>
 </html>
+
+
+<!-- Bootstrap core JavaScript -->
+<script src="../static/vendor/jquery/jquery.min.js"></script>
+<script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <script>
     var acc = document.getElementsByClassName("accordion");
@@ -93,5 +149,32 @@
             }
         });
     }
+    jQuery("#delete_button").click(function () {
+        $("<div></div>").appendTo('body')
+            .html('<div><h3> Are you sure that do you want to delete this dataset? </h3></div>')
+            .dialog({
+                title: "Delete Data",
+                width: 500, height: 300,
+                modal: true,
+                resizable: false,
+                show: {effect: 'drop', direction: "left"},
+                hide: {effect: 'blind'},
+
+                buttons: {
+                    Yes: function () {
+                        jQuery.ajax({
+                            type: "POST", //post data
+                            data: {'key': key}, //if you want to send any data to view
+                            url: '/get_viewerModal/' // your url that u write in action in form tag
+                        }).done(function (result) {
+                            alert("am done") //this will executes after your view executed
+                        })
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+    });
 
 </script>

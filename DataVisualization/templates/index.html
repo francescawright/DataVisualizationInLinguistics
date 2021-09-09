@@ -11,7 +11,145 @@
     <title>Data Visualization in Linguistics</title>
 
     <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    {% load static %}
 </head>
+
+
+<style>
+
+    ul.cloud {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        line-height: 2.75rem;
+        width: 450px;
+        margin-left: 350px;
+    }
+
+
+    ul.cloud a {
+        /*
+        Not supported by any browser at the moment :(
+        --size: attr(data-weight number);
+        */
+        --size: 4;
+        --color: #a33;
+        color: var(--color);
+        font-size: calc(var(--size) * 0.25rem + 0.5rem);
+        display: flex;
+        padding: 0.125rem 0.25rem;
+        position: relative;
+        text-decoration: none;
+        /*
+        For different tones of a single color
+        opacity: calc((15 - (9 - var(--size))) / 15);
+        */
+    }
+
+    li {
+        display: inline-block;
+    }
+
+
+    #cons {
+        color: #90F6B2;
+        --size: 10;
+        position: relative;
+        top: 50px;
+        left: 450px;
+
+
+    }
+
+    #arg {
+        color: #1B8055;
+        --size: 10;
+        position: relative;
+        top: 50px;
+        left: 600px;
+    }
+
+    #sar {
+        color: #97CFFF;
+        --size: 10;
+        position: relative;
+        top: 50px;
+        left: 400px;
+
+    }
+
+    #moc {
+        color: #1795FF;
+        --size: 10;
+        position: relative;
+        top: 50px;
+        left: 500px;
+
+    }
+
+    #into {
+        color: #0B5696;
+        --size: 10;
+        position: relative;
+        top: 50px;
+        left: 450px;
+
+
+    }
+
+    #impro {
+        color: #E3B7E8;
+        --size: 10;
+        position: relative;
+        top: 50px;
+        left: 375px;
+
+    }
+
+    #insult {
+        color: #A313B3;
+        --size: 10;
+        position: relative;
+        left: 675px;
+
+    }
+
+    #aggres {
+        color: #5E1566;
+        --size: 10;
+        position: relative;
+        left: 375px;
+
+    }
+
+    #neg {
+        color: #E60800;
+        position: relative;
+        left: 300px;
+        --size: 9;
+
+    }
+
+    #pos {
+        color: #24FF36;
+        position: relative;
+        top: -47px;
+        left: 650px;
+        --size: 9;
+
+    }
+
+    #tox {
+        color: #000000;
+        position: relative;
+        left: 450px;
+        --size: 11;
+
+    }
+
+</style>
 
 <body>
 
@@ -23,37 +161,37 @@
     <!-- Page Content -->
     <div id="page-content-wrapper">
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-            {#            <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>#}
-
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        {#        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">#}
+        {#            <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>#}
+        {##}
+        {#            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"#}
+        {#                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">#}
+        {#                <span class="navbar-toggler-icon"></span>#}
+        {#            </button>#}
+        {##}
+        {#            <div class="collapse navbar-collapse" id="navbarSupportedContent">#}
+        {#                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">#}
+        {#                    <li class="nav-item active">#}
+        {#                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>#}
+        {#                    </li>#}
+        {#                    <li class="nav-item">#}
+        {#                        <a class="nav-link" href="#">Link</a>#}
+        {#                    </li>#}
+        {#                    <li class="nav-item dropdown">#}
+        {#                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"#}
+        {#                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+        {#                            Dropdown#}
+        {#                        </a>#}
+        {#                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">#}
+        {#                            <a class="dropdown-item" href="#">Action</a>#}
+        {#                            <a class="dropdown-item" href="#">Another action</a>#}
+        {#                            <div class="dropdown-divider"></div>#}
+        {#                            <a class="dropdown-item" href="#">Something else here</a>#}
+        {#                        </div>#}
+        {#                    </li>#}
+        {#                </ul>#}
+        {#            </div>#}
+        {#        </nav>#}
 
         {#        <div class="container-fluid">#}
         {#            <h1 class="mt-4">Simple Sidebar</h1>#}
@@ -65,160 +203,73 @@
         {#        </div>#}
         <h1 class="display-2 text-center">Data Visualization in Linguistics</h1>
         <br>
-        <p class="text-center">This project provides a way to explore and visualize the toxicity of news directly on a
-            website.</p>
-        <br>
-        <p class="text-center">Upload an Excel file and click on View Data to start!</p>
-        <br>
-        <p class="text-center">The following charts summarise the data upload until now</p>
+
+        <h2 class="display-4 text-center">How do we identify hate speech in digital news?</h2>
+
 
         <table>
-            <div class="column" style="width: 100%">
-                <div id="container1"></div>
-            </div>
-            <div class="row" style="margin-left: 50px">
-                <div class="column" style="width: 48%">
-                    <div id="container2"></div>
+            <div class="row text-center" style="margin-top: 50px">
+                <div class="column" style="width: 32%">
+                    <div id="image1"><img src="{% static 'images/landing_page/Immigration.svg' %}" style="width: 30%"
+                                          alt="Immigration"/>
+                    </div>
+                    <br>Immigration
                 </div>
-                <div class="column" style="width: 48%">
-                    <div id="container3"></div>
-
+                <div class="column" style="width: 32%">
+                    <div id="image2"><img src="{% static 'images/landing_page/Society.svg' %}" style="width: 30%"
+                                          alt="Society"/></div>
+                    <br>Society
+                </div>
+                <div class="column" style="width: 32%">
+                    <div id="image3"><img src="{% static 'images/landing_page/Crime.svg' %}" style="width: 30%"
+                                          alt="Crime"/></div>
+                    <br>Crime
                 </div>
             </div>
         </table>
-        <script>
-            Highcharts.chart('container1', {
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: 'Global toxicity'
-                },
-                xAxis: {
-                    categories: [
-                        "Non-toxic comments", "Toxic comments"
-                    ]
-                },
-                plotOptions: {
-                    series: {
-                        stacking: 'normal'
-                    }
-                },
-                series: [{
-                    name: 'Non toxic comment',
-                    data: [
-                        {% for entry in dataset %}{{ entry.toxicity_no }}{% if not forloop.last %}, {% endif %}{% endfor %}
-                    ],
-                    color: 'green'
-                },
-                    {
-                        name: 'Low toxicity',
-                        data: [
-                            {% for entry in dataset %}{{ entry.low_toxicity }}{% if not forloop.last %}, {% endif %}{% endfor %}
-                        ],
-                        color: 'yellow'
-                    },
-                    {
-                        name: 'Med toxicity',
-                        data: [
-                            {% for entry in dataset %}{{ entry.med_toxicity }}{% if not forloop.last %}, {% endif %}{% endfor %}
-                        ],
-                        color: 'orange'
-                    },
-                    {
-                        name: 'High toxicity',
-                        data: [
-                            {% for entry in dataset %}{{ entry.high_toxicity }}{% if not forloop.last %}, {% endif %}{% endfor %}
-                        ],
-                        color: 'red'
-                    }]
-            });
-            var chart = Highcharts.chart('container2', {
-                chart: {
-                    type: 'bar'
-                },
-                title: {
-                    text: 'Some features'
-                },
-                xAxis: {
-                    categories: [
-                        "Non-toxic comment", "Toxic comment"
-                    ]
-                },
-                plotOptions: {
-                    series: {
-                        stacking: ''
-                    }
-                },
-                series: [{
-                    name: 'Sarcasm',
-                    data: [
-                        {% for entry in dataset2 %}{{ entry.sarcasm }}{% if not forloop.last %}, {% endif %}{% endfor %}
-                    ],
-                    color: 'green'
-                },
-                    {
-                        name: 'Argumentation',
-                        data: [
-                            {% for entry in dataset2 %}{{ entry.argumentation }}{% if not forloop.last %}, {% endif %}{% endfor %}
-                        ],
-                        color: 'orange'
-                    },
-                    {
-                        name: 'Positive Stance',
-                        data: [
-                            {% for entry in dataset2 %}{{ entry.positive_stance }}{% if not forloop.last %}, {% endif %}{% endfor %}
-                        ],
-                        color: 'blue'
-                    },
-                    {
-                        name: 'Negative Stance',
-                        data: [
-                            {% for entry in dataset2 %}{{ entry.negative_stance }}{% if not forloop.last %}, {% endif %}{% endfor %}
-                        ],
-                        color: 'red'
-                    }]
-            });
-            var chart = Highcharts.chart('container3', {
-                chart: {
-                    type: 'bar'
-                },
-                title: {
-                    text: 'Targeting groups'
-                },
-                xAxis: {
-                    categories: [
-                        "Non-toxic comment", "Toxic comment"
-                    ]
-                },
-                plotOptions: {
-                    series: {
-                        stacking: ''
-                    }
-                },
-                series: [{
-                    name: 'Target person',
-                    data: [
-                        {% for entry in dataset3 %}{{ entry.target_person }}{% if not forloop.last %}, {% endif %}{% endfor %}
-                    ],
-                    color: 'lightblue'
-                },
-                    {
-                        name: 'Target group',
-                        data: [
-                            {% for entry in dataset3 %}{{ entry.target_group }}{% if not forloop.last %}, {% endif %}{% endfor %}
-                        ],
-                        color: 'blue'
-                    },
-                    {
-                        name: 'Stereotype',
-                        data: [
-                            {% for entry in dataset3 %}{{ entry.stereotype }}{% if not forloop.last %}, {% endif %}{% endfor %}
-                        ],
-                        color: 'darkblue'
-                    }]
-            });
-        </script>
+
+
+        <table>
+            <div class="row text-center">
+                <ul class="cloud" role="navigation"
+                    style="margin-bottom: 75px; box-sizing: content-box">
+                    <li><a href="#" data-weight="4" id='cons'>Constructiveness</a></li>
+                    <li><a href="#" data-weight="5" id='arg'>Argumentation</a></li>
+                    <li><a href="#" data-weight="5" id="sar">Sarcasm</a></li>
+                    <li><a href="#" data-weight="6" id="moc">Mockery</a></li>
+                    <li><a href="#" data-weight="6" id="into">Intolerance</a></li>
+                    <li><a href="#" data-weight="4" id="impro">Improper Language</a></li>
+                    <li><a href="#" data-weight="5" id="insult">Insult</a></li>
+                    <li><a href="#" data-weight="6" id="aggres">Aggressiveness</a></li>
+                    <li><a href="#" data-weight="6" id="neg">Negative Stance</a></li>
+                    <li><a href="#" data-weight="8" id="pos">Positive Stance</a></li>
+                    <li><a href="#" data-weight="7" id="tox">Toxicity</a></li>
+
+                </ul>
+            </div>
+        </table>
+
+        <table>
+            <div class="row text-center" style="margin-top: 50px; margin-bottom: 50px;">
+                <div class="column" style="width: 32%">
+                    <div id="image1"><img src="{% static 'images/landing_page/Person.svg' %}" style="width: 30%"
+                                          alt="Person"/>
+                    </div>
+                    <br>Person
+                </div>
+                <div class="column" style="width: 32%">
+                    <div id="image2"><img src="{% static 'images/landing_page/Group.svg' %}" style="width: 30%"
+                                          alt="Group"/></div>
+                    <br>Group
+                </div>
+                <div class="column" style="width: 32%">
+                    <div id="image3"><img src="{% static 'images/landing_page/Stereotype.svg' %}" style="width: 30%"
+                                          alt="Stereotype"/></div>
+                    <br>Stereotype
+                </div>
+            </div>
+        </table>
+
     </div>
     <!-- /#page-content-wrapper -->
 
