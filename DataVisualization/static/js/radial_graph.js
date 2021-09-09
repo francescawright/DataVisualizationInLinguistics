@@ -30,6 +30,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 const duration = 750; //Duration of the animation of a transition
 
 //Graph
+const edgeLength = 22 * 20;
 const canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
 
 /**
@@ -607,12 +608,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
 
     root = treeData; //Define the root
-    var tree = d3.layout.tree()
-        .nodeSize(root.children.length, 0) //NOTE the width is overwritten later
-        .sort(function (a, b) {
-            if (a.toxicity_level === b.toxicity_level) {
-
-
 
     // The edge length is overwritten in the update()
     let tree = d3.layout.tree()
@@ -1849,11 +1844,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }).append("image")
             .attr('class', objRoot.class)
             .attr('id', objRoot.id)
-            .attr("x", root.x - root.radius)
-            .attr("y", root.y - root.radius)
-            .attr("height", root.radius * 2)
-            .attr("width", root.radius * 2)
-
+            .attr("x", positionImage(root.radius,0))
+            .attr("y", positionImage(root.radius,0))
+            .attr("height", sizeImage(root.radius,0))
+            .attr("width", sizeImage(root.radius,0))
             .attr("href", rootPath + objRoot.fileName)
             .attr("opacity", 1);
     }
