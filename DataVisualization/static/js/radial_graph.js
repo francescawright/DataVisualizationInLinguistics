@@ -25,446 +25,12 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
-/**
- * Compute the radius of the node based on the number of children it has
+/* Constant
  * */
-function computeNodeRadius(d, edgeLength = 300, minRadius = 10) {
-    /*
-        If node has children,
-        more than 2: new radius = 16 + 3 * (#children - 2)
-        2 children: new radius = 16
-        1 child: new radius = 13
-        0 children: new radius = minRadius
-    * */
-    d.radius = minRadius;
-    if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 10
-
-    var children = d.children ?? d._children; //Assign children collapsed or not
-
-    children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
-        : children.length === 2 ? d.radius = 16 //2 children
-            : d.radius = 13; //One child
-    //Avoid the root node from being so large that overlaps/hides its children
-    if (d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
-    return d.radius;
-}
-
-/**
- * Computes the borders of a box containing our nodes
- * */
-function computeDimensions(nodes) {
-    /* Note our coordinate system:
-    * in radian coordinates
-    * q4    |       q1
-    * ------|---------
-    * q3    |       q2
-    * */
-    var maxYq1 = -Infinity, maxYq2 = -Infinity, maxYq3 = -Infinity, maxYq4 = -Infinity;
-    var xQ1, xQ2, xQ3, xQ4;
-
-    for (const n of nodes) {
-        //Quadrant 1
-        if (0 <= n.x && n.x < 90 && n.y > maxYq1) {
-            maxYq1 = n.y;
-            xQ1 = n.x;
-        }
-
-        //Quadrant 2
-        if (90 <= n.x && n.x < 180 && n.y > maxYq2) {
-            maxYq2 = n.y;
-            xQ2 = n.x;
-        }
-        if (-270 <= n.x && n.x < -180 && n.y > maxYq2) {
-            maxYq2 = n.y;
-            xQ2 = n.x;
-        }
-
-        //Quadrant 3
-        if (180 <= n.x && n.x < 270 && n.y > maxYq3) {
-            maxYq3 = n.y;
-            xQ3 = n.x;
-        }
-        if (-180 <= n.x && n.x < -90 && n.y > maxYq3) {
-            maxYq3 = n.y;
-            xQ3 = n.x;
-        }
-
-        //Quadrant 4
-        if (-90 <= n.x && n.x < 0 && n.y > maxYq4) {
-            maxYq4 = n.y;
-            xQ4 = n.x;
-        }
-    }
-    return {
-        maxYq1: maxYq1, maxYq2: maxYq2, maxYq3: maxYq3, maxYq4: maxYq4,
-        xQ1: xQ1, xQ2: xQ2, xQ3: xQ3, xQ4: xQ4
-    };
-}
-
-/**
- * Center graph and zoom to fit the whole graph visualization in our canvas
- * */
-function zoomToFit() {
-    //By default, the (0,0) (our root node) is displayed on the top left corner
-    //We need to center the graph in the canvas
-
-}
-
-
-/**
- * Highlights nodes by category of Toxicity
- * */
-function highlightToxicityOR(node, enabledHighlight) {
-    //Toxicity 0
-    if (enabledHighlight.indexOf("highlight-toxicity-0") > -1) {
-        node.filter(function (d) {
-            if (d.toxicity_level === 0) d.highlighted = 1;
-            return (d.toxicity_level === 0);
-        }).style("opacity", 1);
-    }
-
-    //Toxicity 1
-    if (enabledHighlight.indexOf("highlight-toxicity-1") > -1) {
-        node.filter(function (d) {
-            if (d.toxicity_level === 1) d.highlighted = 1;
-            return (d.toxicity_level === 1);
-        }).style("opacity", 1);
-    }
-
-    //Toxicity 2
-    if (enabledHighlight.indexOf("highlight-toxicity-2") > -1) {
-        node.filter(function (d) {
-            if (d.toxicity_level === 2) d.highlighted = 1;
-            console.log(d);
-            return (d.toxicity_level === 2);
-        }).style("opacity", 1);
-    }
-
-    //Toxicity 3
-    if (enabledHighlight.indexOf("highlight-toxicity-3") > -1) {
-        node.filter(function (d) {
-            if (d.toxicity_level === 3) d.highlighted = 1;
-            console.log(d);
-            return (d.toxicity_level === 3);
-        }).style("opacity", 1);
-    }
-
-}
-
-/**
- * Highlights nodes and edges by category of Toxicity belonging to the intersection of selected values
- *
- * Unhighlights nodes that do not have the selected property
- * */
-function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
-    //Toxicity not 0
-    if (enabledHighlight.indexOf("highlight-toxicity-0") > -1) {
-        var unhighlightNodes = node.filter(function (d) {
-            if (d.toxicity_level !== 0) d.highlighted = 0;
-            return (d.toxicity_level !== 0);
-        });
-        unhighlightNodes.style("opacity", opacityValue);
-        unhighlightNodes.select("g.node.backgroundCircle").style("opacity", 1);
-    }
-
-    //Toxicity not 1
-    if (enabledHighlight.indexOf("highlight-toxicity-1") > -1) {
-        node.filter(function (d) {
-            if (d.toxicity_level !== 1) d.highlighted = 0;
-            return (d.toxicity_level !== 1);
-        })
-            // .select("circle.nodeCircle")
-            .style("position", "relative")
-            .style("z-index", 1)
-            .style("opacity", opacityValue);
-    }
-
-    //Toxicity not 2
-    if (enabledHighlight.indexOf("highlight-toxicity-2") > -1) {
-        node.filter(function (d) {
-            if (d.toxicity_level !== 2) d.highlighted = 0;
-            return (d.toxicity_level !== 2);
-        })
-            // .select("circle.nodeCircle")
-            .style("position", "relative")
-            .style("z-index", 1)
-            .style("opacity", opacityValue);
-    }
-
-    //Toxicity not 3
-    if (enabledHighlight.indexOf("highlight-toxicity-3") > -1) {
-        node.filter(function (d) {
-            if (d.toxicity_level !== 3) d.highlighted = 0;
-            return (d.toxicity_level !== 3);
-        })
-            // .select("circle.nodeCircle")
-            .style("position", "relative")
-            .style("z-index", 1)
-            .style("opacity", opacityValue);
-    }
-
-}
-
-function highlightStanceOR(node, enabledHighlight) {
-    //Neutral stance CB is checked
-    if (enabledHighlight.indexOf("highlight-neutral") > -1) {
-        node.filter(function (d) {
-            if (!d.positive_stance && !d.negative_stance) d.highlighted = 1;
-            return (!d.positive_stance && !d.negative_stance);
-        }).style("opacity", 1);
-    }
-
-    //Positive stance CB is checked
-    if (enabledHighlight.indexOf("highlight-positive") > -1) {
-        node.filter(function (d) {
-            if (d.positive_stance) d.highlighted = 1;
-            return (d.positive_stance);
-        }).style("opacity", 1);
-    }
-
-    //Negative stance CB is checked
-    if (enabledHighlight.indexOf("highlight-negative") > -1) {
-        node.filter(function (d) {
-            if (d.negative_stance) d.highlighted = 1;
-            return (d.negative_stance);
-        }).style("opacity", 1);
-    }
-
-}
-
-function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2) {
-    //Neutral stance CB is checked
-    if (enabledHighlight.indexOf("highlight-neutral") > -1) {
-        node.filter(function (d) {
-            if (d.positive_stance || d.negative_stance) d.highlighted = 0;
-            return (d.positive_stance || d.negative_stance);
-        })//.select("circle.nodeCircle")
-            .style("position", "relative")
-            .style("z-index", 1)
-            .style("opacity", opacityValue);
-    }
-
-    //Positive stance CB is checked
-    if (enabledHighlight.indexOf("highlight-positive") > -1) {
-        node.filter(function (d) {
-            if (!d.positive_stance) d.highlighted = 0;
-            return (!d.positive_stance);
-        })//.select("circle.nodeCircle")
-            .style("position", "relative")
-            .style("z-index", 1)
-            .style("opacity", opacityValue);
-    }
-
-    //Negative stance CB is checked
-    if (enabledHighlight.indexOf("highlight-negative") > -1) {
-        node.filter(function (d) {
-            if (!d.negative_stance) d.highlighted = 0;
-            return (!d.negative_stance);
-        })//.select("circle.nodeCircle")
-            .style("position", "relative")
-            .style("z-index", 1)
-            .style("opacity", opacityValue);
-    }
-
-}
-
-function highlightTargetOR(node, enabledHighlight) {
-    //Target group CB is checked
-    if (enabledHighlight.indexOf("highlight-group") > -1) {
-        node.filter(function (d) {
-            if (d.target_group) d.highlighted = 1;
-            return (d.target_group);
-        }).style("opacity", 1);
-    }
-
-    //Target person CB is checked
-    if (enabledHighlight.indexOf("highlight-person") > -1) {
-        node.filter(function (d) {
-            if (d.target_person) d.highlighted = 1;
-            return (d.target_person);
-        }).style("opacity", 1);
-    }
-
-    //Stereotype CB is checked
-    if (enabledHighlight.indexOf("highlight-stereotype") > -1) {
-        node.filter(function (d) {
-            if (d.stereotype) d.highlighted = 1;
-            return (d.stereotype);
-        }).style("opacity", 1);
-    }
-}
-
-function highlightTargetAND(node, enabledHighlight, opacityValue = 0.2) {
-    //Target group CB is checked
-    if (enabledHighlight.indexOf("highlight-group") > -1) {
-        node.filter(function (d) {
-            if (!d.target_group) d.highlighted = 0;
-            return (!d.target_group);
-        }).style("opacity", opacityValue);
-
-    }
-
-    //Target person CB is checked
-    if (enabledHighlight.indexOf("highlight-person") > -1) {
-        node.filter(function (d) {
-            if (!d.target_person) d.highlighted = 0;
-            return (!d.target_person);
-        }).style("opacity", opacityValue);
-    }
-
-    //Stereotype CB is checked
-    if (enabledHighlight.indexOf("highlight-stereotype") > -1) {
-        node.filter(function (d) {
-            if (!d.stereotype) d.highlighted = 0;
-            return (!d.stereotype);
-        }).style("opacity", opacityValue);
-    }
-}
-
-function highlightPositiveOR(node, enabledHighlight) {
-    //Argumentation CB is checked
-    if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
-        node.filter(function (d) {
-            if (d.argumentation) d.highlighted = 1;
-            return (d.argumentation);
-        }).style("opacity", 1);
-    }
-
-    //Constructiveness CB is checked
-    if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
-        node.filter(function (d) {
-            if (d.constructiveness) d.highlighted = 1;
-            return (d.constructiveness);
-        }).style("opacity", 1);
-    }
-
-}
-
-function highlightPositiveAND(node, enabledHighlight, opacityValue = 0.2) {
-    //Argumentation CB is checked
-    if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
-        node.filter(function (d) {
-            if (!d.argumentation) ;
-            d.highlighted = 0;
-            return (!d.argumentation);
-        }).style("opacity", opacityValue);
-    }
-
-    //Constructiveness CB is checked
-    if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
-        node.filter(function (d) {
-            if (!d.constructiveness) ;
-            d.highlighted = 0;
-            return (!d.constructiveness);
-        }).style("opacity", opacityValue);
-    }
-
-}
-
-function highlightNegativeOR(node, enabledHighlight) {
-    //Sarcasm CB is checked
-    if (enabledHighlight.indexOf("highlight-sarcasm") > -1) {
-        node.filter(function (d) {
-            if (d.sarcasm) d.highlighted = 1;
-            return (d.sarcasm);
-        }).style("opacity", 1);
-    }
-
-    //Mockery CB is checked
-    if (enabledHighlight.indexOf("highlight-mockery") > -1) {
-        node.filter(function (d) {
-            if (d.mockery) d.highlighted = 1;
-            return (d.mockery);
-        }).style("opacity", 1);
-    }
-
-    //Intolerance CB is checked
-    if (enabledHighlight.indexOf("highlight-intolerance") > -1) {
-        node.filter(function (d) {
-            if (d.intolerance) d.highlighted = 1;
-            return (d.intolerance);
-        }).style("opacity", 1);
-    }
-
-    //Improper language CB is checked
-    if (enabledHighlight.indexOf("highlight-improper-language") > -1) {
-        node.filter(function (d) {
-            if (d.improper_language) d.highlighted = 1;
-            return (d.improper_language);
-        }).style("opacity", 1);
-    }
-
-    //Insult language CB is checked
-    if (enabledHighlight.indexOf("highlight-insult") > -1) {
-        node.filter(function (d) {
-            if (d.insult) d.highlighted = 1;
-            return (d.insult);
-        }).style("opacity", 1);
-    }
-
-    //Aggressiveness language CB is checked
-    if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) {
-        node.filter(function (d) {
-            if (d.aggressiveness) d.highlighted = 1;
-            return (d.aggressiveness);
-        }).style("opacity", 1);
-    }
-}
-
-function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2) {
-    //Sarcasm CB is checked
-    if (enabledHighlight.indexOf("highlight-sarcasm") > -1) {
-        node.filter(function (d) {
-            if (!d.sarcasm) d.highlighted = 0;
-            return (!d.sarcasm);
-        }).style("opacity", opacityValue);
-    }
-
-    //Mockery CB is checked
-    if (enabledHighlight.indexOf("highlight-mockery") > -1) {
-        node.filter(function (d) {
-            if (!d.mockery) d.highlighted = 0;
-            return (!d.mockery);
-        }).style("opacity", opacityValue);
-    }
-
-    //Intolerance CB is checked
-    if (enabledHighlight.indexOf("highlight-intolerance") > -1) {
-        node.filter(function (d) {
-            if (!d.intolerance) d.highlighted = 0;
-            return (!d.intolerance);
-        }).style("opacity", opacityValue);
-    }
-
-    //Improper language CB is checked
-    if (enabledHighlight.indexOf("highlight-improper-language") > -1) {
-        node.filter(function (d) {
-            if (!d.improper_language) d.highlighted = 0;
-            return (!d.improper_language);
-        }).style("opacity", opacityValue);
-    }
-
-    //Insult language CB is checked
-    if (enabledHighlight.indexOf("highlight-insult") > -1) {
-        node.filter(function (d) {
-            if (!d.insult) d.highlighted = 0;
-            return (!d.insult);
-        }).style("opacity", opacityValue);
-    }
-
-    //Aggressiveness language CB is checked
-    if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) {
-        node.filter(function (d) {
-            if (!d.aggressiveness) d.highlighted = 0;
-            return (!d.aggressiveness);
-        }).style("opacity", opacityValue);
-    }
-}
+const duration = 750; //Duration of the animation of a transition
 
 //Graph
-const edgeLength = 22 * 20;
 const canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
-
 
 /**
  * Compute the radius of the node based on the number of children it has
@@ -480,7 +46,8 @@ function computeNodeRadius(d, edgeLength = 300, minRadius = 10) {
     d.radius = minRadius;
     if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 10
 
-    const children =  d.children ?? d._children; //Assign children collapsed or not
+    var children =  d.children ?? d._children; //Assign children collapsed or not
+
 
     children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
         : children.length  === 2 ? d.radius = 16 //2 children
@@ -506,33 +73,37 @@ function computeDimensions(nodes){
     for(const n of nodes){
         //Quadrant 1
         if ( 0 <= n.x && n.x < 90 && n.y > maxYq1) {
-            maxYq1 = n.y;
+            maxYq1 = n.y + n.radius;
+
             xQ1 = n.x;
         }
 
         //Quadrant 2
         if ( 90 <= n.x && n.x < 180 && n.y > maxYq2) {
-            maxYq2 = n.y;
+            maxYq2 = n.y + n.radius;
             xQ2 = n.x;
         }
         if ( -270 <= n.x && n.x < -180 && n.y > maxYq2) {
-            maxYq2 = n.y;
+            maxYq2 = n.y + n.radius;
+
             xQ2 = n.x;
         }
 
         //Quadrant 3
         if ( 180 <= n.x && n.x < 270 && n.y > maxYq3) {
-            maxYq3 = n.y;
+            maxYq3 = n.y + n.radius;
             xQ3 = n.x;
         }
         if ( -180 <= n.x && n.x < -90 && n.y > maxYq3) {
-            maxYq3 = n.y;
+            maxYq3 = n.y + n.radius;
+
             xQ3 = n.x;
         }
 
         //Quadrant 4
         if ( -90 <= n.x && n.x < 0 && n.y > maxYq4) {
-            maxYq4 = n.y;
+            maxYq4 = n.y + n.radius;
+
             xQ4 = n.x;
         }
     }
@@ -542,10 +113,41 @@ function computeDimensions(nodes){
 
 /**
  * Center graph and zoom to fit the whole graph visualization in our canvas
+ *
+ * @param {{maxYq1: number}, {maxYq2: number}, {maxYq3: number}, {maxYq4: number}}
+ *      maxYq1: The maximum radius of quadrant Q1.
+ *      maxYq2: The maximum radius of quadrant Q2.
+ *      maxYq3: The maximum radius of quadrant Q3.
+ *      maxYq4: The maximum radius of quadrant Q4.
+ * @return {{initialZoom: number}, {initialX: number}, {initialY: number}}
  * */
-function zoomToFit() {
+function zoomToFit({maxYq1, maxYq2,maxYq3, maxYq4}) {
     //By default, the (0,0) (our root node) is displayed on the top left corner
     //We need to center the graph in the canvas
+
+    //First approach
+    let top =  Math.max(maxYq1, maxYq4),
+        bottom = Math.max(maxYq2, maxYq3);
+
+    let right = Math.max(maxYq1, maxYq2),
+        left = Math.max(maxYq3, maxYq4);
+
+    let width = right + left;
+    let height = top + bottom;
+
+    let scale = Math.min(canvasWidth/width, canvasHeight/height);
+
+    let initialX = (right - left)/2.0,
+        initialY = (top - bottom)/2.0;
+
+    let x = canvasWidth / 2.0 +  initialX * scale,
+        y = canvasHeight / 2.0 + initialY * scale;
+
+    d3.select('g').transition()
+        .duration(duration)
+        .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
+
+    return {initialZoom: scale, initialX: x, initialY: y};
 
 }
 
@@ -910,6 +512,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var root, rootName = "News Article";
     var nodes;
 
+    let initialZoom, initialX, initialY; //Initial zoom and central coordinates of the first visualization of the graph
 
     var groupDrawn = false, personDrawn = false;
     var opacityValue = 0.2;
@@ -1004,6 +607,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
 
     root = treeData; //Define the root
+    var tree = d3.layout.tree()
+        .nodeSize(root.children.length, 0) //NOTE the width is overwritten later
+        .sort(function (a, b) {
+            if (a.toxicity_level === b.toxicity_level) {
+
 
 
     // The edge length is overwritten in the update()
@@ -1051,6 +659,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      *
      * @return rectangular coordinates
      *
+     * 0 degrees at 12 o'clock, continue clockwise
      * This is from the official library https://github.com/d3/d3-shape/blob/master/src/pointRadial.js
      * */
     function radialPoint(x, y) {
@@ -1276,9 +885,15 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     });
 
 
-    // Define the zoom function for the zoomable tree
+    /**
+     * Define zoom and translation
+     * */
     function zoom() {
-        svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        let newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1);;
+        let movement = d3.event.translate;
+        let translatedX = initialX + movement[0]
+            translatedY = initialY + movement[1];
+        svgGroup.attr("transform", "translate(" + [translatedX, translatedY] + ")scale(" + newScale + ")");
     }
 
     // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
@@ -2234,10 +1849,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }).append("image")
             .attr('class', objRoot.class)
             .attr('id', objRoot.id)
-            .attr("x", positionImage(root.radius,0))
-            .attr("y", positionImage(root.radius,0))
-            .attr("height", sizeImage(root.radius,0))
-            .attr("width", sizeImage(root.radius,0))
+            .attr("x", root.x - root.radius)
+            .attr("y", root.y - root.radius)
+            .attr("height", root.radius * 2)
+            .attr("width", root.radius * 2)
 
             .attr("href", rootPath + objRoot.fileName)
             .attr("opacity", 1);
@@ -2829,10 +2444,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 click(d);
             })
             .on('mouseover', function (d) {
-                //console.log("coordinates ", d.x, d.y);
+                console.log("polar coordinates ", d.x, d.y);
                 //console.log("Before transforming coordenates: ", source.x0, source.y0);
                 var aux = (d.x < 0) ? 360 + d.x : d.x;
-                //console.log("something radial?", radialPoint(aux, d.y));
+                console.log("something radial?", radialPoint(aux, d.y));
+                console.log("**************************");
 
                 if (d !== root) {
                     writeTooltipText(d);
@@ -3161,9 +2777,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     // Layout the tree initially and center on the root node.
     update(root);
-    //centerNode(root);
     var box = computeDimensions(nodes);
-    console.log("box containing Y ", box);
+    ({initialZoom, initialX, initialY} = zoomToFit(box));
+
 
     /**
      * Wrap call to compute statistics and to write them in a hover text
