@@ -1,6 +1,9 @@
 //Graph
 const canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
 const canvasFactor = 10;
+const minZoom = 0.1, maxZoom = 8; //Zoom range
+let currentZoomScale; //Current scale
+let link, node;
 
 /**
  * Compute the radius of the node based on the number of children it has
@@ -536,24 +539,30 @@ treeJSON = d3.json(dataset, function (error, json) {
         * If the scale is 0, we will not see the graph
         * Define the scale to be at least 0.1 and set it to the initialZoom + the difference of the listener and the d3.event initial scale
         * */
-        var newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1); //Avoid the graph to be seen mirrored.
+        let newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1); //Avoid the graph to be seen mirrored.
 
         /*
         * NOTE: Add to the initial position values (initialX and initialY) the movement registered by d3.
         * d3.event.translate returns an array [x,y] with starting values [50, 200]
         * The values X and Y are swapped in zoomToFit() and we need to take that into account to give the new coordinates
         * */
-        var movement = d3.event.translate;
-        var newX = initialX + (movement[1]-200);
-        var newY = initialY + (movement[0]-50);
+        let movement = d3.event.translate;
+        let newX = initialX + (movement[1]-200);
+        let newY = initialY + (movement[0]-50);
         svgGroup.attr("transform", "translate(" + [newY, newX] + ")scale(" + newScale + ")");
-        console.log("translate event:  ${d3.event.translate} and scale event: ${d3.event.scale}");
-        console.log("translate event:  ", d3.event.translate , " and scale event: ", d3.event.scale);
-
     }
 
 
-    var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 8]).on("zoom", zoom);
+    var zoomListener = d3.behavior.zoom().scaleExtent([minZoom, maxZoom]).on("zoom", function() {
+        currentZoomScale = d3.event.scale
+        //Enlarge stroke-width
+        link.style("stroke-width", function (d) {
+            console.log("Current zoom: ", currentZoomScale)
+            return currentZoomScale < 0.4 ? 5 : 1;
+        });
+        zoom();
+    });
+
 
     /* Colours
     * */
@@ -660,8 +669,8 @@ treeJSON = d3.json(dataset, function (error, json) {
     var drag = force.drag() //Define behaviour on drag
         .on("dragstart", dragstart);
 
-    var link = svg.selectAll("path.link"),
-        node = svg.selectAll(".node");
+    link = svg.selectAll("path.link");
+    node = svg.selectAll(".node");
 
 
     // Hover rectangle in which the information of a node is displayed
@@ -2343,7 +2352,6 @@ treeJSON = d3.json(dataset, function (error, json) {
         root.fixed = true;
         root.x = canvasWidth / 2;
         root.y = canvasHeight / 2;
-        console.log("Root node", root)
 
         // Restart the force layout.
         force
@@ -2383,13 +2391,15 @@ treeJSON = d3.json(dataset, function (error, json) {
                 else if (d.target.positive_stance === 1) return colourPositiveStance; //In favour
                 else if (d.target.negative_stance === 1) return colourNegativeStance; //Against
                 else return colourNeutralStance; //Neutral comment
+            })
+            .style("stroke-width", function (d) {
+                console.log("Current zoom: ", currentZoomScale)
+                return currentZoomScale < 0.4 ? 5 : 1;
             });
 
 
         node = svgGroup.selectAll("g.node")
-            .data(nodes.sort(function (a, b) {
-                return d3.ascending(a.toxicity_level, b.toxicity_level); //ToDo: delete and just return the data
-            }), function (d) {
+            .data(nodes, function (d) {
                 return d.id;
             });
 
@@ -2414,9 +2424,7 @@ treeJSON = d3.json(dataset, function (error, json) {
                 }
             })
             .on("mousemove", function (d) {
-                //console.log("positions of node: ", d.name ,d.x, d.y);
-;                if (d !== root) {
-
+                if (d !== root) {
                     return tooltip.style("top", (d3.event.pageY - 30) + "px").style("left", (d3.event.pageX - 480) + "px");
                 }
             })
