@@ -15,23 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from DataVisualization.views import index, TestChartView, test, testButton, dashboard, test_boostrap, manage_data, \
-    upload_file, testD3, delete_data
+from DataVisualization.views import index, manage_data, \
+    upload_file, main_form_handler, edit_data, handle_delete_data
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
-    path('test/', TestChartView.as_view(), name='test'),
-    path('test2/', test, name='test2'),
-    path('testButton/', testButton, name='testButton'),
-    path('dashboard/', dashboard, name='dashboard'),
-    path('test_dashboard/', dashboard, name="test_dashboard"),
-    path('test_bootstrap/', test_boostrap),
+
+    # Manage Data
     path('manage_data/', manage_data, name="manage_data"),
     path('upload_file/', upload_file),
-    path('delete_data/', delete_data),
-    path('view_data/', testD3),
-    path('selected_data/', testD3, name='selected_data'),
-    path('selected_layout/', testD3, name='dropdown_layout'),
+    path('delete_data/', handle_delete_data, name='delete_data'),
+    path('edit_data/', edit_data, name='edit_data'),
+
+    # Visualisation paths
+    path('view_data/', main_form_handler),
+    path('selected_data/', main_form_handler, name='selected_data'),
+    path('selected_layout/', main_form_handler, name='dropdown_layout'),
 
 ]

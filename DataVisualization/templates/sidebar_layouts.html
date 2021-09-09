@@ -16,7 +16,7 @@
         width: 275px;
         padding: 19px;
         line-height: 1;
-    {#height: 30px; /* Should be removed. Only for demonstration */#}
+        height: 1200px;
     }
 
 </style>
@@ -28,13 +28,19 @@
 <div>
     <div class="row_cust" style="display: block;">
 
-        <div id="menu-left" class="column3">
+        <div id="menu-left" class="column3" style="overflow-y:scroll;">
             <p style="text-align: center; margin-top: 0px; margin-bottom: 0px; font-weight: bold; font-family:cursive; font-size: 20px;">
                 Menu</p>
             <hr class="gradient-line"/>
             <!--Checkboxes-->
             <!-- Id -->
+
             <div id="id-checkbox" style="margin-top: 5px;background-color: #c9daf8ff; padding-bottom: 10px; ">
+                <div style="padding-top: 10px;padding-left: 10px">
+                    <input type="checkbox" class="checkbox" name="cbStaticValues" value="show-static-values"
+                           id="show-static-values" checked="checked"><label
+                        for="show-static-values" style="font-weight: bold;">Show Static Values</label>
+                </div>
                 <div style="padding-top: 10px;padding-left: 10px">
                     <input type="checkbox" class="checkbox" name="cbId" value="show-id" id="show-id"><label
                         for="show-id" style="font-weight: bold;">Show comment ID</label>
@@ -109,6 +115,7 @@
                                 <option value="trivial-cheese-on-node">Trivial cheese on node</option>
                                 <option value="directory-1">All in one bubble</option>
                                 <option value="directory-2">All in one circle</option>
+                                <option value="new-circular">New all in one circle</option>
                                 <option value="directory-3">All in one rectangle</option>
                             </select>
                         </div>
@@ -429,7 +436,50 @@
                 </div>
             </div>
         </div>
-        <div id="tree-container" class="column2"></div>
+
+        <div id="tree-container" class="column2">
+            <div>
+                <button id="zoom_in_icon"
+                        style="background: url('{% static './images/misc/zoom_in.svg' %}'); width: 35px; height: 35px; position: absolute; left: 300px; top: 900px;">
+                </button>
+            </div>
+            <div>
+                <button id="zoom_out_icon"
+                        style="background: url('{% static './images/misc/zoom_out.svg' %}'); width: 35px; height: 35px; position: absolute; left: 350px; top: 900px;">
+                </button>
+            </div>
+            <div>
+                <button id="zoom_reset_icon"
+                        style="background: url('{% static './images/misc/zoom_reset.svg' %}'); width: 35px; height: 35px; position: absolute; left: 400px; top: 900px;">
+                </button>
+            </div>
+            <div>
+                <label id="zoom_level"
+                       style="width: 350px; position: absolute; left: 450px; top: 905px;">Zoom: </label>
+            </div>
+        </div>
+
+        {#        <div id="tree-container-duplicated" class="column2" style="display: none;">#}
+        {#            <div>#}
+        {#                <button id="zoom_in_icon"#}
+        {#                        style="background: url('{% static './images/misc/zoom_in.svg' %}'); width: 35px; height: 35px; position: absolute; left: 1400px; top: 900px;">#}
+        {#                </button>#}
+        {#            </div>#}
+        {#            <div>#}
+        {#                <button id="zoom_out_icon"#}
+        {#                        style="background: url('{% static './images/misc/zoom_out.svg' %}'); width: 35px; height: 35px; position: absolute; left: 1450px; top: 900px;">#}
+        {#                </button>#}
+        {#            </div>#}
+        {#            <div>#}
+        {#                <button id="zoom_reset_icon"#}
+        {#                        style="background: url('{% static './images/misc/zoom_reset.svg' %}'); width: 35px; height: 35px; position: absolute; left: 1500px; top: 900px;">#}
+        {#                </button>#}
+        {#            </div>#}
+        {#            <div>#}
+        {#                <label id="zoom_level"#}
+        {#                       style="width: 350px; position: absolute; left: 1550px; top: 905px;">Zoom: </label>#}
+        {#            </div>#}
+        {#        </div>#}
 
 
         <table style="display: flex; margin-left: 150px;">
