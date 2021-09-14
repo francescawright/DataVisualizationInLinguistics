@@ -1,9 +1,32 @@
 //Graph
 const canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
 const canvasFactor = 10;
-const minZoom = 0.1, maxZoom = 8; //Zoom range
+const minZoom = 0.05, maxZoom = 8; //Zoom range
 let currentZoomScale; //Current scale
 let link, node;
+
+/**
+ * Set edge stroke width based on current zoom value
+ *
+ * @return 
+ * */
+function getEdgeStrokeWidth(){
+    switch (true) {
+        case (currentZoomScale > 7 ):   return 1
+        case (currentZoomScale > 6):    return 2
+        case (currentZoomScale > 4):    return 3
+        case (currentZoomScale > 3):    return 4
+        case (currentZoomScale > 1):    return 5
+        case (currentZoomScale > 0.6):  return 6
+        case (currentZoomScale > 0.5):  return 7
+        case (currentZoomScale > 0.4):  return 8
+        case (currentZoomScale > 0.3):  return 9
+        case (currentZoomScale > 0.2):  return 10
+        case (currentZoomScale > 0.1):  return 11
+        case (currentZoomScale > 0.075):  return 15
+        case (currentZoomScale > 0):    return 20
+    }
+}
 
 /**
  * Compute the radius of the node based on the number of children it has
@@ -552,14 +575,9 @@ treeJSON = d3.json(dataset, function (error, json) {
         svgGroup.attr("transform", "translate(" + [newY, newX] + ")scale(" + newScale + ")");
     }
 
-
-    var zoomListener = d3.behavior.zoom().scaleExtent([minZoom, maxZoom]).on("zoom", function() {
+    let zoomListener = d3.behavior.zoom().scaleExtent([minZoom, maxZoom]).on("zoom", function() {
         currentZoomScale = d3.event.scale
-        //Enlarge stroke-width
-        link.style("stroke-width", function (d) {
-            console.log("Current zoom: ", currentZoomScale)
-            return currentZoomScale < 0.4 ? 5 : 1;
-        });
+        link.style("stroke-width", getEdgeStrokeWidth()); //Enlarge stroke-width on zoom out
         zoom();
     });
 
@@ -2392,10 +2410,7 @@ treeJSON = d3.json(dataset, function (error, json) {
                 else if (d.target.negative_stance === 1) return colourNegativeStance; //Against
                 else return colourNeutralStance; //Neutral comment
             })
-            .style("stroke-width", function (d) {
-                console.log("Current zoom: ", currentZoomScale)
-                return currentZoomScale < 0.4 ? 5 : 1;
-            });
+            .style("stroke-width",  getEdgeStrokeWidth());
 
 
         node = svgGroup.selectAll("g.node")
