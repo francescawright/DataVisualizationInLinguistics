@@ -1,14 +1,13 @@
 //Graph
 const canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
-const canvasFactor = 10;
+const canvasFactor = 1.75;
 const minZoom = 0.05, maxZoom = 8; //Zoom range
 let currentZoomScale; //Current scale
+const initialZoomScale = 0.17; //Initial zoom scale to display almost the whole graph
 let link, node;
 
 /**
  * Set edge stroke width based on current zoom value
- *
- * @return 
  * */
 function getEdgeStrokeWidth(){
     switch (true) {
@@ -104,8 +103,8 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
 
     scale = Math.min(canvasWidth/boxWidth, canvasHeight/boxHeight);
 
-    var newX = canvasWidth/2.0,
-        newY = canvasHeight/2.0;
+    const newX = 2200 / 2.0,
+        newY = 900 / 2.0;
 
 /*    if(canvasWidth/boxWidth < canvasHeight/boxHeight) {
         newY -= midX * scale;
@@ -119,11 +118,12 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
 
     d3.select('g').transition()
         .duration(duration)
-        .attr("transform", "translate(" + newX + "," + newY + ")scale(" + scale + ")");
+        .attr("transform", "translate(" + newX + "," + newY + ")scale(" + initialZoomScale + ")");
 
-    return {initialZoom: scale,
-        initialY: newX,
-        initialX: newY}
+    return {initialZoom: initialZoomScale,
+        initialY: newY,
+        initialX: newX
+    }
 
 }
 
@@ -550,7 +550,7 @@ treeJSON = d3.json(dataset, function (error, json) {
      * Define zoom and translation
      * */
     function zoom() {
-
+        console.log("In zoom")
         /* The initial d3 events for scale and translation have initial values 1 and [x,y] = [50, 200] respectively
         * Therefore we need to take this into account and sum the difference to our initial scale and position attributes
         * defined in zoomToFit()
@@ -562,8 +562,8 @@ treeJSON = d3.json(dataset, function (error, json) {
         * If the scale is 0, we will not see the graph
         * Define the scale to be at least 0.1 and set it to the initialZoom + the difference of the listener and the d3.event initial scale
         * */
-        let newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1); //Avoid the graph to be seen mirrored.
-
+        let newScale = Math.max(initialZoomScale + (d3.event.scale - 1), 0.1); //Avoid the graph to be seen mirrored.
+        console.log("New scale is: ", initialZoomScale + (d3.event.scale - 1))
         /*
         * NOTE: Add to the initial position values (initialX and initialY) the movement registered by d3.
         * d3.event.translate returns an array [x,y] with starting values [50, 200]
@@ -2664,7 +2664,6 @@ treeJSON = d3.json(dataset, function (error, json) {
         checkboxFeatureMenu.checked ? selectFeatureVisualization(node) : hideFeatureImages();
         if(checkboxHighlightMenu.checked) checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
 
-
     } //END update
 
     function euclideanDistance(a, b) {
@@ -2785,13 +2784,14 @@ treeJSON = d3.json(dataset, function (error, json) {
     root = json;
     update();
 
+    force.alpha(1); //Restart the timer of the cooling parameter with a high value to reach better initial positioning
+
     //console.log("root number of children: ",root.children);
     //Try to center and zoom to fit the first initialization
     let box = computeDimensions(nodes);
     console.log("box", box);
     let initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root);
 
-    console.log("initial values: ", initialSight);
     initialZoom = initialSight.initialZoom;
     initialX = initialSight.initialX;
     initialY = initialSight.initialY;
