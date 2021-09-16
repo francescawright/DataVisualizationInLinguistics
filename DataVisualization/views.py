@@ -26,17 +26,17 @@ def get_all_documents():
 
 
 def main_form_handler(request):
+    # CURRENT DATASET
+    # ---------------------------------------------------------------------------------
+    selected_item, dataset, doc = get_current_dataset(request)
+    # ---------------------------------------------------------------------------------
+    print(selected_item)
     # CHECKBOXES
     # ---------------------------------------------------------------------------------
     # Create two dicts that holds the values of the checkboxes from Targets and Features
     cbTargets = {target: 0 for target in TARGETS}
     cbFeatures = {feature: 0 for feature in FEATURES}
     handle_checkboxes(request, cbTargets, cbFeatures)
-    # ---------------------------------------------------------------------------------
-
-    # CURRENT DATASET
-    # ---------------------------------------------------------------------------------
-    selected_item, dataset, doc = get_current_dataset(request)
     # ---------------------------------------------------------------------------------
 
     # JSON PARSING
@@ -226,7 +226,8 @@ def manage_data(request):
 
 def parse_data(document):
     parser = ExcelParser()
-    parser.load_and_parse(Document.objects.filter(description=document.description).first())
+    parser.load_and_parse(Document.objects.filter(
+        description=document.description).first())
 
 
 def delete_data(selected_data):
@@ -236,11 +237,11 @@ def delete_data(selected_data):
 
 
 def save_project():
-    raise NotImplemented()
+    raise NotImplementedError()
 
 
 def export_visualization():
-    raise NotImplemented()
+    raise NotImplementedError()
 # ---------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------

@@ -25,12 +25,11 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
-/* Constant
- * */
-const duration = 750; //Duration of the animation of a transition
 
 //Graph
+const edgeLength = 22 * 20;
 const canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
+
 
 /**
  * Compute the radius of the node based on the number of children it has
@@ -46,8 +45,7 @@ function computeNodeRadius(d, edgeLength = 300, minRadius = 10) {
     d.radius = minRadius;
     if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 10
 
-    var children =  d.children ?? d._children; //Assign children collapsed or not
-
+    const children =  d.children ?? d._children; //Assign children collapsed or not
 
     children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
         : children.length  === 2 ? d.radius = 16 //2 children
@@ -73,37 +71,33 @@ function computeDimensions(nodes){
     for(const n of nodes){
         //Quadrant 1
         if ( 0 <= n.x && n.x < 90 && n.y > maxYq1) {
-            maxYq1 = n.y + n.radius;
-
+            maxYq1 = n.y;
             xQ1 = n.x;
         }
 
         //Quadrant 2
         if ( 90 <= n.x && n.x < 180 && n.y > maxYq2) {
-            maxYq2 = n.y + n.radius;
+            maxYq2 = n.y;
             xQ2 = n.x;
         }
         if ( -270 <= n.x && n.x < -180 && n.y > maxYq2) {
-            maxYq2 = n.y + n.radius;
-
+            maxYq2 = n.y;
             xQ2 = n.x;
         }
 
         //Quadrant 3
         if ( 180 <= n.x && n.x < 270 && n.y > maxYq3) {
-            maxYq3 = n.y + n.radius;
+            maxYq3 = n.y;
             xQ3 = n.x;
         }
         if ( -180 <= n.x && n.x < -90 && n.y > maxYq3) {
-            maxYq3 = n.y + n.radius;
-
+            maxYq3 = n.y;
             xQ3 = n.x;
         }
 
         //Quadrant 4
         if ( -90 <= n.x && n.x < 0 && n.y > maxYq4) {
-            maxYq4 = n.y + n.radius;
-
+            maxYq4 = n.y;
             xQ4 = n.x;
         }
     }
@@ -113,41 +107,10 @@ function computeDimensions(nodes){
 
 /**
  * Center graph and zoom to fit the whole graph visualization in our canvas
- *
- * @param {{maxYq1: number}, {maxYq2: number}, {maxYq3: number}, {maxYq4: number}}
- *      maxYq1: The maximum radius of quadrant Q1.
- *      maxYq2: The maximum radius of quadrant Q2.
- *      maxYq3: The maximum radius of quadrant Q3.
- *      maxYq4: The maximum radius of quadrant Q4.
- * @return {{initialZoom: number}, {initialX: number}, {initialY: number}}
  * */
-function zoomToFit({maxYq1, maxYq2,maxYq3, maxYq4}) {
+function zoomToFit() {
     //By default, the (0,0) (our root node) is displayed on the top left corner
     //We need to center the graph in the canvas
-
-    //First approach
-    let top =  Math.max(maxYq1, maxYq4),
-        bottom = Math.max(maxYq2, maxYq3);
-
-    let right = Math.max(maxYq1, maxYq2),
-        left = Math.max(maxYq3, maxYq4);
-
-    let width = right + left;
-    let height = top + bottom;
-
-    let scale = Math.min(canvasWidth/width, canvasHeight/height);
-
-    let initialX = (right - left)/2.0,
-        initialY = (top - bottom)/2.0;
-
-    let x = canvasWidth / 2.0 +  initialX * scale,
-        y = canvasHeight / 2.0 + initialY * scale;
-
-    d3.select('g').transition()
-        .duration(duration)
-        .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
-
-    return {initialZoom: scale, initialX: x, initialY: y};
 
 }
 
@@ -512,7 +475,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var root, rootName = "News Article";
     var nodes;
 
-    let initialZoom, initialX, initialY; //Initial zoom and central coordinates of the first visualization of the graph
 
     var groupDrawn = false, personDrawn = false;
     var opacityValue = 0.2;
@@ -535,7 +497,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         class: "rootNode",
         id: "rootNode",
         fileName: "root.png"  };
-
 
     var imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
 
@@ -587,10 +548,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var cheeseX = -17.53, cheeseY = -27.45, cheeseHeight = 55, cheeseWidth = 55;
     var pathFeatures = pf;
 
-    var objToxicity0 = {class: "toxicity0", id: "toxicity0", selected: 1, fileName: "Level0.png"},
-        objToxicity1 = {class: "toxicity1", id: "toxicity1", selected: 1, fileName: "Level1.png"},
-        objToxicity2 = {class: "toxicity2", id: "toxicity2", selected: 1, fileName: "Level2.png"},
-        objToxicity3 = {class: "toxicity3", id: "toxicity3", selected: 1, fileName: "Level3.png"};
+    var objToxicity0 = {class: "toxicity0", id: "toxicity0", selected: 1, fileName: "Level0.svg"},
+        objToxicity1 = {class: "toxicity1", id: "toxicity1", selected: 1, fileName: "Level1.svg"},
+        objToxicity2 = {class: "toxicity2", id: "toxicity2", selected: 1, fileName: "Level2.svg"},
+        objToxicity3 = {class: "toxicity3", id: "toxicity3", selected: 1, fileName: "Level3.svg"};
 
     var tooltipText;
 
@@ -607,12 +568,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
 
     root = treeData; //Define the root
-    var tree = d3.layout.tree()
-        .nodeSize(root.children.length, 0) //NOTE the width is overwritten later
-        .sort(function (a, b) {
-            if (a.toxicity_level === b.toxicity_level) {
-
-
 
     // The edge length is overwritten in the update()
     let tree = d3.layout.tree()
@@ -659,7 +614,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      *
      * @return rectangular coordinates
      *
-     * 0 degrees at 12 o'clock, continue clockwise
      * This is from the official library https://github.com/d3/d3-shape/blob/master/src/pointRadial.js
      * */
     function radialPoint(x, y) {
@@ -680,8 +634,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .attr("class", "my-statistic") //add the tooltip class
         .style("position", "absolute")
         .style("z-index", "1") //it has no change
-        .style("visibility", "visible")
-        .html("Static values of the news article");
+        .style("visibility", "visible");
+
+    // Div where the zoom buttons are displayed
+    var zoomBackground = d3.select(container)
+        .append("div")
+        .style("position", "absolute")
+        .style("z-index", "0") //it has no change
+        .style("visibility", "visible");
 
     // Div where the sum up information of "Static Values" is displayed
     var statisticTitleBackground = d3.select("#tree-container")
@@ -691,11 +651,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .style("z-index", "0") //it has no change
         .style("visibility", "visible");
 
+    /*SECTION zoom*/
+    var zoomLabel = document.getElementById("zoom_level");
+    var XLabel = document.getElementById("position_x");
+    var YLabel = document.getElementById("position_y");
 
     /*SECTION checkboxes*/
     //Check the values of the checkboxes and do something
     var checkbox = document.querySelector("input[name=cbTargets]");
-    var checkboxStaticValues = document.querySelector("input[name=cbStaticValues]");
     var checkboxesTargets = [document.getElementById("target-group"), document.getElementById("target-person"), document.getElementById("target-stereotype")];
     let enabledTargets = []; //Variable which contains the string of the enabled options to display targets
 
@@ -720,6 +683,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var checkboxAND = document.querySelector("input[type=checkbox][name=cbHighlightProperty][value=and-group]");
     var checkboxOR = document.querySelector("input[type=checkbox][name=cbHighlightProperty][value=or-group]");
     var checkboxesHighlightGroup = document.querySelectorAll("input[type=checkbox][name=cbHighlight]");
+
+    var checkboxStaticValues = document.querySelector("input[name=cbStaticValues]");
+
 
     let enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
     /*END SECTION checkboxes*/
@@ -779,7 +745,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             y: cheeseY,
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Argumentation.png"
+            fileName: "Argumentation.svg"
         },
         objFeatConstructiveness = {
             class: "featConstructiveness",
@@ -789,7 +755,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             y: cheeseY,
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Constructiveness.png"
+            fileName: "Constructiveness.svg"
         },
         objFeatSarcasm = {
             class: "featSarcasm",
@@ -799,7 +765,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             y: cheeseY,
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Sarcasm.png"
+            fileName: "Sarcasm.svg"
         },
         objFeatMockery = {
             class: "featMockery",
@@ -809,7 +775,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             y: cheeseY,
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Mockery.png"
+            fileName: "Mockery.svg"
         },
         objFeatIntolerance = {
             class: "featIntolerance",
@@ -819,7 +785,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             y: cheeseY,
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Intolerance.png"
+            fileName: "Intolerance.svg"
         },
         objFeatImproper = {
             class: "featImproper",
@@ -829,7 +795,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             y: cheeseY,
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Improper.png"
+            fileName: "Improper.svg"
         },
         objFeatInsult = {
             class: "featInsult",
@@ -839,7 +805,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             y: cheeseY,
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Insult.png"
+            fileName: "Insult.svg"
         },
         objFeatAggressiveness = {
             class: "featAggressiveness",
@@ -849,7 +815,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             y: cheeseY,
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Aggressiveness.png"
+            fileName: "Aggressiveness.svg"
         },
         objFeatGray = {
             class: "featGray",
@@ -859,7 +825,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             y: cheeseY,
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Gray.png"
+            fileName: "Gray.svg"
         };
 
     // A recursive helper function for performing some setup by walking through all nodes
@@ -884,20 +850,55 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         return d.children && d.children.length > 0 ? d.children : null;
     });
 
+    var currentX = 200;
+    var currentY = 200;
+    var currentScale = 0.2;
 
-    /**
+/**
      * Define zoom and translation
      * */
-    function zoom() {
-        let newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1);;
-        let movement = d3.event.translate;
-        let translatedX = initialX + movement[0]
-            translatedY = initialY + movement[1];
-        svgGroup.attr("transform", "translate(" + [translatedX, translatedY] + ")scale(" + newScale + ")");
-    }
+ function zoom() {
+    /* The initial d3 events for scale and translation have initial values 1 and [x,y] = [50, 200] respectively
+     * Therefore we need to take this into account and sum the difference to our initial scale and position attributes
+     * defined in zoomToFit()
+     * */
 
-    // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
-    var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+    /*
+     * NOTE: Add to the initial position values (initialX and initialY) the movement registered by d3.
+     * d3.event.translate returns an array [x,y] with starting values [50, 200]
+     * The values X and Y are swapped in zoomToFit() and we need to take that into account to give the new coordinates
+     * */
+    var movement = d3.event.translate;
+    var newX = 200 + (movement[1] - 200);
+    var newY = 200 + (movement[0] - 50);
+    currentX = newX;
+    currentY = newY;
+
+    /*
+     * NOTE:
+     * If the scale is negative, we will see the graph upside-down and left-right swapped
+     * If the scale is 0, we will not see the graph
+     * Define the scale to be at least 0.1 and set it to the initialZoom + the difference of the listener and the d3.event initial scale
+     * */
+
+    
+    var newScale = Math.max(0.2 + (d3.event.scale - 1), 0.1)
+
+    svgGroup.attr(
+        "transform",
+        "translate(" + [newY, newX] + ")scale(" + newScale + ")"
+    );
+    drawZoomValue(newScale);
+    currentScale = newScale;
+}
+
+// define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
+var zoomListener = d3.behavior
+    .zoom()
+    .scaleExtent([0.1, 3])
+    .on("zoom", zoom);
+
+drawZoomValue(zoomListener.scale());
 
 
     // define the baseSvg, attaching a class for styling and the zoomListener
@@ -1018,7 +1019,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      * Compute the size of an associated image to be a radiusPercentage smaller than the node
      * */
     function sizeImage(nodeRadius, radiusPercentage = imgRatio){
-
         return 2 * nodeRadius * (1 - radiusPercentage / 100.0);
     }
 
@@ -1173,7 +1173,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         return - (d.radius + sizeImage(minRadius, 0) * (i + 1));
                     })
                     .attr("y", - minRadius)
-
                     .attr("height", function (d) {
                         return sizeImage(minRadius, 0);
                     })
@@ -1223,7 +1222,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     })
                     .attr("width", function (d) {
                         return sizeImage(d.radius)/2.0;
-
                     })
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
@@ -1364,7 +1362,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr("r", dotRadius)
                     .attr("transform",function (d) {
                         return  "translate(" + (d.radius + (i + 1) * (dotRadius*2)) + "," + 0 + ")"
-
                     })
                     .attr("fill", colorFeature[i])
                     .style("stroke", "black")
@@ -1654,6 +1651,20 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 drawFeatureAsRectangularGlyph(nodeEnter, "Rectangular/", localPosition);
                 break;
 
+
+                
+            case "new-circular":
+                drawingAllInOne = true;
+                //Deletes the targets and draws them again but INSIDE of the node
+                document.getElementById(
+                    "feature-over-node-or-outside"
+                ).style.display = "block"; //Show the dropdown menu
+                drawFeatureAsCircularGlyph(
+                    nodeEnter,
+                    "NewCircular/",
+                    localPosition
+                );
+                break;
             default:
                 console.log("default option", option);
                 break;
@@ -1842,18 +1853,16 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      * Draw an icon for the root node
      * */
     function visualiseRootIcon(node){
-
         //Filter the nodes and append an icon just for the root node
         node.filter(function (d) {
             return d.parent === undefined;
         }).append("image")
             .attr('class', objRoot.class)
             .attr('id', objRoot.id)
-            .attr("x", root.x - root.radius)
-            .attr("y", root.y - root.radius)
-            .attr("height", root.radius * 2)
-            .attr("width", root.radius * 2)
-
+            .attr("x", positionImage(root.radius,0))
+            .attr("y", positionImage(root.radius,0))
+            .attr("height", sizeImage(root.radius,0))
+            .attr("width", sizeImage(root.radius,0))
             .attr("href", rootPath + objRoot.fileName)
             .attr("opacity", 1);
     }
@@ -2264,14 +2273,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     function highlightNodesByPropertyOR(node, link){
         if (enabledHighlight.length === 0){ //If no tag (toxicity, stance,...) checkbox is selected: highlight all
-
             nodes.forEach(function (d) {
                 d.highlighted = 1;
             });
             node.style("opacity", 1);
         }
         else { //If some tag checkbox is selected behave as expected
-
             //First, unhighlight everything and set the parameter highlighted to 0
             nodes.forEach(function (d) {
                 d.highlighted = 0;
@@ -2345,18 +2352,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 totalToxic3 += childrenList.toxicity3;
 
                 switch (childrenList.toxicityLevel) {
-                    case 0:
-                        totalToxic0 += 1;
-                        break;
-                    case 1:
-                        totalToxic1 += 1;
-                        break;
-                    case 2:
-                        totalToxic2 += 1;
-                        break;
-                    case 3:
-                        totalToxic3 += 1;
-                        break;
+                    case 0: totalToxic0 += 1; break;
+                    case 1: totalToxic1 += 1; break;
+                    case 2: totalToxic2 += 1; break;
+                    case 3: totalToxic3 += 1; break;
                 }
             })
         }
@@ -2444,12 +2443,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 click(d);
             })
             .on('mouseover', function (d) {
-                console.log("polar coordinates ", d.x, d.y);
+                //console.log("coordinates ", d.x, d.y);
                 //console.log("Before transforming coordenates: ", source.x0, source.y0);
                 var aux = (d.x < 0) ? 360 + d.x : d.x;
-                console.log("something radial?", radialPoint(aux, d.y));
-                console.log("**************************");
-
+                //console.log("something radial?", radialPoint(aux, d.y));
                 if (d !== root) {
                     writeTooltipText(d);
                     tooltip.style("visibility", "visible")
@@ -2494,8 +2491,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
         });
 
-        checkboxStaticValues.addEventListener('change', function () {
-            this.checked ? statisticBackground.style("visibility", "visible").html(writeStatisticText()) : statisticBackground.style("visibility", "hidden").html(writeStatisticText());
+        checkboxStaticValues.addEventListener("change", function () {
+            this.checked ?
+                statisticBackground
+                .style("visibility", "visible")
+                .html(writeStatisticText()) :
+                statisticBackground
+                .style("visibility", "hidden")
+                .html(writeStatisticText());
         });
 
         //Listener related to the visualization of features
@@ -2650,6 +2653,29 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             }
         });
 
+        d3.select("#zoom_in_icon").on("click", function () {
+            currentScale = Math.min(3.0, zoomListener.scale() + 0.1);
+
+            zoomListener.scale(currentScale)
+                // .translate([2200 - currentX - currentScale, 900 - currentY - currentScale])
+                .event(svgGroup);
+        });
+        d3.select("#zoom_out_icon").on("click", function () {
+            currentScale = Math.max(0.1, currentScale - 0.1);
+
+            zoomListener.scale(currentScale)
+                // .translate([2200 - currentX + currentScale, 900 - currentY + currentScale])
+                .event(svgGroup);
+        });
+
+        d3.select("#zoom_reset_icon").on("click", function () {
+            currentScale = 0.4;
+
+            zoomListener.scale(currentScale)
+                .translate([currentX - currentScale, currentY - currentScale])
+                .event(svgGroup);
+        });
+
         // Use Array.forEach to add an event listener to each checkbox.
         checkboxesHighlightGroup.forEach(function (checkboxItem) {
             checkboxItem.addEventListener('change', function () {
@@ -2684,16 +2710,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 if (d._children && d._children.length === 1) return colourCollapsed1Son; //If it is collapsed and just has one children
                 else { //Otherwise, colour the node according to its level of toxicity
                     switch (d.toxicity_level) {
-                        case 0:
-                            return colourToxicity0;
-                        case 1:
-                            return colourToxicity1;
-                        case 2:
-                            return colourToxicity2;
-                        case 3:
-                            return colourToxicity3;
-                        default:
-                            return colourNewsArticle;
+                        case 0: return colourToxicity0;
+                        case 1: return colourToxicity1;
+                        case 2: return colourToxicity2;
+                        case 3: return colourToxicity3;
+                        default: return colourNewsArticle;
                     }
                 }
             });
@@ -2736,7 +2757,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .style("stroke", function (d) {
                 if (d.target.positive_stance && d.target.negative_stance) return colourBothStances; //Both against and in favour
                 else if (d.target.positive_stance === 1) return colourPositiveStance; //In favour
-                else if (d.target.negative_stance === 1) return colourNegativeStance; //Against
+                else if (d.target.negative_stance === 1)  return colourNegativeStance; //Against
                 else return colourNeutralStance; //Neutral comment
             })
             .on('click', clickLink);
@@ -2777,9 +2798,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     // Layout the tree initially and center on the root node.
     update(root);
+    //centerNode(root);
     var box = computeDimensions(nodes);
-    ({initialZoom, initialX, initialY} = zoomToFit(box));
-
+    console.log("box containing Y ", box);
 
     /**
      * Wrap call to compute statistics and to write them in a hover text
@@ -2843,18 +2864,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 totalToxic3 += childrenList.toxicity3;
 
                 switch (childrenList.toxicityLevel) {
-                    case 0:
-                        totalToxic0 += 1;
-                        break;
-                    case 1:
-                        totalToxic1 += 1;
-                        break;
-                    case 2:
-                        totalToxic2 += 1;
-                        break;
-                    case 3:
-                        totalToxic3 += 1;
-                        break;
+                    case 0: totalToxic0 += 1; break;
+                    case 1: totalToxic1 += 1; break;
+                    case 2: totalToxic2 += 1; break;
+                    case 3: totalToxic3 += 1; break;
                 }
 
                 //Targets are not exclusive
@@ -2897,11 +2910,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         totalStereotype = listStatistics.totalTargStereotype,
         totalNone = listStatistics.totalTargNone;
 
-    statisticBackground.style("visibility", "visible").html(writeStatisticText());
-
-    function writeStatisticText() {
-        var statisticText = "<span style='font-size: 22px;'> Static values of " + sel_item.split('/')[2] + "</span>";
-
+        
+        statisticBackground.style("visibility", "visible").html(writeStatisticText());
+        
+        function writeStatisticText() {
+        var statisticText = "<span style='font-size: 22px;'> Summary of " + sel_item.split('/')[2] + "</span>";
         statisticText += "<table style='width: 500px;'>";
 
         var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
@@ -2923,6 +2936,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         statisticText += "</table>";
         return statisticText;
+    }
+
+    function drawZoomValue(zoomLevel) {
+        console.log("Zoom Level", zoomLevel);
+        zoomLabel.textContent = "Zoom: " + (((zoomLevel - 0.1) / 2.9) * 100).toFixed(2) + '%';
+        XLabel.textContent = "X: " + currentX;
+        YLabel.textContent = "Y: " + currentY;
     }
 
 });

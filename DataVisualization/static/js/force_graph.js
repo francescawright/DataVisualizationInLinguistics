@@ -520,40 +520,52 @@ treeJSON = d3.json(dataset, function (error, json) {
         svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
     }*/
 
+    var currentX = initialX;
+    var currentY = initialY;
+    var currentScale = initialZoom;
+
+
+
     /**
      * Define zoom and translation
      * */
     function zoom() {
-
         /* The initial d3 events for scale and translation have initial values 1 and [x,y] = [50, 200] respectively
-        * Therefore we need to take this into account and sum the difference to our initial scale and position attributes
-        * defined in zoomToFit()
-        * */
+         * Therefore we need to take this into account and sum the difference to our initial scale and position attributes
+         * defined in zoomToFit()
+         * */
 
         /*
-        * NOTE:
-        * If the scale is negative, we will see the graph upside-down and left-right swapped
-        * If the scale is 0, we will not see the graph
-        * Define the scale to be at least 0.1 and set it to the initialZoom + the difference of the listener and the d3.event initial scale
-        * */
-        var newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1); //Avoid the graph to be seen mirrored.
-
-        /*
-        * NOTE: Add to the initial position values (initialX and initialY) the movement registered by d3.
-        * d3.event.translate returns an array [x,y] with starting values [50, 200]
-        * The values X and Y are swapped in zoomToFit() and we need to take that into account to give the new coordinates
-        * */
+         * NOTE: Add to the initial position values (initialX and initialY) the movement registered by d3.
+         * d3.event.translate returns an array [x,y] with starting values [50, 200]
+         * The values X and Y are swapped in zoomToFit() and we need to take that into account to give the new coordinates
+         * */
         var movement = d3.event.translate;
-        var newX = initialX + (movement[1]-200);
-        var newY = initialY + (movement[0]-50);
-        svgGroup.attr("transform", "translate(" + [newY, newX] + ")scale(" + newScale + ")");
-        console.log("translate event:  ${d3.event.translate} and scale event: ${d3.event.scale}");
-        console.log("translate event:  ", d3.event.translate , " and scale event: ", d3.event.scale);
+        var newX = initialX + (movement[1] - 200);
+        var newY = initialY + (movement[0] - 50);
+        currentX = newX;
+        currentY = newY;
 
+        /*
+         * NOTE:
+         * If the scale is negative, we will see the graph upside-down and left-right swapped
+         * If the scale is 0, we will not see the graph
+         * Define the scale to be at least 0.1 and set it to the initialZoom + the difference of the listener and the d3.event initial scale
+         * */
+
+        
+        var newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1)
+
+        svgGroup.attr(
+            "transform",
+            "translate(" + [newY, newX] + ")scale(" + newScale + ")"
+        );
+        drawZoomValue(newScale);
+        currentScale = newScale;
     }
 
 
-    var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 8]).on("zoom", zoom);
+    var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
 
     /* Colours
     * */
@@ -618,20 +630,13 @@ treeJSON = d3.json(dataset, function (error, json) {
 
     /* Toxicity: objects to draw the toxicity as image
     * */
-    var objToxicity0 = {class: "toxicity0", id: "toxicity0", selected: 1, fileName: "Level0.png"},
-        objToxicity1 = {class: "toxicity1", id: "toxicity1", selected: 1, fileName: "Level1.png"},
-        objToxicity2 = {class: "toxicity2", id: "toxicity2", selected: 1, fileName: "Level2.png"},
-        objToxicity3 = {class: "toxicity3", id: "toxicity3", selected: 1, fileName: "Level3.png"};
+    var objToxicity0 = {class: "toxicity0", id: "toxicity0", selected: 1, fileName: "Level0.svg"},
+        objToxicity1 = {class: "toxicity1", id: "toxicity1", selected: 1, fileName: "Level1.svg"},
+        objToxicity2 = {class: "toxicity2", id: "toxicity2", selected: 1, fileName: "Level2.svg"},
+        objToxicity3 = {class: "toxicity3", id: "toxicity3", selected: 1, fileName: "Level3.svg"};
 
 
-    var svg = d3.select("#tree-container") //Define the container that holds the layout
-        .append("svg")
-        .attr("width", canvasWidth)
-        .attr("height", canvasHeight)
-        .attr("class", "overlay")
-        //.call(d3.behavior.zoom().scaleExtent([0.1, 8]).on("zoom", zoom)) //Allow zoom
-        .call(zoomListener) //Allow zoom
-        .append("g");
+
 
     /* Construct a new force-directed layout
     * in the dimensions given
@@ -657,11 +662,6 @@ treeJSON = d3.json(dataset, function (error, json) {
         ;
 
 
-    var drag = force.drag() //Define behaviour on drag
-        .on("dragstart", dragstart);
-
-    var link = svg.selectAll("path.link"),
-        node = svg.selectAll(".node");
 
 
     // Hover rectangle in which the information of a node is displayed
@@ -688,6 +688,27 @@ treeJSON = d3.json(dataset, function (error, json) {
         .style("z-index", "0") //it has no change
         .style("visibility", "visible");
 
+
+    var svg = d3.select("#tree-container") //Define the container that holds the layout
+        .append("svg")
+        .attr("width", canvasWidth)
+        .attr("height", canvasHeight)
+        .attr("class", "overlay")
+        //.call(d3.behavior.zoom().scaleExtent([0.1, 8]).on("zoom", zoom)) //Allow zoom
+        .call(zoomListener) //Allow zoom
+        .append("g");
+
+    var drag = force.drag() //Define behaviour on drag
+        .on("dragstart", dragstart);
+
+    var link = svg.selectAll("path.link"),
+        node = svg.selectAll(".node");
+
+
+    /* SECTION Zoom*/
+    var zoomLabel = document.getElementById("zoom_level");
+    var XLabel = document.getElementById("position_x");
+    var YLabel = document.getElementById("position_y");
 
     /*SECTION checkboxes*/
     //Check the values of the checkboxes and do something
@@ -798,7 +819,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Argumentation.png"
+            fileName: "Argumentation.svg"
         },
         objFeatConstructiveness = {
             class: "featConstructiveness",
@@ -811,7 +832,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Constructiveness.png"
+            fileName: "Constructiveness.svg"
         },
         objFeatSarcasm = {
             class: "featSarcasm",
@@ -823,7 +844,7 @@ treeJSON = d3.json(dataset, function (error, json) {
             yDot: Math.sin(0),
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Sarcasm.png"
+            fileName: "Sarcasm.svg"
         },
         objFeatMockery = {
             class: "featMockery",
@@ -836,7 +857,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Mockery.png"
+            fileName: "Mockery.svg"
         },
         objFeatIntolerance = {
             class: "featIntolerance",
@@ -849,7 +870,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Intolerance.png"
+            fileName: "Intolerance.svg"
         },
         objFeatImproper = {
             class: "featImproper",
@@ -862,7 +883,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Improper.png"
+            fileName: "Improper.svg"
         },
         objFeatInsult = {
             class: "featInsult",
@@ -875,7 +896,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Insult.png"
+            fileName: "Insult.svg"
         },
         objFeatAggressiveness = {
             class: "featAggressiveness",
@@ -888,7 +909,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Aggressiveness.png"
+            fileName: "Aggressiveness.svg"
         },
         objFeatGray = {
             class: "featGray",
@@ -898,7 +919,7 @@ treeJSON = d3.json(dataset, function (error, json) {
             y: cheeseY,
             height: cheeseHeight,
             width: cheeseWidth,
-            fileName: "Gray.png"
+            fileName: "Gray.svg"
         };
 
 
@@ -1648,6 +1669,19 @@ treeJSON = d3.json(dataset, function (error, json) {
                 //Deletes the targets and draws them again but INSIDE of the node
                 document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
                 drawFeatureAsRectangularGlyph(nodeEnter, "Rectangular/", localPosition);
+                break;
+
+            case "new-circular":
+                drawingAllInOne = true;
+                //Deletes the targets and draws them again but INSIDE of the node
+                document.getElementById(
+                    "feature-over-node-or-outside"
+                ).style.display = "block"; //Show the dropdown menu
+                drawFeatureAsCircularGlyph(
+                    nodeEnter,
+                    "NewCircular/",
+                    localPosition
+                );
                 break;
 
             default:
@@ -2893,12 +2927,11 @@ treeJSON = d3.json(dataset, function (error, json) {
         totalStereotype = listStatistics.totalTargStereotype,
         totalNone = listStatistics.totalTargNone;
 
-    var statisticTitle = "<span style='font-size: 22px;'> Static values of " + sel_item.split('/')[2] + "</span>";
-    statisticTitleBackground.style("visibility", "visible").html(statisticTitle);
-    statisticBackground.style("visibility", "visible").html(writeStatisticText());
-
-    function writeStatisticText() {
-        var statisticText = "<table style='width: 500px;'>";
+        statisticBackground.style("visibility", "visible").html(writeStatisticText());
+        
+        function writeStatisticText() {
+        var statisticText = "<span style='font-size: 22px;'> Summary of " + sel_item.split('/')[2] + "</span>";
+        statisticText += "<table style='width: 500px;'>";
 
         var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
@@ -2921,5 +2954,11 @@ treeJSON = d3.json(dataset, function (error, json) {
         return statisticText;
     }
 
-    computeStatistics();
+    function drawZoomValue(zoomLevel) {
+        console.log("Zoom Level", zoomLevel);
+        zoomLabel.textContent = "Zoom: " + (((zoomLevel - 0.1) / 2.9) * 100).toFixed(2) + '%';
+        XLabel.textContent = "X: " + currentX;
+        YLabel.textContent = "Y: " + currentY;
+    }
+
 });
