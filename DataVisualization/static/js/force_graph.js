@@ -717,6 +717,9 @@ treeJSON = d3.json(dataset, function (error, json) {
     //console.log(checkboxesTargets);
     let enabledTargets = []; //Variable which contains the string of the enabled options to display targets
 
+    var checkboxStaticValues = document.querySelector("input[name=cbStaticValues]");
+
+
     // Select all checkboxes with the name 'cbFeatures' using querySelectorAll.
     var checkboxes = document.querySelectorAll("input[type=checkbox][name=cbFeatures]");
     let enabledFeatures = []; //Variable which contains the string of the enabled options to display features
@@ -2507,6 +2510,16 @@ treeJSON = d3.json(dataset, function (error, json) {
         });
         dropdownFeatures.addEventListener("change", function () {
             selectFeatureVisualization(node);
+        });
+
+        checkboxStaticValues.addEventListener("change", function () {
+            this.checked ?
+                statisticBackground
+                .style("visibility", "visible")
+                .html(writeStatisticText()) :
+                statisticBackground
+                .style("visibility", "hidden")
+                .html(writeStatisticText());
         });
 
         /*SECTION  cb*/
