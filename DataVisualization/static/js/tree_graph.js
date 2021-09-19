@@ -25,6 +25,38 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
+//Graph
+let link, node;
+
+//Node radius
+const minNodeRadius = 40;
+const incrementRadiusFactorPerChild = 15;
+
+//Zoom
+let currentZoomScale; //Current scale
+const minZoom = 0.05, maxZoom = 8; //Zoom range
+
+/**
+ * Set edge stroke width based on current zoom value
+ * */
+function getEdgeStrokeWidth(){
+    switch (true) {
+        case (currentZoomScale > 7 ):   return 1
+        case (currentZoomScale > 6):    return 2
+        case (currentZoomScale > 4):    return 3
+        case (currentZoomScale > 3):    return 4
+        case (currentZoomScale > 1):    return 5
+        case (currentZoomScale > 0.6):  return 6
+        case (currentZoomScale > 0.5):  return 7
+        case (currentZoomScale > 0.4):  return 8
+        case (currentZoomScale > 0.3):  return 9
+        case (currentZoomScale > 0.2):  return 10
+        case (currentZoomScale > 0.1):  return 11
+        case (currentZoomScale > 0.075):  return 15
+        case (currentZoomScale > 0):    return 20
+    }
+}
+
 /**
  * Compute the radius of the node based on the number of children it has
  * */
@@ -34,16 +66,17 @@ function computeNodeRadius(d, edgeLength = 300) {
         more than 2: new radius = 16 + 3 * (#children - 2)
         2 children: new radius = 16
         1 child: new radius = 13
-        0 children: new radius = 10
-    * */
-    d.radius = 10;
-    if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 10
+        0 children: new radius = 40
+    */
 
-    var children = d.children ?? d._children; //Assign children collapsed or not
+    d.radius = minNodeRadius;
+    if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 40
 
-    children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
-        : children.length === 2 ? d.radius = 16 //2 children
-            : d.radius = 13; //One child
+    let children = d.children ?? d._children; //Assign children collapsed or not
+
+    children.length > 2 ? d.radius = minNodeRadius + incrementRadiusFactorPerChild * children.length // more than 2 children
+        : children.length === 2 ? d.radius = minNodeRadius + incrementRadiusFactorPerChild * 2 //2 children
+        : d.radius = minNodeRadius + incrementRadiusFactorPerChild; //One child
     //Avoid the root node from being so large that overlaps/hides its children
     if (d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
     return d.radius;
@@ -112,6 +145,8 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
     d3.select('g').transition()
         .duration(duration)
         .attr("transform", "translate(" + (newX + root.radius * scale) + "," + newY + ")scale(" + scale + ")");
+
+    currentZoomScale = scale; //Set first initial zoom scale to draw stroke widths
 
     return {
         initialZoom: scale,
@@ -865,7 +900,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 y: cheeseY,
                 height: cheeseHeight,
                 width: cheeseWidth,
-                fileName: "Gray.svg"
+                fileName: "Gray.png"
             };
 
 
@@ -931,10 +966,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             currentScale = newScale;
             drawZoomValue(d3.event.scale);
 
+            currentZoomScale = d3.event.scale
+            link.style("stroke-width", getEdgeStrokeWidth()); //Enlarge stroke-width on zoom out
+            node.select("circle.nodeCircle").style("stroke-width", getEdgeStrokeWidth()); //Enlarge stroke-width on zoom out
         }
 
         // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
-        var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+        var zoomListener = d3.behavior.zoom().scaleExtent([minZoom, maxZoom]).on("zoom", zoom);
 
         drawZoomValue(zoomListener.scale());
 
@@ -2630,7 +2668,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             });
 
             // Update the nodes…
-            var node = svgGroup.selectAll("g.node")
+            node = svgGroup.selectAll("g.node")
                 .data(nodes, function (d) {
                     return d.id || (d.id = ++i);
                 });
@@ -2770,30 +2808,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     removeAllFeatures(); //Hide all features when the cb is unchecked
                 }
             });
-
-            /*        // if DOT is checked, uncheck OR
-                    checkboxFeatureDot.addEventListener('change', function() {
-                        if (this.checked){
-                            checkboxFeatureCheese.checked = false;
-                            drawFeatures(nodeEnter);
-                        }
-                        else {
-                            checkboxFeatureCheese.checked = true;
-                            drawFeaturesCheese(nodeEnter);
-                        }
-
-                    });
-                    // if CHEESE is checked, uncheck AND
-                    checkboxFeatureCheese.addEventListener('change', function() {
-                        if (this.checked) {
-                            checkboxFeatureDot.checked = false;
-                            drawFeaturesCheese(nodeEnter);
-                        }
-                        else {
-                            checkboxFeatureDot.checked = true;
-                            drawFeatures(nodeEnter);
-                        }
-                    });*/
 
             // if DOT is checked, uncheck OR
             cbFeatureInside.addEventListener('change', function () {
@@ -2936,7 +2950,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
             // Change the circle fill depending on whether it has children and is collapsed
             node.select("circle.nodeCircle")
-                //.attr("r", 4.5)
                 .attr("r", function (d) {
                     return computeNodeRadius(d);
                 })
@@ -2956,7 +2969,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                                 return colourNewsArticle;
                         }
                     }
-                });
+                })
+                .style("stroke-width", getEdgeStrokeWidth());
 
             node.select("image.backgroundCircle")
                 .attr("x", function (d) {
@@ -3003,7 +3017,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .style("fill-opacity", 0);
 
             // Update the links…
-            var link = svgGroup.selectAll("path.link")
+            link = svgGroup.selectAll("path.link")
                 .data(links, function (d) {
                     return d.target.id;
                 });
@@ -3027,7 +3041,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     else if (d.target.negative_stance === 1) return colourNegativeStance; //Against
                     else return colourNeutralStance; //Neutral comment
                 })
-                .on('click', clickLink);
+                .on('click', clickLink)
+                .style("stroke-width", getEdgeStrokeWidth() );
 
             // Transition links to their new position.
             link.transition()
@@ -3076,7 +3091,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         initialX = initialSight.initialX;
         initialY = initialSight.initialY;
 
-        //I compute the values for the statistic data showing in the background
+        //Set initial stroke widths
+        link.style("stroke-width", 5); //Enlarge stroke-width on zoom out
+        node.select("circle.nodeCircle").style("stroke-width", 5); //Enlarge stroke-width on zoom out
+
+    //I compute the values for the statistic data showing in the background
         var listStatistics = getStatisticValues(root);
         var totalNumberOfNodes = listStatistics.children;
 
@@ -3125,7 +3144,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         function drawZoomValue(zoomLevel) {
-            console.log(zoomLevel);
+            //console.log(zoomLevel);
             zoomLabel.textContent = "Zoom: " + (((zoomLevel - 0.1) / 2.9) * 100).toFixed(2) + '%';
         }
 
