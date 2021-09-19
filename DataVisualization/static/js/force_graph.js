@@ -2150,7 +2150,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         }
         //Highlight only the edges whose both endpoints are highlighted
         link.style("opacity", function (d) {
-            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+            return (d.source.highlighted && d.target.highlighted) || (d.source.parent === null && d.target.highlighted) ? 1 : opacityValue;
         });
     }
 
@@ -2169,7 +2169,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
         //Highlight only the edges whose both endpoints are highlighted
         link.style("opacity", function (d) {
-            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+            return (d.source.highlighted && d.target.highlighted) || (d.source.parent === null && d.target.highlighted) ? 1 : opacityValue;
         });
     }
 
