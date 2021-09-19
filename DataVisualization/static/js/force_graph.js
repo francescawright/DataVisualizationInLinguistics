@@ -1,15 +1,22 @@
 //Graph
 const canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
 const canvasFactor = 1.75;
+let link, node;
+
+//Zoom
 const minZoom = 0.05, maxZoom = 8; //Zoom range
 let currentZoomScale; //Current scale
 const initialZoomScale = 0.17; //Initial zoom scale to display almost the whole graph
-let link, node;
 
+
+//Node radius
+const minNodeRadius = 30;
+const incrementRadiusFactorPerChild = 5;
 /**
  * Set edge stroke width based on current zoom value
  * */
 function getEdgeStrokeWidth(){
+    console.log("Zoom: ", currentZoomScale)
     switch (true) {
         case (currentZoomScale > 7 ):   return 1
         case (currentZoomScale > 6):    return 2
@@ -27,28 +34,43 @@ function getEdgeStrokeWidth(){
     }
 }
 
+function getNodeStrokeWidth(){
+    console.log("Zoom: ", currentZoomScale)
+    switch (true) {
+        case (currentZoomScale > 1):    return 1
+        case (currentZoomScale > 0.6):  return 2
+        case (currentZoomScale > 0.5):  return 3
+        case (currentZoomScale > 0.4):  return 4
+        case (currentZoomScale > 0.3):  return 5
+        case (currentZoomScale > 0.2):  return 6
+        case (currentZoomScale > 0.1):  return 7
+        case (currentZoomScale > 0.075):  return 8
+        case (currentZoomScale > 0):    return 10
+    }
+}
+
 /**
  * Compute the radius of the node based on the number of children it has
  * */
-function computeNodeRadius(d, edgeLength = 300) {
+function computeNodeRadius(d, edgeLength = 500) {
     /*
         If node has children,
         more than 2: new radius = 16 + 3 * (#children - 2)
         2 children: new radius = 16
         1 child: new radius = 13
-        0 children: new radius = 10
-    * */
-    d.radius = 10;
-    if (d.children == null && d._children == null) return d.radius; //If no children, radius = 10
+        0 children: new radius = 40
+    */
 
-    const children =  d.children ?? d._children; //Assign children collapsed or not
+    d.radius = minNodeRadius;
+    if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 40
 
-    children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
-        : children.length  === 2 ? d.radius = 16 //2 children
-        : d.radius = 13; //One child
+    let children = d.children ?? d._children; //Assign children collapsed or not
+
+    children.length > 2 ? d.radius = minNodeRadius + incrementRadiusFactorPerChild * children.length // more than 2 children
+        : children.length === 2 ? d.radius = minNodeRadius + incrementRadiusFactorPerChild * 2 //2 children
+        : d.radius = minNodeRadius + incrementRadiusFactorPerChild; //One child
     //Avoid the root node from being so large that overlaps/hides its children
-    if(d.parent === null && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
-
+    if (d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
     return d.radius;
 }
 
@@ -578,6 +600,7 @@ treeJSON = d3.json(dataset, function (error, json) {
     let zoomListener = d3.behavior.zoom().scaleExtent([minZoom, maxZoom]).on("zoom", function() {
         currentZoomScale = d3.event.scale
         link.style("stroke-width", getEdgeStrokeWidth()); //Enlarge stroke-width on zoom out
+        node.select("circle").style("stroke-width", getNodeStrokeWidth()); //Enlarge stroke-width on zoom out
         zoom();
     });
 
@@ -672,15 +695,11 @@ treeJSON = d3.json(dataset, function (error, json) {
         .on("tick", tick)
         //.friction(0.95)
         .linkDistance(function(d){
-            let length = 300 - d.source.depth * 10;
-            //console.log("depth", d.source.depth, "linkDistance: ", length, d)
+            let length = 500 - d.source.depth * 10;
             return length > 80 ? length : 80;
         })
         .charge(-300)
-        /*.linkDistance(50)
-        .charge(-50)*/
         .gravity(0) //Disable gravity
-        //.alpha(0.1)
         ;
 
 
@@ -2376,9 +2395,6 @@ treeJSON = d3.json(dataset, function (error, json) {
             .nodes(nodes)
             .links(links);
 
-        //ToDo position nodes radially
-        //console.log("Before setting circular positions:")
-        //setCircularPositions(root, 0);
         force.start();
 
         // Update the links…
@@ -2475,7 +2491,10 @@ treeJSON = d3.json(dataset, function (error, json) {
                         return colourNewsArticle;
                 }
             })
+            .style("stroke", "black")
+            .style("stroke-width", getNodeStrokeWidth())
             .style("z-index", 3);
+
         visualiseRootIcon(node); //Draw an icon for the root node
 
         visualiseRootIcon(node); //Draw an icon for the root node
@@ -2784,7 +2803,7 @@ treeJSON = d3.json(dataset, function (error, json) {
     root = json;
     update();
 
-    force.alpha(1); //Restart the timer of the cooling parameter with a high value to reach better initial positioning
+    force.alpha(1.5); //Restart the timer of the cooling parameter with a high value to reach better initial positioning
 
     //console.log("root number of children: ",root.children);
     //Try to center and zoom to fit the first initialization
