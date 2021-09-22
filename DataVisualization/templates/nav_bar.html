@@ -11,44 +11,104 @@
 </head>
 <body>
 
-<div class="topnav" style="display: flex; max-width: 2500px; padding: 10px;">
-    <a href="/">
-        <img src="{% static 'images/app_icon.svg' %}"
-             style="width: 40px;">
-    </a>
+<div class="topnav" style="display: flex; max-width: 2500px; padding: 0px;">
+    <div style="text-align: center; width: 250px; padding: 15px;">
+        <a style="float: unset;" href="/">
+            <img src="{% static 'images/app_icon.svg' %}"
+                 style="width: 70px;">
+        </a>
+    </div>
     {#    <form style=" padding-left: 5px; padding-right: 45px; margin: 10px;">#}
     {#        <button style="margin-top: 4px;" class="btn btn-primary" formaction="{% url 'manage_data' %}">Manage Data#}
     {#        </button>#}
     {#    </form>#}
-    <div style="margin-left: 150px;"></div>
-    <form style="justify-content: center; vertical-align: center; padding-top: 4px; margin: 10px;"
+    <div style="margin-left: 50px;"></div>
+    <form style="justify-content: center; vertical-align: center;"
           action="{% url 'selected_data' %}"
-          id="dropdown_data"
+          id="main_form"
           method="POST">
         {% csrf_token %}
-        <span style="padding-right: 2px;">Dataset:</span>
-        <select name="selected_data" form="dropdown_data">
-            {% for option in options %}
-                <option value="{{ option.description }}" id="{{ option.description }}"
-                        {% if option.description == selected_item %}selected{% endif %}>{{ option.description }}</option>
-            {% endfor %}
-        </select>
-        <span style="padding-left: 15px; padding-right: 2px;">Layout:</span>
-        <select name="dropdown_layout" form="dropdown_data">
+
+        <ul style="text-align: center; list-style-type: none; align-items: center; justify-content: center;">
+            <li style="margin-bottom: 10px; margin-top: 10px;"><span>Dataset</span><br></li>
+            <li><select id="dataset_dropdown" class="btn btn-primary" style="background-color: white; color: black;"
+                        name="selected_data"
+                        form="main_form">
+                {% for option in options %}
+                    <option value="{{ option.description }}" id="{{ option.description }}"
+                            {% if option.description == selected_item %}selected{% endif %}>{{ option.description }}</option>
+                {% endfor %}
+            </select>
+            </li>
+        </ul>
+        <!-- <select name="dropdown_layout" form="dropdown_data">
             {% for layout in layouts %}
-                <option value="{{ layout }}" id="{{ layout }}"
-                        {% if layout == selected_layout %}selected{% endif %}>{{ layout }}</option>
+            <option value="{{ layout }}" id="{{ layout }}"
+            {% if layout == selected_layout %}selected{% endif %}>{{ layout }}</option>
             {% endfor %}
         </select>
-        <input style="margin-left: 15px; margin-bottom: 4px;" class="btn btn-primary" type="submit" value="Submit">
+        <input style="margin-left: 15px; margin-bottom: 4px;" class="btn btn-primary" type="submit" value="Submit"> -->
     </form>
 
+    <!-- Layouts Radio Buttons -->
+    <ul style="text-align: center; list-style-type: none; align-items: center; justify-content: center;">
+        <li style="margin-bottom: 10px; margin-top: 10px;"><span>Layout</span><br></li>
+        <li>
+            <div style="align-items: center;" class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label id="tree_label" style="width: 75px; height:fit-content;"
+                       {% if checked_layout == "tree" %}class="btn btn-primary active"
+                       {% else %}class="btn btn-primary"{% endif %}>
+                    <input type="radio" id="tree_layout_button" name="tree_layout_button" value="checked"
+                           autocomplete="off" form="main_form"
+                           {% if checked_layout == "tree" %}checked{% endif %}> Tree
+                </label>
+                <label id="force_label" style="width: 75px; height:fit-content;"
+                       {% if checked_layout == "force" %}class="btn btn-primary active"
+                       {% else %}class="btn btn-primary"{% endif %}>
+                    <input type="radio" id="force_layout_button" form="main_form"
+                           name="force_layout_button" value="checked" autocomplete="off"
+                           {% if checked_layout == "force" %}checked{% endif %}>
+                    Force
+                </label>
+                <label id="radial_label" style="width: 75px; height:fit-content;"
+                       {% if checked_layout == "radial" %}class="btn btn-primary active"
+                       {% else %}class="btn btn-primary"{% endif %}>
+                    <input type="radio" id="radial_layout_button" form="main_form"
+                           name="radial_layout_button" value="checked" autocomplete="off"
+                           {% if checked_layout == "radial" %}checked{% endif %}>
+                    Radial
+                </label>
+            </div>
+        </li>
+    </ul>
 
-    <button id="add_layout_button" style="position: absolute; right: 75px; top: 25px; font-size: 20px; vertical-align: center;"
-                        class="btn btn-primary"
-                        name="add_layout">
-                        +
-                </button>
+    <!-- Glyphs Radio Buttons -->
+    <ul style="text-align: center; list-style-type: none; align-items: center; justify-content: center;">
+        <li style="margin-bottom: 10px; margin-top: 10px;"><span>Icons</span><br></li>
+        <li>
+            <div style="align-items: center;" class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label id="dots_label" style="width: 75px; height:fit-content;"
+                       {% if selected_icons == "dots" %}class="btn btn-primary active"
+                       {% else %}class="btn btn-primary"{% endif %}>
+                    <input type="radio" name="dots_icon_button" id="dots_icon_button" form="main_form"
+                           autocomplete="off" {% if selected_icons == "dots" %}checked{% endif %}> Dots
+                </label>
+                <label id="glyphs_label" style="width: 75px; height:fit-content;"
+                       {% if selected_icons == "glyphs" %}class="btn btn-primary active"
+                       {% else %}class="btn btn-primary"{% endif %}>
+                    <input type="radio" name="glyphs_icon_button" id="glyphs_icon_button" form="main_form"
+                           autocomplete="off" {% if selected_icons == "glyphs" %}checked{% endif %}> Glyphs
+                </label>
+            </div>
+        </li>
+    </ul>
+
+    <button id="add_layout_button"
+            style="position: absolute; right: 75px; top: 25px; font-size: 20px; vertical-align: center;"
+            class="btn btn-primary"
+            name="add_layout">
+        +
+    </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
@@ -74,4 +134,61 @@
     </div>
 </div>
 </body>
+
+<script>
+
+    $(document).ready(function () {
+        $('#dataset_dropdown').change(function () {
+            $('#main_form').submit();
+        });
+    });
+
+    jQuery("#tree_layout_button").click(function () {
+        $(this).attr("checked", true);
+        document.getElementById("tree_label").className = "btn btn-primary active";
+        $('#force_layout_button').attr("checked", false);
+        document.getElementById("force_label").className = "btn btn-primary";
+        $('#radial_layout_button').attr("checked", false);
+        document.getElementById("radial_label").className = "btn btn-primary";
+        $('#main_form').submit();
+
+    });
+
+    jQuery("#force_layout_button").click(function () {
+        $('#tree_layout_button').attr("checked", false);
+        document.getElementById("tree_label").className = "btn btn-primary";
+        $(this).attr("checked", true);
+        document.getElementById("force_label").className = "btn btn-primary active";
+        $('#radial_layout_button').attr("checked", false);
+        document.getElementById("radial_label").className = "btn btn-primary";
+        $('#main_form').submit();
+    });
+
+    jQuery("#radial_layout_button").click(function () {
+        $('#tree_layout_button').attr("checked", false);
+        document.getElementById("tree_label").className = "btn btn-primary";
+        $('#force_layout_button').attr("checked", false);
+        document.getElementById("force_label").className = "btn btn-primary";
+        $(this).attr("checked", true);
+        document.getElementById("radial_label").className = "btn btn-primary active";
+        $('#main_form').submit();
+    });
+
+
+    jQuery("#dots_icon_button").click(function () {
+        $(this).attr("checked", true);
+        document.getElementById("dots_label").className = "btn btn-primary active";
+        $('#glyphs_icon_button').attr("checked", false);
+        document.getElementById("glyphs_label").className = "btn btn-primary";
+    });
+
+    jQuery("#glyphs_icon_button").click(function () {
+        $('#dots_icon_button').attr("checked", false);
+        document.getElementById("dots_label").className = "btn btn-primary";
+        $(this).attr("checked", true);
+        document.getElementById("glyphs_label").className = "btn btn-primary active";
+    });
+
+
+</script>
 </html>

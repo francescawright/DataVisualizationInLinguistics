@@ -15,6 +15,9 @@ FEATURES = ["argumentation", "constructiveness", "sarcasm", "mockery", "intolera
             "improper_language", "insult",
             "aggressiveness"]
 LAYOUTS = ["Tree", "Force", "Radial"]
+TREE_LAYOUT = "tree_layout_button"
+FORCE_LAYOUT = "force_layout_button"
+RADIAL_LAYOUT = "radial_layout_button"
 
 
 def index(request):
@@ -30,13 +33,18 @@ def main_form_handler(request):
     # ---------------------------------------------------------------------------------
     selected_item, dataset, doc = get_current_dataset(request)
     # ---------------------------------------------------------------------------------
-    print(selected_item)
+
     # CHECKBOXES
     # ---------------------------------------------------------------------------------
     # Create two dicts that holds the values of the checkboxes from Targets and Features
     cbTargets = {target: 0 for target in TARGETS}
     cbFeatures = {feature: 0 for feature in FEATURES}
     handle_checkboxes(request, cbTargets, cbFeatures)
+    # ---------------------------------------------------------------------------------
+
+    # ICONS
+    # ---------------------------------------------------------------------------------
+    selected_icons = handle_icons(request)
     # ---------------------------------------------------------------------------------
 
     # JSON PARSING
@@ -46,14 +54,19 @@ def main_form_handler(request):
     save_data_to_JSON(first_level, doc)
     # ---------------------------------------------------------------------------------
 
-    selected_layout, template = get_selected_layout(request)
+    selected_layout, template, checked_layout = get_selected_layout(request)
 
-    d1, d2 = auxiliary_charts(doc)
+    # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
+    # d1, d2 = auxiliary_charts(doc)
 
     return render(request, template,
                   {'dataset': 'output.json', 'options': get_all_documents(), 'layouts': LAYOUTS,
                    'selected_layout': selected_layout,
-                   'selected_item': selected_item, "d1": d1, "d2": d2,
+                   'checked_layout': checked_layout,
+                   'selected_item': selected_item,
+                   'selected_icons': selected_icons,
+                   # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
+                   # "d1": d1, "d2": d2,
                    'cbTargets': cbTargets, 'cbFeatures': cbFeatures})
 
 
@@ -87,6 +100,14 @@ def get_current_dataset(request):
         selected_item = Document.objects.all()[0].description
     dataset = Commentary.objects.filter(document_id=doc).all()
     return selected_item, dataset, doc
+
+
+def handle_icons(request):
+    if "dots_icon_button" in request.POST.keys():
+        return "dots"
+    elif "glyphs_icon_button" in request.POST.keys():
+        return "glyphs"
+    return "dots"
 
 
 def recursive_add_node(node, doc):
@@ -125,27 +146,41 @@ def save_data_to_JSON(first_level, doc):
     data_list = [recursive_add_node(node, doc) for node in first_level]
 
     data = {"name": doc, "children": data_list}
-    # print(json.dumps(data, default=str))
-    # print(os.path)
     with open(os.path.join('DataVisualization/' + django_settings.STATIC_URL, 'output.json'), 'w') as outfile:
         json.dump(data, outfile, default=str)
 
 
 def get_selected_layout(request):
-    try:
-        selected_layout = request.POST["dropdown_layout"]
-        template = "tree_layout.html"
-        if request.POST["dropdown_layout"] == "Tree":
-            template = "tree_layout.html"
-        elif request.POST["dropdown_layout"] == "Force":
-            template = "force_layout.html"
-        elif request.POST["dropdown_layout"] == "Radial":
-            template = "radial_layout.html"
-    except MultiValueDictKeyError:
+    if TREE_LAYOUT in request.POST.keys():
         selected_layout = "tree_layout.html"
         template = "tree_layout.html"
+        button_checked = "tree"
+    elif FORCE_LAYOUT in request.POST.keys():
+        selected_layout = "force_layout.html"
+        template = "force_layout.html"
+        button_checked = "force"
+    elif RADIAL_LAYOUT in request.POST.keys():
+        selected_layout = "radial_layout.html"
+        template = "radial_layout.html"
+        button_checked = "radial"
+    else:
+        selected_layout = "tree_layout.html"
+        template = "tree_layout.html"
+        button_checked = "tree"
+    # try:
+    #     #     selected_layout = request.POST["dropdown_layout"]
+    #     #     template = "tree_layout.html"
+    #     #     if request.POST["dropdown_layout"] == "Tree":
+    #     #         template = "tree_layout.html"
+    #     #     elif request.POST["dropdown_layout"] == "Force":
+    #     #         template = "force_layout.html"
+    #     #     elif request.POST["dropdown_layout"] == "Radial":
+    #     #         template = "radial_layout.html"
+    # except MultiValueDictKeyError:
+    #     selected_layout = "tree_layout.html"
+    #     template = "tree_layout.html"
 
-    return selected_layout, template
+    return selected_layout, template, button_checked
 
 
 def auxiliary_charts(doc):
@@ -203,7 +238,6 @@ def edit_data(request):
 
 
 def handle_delete_data(request):
-    print("handle delete data, request:", request)
     try:
         selected_data = request.POST["delete_button"]
     except MultiValueDictKeyError as e:
@@ -213,9 +247,7 @@ def handle_delete_data(request):
 
 
 def manage_data(request):
-    print("Manage data")
     if request.method == 'POST':
-        print(request)
         handle_delete_data(request)
     if request.GET.get("save_button"):
         save_project()
@@ -231,7 +263,6 @@ def parse_data(document):
 
 
 def delete_data(selected_data):
-    print("deleting data:", selected_data)
     parser = ExcelParser()
     parser.drop_database(selected_data)
 

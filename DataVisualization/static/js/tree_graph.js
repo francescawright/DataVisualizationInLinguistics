@@ -1,4 +1,3 @@
-
 /*Copyright (c) 2013-2016, Rob Schmuecker
 All rights reserved.
 
@@ -45,8 +44,8 @@ function computeNodeRadius(d, edgeLength = 300) {
     children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
         :
         children.length === 2 ? d.radius = 16 //2 children
-        :
-        d.radius = 13; //One child
+            :
+            d.radius = 13; //One child
     //Avoid the root node from being so large that overlaps/hides its children
     if (d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
     return d.radius;
@@ -87,9 +86,9 @@ function computeDimensions(nodes) {
  * Center graph and zoom to fit the whole graph visualization in our canvas
  * */
 function zoomToFitGraph(minX, minY, maxX, maxY,
-    root,
-    canvasHeight = 900, canvasWidth = 2200,
-    duration = 750) {
+                        root,
+                        canvasHeight = 1080, canvasWidth = 1920,
+                        duration = 750) {
     /* Note our coordinate system:
      *
      *
@@ -228,9 +227,9 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
     //Toxicity not 1
     if (enabledHighlight.indexOf("highlight-toxicity-1") > -1) {
         node.filter(function (d) {
-                if (d.toxicity_level !== 1) d.highlighted = 0;
-                return (d.toxicity_level !== 1);
-            })
+            if (d.toxicity_level !== 1) d.highlighted = 0;
+            return (d.toxicity_level !== 1);
+        })
             // .select("circle.nodeCircle")
             .style("position", "relative")
             .style("z-index", 1)
@@ -240,9 +239,9 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
     //Toxicity not 2
     if (enabledHighlight.indexOf("highlight-toxicity-2") > -1) {
         node.filter(function (d) {
-                if (d.toxicity_level !== 2) d.highlighted = 0;
-                return (d.toxicity_level !== 2);
-            })
+            if (d.toxicity_level !== 2) d.highlighted = 0;
+            return (d.toxicity_level !== 2);
+        })
             // .select("circle.nodeCircle")
             .style("position", "relative")
             .style("z-index", 1)
@@ -252,9 +251,9 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
     //Toxicity not 3
     if (enabledHighlight.indexOf("highlight-toxicity-3") > -1) {
         node.filter(function (d) {
-                if (d.toxicity_level !== 3) d.highlighted = 0;
-                return (d.toxicity_level !== 3);
-            })
+            if (d.toxicity_level !== 3) d.highlighted = 0;
+            return (d.toxicity_level !== 3);
+        })
             // .select("circle.nodeCircle")
             .style("position", "relative")
             .style("z-index", 1)
@@ -294,9 +293,9 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2) {
     //Neutral stance CB is checked
     if (enabledHighlight.indexOf("highlight-neutral") > -1) {
         node.filter(function (d) {
-                if (d.positive_stance || d.negative_stance) d.highlighted = 0;
-                return (d.positive_stance || d.negative_stance);
-            }) //.select("circle.nodeCircle")
+            if (d.positive_stance || d.negative_stance) d.highlighted = 0;
+            return (d.positive_stance || d.negative_stance);
+        }) //.select("circle.nodeCircle")
             .style("position", "relative")
             .style("z-index", 1)
             .style("opacity", opacityValue);
@@ -305,9 +304,9 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2) {
     //Positive stance CB is checked
     if (enabledHighlight.indexOf("highlight-positive") > -1) {
         node.filter(function (d) {
-                if (!d.positive_stance) d.highlighted = 0;
-                return (!d.positive_stance);
-            }) //.select("circle.nodeCircle")
+            if (!d.positive_stance) d.highlighted = 0;
+            return (!d.positive_stance);
+        }) //.select("circle.nodeCircle")
             .style("position", "relative")
             .style("z-index", 1)
             .style("opacity", opacityValue);
@@ -316,9 +315,9 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2) {
     //Negative stance CB is checked
     if (enabledHighlight.indexOf("highlight-negative") > -1) {
         node.filter(function (d) {
-                if (!d.negative_stance) d.highlighted = 0;
-                return (!d.negative_stance);
-            }) //.select("circle.nodeCircle")
+            if (!d.negative_stance) d.highlighted = 0;
+            return (!d.negative_stance);
+        }) //.select("circle.nodeCircle")
             .style("position", "relative")
             .style("z-index", 1)
             .style("opacity", opacityValue);
@@ -402,7 +401,7 @@ function highlightPositiveAND(node, enabledHighlight, opacityValue = 0.2) {
     //Argumentation CB is checked
     if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
         node.filter(function (d) {
-            if (!d.argumentation);
+            if (!d.argumentation) ;
             d.highlighted = 0;
             return (!d.argumentation);
         }).style("opacity", opacityValue);
@@ -411,7 +410,7 @@ function highlightPositiveAND(node, enabledHighlight, opacityValue = 0.2) {
     //Constructiveness CB is checked
     if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
         node.filter(function (d) {
-            if (!d.constructiveness);
+            if (!d.constructiveness) ;
             d.highlighted = 0;
             return (!d.constructiveness);
         }).style("opacity", opacityValue);
@@ -648,7 +647,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var viewerWidth = 100;
     var viewerHeight = 400;
 
-    var canvasHeight = 900,
+    var canvasHeight = 1200,
         canvasWidth = 2200; //Dimensions of our canvas (grayish area)
     var initialZoom, initialX, initialY; //Initial zoom and central coordinates of the first visualization of the graph
 
@@ -743,8 +742,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     //Dropdown menu
     var checkboxesPositioningFeature = document.querySelectorAll("input[type=checkbox][name=cbFeaturePositioning]");
-    var cbFeatureInside = document.querySelector("input[type=checkbox][name=cbFeaturePositioning][value=on-node]");
-    var cbFeatureOutside = document.querySelector("input[type=checkbox][name=cbFeaturePositioning][value=node-outside]");
+    // var cbFeatureInside = document.querySelector("input[type=checkbox][name=cbFeaturePositioning][value=on-node]");
+    // var cbFeatureOutside = document.querySelector("input[type=checkbox][name=cbFeaturePositioning][value=node-outside]");
 
     // Select which properties and if an intersection or union of those
     var checkboxHighlightMenu = document.querySelector("input[name=cbHighlightMenu]");
@@ -916,9 +915,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         };
 
 
-    var dropdownTargets = document.getElementById("dropdown-targets");
+    // var dropdownTargets = document.getElementById("dropdown-targets");
     var dropdownFeatures = document.getElementById("dropdown-features");
 
+    var dotsFeatures = document.getElementById("dots_icon_button");
+    var glyphsFeatures = document.getElementById("glyphs_icon_button");
 
     // A recursive helper function for performing some setup by walking through all nodes
     function visit(parent, visitFn, childrenFn) {
@@ -948,7 +949,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var currentScale = initialZoom;
 
 
-
     /**
      * Define zoom and translation
      * */
@@ -976,7 +976,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          * Define the scale to be at least 0.1 and set it to the initialZoom + the difference of the listener and the d3.event initial scale
          * */
 
-        
+
         var newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1)
 
         svgGroup.attr(
@@ -1296,7 +1296,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      *
      * */
     function selectTargetVisualization(nodeEnter) {
-        var option = dropdownTargets.value;
+        // var option = dropdownTargets.value;
+        var option = "icons";
 
         //If we are displaying all in one, call that function
         if (drawingAllInOne) selectFeatureVisualization(nodeEnter);
@@ -1320,11 +1321,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 case "directory-2":
                     drawTargets(nodeEnter, "newOption2/");
                     break;
-                    //draw as ring outside of the node
+                //draw as ring outside of the node
                 case "ring-on-node":
                     drawTargetRings(nodeEnter, "rings/");
                     break;
-                    //draw as an icon if 1, as rings if more options checked
+                //draw as an icon if 1, as rings if more options checked
                 case "one-icon-or-rings":
                     enabledTargets.length > 1 ?
                         drawTargetRings(nodeEnter, "rings/") :
@@ -1889,15 +1890,25 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      *
      * */
     function selectFeatureVisualization(nodeEnter) {
-        var option = dropdownFeatures.value;
-        document.getElementById(
-            "feature-over-node-or-outside"
-        ).style.display = "none"; //Hide the dropdown menu
+        // var option = dropdownFeatures.value;
+        var option = "dots";
+
+        if (dotsFeatures.checked) {
+            option = "dots";
+        }
+
+        if (glyphsFeatures.checked) {
+            option = "directory-2";
+        }
+
+        // document.getElementById(
+        //     "feature-over-node-or-outside"
+        // ).style.display = "none"; //Hide the dropdown menu
         drawingAllInOne = false;
         var localPosition;
-        cbFeatureInside.checked ?
-            (localPosition = -10) :
-            (localPosition = 30);
+        // cbFeatureInside.checked ?
+        //     (localPosition = -10) :
+        //     (localPosition = 30);
         switch (option) {
             case "dots":
                 selectTargetVisualization(nodeEnter); //draw the targets if necessary
@@ -1915,27 +1926,27 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             case "directory-1": //"All for one and one for all" we will draw the features inside of the circle, the targets outside will be hidden and the level of toxicity in blue
                 drawingAllInOne = true;
                 //Deletes the targets and draws them again but INSIDE of the node
-                document.getElementById(
-                    "feature-over-node-or-outside"
-                ).style.display = "block"; //Show the dropdown menu
+                // document.getElementById(
+                //     "feature-over-node-or-outside"
+                // ).style.display = "block"; //Show the dropdown menu
 
                 drawFeatureAsGlyph(nodeEnter, "Bubble/", localPosition);
                 break;
             case "directory-2":
                 drawingAllInOne = true;
                 //Deletes the targets and draws them again but INSIDE of the node
-                document.getElementById(
-                    "feature-over-node-or-outside"
-                ).style.display = "block"; //Show the dropdown menu
+                // document.getElementById(
+                //     "feature-over-node-or-outside"
+                // ).style.display = "block"; //Show the dropdown menu
                 drawFeatureAsCircularGlyph(nodeEnter, "Circular/", localPosition);
                 break;
 
             case "new-circular":
                 drawingAllInOne = true;
                 //Deletes the targets and draws them again but INSIDE of the node
-                document.getElementById(
-                    "feature-over-node-or-outside"
-                ).style.display = "block"; //Show the dropdown menu
+                // document.getElementById(
+                //     "feature-over-node-or-outside"
+                // ).style.display = "block"; //Show the dropdown menu
                 drawFeatureAsCircularGlyph(
                     nodeEnter,
                     "NewCircular/",
@@ -1946,9 +1957,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             case "directory-3":
                 drawingAllInOne = true;
                 //Deletes the targets and draws them again but INSIDE of the node
-                document.getElementById(
-                    "feature-over-node-or-outside"
-                ).style.display = "block"; //Show the dropdown menu
+                // document.getElementById(
+                //     "feature-over-node-or-outside"
+                // ).style.display = "block"; //Show the dropdown menu
                 drawFeatureAsGlyph(nodeEnter, "Rectangular/", localPosition);
                 break;
 
@@ -3029,8 +3040,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     (totalTargStereotype += childrenList.totalTargStereotype + 1) :
                     (totalTargStereotype += childrenList.totalTargStereotype);
                 !childrenList.targGroup &&
-                    !childrenList.targPerson &&
-                    !childrenList.targStereotype ?
+                !childrenList.targPerson &&
+                !childrenList.targStereotype ?
                     (totalTargNone += childrenList.totalTargNone + 1) :
                     (totalTargNone += childrenList.totalTargNone);
             });
@@ -3098,18 +3109,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             if (i % 3 === 0) tooltipText += "<tr>"; //Start table line
             if (i < 3)
                 tooltipText +=
-                "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>";
+                    "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>";
             //First ones without bold
             else if (jsonValues[i] !== -1)
                 jsonValues[i] ?
-                (tooltipText +=
-                    "<td><b>" +
-                    jsonNames[i] +
-                    ": " +
-                    jsonValues[i] +
-                    "</b></td>") :
-                (tooltipText +=
-                    "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>");
+                    (tooltipText +=
+                        "<td><b>" +
+                        jsonNames[i] +
+                        ": " +
+                        jsonValues[i] +
+                        "</b></td>") :
+                    (tooltipText +=
+                        "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>");
             if ((i + 1) % 3 === 0) tooltipText += "</tr>"; //End table line
         }
 
@@ -3230,10 +3241,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             });
 
         //Dropdown menus
-        dropdownTargets.addEventListener("change", function () {
-            selectTargetVisualization(nodeEnter);
+        // dropdownTargets.addEventListener("change", function () {
+        //     selectTargetVisualization(nodeEnter);
+        // });
+        // dropdownFeatures.addEventListener("change", function () {
+        //     selectFeatureVisualization(nodeEnter);
+        // });
+
+        dotsFeatures.addEventListener("change", function () {
+            selectFeatureVisualization(nodeEnter);
         });
-        dropdownFeatures.addEventListener("change", function () {
+
+        glyphsFeatures.addEventListener("change", function () {
             selectFeatureVisualization(nodeEnter);
         });
 
@@ -3247,11 +3266,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         checkboxStaticValues.addEventListener("change", function () {
             this.checked ?
                 statisticBackground
-                .style("visibility", "visible")
-                .html(writeStatisticText()) :
+                    .style("visibility", "visible")
+                    .html(writeStatisticText()) :
                 statisticBackground
-                .style("visibility", "hidden")
-                .html(writeStatisticText());
+                    .style("visibility", "hidden")
+                    .html(writeStatisticText());
         });
 
         // Use Array.forEach to add an event listener to each checkbox.
@@ -3280,7 +3299,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 checkboxes.forEach(function (checkboxItem) {
                     checkboxItem.removeAttribute("disabled");
                 });
-                dropdownFeatures.removeAttribute("disabled");
+                // dropdownFeatures.removeAttribute("disabled");
 
                 checkButtons.forEach(function (button) {
                     button.removeAttribute("disabled");
@@ -3297,12 +3316,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     console.log(enabledFeatures);
                 }
 
-                if (
-                    !document.querySelector("input[value=on-node]").checked &&
-                    !document.querySelector("input[value=node-outside]").checked
-                ) {
-                    document.querySelector("input[value=on-node]").checked = true;
-                }
+                // if (
+                //     !document.querySelector("input[value=on-node]").checked &&
+                //     !document.querySelector("input[value=node-outside]").checked
+                // ) {
+                //     document.querySelector("input[value=on-node]").checked = true;
+                // }
                 selectFeatureVisualization(nodeEnter);
             } else {
                 //Disable checkboxes and dropdown menu + remove all the features
@@ -3312,10 +3331,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 checkboxesPositioningFeature.forEach(function (checkboxItem) {
                     checkboxItem.setAttribute("disabled", "disabled");
                 });
-                document.getElementById(
-                    "feature-over-node-or-outside"
-                ).style.display = "none";
-                dropdownFeatures.setAttribute("disabled", "disabled");
+                // document.getElementById(
+                //     "feature-over-node-or-outside"
+                // ).style.display = "none";
+                // dropdownFeatures.setAttribute("disabled", "disabled");
 
                 checkboxes.forEach(function (checkboxItem) {
                     checkboxItem.setAttribute("disabled", "disabled");
@@ -3353,19 +3372,19 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                   });*/
 
         // if DOT is checked, uncheck OR
-        cbFeatureInside.addEventListener("change", function () {
-            this.checked ?
-                (cbFeatureOutside.checked = false) :
-                (cbFeatureOutside.checked = true);
-            selectFeatureVisualization(nodeEnter);
-        });
-        // if CHEESE is checked, uncheck AND
-        cbFeatureOutside.addEventListener("change", function () {
-            this.checked ?
-                (cbFeatureInside.checked = false) :
-                (cbFeatureInside.checked = true);
-            selectFeatureVisualization(nodeEnter);
-        });
+        // cbFeatureInside.addEventListener("change", function () {
+        //     this.checked ?
+        //         (cbFeatureOutside.checked = false) :
+        //         (cbFeatureOutside.checked = true);
+        //     selectFeatureVisualization(nodeEnter);
+        // });
+        // // if CHEESE is checked, uncheck AND
+        // cbFeatureOutside.addEventListener("change", function () {
+        //     this.checked ?
+        //         (cbFeatureInside.checked = false) :
+        //         (cbFeatureInside.checked = true);
+        //     selectFeatureVisualization(nodeEnter);
+        // });
 
         // Use Array.forEach to add an event listener to each checkbox.
         // Draw feature circles
@@ -3614,8 +3633,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         if (checkboxHighlightMenu.checked && source.children)
             checkboxOR.checked ?
-            highlightNodesByPropertyOR(node, link) :
-            highlightNodesByPropertyAND(node, link);
+                highlightNodesByPropertyOR(node, link) :
+                highlightNodesByPropertyAND(node, link);
 
         // Transition exiting nodes to the parent's new position.
         link
@@ -3706,10 +3725,15 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
     function drawZoomValue(zoomLevel) {
-        console.log("Zoom Level", zoomLevel);
+        // console.log("Zoom Level", zoomLevel);
         zoomLabel.textContent = "Zoom: " + (((zoomLevel - 0.1) / 2.9) * 100).toFixed(2) + '%';
-        XLabel.textContent = "X: " + currentX;
-        YLabel.textContent = "Y: " + currentY;
+        try {
+            XLabel.textContent = "X: " + currentX.toFixed(0);
+            YLabel.textContent = "Y: " + currentY.toFixed(0);
+        } catch (TypeError) {
+            XLabel.textContent = "X: " + currentX;
+            YLabel.textContent = "Y: " + currentY;
+        }
     }
 
     // import saveSvgAsPng from './saveSvgAsPng.js';
@@ -3717,43 +3741,44 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var screenshotButton = document.getElementById("screenshot_icon");
     var canvas = document.getElementById("screenshot_canvas");
 
-    function triggerDownload (imgURI) {
-    var evt = new MouseEvent('click', {
-        view: window,
-        bubbles: false,
-        cancelable: true
-    });
+    function triggerDownload(imgURI) {
+        var evt = new MouseEvent('click', {
+            view: window,
+            bubbles: false,
+            cancelable: true
+        });
 
-    var a = document.createElement('a');
-    a.setAttribute('download', 'tree_image.png');
-    a.setAttribute('href', imgURI);
-    a.setAttribute('target', '_blank');
+        var a = document.createElement('a');
+        a.setAttribute('download', 'tree_image.png');
+        a.setAttribute('href', imgURI);
+        a.setAttribute('target', '_blank');
 
-    a.dispatchEvent(evt);
+        a.dispatchEvent(evt);
     }
+
     screenshotButton.addEventListener('click', function () {
-    // var ctx = canvas.getContext('2d');
-    // var data = (new XMLSerializer()).serializeToString(baseSvg.node());
-    // var DOMURL = window.URL || window.webkitURL || window;
+        // var ctx = canvas.getContext('2d');
+        // var data = (new XMLSerializer()).serializeToString(baseSvg.node());
+        // var DOMURL = window.URL || window.webkitURL || window;
 
-    // var img = new Image();
-    // var svgBlob = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
-    // var url = DOMURL.createObjectURL(svgBlob);
+        // var img = new Image();
+        // var svgBlob = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
+        // var url = DOMURL.createObjectURL(svgBlob);
 
-    // img.onload = function () {
-    //     ctx.drawImage(img, 0, 0);
-    //     DOMURL.revokeObjectURL(url);
+        // img.onload = function () {
+        //     ctx.drawImage(img, 0, 0);
+        //     DOMURL.revokeObjectURL(url);
 
-    //     var imgURI = canvas
-    //         .toDataURL('image/png')
-    //         .replace('image/png', 'image/octet-stream');
+        //     var imgURI = canvas
+        //         .toDataURL('image/png')
+        //         .replace('image/png', 'image/octet-stream');
 
-    //     triggerDownload(imgURI);
-    // };
+        //     triggerDownload(imgURI);
+        // };
 
-    // img.src = url;
-    console.log(baseSvg);
-    saveSvgAsPng(baseSvg.node(), "tree_image.png");
+        // img.src = url;
+        console.log(baseSvg);
+        saveSvgAsPng(baseSvg.node(), "tree_image.png");
     });
 
 
