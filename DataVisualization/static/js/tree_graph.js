@@ -27,6 +27,8 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
 //Graph
 let link, node;
+const edgeLength = 900;
+const separationHeight = 40; //Desired separation between two node brothers
 
 //Node radius
 const minNodeRadius = 40;
@@ -35,6 +37,237 @@ const incrementRadiusFactorPerChild = 15;
 //Zoom
 let currentZoomScale; //Current scale
 const minZoom = 0.05, maxZoom = 8; //Zoom range
+
+//Images
+const targetIconHeight = 60, targetIconWidth = 60,
+    targetIconGroupX = -60, targetIconPersonX = -120, targetIconStereotypeX = -180,
+    targetIconY = -30; //Size and relative position of targets drawn as icons
+
+//Paths
+const rootPath = pr;
+const pathFeatures = pf;
+
+//Features
+const dotRadius = 30;
+const cheeseX = 15, cheeseY = -10, cheeseHeight = 20, cheeseWidth = 20;
+
+// Colours
+const colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
+    colourNeutralStance = "#2b2727";
+const colourArgumentation = "#1B8055", colourConstructiveness = "#90F6B2", colourSarcasm = "#97CFFF", colourMockery = "#1795FF",
+    colourIntolerance = "#0B5696", colourImproper = "#E3B7E8", colourInsult = "#A313B3", colourAggressiveness = "#5E1566";
+
+/*const colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
+    colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue", colourCollapsed1Son = "lightsteelblue";*/
+
+const colourToxicity0 = "#FAFFA8", colourToxicity1 = "#F8BB7C", colourToxicity2 = "#F87A54",
+    colourToxicity3 = "#7A1616", colourNewsArticle = "lightsteelblue";
+
+// Objects for feature images
+const objFeatArgumentation = {
+        class: "featArgumentation",
+        id: "featArgumentation",
+        name: "argumentation",
+        color: colourArgumentation,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Argumentation.svg"
+    },
+    objFeatConstructiveness = {
+        class: "featConstructiveness",
+        id: "featConstructiveness",
+        name: "constructiveness",
+        color: colourConstructiveness,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Constructiveness.svg"
+    },
+    objFeatSarcasm = {
+        class: "featSarcasm",
+        id: "featSarcasm",
+        name: "sarcasm",
+        color: colourSarcasm,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Sarcasm.svg"
+    },
+    objFeatMockery = {
+        class: "featMockery",
+        id: "featMockery",
+        name: "mockery",
+        color: colourMockery,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Mockery.svg"
+    },
+    objFeatIntolerance = {
+        class: "featIntolerance",
+        id: "featIntolerance",
+        name: "intolerance",
+        color: colourIntolerance,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Intolerance.svg"
+    },
+    objFeatImproper = {
+        class: "featImproper",
+        id: "featImproper",
+        name: "improper_language",
+        color: colourImproper,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Improper.svg"
+    },
+    objFeatInsult = {
+        class: "featInsult",
+        id: "featInsult",
+        name: "insult",
+        color: colourInsult,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Insult.svg"
+    },
+    objFeatAggressiveness = {
+        class: "featAggressiveness",
+        id: "featAggressiveness",
+        name: "aggressiveness",
+        color: colourAggressiveness,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Aggressiveness.svg"
+    },
+    objFeatGray = {
+        class: "featGray",
+        id: "featGray",
+        name: "gray",
+        selected: 1,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Gray.png"
+    };
+
+/**
+ * Return the value of a property (set from the JSON) of the given node
+ *
+ * @param d Datum of a node
+ * @param {string} propertyNameToRetrieve The property whose value is returned
+ * */
+function retrieveAttributeFromComment(d, propertyNameToRetrieve){
+    switch (propertyNameToRetrieve) {
+        //Features
+        case "argumentation": return d.argumentation;
+        case "constructiveness": return d.constructiveness;
+        case "sarcasm": return d.sarcasm;
+        case "mockery": return d.mockery;
+        case "intolerance": return d.intolerance;
+        case "improper_language": return d.improper_language;
+        case "insult": return d.insult;
+        case "aggressiveness": return d.aggressiveness;
+        case "gray": return 1;
+        case "gray-ring": return 0.5;
+
+        //Targets
+        case "target-group": return  d.target_group;
+        case "target-person": return d.target_person;
+        case "target-stereotype": return d.stereotype;
+
+        //Toxicity
+        case "toxicity-0": return d.toxicity_level === 0 ? 1 : 0;
+        case "toxicity-1": return d.toxicity_level === 1 ? 1 : 0;
+        case "toxicity-2": return d.toxicity_level === 2 ? 1 : 0;
+        case "toxicity-3": return d.toxicity_level === 3 ? 1 : 0;
+
+        default:
+            console.log("An attribute could not be retrieved because the key word did not match any case...");
+            break;
+    }
+}
+
+/**
+ * Removes the features of the node given
+ * */
+function removeThisFeatures(nodeEnter) {
+    nodeEnter.selectAll("#featGray").remove();
+    nodeEnter.selectAll("#featArgumentation").remove();
+    nodeEnter.selectAll("#featConstructiveness").remove();
+    nodeEnter.selectAll("#featSarcasm").remove();
+    nodeEnter.selectAll("#featMockery").remove();
+    nodeEnter.selectAll("#featIntolerance").remove();
+    nodeEnter.selectAll("#featImproper").remove();
+    nodeEnter.selectAll("#featInsult").remove();
+    nodeEnter.selectAll("#featAggressiveness").remove();
+}
+
+
+function removeToxicities(nodeEnter) {
+    nodeEnter.selectAll("#toxicity0").remove();
+    nodeEnter.selectAll("#toxicity1").remove();
+    nodeEnter.selectAll("#toxicity2").remove();
+    nodeEnter.selectAll("#toxicity3").remove();
+}
+
+
+/**
+ * Draws a circle in an horizontal line at the right of the node
+ *
+ * @param {d3-node} nodeEnter Node to which we append the image
+ * @param {object} object The object of a property
+ * @param {number} itemOrder Order in which the circles is drawn (away from the node)
+ * */
+function drawObjectAsDot(nodeEnter, object, itemOrder) {
+    nodeEnter.append("circle")
+        .attr('class', object.class)
+        .attr('id', object.id)
+        .attr("r", dotRadius)
+        .attr("transform", function (d) {
+            return "translate(" + (d.radius + (itemOrder + 1) * (dotRadius*2)) + "," + 0 + ")";
+        })
+        .attr("fill", object.color)
+        .style("stroke", "black")
+        .style("stroke-width", "0.5px")
+        .attr("opacity", function (d) {
+            if (d.parent === undefined) return 0;
+            return retrieveAttributeFromComment(d, object.name);
+        });
+}
+
+/**
+ * Draw features as dots
+ * */
+function drawFeatureDots(nodeEnter, enabledFeatures){
+    removeThisFeatures(nodeEnter);
+    removeToxicities(nodeEnter); //Remove all the pngs for toxicity
+
+    let index = 0;
+    if(enabledFeatures.indexOf("argumentation") > -1) drawObjectAsDot(nodeEnter, objFeatArgumentation, index);
+    if(enabledFeatures.indexOf("constructiveness") > -1) drawObjectAsDot(nodeEnter, objFeatConstructiveness, ++index);
+
+    if(enabledFeatures.indexOf("sarcasm") > -1) drawObjectAsDot(nodeEnter, objFeatSarcasm, ++index);
+    if(enabledFeatures.indexOf("mockery") > -1) drawObjectAsDot(nodeEnter, objFeatMockery, ++index);
+    if(enabledFeatures.indexOf("intolerance") > -1) drawObjectAsDot(nodeEnter, objFeatIntolerance, ++index);
+
+    if(enabledFeatures.indexOf("improper_language") > -1)  drawObjectAsDot(nodeEnter, objFeatImproper, ++index);
+    if(enabledFeatures.indexOf("insult") > -1)  drawObjectAsDot(nodeEnter, objFeatInsult, ++index);
+    if(enabledFeatures.indexOf("aggressiveness") > -1)  drawObjectAsDot(nodeEnter, objFeatAggressiveness, ++index);
+}
 
 /**
  * Set edge stroke width based on current zoom value
@@ -155,24 +388,8 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
     }
 }
 
-var rootPath = pr;
-var colourUnhighlightedToxicity0 = "#f0f0f0", colourUnhighlightedToxicity1 = "#d6d6d6",
-    colourUnhighlightedToxicity2 = "#ababab", colourUnhighlightedToxicity3 = "#6b6b6b",
-    colourUnhighlightedCollapsed1Son = "cfdbeb";
 
-function colourUnhighlightedNode(d) {
-    if (d._children?.length === 1) return colourUnhighlightedCollapsed1Son;
-    switch (d.toxicity_level) {
-        case 0:
-            return colourUnhighlightedToxicity0;
-        case 1:
-            return colourUnhighlightedToxicity1;
-        case 2:
-            return colourUnhighlightedToxicity2;
-        case 3:
-            return colourUnhighlightedToxicity3;
-    }
-}
+
 
 /**
  * Highlights nodes by category of Toxicity
@@ -547,21 +764,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         // Calculate total nodes, max label length
         var totalNodes = 0;
-        var edgeLength = 300;
 
         // Misc. variables
         var i = 0;
         var duration = 750;
         var root, rootName = "News Article";
         var nodes;
-
-        /* Colours
-        * */
-        var colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
-            colourNeutralStance = "#2b2727";
-
-        var colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
-            colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue", colourCollapsed1Son = "lightsteelblue";
 
 
         var objRoot = {
@@ -578,8 +786,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         /* Targets: size, position, local path, objects to draw the target as ring
         * */
-        var targetIconHeight = 15, targetIconWidth = 15, targetIconGroupX = -30, targetIconPersonX = -50,
-            targetIconStereotypeX = -70, targetIconY = -10; //Size and relative position of targets drawn as icons
         var pathTargets = pt;
 
         var objTargetGroupRing = {
@@ -619,10 +825,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 fileName: "Gray.png"
             };
 
-        /* Features: size, position, local path
-        * */
-        var cheeseX = 15, cheeseY = -10, cheeseHeight = 20, cheeseWidth = 20;
-        var pathFeatures = pf;
 
         // Objects for toxicities for Ecem tests
         var objToxicity0 = {class: "toxicity0", id: "toxicity0", selected: 1, fileName: "Level0.svg"},
@@ -639,7 +841,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
         var initialZoom, initialX, initialY; //Initial zoom and central coordinates of the first visualization of the graph
 
-        var separationHeight = 10; //Desired separation between two node brothers
+
         var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
 
         var opacityValue = 0.2; // Opacity when a value is not highlighted
@@ -751,8 +953,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 class: "targetGroup",
                 id: "targetGroup",
                 selected: enabledTargets.indexOf("target-group"),
-                x: -30,
-                y: -10,
+                x: -60,
+                y: -30,
                 height: targetIconHeight,
                 width: targetIconWidth,
                 fileName: "Group.svg"
@@ -761,8 +963,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 class: "targetPerson",
                 id: "targetPerson",
                 selected: enabledTargets.indexOf("target-person"),
-                x: -50,
-                y: -10,
+                x: -120,
+                y: -30,
                 height: targetIconHeight,
                 width: targetIconWidth,
                 fileName: "Person.svg"
@@ -771,8 +973,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 class: "targetStereotype",
                 id: "targetStereotype",
                 selected: enabledTargets.indexOf("target-stereotype"),
-                x: -70,
-                y: -10,
+                x: -180,
+                y: -30,
                 height: targetIconHeight,
                 width: targetIconWidth,
                 fileName: "Stereotype.svg"
@@ -808,99 +1010,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 height: targetIconHeight,
                 width: targetIconWidth,
                 fileName: "Stereotype.svg"
-            };
-
-
-        // Objects for feature images
-        var objFeatArgumentation = {
-                class: "featArgumentation",
-                id: "featArgumentation",
-                selected: enabledFeatures.indexOf("argumentation"),
-                x: cheeseX,
-                y: cheeseY,
-                height: cheeseHeight,
-                width: cheeseWidth,
-                fileName: "Argumentation.svg"
-            },
-            objFeatConstructiveness = {
-                class: "featConstructiveness",
-                id: "featConstructiveness",
-                selected: enabledFeatures.indexOf("constructiveness"),
-                x: cheeseX,
-                y: cheeseY,
-                height: cheeseHeight,
-                width: cheeseWidth,
-                fileName: "Constructiveness.svg"
-            },
-            objFeatSarcasm = {
-                class: "featSarcasm",
-                id: "featSarcasm",
-                selected: enabledFeatures.indexOf("sarcasm"),
-                x: cheeseX,
-                y: cheeseY,
-                height: cheeseHeight,
-                width: cheeseWidth,
-                fileName: "Sarcasm.svg"
-            },
-            objFeatMockery = {
-                class: "featMockery",
-                id: "featMockery",
-                selected: enabledFeatures.indexOf("mockery"),
-                x: cheeseX,
-                y: cheeseY,
-                height: cheeseHeight,
-                width: cheeseWidth,
-                fileName: "Mockery.svg"
-            },
-            objFeatIntolerance = {
-                class: "featIntolerance",
-                id: "featIntolerance",
-                selected: enabledFeatures.indexOf("intolerance"),
-                x: cheeseX,
-                y: cheeseY,
-                height: cheeseHeight,
-                width: cheeseWidth,
-                fileName: "Intolerance.svg"
-            },
-            objFeatImproper = {
-                class: "featImproper",
-                id: "featImproper",
-                selected: enabledFeatures.indexOf("improper_language"),
-                x: cheeseX,
-                y: cheeseY,
-                height: cheeseHeight,
-                width: cheeseWidth,
-                fileName: "Improper.svg"
-            },
-            objFeatInsult = {
-                class: "featInsult",
-                id: "featInsult",
-                selected: enabledFeatures.indexOf("insult"),
-                x: cheeseX,
-                y: cheeseY,
-                height: cheeseHeight,
-                width: cheeseWidth,
-                fileName: "Insult.svg"
-            },
-            objFeatAggressiveness = {
-                class: "featAggressiveness",
-                selected: enabledFeatures.indexOf("aggressiveness"),
-                id: "featAggressiveness",
-                x: cheeseX,
-                y: cheeseY,
-                height: cheeseHeight,
-                width: cheeseWidth,
-                fileName: "Aggressiveness.svg"
-            },
-            objFeatGray = {
-                class: "featGray",
-                id: "featGray",
-                selected: 1,
-                x: cheeseX,
-                y: cheeseY,
-                height: cheeseHeight,
-                width: cheeseWidth,
-                fileName: "Gray.png"
             };
 
 
@@ -1378,44 +1487,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             checkboxes.forEach(cb => cb.checked = !cb.checked);
         }
 
-        /**
-         * Delete the features of the node
-         * Redraw the features of the node
-         *
-         * Deleting the features firts helps us when the selected dropdown menu option changes
-         * */
-        function drawFeatureDots(nodeEnter) {
-            removeThisFeatures(nodeEnter);
-            removeToxicities(nodeEnter); //Remove all the pngs for toxicity
-
-            var cbFeatureEnabled = [enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
-                enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
-                enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness")];
-
-            var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
-            var listOpacity;
-
-            for (var i = 0; i < 8; i++) {
-                if (cbFeatureEnabled[i] > -1) {
-                    nodeEnter.append("circle")
-                        .attr('class', features[i].class)
-                        .attr('id', features[i].id)
-                        .attr("r", "10.5")
-                        .attr("transform", function (d) {
-                            return "translate(" + (d.radius + (i + 1) * (10.5 * 2)) + "," + 0 + ")";
-                        })
-                        .attr("fill", colorFeature[i])
-                        .style("stroke", "black")
-                        .style("stroke-width", "0.5px")
-                        .attr("opacity", function (d) {
-                            if (d.parent === undefined) return 0;
-                            listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
-                            return listOpacity[i];
-                        });
-                }
-            }
-        }
-
         function drawFeatureAsCheeseOutside(nodeEnter, localPath) {
             removeThisFeatures(nodeEnter);
             removeToxicities(nodeEnter); //Remove all the pngs for toxicity
@@ -1647,7 +1718,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             switch (option) {
                 case "dots":
                     selectTargetVisualization(nodeEnter); //draw the targets if necessary
-                    drawFeatureDots(nodeEnter); //Always drawn on the right side
+                    drawFeatureDots(nodeEnter, enabledFeatures); //Always drawn on the right side
                     break;
                 case "trivial-cheese-on-node":
                     selectTargetVisualization(nodeEnter); //draw the targets if necessary
@@ -2654,7 +2725,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     if (a.radius === undefined) a.radius = computeNodeRadius(a);
                     if (b.radius === undefined) b.radius = computeNodeRadius(b);
 
-                    return Math.ceil((a.radius + b.radius) / separationHeight) + 0.5;
+                    return Math.ceil((a.radius + b.radius) / separationHeight) + 1.5;
                 });
 
             // Compute the new tree layout.
@@ -2750,7 +2821,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                             .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                             .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-                    console.log(enabledTargets);
+                    //console.log(enabledTargets);
                     selectTargetVisualization(nodeEnter);
                 })
             });
@@ -2953,21 +3024,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("r", function (d) {
                     return computeNodeRadius(d);
                 })
-                .style("fill", function (d) {
-                    if (d._children && d._children.length === 1) return colourCollapsed1Son; //If it is collapsed and just has one children
-                    else { //Otherwise, colour the node according to its level of toxicity
-                        switch (d.toxicity_level) {
-                            case 0:
-                                return colourToxicity0;
-                            case 1:
-                                return colourToxicity1;
-                            case 2:
-                                return colourToxicity2;
-                            case 3:
-                                return colourToxicity3;
-                            default:
-                                return colourNewsArticle;
-                        }
+                .style("fill", function (d) { //Colour the node according to its level of toxicity
+                    switch (d.toxicity_level) {
+                        case 0: return colourToxicity0;
+                        case 1: return colourToxicity1;
+                        case 2: return colourToxicity2;
+                        case 3:  return colourToxicity3;
+                        default: return colourNewsArticle;
                     }
                 })
                 .style("stroke-width", getEdgeStrokeWidth());
