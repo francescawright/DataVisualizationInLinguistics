@@ -63,6 +63,35 @@ const colourArgumentation = "#1B8055", colourConstructiveness = "#90F6B2", colou
 const colourToxicity0 = "#FAFFA8", colourToxicity1 = "#F8BB7C", colourToxicity2 = "#F87A54",
     colourToxicity3 = "#7A1616", colourNewsArticle = "lightsteelblue";
 
+// Objects for target images
+const objTargetGroup = {
+        class: "targetGroup",
+        id: "targetGroup",
+        x: -60,
+        y: -30,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Group.svg"
+    },
+    objTargetPerson = {
+        class: "targetPerson",
+        id: "targetPerson",
+        x: -120,
+        y: -30,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Person.svg"
+    },
+    objTargetStereotype = {
+        class: "targetStereotype",
+        id: "targetStereotype",
+        x: -180,
+        y: -30,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Stereotype.svg"
+    };
+
 // Objects for feature images
 const objFeatArgumentation = {
         class: "featArgumentation",
@@ -947,38 +976,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         /*END SECTION checkboxes*/
 
         var checkButtons = document.querySelectorAll("input[name=check_button_features]");
-
-        // Objects for target images
-        var objTargetGroup = {
-                class: "targetGroup",
-                id: "targetGroup",
-                selected: enabledTargets.indexOf("target-group"),
-                x: -60,
-                y: -30,
-                height: targetIconHeight,
-                width: targetIconWidth,
-                fileName: "Group.svg"
-            },
-            objTargetPerson = {
-                class: "targetPerson",
-                id: "targetPerson",
-                selected: enabledTargets.indexOf("target-person"),
-                x: -120,
-                y: -30,
-                height: targetIconHeight,
-                width: targetIconWidth,
-                fileName: "Person.svg"
-            },
-            objTargetStereotype = {
-                class: "targetStereotype",
-                id: "targetStereotype",
-                selected: enabledTargets.indexOf("target-stereotype"),
-                x: -180,
-                y: -30,
-                height: targetIconHeight,
-                width: targetIconWidth,
-                fileName: "Stereotype.svg"
-            };
 
 
         var objTargetGroupInside = {

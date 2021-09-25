@@ -35,17 +35,25 @@ const canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayis
 const edgeLength = 24 * 20;
 
 //Node radius
-const minNodeRadius = 15;
+const minNodeRadius = 15,  minRadius = 15;
 const incrementRadiusFactorPerChild = 5;
 
 //Features
 const dotRadius = 15;
 const cheeseX = 15, cheeseY = -10, cheeseHeight = 20, cheeseWidth = 20;
 
+//Images
+const targetIconHeight = 30, targetIconWidth = 30,
+    targetIconGroupX = -60, targetIconPersonX = -120, targetIconStereotypeX = -180,
+    targetIconY = -30; //Size and relative position of targets drawn as icons
+const imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
 
 //Zoom
 let currentZoomScale; //Current scale
 const minZoom = 0.05, maxZoom = 8; //Zoom range
+
+//Paths
+const pathTargets = pt;
 
 // Colours
 
@@ -59,6 +67,44 @@ const colourArgumentation = "#1B8055", colourConstructiveness = "#90F6B2", colou
 var colorFeature = ["#a1d99b", "#31a354",
     "#fee5d9", "#fcbba1", "#fc9272",
     "#fb6a4a", "#de2d26", "#a50f15"];
+
+// Objects for target images
+const objTargetGroup = {
+        class: "targetGroup",
+        id: "targetGroup",
+        name: "target-group",
+        x: -40,
+        y: -15,
+        xInside: -0.9,
+        yInside: -0.8,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Group.svg"
+    },
+    objTargetPerson = {
+        class: "targetPerson",
+        id: "targetPerson",
+        name: "target-person",
+        x: -80,
+        y: -15,
+        xInside: -0.5,
+        yInside: 0,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Person.svg"
+    },
+    objTargetStereotype = {
+        class: "targetStereotype",
+        id: "targetStereotype",
+        name:  "target-stereotype",
+        x: -120,
+        y: -15,
+        xInside: -0.1,
+        yInside: -0.8,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Stereotype.svg"
+    };
 
 // Objects for feature images
 const objFeatArgumentation = {
@@ -263,6 +309,86 @@ function drawFeatureDots(nodeEnter, enabledFeatures){
     if(enabledFeatures.indexOf("improper_language") > -1)  drawObjectAsDot(nodeEnter, objFeatImproper, ++index);
     if(enabledFeatures.indexOf("insult") > -1)  drawObjectAsDot(nodeEnter, objFeatInsult, ++index);
     if(enabledFeatures.indexOf("aggressiveness") > -1)  drawObjectAsDot(nodeEnter, objFeatAggressiveness, ++index);
+}
+
+
+/**
+ * Remove all the target icon or images of the given node
+ * */
+function removeThisTargets(nodeEnter) {
+    nodeEnter.select("#targetGroup").remove();
+    nodeEnter.select("#targetPerson").remove();
+    nodeEnter.select("#targetStereotype").remove();
+    nodeEnter.select("#targetGray").remove();
+}
+
+/**
+ * Draw an image on the left side of a node displaced by object.x pixels
+ *
+ * @param {d3-node} nodeEnter Node to which we append the image
+ * @param {object} object The object of a property
+ * @param {string} path The path of the image
+ * */
+function drawObjectTargetOutside(nodeEnter, object, path){
+    nodeEnter.append("image")
+        .attr('class', object.class)
+        .attr('id', object.id)
+        .attr("x", function (d) {
+            return object.x - d.radius;
+        })
+        .attr("y", object.y)
+        .attr("height", object.height)
+        .attr("width", object.width)
+        .attr("href", path + object.fileName)
+        .attr("opacity", function (d) {
+            if (d.parent === undefined) return 0;
+            return retrieveAttributeFromComment(d, object.name);
+        });
+}
+
+/**
+ * Call to draw all the targets
+ *
+ * @param {d3-node} nodeEnter Node to which we append the image
+ * @param {string} path The path of the image
+ * @param {array} enabledTargets The array containing which checkboxes are selected
+ * @param {object} target The object containing the objects to draw
+ * @param {callback} draw The function to call to draw the object
+ * @param {number} percentage The percentage of the difference of radii between the node and the image
+ * */
+function drawTargetsGeneral(nodeEnter, path, enabledTargets, target, draw, percentage = imgRatio) {
+    if(enabledTargets.indexOf("target-group") > -1) draw(nodeEnter, target.group, path, percentage);
+    if(enabledTargets.indexOf("target-person") > -1) draw(nodeEnter, target.person, path, percentage);
+    if(enabledTargets.indexOf("target-stereotype") > -1) draw(nodeEnter, target.stereotype, path, percentage);
+}
+
+/**
+ * Draws the 3 targets of a node if the checkbox is checked
+ * and if the node has that target (sets the opacity to visible)
+ *
+ * The icon used is from the local path passed by parameter
+ * The css values are from the target objects that are icons
+ * */
+function drawTargetsOutside(nodeEnter, localPath, enabledTargets) {
+    removeThisTargets(nodeEnter);
+
+    let path = pathTargets + localPath;
+    let target = {group: objTargetGroup, person: objTargetPerson, stereotype: objTargetStereotype};
+    drawTargetsGeneral(nodeEnter, path, enabledTargets, target, drawObjectTargetOutside);
+
+        /*nodeEnter.append("image")
+            .attr("x", function (d) {
+                return - (d.radius + sizeImage(minRadius, 0) * (i + 1));
+            })
+            .attr("y", - minRadius)
+
+            .attr("height", function (d) {
+                return sizeImage(minRadius, 0);
+            })
+            .attr("width", function (d) {
+                return sizeImage(minRadius, 0);
+            })
+            ;*/
 }
 
 /**
@@ -763,7 +889,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     var groupDrawn = false, personDrawn = false;
     var opacityValue = 0.2;
-    var circleRadius = 8.7, minRadius = 10;
+    var circleRadius = 8.7;
 
 
 
@@ -780,9 +906,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     /* Targets: size, position, local path, objects to draw the target as ring
     * */
     var drawingAllInOne = false; //if we are drawing all together or separated
-    var pathTargets = pt;
-    var targetIconHeight = 15, targetIconWidth = 15, targetIconGroupX = -30, targetIconPersonX = -50,
-        targetIconStereotypeX = -70, targetIconY = -10; //Size and relative position of targets drawn as icons
+
     var objTargetGroupRing = {
             class: "targetGroup",
             id: "targetGroup",
@@ -956,45 +1080,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var dropdownTargets = document.getElementById("dropdown-targets");
     var dropdownFeatures = document.getElementById("dropdown-features");
 
-    //Define objects after the checkbox where we keep if it is selected
-    var objTargetGroup = {
-            class: "targetGroup",
-            id: "targetGroup",
-            selected: enabledTargets.indexOf("target-group"),
-            x: -30,
-            y: -10,
-            xInside: -0.9,
-            yInside: -0.8,
-            height: targetIconHeight,
-            width: targetIconWidth,
-            fileName: "Group.png"
-        },
-        objTargetPerson = {
-            class: "targetPerson",
-            id: "targetPerson",
-            selected: enabledTargets.indexOf("target-person"),
-            x: -50,
-            y: -10,
-            xInside: -0.5,
-            yInside: 0,
-            height: targetIconHeight,
-            width: targetIconWidth,
-            fileName: "Person.png"
-        },
-        objTargetStereotype = {
-            class: "targetStereotype",
-            id: "targetStereotype",
-            selected: enabledTargets.indexOf("target-stereotype"),
-            x: -70,
-            y: -10,
-            xInside: -0.1,
-            yInside: -0.8,
-            height: targetIconHeight,
-            width: targetIconWidth,
-            fileName: "Stereotype.png"
-        };
-
-
     // A recursive helper function for performing some setup by walking through all nodes
     function visit(parent, visitFn, childrenFn) {
         if (!parent) return;
@@ -1158,15 +1243,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         return 2 * nodeRadius * (1 - radiusPercentage / 100.0);
     }
 
-    /**
-     * Remove all the target icon or images of the given node
-     * */
-    function removeThisTargets(nodeEnter) {
-        nodeEnter.select("#targetGroup").remove();
-        nodeEnter.select("#targetPerson").remove();
-        nodeEnter.select("#targetStereotype").remove();
-        nodeEnter.select("#targetGray").remove();
-    }
 
     /**
      * Draws the 3 targets of a node if the checkbox is checked
@@ -1181,15 +1257,15 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var listOpacity;
         var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
 
-        for (var i = 0; i < targets.length; i++) {
+        for (let i = 0; i < targets.length; i++) {
             if (cbShowTargets[i] > -1) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
                     .attr("x", targets[i].x)
                     .attr("y", targets[i].y)
-                    .attr("height", targets[i].height)
-                    .attr("width", targets[i].width)
+                    .attr("height", 40)
+                    .attr("width", 40)
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
@@ -1258,7 +1334,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     drawTargets(nodeEnter, "icons/");
                     break;
                 case "icon-outside-node":
-                    drawTargetsOutside(nodeEnter, "icons/");
+                    drawTargetsOutside(nodeEnter, "icons/", enabledTargets);
                     break;
 
                 case "icon-on-node":
@@ -1287,44 +1363,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
 
-    /**
-     * Draws the 3 targets of a node if the checkbox is checked
-     * and if the node has that target (sets the opacity to visible)
-     *
-     * The icon used is from the local path passed by parameter
-     * The css values are from the target objects that are icons
-     * */
-    function drawTargetsOutside(nodeEnter, localPath) {
-        removeThisTargets(nodeEnter);
-        var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
-        var listOpacity;
-        var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
 
-        for (var i = 0; i < targets.length; i++) {
-            if (cbShowTargets[i] > -1) {
-                nodeEnter.append("image")
-                    .attr('class', targets[i].class)
-                    .attr('id', targets[i].id)
-                    .attr("x", function (d) {
-                        return - (d.radius + sizeImage(minRadius, 0) * (i + 1));
-                    })
-                    .attr("y", - minRadius)
-
-                    .attr("height", function (d) {
-                        return sizeImage(minRadius, 0);
-                    })
-                    .attr("width", function (d) {
-                        return sizeImage(minRadius, 0);
-                    })
-                    .attr("href", pathTargets + localPath + targets[i].fileName)
-                    .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
-                        listOpacity = [d.target_group, d.target_person, d.stereotype];
-                        return listOpacity[i];
-                    });
-            }
-        }
-    }
 
     /**
      * Draws the 3 targets of a node if the checkbox is checked
