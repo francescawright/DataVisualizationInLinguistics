@@ -9,9 +9,10 @@
     <!-- Custom styles for this template -->
     <link href="{% static  'css/simple-sidebar.css' %}" rel="stylesheet">
 </head>
+
 <body>
 
-<div class="topnav" style="display: flex; max-width: 2500px; padding: 0px;">
+<div class="topnav" style="display: flex; max-width: 2500px; padding: 0px; margin-left: 300px;">
     <div style="text-align: center; width: 250px; padding: 15px;">
         <a style="float: unset;" href="/">
             <img src="{% static 'images/app_icon.svg' %}"
@@ -22,7 +23,6 @@
     {#        <button style="margin-top: 4px;" class="btn btn-primary" formaction="{% url 'manage_data' %}">Manage Data#}
     {#        </button>#}
     {#    </form>#}
-    <div style="margin-left: 50px;"></div>
     <form style="justify-content: center; vertical-align: center;"
           action="{% url 'selected_data' %}"
           id="main_form"
@@ -60,23 +60,29 @@
                        {% else %}class="btn btn-primary"{% endif %}>
                     <input type="radio" id="tree_layout_button" name="tree_layout_button" value="checked"
                            autocomplete="off" form="main_form"
-                           {% if checked_layout == "tree" %}checked{% endif %}> Tree
+                           {% if checked_layout == "tree" %}checked{% endif %}>
+
+                    Tree
+                    {#                    <img#}
+                    {#                        src="{% static 'images/nav_bar/treeLayout.svg' %}" style="width: 45px;">#}
                 </label>
                 <label id="force_label" style="width: 75px; height:fit-content;"
                        {% if checked_layout == "force" %}class="btn btn-primary active"
                        {% else %}class="btn btn-primary"{% endif %}>
                     <input type="radio" id="force_layout_button" form="main_form"
                            name="force_layout_button" value="checked" autocomplete="off"
-                           {% if checked_layout == "force" %}checked{% endif %}>
-                    Force
+                           {% if checked_layout == "force" %}checked{% endif %}>Force
+                    {#                    <img#}
+                    {#                        src="{% static 'images/nav_bar/forceLayout.svg' %}" style="width: 45px;">#}
                 </label>
                 <label id="radial_label" style="width: 75px; height:fit-content;"
                        {% if checked_layout == "radial" %}class="btn btn-primary active"
                        {% else %}class="btn btn-primary"{% endif %}>
                     <input type="radio" id="radial_layout_button" form="main_form"
                            name="radial_layout_button" value="checked" autocomplete="off"
-                           {% if checked_layout == "radial" %}checked{% endif %}>
-                    Radial
+                           {% if checked_layout == "radial" %}checked{% endif %}>Radial
+                    {#                    <img#}
+                    {#                            src="{% static 'images/nav_bar/radialLayout.svg' %}" style="width: 45px;">#}
                 </label>
             </div>
         </li>

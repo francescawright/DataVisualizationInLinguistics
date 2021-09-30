@@ -670,7 +670,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     // Select all checkboxes with the name 'cbFeatures' using querySelectorAll.
     var checkboxes = document.querySelectorAll("input[type=checkbox][name=cbFeatures]");
     let enabledFeatures = []; //Variable which contains the string of the enabled options to display features
-    var checkboxFeatureMenu = document.querySelector("input[name=cbFeatureMenu]");
+    // var checkboxFeatureMenu = document.querySelector("input[name=cbFeatureMenu]");
 
     // Select how to display the features: svg circles or trivial cheese (previous version)
     var checkboxesPropertyFeature = document.querySelectorAll("input[type=checkbox][name=cbFeatureProperty]");
@@ -689,7 +689,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var checkboxOR = document.querySelector("input[type=checkbox][name=cbHighlightProperty][value=or-group]");
     var checkboxesHighlightGroup = document.querySelectorAll("input[type=checkbox][name=cbHighlight]");
 
-    var checkboxStaticValues = document.querySelector("input[name=cbStaticValues]");
+    // var checkboxStaticValues = document.querySelector("input[name=cbStaticValues]");
 
 
     let enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
@@ -2502,6 +2502,19 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             selectFeatureVisualization(nodeEnter);
         });
 
+        var static_values_checked = false;
+        jQuery("#static_values_button").click(function () {
+            if (!static_values_checked) {
+                document.getElementById('static_values_button').innerHTML = '&#8722;';
+                static_values_checked = true;
+                statisticBackground.style("visibility", "visible").html(writeStatisticText());
+            } else {
+                document.getElementById('static_values_button').innerHTML = '&#43;'
+                static_values_checked = false;
+                statisticBackground.style("visibility", "hidden").html(writeStatisticText());
+            }
+        });
+
         /*SECTION checkboxes listener*/
         // Use Array.forEach to add an event listener to each checkbox.
         // Draw target images
@@ -2516,66 +2529,91 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
         });
 
-        checkboxStaticValues.addEventListener("change", function () {
-            this.checked ?
-                statisticBackground
-                    .style("visibility", "visible")
-                    .html(writeStatisticText()) :
-                statisticBackground
-                    .style("visibility", "hidden")
-                    .html(writeStatisticText());
+        // checkboxStaticValues.addEventListener("change", function () {
+        //     this.checked ?
+        //         statisticBackground
+        //             .style("visibility", "visible")
+        //             .html(writeStatisticText()) :
+        //         statisticBackground
+        //             .style("visibility", "hidden")
+        //             .html(writeStatisticText());
+        // });
+
+        checkboxesPropertyFeature.forEach(function (checkboxItem) {
+            checkboxItem.removeAttribute('disabled');
         });
+        checkboxesPositioningFeature.forEach(function (checkboxItem) {
+            checkboxItem.removeAttribute('disabled');
+        });
+        checkboxes.forEach(function (checkboxItem) {
+            checkboxItem.removeAttribute('disabled');
+        });
+        // dropdownFeatures.removeAttribute('disabled');
+
+        checkButtons.forEach(function (button) {
+                button.removeAttribute('disabled');
+            }
+        );
+
+        if (!document.querySelector("input[value=dot-feat]").checked && !document.querySelector("input[value=cheese-feat]").checked) {
+            document.querySelector("input[value=dot-feat]").checked = true;
+        }
+
+        // if (!document.querySelector("input[value=on-node]").checked && !document.querySelector("input[value=node-outside]").checked) {
+        //     document.querySelector("input[value=on-node]").checked = true;
+        // }
+        selectFeatureVisualization(nodeEnter);
 
         //Listener related to the visualization of features
-        checkboxFeatureMenu.addEventListener('change', function () {
-            if (this.checked) { //Enable checkboxes and dropdown menu + show features if they are selected
-                checkboxesPropertyFeature.forEach(function (checkboxItem) {
-                    checkboxItem.removeAttribute('disabled');
-                });
-                checkboxesPositioningFeature.forEach(function (checkboxItem) {
-                    checkboxItem.removeAttribute('disabled');
-                });
-                checkboxes.forEach(function (checkboxItem) {
-                    checkboxItem.removeAttribute('disabled');
-                });
-                // dropdownFeatures.removeAttribute('disabled');
-
-                checkButtons.forEach(function (button) {
-                        button.removeAttribute('disabled');
-                    }
-                );
-
-                if (!document.querySelector("input[value=dot-feat]").checked && !document.querySelector("input[value=cheese-feat]").checked) {
-                    document.querySelector("input[value=dot-feat]").checked = true;
-                }
-
-                // if (!document.querySelector("input[value=on-node]").checked && !document.querySelector("input[value=node-outside]").checked) {
-                //     document.querySelector("input[value=on-node]").checked = true;
-                // }
-                selectFeatureVisualization(nodeEnter);
-
-            } else { //Disable checkboxes and dropdown menu + remove all the features
-                checkboxesPropertyFeature.forEach(function (checkboxItem) {
-                    checkboxItem.setAttribute('disabled', 'disabled');
-                });
-                checkboxesPositioningFeature.forEach(function (checkboxItem) {
-                    checkboxItem.setAttribute('disabled', 'disabled');
-                });
-                // document.getElementById("feature-over-node-or-outside").style.display = "none";
-                // dropdownFeatures.setAttribute('disabled', 'disabled');
-
-                checkboxes.forEach(function (checkboxItem) {
-                    checkboxItem.setAttribute('disabled', 'disabled');
-                });
-
-                checkButtons.forEach(function (button) {
-                        button.setAttribute('disabled', 'disabled');
-                    }
-                );
-
-                removeAllFeatures(); //Hide all features when the cb is unchecked
-            }
-        });
+        // checkboxFeatureMenu.addEventListener('change', function () {
+        //     if (this.checked) { //Enable checkboxes and dropdown menu + show features if they are selected
+        //         checkboxesPropertyFeature.forEach(function (checkboxItem) {
+        //             checkboxItem.removeAttribute('disabled');
+        //         });
+        //         checkboxesPositioningFeature.forEach(function (checkboxItem) {
+        //             checkboxItem.removeAttribute('disabled');
+        //         });
+        //         checkboxes.forEach(function (checkboxItem) {
+        //             checkboxItem.removeAttribute('disabled');
+        //         });
+        //         // dropdownFeatures.removeAttribute('disabled');
+        //
+        //         checkButtons.forEach(function (button) {
+        //                 button.removeAttribute('disabled');
+        //             }
+        //         );
+        //
+        //         if (!document.querySelector("input[value=dot-feat]").checked && !document.querySelector("input[value=cheese-feat]").checked) {
+        //             document.querySelector("input[value=dot-feat]").checked = true;
+        //         }
+        //
+        //         // if (!document.querySelector("input[value=on-node]").checked && !document.querySelector("input[value=node-outside]").checked) {
+        //         //     document.querySelector("input[value=on-node]").checked = true;
+        //         // }
+        //         selectFeatureVisualization(nodeEnter);
+        //
+        //     } else { //Disable checkboxes and dropdown menu + remove all the features
+        //         checkboxesPropertyFeature.forEach(function (checkboxItem) {
+        //             checkboxItem.setAttribute('disabled', 'disabled');
+        //         });
+        //         checkboxesPositioningFeature.forEach(function (checkboxItem) {
+        //             checkboxItem.setAttribute('disabled', 'disabled');
+        //         });
+        //         // document.getElementById("feature-over-node-or-outside").style.display = "none";
+        //         // dropdownFeatures.setAttribute('disabled', 'disabled');
+        //
+        //         checkboxes.forEach(function (checkboxItem) {
+        //             checkboxItem.setAttribute('disabled', 'disabled');
+        //         });
+        //
+        //         checkButtons.forEach(function (button) {
+        //                 button.setAttribute('disabled', 'disabled');
+        //             }
+        //         );
+        //
+        //         removeAllFeatures(); //Hide all features when the cb is unchecked
+        //     }
+        // });
 
         //This needs to be commented or else it will draw things by default
         /*        // if DOT is checked, uncheck OR
@@ -2724,7 +2762,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         - highlight nodes and edges
         * */
         selectTargetVisualization(nodeEnter);
-        checkboxFeatureMenu.checked ? selectFeatureVisualization(nodeEnter) : removeAllFeatures();
+        selectFeatureVisualization(nodeEnter);
+        // checkboxFeatureMenu.checked ? selectFeatureVisualization(nodeEnter) : removeAllFeatures();
 
         // Change the circle fill depending on whether it has children and is collapsed
         node.select("circle.nodeCircle")
@@ -2949,11 +2988,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         totalNone = listStatistics.totalTargNone;
 
 
-    statisticBackground.style("visibility", "visible").html(writeStatisticText());
+    // statisticBackground.style("visibility", "visible").html(writeStatisticText());
 
     function writeStatisticText() {
-        var statisticText = "<span style='font-size: 22px;'> Summary of " + sel_item.split('/')[2] + "</span>";
-        statisticText += "<table style='width: 500px;'>";
+        // var statisticText = "<span style='font-size: 22px;'> Summary of " + sel_item.split('/')[2] + "</span> <button class='btn btn-primary'>+</button>";
+        var statisticText = "<table style='width: 500px; margin-top: 50px; z-index: 100;'>";
 
         var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];

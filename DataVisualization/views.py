@@ -164,6 +164,9 @@ def get_selected_layout(request):
         template = "radial_layout.html"
         button_checked = "radial"
     else:
+        # selected_layout = "circleTreemap.html"
+        # template = "circleTreemap.html"
+        # button_checked = "tree"
         selected_layout = "tree_layout.html"
         template = "tree_layout.html"
         button_checked = "tree"
