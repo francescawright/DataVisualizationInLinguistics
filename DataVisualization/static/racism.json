@@ -1,0 +1,211 @@
+{
+	"name": "Racism", "toxicity_level": 4, "value": 15,
+	"children": [{
+			"name": "thread 1", "toxicity_level": 3, "value": 12,
+			"children": [
+				    {"name": "81", "toxicity_level": 0, "value":  8,
+				        "children": [
+						{"name": "106", "toxicity_level": 0, "value": 3,
+						"children": [
+						      {"name": "116", "toxicity_level": 2, "value": 1,
+						      "children": [
+						            {"name": "141", "toxicity_level": 0, "value": 0.5}
+
+						]}
+
+						]},
+						{"name": "163", "toxicity_level": 0, "value": 3}
+						]},
+				        {"name": "114", "toxicity_level": 2, "value": 3},
+			            {"name": "125", "toxicity_level": 0, "value": 8},
+				    {"name": "132", "toxicity_level": 0, "value": 8},
+				    {"name": "174", "toxicity_level": 1, "value": 8,
+				     "children": [
+				            {"name": "276", "toxicity_level": 2, "value": 3}
+
+			]},
+				    {"name": "268", "toxicity_level": 3, "value": 8,
+				    "children": [
+				        {"name": "275", "toxicity_level": 1, "value": 3,
+					"children": [
+				           {"name": "284", "toxicity_level": 3, "value": 1,
+					   "children": [
+				            {"name": "286", "toxicity_level": 2, "value": 0.5,
+					    "children": [
+				             {"name": "289", "toxicity_level": 2, "value": 0.2}
+
+			]}
+
+			]}
+
+			]}
+
+			]},
+				    {"name": "34", "toxicity_level": 0, "value" : 8,
+					"children": [
+						{"name": "41", "toxicity_level": 0, "value": 3,
+						"children": [
+							{"name": "101", "toxicity_level": 0, "value": 1},
+						        {"name": "169", "toxicity_level": 1, "value": 1},
+						        {"name": "215", "toxicity_level": 0, "value": 1}
+						]},
+						{"name": "102", "toxicity_level": 0, "value": 3},
+						{"name": "159", "toxicity_level": 0, "value": 3},
+						{"name": "182", "toxicity_level": 3, "value": 3,
+						"children": [
+				                     {"name": "228", "toxicity_level": 0, "value": 1}
+
+			]},
+						{"name": "219", "toxicity_level": 0, "value": 3,
+						 "children": [
+				                    {"name": "230", "toxicity_level": 0, "value": 1}
+
+			]},
+						{"name": "152", "toxicity_level": 1, "value": 3,
+						"children": [
+				                    {"name": "162", "toxicity_level": 0, "value": 1}
+
+			]}
+					]
+				},
+				{
+					"name": "174", "toxicity_level": 0, "value" : 8,
+					"children": [
+						{"name": "268", "toxicity_level": 0, "value": 3},
+						{"name": "3",   "toxicity_level": 0,  "value": 3},
+						{"name": "5",    "toxicity_level": 0, "value": 3},
+						{"name": "53",  "toxicity_level": 0, "value": 3},
+						{"name": "178", "toxicity_level": 0, "value": 3}
+					]
+				}
+			]
+		},
+		{
+			"name": "thread 5", "toxicity_level": 0, "value": 12,
+			"children": [
+				{"name": "53", "toxicity_level": 1, "value": 8},
+				{"name": "178", "toxicity_level": 0, "value": 8},
+				{"name": "211", "toxicity_level": 0, "value": 8},
+				{"name": "205", "toxicity_level": 1, "value" : 8}]
+
+		},
+
+		     {"name": "25", "toxicity_level": 3, "value": 12,
+					"children": [
+						{"name": "107", "toxicity_level": 0, "value": 8},
+						{"name": "285", "toxicity_level": 0, "value": 8}
+
+
+
+		]},
+
+
+
+		{
+			"name": "3", "toxicity_level": 0, "value": 12
+
+		},
+		{
+			"name": "25", "toxicity_level": 2, "value": 12,
+			"children": [
+				{"name": "107", "toxicity_level": 0, "value": 8},
+				{"name": "285", "toxicity_level": 0, "value": 8}
+			]
+		},
+		     {
+			"name": "6", "toxicity_level": 2, "value": 12,
+			"children": [
+				{"name": "262", "toxicity_level": 0, "value": 8,
+				"children": [
+				   {"name": "293", "toxicity_level": 0, "value": 3}
+
+			]}
+
+			]
+		},
+		     {
+			"name": "43", "toxicity_level": 0, "value": 12,
+			"children": [
+				{"name": "180", "toxicity_level": 0, "value": 8}
+
+			]
+		},
+		     {
+			"name": "65", "toxicity_level": 1, "value": 12
+
+		},
+		     {
+			"name": "67", "toxicity_level": 1, "value": 12,
+			"children": [
+				{"name": "144", "toxicity_level": 2, "value": 8,
+				"children": [
+				      {"name": "146", "toxicity_level": 2, "value": 3}
+
+			]}
+
+			]
+		},
+		      {
+			"name": "74", "toxicity_level": 2, "value": 12
+
+		},
+		      {
+			"name": "75", "toxicity_level": 2, "value": 12
+
+		},
+		      {
+			"name": "86", "toxicity_level": 0, "value": 12
+
+		},
+		       {
+			"name": "105", "toxicity_level": 0, "value": 12
+
+		},
+		       {
+			"name": "108", "toxicity_level": 0, "value": 12
+
+		},
+		       {
+			"name": "129", "toxicity_level": 0, "value": 12
+
+		},
+		       {
+			"name": "131", "toxicity_level": 1, "value": 12
+
+		},
+		       {
+			"name": "154", "toxicity_level": 0, "value": 12
+
+		},
+		       {
+			"name": "156", "toxicity_level": 0, "value": 12
+
+		},
+		       {
+			"name": "197", "toxicity_level": 0, "value": 12
+
+		},
+		      {
+			"name": "100", "toxicity_level": 0, "value": 12,
+			"children": [
+				{"name": "185", "toxicity_level": 0, "value": 8}
+
+			]
+		},
+		     {
+			"name": "thread 11", "toxicity_level": 1, "value": 12,
+			"children": [
+				{"name": "14", "toxicity_level": 2, "value": 8},
+				{"name": "138", "toxicity_level": 2, "value": 8},
+				{"name": "175", "toxicity_level": 0, "value": 8},
+				{"name": "191", "toxicity_level": 0, "value": 8}
+			]
+		},
+		{
+			"name": "18", "toxicity_level": 2, "value": 12
+
+		}
+
+
+	]
+}

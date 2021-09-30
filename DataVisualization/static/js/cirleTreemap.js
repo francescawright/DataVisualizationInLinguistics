@@ -65,27 +65,41 @@ treeJSON = d3.json(dataset, function (error, root) {
     //
     node.append("circle")
         .attr("r", function (d) {
-            var rootSize = 1000;
-            console.log(d);
-            console.log(d.children);
-            if (d.depth === 0) {
-                return rootSize;
+            if (d.children) {
+                return d.r + 2;
+            } else {
+                return d.r;
             }
-            console.log(d.depth, d.parent.children.length);
-            switch (d.depth) {
-                case 1:
-                    return rootSize / d.parent.children.length * 2;
-                case 2:
-                    return (rootSize / d.parent.children.length) / d.parent.parent.children.length * 2;
-                case 3:
-                    return ((rootSize / d.parent.children.length) / d.parent.parent.children.length) / d.parent.parent.parent.children.length * 2;
-                // case 4:
-                //     return (((rootSize / d.parent.children.length) / d.parent.parent.children.length) / d.parent.parent.parent.children.length) / d.parent.parent.parent.parent.children.length * 2;
-                default:
-                    return 25;
-            }
-
         })
+        // .attr("r", function (d) {
+        //     var rootSize = 1000;
+        //     console.log(d);
+        //     console.log(d.children);
+        //     // return d.value;
+        //     // if (d.depth === 0) {
+        //     //     return rootSize;
+        //     // }
+        //     //
+        //     // if (!d.children) {
+        //     //     return 4;
+        //     // }
+        //     // console.log(d.depth, d.parent.children.length);
+        //     // switch (d.depth) {
+        //     //     // case 1:
+        //     //     //     return rootSize / d.parent.children.length * 2;
+        //     //     // case 2:
+        //     //     //     return (rootSize / d.parent.children.length) / d.parent.parent.children.length * 2;
+        //     //     // case 3:
+        //     //     //     return ((rootSize / d.parent.children.length) / d.parent.parent.children.length) / d.parent.parent.parent.children.length * 2;
+        //     //     // case 4:
+        //     //     //     return (((rootSize / d.parent.children.length) / d.parent.parent.children.length) / d.parent.parent.parent.children.length) / d.parent.parent.parent.parent.children.length * 2;
+        //     //     case 6:
+        //     //         return 1;
+        //     //     default:
+        //     //         return 8;
+        //     // }
+        //
+        // })
         .attr("filter", "url(#dropshadow)")
         .style("fill", function (d) {
             if (d.data.toxicity_level === 0) return colourToxicity0;

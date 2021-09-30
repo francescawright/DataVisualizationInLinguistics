@@ -2891,8 +2891,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         var statisticTitle = "Static values of the news article";
         statisticTitleBackground.style("visibility", "visible").html(statisticTitle);
-        statisticBackground.style("visibility", "visible").html(writeStatisticText(totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic,
-            totalGroup, totalPerson, totalStereotype, totalNone));
+        // statisticBackground.style("visibility", "visible").html(writeStatisticText(totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic,
+        //     totalGroup, totalPerson, totalStereotype, totalNone));
     }
 
     /**
