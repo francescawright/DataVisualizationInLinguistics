@@ -146,7 +146,7 @@ checkboxHighlightMenu.addEventListener('change', function () {
             document.querySelector("input[value=and-group]").checked = true;
             highlightNodesByPropertyAND(node);
         } else {
-            checkboxAND.checked ? highlightNodesByPropertyAND(node) : highlightNodesByPropertyOR(node, enabledHighlight);
+            checkboxAND.checked ? highlightNodesByPropertyAND(node, enabledHighlight) : highlightNodesByPropertyOR(node, enabledHighlight);
             console.log(enabledHighlight);
         }
 
@@ -169,7 +169,7 @@ checkboxHighlightMenu.addEventListener('change', function () {
 checkboxAND.addEventListener('change', function () {
     if (this.checked) {
         checkboxOR.checked = false;
-        highlightNodesByPropertyAND(node);
+        highlightNodesByPropertyAND(node, enabledHighlight);
     } else {
         checkboxOR.checked = true;
         highlightNodesByPropertyOR(node, enabledHighlight);
@@ -182,7 +182,7 @@ checkboxOR.addEventListener('change', function () {
         highlightNodesByPropertyOR(node, enabledHighlight);
     } else {
         checkboxAND.checked = true;
-        highlightNodesByPropertyAND(node);
+        highlightNodesByPropertyAND(node, enabledHighlight);
     }
 });
 
@@ -195,7 +195,7 @@ checkboxesHighlightGroup.forEach(function (checkboxItem) {
                 .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
         console.log(enabledHighlight);
-        checkboxOR.checked ? highlightNodesByPropertyOR(node, enabledHighlight) : highlightNodesByPropertyAND(node);
+        checkboxOR.checked ? highlightNodesByPropertyOR(node, enabledHighlight) : highlightNodesByPropertyAND(node, enabledHighlight);
     })
 });
 
@@ -315,9 +315,9 @@ function highlightNodesByPropertyOR(node, enabledHighlight) {
     }
 }
 
-function highlightNodesByPropertyAND(node) {
+function highlightNodesByPropertyAND(node, enabledHighlight) {
     //First, highlight everything
-    node.style("opacity", 1);
+    node.style("opacity", maxOpacityValue);
 
     //Then unhighlight if the node does not have the property
     highlightByToxicity(node, enabledHighlight, unhighlightNode);
