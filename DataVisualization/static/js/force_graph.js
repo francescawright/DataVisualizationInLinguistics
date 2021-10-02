@@ -12,6 +12,15 @@ const initialZoomScale = 0.17; //Initial zoom scale to display almost the whole 
 //Node radius
 const minNodeRadius = 30;
 const incrementRadiusFactorPerChild = 5;
+const dotRadius = 15;
+
+const colourToxicity0 = "#FAFFA8", colourToxicity1 = "#F8BB7C", colourToxicity2 = "#F87A54",
+    colourToxicity3 = "#7A1616", colourNewsArticle = "lightsteelblue";
+
+const colourArgumentation = "#1B8055", colourConstructiveness = "#90F6B2", colourSarcasm = "#97CFFF", colourMockery = "#1795FF",
+    colourIntolerance = "#0B5696", colourImproper = "#E3B7E8", colourInsult = "#A313B3", colourAggressiveness = "#5E1566";
+
+
 /**
  * Set edge stroke width based on current zoom value
  * */
@@ -610,9 +619,6 @@ treeJSON = d3.json(dataset, function (error, json) {
     var colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
         colourNeutralStance = "#2b2727";
 
-    var colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
-        colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue", colourCollapsed = "Blue";
-
     var colorFeature = ["#a1d99b", "#31a354",
         "#fee5d9", "#fcbba1", "#fc9272",
         "#fb6a4a", "#de2d26", "#a50f15"];
@@ -836,6 +842,7 @@ treeJSON = d3.json(dataset, function (error, json) {
     var objFeatArgumentation = {
             class: "featArgumentation",
             id: "featArgumentation",
+            color: colourArgumentation,
             selected: enabledFeatures.indexOf("argumentation"),
             x: cheeseX,
             y: cheeseY,
@@ -849,6 +856,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         objFeatConstructiveness = {
             class: "featConstructiveness",
             id: "featConstructiveness",
+            color: colourConstructiveness,
             selected: enabledFeatures.indexOf("constructiveness"),
             x: cheeseX,
             y: cheeseY,
@@ -862,6 +870,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         objFeatSarcasm = {
             class: "featSarcasm",
             id: "featSarcasm",
+            color: colourSarcasm,
             selected: enabledFeatures.indexOf("sarcasm"),
             x: cheeseX,
             y: cheeseY,
@@ -874,6 +883,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         objFeatMockery = {
             class: "featMockery",
             id: "featMockery",
+            color: colourMockery,
             selected: enabledFeatures.indexOf("mockery"),
             x: cheeseX,
             y: cheeseY,
@@ -887,6 +897,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         objFeatIntolerance = {
             class: "featIntolerance",
             id: "featIntolerance",
+            color: colourIntolerance,
             selected: enabledFeatures.indexOf("intolerance"),
             x: cheeseX,
             y: cheeseY,
@@ -900,6 +911,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         objFeatImproper = {
             class: "featImproper",
             id: "featImproper",
+            color: colourImproper,
             selected: enabledFeatures.indexOf("improper_language"),
             x: cheeseX,
             y: cheeseY,
@@ -913,6 +925,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         objFeatInsult = {
             class: "featInsult",
             id: "featInsult",
+            color: colourInsult,
             selected: enabledFeatures.indexOf("insult"),
             x: cheeseX,
             y: cheeseY,
@@ -926,6 +939,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         objFeatAggressiveness = {
             class: "featAggressiveness",
             selected: enabledFeatures.indexOf("aggressiveness"),
+            color: colourAggressiveness,
             id: "featAggressiveness",
             x: cheeseX,
             y: cheeseY,
@@ -1403,12 +1417,12 @@ treeJSON = d3.json(dataset, function (error, json) {
                 nodeEnter.append("circle")
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
-                    .attr("r", "4.5")
+                    .attr("r", dotRadius)
                     .attr("transform", function (d) {
-                        return "translate(" + ((d.radius + 5) * features[i].xDot ) + "," + ((d.radius+5) * features[i].yDot) + ")";
+                        return "translate(" + ((d.radius + dotRadius) * features[i].xDot ) + "," + ((d.radius + dotRadius) * features[i].yDot) + ")";
 
                     })
-                    .attr("fill", colorFeature[i])
+                    .attr("fill", features[i].color)
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
                     .attr("opacity", function (d) {
@@ -2477,18 +2491,12 @@ treeJSON = d3.json(dataset, function (error, json) {
                 return computeNodeRadius(d);
             })
             .style("fill", function (d) {
-                if (d._children && d._children.length === 1) return colourCollapsed;
                 switch (d.toxicity_level) {
-                    case 0:
-                        return colourToxicity0;
-                    case 1:
-                        return colourToxicity1;
-                    case 2:
-                        return colourToxicity2;
-                    case 3:
-                        return colourToxicity3;
-                    default:
-                        return colourNewsArticle;
+                    case 0: return colourToxicity0;
+                    case 1: return colourToxicity1;
+                    case 2: return colourToxicity2;
+                    case 3: return colourToxicity3;
+                    default: return colourNewsArticle;
                 }
             })
             .style("stroke", "black")
