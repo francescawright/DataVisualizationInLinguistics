@@ -6,6 +6,10 @@ from django.db.models import Count, Q
 from django.shortcuts import render
 from django.utils.datastructures import MultiValueDictKeyError
 
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate
+from .models import tbl_Authentication
+
 from DataVisualization.forms import FileForm
 from DataVisualization.models import Document, Commentary
 from DataVisualization.utilities.ExcelParser import ExcelParser
@@ -18,10 +22,11 @@ LAYOUTS = ["Tree", "Force", "Radial"]
 TREE_LAYOUT = "tree_layout_button"
 FORCE_LAYOUT = "force_layout_button"
 RADIAL_LAYOUT = "radial_layout_button"
+TREEMAP_LAYOUT = "treeMap_layout_button"
 
 
 def index(request):
-    return render(request, 'index.html', context={'documents_uploaded': get_all_documents()})
+    return render(request, 'index.html', context={'documents_uploaded': get_all_documents(), 'user': request.user})
 
 
 def get_all_documents():
@@ -163,13 +168,17 @@ def get_selected_layout(request):
         selected_layout = "radial_layout.html"
         template = "radial_layout.html"
         button_checked = "radial"
+    elif TREEMAP_LAYOUT in request.POST.keys():
+        selected_layout = "treeMap_layout.html"
+        template = "treeMap_layout.html"
+        button_checked = "treeMap"
     else:
-        selected_layout = "circleTreemap.html"
-        template = "circleTreemap.html"
+        # selected_layout = "treeMap_layout.html"
+        # template = "treeMap_layout.html"
+        # button_checked = "treeMap"
+        selected_layout = "tree_layout.html"
+        template = "tree_layout.html"
         button_checked = "tree"
-        # selected_layout = "tree_layout.html"
-        # template = "tree_layout.html"
-        # button_checked = "tree"
     # try:
     #     #     selected_layout = request.POST["dropdown_layout"]
     #     #     template = "tree_layout.html"
@@ -276,6 +285,57 @@ def save_project():
 
 def export_visualization():
     raise NotImplementedError()
+
+
 # ---------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------
+
+from django.shortcuts import render
+from .forms import Loginform
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+
+
+def login_view(request):
+    uservalue = ''
+    passwordvalue = ''
+
+    form = Loginform(request.POST or None)
+    if form.is_valid():
+        uservalue = form.cleaned_data.get("username")
+        passwordvalue = form.cleaned_data.get("password")
+
+        user = authenticate(username=uservalue, password=passwordvalue)
+        if user is not None:
+            login(request, user)
+            context = {'form': form,
+                       'error': 'The login has been successful'}
+
+            return index(request)
+        else:
+            context = {'form': form,
+                       'error': 'The username and password combination is incorrect'}
+
+            return index(request)
+
+    else:
+        context = {'form': form}
+        return render(request, 'login.html', context)
+
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return index(request)
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    return index(request)

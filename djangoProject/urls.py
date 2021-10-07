@@ -16,11 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from DataVisualization.views import index, manage_data, \
-    upload_file, main_form_handler, edit_data, handle_delete_data
+    upload_file, main_form_handler, edit_data, handle_delete_data, signup_view, login_view, logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
+
+    # Users
+    path('login/', login_view, name="login"),
+    path('signup/', signup_view, name="signup"),
+    path('logout/', logout_view, name="logout"),
 
     # Manage Data
     path('manage_data/', manage_data, name="manage_data"),

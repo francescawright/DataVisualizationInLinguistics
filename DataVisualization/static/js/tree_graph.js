@@ -748,9 +748,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     // Select which properties and if an intersection or union of those
     var checkboxHighlightMenu = document.querySelector("input[name=cbHighlightMenu]");
     var checkboxesProperty = document.querySelectorAll("input[type=checkbox][name=cbHighlightProperty]");
-    var checkboxAND = document.querySelector("input[type=checkbox][name=cbHighlightProperty][value=and-group]");
-    var checkboxOR = document.querySelector("input[type=checkbox][name=cbHighlightProperty][value=or-group]");
-    var checkboxesHighlightGroup = document.querySelectorAll("input[type=checkbox][name=cbHighlight]");
+    var checkboxAND = document.querySelector("input[type=radio][name=cbHighlightProperty][value=and-group]");
+    var checkboxOR = document.querySelector("input[type=radio][name=cbHighlightProperty][value=or-group]");
+    var checkboxesHighlightGroup = document.querySelectorAll("input[name=cbHighlight]");
 
     let enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
     /*END SECTION checkboxes*/
@@ -993,7 +993,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .scaleExtent([0.1, 3])
         .on("zoom", zoom);
 
-    drawZoomValue(zoomListener.scale());
 
     // define the baseSvg, attaching a class for styling and the zoomListener
     var baseSvg = d3
@@ -1924,7 +1923,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 break;
 
             case "directory-1": //"All for one and one for all" we will draw the features inside of the circle, the targets outside will be hidden and the level of toxicity in blue
-                drawingAllInOne = true;
+                drawingAllInOne = false;
                 //Deletes the targets and draws them again but INSIDE of the node
                 // document.getElementById(
                 //     "feature-over-node-or-outside"
@@ -1933,16 +1932,17 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 drawFeatureAsGlyph(nodeEnter, "Bubble/", localPosition);
                 break;
             case "directory-2":
-                drawingAllInOne = true;
+                drawingAllInOne = false;
                 //Deletes the targets and draws them again but INSIDE of the node
                 // document.getElementById(
                 //     "feature-over-node-or-outside"
                 // ).style.display = "block"; //Show the dropdown menu
+                selectTargetVisualization(nodeEnter); //draw the targets if necessary
                 drawFeatureAsCircularGlyph(nodeEnter, "Circular/", localPosition);
                 break;
 
             case "new-circular":
-                drawingAllInOne = true;
+                drawingAllInOne = false;
                 //Deletes the targets and draws them again but INSIDE of the node
                 // document.getElementById(
                 //     "feature-over-node-or-outside"
@@ -1955,7 +1955,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 break;
 
             case "directory-3":
-                drawingAllInOne = true;
+                drawingAllInOne = false;
                 //Deletes the targets and draws them again but INSIDE of the node
                 // document.getElementById(
                 //     "feature-over-node-or-outside"
@@ -3448,52 +3448,60 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             });
         });
 
+
         //Listener related to highlighting nodes and edges
-        checkboxHighlightMenu.addEventListener("change", function () {
-            if (this.checked) {
-                checkboxesProperty.forEach(function (checkboxItem) {
-                    checkboxItem.removeAttribute("disabled");
-                });
-                checkboxesHighlightGroup.forEach(function (checkboxItem) {
-                    checkboxItem.removeAttribute("disabled");
-                });
-
-                if (
-                    !document.querySelector("input[value=and-group]").checked &&
-                    !document.querySelector("input[value=or-group]").checked
-                ) {
-                    document.querySelector("input[value=and-group]").checked = true;
-                    highlightNodesByPropertyAND(node, link);
-                } else {
-                    checkboxAND.checked ?
-                        highlightNodesByPropertyAND(node, link) :
-                        highlightNodesByPropertyOR(node, link);
-                    console.log(enabledHighlight);
-                }
-                getStatisticValues(node);
-                writeStatisticText();
-            } else {
-                console.log("We disable all checkboxes ...");
-                checkboxesProperty.forEach(function (checkboxItem) {
-                    checkboxItem.setAttribute("disabled", "disabled");
-                });
-                checkboxesHighlightGroup.forEach(function (checkboxItem) {
-                    checkboxItem.setAttribute("disabled", "disabled");
-                });
-
-                //We make all nodes and links visible again
-                node.style("opacity", 1);
-                link.style("opacity", 1);
-            }
-        });
+        // checkboxHighlightMenu.addEventListener("change", function () {
+        //     if (this.checked) {
+        //         checkboxesProperty.forEach(function (checkboxItem) {
+        //             checkboxItem.removeAttribute("disabled");
+        //         });
+        //         checkboxesHighlightGroup.forEach(function (checkboxItem) {
+        //             checkboxItem.removeAttribute("disabled");
+        //         });
+        //
+        //         if (
+        //             !document.querySelector("input[value=and-group]").checked &&
+        //             !document.querySelector("input[value=or-group]").checked
+        //         ) {
+        //             document.querySelector("input[value=and-group]").checked = true;
+        //             highlightNodesByPropertyAND(node, link);
+        //         } else {
+        //             checkboxAND.checked ?
+        //                 highlightNodesByPropertyAND(node, link) :
+        //                 highlightNodesByPropertyOR(node, link);
+        //             console.log(enabledHighlight);
+        //         }
+        //         getStatisticValues(node);
+        //         writeStatisticText();
+        //     } else {
+        //         console.log("We disable all checkboxes ...");
+        //         checkboxesProperty.forEach(function (checkboxItem) {
+        //             checkboxItem.setAttribute("disabled", "disabled");
+        //         });
+        //         checkboxesHighlightGroup.forEach(function (checkboxItem) {
+        //             checkboxItem.setAttribute("disabled", "disabled");
+        //         });
+        //
+        //         //We make all nodes and links visible again
+        //         node.style("opacity", 1);
+        //         link.style("opacity", 1);
+        //     }
+        // });
 
         // If AND is selected, uncheck the OR and highlight by property AND
         checkboxAND.addEventListener("change", function () {
             if (this.checked) {
                 checkboxOR.checked = false;
+                checkboxesHighlightGroup.forEach(function (checkboxItem) {
+                    checkboxItem.removeAttribute("checked");
+                });
+                // checkboxesHighlightGroup[0].setAttribute("checked", "checked");
                 highlightNodesByPropertyAND(node, link);
             } else {
                 checkboxOR.checked = true;
+                checkboxesHighlightGroup.forEach(function (checkboxItem) {
+                    checkboxItem.setAttribute("checked", "checked");
+                });
                 highlightNodesByPropertyOR(node, link);
             }
         });
@@ -3501,9 +3509,15 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         checkboxOR.addEventListener("change", function () {
             if (this.checked) {
                 checkboxAND.checked = false;
+                checkboxesHighlightGroup.forEach(function (checkboxItem) {
+                    checkboxItem.setAttribute("checked", "checked");
+                });
                 highlightNodesByPropertyOR(node, link);
             } else {
                 checkboxAND.checked = true;
+                checkboxesHighlightGroup.forEach(function (checkboxItem) {
+                    checkboxItem.removeAttribute("checked");
+                });
                 highlightNodesByPropertyAND(node, link);
             }
         });
@@ -3681,10 +3695,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         // Transition links to their new position.
         link.transition().duration(duration).attr("d", diagonal);
 
-        if (checkboxHighlightMenu.checked && source.children)
-            checkboxOR.checked ?
-                highlightNodesByPropertyOR(node, link) :
-                highlightNodesByPropertyAND(node, link);
+        // if (checkboxHighlightMenu.checked && source.children)
+        // checkboxOR.checked ?
+        highlightNodesByPropertyOR(node, link);
+        // highlightNodesByPropertyAND(node, link);
 
         // Transition exiting nodes to the parent's new position.
         link
@@ -3793,6 +3807,36 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
+    window.addEventListener('DOMContentLoaded', (event) => {
+        console.log('DOM fully loaded and parsed');
+        drawZoomValue(zoomListener.scale());
+        screenshotButton.addEventListener('click', function () {
+            // var ctx = canvas.getContext('2d');
+            // var data = (new XMLSerializer()).serializeToString(baseSvg.node());
+            // var DOMURL = window.URL || window.webkitURL || window;
+
+            // var img = new Image();
+            // var svgBlob = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
+            // var url = DOMURL.createObjectURL(svgBlob);
+
+            // img.onload = function () {
+            //     ctx.drawImage(img, 0, 0);
+            //     DOMURL.revokeObjectURL(url);
+
+            //     var imgURI = canvas
+            //         .toDataURL('image/png')
+            //         .replace('image/png', 'image/octet-stream');
+
+            //     triggerDownload(imgURI);
+            // };
+
+            // img.src = url;
+            console.log(baseSvg);
+            saveSvgAsPng(baseSvg.node(), "tree_image.png");
+        });
+    });
+
+
     // import saveSvgAsPng from './saveSvgAsPng.js';
 
     var screenshotButton = document.getElementById("screenshot_icon");
@@ -3812,31 +3856,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         a.dispatchEvent(evt);
     }
-
-    screenshotButton.addEventListener('click', function () {
-        // var ctx = canvas.getContext('2d');
-        // var data = (new XMLSerializer()).serializeToString(baseSvg.node());
-        // var DOMURL = window.URL || window.webkitURL || window;
-
-        // var img = new Image();
-        // var svgBlob = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
-        // var url = DOMURL.createObjectURL(svgBlob);
-
-        // img.onload = function () {
-        //     ctx.drawImage(img, 0, 0);
-        //     DOMURL.revokeObjectURL(url);
-
-        //     var imgURI = canvas
-        //         .toDataURL('image/png')
-        //         .replace('image/png', 'image/octet-stream');
-
-        //     triggerDownload(imgURI);
-        // };
-
-        // img.src = url;
-        console.log(baseSvg);
-        saveSvgAsPng(baseSvg.node(), "tree_image.png");
-    });
 
 
     // function saveSvg(svgEl, name) {

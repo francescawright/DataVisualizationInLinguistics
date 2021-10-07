@@ -55,7 +55,7 @@
         <li style="margin-bottom: 10px; margin-top: 10px;"><span>Layout</span><br></li>
         <li>
             <div style="align-items: center;" class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label id="tree_label" style="width: 75px; height:fit-content;"
+                <label id="tree_label" style="width: 100px; height:fit-content;"
                        {% if checked_layout == "tree" %}class="btn btn-primary active"
                        {% else %}class="btn btn-primary"{% endif %}>
                     <input type="radio" id="tree_layout_button" name="tree_layout_button" value="checked"
@@ -66,7 +66,7 @@
                     {#                    <img#}
                     {#                        src="{% static 'images/nav_bar/treeLayout.svg' %}" style="width: 45px;">#}
                 </label>
-                <label id="force_label" style="width: 75px; height:fit-content;"
+                <label id="force_label" style="width: 100px; height:fit-content;"
                        {% if checked_layout == "force" %}class="btn btn-primary active"
                        {% else %}class="btn btn-primary"{% endif %}>
                     <input type="radio" id="force_layout_button" form="main_form"
@@ -75,12 +75,21 @@
                     {#                    <img#}
                     {#                        src="{% static 'images/nav_bar/forceLayout.svg' %}" style="width: 45px;">#}
                 </label>
-                <label id="radial_label" style="width: 75px; height:fit-content;"
+                <label id="radial_label" style="width: 100px; height:fit-content;"
                        {% if checked_layout == "radial" %}class="btn btn-primary active"
                        {% else %}class="btn btn-primary"{% endif %}>
                     <input type="radio" id="radial_layout_button" form="main_form"
                            name="radial_layout_button" value="checked" autocomplete="off"
                            {% if checked_layout == "radial" %}checked{% endif %}>Radial
+                    {#                    <img#}
+                    {#                            src="{% static 'images/nav_bar/radialLayout.svg' %}" style="width: 45px;">#}
+                </label>
+                <label id="treeMap_label" style="width: 100px; height:fit-content;"
+                       {% if checked_layout == "treeMap" %}class="btn btn-primary active"
+                       {% else %}class="btn btn-primary"{% endif %}>
+                    <input type="radio" id="treeMap_layout_button" form="main_form"
+                           name="treeMap_layout_button" value="checked" autocomplete="off"
+                           {% if checked_layout == "TreeMap" %}checked{% endif %}>TreeMap
                     {#                    <img#}
                     {#                            src="{% static 'images/nav_bar/radialLayout.svg' %}" style="width: 45px;">#}
                 </label>
@@ -111,7 +120,7 @@
 
     <button id="add_layout_button"
             style="position: absolute; right: 75px; top: 25px; font-size: 20px; vertical-align: center;"
-            class="btn btn-primary"
+            class="btn btn-secondary"
             name="add_layout">
         +
     </button>
@@ -156,6 +165,8 @@
         document.getElementById("force_label").className = "btn btn-primary";
         $('#radial_layout_button').attr("checked", false);
         document.getElementById("radial_label").className = "btn btn-primary";
+        $('#treeMap_layout_button').attr("checked", false);
+        document.getElementById("treeMap_label").className = "btn btn-primary";
         $('#main_form').submit();
 
     });
@@ -167,6 +178,8 @@
         document.getElementById("force_label").className = "btn btn-primary active";
         $('#radial_layout_button').attr("checked", false);
         document.getElementById("radial_label").className = "btn btn-primary";
+        $('#treeMap_layout_button').attr("checked", false);
+        document.getElementById("treeMap_label").className = "btn btn-primary";
         $('#main_form').submit();
     });
 
@@ -177,6 +190,20 @@
         document.getElementById("force_label").className = "btn btn-primary";
         $(this).attr("checked", true);
         document.getElementById("radial_label").className = "btn btn-primary active";
+        $('#treeMap_layout_button').attr("checked", false);
+        document.getElementById("treeMap_label").className = "btn btn-primary";
+        $('#main_form').submit();
+    });
+
+    jQuery("#treeMap_layout_button").click(function () {
+        $('#tree_layout_button').attr("checked", false);
+        document.getElementById("tree_label").className = "btn btn-primary";
+        $('#force_layout_button').attr("checked", false);
+        document.getElementById("force_label").className = "btn btn-primary";
+        document.getElementById("radial_label").className = "btn btn-primary";
+        $('#radial_layout_button').attr("checked", false);
+        $(this).attr("checked", true);
+        document.getElementById("treeMap_label").className = "btn btn-primary active";
         $('#main_form').submit();
     });
 

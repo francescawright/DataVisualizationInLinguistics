@@ -43,3 +43,18 @@ class Commentary(models.Model):
         return f"Document id: {self.document_name} | Comment id: {self.comment_id} | User id: {self.user_id} | Date: {self.date} | " \
                f"Thread: {self.comment_level} | Toxicity Level: {self.toxicity_level} | " \
                f"Positive Stance: {self.positive_stance} | Negative Stance: {self.negative_stance}"
+
+
+from django.db import models
+
+
+class tbl_Authentication(models.Model):
+    Empcode = models.IntegerField()
+    username = models.CharField(max_length=50, default='')
+    password = models.CharField(max_length=50, default='')
+    is_active = models.IntegerField(null=True)
+
+    def __str__(self):
+        return self.username
+
+    empAuth_objects = models.Manager()

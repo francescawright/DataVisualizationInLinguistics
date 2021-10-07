@@ -683,10 +683,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     // var cbFeatureOutside = document.querySelector("input[type=checkbox][name=cbFeaturePositioning][value=node-outside]");
 
     // Select which properties and if an intersection or union of those
-    var checkboxHighlightMenu = document.querySelector("input[name=cbHighlightMenu]");
+    // var checkboxHighlightMenu = document.querySelector("input[name=cbHighlightMenu]");
     var checkboxesProperty = document.querySelectorAll("input[type=checkbox][name=cbHighlightProperty]");
-    var checkboxAND = document.querySelector("input[type=checkbox][name=cbHighlightProperty][value=and-group]");
-    var checkboxOR = document.querySelector("input[type=checkbox][name=cbHighlightProperty][value=or-group]");
+    var checkboxAND = document.querySelector("input[type=radio][name=cbHighlightProperty][value=and-group]");
+    var checkboxOR = document.querySelector("input[type=radio][name=cbHighlightProperty][value=or-group]");
     var checkboxesHighlightGroup = document.querySelectorAll("input[type=checkbox][name=cbHighlight]");
 
     // var checkboxStaticValues = document.querySelector("input[name=cbStaticValues]");
@@ -2665,34 +2665,34 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         });
 
         //Listener related to highlighting nodes and edges
-        checkboxHighlightMenu.addEventListener('change', function () {
-            if (this.checked) {
-                checkboxesProperty.forEach(function (checkboxItem) {
-                    checkboxItem.removeAttribute('disabled');
-                });
-                checkboxesHighlightGroup.forEach(function (checkboxItem) {
-                    checkboxItem.removeAttribute('disabled');
-                });
-
-                if (!document.querySelector("input[value=and-group]").checked && !document.querySelector("input[value=or-group]").checked) {
-                    document.querySelector("input[value=and-group]").checked = true;
-                    highlightNodesByPropertyAND(node, link);
-                } else {
-                    checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
-                    console.log(enabledHighlight);
-                }
-
-            } else { //We make all nodes and links visible again
-                checkboxesProperty.forEach(function (checkboxItem) {
-                    checkboxItem.setAttribute('disabled', 'disabled');
-                });
-                checkboxesHighlightGroup.forEach(function (checkboxItem) {
-                    checkboxItem.setAttribute('disabled', 'disabled');
-                });
-                node.style("opacity", 1);
-                link.style("opacity", 1);
-            }
-        });
+        // checkboxHighlightMenu.addEventListener('change', function () {
+        //     if (this.checked) {
+        //         checkboxesProperty.forEach(function (checkboxItem) {
+        //             checkboxItem.removeAttribute('disabled');
+        //         });
+        //         checkboxesHighlightGroup.forEach(function (checkboxItem) {
+        //             checkboxItem.removeAttribute('disabled');
+        //         });
+        //
+        //         if (!document.querySelector("input[value=and-group]").checked && !document.querySelector("input[value=or-group]").checked) {
+        //             document.querySelector("input[value=and-group]").checked = true;
+        //             highlightNodesByPropertyAND(node, link);
+        //         } else {
+        //             checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
+        //             console.log(enabledHighlight);
+        //         }
+        //
+        //     } else { //We make all nodes and links visible again
+        //         checkboxesProperty.forEach(function (checkboxItem) {
+        //             checkboxItem.setAttribute('disabled', 'disabled');
+        //         });
+        //         checkboxesHighlightGroup.forEach(function (checkboxItem) {
+        //             checkboxItem.setAttribute('disabled', 'disabled');
+        //         });
+        //         node.style("opacity", 1);
+        //         link.style("opacity", 1);
+        //     }
+        // });
 
         // If AND is selected, uncheck the OR and highlight by property AND
         checkboxAND.addEventListener('change', function () {
@@ -2837,7 +2837,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .attr("d", diagonal);
 
         //Highlight nodes if necessary NOTE: it needs to be after the definition of the link
-        if (checkboxHighlightMenu.checked && source.children) checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
+        // if (checkboxHighlightMenu.checked && source.children) checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
+        highlightNodesByPropertyOR(node, link);
 
         // Transition exiting nodes to the parent's new position.
         link.exit().transition()

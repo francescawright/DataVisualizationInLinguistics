@@ -10,9 +10,11 @@
 
 <body>
 
-{% include 'nav_bar.html' %}
 {% include 'sidebar_layouts.html' %}
+{% include 'nav_bar.html' %}
 <svg id="svg_treeMap" width="960" height="960"></svg>
+
+
 </body>
 
 <script>
@@ -39,4 +41,4 @@
 
 </style>
 <script src="https://d3js.org/d3.v4.min.js"></script>
-<script src="{% static 'js/cirleTreemap.js' %}"></script>
+<script src="{% static 'js/circleTreemap.js' %}"></script>

@@ -52,7 +52,7 @@
             <div id="target-checkbox-group" style="margin-top: 5px;background-color: #c9daf8ff; padding-bottom: 10px;">
 
                 <div class="list-group list-group-flush" style="width: 261px;">
-                    <button id="targets_accordion_button" type="button" class="accordion btn btn-primary active"><span
+                    <button id="targets_accordion_button" type="button" class="accordion btn btn-secondary active"><span
                             style="text-align: center; font-weight: bold; vertical-align: center;" checked>
                     Targets</span>
                         <div id="plus_sign_targets" style="float: right;">
@@ -69,9 +69,9 @@
                             <option value="ring-on-node">Rings on the node</option>
                         </select> -->
                         <div class="text-center">
-                            <input class="btn btn-info" type="button" name="Check_All" value="Check All"
+                            <input class="btn btn-secondary" type="button" name="Check_All" value="Check All"
                                    onClick="CheckAll(document.querySelectorAll('input[type=checkbox][name=cbTargets]'))">
-                            <input class="btn btn-info" type="button" name="Un_CheckAll" value="Uncheck All"
+                            <input class="btn btn-secondary" type="button" name="Un_CheckAll" value="Uncheck All"
                                    onClick="UnCheckAll(document.querySelectorAll('input[type=checkbox][name=cbTargets]'))">
                         </div>
 
@@ -117,7 +117,8 @@
                 {#                       form="dropdown_data"><label for="feature-group" style="font-weight: bold;">Show features</label>#}
 
                 <div class="list-group list-group-flush" style="width: 261px;">
-                    <button id="features_accordion_button" type="button" class="accordion btn btn-primary active"><span
+                    <button id="features_accordion_button" type="button"
+                            class="accordion btn btn-secondary active"><span
                             style="text-align: center; font-weight: bold; vertical-align: center;" checked>
                     Features</span>
                         <div id="plus_sign_features" style="float: right;">
@@ -156,11 +157,11 @@
                             </div>
                         </div>
                         <div class="text-center">
-                            <input class="btn btn-info" type="button" id="check_button_features"
+                            <input class="btn btn-secondary" type="button" id="check_button_features"
                                    name="check_button_features" value="Check All"
                                    disabled="true"
                                    onClick="CheckAll(document.querySelectorAll('input[type=checkbox][name=cbFeatures]'))">
-                            <input class="btn btn-info" type="button" id="uncheck_button_features"
+                            <input class="btn btn-secondary" type="button" id="uncheck_button_features"
                                    name="check_button_features" value="Uncheck All"
                                    disabled="true"
                                    onClick="UnCheckAll(document.querySelectorAll('input[type=checkbox][name=cbFeatures]'))">
@@ -277,7 +278,7 @@
                 <div>
                     <div class="list-group list-group-flush" style="width: 261px;">
                         <button id="highlight_accordion_button" type="button"
-                                class="accordion btn btn-primary active"><span
+                                class="accordion btn btn-secondary active"><span
                                 style="text-align: center; font-weight: bold; vertical-align: center;" checked>
                     Highlight node & edge</span>
                             <div id="plus_sign_highlight" style="float: right;">
@@ -285,33 +286,38 @@
                             </div>
                         </button>
                         <div style="padding-top: 10px;padding-left: 10px;" class="panel">
-                            <input type="checkbox" class="checkbox" name="cbHighlightMenu" value="highlight-group"
-                                   id="highlight-group-cb"><label for="highlight-group-cb" style="font-weight: bold;">Filter</label>
+                            {#                            <input type="checkbox" class="checkbox" name="cbHighlightMenu" value="highlight-group"#}
+                            {#                                   id="highlight-group-cb"><label for="highlight-group-cb" style="font-weight: bold;">Filter</label>#}
 
-                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                <label id="and_label" style="width: 75px; height:fit-content;"
-                                       class="btn btn-info active">
-                                    <input type="radio" name="options" id="and_button" autocomplete="off" checked> AND
-                                </label>
-                                <label id="or_label" style="width: 75px; height:fit-content;" class="btn btn-info">
-                                    <input type="radio" name="options" id="or_button" autocomplete="off"> OR
-                                </label>
+                            <div class="text-center">
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label id="and_label" style="width: 75px; height:fit-content;"
+                                           class="btn btn-secondary">
+                                        <input type="radio" name="cbHighlightProperty" value="and-group" id="and_button"
+                                               autocomplete="off"> AND
+                                    </label>
+                                    <label id="or_label" style="width: 75px; height:fit-content;"
+                                           class="btn btn-secondary active">
+                                        <input type="radio" name="cbHighlightProperty" value="or-group" id="or_button"
+                                               autocomplete="off" checked> OR
+                                    </label>
+                                </div>
                             </div>
-                            <div>
-                                <input type="checkbox" class="checkbox" name="cbHighlightProperty" value="and-group"
-                                       id="and-group" disabled="true"><label for="and-group">AND</label>
-                                <input type="checkbox" class="checkbox" name="cbHighlightProperty" value="or-group"
-                                       id="or-group" disabled="true"><label for="or-group">OR</label>
-                            </div>
+                            {#                            <div>#}
+                            {#                                <input type="checkbox" class="checkbox" name="cbHighlightProperty" value="and-group"#}
+                            {#                                       id="and-group" disabled="true"><label for="and-group">AND</label>#}
+                            {#                                <input type="checkbox" class="checkbox" name="cbHighlightProperty" value="or-group"#}
+                            {#                                       id="or-group" disabled="true"><label for="or-group">OR</label>#}
+                            {#                            </div>#}
                             <br>
 
-                            <div style="padding-top: 10px;">
+                            <div id="highlight_checks_AND" style="display: none;">
                                 <!--Toxicity level-->
                                 <div style="padding-top: 10px; padding-right: 10px">
                                     <div>
-                                        <input type="checkbox" class="checkbox" name="cbHighlight"
+                                        <input type="radio" class="radio" name="cbHighlight"
                                                value="highlight-toxicity-0" id="highlight-toxicity-0"
-                                               disabled="true"><label
+                                               checked><label
                                             for="highlight-toxicity-0">Not toxic</label>
                                         <div style="float: right">
                                             <svg height="20" width="30" style="display: inline-block;">
@@ -322,9 +328,9 @@
                                     </div>
 
                                     <div>
-                                        <input type="checkbox" class="checkbox" name="cbHighlight"
+                                        <input type="radio" class="radio" name="cbHighlight"
                                                value="highlight-toxicity-1" id="highlight-toxicity-1"
-                                               disabled="true"><label
+                                        ><label
                                             for="highlight-toxicity-1">Mildly toxic</label>
                                         <div style="float: right">
                                             <svg height="20" width="30" style="display: inline-block;">
@@ -335,9 +341,9 @@
                                     </div>
 
                                     <div>
-                                        <input type="checkbox" class="checkbox" name="cbHighlight"
+                                        <input type="radio" class="radio" name="cbHighlight"
                                                value="highlight-toxicity-2" id="highlight-toxicity-2"
-                                               disabled="true"><label
+                                        ><label
                                             for="highlight-toxicity-2">Toxic</label>
                                         <div style="float: right">
                                             <svg height="20" width="30" style="display: inline-block;">
@@ -348,9 +354,9 @@
                                     </div>
 
                                     <div>
-                                        <input type="checkbox" class="checkbox" name="cbHighlight"
+                                        <input type="radio" class="radio" name="cbHighlight"
                                                value="highlight-toxicity-3" id="highlight-toxicity-3"
-                                               disabled="true"><label
+                                        ><label
                                             for="highlight-toxicity-3">Very toxic</label>
                                         <div style="float: right">
                                             <svg height="20" width="30" style="display: inline-block;">
@@ -367,7 +373,7 @@
                                     <div>
                                         <input type="checkbox" class="checkbox" name="cbHighlight"
                                                value="highlight-neutral"
-                                               id="highlight-neutral" disabled="true"><label for="highlight-neutral">Neutral
+                                               id="highlight-neutral"><label for="highlight-neutral">Neutral
                                         stance</label>
                                         <div style="float: right">
                                             <svg height=" 10" width="30" style="display: inline-block;">
@@ -378,7 +384,7 @@
 
                                     <div>
                                         <input type="checkbox" class="checkbox" name="cbHighlight"
-                                               value="highlight-positive" id="highlight-positive" disabled="true"><label
+                                               value="highlight-positive" id="highlight-positive"><label
                                             for="highlight-positive">Positive stance</label>
                                         <div style="float: right">
                                             <svg height=" 10" width="30" style="display: inline-block;">
@@ -389,7 +395,7 @@
 
                                     <div>
                                         <input type="checkbox" class="checkbox" name="cbHighlight"
-                                               value="highlight-negative" id="highlight-negative" disabled="true"><label
+                                               value="highlight-negative" id="highlight-negative"><label
                                             for="highlight-negative">Negative stance</label>
                                         <div style="float: right">
                                             <svg height=" 10" width="30" style="display: inline-block;">
@@ -399,59 +405,222 @@
                                     </div>
 
                                 </div>
+                                <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
+
+
                                 <!--Target-->
                                 <div style="padding-top: 10px;">
                                     <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-group"
-                                           id="highlight-group" disabled="true"><label for="highlight-group">Target
+                                           id="highlight-group"><label for="highlight-group">Target
                                     group</label>
                                     <br>
                                     <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-person"
-                                           id="highlight-person" disabled="true"><label for="highlight-person">Target
+                                           id="highlight-person"><label for="highlight-person">Target
                                     person</label>
                                     <br>
                                     <input type="checkbox" class="checkbox" name="cbHighlight"
                                            value="highlight-stereotype"
-                                           id="highlight-stereotype" disabled="true"><label
+                                           id="highlight-stereotype"><label
                                         for="highlight-stereotype">Stereotype</label>
                                 </div>
+
+                                <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
+
                                 <!--Features-->
                                 <div style="padding-top: 10px;">
                                     <input type="checkbox" class="checkbox" name="cbHighlight"
                                            value="highlight-argumentation" id="highlight-argumentation"
-                                           disabled="true"><label
+                                    ><label
                                         for="highlight-argumentation">Argumentation</label>
                                     <br>
                                     <input type="checkbox" class="checkbox" name="cbHighlight"
                                            value="highlight-constructiveness" id="highlight-constructiveness"
-                                           disabled="true"><label
+                                    ><label
                                         for="highlight-constructiveness">Constructiveness</label>
                                     <br>
                                     <br>
                                     <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-sarcasm"
-                                           id="highlight-sarcasm" disabled="true"><label
+                                           id="highlight-sarcasm"><label
                                         for="highlight-sarcasm">Sarcasm</label>
                                     <br>
                                     <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-mockery"
-                                           id="highlight-mockery" disabled="true"><label
+                                           id="highlight-mockery"><label
                                         for="highlight-mockery">Mockery</label>
                                     <br>
                                     <input type="checkbox" class="checkbox" name="cbHighlight"
                                            value="highlight-intolerance"
-                                           id="highlight-intolerance" disabled="true"><label
+                                           id="highlight-intolerance"><label
                                         for="highlight-intolerance">Intolerance</label>
                                     <br>
                                     <input type="checkbox" class="checkbox" name="cbHighlight"
                                            value="highlight-improper-language" id="highlight-improper-language"
-                                           disabled="true"><label for="highlight-improper-language">Improper
+                                    ><label for="highlight-improper-language">Improper
                                     language</label>
                                     <br>
                                     <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-insult"
-                                           id="highlight-insult" disabled="true"><label
+                                           id="highlight-insult"><label
                                         for="highlight-insult">Insult</label>
                                     <br>
                                     <input type="checkbox" class="checkbox" name="cbHighlight"
                                            value="highlight-aggressiveness" id="highlight-aggressiveness"
-                                           disabled="true"><label for="highlight-aggressiveness">Aggressiveness</label>
+                                    ><label for="highlight-aggressiveness">Aggressiveness</label>
+                                    <br>
+                                </div>
+                            </div>
+
+                            <div id="highlight_checks_OR" style="display: block;">
+                                <!--Toxicity level-->
+                                <div style="padding-top: 10px; padding-right: 10px">
+                                    <div>
+                                        <input type="checkbox" class="checkbox" name="cbHighlight"
+                                               value="highlight-toxicity-0" id="highlight-toxicity-0"
+                                               checked><label
+                                            for="highlight-toxicity-0">Not toxic</label>
+                                        <div style="float: right">
+                                            <svg height="20" width="30" style="display: inline-block;">
+                                                <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                        fill="#f7f7f7"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <input type="checkbox" class="checkbox" name="cbHighlight"
+                                               value="highlight-toxicity-1" id="highlight-toxicity-1"
+                                               checked><label
+                                            for="highlight-toxicity-1">Mildly toxic</label>
+                                        <div style="float: right">
+                                            <svg height="20" width="30" style="display: inline-block;">
+                                                <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                        fill="#cccccc"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <input type="checkbox" class="checkbox" name="cbHighlight"
+                                               value="highlight-toxicity-2" id="highlight-toxicity-2"
+                                               checked><label
+                                            for="highlight-toxicity-2">Toxic</label>
+                                        <div style="float: right">
+                                            <svg height="20" width="30" style="display: inline-block;">
+                                                <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                        fill="#737373"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <input type="checkbox" class="checkbox" name="cbHighlight"
+                                               value="highlight-toxicity-3" id="highlight-toxicity-3"
+                                               checked><label
+                                            for="highlight-toxicity-3">Very toxic</label>
+                                        <div style="float: right">
+                                            <svg height="20" width="30" style="display: inline-block;">
+                                                <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                        fill="#000000"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
+
+                                <!--Stance-->
+                                <div style="padding-top: 10px;">
+                                    <div>
+                                        <input type="checkbox" class="checkbox" name="cbHighlight"
+                                               value="highlight-neutral"
+                                               id="highlight-neutral" checked><label for="highlight-neutral">Neutral
+                                        stance</label>
+                                        <div style="float: right">
+                                            <svg height=" 10" width="30" style="display: inline-block;">
+                                                <rect width="20" height="10" fill="#2b2727"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <input type="checkbox" class="checkbox" name="cbHighlight"
+                                               value="highlight-positive" id="highlight-positive" checked><label
+                                            for="highlight-positive">Positive stance</label>
+                                        <div style="float: right">
+                                            <svg height=" 10" width="30" style="display: inline-block;">
+                                                <rect width="20" height="10" fill="#77dd77"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <input type="checkbox" class="checkbox" name="cbHighlight"
+                                               value="highlight-negative" id="highlight-negative" checked><label
+                                            for="highlight-negative">Negative stance</label>
+                                        <div style="float: right">
+                                            <svg height=" 10" width="30" style="display: inline-block;">
+                                                <rect width="20" height="10" fill="#ff6961"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
+
+
+                                <!--Target-->
+                                <div style="padding-top: 10px;">
+                                    <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-group"
+                                           id="highlight-group" checked><label for="highlight-group">Target
+                                    group</label>
+                                    <br>
+                                    <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-person"
+                                           id="highlight-person" checked><label for="highlight-person">Target
+                                    person</label>
+                                    <br>
+                                    <input type="checkbox" class="checkbox" name="cbHighlight"
+                                           value="highlight-stereotype"
+                                           id="highlight-stereotype" checked><label
+                                        for="highlight-stereotype">Stereotype</label>
+                                </div>
+
+                                <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
+
+                                <!--Features-->
+                                <div style="padding-top: 10px;">
+                                    <input type="checkbox" class="checkbox" name="cbHighlight"
+                                           value="highlight-argumentation" id="highlight-argumentation"
+                                           checked><label
+                                        for="highlight-argumentation">Argumentation</label>
+                                    <br>
+                                    <input type="checkbox" class="checkbox" name="cbHighlight"
+                                           value="highlight-constructiveness" id="highlight-constructiveness"
+                                           checked><label
+                                        for="highlight-constructiveness">Constructiveness</label>
+                                    <br>
+                                    <br>
+                                    <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-sarcasm"
+                                           id="highlight-sarcasm" checked><label
+                                        for="highlight-sarcasm">Sarcasm</label>
+                                    <br>
+                                    <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-mockery"
+                                           id="highlight-mockery" checked><label
+                                        for="highlight-mockery">Mockery</label>
+                                    <br>
+                                    <input type="checkbox" class="checkbox" name="cbHighlight"
+                                           value="highlight-intolerance"
+                                           id="highlight-intolerance" checked><label
+                                        for="highlight-intolerance">Intolerance</label>
+                                    <br>
+                                    <input type="checkbox" class="checkbox" name="cbHighlight"
+                                           value="highlight-improper-language" id="highlight-improper-language"
+                                           checked><label for="highlight-improper-language">Improper
+                                    language</label>
+                                    <br>
+                                    <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-insult"
+                                           id="highlight-insult" checked><label
+                                        for="highlight-insult">Insult</label>
+                                    <br>
+                                    <input type="checkbox" class="checkbox" name="cbHighlight"
+                                           value="highlight-aggressiveness" id="highlight-aggressiveness"
+                                           checked><label for="highlight-aggressiveness">Aggressiveness</label>
                                     <br>
                                 </div>
                             </div>
@@ -597,41 +766,46 @@
 
     }
 
-    window.onload = function () {
-        var chk_targets = document.querySelectorAll('input[type=checkbox][name=cbTargets]');
-        var chk_features = document.querySelectorAll('input[type=checkbox][name=cbFeatures]');
+    /* window.onload = function () {
+         var chk_targets = document.querySelectorAll('input[type=checkbox][name=cbTargets]');
+         var chk_features = document.querySelectorAll('input[type=checkbox][name=cbFeatures]');
 
-        for (i = 0; i < chk_targets.length; i++) {
-            var evt = document.createEvent("HTMLEvents");
-            evt.initEvent("change", false, true);
-            chk_targets[i].dispatchEvent(evt);
-        }
+         for (i = 0; i < chk_targets.length; i++) {
+             var evt = document.createEvent("HTMLEvents");
+             evt.initEvent("change", false, true);
+             chk_targets[i].dispatchEvent(evt);
+         }
 
-        for (i = 0; i < chk_features.length; i++) {
-            var evt = document.createEvent("HTMLEvents");
-            evt.initEvent("change", false, true);
-            chk_features[i].dispatchEvent(evt);
-        }
+         for (i = 0; i < chk_features.length; i++) {
+             var evt = document.createEvent("HTMLEvents");
+             evt.initEvent("change", false, true);
+             chk_features[i].dispatchEvent(evt);
+         }
 
-        var chk_enable_features = document.getElementById("feature-group")
-        var evt = document.createEvent("HTMLEvents");
-        evt.initEvent("change", false, true);
-        chk_enable_features.dispatchEvent(evt);
-    };
+         var chk_enable_features = document.getElementById("feature-group")
+         var evt = document.createEvent("HTMLEvents");
+         evt.initEvent("change", false, true);
+         chk_enable_features.dispatchEvent(evt);
+     };*/
 
 
     jQuery("#and_button").click(function () {
         $(this).attr("checked", true);
-        document.getElementById("and_label").className = "btn btn-info active";
+        document.getElementById("and_label").className = "btn btn-secondary active";
         $('#or_button').attr("checked", false);
-        document.getElementById("or_label").className = "btn btn-info";
+        document.getElementById("or_label").className = "btn btn-secondary";
+
+        document.getElementById("highlight_checks_AND").style = "display: block;";
+        document.getElementById("highlight_checks_OR").style = "display: none;";
     });
 
     jQuery("#or_button").click(function () {
         $('#and_button').attr("checked", false);
-        document.getElementById("and_label").className = "btn btn-info";
+        document.getElementById("and_label").className = "btn btn-secondary";
         $(this).attr("checked", true);
-        document.getElementById("or_label").className = "btn btn-info active";
+        document.getElementById("or_label").className = "btn btn-secondary active";
+        document.getElementById("highlight_checks_AND").style = "display: none;";
+        document.getElementById("highlight_checks_OR").style = "display: block;";
     });
 
     var targets_accordion_expanded = false;
