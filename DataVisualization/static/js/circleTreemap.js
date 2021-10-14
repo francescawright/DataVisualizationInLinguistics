@@ -32,7 +32,7 @@ treeJSON = d3.json(dataset, function (error, root) {
 
     root = d3.hierarchy(root)
         .sum(function (d) {
-            console.log(d);
+            //console.log(d);
             switch (d.comment_level) {
                 //case 0:
                 //return colourToxicity0;
@@ -108,14 +108,17 @@ treeJSON = d3.json(dataset, function (error, root) {
         });
 });
 
+
 // Select which properties and if an intersection or union of those
 // let checkboxHighlightMenu = document.querySelector("input[name=cbHighlightMenu]");
+
 let checkboxesProperty = document.querySelectorAll("input[type=checkbox][name=cbHighlightProperty]");
 let checkboxAND = document.querySelector("input[type=radio][name=cbHighlightProperty][value=and-group]");
 let checkboxOR = document.querySelector("input[type=radio][name=cbHighlightProperty][value=or-group]");
 let checkboxesHighlightGroup = document.querySelectorAll("input[type=checkbox][name=cbHighlight]");
 
 let enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
+console.log('[User]', user.split('/')[2], '[interaction]', 'TreeMap_layout_loaded', '[Date]', new Date().toISOString());
 
 //Listeners
 
@@ -181,7 +184,12 @@ checkboxesHighlightGroup.forEach(function (checkboxItem) {
                 .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                 .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-        console.log(enabledHighlight);
+        //console.log(enabledHighlight);
+        if (checkboxItem.checked) {
+            console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+        } else {
+            console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+        }
         checkboxOR.checked ? highlightNodesByPropertyOR(node, enabledHighlight) : highlightNodesByPropertyAND(node, enabledHighlight);
     })
 });
@@ -246,7 +254,7 @@ function retrieveAttributeFromComment(d, propertyNameToRetrieve) {
             return d.positive_stance && d.negative_stance;
 
         default:
-            console.log("An attribute could not be retrieved because the key word did not match any case...");
+            //console.log("An attribute could not be retrieved because the key word did not match any case...");
             break;
     }
 }

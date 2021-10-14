@@ -97,27 +97,28 @@
         </li>
     </ul>
 
-    <!-- Glyphs Radio Buttons -->
-    <ul style="text-align: center; list-style-type: none; align-items: center; justify-content: center;">
-        <li style="margin-bottom: 10px; margin-top: 10px;"><span>Icons</span><br></li>
-        <li>
-            <div style="align-items: center;" class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label id="dots_label" style="width: 75px; height:fit-content;"
-                       {% if selected_icons == "dots" %}class="btn btn-primary active"
-                       {% else %}class="btn btn-primary"{% endif %}>
-                    <input type="radio" name="dots_icon_button" id="dots_icon_button" form="main_form"
-                           autocomplete="off" {% if selected_icons == "dots" %}checked{% endif %}> Dots
-                </label>
-                <label id="glyphs_label" style="width: 75px; height:fit-content;"
-                       {% if selected_icons == "glyphs" %}class="btn btn-primary active"
-                       {% else %}class="btn btn-primary"{% endif %}>
-                    <input type="radio" name="glyphs_icon_button" id="glyphs_icon_button" form="main_form"
-                           autocomplete="off" {% if selected_icons == "glyphs" %}checked{% endif %}> Glyphs
-                </label>
-            </div>
-        </li>
-    </ul>
-
+    {% if checked_layout != "treeMap" %}
+        <!-- Glyphs Radio Buttons -->
+        <ul style="text-align: center; list-style-type: none; align-items: center; justify-content: center;">
+            <li style="margin-bottom: 10px; margin-top: 10px;"><span>Icons</span><br></li>
+            <li>
+                <div style="align-items: center;" class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label id="dots_label" style="width: 75px; height:fit-content;"
+                           {% if selected_icons == "dots" %}class="btn btn-primary active"
+                           {% else %}class="btn btn-primary"{% endif %}>
+                        <input type="radio" name="dots_icon_button" id="dots_icon_button" form="main_form"
+                               autocomplete="off" {% if selected_icons == "dots" %}checked{% endif %}> Dots
+                    </label>
+                    <label id="glyphs_label" style="width: 75px; height:fit-content;"
+                           {% if selected_icons == "glyphs" %}class="btn btn-primary active"
+                           {% else %}class="btn btn-primary"{% endif %}>
+                        <input type="radio" name="glyphs_icon_button" id="glyphs_icon_button" form="main_form"
+                               autocomplete="off" {% if selected_icons == "glyphs" %}checked{% endif %}> Glyphs
+                    </label>
+                </div>
+            </li>
+        </ul>
+    {% endif %}
     <button id="add_layout_button"
             style="position: absolute; right: 75px; top: 25px; font-size: 20px; vertical-align: center;"
             class="btn btn-secondary"
@@ -213,6 +214,7 @@
         document.getElementById("dots_label").className = "btn btn-primary active";
         $('#glyphs_icon_button').attr("checked", false);
         document.getElementById("glyphs_label").className = "btn btn-primary";
+        console.log('[User]', user.split('/')[2], '[interaction]', 'dots_icons', '[Date]', new Date().toISOString());
     });
 
     jQuery("#glyphs_icon_button").click(function () {
@@ -220,6 +222,7 @@
         document.getElementById("dots_label").className = "btn btn-primary";
         $(this).attr("checked", true);
         document.getElementById("glyphs_label").className = "btn btn-primary active";
+        console.log('[User]', user.split('/')[2], '[interaction]', 'glyph_icons', '[Date]', new Date().toISOString());
     });
 
 

@@ -8,7 +8,7 @@
     }
 
     .overlay {
-        background-color: #EEE;
+        background-color: #eff4fc;
     }
 
     .node circle {
@@ -147,56 +147,15 @@
     var pf = "{% static 'images/features/' %}"
     var pr = "{% static 'images/' %}";
     var sel_item = "{% static selected_item %}";
+    var user = "{% static user %}";
 </script>
 
 
 <script src="{% static 'js/force_graph.js' %}"></script>
 <body>
-{% include 'sidebar_layouts.html' %}
 {% include 'nav_bar.html' %}
-
-
-<div id="tree-container" class="column2">
-
-    <div style="z-index: 50;">
-        <span style='font-size: 23px; position: absolute; right: 470px; top: 115px;'
-              class="my-statistic"> Summary of {{ selected_item }}</span>
-        <button id="static_values_button" class="btn btn-primary"
-                style="position: absolute; right: 420px; top: 150px; z-index: 1000">+
-        </button>
-    </div>
-    <div>
-        <button id="zoom_in_icon"
-                style="background: url('{% static './images/misc/zoom_in.svg' %}'); width: 35px; height: 35px; position: absolute; left: 300px; top: 1200px; border: none;">
-        </button>
-    </div>
-    <div>
-        <button id="zoom_out_icon"
-                style="background: url('{% static './images/misc/zoom_out.svg' %}'); width: 35px; height: 35px; position: absolute; left: 350px; top: 1200px; border: none;">
-        </button>
-    </div>
-    <div>
-        <button id="zoom_reset_icon"
-                style="background: url('{% static './images/misc/zoom_reset.svg' %}'); width: 35px; height: 35px; position: absolute; left: 400px; top: 1200px; border: none;">
-        </button>
-    </div>
-    <div>
-        <label id="zoom_level"
-               style="width: 350px; position: absolute; left: 450px; top: 1205px;">Zoom: </label>
-    </div>
-    <div>
-        <label id="position_x" style="width: 350px; position: absolute; left: 450px; top: 1225px;">X: </label>
-    </div>
-    <div>
-        <label id="position_y" style="width: 350px; position: absolute; left: 450px; top: 1245px;">Y: </label>
-    </div>
-    <div>
-        <button id="screenshot_icon"
-                style="background: url('{% static './images/misc/screenshot_icon.svg' %}'); width: 35px; height: 35px; position: absolute; left: 570px; top: 1200px; border: none;">
-        </button>
-    </div>
-</div>
-
+{% include 'sidebar_layouts.html' %}
+{#<canvas id="screenshot_canvas" style="width:2000px; height:2000px;"></canvas>#}
 </body>
 
 <!-- <script>

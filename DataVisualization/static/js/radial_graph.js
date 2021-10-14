@@ -28,7 +28,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
 //Graph
 const edgeLength = 22 * 20;
-const canvasHeight = 1200, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
+const canvasHeight = 1000, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
 
 
 /**
@@ -141,7 +141,7 @@ function highlightToxicityOR(node, enabledHighlight) {
     if (enabledHighlight.indexOf("highlight-toxicity-2") > -1) {
         node.filter(function (d) {
             if (d.toxicity_level === 2) d.highlighted = 1;
-            console.log(d);
+            //console.log(d);
             return (d.toxicity_level === 2);
         }).style("opacity", 1);
     }
@@ -150,7 +150,7 @@ function highlightToxicityOR(node, enabledHighlight) {
     if (enabledHighlight.indexOf("highlight-toxicity-3") > -1) {
         node.filter(function (d) {
             if (d.toxicity_level === 3) d.highlighted = 1;
-            console.log(d);
+            //console.log(d);
             return (d.toxicity_level === 3);
         }).style("opacity", 1);
     }
@@ -491,9 +491,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         colourNeutralStance = "#2b2727";
     var colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
         colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue", colourCollapsed1Son = "lightsteelblue";
-    var colorFeature = ["#a1d99b", "#31a354",
-        "#fee5d9", "#fcbba1", "#fc9272",
-        "#fb6a4a", "#de2d26", "#a50f15"];
+    var colorFeature = ["#1B8055", "#90F6B2",
+        "#97CFFF", "#1795FF", "#0B5696",
+        "#E3B7E8", "#A313B3", "#5E1566"
+    ];
 
     /* Root icon */
     var rootPath = pr;
@@ -595,7 +596,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 if (a._children?.length >= 5 || b._children?.length >= 5) separation = 3 / a.depth; // if 5 children or more collapsed
                 else separation = 1 / a.depth;
             }
-            console.log(a, b, separation);
+            //console.log(a, b, separation);
             return separation;
         })
         .sort(function (a, b) {
@@ -860,7 +861,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     var currentX = 200;
     var currentY = 200;
-    var currentScale = 0.2;
+    var currentScale = 0.5;
 
     /**
      * Define zoom and translation
@@ -906,7 +907,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .scaleExtent([0.1, 3])
         .on("zoom", zoom);
 
-    drawZoomValue(zoomListener.scale());
+    drawZoomValue(currentScale);
 
 
     // define the baseSvg, attaching a class for styling and the zoomListener
@@ -965,7 +966,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .duration(duration)
             .attr("transform", "translate(" + ((viewerWidth / 2) - zoomY) + "," + ((viewerHeight / 2) + zoomX) + ")");
 
-        console.log("LINK: origen:", link.source.name, " target: ", link.target.name);
+        // console.log("LINK: origen:", link.source.name, " target: ", link.target.name);
     }
 
     // Toggle children function
@@ -1009,7 +1010,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     function clickLink(l) {
         if (d3.event.defaultPrevented) return; // click suppressed
-        console.log("Link clicked");
+        //console.log("Link clicked");
         centerLink(l);
     }
 
@@ -1141,7 +1142,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     drawTargets(nodeEnter, "newOption1/")
                     break;
                 case "directory-2":
-                    drawTargets(nodeEnter, "newOption2/")
+                    drawTargets(nodeEnter, "NewCircular/")
                     break;
                 //draw as ring outside of the node
                 case "ring-on-node":
@@ -1153,7 +1154,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     break;
 
                 default:
-                    console.log("default option", option);
+                    //console.log("default option", option);
                     break;
             }
         }
@@ -1624,8 +1625,15 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      * */
     function selectFeatureVisualization(nodeEnter) {
         // var option = dropdownFeatures.value;
-        var option = dotsFeatures.checked ? "dots" : "directory-2";
+        var option = "dots";
 
+        if (dotsFeatures.checked) {
+            option = "dots";
+        }
+
+        if (glyphsFeatures.checked) {
+            option = "directory-2";
+        }
         // document.getElementById("feature-over-node-or-outside").style.display = "none"; //Hide the dropdown menu
         drawingAllInOne = false;
         var localPosition;
@@ -1652,7 +1660,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 drawingAllInOne = true;
                 //Deletes the targets and draws them again but INSIDE of the node
                 // document.getElementById("feature-over-node-or-outside").style.display = "block"; //Show the dropdown menu
-                drawFeatureAsCircularGlyph(nodeEnter, "Circular/", localPosition);
+                drawFeatureAsCircularGlyph(nodeEnter, "NewCircular/", localPosition);
                 break;
 
             case "directory-3":
@@ -1676,7 +1684,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 );
                 break;
             default:
-                console.log("default option", option);
+                //console.log("default option", option);
                 break;
         }
     }
@@ -2508,10 +2516,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 document.getElementById('static_values_button').innerHTML = '&#8722;';
                 static_values_checked = true;
                 statisticBackground.style("visibility", "visible").html(writeStatisticText());
+                console.log('[User]', user.split('/')[2], '[interaction]', 'show_summary', '[Date]', new Date().toISOString());
+
             } else {
                 document.getElementById('static_values_button').innerHTML = '&#43;'
                 static_values_checked = false;
                 statisticBackground.style("visibility", "hidden").html(writeStatisticText());
+                console.log('[User]', user.split('/')[2], '[interaction]', 'hide_summary', '[Date]', new Date().toISOString());
+
             }
         });
 
@@ -2524,7 +2536,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     Array.from(checkboxesTargets) // Convert checkboxes to an array to use filter and map.
                         .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
-
+                if (checkboxItem.checked) {
+                    console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                } else {
+                    console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                }
                 selectTargetVisualization(nodeEnter);
             })
         });
@@ -2659,7 +2675,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     Array.from(checkboxes) // Convert checkboxes to an array to use filter and map.
                         .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
-
+                if (checkboxItem.checked) {
+                    console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                } else {
+                    console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                }
                 selectFeatureVisualization(nodeEnter);
             })
         });
@@ -2722,6 +2742,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             zoomListener.scale(currentScale)
                 // .translate([2200 - currentX - currentScale, 900 - currentY - currentScale])
                 .event(svgGroup);
+            console.log('[User]', user.split('/')[2], '[interaction]', 'zoom_in', '[Date]', new Date().toISOString());
+
         });
         d3.select("#zoom_out_icon").on("click", function () {
             currentScale = Math.max(0.1, currentScale - 0.1);
@@ -2729,6 +2751,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             zoomListener.scale(currentScale)
                 // .translate([2200 - currentX + currentScale, 900 - currentY + currentScale])
                 .event(svgGroup);
+            console.log('[User]', user.split('/')[2], '[interaction]', 'zoom_out', '[Date]', new Date().toISOString());
         });
 
         d3.select("#zoom_reset_icon").on("click", function () {
@@ -2737,6 +2760,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             zoomListener.scale(currentScale)
                 .translate([currentX - currentScale, currentY - currentScale])
                 .event(svgGroup);
+            console.log('[User]', user.split('/')[2], '[interaction]', 'reset_zoom', '[Date]', new Date().toISOString());
+
         });
 
         // Use Array.forEach to add an event listener to each checkbox.
@@ -2747,7 +2772,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-                console.log(enabledHighlight);
+                //console.log(enabledHighlight);
+                if (checkboxItem.checked) {
+                    console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                } else {
+                    console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                }
                 checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
             })
         });
@@ -2870,7 +2900,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     update(root);
     //centerNode(root);
     var box = computeDimensions(nodes);
-    console.log("box containing Y ", box);
+
+    //console.log("box containing Y ", box);
 
     /**
      * Wrap call to compute statistics and to write them in a hover text
@@ -3017,10 +3048,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
     function drawZoomValue(zoomLevel) {
-        console.log("Zoom Level", zoomLevel);
+        //console.log("Zoom Level", zoomLevel);
         zoomLabel.textContent = "Zoom: " + (((zoomLevel - 0.1) / 2.9) * 100).toFixed(2) + '%';
-        XLabel.textContent = "X: " + currentX;
-        YLabel.textContent = "Y: " + currentY;
+        XLabel.textContent = "X: " + currentX.toFixed(0);
+        YLabel.textContent = "Y: " + currentY.toFixed(0);
     }
+
+    console.log('[User]', user.split('/')[2], '[interaction]', 'Radial_layout_loaded', '[Date]', new Date().toISOString());
+
 
 });
