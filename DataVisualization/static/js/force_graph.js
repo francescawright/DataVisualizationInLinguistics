@@ -1,29 +1,87 @@
 //Graph
-const canvasHeight = 1000, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
-const canvasFactor = 10;
+const canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
+const canvasFactor = 1.75;
+let link, node;
+
+//Zoom
+const minZoom = 0.05, maxZoom = 8; //Zoom range
+let currentZoomScale; //Current scale
+const initialZoomScale = 0.17; //Initial zoom scale to display almost the whole graph
+
+
+//Node radius
+const minNodeRadius = 30;
+const incrementRadiusFactorPerChild = 5;
+const dotRadius = 15;
+
+const colourToxicity0 = "#FAFFA8", colourToxicity1 = "#F8BB7C", colourToxicity2 = "#F87A54",
+    colourToxicity3 = "#7A1616", colourNewsArticle = "lightsteelblue";
+
+const colourArgumentation = "#1B8055", colourConstructiveness = "#90F6B2", colourSarcasm = "#97CFFF", colourMockery = "#1795FF",
+    colourIntolerance = "#0B5696", colourImproper = "#E3B7E8", colourInsult = "#A313B3", colourAggressiveness = "#5E1566";
+
+
+/**
+ * Set edge stroke width based on current zoom value
+ * */
+function getEdgeStrokeWidth(){
+    console.log("Zoom: ", currentZoomScale)
+    switch (true) {
+        case (currentZoomScale > 7 ):   return 1
+        case (currentZoomScale > 6):    return 2
+        case (currentZoomScale > 4):    return 3
+        case (currentZoomScale > 3):    return 4
+        case (currentZoomScale > 1):    return 5
+        case (currentZoomScale > 0.6):  return 6
+        case (currentZoomScale > 0.5):  return 7
+        case (currentZoomScale > 0.4):  return 8
+        case (currentZoomScale > 0.3):  return 9
+        case (currentZoomScale > 0.2):  return 10
+        case (currentZoomScale > 0.1):  return 11
+        case (currentZoomScale > 0.075):  return 15
+        case (currentZoomScale > 0):    return 20
+    }
+}
+
+function getNodeStrokeWidth(){
+    console.log("Zoom: ", currentZoomScale)
+    switch (true) {
+        case (currentZoomScale > 1):    return 1
+        case (currentZoomScale > 0.6):  return 2
+        case (currentZoomScale > 0.5):  return 3
+        case (currentZoomScale > 0.4):  return 4
+        case (currentZoomScale > 0.3):  return 5
+        case (currentZoomScale > 0.2):  return 6
+        case (currentZoomScale > 0.1):  return 7
+        case (currentZoomScale > 0.075):  return 8
+        case (currentZoomScale > 0):    return 10
+    }
+}
+
 
 /**
  * Compute the radius of the node based on the number of children it has
  * */
-function computeNodeRadius(d, edgeLength = 300) {
+function computeNodeRadius(d, edgeLength = 500) {
     /*
         If node has children,
         more than 2: new radius = 16 + 3 * (#children - 2)
         2 children: new radius = 16
         1 child: new radius = 13
-        0 children: new radius = 10
-    * */
-    d.radius = 10;
-    if (d.children == null && d._children == null) return d.radius; //If no children, radius = 10
+        0 children: new radius = 40
+    */
 
-    const children = d.children ?? d._children; //Assign children collapsed or not
+    d.radius = minNodeRadius;
+    if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 40
 
-    children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
-        : children.length === 2 ? d.radius = 16 //2 children
-            : d.radius = 13; //One child
+    let children = d.children ?? d._children; //Assign children collapsed or not
+
+
+    children.length > 2 ? d.radius = minNodeRadius + incrementRadiusFactorPerChild * children.length // more than 2 children
+        : children.length === 2 ? d.radius = minNodeRadius + incrementRadiusFactorPerChild * 2 //2 children
+        : d.radius = minNodeRadius + incrementRadiusFactorPerChild; //One child
     //Avoid the root node from being so large that overlaps/hides its children
-    if (d.parent === null && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
-
+    if (d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
     return d.radius;
 }
 
@@ -78,6 +136,7 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
 
     scale = Math.min(canvasWidth / boxWidth, canvasHeight / boxHeight);
 
+
     var newX = canvasWidth / 2.0,
         newY = canvasHeight / 2.0;
 
@@ -93,7 +152,8 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
 
     d3.select('g').transition()
         .duration(duration)
-        .attr("transform", "translate(" + newX + "," + newY + ")scale(" + scale + ")");
+        .attr("transform", "translate(" + newX + "," + newY + ")scale(" + initialZoomScale + ")");
+
 
     return {
         initialZoom: scale,
@@ -534,47 +594,48 @@ treeJSON = d3.json(dataset, function (error, json) {
      * Define zoom and translation
      * */
     function zoom() {
+
         /* The initial d3 events for scale and translation have initial values 1 and [x,y] = [50, 200] respectively
          * Therefore we need to take this into account and sum the difference to our initial scale and position attributes
          * defined in zoomToFit()
          * */
 
         /*
-         * NOTE: Add to the initial position values (initialX and initialY) the movement registered by d3.
-         * d3.event.translate returns an array [x,y] with starting values [50, 200]
-         * The values X and Y are swapped in zoomToFit() and we need to take that into account to give the new coordinates
-         * */
-        var movement = d3.event.translate;
-        var newX = initialX + (movement[1] - 200);
-        var newY = initialY + (movement[0] - 50);
-        currentX = newX;
-        currentY = newY;
-
+        * NOTE:
+        * If the scale is negative, we will see the graph upside-down and left-right swapped
+        * If the scale is 0, we will not see the graph
+        * Define the scale to be at least 0.1 and set it to the initialZoom + the difference of the listener and the d3.event initial scale
+        * */
+        let newScale = Math.max(initialZoomScale + (d3.event.scale - 1), 0.1); //Avoid the graph to be seen mirrored.
+        console.log("New scale is: ", initialZoomScale + (d3.event.scale - 1))
         /*
-         * NOTE:
-         * If the scale is negative, we will see the graph upside-down and left-right swapped
-         * If the scale is 0, we will not see the graph
-         * Define the scale to be at least 0.1 and set it to the initialZoom + the difference of the listener and the d3.event initial scale
-         * */
-
-
-        var newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1)
-
-        svgGroup.attr(
-            "transform",
-            "translate(" + [newY, newX] + ")scale(" + newScale + ")"
-        );
-        drawZoomValue(newScale);
+        * NOTE: Add to the initial position values (initialX and initialY) the movement registered by d3.
+        * d3.event.translate returns an array [x,y] with starting values [50, 200]
+        * The values X and Y are swapped in zoomToFit() and we need to take that into account to give the new coordinates
+        * */
+        let movement = d3.event.translate;
+        let newX = initialX + (movement[1]-200);
+        let newY = initialY + (movement[0]-50);
+        svgGroup.attr("transform", "translate(" + [newY, newX] + ")scale(" + newScale + ")");
+              drawZoomValue(newScale);
         currentScale = newScale;
+
     }
 
+    let zoomListener = d3.behavior.zoom().scaleExtent([minZoom, maxZoom]).on("zoom", function() {
+        currentZoomScale = d3.event.scale
+        link.style("stroke-width", getEdgeStrokeWidth()); //Enlarge stroke-width on zoom out
+        node.select("circle").style("stroke-width", getNodeStrokeWidth()); //Enlarge stroke-width on zoom out
+        zoom();
+    });
 
-    var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+
 
     /* Colours
     * */
     var colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
         colourNeutralStance = "#2b2727";
+
 
     var colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
         colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue", colourCollapsed = "Blue";
@@ -649,20 +710,24 @@ treeJSON = d3.json(dataset, function (error, json) {
     * approximated link distance, real distance depends on other factors
    * */
     let force = d3.layout.force()
-            .size([canvasWidth * canvasFactor, canvasHeight * canvasFactor])
-            .on("tick", tick)
-            //.friction(0.95)
-            .linkDistance(function (d) {
-                let length = 300 - d.source.depth * 10;
-                //console.log("depth", d.source.depth, "linkDistance: ", length, d)
-                return length > 80 ? length : 80;
-            })
-            .charge(-300)
-            /*.linkDistance(50)
-            .charge(-50)*/
-            .gravity(0) //Disable gravity
-        //.alpha(0.1)
-    ;
+        .size([canvasWidth*canvasFactor, canvasHeight*canvasFactor])
+        .on("tick", tick)
+        //.friction(0.95)
+        .linkDistance(function(d){
+            let length = 500 - d.source.depth * 10;
+            return length > 80 ? length : 80;
+        })
+        .charge(-300)
+        .gravity(0) //Disable gravity
+        ;
+
+
+    var drag = force.drag() //Define behaviour on drag
+        .on("dragstart", dragstart);
+
+    link = svg.selectAll("path.link");
+    node = svg.selectAll(".node");
+
 
 
     // Hover rectangle in which the information of a node is displayed
@@ -818,6 +883,7 @@ treeJSON = d3.json(dataset, function (error, json) {
     var objFeatArgumentation = {
             class: "featArgumentation",
             id: "featArgumentation",
+            color: colourArgumentation,
             selected: enabledFeatures.indexOf("argumentation"),
             x: cheeseX,
             y: cheeseY,
@@ -831,6 +897,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         objFeatConstructiveness = {
             class: "featConstructiveness",
             id: "featConstructiveness",
+            color: colourConstructiveness,
             selected: enabledFeatures.indexOf("constructiveness"),
             x: cheeseX,
             y: cheeseY,
@@ -844,6 +911,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         objFeatSarcasm = {
             class: "featSarcasm",
             id: "featSarcasm",
+            color: colourSarcasm,
             selected: enabledFeatures.indexOf("sarcasm"),
             x: cheeseX,
             y: cheeseY,
@@ -856,6 +924,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         objFeatMockery = {
             class: "featMockery",
             id: "featMockery",
+            color: colourMockery,
             selected: enabledFeatures.indexOf("mockery"),
             x: cheeseX,
             y: cheeseY,
@@ -869,6 +938,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         objFeatIntolerance = {
             class: "featIntolerance",
             id: "featIntolerance",
+            color: colourIntolerance,
             selected: enabledFeatures.indexOf("intolerance"),
             x: cheeseX,
             y: cheeseY,
@@ -882,6 +952,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         objFeatImproper = {
             class: "featImproper",
             id: "featImproper",
+            color: colourImproper,
             selected: enabledFeatures.indexOf("improper_language"),
             x: cheeseX,
             y: cheeseY,
@@ -895,6 +966,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         objFeatInsult = {
             class: "featInsult",
             id: "featInsult",
+            color: colourInsult,
             selected: enabledFeatures.indexOf("insult"),
             x: cheeseX,
             y: cheeseY,
@@ -908,6 +980,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         objFeatAggressiveness = {
             class: "featAggressiveness",
             selected: enabledFeatures.indexOf("aggressiveness"),
+            color: colourAggressiveness,
             id: "featAggressiveness",
             x: cheeseX,
             y: cheeseY,
@@ -1386,12 +1459,13 @@ treeJSON = d3.json(dataset, function (error, json) {
                 nodeEnter.append("circle")
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
-                    .attr("r", "4.5")
+                    .attr("r", dotRadius)
                     .attr("transform", function (d) {
-                        return "translate(" + ((d.radius + 5) * features[i].xDot) + "," + ((d.radius + 5) * features[i].yDot) + ")";
+                        return "translate(" + ((d.radius + dotRadius) * features[i].xDot ) + "," + ((d.radius + dotRadius) * features[i].yDot) + ")";
+
 
                     })
-                    .attr("fill", colorFeature[i])
+                    .attr("fill", features[i].color)
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
                     .attr("opacity", function (d) {
@@ -2156,7 +2230,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         }
         //Highlight only the edges whose both endpoints are highlighted
         link.style("opacity", function (d) {
-            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+            return (d.source.highlighted && d.target.highlighted) || (d.source.parent === null && d.target.highlighted) ? 1 : opacityValue;
         });
     }
 
@@ -2175,7 +2249,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
         //Highlight only the edges whose both endpoints are highlighted
         link.style("opacity", function (d) {
-            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+            return (d.source.highlighted && d.target.highlighted) || (d.source.parent === null && d.target.highlighted) ? 1 : opacityValue;
         });
     }
 
@@ -2394,16 +2468,13 @@ treeJSON = d3.json(dataset, function (error, json) {
         root.fixed = true;
         root.x = canvasWidth / 2;
         root.y = canvasHeight / 2;
-        //console.log("Root node", root)
+
 
         // Restart the force layout.
         force
             .nodes(nodes)
             .links(links);
 
-        //ToDo position nodes radially
-        //console.log("Before setting circular positions:")
-        //setCircularPositions(root, 0);
         force.start();
 
         // Update the links…
@@ -2434,13 +2505,12 @@ treeJSON = d3.json(dataset, function (error, json) {
                 else if (d.target.positive_stance === 1) return colourPositiveStance; //In favour
                 else if (d.target.negative_stance === 1) return colourNegativeStance; //Against
                 else return colourNeutralStance; //Neutral comment
-            });
+            })
+            .style("stroke-width",  getEdgeStrokeWidth());
 
 
         node = svgGroup.selectAll("g.node")
-            .data(nodes.sort(function (a, b) {
-                return d3.ascending(a.toxicity_level, b.toxicity_level); //ToDo: delete and just return the data
-            }), function (d) {
+            .data(nodes, function (d) {
                 return d.id;
             });
 
@@ -2465,8 +2535,6 @@ treeJSON = d3.json(dataset, function (error, json) {
                 }
             })
             .on("mousemove", function (d) {
-                //console.log("positions of node: ", d.name ,d.x, d.y);
-                ;
                 if (d !== root) {
 
                     return tooltip.style("top", (d3.event.pageY - 30) + "px").style("left", (d3.event.pageX - 480) + "px");
@@ -2490,21 +2558,18 @@ treeJSON = d3.json(dataset, function (error, json) {
                 return computeNodeRadius(d);
             })
             .style("fill", function (d) {
-                if (d._children && d._children.length === 1) return colourCollapsed;
                 switch (d.toxicity_level) {
-                    case 0:
-                        return colourToxicity0;
-                    case 1:
-                        return colourToxicity1;
-                    case 2:
-                        return colourToxicity2;
-                    case 3:
-                        return colourToxicity3;
-                    default:
-                        return colourNewsArticle;
+                    case 0: return colourToxicity0;
+                    case 1: return colourToxicity1;
+                    case 2: return colourToxicity2;
+                    case 3: return colourToxicity3;
+                    default: return colourNewsArticle;
                 }
             })
+            .style("stroke", "black")
+            .style("stroke-width", getNodeStrokeWidth())
             .style("z-index", 3);
+
         visualiseRootIcon(node); //Draw an icon for the root node
 
         visualiseRootIcon(node); //Draw an icon for the root node
@@ -2769,7 +2834,6 @@ treeJSON = d3.json(dataset, function (error, json) {
         // checkboxFeatureMenu.checked ? selectFeatureVisualization(node) : hideFeatureImages();
         //if (checkboxHighlightMenu.checked) checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
 
-
     } //END update
 
     function euclideanDistance(a, b) {
@@ -2890,13 +2954,15 @@ treeJSON = d3.json(dataset, function (error, json) {
     root = json;
     update();
 
+    force.alpha(1.5); //Restart the timer of the cooling parameter with a high value to reach better initial positioning
+
     //console.log("root number of children: ",root.children);
     //Try to center and zoom to fit the first initialization
     let box = computeDimensions(nodes);
     //console.log("box", box);
     let initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root);
 
-    //console.log("initial values: ", initialSight);
+
     initialZoom = initialSight.initialZoom;
     initialX = initialSight.initialX;
     initialY = initialSight.initialY;

@@ -27,29 +27,403 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
 
 //Graph
-const edgeLength = 22 * 20;
-const canvasHeight = 1000, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
+let link, node;
+const canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
+const edgeLength = 24 * 20;
 
+//Node radius
+const minNodeRadius = 15,  minRadius = 15;
+const incrementRadiusFactorPerChild = 5;
+
+//Features
+const dotRadius = 15;
+const cheeseX = 15, cheeseY = -10, cheeseHeight = 20, cheeseWidth = 20;
+
+//Images
+const targetIconHeight = 30, targetIconWidth = 30,
+    targetIconGroupX = -60, targetIconPersonX = -120, targetIconStereotypeX = -180,
+    targetIconY = -30; //Size and relative position of targets drawn as icons
+const imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
+
+//Zoom
+let currentZoomScale; //Current scale
+const minZoom = 0.05, maxZoom = 8; //Zoom range
+
+//Paths
+const pathTargets = pt;
+
+// Colours
+
+const colourToxicity0 = "#FAFFA8", colourToxicity1 = "#F8BB7C", colourToxicity2 = "#F87A54",
+    colourToxicity3 = "#7A1616", colourNewsArticle = "lightsteelblue";
+const colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
+    colourNeutralStance = "#2b2727";
+const colourArgumentation = "#1B8055", colourConstructiveness = "#90F6B2", colourSarcasm = "#97CFFF", colourMockery = "#1795FF",
+    colourIntolerance = "#0B5696", colourImproper = "#E3B7E8", colourInsult = "#A313B3", colourAggressiveness = "#5E1566";
+
+var colorFeature = ["#a1d99b", "#31a354",
+    "#fee5d9", "#fcbba1", "#fc9272",
+    "#fb6a4a", "#de2d26", "#a50f15"];
+
+// Objects for target images
+const objTargetGroup = {
+        class: "targetGroup",
+        id: "targetGroup",
+        name: "target-group",
+        x: -40,
+        y: -15,
+        xInside: -0.9,
+        yInside: -0.8,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Group.svg"
+    },
+    objTargetPerson = {
+        class: "targetPerson",
+        id: "targetPerson",
+        name: "target-person",
+        x: -80,
+        y: -15,
+        xInside: -0.5,
+        yInside: 0,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Person.svg"
+    },
+    objTargetStereotype = {
+        class: "targetStereotype",
+        id: "targetStereotype",
+        name:  "target-stereotype",
+        x: -120,
+        y: -15,
+        xInside: -0.1,
+        yInside: -0.8,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Stereotype.svg"
+    };
+
+// Objects for feature images
+const objFeatArgumentation = {
+        class: "featArgumentation",
+        id: "featArgumentation",
+        name: "argumentation",
+        color: colourArgumentation,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Argumentation.svg"
+    },
+    objFeatConstructiveness = {
+        class: "featConstructiveness",
+        id: "featConstructiveness",
+        name: "constructiveness",
+        color: colourConstructiveness,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Constructiveness.svg"
+    },
+    objFeatSarcasm = {
+        class: "featSarcasm",
+        id: "featSarcasm",
+        name: "sarcasm",
+        color: colourSarcasm,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Sarcasm.svg"
+    },
+    objFeatMockery = {
+        class: "featMockery",
+        id: "featMockery",
+        name: "mockery",
+        color: colourMockery,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Mockery.svg"
+    },
+    objFeatIntolerance = {
+        class: "featIntolerance",
+        id: "featIntolerance",
+        name: "intolerance",
+        color: colourIntolerance,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Intolerance.svg"
+    },
+    objFeatImproper = {
+        class: "featImproper",
+        id: "featImproper",
+        name: "improper_language",
+        color: colourImproper,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Improper.svg"
+    },
+    objFeatInsult = {
+        class: "featInsult",
+        id: "featInsult",
+        name: "insult",
+        color: colourInsult,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Insult.svg"
+    },
+    objFeatAggressiveness = {
+        class: "featAggressiveness",
+        id: "featAggressiveness",
+        name: "aggressiveness",
+        color: colourAggressiveness,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Aggressiveness.svg"
+    },
+    objFeatGray = {
+        class: "featGray",
+        id: "featGray",
+        name: "gray",
+        selected: 1,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Gray.png"
+    };
+
+
+/**
+ * Return the value of a property (set from the JSON) of the given node
+ *
+ * @param d Datum of a node
+ * @param {string} propertyNameToRetrieve The property whose value is returned
+ * */
+function retrieveAttributeFromComment(d, propertyNameToRetrieve){
+    switch (propertyNameToRetrieve) {
+        //Features
+        case "argumentation": return d.argumentation;
+        case "constructiveness": return d.constructiveness;
+        case "sarcasm": return d.sarcasm;
+        case "mockery": return d.mockery;
+        case "intolerance": return d.intolerance;
+        case "improper_language": return d.improper_language;
+        case "insult": return d.insult;
+        case "aggressiveness": return d.aggressiveness;
+        case "gray": return 1;
+        case "gray-ring": return 0.5;
+
+        //Targets
+        case "target-group": return  d.target_group;
+        case "target-person": return d.target_person;
+        case "target-stereotype": return d.stereotype;
+
+        //Toxicity
+        case "toxicity-0": return d.toxicity_level === 0 ? 1 : 0;
+        case "toxicity-1": return d.toxicity_level === 1 ? 1 : 0;
+        case "toxicity-2": return d.toxicity_level === 2 ? 1 : 0;
+        case "toxicity-3": return d.toxicity_level === 3 ? 1 : 0;
+
+        default:
+            console.log("An attribute could not be retrieved because the key word did not match any case...");
+            break;
+    }
+}
+
+/**
+ * Removes the features of the node given
+ * */
+function removeThisFeatures(nodeEnter) {
+    nodeEnter.selectAll("#featGray").remove();
+    nodeEnter.selectAll("#featArgumentation").remove();
+    nodeEnter.selectAll("#featConstructiveness").remove();
+    nodeEnter.selectAll("#featSarcasm").remove();
+    nodeEnter.selectAll("#featMockery").remove();
+    nodeEnter.selectAll("#featIntolerance").remove();
+    nodeEnter.selectAll("#featImproper").remove();
+    nodeEnter.selectAll("#featInsult").remove();
+    nodeEnter.selectAll("#featAggressiveness").remove();
+}
+
+
+function removeToxicities(nodeEnter) {
+    nodeEnter.selectAll("#toxicity0").remove();
+    nodeEnter.selectAll("#toxicity1").remove();
+    nodeEnter.selectAll("#toxicity2").remove();
+    nodeEnter.selectAll("#toxicity3").remove();
+}
+
+
+/**
+ * Draws a circle in an horizontal line at the right of the node
+ *
+ * @param {d3-node} nodeEnter Node to which we append the image
+ * @param {object} object The object of a property
+ * @param {number} itemOrder Order in which the circles is drawn (away from the node)
+ * */
+function drawObjectAsDot(nodeEnter, object, itemOrder) {
+    nodeEnter.append("circle")
+        .attr('class', object.class)
+        .attr('id', object.id)
+        .attr("r", dotRadius)
+        .attr("transform", function (d) {
+            return "translate(" + (d.radius + (itemOrder + 1) * (dotRadius*2)) + "," + 0 + ")";
+        })
+        .attr("fill", object.color)
+        .style("stroke", "black")
+        .style("stroke-width", "0.5px")
+        .attr("opacity", function (d) {
+            if (d.parent === undefined) return 0;
+            return retrieveAttributeFromComment(d, object.name);
+        });
+}
+/**
+ * Draw features as dots
+ * */
+function drawFeatureDots(nodeEnter, enabledFeatures){
+    removeThisFeatures(nodeEnter);
+    removeToxicities(nodeEnter); //Remove all the pngs for toxicity
+
+    let index = 0;
+    if(enabledFeatures.indexOf("argumentation") > -1) drawObjectAsDot(nodeEnter, objFeatArgumentation, index);
+    if(enabledFeatures.indexOf("constructiveness") > -1) drawObjectAsDot(nodeEnter, objFeatConstructiveness, ++index);
+
+    if(enabledFeatures.indexOf("sarcasm") > -1) drawObjectAsDot(nodeEnter, objFeatSarcasm, ++index);
+    if(enabledFeatures.indexOf("mockery") > -1) drawObjectAsDot(nodeEnter, objFeatMockery, ++index);
+    if(enabledFeatures.indexOf("intolerance") > -1) drawObjectAsDot(nodeEnter, objFeatIntolerance, ++index);
+
+    if(enabledFeatures.indexOf("improper_language") > -1)  drawObjectAsDot(nodeEnter, objFeatImproper, ++index);
+    if(enabledFeatures.indexOf("insult") > -1)  drawObjectAsDot(nodeEnter, objFeatInsult, ++index);
+    if(enabledFeatures.indexOf("aggressiveness") > -1)  drawObjectAsDot(nodeEnter, objFeatAggressiveness, ++index);
+}
+
+
+/**
+ * Remove all the target icon or images of the given node
+ * */
+function removeThisTargets(nodeEnter) {
+    nodeEnter.select("#targetGroup").remove();
+    nodeEnter.select("#targetPerson").remove();
+    nodeEnter.select("#targetStereotype").remove();
+    nodeEnter.select("#targetGray").remove();
+}
+
+/**
+ * Draw an image on the left side of a node displaced by object.x pixels
+ *
+ * @param {d3-node} nodeEnter Node to which we append the image
+ * @param {object} object The object of a property
+ * @param {string} path The path of the image
+ * */
+function drawObjectTargetOutside(nodeEnter, object, path){
+    nodeEnter.append("image")
+        .attr('class', object.class)
+        .attr('id', object.id)
+        .attr("x", function (d) {
+            return object.x - d.radius;
+        })
+        .attr("y", object.y)
+        .attr("height", object.height)
+        .attr("width", object.width)
+        .attr("href", path + object.fileName)
+        .attr("opacity", function (d) {
+            if (d.parent === undefined) return 0;
+            return retrieveAttributeFromComment(d, object.name);
+        });
+}
+
+/**
+ * Call to draw all the targets
+ *
+ * @param {d3-node} nodeEnter Node to which we append the image
+ * @param {string} path The path of the image
+ * @param {array} enabledTargets The array containing which checkboxes are selected
+ * @param {object} target The object containing the objects to draw
+ * @param {callback} draw The function to call to draw the object
+ * @param {number} percentage The percentage of the difference of radii between the node and the image
+ * */
+function drawTargetsGeneral(nodeEnter, path, enabledTargets, target, draw, percentage = imgRatio) {
+    if(enabledTargets.indexOf("target-group") > -1) draw(nodeEnter, target.group, path, percentage);
+    if(enabledTargets.indexOf("target-person") > -1) draw(nodeEnter, target.person, path, percentage);
+    if(enabledTargets.indexOf("target-stereotype") > -1) draw(nodeEnter, target.stereotype, path, percentage);
+}
+
+/**
+ * Draws the 3 targets of a node if the checkbox is checked
+ * and if the node has that target (sets the opacity to visible)
+ *
+ * The icon used is from the local path passed by parameter
+ * The css values are from the target objects that are icons
+ * */
+function drawTargetsOutside(nodeEnter, localPath, enabledTargets) {
+    removeThisTargets(nodeEnter);
+
+    let path = pathTargets + localPath;
+    let target = {group: objTargetGroup, person: objTargetPerson, stereotype: objTargetStereotype};
+    drawTargetsGeneral(nodeEnter, path, enabledTargets, target, drawObjectTargetOutside);
+
+        /*nodeEnter.append("image")
+            .attr("x", function (d) {
+                return - (d.radius + sizeImage(minRadius, 0) * (i + 1));
+            })
+            .attr("y", - minRadius)
+
+            .attr("height", function (d) {
+                return sizeImage(minRadius, 0);
+            })
+            .attr("width", function (d) {
+                return sizeImage(minRadius, 0);
+            })
+            ;*/
+}
+
+/**
+ * Set edge stroke width based on current zoom value
+ * */
+function getEdgeStrokeWidth(){
+    console.log("Current zoom is: ", currentZoomScale);
+    switch (true) {
+        case (currentZoomScale > 7 ):   return 1
+        case (currentZoomScale > 6):    return 2
+        case (currentZoomScale > 4):    return 3
+        case (currentZoomScale > 3):    return 4
+        case (currentZoomScale > 1):    return 5
+        case (currentZoomScale > 0.6):  return 6
+        case (currentZoomScale > 0.5):  return 7
+        case (currentZoomScale > 0.4):  return 8
+        case (currentZoomScale > 0.3):  return 9
+        case (currentZoomScale > 0.2):  return 10
+        case (currentZoomScale > 0.1):  return 11
+        case (currentZoomScale > 0.075):  return 15
+        case (currentZoomScale > 0):    return 20
+    }
+}
 
 /**
  * Compute the radius of the node based on the number of children it has
  * */
-function computeNodeRadius(d, edgeLength = 300, minRadius = 10) {
-    /*
-        If node has children,
-        more than 2: new radius = 16 + 3 * (#children - 2)
-        2 children: new radius = 16
-        1 child: new radius = 13
-        0 children: new radius = minRadius
-    * */
-    d.radius = minRadius;
-    if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 10
+function computeNodeRadius(d, edgeLength = 300) {
+    d.radius = minNodeRadius;
+    if (d.children === undefined && d._children === undefined) return d.radius; //No children
 
-    const children = d.children ?? d._children; //Assign children collapsed or not
+    let children = d.children ?? d._children; //Assign children collapsed or not
 
-    children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
-        : children.length === 2 ? d.radius = 16 //2 children
-            : d.radius = 13; //One child
+    children.length > 2 ? d.radius = minNodeRadius + incrementRadiusFactorPerChild * children.length // more than 2 children
+        : children.length === 2 ? d.radius = minNodeRadius + incrementRadiusFactorPerChild * 2 //2 children
+        : d.radius = minNodeRadius + incrementRadiusFactorPerChild; //One child
+
     //Avoid the root node from being so large that overlaps/hides its children
     if (d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
     return d.radius;
@@ -482,6 +856,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     var groupDrawn = false, personDrawn = false;
     var opacityValue = 0.2;
+
     var circleRadius = 8.7, minRadius = 10;
     const dotRadius = 10.5;
 
@@ -509,9 +884,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     /* Targets: size, position, local path, objects to draw the target as ring
     * */
     var drawingAllInOne = false; //if we are drawing all together or separated
-    var pathTargets = pt;
-    var targetIconHeight = 15, targetIconWidth = 15, targetIconGroupX = -30, targetIconPersonX = -50,
-        targetIconStereotypeX = -70, targetIconY = -10; //Size and relative position of targets drawn as icons
+
     var objTargetGroupRing = {
             class: "targetGroup",
             id: "targetGroup",
@@ -584,19 +957,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             if (a.depth === 0) separation = 1;
             else if (a.parent !== b.parent) separation = 2 / a.depth;
             else {
-                /*let aChildren, bChildren;
-                aChildren = a.children && a._children;
-                bChildren = b.children && b._children;
-                console.log(aChildren?.length, bChildren?.length);
-
-                if (aChildren?.length >= 5 || bChildren?.length >= 5) {
-                    console.log("Some node has 5 children or more!")
-                    separation = 3 / a.depth; // if 5 children or more collapsed
-                }*/
                 if (a._children?.length >= 5 || b._children?.length >= 5) separation = 3 / a.depth; // if 5 children or more collapsed
                 else separation = 1 / a.depth;
             }
-            //console.log(a, b, separation);
+
             return separation;
         })
         .sort(function (a, b) {
@@ -704,6 +1068,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     * */
     // var dropdownTargets = document.getElementById("dropdown-targets");
     var dropdownFeatures = document.getElementById("dropdown-features");
+
 
     var dotsFeatures = document.getElementById("dots_icon_button");
     var glyphsFeatures = document.getElementById("glyphs_icon_button");
@@ -867,47 +1232,23 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      * Define zoom and translation
      * */
     function zoom() {
-        /* The initial d3 events for scale and translation have initial values 1 and [x,y] = [50, 200] respectively
-         * Therefore we need to take this into account and sum the difference to our initial scale and position attributes
-         * defined in zoomToFit()
-         * */
-
-        /*
-         * NOTE: Add to the initial position values (initialX and initialY) the movement registered by d3.
-         * d3.event.translate returns an array [x,y] with starting values [50, 200]
-         * The values X and Y are swapped in zoomToFit() and we need to take that into account to give the new coordinates
-         * */
-        var movement = d3.event.translate;
-        var newX = 200 + (movement[1] - 200);
-        var newY = 200 + (movement[0] - 50);
-        currentX = newX;
-        currentY = newY;
-
-        /*
-         * NOTE:
-         * If the scale is negative, we will see the graph upside-down and left-right swapped
-         * If the scale is 0, we will not see the graph
-         * Define the scale to be at least 0.1 and set it to the initialZoom + the difference of the listener and the d3.event initial scale
-         * */
-
-
-        var newScale = Math.max(0.2 + (d3.event.scale - 1), 0.1)
-
-        svgGroup.attr(
-            "transform",
-            "translate(" + [newY, newX] + ")scale(" + newScale + ")"
-        );
-        drawZoomValue(newScale);
+        let newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1);
+        let movement = d3.event.translate;
+        let translatedX = initialX + movement[0]
+            translatedY = initialY + movement[1];
+        currentZoomScale = newScale;
+        link.style("stroke-width", getEdgeStrokeWidth()); //Enlarge stroke-width on zoom out
+        node.select("circle.nodeCircle").style("stroke-width", Math.max(getEdgeStrokeWidth() - 4, 1)); //Enlarge stroke-width on zoom out
+        svgGroup.attr("transform", "translate(" + [translatedX, translatedY] + ")scale(" + newScale + ")");
+              drawZoomValue(newScale);
         currentScale = newScale;
     }
 
-// define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
-    var zoomListener = d3.behavior
-        .zoom()
-        .scaleExtent([0.1, 3])
-        .on("zoom", zoom);
+    // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
+    var zoomListener = d3.behavior.zoom().scaleExtent([minZoom, maxZoom]).on("zoom", zoom);
+      drawZoomValue(currentScale);
 
-    drawZoomValue(currentScale);
+
 
 
     // define the baseSvg, attaching a class for styling and the zoomListener
@@ -1031,15 +1372,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         return 2 * nodeRadius * (1 - radiusPercentage / 100.0);
     }
 
-    /**
-     * Remove all the target icon or images of the given node
-     * */
-    function removeThisTargets(nodeEnter) {
-        nodeEnter.select("#targetGroup").remove();
-        nodeEnter.select("#targetPerson").remove();
-        nodeEnter.select("#targetStereotype").remove();
-        nodeEnter.select("#targetGray").remove();
-    }
 
     /**
      * Draws the 3 targets of a node if the checkbox is checked
@@ -1054,15 +1386,15 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var listOpacity;
         var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
 
-        for (var i = 0; i < targets.length; i++) {
+        for (let i = 0; i < targets.length; i++) {
             if (cbShowTargets[i] > -1) {
                 nodeEnter.append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
                     .attr("x", targets[i].x)
                     .attr("y", targets[i].y)
-                    .attr("height", targets[i].height)
-                    .attr("width", targets[i].width)
+                    .attr("height", 40)
+                    .attr("width", 40)
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
@@ -1132,7 +1464,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     drawTargets(nodeEnter, "icons/");
                     break;
                 case "icon-outside-node":
-                    drawTargetsOutside(nodeEnter, "icons/");
+                    drawTargetsOutside(nodeEnter, "icons/", enabledTargets);
                     break;
 
                 case "icon-on-node":
@@ -1161,18 +1493,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
 
-    /**
-     * Draws the 3 targets of a node if the checkbox is checked
-     * and if the node has that target (sets the opacity to visible)
-     *
-     * The icon used is from the local path passed by parameter
-     * The css values are from the target objects that are icons
-     * */
-    function drawTargetsOutside(nodeEnter, localPath) {
-        removeThisTargets(nodeEnter);
-        var cbShowTargets = [enabledTargets.indexOf("target-group"), enabledTargets.indexOf("target-person"), enabledTargets.indexOf("target-stereotype")];
-        var listOpacity;
-        var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
+
 
         for (var i = 0; i < targets.length; i++) {
             if (cbShowTargets[i] > -1) {
@@ -1308,30 +1629,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     /* SECTION: Draw features*/
 
-    /** Removes the pngs for the toxicities drawn
-     * */
-    function removeToxicities(nodeEnter) {
-        nodeEnter.selectAll("#toxicity0").remove();
-        nodeEnter.selectAll("#toxicity1").remove();
-        nodeEnter.selectAll("#toxicity2").remove();
-        nodeEnter.selectAll("#toxicity3").remove();
-    }
-
-    /**
-     * Removes the features of the node given
-     * */
-    function removeThisFeatures(nodeEnter) {
-        nodeEnter.selectAll("#featGray").remove();
-        nodeEnter.selectAll("#featArgumentation").remove();
-        nodeEnter.selectAll("#featConstructiveness").remove();
-        nodeEnter.selectAll("#featSarcasm").remove();
-        nodeEnter.selectAll("#featMockery").remove();
-        nodeEnter.selectAll("#featIntolerance").remove();
-        nodeEnter.selectAll("#featImproper").remove();
-        nodeEnter.selectAll("#featInsult").remove();
-        nodeEnter.selectAll("#featAggressiveness").remove();
-    }
-
     /**
      * Removes the features of all the nodes
      * */
@@ -1347,19 +1644,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         d3.selectAll("#featAggressiveness").remove();
     }
 
-    /**
-     * Delete the features of the node
-     * Redraw the features of the node
-     *
-     * Deleting the features firts helps us when the selected dropdown menu option changes
-     * */
-    function drawFeatureDots(nodeEnter) {
-        removeThisFeatures(nodeEnter);
-        removeToxicities(nodeEnter); //Remove all the pngs for toxicity
 
-        var cbFeatureEnabled = [enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
-            enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
-            enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness")];
 
         var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
         var listOpacity;
@@ -1642,7 +1927,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         switch (option) {
             case "dots":
                 selectTargetVisualization(nodeEnter); //draw the targets if necessary
-                drawFeatureDots(nodeEnter); //Always drawn on the right side
+                drawFeatureDots(nodeEnter, enabledFeatures); //Always drawn on the right side
                 break;
             case "trivial-cheese-on-node":
                 selectTargetVisualization(nodeEnter); //draw the targets if necessary
@@ -1719,6 +2004,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             }
         }
     }
+
 
     function drawFeatures(nodeEnter) {
         hideCheese();
@@ -1878,6 +2164,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }).append("image")
             .attr('class', objRoot.class)
             .attr('id', objRoot.id)
+
             .attr("x", positionImage(root.radius, 0))
             .attr("y", positionImage(root.radius, 0))
             .attr("height", sizeImage(root.radius, 0))
@@ -2448,9 +2735,15 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         nodes = tree.nodes(root).reverse();
         var links = tree.links(nodes);
 
+        const firstLevelEdgeLength = Math.max(
+            (root.children?.length || root._children?.length) * minNodeRadius / Math.PI,
+                    480) ;
         // Set widths between levels
         nodes.forEach(function (d) {
-            d.y = (d.depth * edgeLength);
+            let computedRadius = firstLevelEdgeLength + (d.depth - 1) * edgeLength;
+
+            if(d.depth === 1) console.log("First y: ", firstLevelEdgeLength, computedRadius );
+            d.depth === 1 ? d.y = firstLevelEdgeLength : d.y = computedRadius;
         });
 
         // Update the nodes…
@@ -2469,10 +2762,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 click(d);
             })
             .on('mouseover', function (d) {
-                //console.log("coordinates ", d.x, d.y);
                 //console.log("Before transforming coordenates: ", source.x0, source.y0);
                 var aux = (d.x < 0) ? 360 + d.x : d.x;
-                //console.log("something radial?", radialPoint(aux, d.y));
                 if (d !== root) {
                     writeTooltipText(d);
                     tooltip.style("visibility", "visible")
@@ -2631,31 +2922,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         //     }
         // });
 
-        //This needs to be commented or else it will draw things by default
-        /*        // if DOT is checked, uncheck OR
-                checkboxFeatureDot.addEventListener('change', function() {
-                    if (this.checked){
-                        checkboxFeatureCheese.checked = false;
-                        drawFeatures(nodeEnter);
-                    }
-                    else {
-                        checkboxFeatureCheese.checked = true;
-                        drawFeaturesCheese(nodeEnter);
-                    }
-
-                });
-                // if CHEESE is checked, uncheck AND
-                checkboxFeatureCheese.addEventListener('change', function() {
-                    if (this.checked) {
-                        checkboxFeatureDot.checked = false;
-                        drawFeaturesCheese(nodeEnter);
-                    }
-                    else {
-                        checkboxFeatureDot.checked = true;
-                        drawFeatures(nodeEnter);
-                    }
-                });*/
-
         // if DOT is checked, uncheck OR
         // cbFeatureInside.addEventListener('change', function () {
         //     this.checked ? cbFeatureOutside.checked = false : cbFeatureOutside.checked = true;
@@ -2800,23 +3066,16 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .attr("r", function (d) {
                 return computeNodeRadius(d);
             })
-            .style("fill", function (d) {
-                if (d._children && d._children.length === 1) return colourCollapsed1Son; //If it is collapsed and just has one children
-                else { //Otherwise, colour the node according to its level of toxicity
-                    switch (d.toxicity_level) {
-                        case 0:
-                            return colourToxicity0;
-                        case 1:
-                            return colourToxicity1;
-                        case 2:
-                            return colourToxicity2;
-                        case 3:
-                            return colourToxicity3;
-                        default:
-                            return colourNewsArticle;
-                    }
+            .style("fill", function (d) { //Colour the node according to its level of toxicity
+                switch (d.toxicity_level) {
+                    case 0: return colourToxicity0;
+                    case 1: return colourToxicity1;
+                    case 2: return colourToxicity2;
+                    case 3: return colourToxicity3;
+                    default: return colourNewsArticle;
                 }
-            });
+            })
+            .style("stroke-width", getEdgeStrokeWidth());
 
         visualiseRootIcon(node); //Draw an icon for the root node
 
@@ -2841,7 +3100,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
 
         // Update the links…
-        var link = svgGroup.selectAll("path.link")
+        link = svgGroup.selectAll("path.link")
             .data(links, function (d) {
                 return d.target.id;
             });
@@ -2859,7 +3118,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 else if (d.target.negative_stance === 1) return colourNegativeStance; //Against
                 else return colourNeutralStance; //Neutral comment
             })
-            .on('click', clickLink);
+            .on('click', clickLink)
+            .style("stroke-width", getEdgeStrokeWidth() );
 
         // Transition links to their new position.
         link.transition()
@@ -2901,8 +3161,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     //centerNode(root);
     var box = computeDimensions(nodes);
 
-    //console.log("box containing Y ", box);
-
+    //Set initial stroke widths
+    link.style("stroke-width", 11); //Enlarge stroke-width on zoom out
+    node.select("circle.nodeCircle").style("stroke-width", 3); //Enlarge stroke-width on zoom out
+ 
     /**
      * Wrap call to compute statistics and to write them in a hover text
      * */

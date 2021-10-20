@@ -25,6 +25,300 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
+//Graph
+let link, node;
+const edgeLength = 900;
+const separationHeight = 40; //Desired separation between two node brothers
+
+//Node radius
+const minNodeRadius = 40;
+const incrementRadiusFactorPerChild = 15;
+
+//Zoom
+let currentZoomScale; //Current scale
+const minZoom = 0.05, maxZoom = 8; //Zoom range
+
+//Images
+const targetIconHeight = 60, targetIconWidth = 60,
+    targetIconGroupX = -60, targetIconPersonX = -120, targetIconStereotypeX = -180,
+    targetIconY = -30; //Size and relative position of targets drawn as icons
+
+//Paths
+const rootPath = pr;
+const pathFeatures = pf;
+
+//Features
+const dotRadius = 30;
+const cheeseX = 15, cheeseY = -10, cheeseHeight = 20, cheeseWidth = 20;
+
+// Colours
+const colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
+    colourNeutralStance = "#2b2727";
+const colourArgumentation = "#1B8055", colourConstructiveness = "#90F6B2", colourSarcasm = "#97CFFF", colourMockery = "#1795FF",
+    colourIntolerance = "#0B5696", colourImproper = "#E3B7E8", colourInsult = "#A313B3", colourAggressiveness = "#5E1566";
+
+/*const colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
+    colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue", colourCollapsed1Son = "lightsteelblue";*/
+
+const colourToxicity0 = "#FAFFA8", colourToxicity1 = "#F8BB7C", colourToxicity2 = "#F87A54",
+    colourToxicity3 = "#7A1616", colourNewsArticle = "lightsteelblue";
+
+// Objects for target images
+const objTargetGroup = {
+        class: "targetGroup",
+        id: "targetGroup",
+        x: -60,
+        y: -30,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Group.svg"
+    },
+    objTargetPerson = {
+        class: "targetPerson",
+        id: "targetPerson",
+        x: -120,
+        y: -30,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Person.svg"
+    },
+    objTargetStereotype = {
+        class: "targetStereotype",
+        id: "targetStereotype",
+        x: -180,
+        y: -30,
+        height: targetIconHeight,
+        width: targetIconWidth,
+        fileName: "Stereotype.svg"
+    };
+
+// Objects for feature images
+const objFeatArgumentation = {
+        class: "featArgumentation",
+        id: "featArgumentation",
+        name: "argumentation",
+        color: colourArgumentation,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Argumentation.svg"
+    },
+    objFeatConstructiveness = {
+        class: "featConstructiveness",
+        id: "featConstructiveness",
+        name: "constructiveness",
+        color: colourConstructiveness,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Constructiveness.svg"
+    },
+    objFeatSarcasm = {
+        class: "featSarcasm",
+        id: "featSarcasm",
+        name: "sarcasm",
+        color: colourSarcasm,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Sarcasm.svg"
+    },
+    objFeatMockery = {
+        class: "featMockery",
+        id: "featMockery",
+        name: "mockery",
+        color: colourMockery,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Mockery.svg"
+    },
+    objFeatIntolerance = {
+        class: "featIntolerance",
+        id: "featIntolerance",
+        name: "intolerance",
+        color: colourIntolerance,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Intolerance.svg"
+    },
+    objFeatImproper = {
+        class: "featImproper",
+        id: "featImproper",
+        name: "improper_language",
+        color: colourImproper,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Improper.svg"
+    },
+    objFeatInsult = {
+        class: "featInsult",
+        id: "featInsult",
+        name: "insult",
+        color: colourInsult,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Insult.svg"
+    },
+    objFeatAggressiveness = {
+        class: "featAggressiveness",
+        id: "featAggressiveness",
+        name: "aggressiveness",
+        color: colourAggressiveness,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Aggressiveness.svg"
+    },
+    objFeatGray = {
+        class: "featGray",
+        id: "featGray",
+        name: "gray",
+        selected: 1,
+        x: cheeseX,
+        y: cheeseY,
+        height: cheeseHeight,
+        width: cheeseWidth,
+        fileName: "Gray.png"
+    };
+
+/**
+ * Return the value of a property (set from the JSON) of the given node
+ *
+ * @param d Datum of a node
+ * @param {string} propertyNameToRetrieve The property whose value is returned
+ * */
+function retrieveAttributeFromComment(d, propertyNameToRetrieve){
+    switch (propertyNameToRetrieve) {
+        //Features
+        case "argumentation": return d.argumentation;
+        case "constructiveness": return d.constructiveness;
+        case "sarcasm": return d.sarcasm;
+        case "mockery": return d.mockery;
+        case "intolerance": return d.intolerance;
+        case "improper_language": return d.improper_language;
+        case "insult": return d.insult;
+        case "aggressiveness": return d.aggressiveness;
+        case "gray": return 1;
+        case "gray-ring": return 0.5;
+
+        //Targets
+        case "target-group": return  d.target_group;
+        case "target-person": return d.target_person;
+        case "target-stereotype": return d.stereotype;
+
+        //Toxicity
+        case "toxicity-0": return d.toxicity_level === 0 ? 1 : 0;
+        case "toxicity-1": return d.toxicity_level === 1 ? 1 : 0;
+        case "toxicity-2": return d.toxicity_level === 2 ? 1 : 0;
+        case "toxicity-3": return d.toxicity_level === 3 ? 1 : 0;
+
+        default:
+            console.log("An attribute could not be retrieved because the key word did not match any case...");
+            break;
+    }
+}
+
+/**
+ * Removes the features of the node given
+ * */
+function removeThisFeatures(nodeEnter) {
+    nodeEnter.selectAll("#featGray").remove();
+    nodeEnter.selectAll("#featArgumentation").remove();
+    nodeEnter.selectAll("#featConstructiveness").remove();
+    nodeEnter.selectAll("#featSarcasm").remove();
+    nodeEnter.selectAll("#featMockery").remove();
+    nodeEnter.selectAll("#featIntolerance").remove();
+    nodeEnter.selectAll("#featImproper").remove();
+    nodeEnter.selectAll("#featInsult").remove();
+    nodeEnter.selectAll("#featAggressiveness").remove();
+}
+
+
+function removeToxicities(nodeEnter) {
+    nodeEnter.selectAll("#toxicity0").remove();
+    nodeEnter.selectAll("#toxicity1").remove();
+    nodeEnter.selectAll("#toxicity2").remove();
+    nodeEnter.selectAll("#toxicity3").remove();
+}
+
+
+/**
+ * Draws a circle in an horizontal line at the right of the node
+ *
+ * @param {d3-node} nodeEnter Node to which we append the image
+ * @param {object} object The object of a property
+ * @param {number} itemOrder Order in which the circles is drawn (away from the node)
+ * */
+function drawObjectAsDot(nodeEnter, object, itemOrder) {
+    nodeEnter.append("circle")
+        .attr('class', object.class)
+        .attr('id', object.id)
+        .attr("r", dotRadius)
+        .attr("transform", function (d) {
+            return "translate(" + (d.radius + (itemOrder + 1) * (dotRadius*2)) + "," + 0 + ")";
+        })
+        .attr("fill", object.color)
+        .style("stroke", "black")
+        .style("stroke-width", "0.5px")
+        .attr("opacity", function (d) {
+            if (d.parent === undefined) return 0;
+            return retrieveAttributeFromComment(d, object.name);
+        });
+}
+
+/**
+ * Draw features as dots
+ * */
+function drawFeatureDots(nodeEnter, enabledFeatures){
+    removeThisFeatures(nodeEnter);
+    removeToxicities(nodeEnter); //Remove all the pngs for toxicity
+
+    let index = 0;
+    if(enabledFeatures.indexOf("argumentation") > -1) drawObjectAsDot(nodeEnter, objFeatArgumentation, index);
+    if(enabledFeatures.indexOf("constructiveness") > -1) drawObjectAsDot(nodeEnter, objFeatConstructiveness, ++index);
+
+    if(enabledFeatures.indexOf("sarcasm") > -1) drawObjectAsDot(nodeEnter, objFeatSarcasm, ++index);
+    if(enabledFeatures.indexOf("mockery") > -1) drawObjectAsDot(nodeEnter, objFeatMockery, ++index);
+    if(enabledFeatures.indexOf("intolerance") > -1) drawObjectAsDot(nodeEnter, objFeatIntolerance, ++index);
+
+    if(enabledFeatures.indexOf("improper_language") > -1)  drawObjectAsDot(nodeEnter, objFeatImproper, ++index);
+    if(enabledFeatures.indexOf("insult") > -1)  drawObjectAsDot(nodeEnter, objFeatInsult, ++index);
+    if(enabledFeatures.indexOf("aggressiveness") > -1)  drawObjectAsDot(nodeEnter, objFeatAggressiveness, ++index);
+}
+
+/**
+ * Set edge stroke width based on current zoom value
+ * */
+function getEdgeStrokeWidth(){
+    switch (true) {
+        case (currentZoomScale > 7 ):   return 1
+        case (currentZoomScale > 6):    return 2
+        case (currentZoomScale > 4):    return 3
+        case (currentZoomScale > 3):    return 4
+        case (currentZoomScale > 1):    return 5
+        case (currentZoomScale > 0.6):  return 6
+        case (currentZoomScale > 0.5):  return 7
+        case (currentZoomScale > 0.4):  return 8
+        case (currentZoomScale > 0.3):  return 9
+        case (currentZoomScale > 0.2):  return 10
+        case (currentZoomScale > 0.1):  return 11
+        case (currentZoomScale > 0.075):  return 15
+        case (currentZoomScale > 0):    return 20
+    }
+}
+
 /**
  * Compute the radius of the node based on the number of children it has
  * */
@@ -34,18 +328,18 @@ function computeNodeRadius(d, edgeLength = 300) {
         more than 2: new radius = 16 + 3 * (#children - 2)
         2 children: new radius = 16
         1 child: new radius = 13
-        0 children: new radius = 10
-    * */
-    d.radius = 10;
-    if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 10
+        0 children: new radius = 40
+    */
 
-    var children = d.children ?? d._children; //Assign children collapsed or not
+    d.radius = minNodeRadius;
+    if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 40
 
-    children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
-        :
-        children.length === 2 ? d.radius = 16 //2 children
-            :
-            d.radius = 13; //One child
+    let children = d.children ?? d._children; //Assign children collapsed or not
+
+    children.length > 2 ? d.radius = minNodeRadius + incrementRadiusFactorPerChild * children.length // more than 2 children
+        : children.length === 2 ? d.radius = minNodeRadius + incrementRadiusFactorPerChild * 2 //2 children
+        : d.radius = minNodeRadius + incrementRadiusFactorPerChild; //One child
+
     //Avoid the root node from being so large that overlaps/hides its children
     if (d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
     return d.radius;
@@ -123,6 +417,8 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
         .duration(duration)
         .attr("transform", "translate(" + (newX + root.radius * scale) + "," + newY + ")scale(" + scale + ")");
 
+    currentZoomScale = scale; //Set first initial zoom scale to draw stroke widths
+
     return {
         initialZoom: scale,
         initialY: newX,
@@ -130,26 +426,7 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
     }
 }
 
-var rootPath = pr;
-var colourUnhighlightedToxicity0 = "#f0f0f0",
-    colourUnhighlightedToxicity1 = "#d6d6d6",
-    colourUnhighlightedToxicity2 = "#ababab",
-    colourUnhighlightedToxicity3 = "#6b6b6b",
-    colourUnhighlightedCollapsed1Son = "cfdbeb";
 
-function colourUnhighlightedNode(d) {
-    if (d._children?.length === 1) return colourUnhighlightedCollapsed1Son;
-    switch (d.toxicity_level) {
-        case 0:
-            return colourUnhighlightedToxicity0;
-        case 1:
-            return colourUnhighlightedToxicity1;
-        case 2:
-            return colourUnhighlightedToxicity2;
-        case 3:
-            return colourUnhighlightedToxicity3;
-    }
-}
 
 /**
  * Highlights nodes by category of Toxicity
@@ -522,130 +799,228 @@ function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2) {
 // Get JSON data
 treeJSON = d3.json(dataset, function (error, treeData) {
 
-    // Calculate total nodes, max label length
-    var totalNodes = 0;
-    var edgeLength = 300;
+        // Calculate total nodes, max label length
+        var totalNodes = 0;
 
-    // Misc. variables
-    var i = 0;
-    var duration = 750;
-    var root, rootName = "News Article";
-    var nodes;
-
-    /* Colours
-     * */
-    var colourBothStances = "#FFA500",
-        colourPositiveStance = "#77dd77",
-        colourNegativeStance = "#ff6961",
-        colourNeutralStance = "#2b2727";
-
-    var colourToxicity0 = "#f7f7f7",
-        colourToxicity1 = "#cccccc",
-        colourToxicity2 = "#737373",
-        colourToxicity3 = "#000000",
-        colourNewsArticle = "lightsteelblue",
-        colourCollapsed1Son = "lightsteelblue";
+        // Misc. variables
+        var i = 0;
+        var duration = 750;
+        var root, rootName = "News Article";
+        var nodes;
 
 
-    var objRoot = {
-        class: "rootNode",
-        id: "rootNode",
-        fileName: "root.png"
-    };
-    var imageOffset = 4; //Radii size difference between a node and its associated image
-    var imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
-
-    var colorFeature = ["#1B8055", "#90F6B2",
-        "#97CFFF", "#1795FF", "#0B5696",
-        "#E3B7E8", "#A313B3", "#5E1566"
-    ];
-
-    /* Targets: size, position, local path, objects to draw the target as ring
-     * */
-    var targetIconHeight = 15,
-        targetIconWidth = 15,
-        targetIconGroupX = -30,
-        targetIconPersonX = -50,
-        targetIconStereotypeX = -70,
-        targetIconY = -10; //Size and relative position of targets drawn as icons
-    var pathTargets = pt;
-
-    var objTargetGroupRing = {
-            class: "targetGroup",
-            id: "targetGroup",
-            x: -10,
-            y: -10,
-            height: 20,
-            width: 20,
-            fileName: "Group.png"
-        },
-        objTargetPersonRing = {
-            class: "targetPerson",
-            id: "targetPerson",
-            x: -10,
-            y: -10,
-            height: 20,
-            width: 20,
-            fileName: "Person.png"
-        },
-        objTargetStereotypeRing = {
-            class: "targetStereotype",
-            id: "targetStereotype",
-            x: -10,
-            y: -10,
-            height: 20,
-            width: 20,
-            fileName: "Stereotype.png"
-        },
-        objTargetGrayRing = {
-            class: "targetGray",
-            id: "targetGray",
-            x: -10,
-            y: -10,
-            height: 20,
-            width: 20,
-            fileName: "Gray.png"
+        var objRoot = {
+            class: "rootNode",
+            id: "rootNode",
+            fileName: "root.png"
         };
+        var imageOffset = 4; //Radii size difference between a node and its associated image
+        var imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
 
-    /* Features: size, position, local path
-     * */
-    var cheeseX = 15,
-        cheeseY = -10,
-        cheeseHeight = 20,
-        cheeseWidth = 20;
-    var pathFeatures = pf;
+        var colorFeature = ["#a1d99b", "#31a354",
+            "#fee5d9", "#fcbba1", "#fc9272",
+            "#fb6a4a", "#de2d26", "#a50f15"];
 
-    // Objects for toxicities for Ecem tests
-    var objToxicity0 = {
-            class: "toxicity0",
-            id: "toxicity0",
-            selected: 1,
-            fileName: "Level0.svg"
-        },
-        objToxicity1 = {
-            class: "toxicity1",
-            id: "toxicity1",
-            selected: 1,
-            fileName: "Level1.svg"
-        },
-        objToxicity2 = {
-            class: "toxicity2",
-            id: "toxicity2",
-            selected: 1,
-            fileName: "Level2.svg"
-        },
-        objToxicity3 = {
-            class: "toxicity3",
-            id: "toxicity3",
-            selected: 1,
-            fileName: "Level3.svg"
-        };
-    var drawingAllInOne = false; //if we are drawing all together or separated
+        /* Targets: size, position, local path, objects to draw the target as ring
+        * */
+        var pathTargets = pt;
+
+        var objTargetGroupRing = {
+                class: "targetGroup",
+                id: "targetGroup",
+                x: -10,
+                y: -10,
+                height: 20,
+                width: 20,
+                fileName: "Group.png"
+            },
+            objTargetPersonRing = {
+                class: "targetPerson",
+                id: "targetPerson",
+                x: -10,
+                y: -10,
+                height: 20,
+                width: 20,
+                fileName: "Person.png"
+            },
+            objTargetStereotypeRing = {
+                class: "targetStereotype",
+                id: "targetStereotype",
+                x: -10,
+                y: -10,
+                height: 20,
+                width: 20,
+                fileName: "Stereotype.png"
+            },
+            objTargetGrayRing = {
+                class: "targetGray",
+                id: "targetGray",
+                x: -10,
+                y: -10,
+                height: 20,
+                width: 20,
+                fileName: "Gray.png"
+            };
 
 
-    // size of the diagram
-    var viewerWidth = 100;
-    var viewerHeight = 400;
+        // Objects for toxicities for Ecem tests
+        var objToxicity0 = {class: "toxicity0", id: "toxicity0", selected: 1, fileName: "Level0.svg"},
+            objToxicity1 = {class: "toxicity1", id: "toxicity1", selected: 1, fileName: "Level1.svg"},
+            objToxicity2 = {class: "toxicity2", id: "toxicity2", selected: 1, fileName: "Level2.svg"},
+            objToxicity3 = {class: "toxicity3", id: "toxicity3", selected: 1, fileName: "Level3.svg"};
+        var drawingAllInOne = false; //if we are drawing all together or separated
+
+
+        // size of the diagram
+        var viewerWidth = 100;
+        var viewerHeight = 400;
+
+        var canvasHeight = 900, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
+        var initialZoom, initialX, initialY; //Initial zoom and central coordinates of the first visualization of the graph
+
+
+        var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
+
+        var opacityValue = 0.2; // Opacity when a value is not highlighted
+        var tooltipText; // The variable displaying the information of a node inside a floating rectangle
+
+        root = treeData; //Define the root
+
+        /* Creation of the tree with nodeSize
+         * We indicate the reserved area for each node as [height, width] since our tree grows horizontally
+         * Sorts nodes by level of toxicity (from lower to higher)
+         *
+         * NOTE: tree must be sorted at the creation of the tree, otherwise when collapsing and uncollapsing a node
+         * the order of the nodes might change, disturbing the user mental map of the tree
+         *
+        * */
+        var tree = d3.layout.tree()
+            .nodeSize(root.children.length, 0) //NOTE the width is overwritten later
+            .sort(function (a, b) {
+                return d3.ascending(a.toxicity_level, b.toxicity_level); //NOTE: this avoids the tree being sorted and changed when collapsing a node
+            });
+
+        // define a d3 diagonal projection for use by the node paths later on.
+        var diagonal = d3.svg.diagonal()
+            .projection(function (d) {
+                return [d.y, d.x];
+            });
+
+        // Hover rectangle in which the information of a node is displayed
+        var tooltip = d3.select(container)
+            .append("div")
+            .attr("class", "my-tooltip") //add the tooltip class
+            .style("position", "absolute")
+            .style("z-index", "10")
+            .style("visibility", "hidden");
+
+        // Div where the title of the "Static Values" is displayed
+        var statisticBackground = d3.select(container)
+            .append("div")
+            .attr("class", "my-statistic") //add the tooltip class
+            .style("position", "absolute")
+            .style("z-index", "0") //it has no change
+            .style("visibility", "visible");
+
+        // Div where the zoom buttons are displayed
+        var zoomBackground = d3.select(container)
+            .append("div")
+            .style("position", "absolute")
+            .style("z-index", "0") //it has no change
+            .style("visibility", "visible");
+
+        // Div where the sum up information of "Static Values" is displayed
+        var statisticTitleBackground = d3.select(container)
+            .append("div")
+            .attr("class", "my-statistic-title") //add the tooltip class
+            .style("position", "absolute")
+            .style("z-index", "0") //it has no change
+            .style("visibility", "visible");
+
+
+        /* SECTION Zoom*/
+        var zoomInButton = document.querySelector("input[name=zoom_in_icon]");
+        var zoomOutButton = document.querySelector("input[name=zoom_out_icon]");
+        var zoomOutReset = document.querySelector("input[name=zoom_reset_icon]");
+        var zoomLabel = document.getElementById("zoom_level");
+
+        /*SECTION checkboxes*/
+        var checkboxId = document.querySelector("input[name=cbId]");
+
+        var checkboxStaticValues = document.querySelector("input[name=cbStaticValues]");
+
+        //Check the values of the checkboxes and do something
+        var checkbox = document.querySelector("input[name=cbTargets]");
+        var checkboxesTargets = [document.getElementById("target-group"), document.getElementById("target-person"), document.getElementById("target-stereotype")];//document.querySelectorAll("input[type=checkbox][name=cbTargets]");
+        // for (var i = 0; i < checkboxesTargets.length; i++) {
+        //     checkboxesTargets[i] = "target-" + checkboxesTargets[i];
+        // }
+
+        let enabledTargets = []; //Variable which contains the string of the enabled options to display targets
+
+        // Select all checkboxes with the name 'cbFeatures' using querySelectorAll.
+        var checkboxes = document.querySelectorAll("input[type=checkbox][name=cbFeatures]");
+        let enabledFeatures = []; //Variable which contains the string of the enabled options to display features
+        var checkboxFeatureMenu = document.querySelector("input[name=cbFeatureMenu]");
+
+        // Select how to display the features: svg circles or trivial cheese
+        var checkboxesPropertyFeature = document.querySelectorAll("input[type=checkbox][name=cbFeatureProperty]");
+        var checkboxFeatureDot = document.querySelector("input[type=checkbox][name=cbFeatureProperty][value=dot-feat]");
+        var checkboxFeatureCheese = document.querySelector("input[type=checkbox][name=cbFeatureProperty][value=cheese-feat]");
+
+        //Dropdown menu
+        var checkboxesPositioningFeature = document.querySelectorAll("input[type=checkbox][name=cbFeaturePositioning]");
+        var cbFeatureInside = document.querySelector("input[type=checkbox][name=cbFeaturePositioning][value=on-node]");
+        var cbFeatureOutside = document.querySelector("input[type=checkbox][name=cbFeaturePositioning][value=node-outside]");
+
+        // Select which properties and if an intersection or union of those
+        var checkboxHighlightMenu = document.querySelector("input[name=cbHighlightMenu]");
+        var checkboxesProperty = document.querySelectorAll("input[type=checkbox][name=cbHighlightProperty]");
+        var checkboxAND = document.querySelector("input[type=checkbox][name=cbHighlightProperty][value=and-group]");
+        var checkboxOR = document.querySelector("input[type=checkbox][name=cbHighlightProperty][value=or-group]");
+        var checkboxesHighlightGroup = document.querySelectorAll("input[type=checkbox][name=cbHighlight]");
+
+        let enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
+        /*END SECTION checkboxes*/
+
+        var checkButtons = document.querySelectorAll("input[name=check_button_features]");
+
+
+        var objTargetGroupInside = {
+                class: "targetGroup",
+                id: "targetGroup",
+                selected: enabledTargets.indexOf("target-group"),
+                x: -0.9,
+                y: -0.8,
+                height: targetIconHeight,
+                width: targetIconWidth,
+                fileName: "Group.svg"
+            },
+            objTargetPersonInside = {
+                class: "targetPerson",
+                id: "targetPerson",
+                selected: enabledTargets.indexOf("target-person"),
+                x: -0.5,
+                y: 0,
+                height: targetIconHeight,
+                width: targetIconWidth,
+                fileName: "Person.svg"
+            },
+            objTargetStereotypeInside = {
+                class: "targetStereotype",
+                id: "targetStereotype",
+                selected: enabledTargets.indexOf("target-stereotype"),
+                x: -0.1,
+                y: -0.8,
+                height: targetIconHeight,
+                width: targetIconWidth,
+                fileName: "Stereotype.svg"
+            };
+
+
+        var dropdownTargets = document.getElementById("dropdown-targets");
+        var dropdownFeatures = document.getElementById("dropdown-features");
+
 
     var canvasHeight = 1000,
         canvasWidth = 2200; //Dimensions of our canvas (grayish area)
@@ -788,6 +1163,99 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             width: targetIconWidth,
             fileName: "Stereotype.svg"
         };
+
+        /**
+         * Define zoom and translation
+         * */
+        function zoom() {
+            /* The initial d3 events for scale and translation have initial values 1 and [x,y] = [50, 200] respectively
+            * Therefore we need to take this into account and sum the difference to our initial scale and position attributes
+            * defined in zoomToFit()
+            * */
+
+            /*
+            * NOTE:
+            * If the scale is negative, we will see the graph upside-down and left-right swapped
+            * If the scale is 0, we will not see the graph
+            * Define the scale to be at least 0.1 and set it to the initialZoom + the difference of the listener and the d3.event initial scale
+            * */
+            var newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1); //Avoid the graph to be seen mirrored.
+
+            /*
+            * NOTE: Add to the initial position values (initialX and initialY) the movement registered by d3.
+            * d3.event.translate returns an array [x,y] with starting values [50, 200]
+            * The values X and Y are swapped in zoomToFit() and we need to take that into account to give the new coordinates
+            * */
+            var movement = d3.event.translate;
+            var newX = initialX + (movement[1] - 200);
+            var newY = initialY + (movement[0] - 50);
+            svgGroup.attr("transform", "translate(" + [newY, newX] + ")scale(" + newScale + ")");
+            currentX = newX;
+            currentY = newY;
+            currentScale = newScale;
+            drawZoomValue(d3.event.scale);
+
+            currentZoomScale = d3.event.scale
+            link.style("stroke-width", getEdgeStrokeWidth()); //Enlarge stroke-width on zoom out
+            node.select("circle.nodeCircle").style("stroke-width", getEdgeStrokeWidth()); //Enlarge stroke-width on zoom out
+        }
+
+        // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
+        var zoomListener = d3.behavior.zoom().scaleExtent([minZoom, maxZoom]).on("zoom", zoom);
+
+        drawZoomValue(zoomListener.scale());
+
+        // define the baseSvg, attaching a class for styling and the zoomListener
+        var baseSvg = d3.select(container).append("svg")
+            .attr("width", canvasWidth)
+            .attr("height", canvasHeight)
+            .attr("class", "overlay")
+            .call(zoomListener);
+
+
+        /**
+         * Center the screen to the position of the given node
+         * */
+        function centerNode(source) {
+            scale = zoomListener.scale();
+            x = -source.y0;
+            y = -source.x0;
+            x = x * scale + viewerWidth / 2;
+            y = y * scale + viewerHeight / 2;
+            d3.select('g').transition()
+                .duration(duration)
+                .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
+            zoomListener.scale(scale);
+            zoomListener.translate([x, y]);
+        }
+
+        /**
+         * Center the screen to the position of the given link
+         * */
+        function centerLink(link) {
+            scale = zoomListener.scale();
+            x = -(link.source.y0 + link.target.y0) / 2;
+            y = -(link.source.x0 + link.target.x0) / 2;
+            x = x * scale + viewerWidth / 2;
+            y = y * scale + viewerHeight / 2;
+            d3.select('g').transition()
+                .duration(duration)
+                .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
+            zoomListener.scale(scale);
+            zoomListener.translate([x, y]);
+        }
+
+        // Toggle children function
+        function toggleChildren(d) {
+            if (d.children) {
+                d._children = d.children;
+                d.children = null;
+            } else if (d._children) {
+                d.children = d._children;
+                d._children = null;
+            }
+            return d;
+        }
 
 
     var objTargetGroupInside = {
@@ -1087,15 +1555,45 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         centerLink(l);
     }
 
-    /*SECTION draw svgs from checboxes*/
+        //Feature section
+        /**
+         * Removes the features of the node given
+         * */
+        function removeThisFeatures(nodeEnter) {
+            nodeEnter.selectAll("#featGray").remove();
+            nodeEnter.selectAll("#featArgumentation").remove();
+            nodeEnter.selectAll("#featConstructiveness").remove();
+            nodeEnter.selectAll("#featSarcasm").remove();
+            nodeEnter.selectAll("#featMockery").remove();
+            nodeEnter.selectAll("#featIntolerance").remove();
+            nodeEnter.selectAll("#featImproper").remove();
+            nodeEnter.selectAll("#featInsult").remove();
+            nodeEnter.selectAll("#featAggressiveness").remove();
+        }
 
-    /**
-     * Compute the position of an associated image to be centered on the node
-     * that is a radiusPercentage smaller than it
-     * */
-    function positionImage(nodeRadius, radiusPercentage = imgRatio) {
-        return nodeRadius * (radiusPercentage / 100.0 - 1);
-    }
+        /**
+         * Removes the features of all the nodes
+         * */
+        function removeAllFeatures() {
+            d3.selectAll("#featGray").remove();
+            d3.selectAll("#featArgumentation").remove();
+            d3.selectAll("#featConstructiveness").remove();
+            d3.selectAll("#featSarcasm").remove();
+            d3.selectAll("#featMockery").remove();
+            d3.selectAll("#featIntolerance").remove();
+            d3.selectAll("#featImproper").remove();
+            d3.selectAll("#featInsult").remove();
+            d3.selectAll("#featAggressiveness").remove();
+        }
+
+        function checkUncheckAll() {
+            checkboxes.forEach(cb => cb.checked = !cb.checked);
+        }
+
+        function drawFeatureAsCheeseOutside(nodeEnter, localPath) {
+            removeThisFeatures(nodeEnter);
+            removeToxicities(nodeEnter); //Remove all the pngs for toxicity
+
 
     /**
      * Compute the size of an associated image to be a radiusPercentage smaller than the node
@@ -1303,6 +1801,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         if (drawingAllInOne) selectFeatureVisualization(nodeEnter);
         else {
             switch (option) {
+
                 //draw as icons on the left side of the node
                 case "icons":
                     drawTargets(nodeEnter, "icons/");
@@ -2672,11 +3171,31 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 })
                 .style("opacity", opacityValue);
 
-            link
-                .filter(function (d) {
-                    return !d.target.negative_stance;
-                })
-                .style("opacity", opacityValue);
+        function highlightNodesByPropertyOR(node, link) {
+            if (enabledHighlight.length === 0) { //If no tag (toxicity, stance,...) checkbox is selected: highlight all
+                nodes.forEach(function (d) {
+                    d.highlighted = 1;
+                });
+                node.style("opacity", 1);
+            } else { //If some tag checkbox is selected behave as expected
+                //First, unhighlight everything and set the parameter highlighted to 0
+                nodes.forEach(function (d) {
+                    d.highlighted = 0;
+                });
+                node.style("opacity", opacityValue);
+
+                //Then highlight by property OR
+                highlightToxicityOR(node, enabledHighlight);
+                highlightStanceOR(node, enabledHighlight);
+                highlightTargetOR(node, enabledHighlight);
+                highlightPositiveOR(node, enabledHighlight);
+                highlightNegativeOR(node, enabledHighlight);
+            }
+            //Highlight only the edges whose both endpoints are highlighted
+            link.style("opacity", function (d) {
+                return (d.source.highlighted && d.target.highlighted) || (d.source.parent === undefined && d.target.highlighted) ? 1 : opacityValue;
+            });
+
         }
 
         //Target group CB is checked
@@ -2694,19 +3213,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .style("opacity", opacityValue);
         }
 
-        //Target person CB is checked
-        if (enabledHighlight.indexOf("highlight-person") > -1) {
-            node
-                .filter(function (d) {
-                    return !d.target_person;
-                })
-                .style("opacity", opacityValue);
+            //Highlight only the edges whose both endpoints are highlighted
+            link.style("opacity", function (d) {
+                return (d.source.highlighted && d.target.highlighted) || (d.source.parent === undefined && d.target.highlighted) ? 1 : opacityValue;
+            });
 
-            link
-                .filter(function (d) {
-                    return !d.target.target_person;
-                })
-                .style("opacity", opacityValue);
         }
 
         //Stereotype CB is checked
@@ -3169,6 +3680,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 return Math.ceil((a.radius + b.radius) / separationHeight) + 0.5;
             });
 
+
         // Compute the new tree layout.
         nodes = tree.nodes(root).reverse();
         //nodes = tree.nodes(root);
@@ -3184,6 +3696,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             return d.id || (d.id = ++i);
         });
 
+            // Update the nodes…
+            node = svgGroup.selectAll("g.node")
+                .data(nodes, function (d) {
+                    return d.id || (d.id = ++i);
+                });
         // Enter any new nodes at the parent's previous position.
         var nodeEnter = node
             .enter()
@@ -3334,6 +3851,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             //checkboxFeatureCheese.checked ? drawFeaturesCheese(nodeEnter) : drawFeatures(nodeEnter);
             //console.log(enabledFeatures);
         }
+
 
         // if (
         //     !document.querySelector("input[value=on-node]").checked &&
@@ -3538,6 +4056,16 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         d3.select("#zoom_in_icon").on("click", function () {
             currentScale = Math.min(3.0, zoomListener.scale() + 0.1);
 
+            // if DOT is checked, uncheck OR
+            cbFeatureInside.addEventListener('change', function () {
+                this.checked ? cbFeatureOutside.checked = false : cbFeatureOutside.checked = true;
+                selectFeatureVisualization(nodeEnter);
+            });
+            // if CHEESE is checked, uncheck AND
+            cbFeatureOutside.addEventListener('change', function () {
+                this.checked ? cbFeatureInside.checked = false : cbFeatureInside.checked = true;
+                selectFeatureVisualization(nodeEnter);
+            });
             zoomListener.scale(currentScale)
                 // .translate([2200 - currentX - currentScale, 900 - currentY - currentScale])
                 .event(svgGroup);
@@ -3680,6 +4208,21 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         nodeExit.select("text").style("fill-opacity", 0);
 
+            // Change the circle fill depending on whether it has children and is collapsed
+            node.select("circle.nodeCircle")
+                .attr("r", function (d) {
+                    return computeNodeRadius(d);
+                })
+                .style("fill", function (d) { //Colour the node according to its level of toxicity
+                    switch (d.toxicity_level) {
+                        case 0: return colourToxicity0;
+                        case 1: return colourToxicity1;
+                        case 2: return colourToxicity2;
+                        case 3:  return colourToxicity3;
+                        default: return colourNewsArticle;
+                    }
+                })
+                .style("stroke-width", getEdgeStrokeWidth());
         // Update the links…
         var link = svgGroup.selectAll("path.link").data(links, function (d) {
             return d.target.id;
@@ -3772,6 +4315,56 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         totalToxic = listStatistics.toxicity2,
         totalVeryToxic = listStatistics.toxicity3;
 
+            // Update the links…
+            link = svgGroup.selectAll("path.link")
+                .data(links, function (d) {
+                    return d.target.id;
+                });
+
+            // Enter any new links at the parent's previous position.
+            link.enter().insert("path", "g")
+                .attr("class", "link")
+                .attr("d", function (d) {
+                    var o = {
+                        x: source.x0,
+                        y: source.y0
+                    };
+                    return diagonal({
+                        source: o,
+                        target: o
+                    });
+                })
+                .style("stroke", function (d) {
+                    if (d.target.positive_stance && d.target.negative_stance) return colourBothStances; //Both against and in favour
+                    else if (d.target.positive_stance === 1) return colourPositiveStance; //In favour
+                    else if (d.target.negative_stance === 1) return colourNegativeStance; //Against
+                    else return colourNeutralStance; //Neutral comment
+                })
+                .on('click', clickLink)
+                .style("stroke-width", getEdgeStrokeWidth() );
+
+            // Transition links to their new position.
+            link.transition()
+                .duration(duration)
+                .attr("d", diagonal);
+
+            if (checkboxHighlightMenu.checked && source.children) checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
+
+
+            // Transition exiting nodes to the parent's new position.
+            link.exit().transition()
+                .duration(duration)
+                .attr("d", function (d) {
+                    var o = {
+                        x: source.x,
+                        y: source.y
+                    };
+                    return diagonal({
+                        source: o,
+                        target: o
+                    });
+                })
+                .remove();
     var totalGroup = listStatistics.totalTargGroup,
         totalPerson = listStatistics.totalTargPerson,
         totalStereotype = listStatistics.totalTargStereotype,
@@ -3789,6 +4382,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         writeStatisticText();
         drawZoomIcons();
     }
+
+        //Set initial stroke widths
+        link.style("stroke-width", 5); //Enlarge stroke-width on zoom out
+        node.select("circle.nodeCircle").style("stroke-width", 5); //Enlarge stroke-width on zoom out
+
+    //I compute the values for the statistic data showing in the background
+        var listStatistics = getStatisticValues(root);
+        var totalNumberOfNodes = listStatistics.children;
 
 
     function writeStatisticText() {
@@ -3852,11 +4453,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     //     triggerDownload(imgURI);
     // };
 
-    // img.src = url;
-    //console.log(baseSvg);
-    //    saveSvgAsPng(baseSvg.node(), "tree_image.png");
-    //});
-    //});
+        function drawZoomValue(zoomLevel) {
+            //console.log(zoomLevel);
+            zoomLabel.textContent = "Zoom: " + (((zoomLevel - 0.1) / 2.9) * 100).toFixed(2) + '%';
+        }
+
 
 
     // import saveSvgAsPng from './saveSvgAsPng.js';
