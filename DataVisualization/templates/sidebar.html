@@ -144,37 +144,38 @@
                 </div>
             </div>
 
-
-            <button id="projects_button" type="button" class="accordion"><span
-                    style="font-size:22px;">Manage Projects</span>
-                <div style="float: right">
-                    <span id="plus_sign_manage_projects" style="font-size:22px;">&#43;</span>
+            {% if False %}
+                <button id="projects_button" type="button" class="accordion"><span
+                        style="font-size:22px;">Manage Projects</span>
+                    <div style="float: right">
+                        <span id="plus_sign_manage_projects" style="font-size:22px;">&#43;</span>
+                    </div>
+                </button>
+                <div class="panel">
+                    {#            <a type="button" href="/upload_file" class="btn btn-primary" value="Upload Document"#}
+                    {#               name="upload_button">Upload Document</a>#}
+                    {#            <form method="POST" id="dropdown_delete">#}
+                    {#                {% csrf_token %}#}
+                    {#                <input type="submit" class="btn btn-danger error" value="Delete Data" name="delete_button"#}
+                    {#                       id="delete_button">#}
+                    {#                <select name="selected_data_delete" form="dropdown_delete">#}
+                    {#                    {% for document in documents_uploaded %}#}
+                    {#                        <option value="{{ document.description }}"#}
+                    {#                                id="{{ document.description }}">{{ document.description }}</option>#}
+                    {#                    {% endfor %}#}
+                    {#                </select>#}
+                    {#            </form>#}
+                    <a href="" style="margin-top: 5px; width: 250px;" type="button" class="btn btn-primary"
+                       value="Create new Project"
+                       name="new_project_button">Create
+                        new project</a>
+                    <a href="" style="margin-top: 5px; margin-bottom: 15px; width: 250px;" type="button"
+                       class="btn btn-primary"
+                       value="Load Project"
+                       name="load_project_button">Load
+                        project</a>
                 </div>
-            </button>
-            <div class="panel">
-                {#            <a type="button" href="/upload_file" class="btn btn-primary" value="Upload Document"#}
-                {#               name="upload_button">Upload Document</a>#}
-                {#            <form method="POST" id="dropdown_delete">#}
-                {#                {% csrf_token %}#}
-                {#                <input type="submit" class="btn btn-danger error" value="Delete Data" name="delete_button"#}
-                {#                       id="delete_button">#}
-                {#                <select name="selected_data_delete" form="dropdown_delete">#}
-                {#                    {% for document in documents_uploaded %}#}
-                {#                        <option value="{{ document.description }}"#}
-                {#                                id="{{ document.description }}">{{ document.description }}</option>#}
-                {#                    {% endfor %}#}
-                {#                </select>#}
-                {#            </form>#}
-                <a href="" style="margin-top: 5px; width: 250px;" type="button" class="btn btn-primary"
-                   value="Create new Project"
-                   name="new_project_button">Create
-                    new project</a>
-                <a href="" style="margin-top: 5px; margin-bottom: 15px; width: 250px;" type="button"
-                   class="btn btn-primary"
-                   value="Load Project"
-                   name="load_project_button">Load
-                    project</a>
-            </div>
+            {% endif %}
         {% endif %}
 
 

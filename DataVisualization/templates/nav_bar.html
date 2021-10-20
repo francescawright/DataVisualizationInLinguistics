@@ -55,43 +55,43 @@
         <li style="margin-bottom: 10px; margin-top: 10px;"><span>Layout</span><br></li>
         <li>
             <div style="align-items: center;" class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label id="tree_label" style="width: 100px; height:fit-content;"
+                <label id="tree_label" style="width: 200px; height:fit-content;"
                        {% if checked_layout == "tree" %}class="btn btn-primary active"
                        {% else %}class="btn btn-primary"{% endif %}>
                     <input type="radio" id="tree_layout_button" name="tree_layout_button" value="checked"
                            autocomplete="off" form="main_form"
                            {% if checked_layout == "tree" %}checked{% endif %}>
 
-                    Tree
-                    {#                    <img#}
-                    {#                        src="{% static 'images/nav_bar/treeLayout.svg' %}" style="width: 45px;">#}
+                    Tree &#8195;
+                    <img
+                            src="{% static 'images/nav_bar/treeLayout.svg' %}" style="width: 40px;">
                 </label>
-                <label id="force_label" style="width: 100px; height:fit-content;"
+                <label id="force_label" style="width: 200px; height:fit-content;"
                        {% if checked_layout == "force" %}class="btn btn-primary active"
                        {% else %}class="btn btn-primary"{% endif %}>
                     <input type="radio" id="force_layout_button" form="main_form"
                            name="force_layout_button" value="checked" autocomplete="off"
-                           {% if checked_layout == "force" %}checked{% endif %}>Force
-                    {#                    <img#}
-                    {#                        src="{% static 'images/nav_bar/forceLayout.svg' %}" style="width: 45px;">#}
+                           {% if checked_layout == "force" %}checked{% endif %}>Force &#8195;
+                    <img
+                            src="{% static 'images/nav_bar/forceLayout.svg' %}" style="width: 40px;">
                 </label>
-                <label id="radial_label" style="width: 100px; height:fit-content;"
+                <label id="radial_label" style="width: 200px; height:fit-content;"
                        {% if checked_layout == "radial" %}class="btn btn-primary active"
                        {% else %}class="btn btn-primary"{% endif %}>
                     <input type="radio" id="radial_layout_button" form="main_form"
                            name="radial_layout_button" value="checked" autocomplete="off"
-                           {% if checked_layout == "radial" %}checked{% endif %}>Radial
-                    {#                    <img#}
-                    {#                            src="{% static 'images/nav_bar/radialLayout.svg' %}" style="width: 45px;">#}
+                           {% if checked_layout == "radial" %}checked{% endif %}>Radial &#8195;
+                    <img
+                            src="{% static 'images/nav_bar/radialLayout.svg' %}" style="width: 40px;">
                 </label>
-                <label id="treeMap_label" style="width: 100px; height:fit-content;"
+                <label id="treeMap_label" style="width: 200px; height:fit-content;"
                        {% if checked_layout == "treeMap" %}class="btn btn-primary active"
                        {% else %}class="btn btn-primary"{% endif %}>
                     <input type="radio" id="treeMap_layout_button" form="main_form"
                            name="treeMap_layout_button" value="checked" autocomplete="off"
-                           {% if checked_layout == "TreeMap" %}checked{% endif %}>TreeMap
-                    {#                    <img#}
-                    {#                            src="{% static 'images/nav_bar/radialLayout.svg' %}" style="width: 45px;">#}
+                           {% if checked_layout == "TreeMap" %}checked{% endif %}>Circle Packing &#8195;
+                    <img
+                            src="{% static 'images/nav_bar/circlePacking.svg' %}" style="width: 40px;">
                 </label>
             </div>
         </li>
@@ -103,28 +103,32 @@
             <li style="margin-bottom: 10px; margin-top: 10px;"><span>Icons</span><br></li>
             <li>
                 <div style="align-items: center;" class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label id="dots_label" style="width: 75px; height:fit-content;"
+                    <label id="dots_label" style="width: 150px; height:fit-content;"
                            {% if selected_icons == "dots" %}class="btn btn-primary active"
                            {% else %}class="btn btn-primary"{% endif %}>
                         <input type="radio" name="dots_icon_button" id="dots_icon_button" form="main_form"
-                               autocomplete="off" {% if selected_icons == "dots" %}checked{% endif %}> Dots
+                               autocomplete="off" {% if selected_icons == "dots" %}checked{% endif %}> Dots &#8195;
+                        <img
+                                src="{% static 'images/nav_bar/dots.svg' %}" style="width: 40px;">
                     </label>
-                    <label id="glyphs_label" style="width: 75px; height:fit-content;"
+                    <label id="glyphs_label" style="width: 150px; height:fit-content;"
                            {% if selected_icons == "glyphs" %}class="btn btn-primary active"
                            {% else %}class="btn btn-primary"{% endif %}>
                         <input type="radio" name="glyphs_icon_button" id="glyphs_icon_button" form="main_form"
-                               autocomplete="off" {% if selected_icons == "glyphs" %}checked{% endif %}> Glyphs
+                               autocomplete="off" {% if selected_icons == "glyphs" %}checked{% endif %}> Glyphs &#8195;
+                        <img
+                                src="{% static 'images/nav_bar/glyph.svg' %}" style="width: 40px;">
                     </label>
                 </div>
             </li>
         </ul>
     {% endif %}
-    <button id="add_layout_button"
-            style="position: absolute; right: 75px; top: 25px; font-size: 20px; vertical-align: center;"
-            class="btn btn-secondary"
-            name="add_layout">
-        +
-    </button>
+    {#    <button id="add_layout_button"#}
+    {#            style="position: absolute; right: 75px; top: 25px; font-size: 20px; vertical-align: center;"#}
+    {#            class="btn btn-secondary"#}
+    {#            name="add_layout">#}
+    {#        +#}
+    {#    </button>#}
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
