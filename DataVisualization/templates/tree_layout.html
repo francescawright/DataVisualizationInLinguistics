@@ -7,7 +7,7 @@
     }
 
     .overlay {
-        background-color: #f8f8f8;
+        background-color: #eff4fc;
     }
 
     .node circle {
@@ -71,8 +71,8 @@
 
 
     .my-statistic {
-        margin-top: 100px;
-        margin-left: 50px;
+        margin-top: 35px;
+        margin-left: 1500px;
         max-width: 300px;
         font-size: 14px;
         font-family: sans-serif;
@@ -133,6 +133,7 @@
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.src.js"></script>
+<script src="{% static 'js/saveSvgAsPng.js' %}" type="module"></script>
 
 <script>
     var dataset = "{% static dataset %}";
@@ -143,6 +144,7 @@
     var sel_item = "{% static selected_item %}";
     var container = "#tree-container";
     var container_duplicated = "#tree-container-duplicated";
+    var user = "{% static user %}";
 </script>
 
 
@@ -150,11 +152,28 @@
 {#<script src="{% static 'js/tree_graph_duplicated.js' %}"></script>#}
 <body>
 {% include 'nav_bar.html' %}
-
 {% include 'sidebar_layouts.html' %}
 
-{% include 'auxiliary_charts.html' %}
+
+{#<canvas id="screenshot_canvas" style="width:2000px; height:2000px;"></canvas>#}
+
+<!-- {% include 'auxiliary_charts.html' %} -->
 </body>
 
+<script>
+    var layout_shown = false;
+    jQuery("#add_layout_button").click(function () {
+        var duplicated = document.getElementById("tree-container-duplicated");
+        if (!layout_shown) {
+            duplicated.style.display = "flex";
+            layout_shown = true;
+        } else {
+            duplicated.style.display = "none";
+            layout_shown = false;
+
+        }
+    });
+
+</script>
 
 </html>

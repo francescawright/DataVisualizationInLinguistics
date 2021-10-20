@@ -7,7 +7,7 @@
     }
 
     .overlay {
-        background-color: #EEE;
+        background-color: #eff4fc;
     }
 
     .node circle {
@@ -73,8 +73,8 @@
 
 
     .my-statistic {
-        margin-top: 100px;
-        margin-left: 50px;
+        margin-top: 35px;
+        margin-left: 1500px;
         max-width: 300px;
         font-size: 14px;
         font-family: sans-serif;
@@ -149,6 +149,8 @@
     var pr = "{% static 'images/' %}";
     var pf = "{% static 'images/features/' %}"
     var sel_item = "{% static selected_item %}";
+    var container = "#tree-container";
+    var user = "{% static user %}";
 </script>
 
 
@@ -158,7 +160,7 @@
 {% include 'sidebar_layouts.html' %}
 
 </body>
-<script>
+<!-- <script>
     Highcharts.chart('aux_graph', {
         chart: {
             type: 'column'
@@ -252,7 +254,7 @@
             }]
     });
 
-</script>
+</script> -->
 
 
 </html>

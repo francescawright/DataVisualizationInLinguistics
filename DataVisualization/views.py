@@ -6,6 +6,10 @@ from django.db.models import Count, Q
 from django.shortcuts import render
 from django.utils.datastructures import MultiValueDictKeyError
 
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate
+from .models import tbl_Authentication
+
 from DataVisualization.forms import FileForm
 from DataVisualization.models import Document, Commentary
 from DataVisualization.utilities.ExcelParser import ExcelParser
@@ -15,10 +19,14 @@ FEATURES = ["argumentation", "constructiveness", "sarcasm", "mockery", "intolera
             "improper_language", "insult",
             "aggressiveness"]
 LAYOUTS = ["Tree", "Force", "Radial"]
+TREE_LAYOUT = "tree_layout_button"
+FORCE_LAYOUT = "force_layout_button"
+RADIAL_LAYOUT = "radial_layout_button"
+TREEMAP_LAYOUT = "treeMap_layout_button"
 
 
 def index(request):
-    return render(request, 'index.html', context={'documents_uploaded': get_all_documents()})
+    return render(request, 'index.html', context={'documents_uploaded': get_all_documents(), 'user': request.user})
 
 
 def get_all_documents():
@@ -26,6 +34,11 @@ def get_all_documents():
 
 
 def main_form_handler(request):
+    # CURRENT DATASET
+    # ---------------------------------------------------------------------------------
+    selected_item, dataset, doc = get_current_dataset(request)
+    # ---------------------------------------------------------------------------------
+
     # CHECKBOXES
     # ---------------------------------------------------------------------------------
     # Create two dicts that holds the values of the checkboxes from Targets and Features
@@ -34,9 +47,9 @@ def main_form_handler(request):
     handle_checkboxes(request, cbTargets, cbFeatures)
     # ---------------------------------------------------------------------------------
 
-    # CURRENT DATASET
+    # ICONS
     # ---------------------------------------------------------------------------------
-    selected_item, dataset, doc = get_current_dataset(request)
+    selected_icons = handle_icons(request)
     # ---------------------------------------------------------------------------------
 
     # JSON PARSING
@@ -46,14 +59,19 @@ def main_form_handler(request):
     save_data_to_JSON(first_level, doc)
     # ---------------------------------------------------------------------------------
 
-    selected_layout, template = get_selected_layout(request)
+    selected_layout, template, checked_layout = get_selected_layout(request)
 
-    d1, d2 = auxiliary_charts(doc)
+    # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
+    # d1, d2 = auxiliary_charts(doc)
 
     return render(request, template,
                   {'dataset': 'output.json', 'options': get_all_documents(), 'layouts': LAYOUTS,
                    'selected_layout': selected_layout,
-                   'selected_item': selected_item, "d1": d1, "d2": d2,
+                   'checked_layout': checked_layout,
+                   'selected_item': selected_item,
+                   'selected_icons': selected_icons,
+                   # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
+                   # "d1": d1, "d2": d2,
                    'cbTargets': cbTargets, 'cbFeatures': cbFeatures})
 
 
@@ -87,6 +105,14 @@ def get_current_dataset(request):
         selected_item = Document.objects.all()[0].description
     dataset = Commentary.objects.filter(document_id=doc).all()
     return selected_item, dataset, doc
+
+
+def handle_icons(request):
+    if "dots_icon_button" in request.POST.keys():
+        return "dots"
+    elif "glyphs_icon_button" in request.POST.keys():
+        return "glyphs"
+    return "dots"
 
 
 def recursive_add_node(node, doc):
@@ -125,27 +151,48 @@ def save_data_to_JSON(first_level, doc):
     data_list = [recursive_add_node(node, doc) for node in first_level]
 
     data = {"name": doc, "children": data_list}
-    # print(json.dumps(data, default=str))
-    # print(os.path)
     with open(os.path.join('DataVisualization/' + django_settings.STATIC_URL, 'output.json'), 'w') as outfile:
         json.dump(data, outfile, default=str)
 
 
 def get_selected_layout(request):
-    try:
-        selected_layout = request.POST["dropdown_layout"]
-        template = "tree_layout.html"
-        if request.POST["dropdown_layout"] == "Tree":
-            template = "tree_layout.html"
-        elif request.POST["dropdown_layout"] == "Force":
-            template = "force_layout.html"
-        elif request.POST["dropdown_layout"] == "Radial":
-            template = "radial_layout.html"
-    except MultiValueDictKeyError:
+    if TREE_LAYOUT in request.POST.keys():
         selected_layout = "tree_layout.html"
         template = "tree_layout.html"
+        button_checked = "tree"
+    elif FORCE_LAYOUT in request.POST.keys():
+        selected_layout = "force_layout.html"
+        template = "force_layout.html"
+        button_checked = "force"
+    elif RADIAL_LAYOUT in request.POST.keys():
+        selected_layout = "radial_layout.html"
+        template = "radial_layout.html"
+        button_checked = "radial"
+    elif TREEMAP_LAYOUT in request.POST.keys():
+        selected_layout = "treeMap_layout.html"
+        template = "treeMap_layout.html"
+        button_checked = "treeMap"
+    else:
+        # selected_layout = "treeMap_layout.html"
+        # template = "treeMap_layout.html"
+        # button_checked = "treeMap"
+        selected_layout = "tree_layout.html"
+        template = "tree_layout.html"
+        button_checked = "tree"
+    # try:
+    #     #     selected_layout = request.POST["dropdown_layout"]
+    #     #     template = "tree_layout.html"
+    #     #     if request.POST["dropdown_layout"] == "Tree":
+    #     #         template = "tree_layout.html"
+    #     #     elif request.POST["dropdown_layout"] == "Force":
+    #     #         template = "force_layout.html"
+    #     #     elif request.POST["dropdown_layout"] == "Radial":
+    #     #         template = "radial_layout.html"
+    # except MultiValueDictKeyError:
+    #     selected_layout = "tree_layout.html"
+    #     template = "tree_layout.html"
 
-    return selected_layout, template
+    return selected_layout, template, button_checked
 
 
 def auxiliary_charts(doc):
@@ -203,7 +250,6 @@ def edit_data(request):
 
 
 def handle_delete_data(request):
-    print("handle delete data, request:", request)
     try:
         selected_data = request.POST["delete_button"]
     except MultiValueDictKeyError as e:
@@ -213,9 +259,7 @@ def handle_delete_data(request):
 
 
 def manage_data(request):
-    print("Manage data")
     if request.method == 'POST':
-        print(request)
         handle_delete_data(request)
     if request.GET.get("save_button"):
         save_project()
@@ -226,21 +270,72 @@ def manage_data(request):
 
 def parse_data(document):
     parser = ExcelParser()
-    parser.load_and_parse(Document.objects.filter(description=document.description).first())
+    parser.load_and_parse(Document.objects.filter(
+        description=document.description).first())
 
 
 def delete_data(selected_data):
-    print("deleting data:", selected_data)
     parser = ExcelParser()
     parser.drop_database(selected_data)
 
 
 def save_project():
-    raise NotImplemented()
+    raise NotImplementedError()
 
 
 def export_visualization():
-    raise NotImplemented()
+    raise NotImplementedError()
+
+
 # ---------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------
+
+from django.shortcuts import render
+from .forms import Loginform
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+
+
+def login_view(request):
+    uservalue = ''
+    passwordvalue = ''
+
+    form = Loginform(request.POST or None)
+    if form.is_valid():
+        uservalue = form.cleaned_data.get("username")
+        passwordvalue = form.cleaned_data.get("password")
+
+        user = authenticate(username=uservalue, password=passwordvalue)
+        if user is not None:
+            login(request, user)
+            context = {'form': form,
+                       'error': 'The login has been successful'}
+
+            return index(request)
+        else:
+            context = {'form': form,
+                       'error': 'The username and password combination is incorrect'}
+
+            return index(request)
+
+    else:
+        context = {'form': form}
+        return render(request, 'login.html', context)
+
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return index(request)
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    return index(request)

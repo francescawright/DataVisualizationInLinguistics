@@ -4,7 +4,7 @@
     /* Style the buttons that are used to open and close the accordion panel */
     .accordion {
         background-color: #eee;
-    {#color: #444;#} cursor: pointer;
+        cursor: pointer;
         padding: 18px;
         width: 100%;
         text-align: left;
@@ -40,85 +40,144 @@
 <body>
 <div class="bg-light border-right" id="sidebar-wrapper">
 
-    <div class="sidebar-heading">
+    <div style="display: flex; vertical-align:center; text-align:center;" class="sidebar-heading">
         <a href="/">
             <img src="{% static 'images/app_icon.svg' %}"
-                 style="width: 40px;">
+                 style="width: 70px;">
         </a>
-        {{ title }}
+
+        <h1 style="width:fit-content; padding: 10px;">{{ title }}</h1>
     </div>
     <div class="list-group list-group-flush" style="width: 300px;">
 
+        <div class="text-center">
+            {% if user.is_authenticated %}
+                Hello, {{ user }}
+            {% else %}
+                Please log-in or sign-up to use the application.
+            {% endif %}
+        </div>
 
-        <button type="button" class="accordion">View Data</button>
-        <div class="panel">
-            {% for document in documents_uploaded %}
-                <button href="/manage_data" class="list-group-item-action bg-light"
-                        name="from_button"
-                        style="width: 59%; margin-top: 10px; vertical-align: unset;"
-                        value="{{ document.description }}"
-                        form="data_selection">
-                    <form style="justify-content: center; vertical-align: center;"
-                          action="{% url 'selected_data' %}"
-                          id="data_selection"
-                          method="POST">
-                        {% csrf_token %}
-                    </form>
-                    {{ document.description }}</button>
-                <button style="width: 40px; height: 40px;"
-                        href="/delete_data"
-                        class="btn btn-danger error"
-                        name="delete_button" type="submit"
-                        value="{{ document.description }}" form="data_deletion">
-                    <form style="justify-content: center; vertical-align: center;"
-                          action="{% url 'delete_data' %}" id="data_deletion" method="POST">
-                        {% csrf_token %}
-                    </form>
-                    &#10005
 
-                </button>
-                <button style="width: 40px; height: 40px;" class="btn btn-primary"
-                        name="edit_button"
-                        value="{{ document.description }}" form="data_edit">
-                    <form style="justify-content: center; vertical-align: center;"
-                          action="{% url 'edit_data' %}" id="data_edit" method="POST">
+        <div class="text-center"
+             style="padding-top: 15px; padding-left: 20px; padding-right: 20px; padding-bottom: 15px;">
+            {% if user.is_authenticated %}
+                <div>
+                    <form action="{% url 'logout' %}" method="get">
                         {% csrf_token %}
+                        <button href="/logout" type="submit" class="btn btn-primary"
+                                style="width: 115px;"
+                        >Log-out
+                        </button>
                     </form>
-                    &#9998
-                </button>
-                {% if not forloop.last %}{% endif %}{% endfor %}
-            <div style="margin-top: 15px; margin-bottom: 15px;">
-                <a style="width: 250px;" type="button" href="/upload_file" class="btn btn-primary"
-                   value="Upload Document"
-                   name="upload_button">Upload Document</a>
+                </div>
+            {% else %}
+                <div>
+                    <form action="{% url 'login' %}" method="get">
+                        {% csrf_token %}
+                        <button href="/login" type="submit" class="btn btn-primary"
+                                style="width: 85px; float: left;"
+                        >Log-in
+                        </button>
+                    </form>
+                </div>
+                <div>
+                    <form action="{% url 'signup' %}" method="get">
+                        {% csrf_token %}
+                        <button href="/signup" type="submit" class="btn btn-primary"
+                                style="width: 85px; float: right;"
+                        >Sign-up
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+
+        </div>
+
+        {% if user.is_authenticated %}
+            <button id="data_button" type="button" class="accordion"><span style="font-size:22px;"> View Data</span>
+                <div id="plus_sign_data" style="float: right; font-size: 22px;">
+                    &#43;
+                </div>
+            </button>
+            <div class="panel">
+                {% for document in documents_uploaded %}
+                    <button href="/manage_data" class="list-group-item-action bg-light btn btn-secondary"
+                            name="from_button"
+                            style="width: 63%; margin-top: 10px; vertical-align: unset;"
+                            value="{{ document.description }}"
+                            form="data_selection">
+                        <form style="justify-content: center; vertical-align: center;"
+                              action="{% url 'selected_data' %}"
+                              id="data_selection"
+                              method="POST">
+                            {% csrf_token %}
+                        </form>
+                        {{ document.description }}</button>
+                    <button style="width: fit-content; height: 38px; margin-bottom: 5px;"
+                            href="/delete_data"
+                            class="btn btn-danger error"
+                            name="delete_button" type="submit"
+                            value="{{ document.description }}" form="data_deletion">
+                        <form style="justify-content: center; vertical-align: center;"
+                              action="{% url 'delete_data' %}" id="data_deletion" method="POST">
+                            {% csrf_token %}
+                        </form>
+                        &#10005
+
+                    </button>
+                    <button style="width: fit-content; height: 38px; margin-bottom: 5px;"
+                            class="btn btn-primary"
+                            name="edit_button"
+                            value="{{ document.description }}" form="data_edit">
+                        <form style="justify-content: center; vertical-align: center;"
+                              action="{% url 'edit_data' %}" id="data_edit" method="POST">
+                            {% csrf_token %}
+                        </form>
+                        <span style="margin-right: 1px;">&#9998;</span>
+                    </button>
+                    {% if not forloop.last %}{% endif %}{% endfor %}
+                <div style="margin-top: 15px; margin-bottom: 15px;">
+                    <a style="width: 250px;" type="button" href="/upload_file" class="btn btn-primary"
+                       value="Upload Document"
+                       name="upload_button">Upload Document</a>
+                </div>
             </div>
-        </div>
 
+            {% if False %}
+                <button id="projects_button" type="button" class="accordion"><span
+                        style="font-size:22px;">Manage Projects</span>
+                    <div style="float: right">
+                        <span id="plus_sign_manage_projects" style="font-size:22px;">&#43;</span>
+                    </div>
+                </button>
+                <div class="panel">
+                    {#            <a type="button" href="/upload_file" class="btn btn-primary" value="Upload Document"#}
+                    {#               name="upload_button">Upload Document</a>#}
+                    {#            <form method="POST" id="dropdown_delete">#}
+                    {#                {% csrf_token %}#}
+                    {#                <input type="submit" class="btn btn-danger error" value="Delete Data" name="delete_button"#}
+                    {#                       id="delete_button">#}
+                    {#                <select name="selected_data_delete" form="dropdown_delete">#}
+                    {#                    {% for document in documents_uploaded %}#}
+                    {#                        <option value="{{ document.description }}"#}
+                    {#                                id="{{ document.description }}">{{ document.description }}</option>#}
+                    {#                    {% endfor %}#}
+                    {#                </select>#}
+                    {#            </form>#}
+                    <a href="" style="margin-top: 5px; width: 250px;" type="button" class="btn btn-primary"
+                       value="Create new Project"
+                       name="new_project_button">Create
+                        new project</a>
+                    <a href="" style="margin-top: 5px; margin-bottom: 15px; width: 250px;" type="button"
+                       class="btn btn-primary"
+                       value="Load Project"
+                       name="load_project_button">Load
+                        project</a>
+                </div>
+            {% endif %}
+        {% endif %}
 
-        <button type="button" class="accordion" style="margin-bottom: 5px;">Manage Projects</button>
-        <div class="panel">
-            {#            <a type="button" href="/upload_file" class="btn btn-primary" value="Upload Document"#}
-            {#               name="upload_button">Upload Document</a>#}
-            {#            <form method="POST" id="dropdown_delete">#}
-            {#                {% csrf_token %}#}
-            {#                <input type="submit" class="btn btn-danger error" value="Delete Data" name="delete_button"#}
-            {#                       id="delete_button">#}
-            {#                <select name="selected_data_delete" form="dropdown_delete">#}
-            {#                    {% for document in documents_uploaded %}#}
-            {#                        <option value="{{ document.description }}"#}
-            {#                                id="{{ document.description }}">{{ document.description }}</option>#}
-            {#                    {% endfor %}#}
-            {#                </select>#}
-            {#            </form>#}
-            <a href="" style="margin-top: 5px; width: 250px;" type="button" class="btn btn-primary"
-               value="Create new Project"
-               name="new_project_button">Create
-                new project</a>
-            <a href="" style="margin-top: 5px; margin-bottom: 15px; width: 250px;" type="button" class="btn btn-primary"
-               value="Load Project"
-               name="load_project_button">Load
-                project</a>
-        </div>
 
     </div>
 </div>
@@ -175,6 +234,28 @@
                     }
                 }
             });
+    });
+
+    var data_accordion_expanded = false;
+    jQuery("#data_button").click(function () {
+        if (!data_accordion_expanded) {
+            document.getElementById('plus_sign_data').innerHTML = '&#8722;';
+            data_accordion_expanded = true;
+        } else {
+            document.getElementById('plus_sign_data').innerHTML = '&#43;'
+            data_accordion_expanded = false;
+        }
+    });
+
+    var project_accordion_expanded = false;
+    jQuery("#projects_button").click(function () {
+        if (!project_accordion_expanded) {
+            document.getElementById('plus_sign_manage_projects').innerHTML = '&#8722;';
+            project_accordion_expanded = true;
+        } else {
+            document.getElementById('plus_sign_manage_projects').innerHTML = '&#43;'
+            project_accordion_expanded = false;
+        }
     });
 
 </script>
