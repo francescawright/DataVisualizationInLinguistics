@@ -65,177 +65,14 @@
 
                         <br>
 
-                        <div id="highlight_checks_AND" style="display: none;">
-                            <!--Toxicity level-->
-                            <div style="padding-top: 10px; padding-right: 10px">
-
-                                <div>
-                                    <input type="radio" class="radio" name="cbHighlight"
-                                           value="highlight-toxicity-0" id="highlight-toxicity-0"
-                                           checked><label
-                                        for="highlight-toxicity-0">Not toxic</label>
-                                    <div style="float: right">
-                                        <svg height="20" width="30" style="display: inline-block;">
-                                            <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
-                                                    fill="#f7f7f7"/>
-                                        </svg>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <input type="radio" class="radio" name="cbHighlight"
-                                           value="highlight-toxicity-1" id="highlight-toxicity-1"
-                                    ><label
-                                        for="highlight-toxicity-1">Mildly toxic</label>
-                                    <div style="float: right">
-                                        <svg height="20" width="30" style="display: inline-block;">
-                                            <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
-                                                    fill="#cccccc"/>
-                                        </svg>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <input type="radio" class="radio" name="cbHighlight"
-                                           value="highlight-toxicity-2" id="highlight-toxicity-2"
-                                    ><label
-                                        for="highlight-toxicity-2">Toxic</label>
-                                    <div style="float: right">
-                                        <svg height="20" width="30" style="display: inline-block;">
-                                            <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
-                                                    fill="#737373"/>
-                                        </svg>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <input type="radio" class="radio" name="cbHighlight"
-                                           value="highlight-toxicity-3" id="highlight-toxicity-3"
-                                    ><label
-                                        for="highlight-toxicity-3">Very toxic</label>
-                                    <div style="float: right">
-                                        <svg height="20" width="30" style="display: inline-block;">
-                                            <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
-                                                    fill="#000000"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
-
-                            <!--Stance-->
-                            <div style="padding-top: 10px;">
-                                <div>
-                                    <input type="checkbox" class="checkbox" name="cbHighlight"
-                                           value="highlight-neutral"
-                                           id="highlight-neutral"><label for="highlight-neutral">Neutral
-                                    stance</label>
-                                    <div style="float: right">
-                                        <svg height=" 10" width="30" style="display: inline-block;">
-                                            <rect width="20" height="10" fill="#2b2727"/>
-                                        </svg>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <input type="checkbox" class="checkbox" name="cbHighlight"
-                                           value="highlight-positive" id="highlight-positive"><label
-                                        for="highlight-positive">Positive stance</label>
-                                    <div style="float: right">
-                                        <svg height=" 10" width="30" style="display: inline-block;">
-                                            <rect width="20" height="10" fill="#77dd77"/>
-                                        </svg>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <input type="checkbox" class="checkbox" name="cbHighlight"
-                                           value="highlight-negative" id="highlight-negative"><label
-                                        for="highlight-negative">Negative stance</label>
-                                    <div style="float: right">
-                                        <svg height=" 10" width="30" style="display: inline-block;">
-                                            <rect width="20" height="10" fill="#ff6961"/>
-                                        </svg>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
-
-
-                            <!--Target-->
-                            <div style="padding-top: 10px;">
-                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-group"
-                                       id="highlight-group"><label for="highlight-group">Target
-                                group</label>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-person"
-                                       id="highlight-person"><label for="highlight-person">Target
-                                person</label>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight"
-                                       value="highlight-stereotype"
-                                       id="highlight-stereotype"><label
-                                    for="highlight-stereotype">Stereotype</label>
-                            </div>
-
-                            <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
-
-                            <!--Features-->
-                            <div style="padding-top: 10px;">
-                                <input type="checkbox" class="checkbox" name="cbHighlight"
-                                       value="highlight-argumentation" id="highlight-argumentation"
-                                ><label
-                                    for="highlight-argumentation">Argumentation</label>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight"
-                                       value="highlight-constructiveness" id="highlight-constructiveness"
-                                ><label
-                                    for="highlight-constructiveness">Constructiveness</label>
-                                <br>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-sarcasm"
-                                       id="highlight-sarcasm"><label
-                                    for="highlight-sarcasm">Sarcasm</label>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-mockery"
-                                       id="highlight-mockery"><label
-                                    for="highlight-mockery">Mockery</label>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight"
-                                       value="highlight-intolerance"
-                                       id="highlight-intolerance"><label
-                                    for="highlight-intolerance">Intolerance</label>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight"
-                                       value="highlight-improper-language" id="highlight-improper-language"
-                                ><label for="highlight-improper-language">Improper
-                                language</label>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-insult"
-                                       id="highlight-insult"><label
-                                    for="highlight-insult">Insult</label>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight"
-                                       value="highlight-aggressiveness" id="highlight-aggressiveness"
-                                ><label for="highlight-aggressiveness">Aggressiveness</label>
-                                <br>
-                            </div>
-                        </div>
-
                         <div id="highlight_checks_OR" style="display: block;">
                             <!--Toxicity level-->
                             <div style="padding-top: 10px; padding-right: 10px">
-                                <input type="checkbox" class="checkbox" name="cbCheckAll"
-                                       value="highlight-argumentation" id="highlight-argumentation"
-                                ><label
-                                    for="highlight-argumentation">Check/Uncheck all</label>
-                                <br>
-                                <div>
-                                    <input type="checkbox" class="checkbox" name="cbHighlight"
-                                           value="highlight-toxicity-0" id="highlight-toxicity-0"
-                                           checked><label
-                                        for="highlight-toxicity-0">Not toxic</label>
+                                <div class="custom-control custom-switch" style="line-height: 23px;">
+                                    <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                           value="highlight-toxicity-0" id="highlight-toxicity-0OR"
+                                           checked><label class="custom-control-label"
+                                                          for="highlight-toxicity-0OR">Not toxic</label>
                                     <div style="float: right">
                                         <svg height="20" width="30" style="display: inline-block;">
                                             <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -244,11 +81,11 @@
                                     </div>
                                 </div>
 
-                                <div>
-                                    <input type="checkbox" class="checkbox" name="cbHighlight"
-                                           value="highlight-toxicity-1" id="highlight-toxicity-1"
-                                           checked><label
-                                        for="highlight-toxicity-1">Mildly toxic</label>
+                                <div class="custom-control custom-switch" style="line-height: 23px;">
+                                    <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                           value="highlight-toxicity-1" id="highlight-toxicity-1OR"
+                                           checked><label class="custom-control-label"
+                                                          for="highlight-toxicity-1OR">Mildly toxic</label>
                                     <div style="float: right">
                                         <svg height="20" width="30" style="display: inline-block;">
                                             <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -257,11 +94,11 @@
                                     </div>
                                 </div>
 
-                                <div>
-                                    <input type="checkbox" class="checkbox" name="cbHighlight"
-                                           value="highlight-toxicity-2" id="highlight-toxicity-2"
-                                           checked><label
-                                        for="highlight-toxicity-2">Toxic</label>
+                                <div class="custom-control custom-switch" style="line-height: 23px;">
+                                    <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                           value="highlight-toxicity-2" id="highlight-toxicity-2OR"
+                                           checked><label class="custom-control-label"
+                                                          for="highlight-toxicity-2OR">Toxic</label>
                                     <div style="float: right">
                                         <svg height="20" width="30" style="display: inline-block;">
                                             <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -270,11 +107,11 @@
                                     </div>
                                 </div>
 
-                                <div>
-                                    <input type="checkbox" class="checkbox" name="cbHighlight"
-                                           value="highlight-toxicity-3" id="highlight-toxicity-3"
-                                           checked><label
-                                        for="highlight-toxicity-3">Very toxic</label>
+                                <div class="custom-control custom-switch" style="line-height: 23px;">
+                                    <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                           value="highlight-toxicity-3" id="highlight-toxicity-3OR"
+                                           checked><label class="custom-control-label"
+                                                          for="highlight-toxicity-3OR">Very toxic</label>
                                     <div style="float: right">
                                         <svg height="20" width="30" style="display: inline-block;">
                                             <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -287,10 +124,11 @@
 
                             <!--Stance-->
                             <div style="padding-top: 10px;">
-                                <div>
-                                    <input type="checkbox" class="checkbox" name="cbHighlight"
+                                <div class="custom-control custom-switch" style="line-height: 23px;">
+                                    <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                            value="highlight-neutral"
-                                           id="highlight-neutral" checked><label for="highlight-neutral">Neutral
+                                           id="highlight-neutralOR" checked><label class="custom-control-label"
+                                                                                   for="highlight-neutralOR">Neutral
                                     stance</label>
                                     <div style="float: right">
                                         <svg height=" 10" width="30" style="display: inline-block;">
@@ -299,9 +137,196 @@
                                     </div>
                                 </div>
 
-                                <div>
-                                    <input type="checkbox" class="checkbox" name="cbHighlight"
-                                           value="highlight-positive" id="highlight-positive" checked><label
+                                <div class="custom-control custom-switch" style="line-height: 23px;">
+                                    <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                           value="highlight-positive" id="highlight-positiveOR" checked><label
+                                        class="custom-control-label"
+                                        for="highlight-positiveOR">Positive stance</label>
+                                    <div style="float: right">
+                                        <svg height=" 10" width="30" style="display: inline-block;">
+                                            <rect width="20" height="10" fill="#77dd77"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="custom-control custom-switch" style="line-height: 23px;">
+                                    <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                           value="highlight-negative" id="highlight-negativeOR" checked><label
+                                        class="custom-control-label"
+                                        for="highlight-negativeOR" checked>Negative stance</label>
+                                    <div style="float: right">
+                                        <svg height=" 10" width="30" style="display: inline-block;">
+                                            <rect width="20" height="10" fill="#ff6961"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
+
+
+                            <!--Target-->
+                            <div class="custom-control custom-switch" style="line-height: 23px; padding-top: 10px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                       value="highlight-group"
+                                       id="highlight-groupOR" checked><label class="custom-control-label"
+                                                                             for="highlight-groupOR">Target
+                                group</label>
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                       value="highlight-person"
+                                       id="highlight-personOR" checked><label class="custom-control-label"
+                                                                              for="highlight-personOR">Target
+                                person</label>
+                            </div>
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                       value="highlight-stereotype"
+                                       id="highlight-stereotypeOR" checked><label class="custom-control-label"
+                                                                                  for="highlight-stereotypeOR">Stereotype</label>
+                            </div>
+
+                            <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
+
+                            <!--Features-->
+                            <div class="custom-control custom-switch" style="line-height: 23px; padding-top: 10px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                       value="highlight-argumentation" id="highlight-argumentationOR"
+                                       checked><label class="custom-control-label"
+                                                      for="highlight-argumentationOR">Argumentation</label>
+                            </div>
+                            <div class="custom-control custom-switch"
+                                 style="line-height: 23px; margin-bottom: 15px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                       value="highlight-constructiveness" id="highlight-constructivenessOR"
+                                       checked><label class="custom-control-label"
+                                                      for="highlight-constructivenessOR">Constructiveness</label>
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                       value="highlight-sarcasm"
+                                       id="highlight-sarcasmOR" checked><label class="custom-control-label"
+                                                                               for="highlight-sarcasmOR">Sarcasm</label>
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                       value="highlight-mockery"
+                                       id="highlight-mockeryOR" checked><label class="custom-control-label"
+                                                                               for="highlight-mockeryOR">Mockery</label>
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                       value="highlight-intolerance"
+                                       id="highlight-intoleranceOR" checked><label class="custom-control-label"
+                                                                                   for="highlight-intoleranceOR">Intolerance</label>
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                       value="highlight-improper-language" id="highlight-improper-languageOR"
+                                       checked><label class="custom-control-label"
+                                                      for="highlight-improper-languageOR">Improper
+                                language</label>
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                       value="highlight-insult"
+                                       id="highlight-insultOR" checked><label class="custom-control-label"
+                                                                              for="highlight-insultOR">Insult</label>
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                       value="highlight-aggressiveness" id="highlight-aggressivenessOR"
+                                       checked><label class="custom-control-label"
+                                                      for="highlight-aggressivenessOR">Aggressiveness</label>
+                            </div>
+                        </div>
+
+                        <div id="highlight_checks_AND" style="display: none;">
+                            <!--Toxicity level-->
+                            <div style="padding-top: 10px; padding-right: 10px">
+                                <div class="custom-control custom-switch" style="line-height: 23px;">
+                                    <input type="radio" class="form-check-input" name="cbHighlightAND"
+                                           value="highlight-toxicity-0" id="highlight-toxicity-0"
+                                           checked><label class="form-check-label"
+                                                          for="highlight-toxicity-0">Not toxic</label>
+                                    <div style="float: right">
+                                        <svg height="20" width="30" style="display: inline-block;">
+                                            <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                    fill="#f7f7f7"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="custom-control custom-switch" style="line-height: 23px;">
+                                    <input type="radio" class="form-check-input" name="cbHighlightAND"
+                                           value="highlight-toxicity-1" id="highlight-toxicity-1"
+                                    ><label class="form-check-label"
+                                            for="highlight-toxicity-1">Mildly toxic</label>
+                                    <div style="float: right">
+                                        <svg height="20" width="30" style="display: inline-block;">
+                                            <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                    fill="#cccccc"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="custom-control custom-switch" style="line-height: 23px;">
+                                    <input type="radio" class="form-check-input" name="cbHighlightAND"
+                                           value="highlight-toxicity-2" id="highlight-toxicity-2"
+                                    ><label class="form-check-label"
+                                            for="highlight-toxicity-2">Toxic</label>
+                                    <div style="float: right">
+                                        <svg height="20" width="30" style="display: inline-block;">
+                                            <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                    fill="#737373"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="custom-control custom-switch" style="line-height: 23px;">
+                                    <input type="radio" class="form-check-input" name="cbHighlightAND"
+                                           value="highlight-toxicity-3" id="highlight-toxicity-3"
+                                    ><label class="form-check-label"
+                                            for="highlight-toxicity-3">Very toxic</label>
+                                    <div style="float: right">
+                                        <svg height="20" width="30" style="display: inline-block;">
+                                            <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                    fill="#000000"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
+
+                            <!--Stance-->
+                            <div style="padding-top: 10px;">
+                                <div class="custom-control custom-switch" style="line-height: 23px;">
+                                    <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
+                                           value="highlight-neutral"
+                                           id="highlight-neutral"><label class="custom-control-label"
+                                                                         for="highlight-neutral">Neutral
+                                    stance</label>
+                                    <div style="float: right">
+                                        <svg height=" 10" width="30" style="display: inline-block;">
+                                            <rect width="20" height="10" fill="#2b2727"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="custom-control custom-switch" style="line-height: 23px;">
+                                    <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
+                                           value="highlight-positive" id="highlight-positive"><label
+                                        class="custom-control-label"
                                         for="highlight-positive">Positive stance</label>
                                     <div style="float: right">
                                         <svg height=" 10" width="30" style="display: inline-block;">
@@ -310,9 +335,10 @@
                                     </div>
                                 </div>
 
-                                <div>
-                                    <input type="checkbox" class="checkbox" name="cbHighlight"
-                                           value="highlight-negative" id="highlight-negative" checked><label
+                                <div class="custom-control custom-switch" style="line-height: 23px;">
+                                    <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
+                                           value="highlight-negative" id="highlight-negative"><label
+                                        class="custom-control-label"
                                         for="highlight-negative">Negative stance</label>
                                     <div style="float: right">
                                         <svg height=" 10" width="30" style="display: inline-block;">
@@ -326,64 +352,91 @@
 
 
                             <!--Target-->
-                            <div style="padding-top: 10px;">
-                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-group"
-                                       id="highlight-group" checked><label for="highlight-group">Target
+                            <div class="custom-control custom-switch" style="line-height: 23px; padding-top: 10px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
+                                       value="highlight-group"
+                                       id="highlight-group"><label class="custom-control-label"
+                                                                   for="highlight-group">Target
                                 group</label>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-person"
-                                       id="highlight-person" checked><label for="highlight-person">Target
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
+                                       value="highlight-person"
+                                       id="highlight-person"><label class="custom-control-label"
+                                                                    for="highlight-person">Target
                                 person</label>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight"
+                            </div>
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
                                        value="highlight-stereotype"
-                                       id="highlight-stereotype" checked><label
-                                    for="highlight-stereotype">Stereotype</label>
+                                       id="highlight-stereotype"><label class="custom-control-label"
+                                                                        for="highlight-stereotype">Stereotype</label>
                             </div>
 
                             <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
 
                             <!--Features-->
-                            <div style="padding-top: 10px;">
-                                <input type="checkbox" class="checkbox" name="cbHighlight"
+                            <div class="custom-control custom-switch" style="line-height: 23px; padding-top: 10px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
                                        value="highlight-argumentation" id="highlight-argumentation"
-                                       checked><label
-                                    for="highlight-argumentation">Argumentation</label>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight"
+                                ><label class="custom-control-label"
+                                        for="highlight-argumentation">Argumentation</label>
+                            </div>
+                            <div class="custom-control custom-switch"
+                                 style="line-height: 23px; margin-bottom: 15px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
                                        value="highlight-constructiveness" id="highlight-constructiveness"
-                                       checked><label
-                                    for="highlight-constructiveness">Constructiveness</label>
-                                <br>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-sarcasm"
-                                       id="highlight-sarcasm" checked><label
-                                    for="highlight-sarcasm">Sarcasm</label>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-mockery"
-                                       id="highlight-mockery" checked><label
-                                    for="highlight-mockery">Mockery</label>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight"
+                                ><label class="custom-control-label"
+                                        for="highlight-constructiveness">Constructiveness</label>
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
+                                       value="highlight-sarcasm"
+                                       id="highlight-sarcasm"><label class="custom-control-label"
+                                                                     for="highlight-sarcasm">Sarcasm</label>
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
+                                       value="highlight-mockery"
+                                       id="highlight-mockery"><label class="custom-control-label"
+                                                                     for="highlight-mockery">Mockery</label>
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
                                        value="highlight-intolerance"
-                                       id="highlight-intolerance" checked><label
-                                    for="highlight-intolerance">Intolerance</label>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight"
+                                       id="highlight-intolerance"><label class="custom-control-label"
+                                                                         for="highlight-intolerance">Intolerance</label>
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
                                        value="highlight-improper-language" id="highlight-improper-language"
-                                       checked><label for="highlight-improper-language">Improper
+                                ><label class="custom-control-label" for="highlight-improper-language">Improper
                                 language</label>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight" value="highlight-insult"
-                                       id="highlight-insult" checked><label
-                                    for="highlight-insult">Insult</label>
-                                <br>
-                                <input type="checkbox" class="checkbox" name="cbHighlight"
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
+                                       value="highlight-insult"
+                                       id="highlight-insult"><label class="custom-control-label"
+                                                                    for="highlight-insult">Insult</label>
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
                                        value="highlight-aggressiveness" id="highlight-aggressiveness"
-                                       checked><label for="highlight-aggressiveness">Aggressiveness</label>
-                                <br>
+                                ><label class="custom-control-label"
+                                        for="highlight-aggressiveness">Aggressiveness</label>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>

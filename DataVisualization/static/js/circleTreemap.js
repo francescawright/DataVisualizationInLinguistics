@@ -115,9 +115,10 @@ treeJSON = d3.json(dataset, function (error, root) {
 let checkboxesProperty = document.querySelectorAll("input[type=checkbox][name=cbHighlightProperty]");
 let checkboxAND = document.querySelector("input[type=radio][name=cbHighlightProperty][value=and-group]");
 let checkboxOR = document.querySelector("input[type=radio][name=cbHighlightProperty][value=or-group]");
-let checkboxesHighlightGroup = document.querySelectorAll("input[type=checkbox][name=cbHighlight]");
+var checkboxesHighlightGroupOR = document.querySelectorAll("input[name=cbHighlightOR]");
+var checkboxesHighlightGroupAND = document.querySelectorAll("input[name=cbHighlightAND]");
 
-let enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
+var enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
 console.log('[User]', user.split('/')[2], '[interaction]', 'TreeMap_layout_loaded', '[Date]', new Date().toISOString());
 
 //Listeners
@@ -156,35 +157,55 @@ console.log('[User]', user.split('/')[2], '[interaction]', 'TreeMap_layout_loade
 // });
 
 // If AND is selected, uncheck the OR and highlight by property AND
-checkboxAND.addEventListener('change', function () {
+checkboxAND.addEventListener("change", function () {
     if (this.checked) {
         checkboxOR.checked = false;
+
+        enabledHighlight =
+            Array.from(checkboxesHighlightGroupAND) // Convert checkboxes to an array to use filter and map.
+                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
         highlightNodesByPropertyAND(node, enabledHighlight);
     } else {
         checkboxOR.checked = true;
+        enabledHighlight =
+            Array.from(checkboxesHighlightGroupOR) // Convert checkboxes to an array to use filter and map.
+                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
         highlightNodesByPropertyOR(node, enabledHighlight);
     }
 });
 // If OR is selected, uncheck the AND and highlight by property OR
-checkboxOR.addEventListener('change', function () {
+checkboxOR.addEventListener("change", function () {
     if (this.checked) {
         checkboxAND.checked = false;
+
+        enabledHighlight =
+            Array.from(checkboxesHighlightGroupOR) // Convert checkboxes to an array to use filter and map.
+                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
         highlightNodesByPropertyOR(node, enabledHighlight);
     } else {
         checkboxAND.checked = true;
+        enabledHighlight =
+            Array.from(checkboxesHighlightGroupAND) // Convert checkboxes to an array to use filter and map.
+                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
         highlightNodesByPropertyAND(node, enabledHighlight);
     }
 });
 
 // Use Array.forEach to add an event listener to each checkbox.
-checkboxesHighlightGroup.forEach(function (checkboxItem) {
+checkboxesHighlightGroupOR.forEach(function (checkboxItem) {
     checkboxItem.addEventListener('change', function () {
         enabledHighlight =
-            Array.from(checkboxesHighlightGroup) // Convert checkboxes to an array to use filter and map.
+            Array.from(checkboxesHighlightGroupOR) // Convert checkboxes to an array to use filter and map.
                 .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                 .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-        //console.log(enabledHighlight);
+        console.log(enabledHighlight);
         if (checkboxItem.checked) {
             console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
         } else {
@@ -192,8 +213,25 @@ checkboxesHighlightGroup.forEach(function (checkboxItem) {
         }
         checkboxOR.checked ? highlightNodesByPropertyOR(node, enabledHighlight) : highlightNodesByPropertyAND(node, enabledHighlight);
     })
-});
 
+    // Use Array.forEach to add an event listener to each checkbox.
+    checkboxesHighlightGroupAND.forEach(function (checkboxItem) {
+        checkboxItem.addEventListener('change', function () {
+            enabledHighlight =
+                Array.from(checkboxesHighlightGroupAND) // Convert checkboxes to an array to use filter and map.
+                    .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                    .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
+            console.log(enabledHighlight);
+            if (checkboxItem.checked) {
+                console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+            } else {
+                console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+            }
+            checkboxAND.checked ? highlightNodesByPropertyAND(node, enabledHighlight) : highlightNodesByPropertyOR(node, enabledHighlight);
+        })
+    });
+});
 
 /**
  * Return the value of a property (set from the JSON) of the given node
