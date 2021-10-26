@@ -29,7 +29,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 //Graph
 let link, node;
 const canvasHeight = 1000, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
-const canvasFactor = 1.75;
+const canvasFactor = 1;
 
 const edgeLength = 24 * 20;
 const initialZoomScale = 0.17; //Initial zoom scale to display almost the whole graph
@@ -702,7 +702,7 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
 
 function highlightStanceOR(node, enabledHighlight) {
     //Neutral stance CB is checked
-    if (enabledHighlight.indexOf("highlight-neutral") > -1) {
+    if (enabledHighlight.indexOf("highlight-stance-neutral") > -1) {
         node.filter(function (d) {
             if (!d.positive_stance && !d.negative_stance) d.highlighted = 1;
             return (!d.positive_stance && !d.negative_stance);
@@ -710,7 +710,7 @@ function highlightStanceOR(node, enabledHighlight) {
     }
 
     //Positive stance CB is checked
-    if (enabledHighlight.indexOf("highlight-positive") > -1) {
+    if (enabledHighlight.indexOf("highlight-stance-positive") > -1) {
         node.filter(function (d) {
             if (d.positive_stance) d.highlighted = 1;
             return (d.positive_stance);
@@ -718,7 +718,7 @@ function highlightStanceOR(node, enabledHighlight) {
     }
 
     //Negative stance CB is checked
-    if (enabledHighlight.indexOf("highlight-negative") > -1) {
+    if (enabledHighlight.indexOf("highlight-stance-negative") > -1) {
         node.filter(function (d) {
             if (d.negative_stance) d.highlighted = 1;
             return (d.negative_stance);
@@ -729,7 +729,7 @@ function highlightStanceOR(node, enabledHighlight) {
 
 function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2) {
     //Neutral stance CB is checked
-    if (enabledHighlight.indexOf("highlight-neutral") > -1) {
+    if (enabledHighlight.indexOf("highlight-stance-neutral") > -1) {
         node.filter(function (d) {
             if (d.positive_stance || d.negative_stance) d.highlighted = 0;
             return (d.positive_stance || d.negative_stance);
@@ -740,7 +740,7 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Positive stance CB is checked
-    if (enabledHighlight.indexOf("highlight-positive") > -1) {
+    if (enabledHighlight.indexOf("highlight-stance-positive") > -1) {
         node.filter(function (d) {
             if (!d.positive_stance) d.highlighted = 0;
             return (!d.positive_stance);
@@ -751,7 +751,7 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Negative stance CB is checked
-    if (enabledHighlight.indexOf("highlight-negative") > -1) {
+    if (enabledHighlight.indexOf("highlight-stance-negative") > -1) {
         node.filter(function (d) {
             if (!d.negative_stance) d.highlighted = 0;
             return (!d.negative_stance);
@@ -765,7 +765,7 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2) {
 
 function highlightTargetOR(node, enabledHighlight) {
     //Target group CB is checked
-    if (enabledHighlight.indexOf("highlight-group") > -1) {
+    if (enabledHighlight.indexOf("highlight-target-group") > -1) {
         node.filter(function (d) {
             if (d.target_group) d.highlighted = 1;
             return (d.target_group);
@@ -773,7 +773,7 @@ function highlightTargetOR(node, enabledHighlight) {
     }
 
     //Target person CB is checked
-    if (enabledHighlight.indexOf("highlight-person") > -1) {
+    if (enabledHighlight.indexOf("highlight-target-person") > -1) {
         node.filter(function (d) {
             if (d.target_person) d.highlighted = 1;
             return (d.target_person);
@@ -781,7 +781,7 @@ function highlightTargetOR(node, enabledHighlight) {
     }
 
     //Stereotype CB is checked
-    if (enabledHighlight.indexOf("highlight-stereotype") > -1) {
+    if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) {
         node.filter(function (d) {
             if (d.stereotype) d.highlighted = 1;
             return (d.stereotype);
@@ -791,7 +791,7 @@ function highlightTargetOR(node, enabledHighlight) {
 
 function highlightTargetAND(node, enabledHighlight, opacityValue = 0.2) {
     //Target group CB is checked
-    if (enabledHighlight.indexOf("highlight-group") > -1) {
+    if (enabledHighlight.indexOf("highlight-target-group") > -1) {
         node.filter(function (d) {
             if (!d.target_group) d.highlighted = 0;
             return (!d.target_group);
@@ -800,7 +800,7 @@ function highlightTargetAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Target person CB is checked
-    if (enabledHighlight.indexOf("highlight-person") > -1) {
+    if (enabledHighlight.indexOf("highlight-target-person") > -1) {
         node.filter(function (d) {
             if (!d.target_person) d.highlighted = 0;
             return (!d.target_person);
@@ -808,7 +808,7 @@ function highlightTargetAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Stereotype CB is checked
-    if (enabledHighlight.indexOf("highlight-stereotype") > -1) {
+    if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) {
         node.filter(function (d) {
             if (!d.stereotype) d.highlighted = 0;
             return (!d.stereotype);
@@ -818,7 +818,7 @@ function highlightTargetAND(node, enabledHighlight, opacityValue = 0.2) {
 
 function highlightPositiveOR(node, enabledHighlight) {
     //Argumentation CB is checked
-    if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-argumentation") > -1) {
         node.filter(function (d) {
             if (d.argumentation) d.highlighted = 1;
             return (d.argumentation);
@@ -826,7 +826,7 @@ function highlightPositiveOR(node, enabledHighlight) {
     }
 
     //Constructiveness CB is checked
-    if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-constructiveness") > -1) {
         node.filter(function (d) {
             if (d.constructiveness) d.highlighted = 1;
             return (d.constructiveness);
@@ -837,7 +837,7 @@ function highlightPositiveOR(node, enabledHighlight) {
 
 function highlightPositiveAND(node, enabledHighlight, opacityValue = 0.2) {
     //Argumentation CB is checked
-    if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-argumentation") > -1) {
         node.filter(function (d) {
             if (!d.argumentation) ;
             d.highlighted = 0;
@@ -846,7 +846,7 @@ function highlightPositiveAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Constructiveness CB is checked
-    if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-constructiveness") > -1) {
         node.filter(function (d) {
             if (!d.constructiveness) ;
             d.highlighted = 0;
@@ -858,7 +858,7 @@ function highlightPositiveAND(node, enabledHighlight, opacityValue = 0.2) {
 
 function highlightNegativeOR(node, enabledHighlight) {
     //Sarcasm CB is checked
-    if (enabledHighlight.indexOf("highlight-sarcasm") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-sarcasm") > -1) {
         node.filter(function (d) {
             if (d.sarcasm) d.highlighted = 1;
             return (d.sarcasm);
@@ -866,7 +866,7 @@ function highlightNegativeOR(node, enabledHighlight) {
     }
 
     //Mockery CB is checked
-    if (enabledHighlight.indexOf("highlight-mockery") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-mockery") > -1) {
         node.filter(function (d) {
             if (d.mockery) d.highlighted = 1;
             return (d.mockery);
@@ -874,7 +874,7 @@ function highlightNegativeOR(node, enabledHighlight) {
     }
 
     //Intolerance CB is checked
-    if (enabledHighlight.indexOf("highlight-intolerance") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-intolerance") > -1) {
         node.filter(function (d) {
             if (d.intolerance) d.highlighted = 1;
             return (d.intolerance);
@@ -882,7 +882,7 @@ function highlightNegativeOR(node, enabledHighlight) {
     }
 
     //Improper language CB is checked
-    if (enabledHighlight.indexOf("highlight-improper-language") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-improper-language") > -1) {
         node.filter(function (d) {
             if (d.improper_language) d.highlighted = 1;
             return (d.improper_language);
@@ -890,7 +890,7 @@ function highlightNegativeOR(node, enabledHighlight) {
     }
 
     //Insult language CB is checked
-    if (enabledHighlight.indexOf("highlight-insult") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-insult") > -1) {
         node.filter(function (d) {
             if (d.insult) d.highlighted = 1;
             return (d.insult);
@@ -898,7 +898,7 @@ function highlightNegativeOR(node, enabledHighlight) {
     }
 
     //Aggressiveness language CB is checked
-    if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-aggressiveness") > -1) {
         node.filter(function (d) {
             if (d.aggressiveness) d.highlighted = 1;
             return (d.aggressiveness);
@@ -908,7 +908,7 @@ function highlightNegativeOR(node, enabledHighlight) {
 
 function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2) {
     //Sarcasm CB is checked
-    if (enabledHighlight.indexOf("highlight-sarcasm") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-sarcasm") > -1) {
         node.filter(function (d) {
             if (!d.sarcasm) d.highlighted = 0;
             return (!d.sarcasm);
@@ -916,7 +916,7 @@ function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Mockery CB is checked
-    if (enabledHighlight.indexOf("highlight-mockery") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-mockery") > -1) {
         node.filter(function (d) {
             if (!d.mockery) d.highlighted = 0;
             return (!d.mockery);
@@ -924,7 +924,7 @@ function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Intolerance CB is checked
-    if (enabledHighlight.indexOf("highlight-intolerance") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-intolerance") > -1) {
         node.filter(function (d) {
             if (!d.intolerance) d.highlighted = 0;
             return (!d.intolerance);
@@ -932,7 +932,7 @@ function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Improper language CB is checked
-    if (enabledHighlight.indexOf("highlight-improper-language") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-improper-language") > -1) {
         node.filter(function (d) {
             if (!d.improper_language) d.highlighted = 0;
             return (!d.improper_language);
@@ -940,7 +940,7 @@ function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Insult language CB is checked
-    if (enabledHighlight.indexOf("highlight-insult") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-insult") > -1) {
         node.filter(function (d) {
             if (!d.insult) d.highlighted = 0;
             return (!d.insult);
@@ -948,7 +948,7 @@ function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Aggressiveness language CB is checked
-    if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-aggressiveness") > -1) {
         node.filter(function (d) {
             if (!d.aggressiveness) d.highlighted = 0;
             return (!d.aggressiveness);
@@ -2347,7 +2347,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Neutral stance CB is checked
-        if (enabledHighlight.indexOf("highlight-neutral") > -1) {
+        if (enabledHighlight.indexOf("highlight-stance-neutral") > -1) {
             node.filter(function (d) {
                 return (!d.positive_stance && !d.negative_stance);
             }).style("opacity", 1);
@@ -2358,7 +2358,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Positive stance CB is checked
-        if (enabledHighlight.indexOf("highlight-positive") > -1) {
+        if (enabledHighlight.indexOf("highlight-stance-positive") > -1) {
             node.filter(function (d) {
                 return (d.positive_stance);
             }).style("opacity", 1);
@@ -2369,7 +2369,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Negative stance CB is checked
-        if (enabledHighlight.indexOf("highlight-negative") > -1) {
+        if (enabledHighlight.indexOf("highlight-stance-negative") > -1) {
             node.filter(function (d) {
                 return (d.negative_stance);
             }).style("opacity", 1);
@@ -2380,7 +2380,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Target group CB is checked
-        if (enabledHighlight.indexOf("highlight-group") > -1) {
+        if (enabledHighlight.indexOf("highlight-target-group") > -1) {
             node.filter(function (d) {
                 return (d.target_group);
             }).style("opacity", 1);
@@ -2391,7 +2391,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Target person CB is checked
-        if (enabledHighlight.indexOf("highlight-person") > -1) {
+        if (enabledHighlight.indexOf("highlight-target-person") > -1) {
             node.filter(function (d) {
                 return (d.target_person);
             }).style("opacity", 1);
@@ -2402,7 +2402,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Stereotype CB is checked
-        if (enabledHighlight.indexOf("highlight-stereotype") > -1) {
+        if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) {
             node.filter(function (d) {
                 return (d.stereotype);
             }).style("opacity", 1);
@@ -2413,7 +2413,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Argumentation CB is checked
-        if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-argumentation") > -1) {
             node.filter(function (d) {
                 return (d.argumentation);
             }).style("opacity", 1);
@@ -2424,7 +2424,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Constructiveness CB is checked
-        if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-constructiveness") > -1) {
             node.filter(function (d) {
                 return (d.constructiveness);
             }).style("opacity", 1);
@@ -2435,7 +2435,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Sarcasm CB is checked
-        if (enabledHighlight.indexOf("highlight-sarcasm") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-sarcasm") > -1) {
             node.filter(function (d) {
                 return (d.sarcasm);
             }).style("opacity", 1);
@@ -2446,7 +2446,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Mockery CB is checked
-        if (enabledHighlight.indexOf("highlight-mockery") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-mockery") > -1) {
             node.filter(function (d) {
                 return (d.mockery);
             }).style("opacity", 1);
@@ -2456,7 +2456,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             }).style("opacity", 1);
         }
         //Intolerance CB is checked
-        if (enabledHighlight.indexOf("highlight-intolerance") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-intolerance") > -1) {
             node.filter(function (d) {
                 return (d.intolerance);
             }).style("opacity", 1);
@@ -2466,7 +2466,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             }).style("opacity", 1);
         }
         //Improper language CB is checked
-        if (enabledHighlight.indexOf("highlight-improper-language") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-improper-language") > -1) {
             node.filter(function (d) {
                 return (d.improper_language);
             }).style("opacity", 1);
@@ -2477,7 +2477,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Insult language CB is checked
-        if (enabledHighlight.indexOf("highlight-insult") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-insult") > -1) {
             node.filter(function (d) {
                 return (d.insult);
             }).style("opacity", 1);
@@ -2488,7 +2488,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Aggressiveness language CB is checked
-        if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-aggressiveness") > -1) {
             node.filter(function (d) {
                 return (d.aggressiveness);
             }).style("opacity", 1);
@@ -2549,7 +2549,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
 
         //Neutral stance CB is checked
-        if (enabledHighlight.indexOf("highlight-neutral") > -1) {
+        if (enabledHighlight.indexOf("highlight-stance-neutral") > -1) {
             node.filter(function (d) {
                 return (d.positive_stance || d.negative_stance);
             }).style("opacity", opacityValue);
@@ -2560,7 +2560,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Positive stance CB is checked
-        if (enabledHighlight.indexOf("highlight-positive") > -1) {
+        if (enabledHighlight.indexOf("highlight-stance-positive") > -1) {
             node.filter(function (d) {
                 return (!d.positive_stance);
             }).style("opacity", opacityValue);
@@ -2571,7 +2571,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Negative stance CB is checked
-        if (enabledHighlight.indexOf("highlight-negative") > -1) {
+        if (enabledHighlight.indexOf("highlight-stance-negative") > -1) {
             node.filter(function (d) {
                 return (!d.negative_stance);
             }).style("opacity", opacityValue);
@@ -2582,7 +2582,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Target group CB is checked
-        if (enabledHighlight.indexOf("highlight-group") > -1) {
+        if (enabledHighlight.indexOf("highlight-target-group") > -1) {
             node.filter(function (d) {
                 return (!d.target_group);
             }).style("opacity", opacityValue);
@@ -2593,7 +2593,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Target person CB is checked
-        if (enabledHighlight.indexOf("highlight-person") > -1) {
+        if (enabledHighlight.indexOf("highlight-target-person") > -1) {
             node.filter(function (d) {
                 return (!d.target_person);
             }).style("opacity", opacityValue);
@@ -2604,7 +2604,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Stereotype CB is checked
-        if (enabledHighlight.indexOf("highlight-stereotype") > -1) {
+        if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) {
             node.filter(function (d) {
                 return (!d.stereotype);
             }).style("opacity", opacityValue);
@@ -2615,7 +2615,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Argumentation CB is checked
-        if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-argumentation") > -1) {
             node.filter(function (d) {
                 return (!d.argumentation);
             }).style("opacity", opacityValue);
@@ -2626,7 +2626,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Constructiveness CB is checked
-        if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-constructiveness") > -1) {
             node.filter(function (d) {
                 return (!d.constructiveness);
             }).style("opacity", opacityValue);
@@ -2637,7 +2637,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Sarcasm CB is checked
-        if (enabledHighlight.indexOf("highlight-sarcasm") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-sarcasm") > -1) {
             node.filter(function (d) {
                 return (!d.sarcasm);
             }).style("opacity", opacityValue);
@@ -2648,7 +2648,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Mockery CB is checked
-        if (enabledHighlight.indexOf("highlight-mockery") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-mockery") > -1) {
             node.filter(function (d) {
                 return (!d.mockery);
             }).style("opacity", opacityValue);
@@ -2658,7 +2658,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             }).style("opacity", opacityValue);
         }
         //Intolerance CB is checked
-        if (enabledHighlight.indexOf("highlight-intolerance") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-intolerance") > -1) {
             node.filter(function (d) {
                 return (!d.intolerance);
             }).style("opacity", opacityValue);
@@ -2668,7 +2668,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             }).style("opacity", opacityValue);
         }
         //Improper language CB is checked
-        if (enabledHighlight.indexOf("highlight-improper-language") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-improper-language") > -1) {
             node.filter(function (d) {
                 return (!d.improper_language);
             }).style("opacity", opacityValue);
@@ -2679,7 +2679,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Insult language CB is checked
-        if (enabledHighlight.indexOf("highlight-insult") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-insult") > -1) {
             node.filter(function (d) {
                 return (!d.insult);
             }).style("opacity", opacityValue);
@@ -2690,7 +2690,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Aggressiveness language CB is checked
-        if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-aggressiveness") > -1) {
             node.filter(function (d) {
                 return (!d.aggressiveness);
             }).style("opacity", opacityValue);
@@ -2942,6 +2942,16 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             }
         });
 
+        function getLengthFilterByName(array, stringToMatch, matchPositive = true) {
+            return Array.from(array).filter(function (val) {
+                if (matchPositive) {
+                    return val.includes(stringToMatch);
+                } else {
+                    return !val.includes(stringToMatch);
+                }
+            }).length;
+        }
+
         try {
             $(document).ready(function () {
 
@@ -2986,7 +2996,23 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                                 .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                                 .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-                        console.log(enabledHighlight);
+
+                        var filteredOriginalToxicity = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-toxicity-");
+                        var filteredCompareToxicity = getLengthFilterByName(Array.from(enabledHighlight), "highlight-toxicity-");
+                        document.getElementById('highlight-OR-selectAll-toxicity').checked = filteredOriginalToxicity === filteredCompareToxicity;
+
+                        var filteredOriginalStance = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-stance-");
+                        var filteredCompareStance = getLengthFilterByName(Array.from(enabledHighlight), "highlight-stance-");
+                        document.getElementById('highlight-OR-selectAll-stance').checked = filteredOriginalStance === filteredCompareStance;
+
+                        var filteredOriginalTarget = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-target-");
+                        var filteredCompareTarget = getLengthFilterByName(Array.from(enabledHighlight), "highlight-target-");
+                        document.getElementById('highlight-OR-selectAll-target').checked = filteredOriginalTarget === filteredCompareTarget;
+
+                        var filteredOriginalFeatures = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-features-");
+                        var filteredCompareFeatures = getLengthFilterByName(Array.from(enabledHighlight), "highlight-features-");
+                        document.getElementById('highlight-OR-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
+
                         if (checkboxItem.checked) {
                             console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
                         } else {
@@ -2994,24 +3020,30 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         }
                         checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
                     })
+                });
+                // Use Array.forEach to add an event listener to each checkbox.
+                checkboxesHighlightGroupAND.forEach(function (checkboxItem) {
+                    checkboxItem.addEventListener('change', function () {
+                        enabledHighlight =
+                            Array.from(checkboxesHighlightGroupAND) // Convert checkboxes to an array to use filter and map.
+                                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-                    // Use Array.forEach to add an event listener to each checkbox.
-                    checkboxesHighlightGroupAND.forEach(function (checkboxItem) {
-                        checkboxItem.addEventListener('change', function () {
-                            enabledHighlight =
-                                Array.from(checkboxesHighlightGroupAND) // Convert checkboxes to an array to use filter and map.
-                                    .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
-                                    .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+                        var filteredOriginalTarget = getLengthFilterByName(Array.from(checkboxesHighlightGroupAND).map(i => i.value), "highlight-target-");
+                        var filteredCompareTarget = getLengthFilterByName(Array.from(enabledHighlight), "highlight-target-");
+                        document.getElementById('highlight-AND-selectAll-target').checked = filteredOriginalTarget === filteredCompareTarget;
 
-                            console.log(enabledHighlight);
-                            if (checkboxItem.checked) {
-                                console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
-                            } else {
-                                console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
-                            }
-                            checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
-                        })
-                    });
+                        var filteredOriginalFeatures = getLengthFilterByName(Array.from(checkboxesHighlightGroupAND).map(i => i.value), "highlight-features-");
+                        var filteredCompareFeatures = getLengthFilterByName(Array.from(enabledHighlight), "highlight-features-");
+                        document.getElementById('highlight-AND-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
+
+                        if (checkboxItem.checked) {
+                            console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                        } else {
+                            console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                        }
+                        checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
+                    })
                 });
             });
         } catch (TypeError) {
@@ -3026,6 +3058,24 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         //             .style("visibility", "hidden")
         //             .html(writeStatisticText());
         // });
+
+        checkboxesTargets.forEach(function (checkboxItem) {
+            enabledTargets =
+                Array.from(checkboxesTargets) // Convert checkboxes to an array to use filter and map.
+                    .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                    .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
+            selectTargetVisualization(nodeEnter);
+        });
+
+        checkboxes.forEach(function (checkboxItem) {
+            enabledFeatures =
+                Array.from(checkboxes) // Convert checkboxes to an array to use filter and map.
+                    .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                    .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
+            selectFeatureVisualization(nodeEnter);
+        });
 
         checkboxesPropertyFeature.forEach(function (checkboxItem) {
             checkboxItem.removeAttribute('disabled');
@@ -3473,7 +3523,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
         var statValuesTox = [totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic];
         var statValuesTarg = [totalGroup, totalPerson, totalStereotype, totalNone];
-        var targetImagesPath = ["icons/Group.png", "icons/Person.png", "icons/Stereotype.png", "/icons/Blank.png"];
+        var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "/icons/Blank.png"];
         var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
         for (var i = 0; i < statTitlesToxicity.length; i++) {

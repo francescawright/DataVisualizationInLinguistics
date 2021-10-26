@@ -9,8 +9,8 @@ let pack = d3.pack()
 
 let node;
 
-const colourToxicity0 = "#FAFFA8", colourToxicity1 = "#F8BB7C", colourToxicity2 = "#F87A54",
-    colourToxicity3 = "#7A1616", colourNewsArticle = "#E3E1C5";
+const colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
+    colourToxicity3 = "#000000", colourNewsArticle = "#C8EAFC";
 
 const minOpacityValue = 0.2, maxOpacityValue = 1;
 
@@ -157,6 +157,17 @@ console.log('[User]', user.split('/')[2], '[interaction]', 'TreeMap_layout_loade
 // });
 
 // If AND is selected, uncheck the OR and highlight by property AND
+
+function getLengthFilterByName(array, stringToMatch, matchPositive = true) {
+    return Array.from(array).filter(function (val) {
+        if (matchPositive) {
+            return val.includes(stringToMatch);
+        } else {
+            return !val.includes(stringToMatch);
+        }
+    }).length;
+}
+
 checkboxAND.addEventListener("change", function () {
     if (this.checked) {
         checkboxOR.checked = false;
@@ -205,7 +216,23 @@ checkboxesHighlightGroupOR.forEach(function (checkboxItem) {
                 .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                 .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-        console.log(enabledHighlight);
+
+        var filteredOriginalToxicity = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-toxicity-");
+        var filteredCompareToxicity = getLengthFilterByName(Array.from(enabledHighlight), "highlight-toxicity-");
+        document.getElementById('highlight-OR-selectAll-toxicity').checked = filteredOriginalToxicity === filteredCompareToxicity;
+
+        var filteredOriginalStance = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-stance-");
+        var filteredCompareStance = getLengthFilterByName(Array.from(enabledHighlight), "highlight-stance-");
+        document.getElementById('highlight-OR-selectAll-stance').checked = filteredOriginalStance === filteredCompareStance;
+
+        var filteredOriginalTarget = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-target-");
+        var filteredCompareTarget = getLengthFilterByName(Array.from(enabledHighlight), "highlight-target-");
+        document.getElementById('highlight-OR-selectAll-target').checked = filteredOriginalTarget === filteredCompareTarget;
+
+        var filteredOriginalFeatures = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-features-");
+        var filteredCompareFeatures = getLengthFilterByName(Array.from(enabledHighlight), "highlight-features-");
+        document.getElementById('highlight-OR-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
+
         if (checkboxItem.checked) {
             console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
         } else {
@@ -213,24 +240,32 @@ checkboxesHighlightGroupOR.forEach(function (checkboxItem) {
         }
         checkboxOR.checked ? highlightNodesByPropertyOR(node, enabledHighlight) : highlightNodesByPropertyAND(node, enabledHighlight);
     })
+});
 
-    // Use Array.forEach to add an event listener to each checkbox.
-    checkboxesHighlightGroupAND.forEach(function (checkboxItem) {
-        checkboxItem.addEventListener('change', function () {
-            enabledHighlight =
-                Array.from(checkboxesHighlightGroupAND) // Convert checkboxes to an array to use filter and map.
-                    .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
-                    .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+// Use Array.forEach to add an event listener to each checkbox.
+checkboxesHighlightGroupAND.forEach(function (checkboxItem) {
+    checkboxItem.addEventListener('change', function () {
+        enabledHighlight =
+            Array.from(checkboxesHighlightGroupAND) // Convert checkboxes to an array to use filter and map.
+                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-            console.log(enabledHighlight);
-            if (checkboxItem.checked) {
-                console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
-            } else {
-                console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
-            }
-            checkboxAND.checked ? highlightNodesByPropertyAND(node, enabledHighlight) : highlightNodesByPropertyOR(node, enabledHighlight);
-        })
-    });
+
+        var filteredOriginalTarget = getLengthFilterByName(Array.from(checkboxesHighlightGroupAND).map(i => i.value), "highlight-target-");
+        var filteredCompareTarget = getLengthFilterByName(Array.from(enabledHighlight), "highlight-target-");
+        document.getElementById('highlight-AND-selectAll-target').checked = filteredOriginalTarget === filteredCompareTarget;
+
+        var filteredOriginalFeatures = getLengthFilterByName(Array.from(checkboxesHighlightGroupAND).map(i => i.value), "highlight-features-");
+        var filteredCompareFeatures = getLengthFilterByName(Array.from(enabledHighlight), "highlight-features-");
+        document.getElementById('highlight-AND-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
+
+        if (checkboxItem.checked) {
+            console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+        } else {
+            console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+        }
+        checkboxAND.checked ? highlightNodesByPropertyAND(node, enabledHighlight) : highlightNodesByPropertyOR(node, enabledHighlight);
+    })
 });
 
 /**
@@ -240,6 +275,7 @@ checkboxesHighlightGroupOR.forEach(function (checkboxItem) {
  * @param {string} propertyNameToRetrieve The property whose value is returned
  * */
 function retrieveAttributeFromComment(d, propertyNameToRetrieve) {
+    console.log(propertyNameToRetrieve);
     switch (propertyNameToRetrieve) {
         //Features
         case "argumentation":
@@ -320,32 +356,32 @@ function highlightByToxicity(node, enabledHighlight, changeNodeOpacity) {
 }
 
 function highlightByStance(node, enabledHighlight, changeNodeOpacity) {
-    if (enabledHighlight.indexOf("highlight-neutral") > -1) changeNodeOpacity(node, "neutral");
-    if (enabledHighlight.indexOf("highlight-positive") > -1) changeNodeOpacity(node, "positive");
-    if (enabledHighlight.indexOf("highlight-negative") > -1) changeNodeOpacity(node, "negative");
+    if (enabledHighlight.indexOf("highlight-stance-neutral") > -1) changeNodeOpacity(node, "neutral");
+    if (enabledHighlight.indexOf("highlight-stance-positive") > -1) changeNodeOpacity(node, "positive");
+    if (enabledHighlight.indexOf("highlight-stance-negative") > -1) changeNodeOpacity(node, "negative");
     if (enabledHighlight.indexOf("highlight-both") > -1) changeNodeOpacity(node, "both");
 }
 
 function highlightByTarget(node, enabledHighlight, changeNodeOpacity) {
-    if (enabledHighlight.indexOf("highlight-group") > -1) changeNodeOpacity(node, "target-group");
-    if (enabledHighlight.indexOf("highlight-person") > -1) changeNodeOpacity(node, "target-person");
-    if (enabledHighlight.indexOf("highlight-stereotype") > -1) changeNodeOpacity(node, "target-stereotype");
+    if (enabledHighlight.indexOf("highlight-target-group") > -1) changeNodeOpacity(node, "target-group");
+    if (enabledHighlight.indexOf("highlight-target-person") > -1) changeNodeOpacity(node, "target-person");
+    if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) changeNodeOpacity(node, "target-stereotype");
 }
 
 /**
  * Highlight a node if the checkbox is checked and if the node presents the feature
  * */
 function highlightByFeature(node, enabledHighlight, changeNodeOpacity) {
-    if (enabledHighlight.indexOf("highlight-argumentation") > -1) changeNodeOpacity(node, "argumentation");
-    if (enabledHighlight.indexOf("highlight-constructiveness") > -1) changeNodeOpacity(node, "constructiveness");
+    if (enabledHighlight.indexOf("highlight-features-argumentation") > -1) changeNodeOpacity(node, "argumentation");
+    if (enabledHighlight.indexOf("highlight-features-constructiveness") > -1) changeNodeOpacity(node, "constructiveness");
 
-    if (enabledHighlight.indexOf("highlight-sarcasm") > -1) changeNodeOpacity(node, "sarcasm");
-    if (enabledHighlight.indexOf("highlight-mockery") > -1) changeNodeOpacity(node, "mockery");
-    if (enabledHighlight.indexOf("highlight-intolerance") > -1) changeNodeOpacity(node, "intolerance");
+    if (enabledHighlight.indexOf("highlight-features-sarcasm") > -1) changeNodeOpacity(node, "sarcasm");
+    if (enabledHighlight.indexOf("highlight-features-mockery") > -1) changeNodeOpacity(node, "mockery");
+    if (enabledHighlight.indexOf("highlight-features-intolerance") > -1) changeNodeOpacity(node, "intolerance");
 
-    if (enabledHighlight.indexOf("highlight-improper_language") > -1) changeNodeOpacity(node, "improper_language");
-    if (enabledHighlight.indexOf("highlight-insult") > -1) changeNodeOpacity(node, "insult");
-    if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) changeNodeOpacity(node, "aggressiveness");
+    if (enabledHighlight.indexOf("highlight-features-improper-language") > -1) changeNodeOpacity(node, "improper_language");
+    if (enabledHighlight.indexOf("highlight-features-insult") > -1) changeNodeOpacity(node, "insult");
+    if (enabledHighlight.indexOf("highlight-features-aggressiveness") > -1) changeNodeOpacity(node, "aggressiveness");
 }
 
 

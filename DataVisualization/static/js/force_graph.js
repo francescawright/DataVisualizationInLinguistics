@@ -1,12 +1,12 @@
 //Graph
 const canvasHeight = 1000, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
-const canvasFactor = 1.75;
+const canvasFactor = 1;
 let link, node;
 
 //Zoom
 const minZoom = 0.05, maxZoom = 8; //Zoom range
 let currentZoomScale; //Current scale
-const initialZoomScale = 0.17; //Initial zoom scale to display almost the whole graph
+const initialZoomScale = 1; //Initial zoom scale to display almost the whole graph
 
 
 //Node radius
@@ -106,7 +106,7 @@ function computeNodeRadius(d, edgeLength = 500) {
             : d.radius = minNodeRadius + incrementRadiusFactorPerChild; //One child
     //Avoid the root node from being so large that overlaps/hides its children
     if (d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
-    return d.radius;
+    return Math.min(d.radius, 300);
 }
 
 /**
@@ -139,19 +139,19 @@ function computeDimensions(nodes) {
  * */
 function zoomToFitGraph(minX, minY, maxX, maxY,
                         root,
-                        canvasHeight = 900 * canvasFactor, canvasWidth = 2200 * canvasFactor,
+                        canvasHeight = 1080, canvasWidth = 1920,
                         duration = 750) {
     /* Note our coordinate system:
-    *
-    *
-    *                     | Y negative
-    *                     |
-    * X negative <--------|-------> X positive
-    *                     |
-    *                     | Y positive
-    * Due to the D3 algorithm we are expecting: minX = - maxX
-    * and due to the assignment of the root positions: minY = 0
-    * */
+     *
+     *
+     *                     | X negative
+     *                     |
+     * Y negative <--------|-------> Y positive
+     *                     |
+     *                     | X positive
+     * Due to the D3 algorithm we are expecting: minX = - maxX
+     * and due to the assignment of the root positions: minY = 0
+     * */
     var boxWidth = maxY - minY,
         boxHeight = maxX - minX;
 
@@ -160,33 +160,27 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
 
     scale = Math.min(canvasWidth / boxWidth, canvasHeight / boxHeight);
 
-
     var newX = canvasWidth / 2.0,
         newY = canvasHeight / 2.0;
 
-    /*    if(canvasWidth/boxWidth < canvasHeight/boxHeight) {
-            newY -= midX * scale;
-            //newX -= midY * scale;
-        }
-        else newX -= midY * scale;*/
-
+    if (canvasWidth / boxWidth < canvasHeight / boxHeight) {
+        newY -= midX * scale;
+        newX -= midY * scale;
+    } else newX -= midY * scale;
 
     //For nodes wider than tall, we need to displace them to the middle of the graph
-    //if(newY < boxHeight*scale && boxHeight*scale < canvasHeight) newY =  canvasHeight / 2.0;
+    if (newY < boxHeight * scale && boxHeight * scale < canvasHeight) newY = canvasHeight / 2.0;
 
     d3.select('g').transition()
         .duration(duration)
-        .attr("transform", "translate(" + newX + "," + newY + ")scale(" + initialZoomScale + ")");
-
+        .attr("transform", "translate(" + (newX + root.radius * scale) + "," + newY + ")scale(" + scale + ")");
 
     return {
         initialZoom: scale,
         initialY: newX,
         initialX: newY
     }
-
 }
-
 
 /**
  * Highlights nodes by category of Toxicity
@@ -303,7 +297,7 @@ function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
 function highlightStanceOR(node, enabledHighlight) {
 
     //Neutral stance CB is checked
-    if (enabledHighlight.indexOf("highlight-neutral") > -1) {
+    if (enabledHighlight.indexOf("highlight-stance-neutral") > -1) {
         node.filter(function (d) {
             if (!d.positive_stance && !d.negative_stance) d.highlighted = 1;
             return (!d.positive_stance && !d.negative_stance);
@@ -311,7 +305,7 @@ function highlightStanceOR(node, enabledHighlight) {
     }
 
     //Positive stance CB is checked
-    if (enabledHighlight.indexOf("highlight-positive") > -1) {
+    if (enabledHighlight.indexOf("highlight-stance-positive") > -1) {
         node.filter(function (d) {
             if (d.positive_stance) d.highlighted = 1;
             return (d.positive_stance);
@@ -319,7 +313,7 @@ function highlightStanceOR(node, enabledHighlight) {
     }
 
     //Negative stance CB is checked
-    if (enabledHighlight.indexOf("highlight-negative") > -1) {
+    if (enabledHighlight.indexOf("highlight-stance-negative") > -1) {
         node.filter(function (d) {
             if (d.negative_stance) d.highlighted = 1;
             return (d.negative_stance);
@@ -331,7 +325,7 @@ function highlightStanceOR(node, enabledHighlight) {
 function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2) {
 
     //Neutral stance CB is checked
-    if (enabledHighlight.indexOf("highlight-neutral") > -1) {
+    if (enabledHighlight.indexOf("highlight-stance-neutral") > -1) {
         node.filter(function (d) {
             if (d.positive_stance || d.negative_stance) d.highlighted = 0;
             return (d.positive_stance || d.negative_stance);
@@ -342,7 +336,7 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Positive stance CB is checked
-    if (enabledHighlight.indexOf("highlight-positive") > -1) {
+    if (enabledHighlight.indexOf("highlight-stance-positive") > -1) {
         node.filter(function (d) {
             if (!d.positive_stance) d.highlighted = 0;
             return (!d.positive_stance);
@@ -353,7 +347,7 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Negative stance CB is checked
-    if (enabledHighlight.indexOf("highlight-negative") > -1) {
+    if (enabledHighlight.indexOf("highlight-stance-negative") > -1) {
         node.filter(function (d) {
             if (!d.negative_stance) d.highlighted = 0;
             return (!d.negative_stance);
@@ -368,7 +362,7 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2) {
 function highlightTargetOR(node, enabledHighlight) {
 
     //Target group CB is checked
-    if (enabledHighlight.indexOf("highlight-group") > -1) {
+    if (enabledHighlight.indexOf("highlight-target-group") > -1) {
         node.filter(function (d) {
             if (d.target_group) d.highlighted = 1;
             return (d.target_group);
@@ -376,7 +370,7 @@ function highlightTargetOR(node, enabledHighlight) {
     }
 
     //Target person CB is checked
-    if (enabledHighlight.indexOf("highlight-person") > -1) {
+    if (enabledHighlight.indexOf("highlight-target-person") > -1) {
         node.filter(function (d) {
             if (d.target_person) d.highlighted = 1;
             return (d.target_person);
@@ -384,7 +378,7 @@ function highlightTargetOR(node, enabledHighlight) {
     }
 
     //Stereotype CB is checked
-    if (enabledHighlight.indexOf("highlight-stereotype") > -1) {
+    if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) {
         node.filter(function (d) {
             if (d.stereotype) d.highlighted = 1;
             return (d.stereotype);
@@ -395,7 +389,7 @@ function highlightTargetOR(node, enabledHighlight) {
 function highlightTargetAND(node, enabledHighlight, opacityValue = 0.2) {
 
     //Target group CB is checked
-    if (enabledHighlight.indexOf("highlight-group") > -1) {
+    if (enabledHighlight.indexOf("highlight-target-group") > -1) {
         node.filter(function (d) {
             if (!d.target_group) d.highlighted = 0;
             return (!d.target_group);
@@ -404,7 +398,7 @@ function highlightTargetAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Target person CB is checked
-    if (enabledHighlight.indexOf("highlight-person") > -1) {
+    if (enabledHighlight.indexOf("highlight-target-person") > -1) {
         node.filter(function (d) {
             if (!d.target_person) d.highlighted = 0;
             return (!d.target_person);
@@ -412,7 +406,7 @@ function highlightTargetAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Stereotype CB is checked
-    if (enabledHighlight.indexOf("highlight-stereotype") > -1) {
+    if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) {
         node.filter(function (d) {
             if (!d.stereotype) d.highlighted = 0;
             return (!d.stereotype);
@@ -423,7 +417,7 @@ function highlightTargetAND(node, enabledHighlight, opacityValue = 0.2) {
 function highlightPositiveOR(node, enabledHighlight) {
 
     //Argumentation CB is checked
-    if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-argumentation") > -1) {
         node.filter(function (d) {
             if (d.argumentation) d.highlighted = 1;
             return (d.argumentation);
@@ -431,7 +425,7 @@ function highlightPositiveOR(node, enabledHighlight) {
     }
 
     //Constructiveness CB is checked
-    if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-constructiveness") > -1) {
         node.filter(function (d) {
             if (d.constructiveness) d.highlighted = 1;
             return (d.constructiveness);
@@ -442,7 +436,7 @@ function highlightPositiveOR(node, enabledHighlight) {
 
 function highlightPositiveAND(node, enabledHighlight, opacityValue = 0.2) {
     //Argumentation CB is checked
-    if (enabledHighlight.indexOf("highlight-argumentation") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-argumentation") > -1) {
         node.filter(function (d) {
             if (!d.argumentation) ;
             d.highlighted = 0;
@@ -452,7 +446,7 @@ function highlightPositiveAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Constructiveness CB is checked
-    if (enabledHighlight.indexOf("highlight-constructiveness") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-constructiveness") > -1) {
         node.filter(function (d) {
             if (!d.constructiveness) ;
             d.highlighted = 0;
@@ -466,7 +460,7 @@ function highlightPositiveAND(node, enabledHighlight, opacityValue = 0.2) {
 function highlightNegativeOR(node, enabledHighlight) {
 
     //Sarcasm CB is checked
-    if (enabledHighlight.indexOf("highlight-sarcasm") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-sarcasm") > -1) {
         node.filter(function (d) {
             if (d.sarcasm) d.highlighted = 1;
             return (d.sarcasm);
@@ -474,7 +468,7 @@ function highlightNegativeOR(node, enabledHighlight) {
     }
 
     //Mockery CB is checked
-    if (enabledHighlight.indexOf("highlight-mockery") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-mockery") > -1) {
         node.filter(function (d) {
             if (d.mockery) d.highlighted = 1;
             return (d.mockery);
@@ -482,7 +476,7 @@ function highlightNegativeOR(node, enabledHighlight) {
     }
 
     //Intolerance CB is checked
-    if (enabledHighlight.indexOf("highlight-intolerance") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-intolerance") > -1) {
         node.filter(function (d) {
             if (d.intolerance) d.highlighted = 1;
             return (d.intolerance);
@@ -490,7 +484,7 @@ function highlightNegativeOR(node, enabledHighlight) {
     }
 
     //Improper language CB is checked
-    if (enabledHighlight.indexOf("highlight-improper-language") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-improper-language") > -1) {
         node.filter(function (d) {
             if (d.improper_language) d.highlighted = 1;
             return (d.improper_language);
@@ -498,7 +492,7 @@ function highlightNegativeOR(node, enabledHighlight) {
     }
 
     //Insult language CB is checked
-    if (enabledHighlight.indexOf("highlight-insult") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-insult") > -1) {
         node.filter(function (d) {
             if (d.insult) d.highlighted = 1;
             return (d.insult);
@@ -506,7 +500,7 @@ function highlightNegativeOR(node, enabledHighlight) {
     }
 
     //Aggressiveness language CB is checked
-    if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-aggressiveness") > -1) {
         node.filter(function (d) {
             if (d.aggressiveness) d.highlighted = 1;
             return (d.aggressiveness);
@@ -517,7 +511,7 @@ function highlightNegativeOR(node, enabledHighlight) {
 function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2) {
 
     //Sarcasm CB is checked
-    if (enabledHighlight.indexOf("highlight-sarcasm") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-sarcasm") > -1) {
         node.filter(function (d) {
             if (!d.sarcasm) d.highlighted = 0;
             return (!d.sarcasm);
@@ -525,7 +519,7 @@ function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Mockery CB is checked
-    if (enabledHighlight.indexOf("highlight-mockery") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-mockery") > -1) {
         node.filter(function (d) {
             if (!d.mockery) d.highlighted = 0;
             return (!d.mockery);
@@ -533,7 +527,7 @@ function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Intolerance CB is checked
-    if (enabledHighlight.indexOf("highlight-intolerance") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-intolerance") > -1) {
         node.filter(function (d) {
             if (!d.intolerance) d.highlighted = 0;
             return (!d.intolerance);
@@ -541,7 +535,7 @@ function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Improper language CB is checked
-    if (enabledHighlight.indexOf("highlight-improper-language") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-improper-language") > -1) {
         node.filter(function (d) {
             if (!d.improper_language) d.highlighted = 0;
             return (!d.improper_language);
@@ -549,7 +543,7 @@ function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Insult language CB is checked
-    if (enabledHighlight.indexOf("highlight-insult") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-insult") > -1) {
         node.filter(function (d) {
             if (!d.insult) d.highlighted = 0;
             return (!d.insult);
@@ -557,11 +551,10 @@ function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2) {
     }
 
     //Aggressiveness language CB is checked
-    if (enabledHighlight.indexOf("highlight-aggressiveness") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-aggressiveness") > -1) {
         node.filter(function (d) {
             if (!d.aggressiveness) d.highlighted = 0;
-            ret
-            urn(!d.aggressiveness);
+            return (!d.aggressiveness);
 
         }).style("opacity", opacityValue);
     }
@@ -1035,7 +1028,7 @@ treeJSON = d3.json(dataset, function (error, json) {
             })
             .attr("height", 15)
             .attr("width", 15)
-            .attr("href", "./images/targets/icons/Group.png")
+            .attr("href", "./images/targets/icons/Group.svg")
             .attr("opacity", function (d) {
                 if (d.target_group) return 1
                 return 0 //We need to set the opacity or it will always be displayed!
@@ -1051,7 +1044,7 @@ treeJSON = d3.json(dataset, function (error, json) {
             .attr("height", ringHeight)
             .attr("width", ringWidth)
             .style("z-index", -1)
-            .attr("href", "./images/targets/rings/Group.png")
+            .attr("href", "./images/targets/rings/Group.svg")
             .attr("opacity", function (d) {
                 if (d.target_group) return 1
                 return 0 //We need to set the opacity or it will always be displayed!
@@ -1076,7 +1069,7 @@ treeJSON = d3.json(dataset, function (error, json) {
             })
             .attr("height", 15)
             .attr("width", 15)
-            .attr("href", "./images/targets/icons/Person.png")
+            .attr("href", "./images/targets/icons/Person.svg")
             .attr("opacity", function (d) {
                 if (d.target_person) return 1
                 return 0
@@ -1092,7 +1085,7 @@ treeJSON = d3.json(dataset, function (error, json) {
             .attr("height", ringHeight)
             .attr("width", ringWidth)
             .style("z-index", -1)
-            .attr("href", "./images/targets/rings/Person.png")
+            .attr("href", "./images/targets/rings/Person.svg")
             .attr("opacity", function (d) {
                 if (d.target_person) return 1
                 return 0
@@ -1108,7 +1101,7 @@ treeJSON = d3.json(dataset, function (error, json) {
             .attr("height", ringHeight)
             .attr("width", ringWidth)
             .style("z-index", -1)
-            .attr("href", "./images/targets/rings/Stereotype.png")
+            .attr("href", "./images/targets/rings/Stereotype.svg")
             .attr("opacity", function (d) {
                 if (d.stereotype) return 1
                 return 0
@@ -1132,7 +1125,7 @@ treeJSON = d3.json(dataset, function (error, json) {
             })
             .attr("height", 15)
             .attr("width", 15)
-            .attr("href", "./images/targets/icons/Stereotype.png")
+            .attr("href", "./images/targets/icons/Stereotype.svg")
             .attr("opacity", function (d) {
                 if (d.stereotype) return 1
                 return 0
@@ -1176,7 +1169,7 @@ treeJSON = d3.json(dataset, function (error, json) {
      * that is a radiusPercentage smaller than it
      * */
     function positionImage(nodeRadius, radiusPercentage = imgRatio) {
-        return nodeRadius * (radiusPercentage / 100.0 - 1);
+        return Math.min(nodeRadius * (radiusPercentage / 100.0 - 1), 300);
     }
 
     /**
@@ -1184,7 +1177,7 @@ treeJSON = d3.json(dataset, function (error, json) {
      * */
     function sizeImage(nodeRadius, radiusPercentage = imgRatio) {
 
-        return 2 * nodeRadius * (1 - radiusPercentage / 100.0);
+        return Math.min(2 * nodeRadius * (1 - radiusPercentage / 100.0));
     }
 
     /**
@@ -1812,10 +1805,10 @@ treeJSON = d3.json(dataset, function (error, json) {
         }).append("image")
             .attr('class', objRoot.class)
             .attr('id', objRoot.id)
-            .attr("x", positionImage(root.radius, 0))
-            .attr("y", positionImage(root.radius, 0))
-            .attr("height", sizeImage(root.radius, 0))
-            .attr("width", sizeImage(root.radius, 0))
+            .attr("x", positionImage(Math.min(root.radius, 300), 0))
+            .attr("y", positionImage(Math.min(root.radius, 300), 0))
+            .attr("height", sizeImage(Math.min(root.radius, 300), 0))
+            .attr("width", sizeImage(Math.min(root.radius, 300), 0))
 
             .attr("href", rootPath + objRoot.fileName)
             .attr("opacity", 1);
@@ -2634,7 +2627,18 @@ treeJSON = d3.json(dataset, function (error, json) {
         // });
 
         /*SECTION  cb*/
+
         // Listeners related to the visualization of targets
+        function getLengthFilterByName(array, stringToMatch, matchPositive = true) {
+            return Array.from(array).filter(function (val) {
+                if (matchPositive) {
+                    return val.includes(stringToMatch);
+                } else {
+                    return !val.includes(stringToMatch);
+                }
+            }).length;
+        }
+
         try {
             $(document).ready(function () {
                 checkboxesTargets.forEach(function (checkboxItem) {
@@ -2680,7 +2684,21 @@ treeJSON = d3.json(dataset, function (error, json) {
                                 .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                                 .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-                        console.log(enabledHighlight);
+                        var filteredOriginalToxicity = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-toxicity-");
+                        var filteredCompareToxicity = getLengthFilterByName(Array.from(enabledHighlight), "highlight-toxicity-");
+                        document.getElementById('highlight-OR-selectAll-toxicity').checked = filteredOriginalToxicity === filteredCompareToxicity;
+
+                        var filteredOriginalStance = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-stance-");
+                        var filteredCompareStance = getLengthFilterByName(Array.from(enabledHighlight), "highlight-stance-");
+                        document.getElementById('highlight-OR-selectAll-stance').checked = filteredOriginalStance === filteredCompareStance;
+
+                        var filteredOriginalTarget = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-target-");
+                        var filteredCompareTarget = getLengthFilterByName(Array.from(enabledHighlight), "highlight-target-");
+                        document.getElementById('highlight-OR-selectAll-target').checked = filteredOriginalTarget === filteredCompareTarget;
+
+                        var filteredOriginalFeatures = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-features-");
+                        var filteredCompareFeatures = getLengthFilterByName(Array.from(enabledHighlight), "highlight-features-");
+                        document.getElementById('highlight-OR-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
                         if (checkboxItem.checked) {
                             console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
                         } else {
@@ -2688,32 +2706,57 @@ treeJSON = d3.json(dataset, function (error, json) {
                         }
                         checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
                     })
-
-                    // Use Array.forEach to add an event listener to each checkbox.
-                    checkboxesHighlightGroupAND.forEach(function (checkboxItem) {
-                        checkboxItem.addEventListener('change', function () {
-                            enabledHighlight =
-                                Array.from(checkboxesHighlightGroupAND) // Convert checkboxes to an array to use filter and map.
-                                    .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
-                                    .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
-
-                            console.log(enabledHighlight);
-                            if (checkboxItem.checked) {
-                                console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
-                            } else {
-                                console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
-                            }
-                            checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
-                        })
-                    });
                 });
-                /*END section cb*/
 
+                // Use Array.forEach to add an event listener to each checkbox.
+                checkboxesHighlightGroupAND.forEach(function (checkboxItem) {
+                    checkboxItem.addEventListener('change', function () {
+                        enabledHighlight =
+                            Array.from(checkboxesHighlightGroupAND) // Convert checkboxes to an array to use filter and map.
+                                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
+                        var filteredOriginalTarget = getLengthFilterByName(Array.from(checkboxesHighlightGroupAND).map(i => i.value), "highlight-target-");
+                        var filteredCompareTarget = getLengthFilterByName(Array.from(enabledHighlight), "highlight-target-");
+                        document.getElementById('highlight-AND-selectAll-target').checked = filteredOriginalTarget === filteredCompareTarget;
+
+                        var filteredOriginalFeatures = getLengthFilterByName(Array.from(checkboxesHighlightGroupAND).map(i => i.value), "highlight-features-");
+                        var filteredCompareFeatures = getLengthFilterByName(Array.from(enabledHighlight), "highlight-features-");
+                        document.getElementById('highlight-AND-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
+
+                        if (checkboxItem.checked) {
+                            console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                        } else {
+                            console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                        }
+                        checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
+                    })
+                });
             });
+            /*END section cb*/
+
         } catch (TypeError) {
             console.error("Error attaching buttons... trying again...");
         }
 
+
+        checkboxesTargets.forEach(function (checkboxItem) {
+            enabledTargets =
+                Array.from(checkboxesTargets) // Convert checkboxes to an array to use filter and map.
+                    .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                    .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
+            selectTargetVisualization(node);
+        });
+
+        checkboxes.forEach(function (checkboxItem) {
+            enabledFeatures =
+                Array.from(checkboxes) // Convert checkboxes to an array to use filter and map.
+                    .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                    .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
+            selectFeatureVisualization(node);
+        });
 
         //Enable checkboxes and dropdown menu + show features if they are selected
         checkboxesPropertyFeature.forEach(function (checkboxItem) {
@@ -3170,7 +3213,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
         var statValuesTox = [totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic];
         var statValuesTarg = [totalGroup, totalPerson, totalStereotype, totalNone];
-        var targetImagesPath = ["icons/Group.png", "icons/Person.png", "icons/Stereotype.png", "/icons/Blank.png"];
+        var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "/icons/Blank.png"];
         var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
         for (var i = 0; i < statTitlesToxicity.length; i++) {

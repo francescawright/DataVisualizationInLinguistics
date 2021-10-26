@@ -47,27 +47,45 @@
                         </div>
                     </button>
                     <div style="padding-top: 10px;padding-left: 10px;" class="panel">
+                        {#                            <input type="checkbox" class="checkbox" name="cbHighlightMenu" value="highlight-group"#}
+                        {#                                   id="highlight-group-cb"><label for="highlight-group-cb" style="font-weight: bold;">Filter</label>#}
 
                         <div class="text-center">
                             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                 <label id="and_label" style="width: 75px; height:fit-content;"
                                        class="btn btn-secondary">
-                                    <input type="radio" name="cbHighlightProperty" value="and-group" id="and_button"
+                                    <input type="radio" name="cbHighlightProperty" value="and-group"
+                                           id="and_button"
                                            autocomplete="off"> AND
                                 </label>
                                 <label id="or_label" style="width: 75px; height:fit-content;"
                                        class="btn btn-secondary active">
-                                    <input type="radio" name="cbHighlightProperty" value="or-group" id="or_button"
+                                    <input type="radio" name="cbHighlightProperty" value="or-group"
+                                           id="or_button"
                                            autocomplete="off" checked> OR
                                 </label>
                             </div>
                         </div>
-
+                        {#                            <div>#}
+                        {#                                <input type="checkbox" class="checkbox" name="cbHighlightProperty" value="and-group"#}
+                        {#                                       id="and-group" disabled="true"><label for="and-group">AND</label>#}
+                        {#                                <input type="checkbox" class="checkbox" name="cbHighlightProperty" value="or-group"#}
+                        {#                                       id="or-group" disabled="true"><label for="or-group">OR</label>#}
+                        {#                            </div>#}
                         <br>
 
                         <div id="highlight_checks_OR" style="display: block;">
                             <!--Toxicity level-->
                             <div style="padding-top: 10px; padding-right: 10px">
+                                <div class="custom-control custom-switch"
+                                     style="line-height: 23px; padding-bottom: 5px;">
+                                    <input type="checkbox" class="custom-control-input"
+                                           name="cbHighlightOR_selectAll_toxicity"
+                                           value="highlight-OR-selectAll-toxicity"
+                                           id="highlight-OR-selectAll-toxicity"
+                                           checked><label class="custom-control-label"
+                                                          for="highlight-OR-selectAll-toxicity">Select All</label>
+                                </div>
                                 <div class="custom-control custom-switch" style="line-height: 23px;">
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                            value="highlight-toxicity-0" id="highlight-toxicity-0OR"
@@ -123,12 +141,22 @@
                             <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
 
                             <!--Stance-->
-                            <div style="padding-top: 10px;">
+                            <div>
+                                <div class="custom-control custom-switch"
+                                     style="line-height: 23px; padding-bottom: 5px;">
+                                    <input type="checkbox" class="custom-control-input"
+                                           name="cbHighlightOR_selectAll_stance"
+                                           value="highlight-OR-selectAll-stance"
+                                           id="highlight-OR-selectAll-stance"
+                                           checked><label class="custom-control-label"
+                                                          for="highlight-OR-selectAll-stance">Select All</label>
+                                </div>
                                 <div class="custom-control custom-switch" style="line-height: 23px;">
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
-                                           value="highlight-neutral"
-                                           id="highlight-neutralOR" checked><label class="custom-control-label"
-                                                                                   for="highlight-neutralOR">Neutral
+                                           value="highlight-stance-neutral"
+                                           id="highlight-stance-neutralOR" checked><label
+                                        class="custom-control-label"
+                                        for="highlight-stance-neutralOR">Neutral
                                     stance</label>
                                     <div style="float: right">
                                         <svg height=" 10" width="30" style="display: inline-block;">
@@ -139,9 +167,10 @@
 
                                 <div class="custom-control custom-switch" style="line-height: 23px;">
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
-                                           value="highlight-positive" id="highlight-positiveOR" checked><label
+                                           value="highlight-stance-positive" id="highlight-stance-positiveOR"
+                                           checked><label
                                         class="custom-control-label"
-                                        for="highlight-positiveOR">Positive stance</label>
+                                        for="highlight-stance-positiveOR">Positive stance</label>
                                     <div style="float: right">
                                         <svg height=" 10" width="30" style="display: inline-block;">
                                             <rect width="20" height="10" fill="#77dd77"/>
@@ -151,9 +180,10 @@
 
                                 <div class="custom-control custom-switch" style="line-height: 23px;">
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
-                                           value="highlight-negative" id="highlight-negativeOR" checked><label
+                                           value="highlight-stance-negative" id="highlight-stance-negativeOR"
+                                           checked><label
                                         class="custom-control-label"
-                                        for="highlight-negativeOR" checked>Negative stance</label>
+                                        for="highlight-stance-negativeOR" checked>Negative stance</label>
                                     <div style="float: right">
                                         <svg height=" 10" width="30" style="display: inline-block;">
                                             <rect width="20" height="10" fill="#ff6961"/>
@@ -166,88 +196,175 @@
 
 
                             <!--Target-->
-                            <div class="custom-control custom-switch" style="line-height: 23px; padding-top: 10px;">
+                            <div class="custom-control custom-switch"
+                                 style="line-height: 23px; padding-bottom: 5px;">
+                                <input type="checkbox" class="custom-control-input"
+                                       name="cbHighlightOR_selectAll_target"
+                                       value="highlight-OR-selectAll-target"
+                                       id="highlight-OR-selectAll-target"
+                                       checked><label class="custom-control-label"
+                                                      for="highlight-OR-selectAll-target">Select All</label>
+                            </div>
+                            <div class="custom-control custom-switch"
+                                 style="line-height: 23px;">
                                 <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
-                                       value="highlight-group"
-                                       id="highlight-groupOR" checked><label class="custom-control-label"
-                                                                             for="highlight-groupOR">Target
+                                       value="highlight-target-group"
+                                       id="highlight-target-groupOR" checked><label class="custom-control-label"
+                                                                                    for="highlight-target-groupOR">Target
                                 group</label>
+                                <img src="{% static './images/targets/icons/Group.svg' %}" alt="Purple people"
+                                     width="20"
+                                     height="20" style="float:right; margin-right: 10px;">
                             </div>
+
 
                             <div class="custom-control custom-switch" style="line-height: 23px;">
 
                                 <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
-                                       value="highlight-person"
-                                       id="highlight-personOR" checked><label class="custom-control-label"
-                                                                              for="highlight-personOR">Target
+                                       value="highlight-target-person"
+                                       id="highlight-target-personOR" checked><label class="custom-control-label"
+                                                                                     for="highlight-target-personOR">Target
                                 person</label>
+                                <img src="{% static './images/targets/icons/Person.svg' %}" alt="Purple people"
+                                     width="20"
+                                     height="20" style="float:right; margin-right: 10px;">
                             </div>
                             <div class="custom-control custom-switch" style="line-height: 23px;">
                                 <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
-                                       value="highlight-stereotype"
-                                       id="highlight-stereotypeOR" checked><label class="custom-control-label"
-                                                                                  for="highlight-stereotypeOR">Stereotype</label>
+                                       value="highlight-target-stereotype"
+                                       id="highlight-target-stereotypeOR" checked><label
+                                    class="custom-control-label"
+                                    for="highlight-target-stereotypeOR">Stereotype</label>
+                                <img src="{% static './images/targets/icons/Stereotype.svg' %}"
+                                     alt="Purple people"
+                                     width="20"
+                                     height="20" style="float:right; margin-right: 10px;">
                             </div>
 
                             <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
 
                             <!--Features-->
-                            <div class="custom-control custom-switch" style="line-height: 23px; padding-top: 10px;">
-                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
-                                       value="highlight-argumentation" id="highlight-argumentationOR"
+                            <div class="custom-control custom-switch"
+                                 style="line-height: 23px; padding-bottom: 5px;">
+                                <input type="checkbox" class="custom-control-input"
+                                       name="cbHighlightOR_selectAll_features"
+                                       value="highlight-OR-selectAll-features"
+                                       id="highlight-OR-selectAll-features"
                                        checked><label class="custom-control-label"
-                                                      for="highlight-argumentationOR">Argumentation</label>
+                                                      for="highlight-OR-selectAll-features">Select All</label>
                             </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                       value="highlight-features-argumentation"
+                                       id="highlight-features-argumentationOR" checked><label
+                                    class="custom-control-label"
+                                    for="highlight-features-argumentationOR">Argumentation</label>
+                                <div style="float: right; margin-right: 10px;">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                fill="#1B8055"/>
+                                    </svg>
+                                </div>
+                            </div>
+
                             <div class="custom-control custom-switch"
                                  style="line-height: 23px; margin-bottom: 15px;">
                                 <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
-                                       value="highlight-constructiveness" id="highlight-constructivenessOR"
+                                       value="highlight-features-constructiveness"
+                                       id="highlight-features-constructivenessOR" checked
+                                ><label
+                                    class="custom-control-label"
+                                    for="highlight-features-constructivenessOR">Constructiveness</label>
+                                <div style="float: right; margin-right: 10px;">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                fill="#90F6B2"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                       value="highlight-features-sarcasm"
+                                       id="highlight-features-sarcasmOR" checked><label class="custom-control-label"
+                                                                                        for="highlight-features-sarcasmOR">Sarcasm</label>
+                                <div style="float: right; margin-right: 10px;">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                fill="#97CFFF"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                       value="highlight-features-mockery"
+                                       id="highlight-features-mockeryOR" checked><label class="custom-control-label"
+                                                                                        for="highlight-features-mockeryOR">Mockery</label>
+                                <div style="float: right; margin-right: 10px;">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                fill="#1795FF"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                       value="highlight-features-intolerance"
+                                       id="highlight-features-intoleranceOR" checked><label
+                                    class="custom-control-label"
+                                    for="highlight-features-intoleranceOR">Intolerance</label>
+                                <div style="float: right; margin-right: 10px;">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                fill="#0B5696"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                       value="highlight-features-improper-language"
+                                       id="highlight-features-improper-languageOR"
                                        checked><label class="custom-control-label"
-                                                      for="highlight-constructivenessOR">Constructiveness</label>
-                            </div>
-
-                            <div class="custom-control custom-switch" style="line-height: 23px;">
-
-                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
-                                       value="highlight-sarcasm"
-                                       id="highlight-sarcasmOR" checked><label class="custom-control-label"
-                                                                               for="highlight-sarcasmOR">Sarcasm</label>
-                            </div>
-
-                            <div class="custom-control custom-switch" style="line-height: 23px;">
-                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
-                                       value="highlight-mockery"
-                                       id="highlight-mockeryOR" checked><label class="custom-control-label"
-                                                                               for="highlight-mockeryOR">Mockery</label>
-                            </div>
-
-                            <div class="custom-control custom-switch" style="line-height: 23px;">
-                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
-                                       value="highlight-intolerance"
-                                       id="highlight-intoleranceOR" checked><label class="custom-control-label"
-                                                                                   for="highlight-intoleranceOR">Intolerance</label>
-                            </div>
-
-                            <div class="custom-control custom-switch" style="line-height: 23px;">
-                                <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
-                                       value="highlight-improper-language" id="highlight-improper-languageOR"
-                                       checked><label class="custom-control-label"
-                                                      for="highlight-improper-languageOR">Improper
+                                                      for="highlight-features-improper-languageOR">Improper
                                 language</label>
+                                <div style="float: right; margin-right: 10px;">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                fill="#E3B7E8"/>
+                                    </svg>
+                                </div>
                             </div>
 
                             <div class="custom-control custom-switch" style="line-height: 23px;">
                                 <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
-                                       value="highlight-insult"
-                                       id="highlight-insultOR" checked><label class="custom-control-label"
-                                                                              for="highlight-insultOR">Insult</label>
+                                       value="highlight-features-insult"
+                                       id="highlight-features-insultOR" checked><label class="custom-control-label"
+                                                                                       for="highlight-features-insultOR">Insult</label>
+                                <div style="float: right; margin-right: 10px;">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                fill="#A313B3"/>
+                                    </svg>
+                                </div>
                             </div>
 
                             <div class="custom-control custom-switch" style="line-height: 23px;">
                                 <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
-                                       value="highlight-aggressiveness" id="highlight-aggressivenessOR"
+                                       value="highlight-features-aggressiveness"
+                                       id="highlight-features-aggressivenessOR"
                                        checked><label class="custom-control-label"
-                                                      for="highlight-aggressivenessOR">Aggressiveness</label>
+                                                      for="highlight-features-aggressivenessOR">Aggressiveness</label>
+                                <div style="float: right; margin-right: 10px;">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                fill="#5E1566"/>
+                                    </svg>
+                                </div>
                             </div>
                         </div>
 
@@ -257,8 +374,8 @@
                                 <div class="custom-control custom-switch" style="line-height: 23px;">
                                     <input type="radio" class="form-check-input" name="cbHighlightAND"
                                            value="highlight-toxicity-0" id="highlight-toxicity-0"
-                                           checked><label class="form-check-label"
-                                                          for="highlight-toxicity-0">Not toxic</label>
+                                    ><label class="form-check-label"
+                                            for="highlight-toxicity-0">Not toxic</label>
                                     <div style="float: right">
                                         <svg height="20" width="30" style="display: inline-block;">
                                             <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -309,12 +426,12 @@
                             <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
 
                             <!--Stance-->
-                            <div style="padding-top: 10px;">
+                            <div>
                                 <div class="custom-control custom-switch" style="line-height: 23px;">
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
-                                           value="highlight-neutral"
-                                           id="highlight-neutral"><label class="custom-control-label"
-                                                                         for="highlight-neutral">Neutral
+                                           value="highlight-stance-neutral"
+                                           id="highlight-stance-neutral"><label class="custom-control-label"
+                                                                                for="highlight-stance-neutral">Neutral
                                     stance</label>
                                     <div style="float: right">
                                         <svg height=" 10" width="30" style="display: inline-block;">
@@ -325,9 +442,9 @@
 
                                 <div class="custom-control custom-switch" style="line-height: 23px;">
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
-                                           value="highlight-positive" id="highlight-positive"><label
+                                           value="highlight-stance-positive" id="highlight-stance-positive"><label
                                         class="custom-control-label"
-                                        for="highlight-positive">Positive stance</label>
+                                        for="highlight-stance-positive">Positive stance</label>
                                     <div style="float: right">
                                         <svg height=" 10" width="30" style="display: inline-block;">
                                             <rect width="20" height="10" fill="#77dd77"/>
@@ -337,9 +454,9 @@
 
                                 <div class="custom-control custom-switch" style="line-height: 23px;">
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
-                                           value="highlight-negative" id="highlight-negative"><label
+                                           value="highlight-stance-negative" id="highlight-stance-negative"><label
                                         class="custom-control-label"
-                                        for="highlight-negative">Negative stance</label>
+                                        for="highlight-stance-negative">Negative stance</label>
                                     <div style="float: right">
                                         <svg height=" 10" width="30" style="display: inline-block;">
                                             <rect width="20" height="10" fill="#ff6961"/>
@@ -352,87 +469,172 @@
 
 
                             <!--Target-->
-                            <div class="custom-control custom-switch" style="line-height: 23px; padding-top: 10px;">
+                            <div class="custom-control custom-switch"
+                                 style="line-height: 23px; padding-bottom: 5px;">
+                                <input type="checkbox" class="custom-control-input"
+                                       name="cbHighlightAND_selectAll_target"
+                                       value="highlight-AND-selectAll-target"
+                                       id="highlight-AND-selectAll-target"
+                                ><label class="custom-control-label"
+                                        for="highlight-AND-selectAll-target">Select All</label>
+                            </div>
+
+                            <div class="custom-control custom-switch"
+                                 style="line-height: 23px;">
                                 <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
-                                       value="highlight-group"
-                                       id="highlight-group"><label class="custom-control-label"
-                                                                   for="highlight-group">Target
+                                       value="highlight-target-group"
+                                       id="highlight-target-group"><label class="custom-control-label"
+                                                                          for="highlight-target-group">Target
                                 group</label>
+                                <img src="{% static './images/targets/icons/Group.svg' %}" alt="Purple people"
+                                     width="20"
+                                     height="20" style="float:right; margin-right: 10px;">
                             </div>
 
                             <div class="custom-control custom-switch" style="line-height: 23px;">
 
                                 <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
-                                       value="highlight-person"
-                                       id="highlight-person"><label class="custom-control-label"
-                                                                    for="highlight-person">Target
+                                       value="highlight-target-person"
+                                       id="highlight-target-person"><label class="custom-control-label"
+                                                                           for="highlight-target-person">Target
                                 person</label>
+                                <img src="{% static './images/targets/icons/Person.svg' %}" alt="Purple people"
+                                     width="20"
+                                     height="20" style="float:right; margin-right: 10px;">
                             </div>
                             <div class="custom-control custom-switch" style="line-height: 23px;">
                                 <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
-                                       value="highlight-stereotype"
-                                       id="highlight-stereotype"><label class="custom-control-label"
-                                                                        for="highlight-stereotype">Stereotype</label>
+                                       value="highlight-target-stereotype"
+                                       id="highlight-target-stereotype"><label class="custom-control-label"
+                                                                               for="highlight-target-stereotype">Stereotype</label>
+                                <img src="{% static './images/targets/icons/Stereotype.svg' %}"
+                                     alt="Purple people"
+                                     width="20"
+                                     height="20" style="float:right; margin-right: 10px;">
                             </div>
 
                             <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
 
                             <!--Features-->
-                            <div class="custom-control custom-switch" style="line-height: 23px; padding-top: 10px;">
-                                <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
-                                       value="highlight-argumentation" id="highlight-argumentation"
+
+                            <div class="custom-control custom-switch"
+                                 style="line-height: 23px; padding-bottom: 5px;">
+                                <input type="checkbox" class="custom-control-input"
+                                       name="cbHighlightAND_selectAll_features"
+                                       value="highlight-AND-selectAll-features"
+                                       id="highlight-AND-selectAll-features"
                                 ><label class="custom-control-label"
-                                        for="highlight-argumentation">Argumentation</label>
+                                        for="highlight-AND-selectAll-features">Select All</label>
                             </div>
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                                <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
+                                       value="highlight-features-argumentation"
+                                       id="highlight-features-argumentation"><label
+                                    class="custom-control-label"
+                                    for="highlight-features-argumentation">Argumentation</label>
+                                <div style="float: right; margin-right: 10px;">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                fill="#1B8055"/>
+                                    </svg>
+                                </div>
+                            </div>
+
                             <div class="custom-control custom-switch"
                                  style="line-height: 23px; margin-bottom: 15px;">
                                 <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
-                                       value="highlight-constructiveness" id="highlight-constructiveness"
-                                ><label class="custom-control-label"
-                                        for="highlight-constructiveness">Constructiveness</label>
+                                       value="highlight-features-constructiveness"
+                                       id="highlight-features-constructiveness"
+                                ><label
+                                    class="custom-control-label"
+                                    for="highlight-features-constructiveness">Constructiveness</label>
+                                <div style="float: right; margin-right: 10px;">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                fill="#90F6B2"/>
+                                    </svg>
+                                </div>
                             </div>
 
                             <div class="custom-control custom-switch" style="line-height: 23px;">
 
                                 <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
-                                       value="highlight-sarcasm"
-                                       id="highlight-sarcasm"><label class="custom-control-label"
-                                                                     for="highlight-sarcasm">Sarcasm</label>
+                                       value="highlight-features-sarcasm"
+                                       id="highlight-features-sarcasm"><label class="custom-control-label"
+                                                                              for="highlight-features-sarcasm">Sarcasm</label>
+                                <div style="float: right; margin-right: 10px;">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                fill="#97CFFF"/>
+                                    </svg>
+                                </div>
                             </div>
 
                             <div class="custom-control custom-switch" style="line-height: 23px;">
                                 <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
-                                       value="highlight-mockery"
-                                       id="highlight-mockery"><label class="custom-control-label"
-                                                                     for="highlight-mockery">Mockery</label>
+                                       value="highlight-features-mockery"
+                                       id="highlight-features-mockery"><label class="custom-control-label"
+                                                                              for="highlight-features-mockery">Mockery</label>
+                                <div style="float: right; margin-right: 10px;">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                fill="#1795FF"/>
+                                    </svg>
+                                </div>
                             </div>
 
                             <div class="custom-control custom-switch" style="line-height: 23px;">
                                 <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
-                                       value="highlight-intolerance"
-                                       id="highlight-intolerance"><label class="custom-control-label"
-                                                                         for="highlight-intolerance">Intolerance</label>
+                                       value="highlight-features-intolerance"
+                                       id="highlight-features-intolerance"><label class="custom-control-label"
+                                                                                  for="highlight-features-intolerance">Intolerance</label>
+                                <div style="float: right; margin-right: 10px;">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                fill="#0B5696"/>
+                                    </svg>
+                                </div>
                             </div>
 
                             <div class="custom-control custom-switch" style="line-height: 23px;">
                                 <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
-                                       value="highlight-improper-language" id="highlight-improper-language"
-                                ><label class="custom-control-label" for="highlight-improper-language">Improper
+                                       value="highlight-features-improper-language"
+                                       id="highlight-features-improper-language"
+                                ><label class="custom-control-label" for="highlight-features-improper-language">Improper
                                 language</label>
+                                <div style="float: right; margin-right: 10px;">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                fill="#E3B7E8"/>
+                                    </svg>
+                                </div>
                             </div>
 
                             <div class="custom-control custom-switch" style="line-height: 23px;">
                                 <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
-                                       value="highlight-insult"
-                                       id="highlight-insult"><label class="custom-control-label"
-                                                                    for="highlight-insult">Insult</label>
+                                       value="highlight-features-insult"
+                                       id="highlight-features-insult"><label class="custom-control-label"
+                                                                             for="highlight-features-insult">Insult</label>
+                                <div style="float: right; margin-right: 10px;">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                fill="#A313B3"/>
+                                    </svg>
+                                </div>
                             </div>
 
                             <div class="custom-control custom-switch" style="line-height: 23px;">
                                 <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
-                                       value="highlight-aggressiveness" id="highlight-aggressiveness"
+                                       value="highlight-features-aggressiveness"
+                                       id="highlight-features-aggressiveness"
                                 ><label class="custom-control-label"
-                                        for="highlight-aggressiveness">Aggressiveness</label>
+                                        for="highlight-features-aggressiveness">Aggressiveness</label>
+                                <div style="float: right; margin-right: 10px;">
+                                    <svg height="20" width="30" style="display: inline-block;">
+                                        <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
+                                                fill="#5E1566"/>
+                                    </svg>
+                                </div>
                             </div>
                         </div>
 
@@ -533,4 +735,132 @@
         document.getElementById("highlight_checks_OR").style = "display: block;";
         console.log('[User]', user.split('/')[2], '[interaction]', 'OR_button', '[Date]', new Date().toISOString());
     });
+
+    var radios = document.querySelectorAll("input[type=radio][name=cbHighlightAND]");
+    for (i = 0; i < radios.length; i++) {
+        radios[i].onclick = function (e) {
+            if (e.ctrlKey) {
+                this.checked = false;
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", false, true);
+                this.dispatchEvent(evt);
+            }
+        }
+    }
+
+    jQuery('#highlight-OR-selectAll-toxicity').click(function () {
+        var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightOR][id^=highlight-toxicity-]");
+        if (this.checked) {
+            for (i = 0; i < checks.length; i++) {
+                checks[i].checked = true;
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", false, true);
+                checks[i].dispatchEvent(evt);
+            }
+        } else {
+            for (i = 0; i < checks.length; i++) {
+                checks[i].checked = false;
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", false, true);
+                checks[i].dispatchEvent(evt);
+            }
+        }
+    });
+
+    jQuery('#highlight-OR-selectAll-stance').click(function () {
+        var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightOR][id^=highlight-stance-]");
+        if (this.checked) {
+            for (i = 0; i < checks.length; i++) {
+                checks[i].checked = true;
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", false, true);
+                checks[i].dispatchEvent(evt);
+            }
+        } else {
+            for (i = 0; i < checks.length; i++) {
+                checks[i].checked = false;
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", false, true);
+                checks[i].dispatchEvent(evt);
+            }
+        }
+    });
+
+    jQuery('#highlight-OR-selectAll-target').click(function () {
+        var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightOR][id^=highlight-target-]");
+        if (this.checked) {
+            for (i = 0; i < checks.length; i++) {
+                checks[i].checked = true;
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", false, true);
+                checks[i].dispatchEvent(evt);
+            }
+        } else {
+            for (i = 0; i < checks.length; i++) {
+                checks[i].checked = false;
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", false, true);
+                checks[i].dispatchEvent(evt);
+            }
+        }
+    });
+
+    jQuery('#highlight-OR-selectAll-features').click(function () {
+        var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightOR][id^=highlight-features-]");
+        if (this.checked) {
+            for (i = 0; i < checks.length; i++) {
+                checks[i].checked = true;
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", false, true);
+                checks[i].dispatchEvent(evt);
+            }
+        } else {
+            for (i = 0; i < checks.length; i++) {
+                checks[i].checked = false;
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", false, true);
+                checks[i].dispatchEvent(evt);
+            }
+        }
+    });
+
+
+    jQuery('#highlight-AND-selectAll-target').click(function () {
+        var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightAND][id^=highlight-target-]");
+        if (this.checked) {
+            for (i = 0; i < checks.length; i++) {
+                checks[i].checked = true;
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", false, true);
+                checks[i].dispatchEvent(evt);
+            }
+        } else {
+            for (i = 0; i < checks.length; i++) {
+                checks[i].checked = false;
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", false, true);
+                checks[i].dispatchEvent(evt);
+            }
+        }
+    });
+
+    jQuery('#highlight-AND-selectAll-features').click(function () {
+        var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightAND][id^=highlight-features-]");
+        if (this.checked) {
+            for (i = 0; i < checks.length; i++) {
+                checks[i].checked = true;
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", false, true);
+                checks[i].dispatchEvent(evt);
+            }
+        } else {
+            for (i = 0; i < checks.length; i++) {
+                checks[i].checked = false;
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", false, true);
+                checks[i].dispatchEvent(evt);
+            }
+        }
+    });
+
 </script>
