@@ -17,7 +17,7 @@ const dotRadius = 15;
 const colourToxicity0 = "#FAFFA8", colourToxicity1 = "#F8BB7C", colourToxicity2 = "#F87A54",
     colourToxicity3 = "#7A1616", colourNewsArticle = "lightsteelblue";
 
-const colourArgumentation = "#1B8055", colourConstructiveness = "#90F6B2", colourSarcasm = "#97CFFF",
+const colourConstructiveness = "#90F6B2", colourArgumentation = "#1B8055", colourSarcasm = "#97CFFF",
     colourMockery = "#1795FF",
     colourIntolerance = "#0B5696", colourImproper = "#E3B7E8", colourInsult = "#A313B3",
     colourAggressiveness = "#5E1566";
@@ -733,7 +733,7 @@ treeJSON = d3.json(dataset, function (error, json) {
             let length = 500 - d.source.depth * 10;
             return length > 80 ? length : 80;
         })
-        .charge(-300)
+        .charge(-600)
         .gravity(0) //Disable gravity
     ;
 
@@ -1456,11 +1456,11 @@ treeJSON = d3.json(dataset, function (error, json) {
         removeThisFeatures(nodeEnter);
         removeToxicities(nodeEnter); //Remove all the pngs for toxicity
 
-        var cbFeatureEnabled = [enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+        var cbFeatureEnabled = [enabledFeatures.indexOf("constructiveness"), enabledFeatures.indexOf("argumentation"),
             enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
             enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness")];
 
-        var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
+        var features = [objFeatConstructiveness, objFeatArgumentation, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
         var listOpacity;
 
         for (var i = 0; i < 8; i++) {

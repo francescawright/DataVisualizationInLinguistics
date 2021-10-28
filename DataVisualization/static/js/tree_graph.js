@@ -555,7 +555,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var imageOffset = 4; //Radii size difference between a node and its associated image
     var imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
 
-    var colorFeature = ["#1B8055", "#90F6B2",
+    var colorFeature = ["#90F6B2", "#1B8055",
         "#97CFFF", "#1795FF", "#0B5696",
         "#E3B7E8", "#A313B3", "#5E1566"
     ];
@@ -1463,8 +1463,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         removeToxicities(nodeEnter); //Remove all the pngs for toxicity
 
         var cbFeatureEnabled = [
-            enabledFeatures.indexOf("argumentation"),
             enabledFeatures.indexOf("constructiveness"),
+            enabledFeatures.indexOf("argumentation"),
             enabledFeatures.indexOf("sarcasm"),
             enabledFeatures.indexOf("mockery"),
             enabledFeatures.indexOf("intolerance"),
@@ -1474,8 +1474,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         ];
 
         var features = [
-            objFeatArgumentation,
             objFeatConstructiveness,
+            objFeatArgumentation,
             objFeatSarcasm,
             objFeatMockery,
             objFeatIntolerance,

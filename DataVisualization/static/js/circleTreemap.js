@@ -9,6 +9,8 @@ let pack = d3.pack()
 
 let node;
 
+var root;
+
 const colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
     colourToxicity3 = "#000000", colourNewsArticle = "#C8EAFC";
 
@@ -96,7 +98,7 @@ treeJSON = d3.json(dataset, function (error, root) {
                         return colourNewsArticle;
                 }
             }
-        })
+        }).style("stroke", "black");
 
     // name of the node
     node.filter(function (d) {
@@ -275,7 +277,7 @@ checkboxesHighlightGroupAND.forEach(function (checkboxItem) {
  * @param {string} propertyNameToRetrieve The property whose value is returned
  * */
 function retrieveAttributeFromComment(d, propertyNameToRetrieve) {
-    console.log(propertyNameToRetrieve);
+    //console.log(propertyNameToRetrieve);
     switch (propertyNameToRetrieve) {
         //Features
         case "argumentation":
@@ -329,20 +331,20 @@ function retrieveAttributeFromComment(d, propertyNameToRetrieve) {
 
         default:
             //console.log("An attribute could not be retrieved because the key word did not match any case...");
-            break;
+            return 1;
     }
 }
 
 function highlightNode(node, attributeName) {
     node.filter(function (d) {
         return retrieveAttributeFromComment(d.data, attributeName);
-    }).style("opacity", maxOpacityValue);
+    }).style("stroke", "black").style("color", "black").style("opacity", maxOpacityValue);
 }
 
 function unhighlightNode(node, attributeName) {
     node.filter(function (d) {
         return !retrieveAttributeFromComment(d.data, attributeName);
-    }).style("opacity", minOpacityValue);
+    }).style("stroke", "black").style("color", "black").style("opacity", minOpacityValue);
 }
 
 /**
@@ -400,6 +402,10 @@ function highlightNodesByPropertyOR(node, enabledHighlight) {
         highlightByStance(node, enabledHighlight, highlightNode);
         highlightByTarget(node, enabledHighlight, highlightNode);
     }
+    node.filter(function (d) {
+        return d.depth === 0;
+    }).style("opacity", maxOpacityValue);
+
 }
 
 function highlightNodesByPropertyAND(node, enabledHighlight) {
@@ -411,4 +417,8 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
     highlightByFeature(node, enabledHighlight, unhighlightNode);
     highlightByStance(node, enabledHighlight, unhighlightNode);
     highlightByTarget(node, enabledHighlight, unhighlightNode);
+    node.filter(function (d) {
+        return d.depth === 0;
+    }).style("opacity", maxOpacityValue);
+
 }
