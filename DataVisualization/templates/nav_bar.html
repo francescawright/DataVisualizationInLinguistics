@@ -186,7 +186,7 @@
                    autocomplete="off" form="main_form"
                    {% if checked_layout == "tree" %}checked{% endif %}>
 
-            Hierarchical Layout &#8195;
+            Tree Layout &#8195;
             <img
                     src="{% static 'images/nav_bar/treeLayout.svg' %}" style="width: 60px;">
         </label>
@@ -228,7 +228,7 @@
                    {% if selected_icons == "dots" %}class="btn btn-outline-primary active"
                    {% else %}class="btn btn-outline-primary"{% endif %}>
                 <input type="radio" name="dots_icon_button" id="dots_icon_button" form="main_form"
-                       autocomplete="off" {% if selected_icons == "dots" %}checked{% endif %}> Dots Icons &#8195;
+                       autocomplete="off" {% if selected_icons == "dots" %}checked{% endif %}> Dots &#8195;
                 <img
                         src="{% static 'images/nav_bar/dots_1.svg' %}" style="width: 60px;">
             </label>
@@ -236,7 +236,7 @@
                    {% if selected_icons == "glyphs" %}class="btn btn-outline-primary active"
                    {% else %}class="btn btn-outline-primary"{% endif %}>
                 <input type="radio" name="glyphs_icon_button" id="glyphs_icon_button" form="main_form"
-                       autocomplete="off" {% if selected_icons == "glyphs" %}checked{% endif %}> Glyphs Icons &#8195;
+                       autocomplete="off" {% if selected_icons == "glyphs" %}checked{% endif %}> Circular Glyphs &#8195;
                 <img
                         src="{% static 'images/nav_bar/glyph.svg' %}" style="width: 60px;">
             </label>
@@ -281,7 +281,7 @@
         $('#dataset_dropdown').change(function () {
             $('#main_form').submit();
         });
-        console.log('[User]', user.split('/')[2], '[interaction]', 'has_loaded_' + $('#dataset_dropdown').val(), '[Date]', new Date().toISOString());
+        console.log('[User]', user.split('/')[2], '| [interaction]', 'has_loaded_' + $('#dataset_dropdown').val(), '| [Date]', new Date().toISOString());
     });
 
     jQuery("#tree_layout_button").click(function () {
@@ -339,7 +339,7 @@
         document.getElementById("dots_label").className = "btn btn-primary active";
         $('#glyphs_icon_button').attr("checked", false);
         document.getElementById("glyphs_label").className = "btn btn-primary";
-        console.log('[User]', user.split('/')[2], '[interaction]', 'dots_icons', '[Date]', new Date().toISOString());
+        console.log('[User]', user.split('/')[2], '| [interaction]', 'dots_icons', '| [Date]', new Date().toISOString());
     });
 
     jQuery("#glyphs_icon_button").click(function () {
@@ -347,7 +347,7 @@
         document.getElementById("dots_label").className = "btn btn-primary";
         $(this).attr("checked", true);
         document.getElementById("glyphs_label").className = "btn btn-primary active";
-        console.log('[User]', user.split('/')[2], '[interaction]', 'glyph_icons', '[Date]', new Date().toISOString());
+        console.log('[User]', user.split('/')[2], '| [interaction]', 'glyph_icons', '| [Date]', new Date().toISOString());
     });
 
 

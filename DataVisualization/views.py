@@ -18,6 +18,16 @@ TARGETS = ["target_group", "target_person", "target_stereotype"]
 FEATURES = ["argumentation", "constructiveness", "sarcasm", "mockery", "intolerance",
             "improper_language", "insult",
             "aggressiveness"]
+FILTERS = ["highlight_toxicity_0", "highlight_toxicity_1", "highlight_toxicity_2", "highlight_toxicity_3"] + \
+          ["highlight_stance_neutral", "highlight_stance_positive", "highlight_stance_negative"] + \
+          ["highlight_" + target for target in TARGETS] + \
+          ["highlight_features_" + feature for feature in FEATURES] + \
+          ["highlight_OR_selectAll_toxicity", "highlight_OR_selectAll_stance", "highlight_OR_selectAll_target",
+           "highlight_OR_selectAll_features"] + \
+          ["highlight_AND_selectAll_target", "highlight_AND_selectAll_features"]
+
+COMMONS = ["and_group", "or_group"]
+
 LAYOUTS = ["Tree", "Force", "Radial"]
 TREE_LAYOUT = "tree_layout_button"
 FORCE_LAYOUT = "force_layout_button"
@@ -44,7 +54,10 @@ def main_form_handler(request):
     # Create two dicts that holds the values of the checkboxes from Targets and Features
     cbTargets = {target: 0 for target in TARGETS}
     cbFeatures = {feature: 0 for feature in FEATURES}
-    handle_checkboxes(request, cbTargets, cbFeatures)
+    cbFilterOR = {feature: 0 for feature in FILTERS}
+    cbFilterAND = {feature: 0 for feature in FILTERS}
+    cbCommons = {feature: 0 for feature in COMMONS}
+    handle_checkboxes(request, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons)
     # ---------------------------------------------------------------------------------
 
     # ICONS
@@ -72,14 +85,15 @@ def main_form_handler(request):
                    'selected_icons': selected_icons,
                    # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
                    # "d1": d1, "d2": d2,
-                   'cbTargets': cbTargets, 'cbFeatures': cbFeatures})
+                   'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
+                   'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons})
 
 
 # Auxiliary Form Handler functions
 # ---------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------
-def handle_checkboxes(request, cbTargets, cbFeatures):
+def handle_checkboxes(request, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons):
     if "cbTargets" in request.POST.keys():
         for target in request.POST.getlist("cbTargets"):
             cbTargets[target.replace('-', '_')] = 1
@@ -88,6 +102,17 @@ def handle_checkboxes(request, cbTargets, cbFeatures):
             cbFeatures[feature] = 1
     if "cbFeatureMenu" in request.POST.keys():
         cbFeatures[request.POST["cbFeatureMenu"].replace('-', '_')] = 1
+    if "cbHighlightOR" in request.POST.keys():
+        for filterOR in request.POST.getlist("cbHighlightOR"):
+            cbFilterOR[filterOR.replace('-', '_')] = 1
+    if "cbHighlightAND" in request.POST.keys():
+        for filterAND in request.POST.getlist("cbHighlightAND"):
+            cbFilterAND[filterAND.replace('-', '_')] = 1
+    if "cbHighlightProperty" in request.POST.keys():
+        for common in request.POST.getlist("cbHighlightProperty"):
+            cbCommons[common.replace('-', '_')] = 1
+    else:
+        cbCommons["and_group"] = 1
 
 
 def get_current_dataset(request):

@@ -230,7 +230,7 @@ function highlightToxicityOR(node, enabledHighlight) {
  *
  * Unhighlights nodes that do not have the selected property
  * */
-function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.2) {
+function highlightToxicityAND(node, enabledHighlight, opacityValue = 0.1) {
     //Toxicity not 0
     if (enabledHighlight.indexOf("highlight-toxicity-0") > -1) {
         var unhighlightNodes = node.filter(function (d) {
@@ -322,7 +322,7 @@ function highlightStanceOR(node, enabledHighlight) {
 
 }
 
-function highlightStanceAND(node, enabledHighlight, opacityValue = 0.2) {
+function highlightStanceAND(node, enabledHighlight, opacityValue = 0.1) {
 
     //Neutral stance CB is checked
     if (enabledHighlight.indexOf("highlight-stance-neutral") > -1) {
@@ -386,7 +386,7 @@ function highlightTargetOR(node, enabledHighlight) {
     }
 }
 
-function highlightTargetAND(node, enabledHighlight, opacityValue = 0.2) {
+function highlightTargetAND(node, enabledHighlight, opacityValue = 0.1) {
 
     //Target group CB is checked
     if (enabledHighlight.indexOf("highlight-target-group") > -1) {
@@ -434,7 +434,7 @@ function highlightPositiveOR(node, enabledHighlight) {
 
 }
 
-function highlightPositiveAND(node, enabledHighlight, opacityValue = 0.2) {
+function highlightPositiveAND(node, enabledHighlight, opacityValue = 0.1) {
     //Argumentation CB is checked
     if (enabledHighlight.indexOf("highlight-features-argumentation") > -1) {
         node.filter(function (d) {
@@ -508,7 +508,7 @@ function highlightNegativeOR(node, enabledHighlight) {
     }
 }
 
-function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2) {
+function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.1) {
 
     //Sarcasm CB is checked
     if (enabledHighlight.indexOf("highlight-features-sarcasm") > -1) {
@@ -593,7 +593,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
     var ringHeight = 55, ringWidth = 55, ringX = -10, ringY = -10;
     var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
-    var opacityValue = 0.2; //Opacity when a node or link is not highlighted
+    var opacityValue = 0.1; //Opacity when a node or link is not highlighted
 
 
     /*    // Define the zoom function for the zoomable tree
@@ -2539,7 +2539,10 @@ treeJSON = d3.json(dataset, function (error, json) {
                 return "translate(" + d.x + "," + d.y + ")";
             })
             .on('mouseover', function (d) {
-                if (d !== root) {
+                var highlighted_nodes = node.filter(function (n) {
+                    return n.highlighted;
+                })[0].map(i => i.__data__.name); // don't ask..
+                if (d !== root && highlighted_nodes.includes(d.name)) {
                     writeTooltipText(d);
                     tooltip.style("visibility", "visible")
                         .html(tooltipText);
@@ -2649,9 +2652,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                                 .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
                         if (checkboxItem.checked) {
-                            console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
                         } else {
-                            console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
                         }
                         selectTargetVisualization(node);
                     })
@@ -2666,9 +2669,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                                 .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                                 .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
                         if (checkboxItem.checked) {
-                            console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
                         } else {
-                            console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
                         }
                         selectFeatureVisualization(node);
 
@@ -2700,9 +2703,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                         var filteredCompareFeatures = getLengthFilterByName(Array.from(enabledHighlight), "highlight-features-");
                         document.getElementById('highlight-OR-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
                         if (checkboxItem.checked) {
-                            console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
                         } else {
-                            console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
                         }
                         checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
                     })
@@ -2725,9 +2728,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                         document.getElementById('highlight-AND-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
 
                         if (checkboxItem.checked) {
-                            console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
                         } else {
-                            console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
                         }
                         checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
                     })
@@ -2785,13 +2788,13 @@ treeJSON = d3.json(dataset, function (error, json) {
                 document.getElementById('static_values_button').innerHTML = '&#8722;';
                 static_values_checked = true;
                 statisticBackground.style("visibility", "visible").html(writeStatisticText());
-                console.log('[User]', user.split('/')[2], '[interaction]', 'show_summary', '[Date]', new Date().toISOString());
+                console.log('[User]', user.split('/')[2], ' | [interaction]', 'show_summary', ' | [Date]', new Date().toISOString());
 
             } else {
                 document.getElementById('static_values_button').innerHTML = '&#43;'
                 static_values_checked = false;
                 statisticBackground.style("visibility", "hidden").html(writeStatisticText());
-                console.log('[User]', user.split('/')[2], '[interaction]', 'hide_summary', '[Date]', new Date().toISOString());
+                console.log('[User]', user.split('/')[2], ' | [interaction]', 'hide_summary', ' | [Date]', new Date().toISOString());
 
             }
         });
@@ -3237,7 +3240,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         //>YLabel.textContent = "Y: " + currentY.toFixed(0);
     }
 
-    console.log('[User]', user.split('/')[2], '[interaction]', 'Force_layout_loaded', '[Date]', new Date().toISOString());
+    console.log('[User]', user.split('/')[2], ' | [interaction]', 'Force_layout_loaded', ' | [Date]', new Date().toISOString());
 
 
 });

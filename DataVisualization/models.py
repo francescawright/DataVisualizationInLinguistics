@@ -11,7 +11,7 @@ class Document(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Title: {self.description} | File name: {self.document.name} | Uploaded at: {self.uploaded_at}"
+        return f"Title: {self.description}| File name: {self.document.name} | Uploaded at: {self.uploaded_at}"
 
 
 class Commentary(models.Model):

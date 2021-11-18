@@ -121,7 +121,7 @@ var checkboxesHighlightGroupOR = document.querySelectorAll("input[name=cbHighlig
 var checkboxesHighlightGroupAND = document.querySelectorAll("input[name=cbHighlightAND]");
 
 var enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
-console.log('[User]', user.split('/')[2], '[interaction]', 'TreeMap_layout_loaded', '[Date]', new Date().toISOString());
+console.log('[User]', user.split('/')[2], '| [interaction]', 'TreeMap_layout_loaded', '| [Date]', new Date().toISOString());
 
 //Listeners
 
@@ -236,9 +236,9 @@ checkboxesHighlightGroupOR.forEach(function (checkboxItem) {
         document.getElementById('highlight-OR-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
 
         if (checkboxItem.checked) {
-            console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "| [Date]", new Date().toISOString());
         } else {
-            console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
         }
         checkboxOR.checked ? highlightNodesByPropertyOR(node, enabledHighlight) : highlightNodesByPropertyAND(node, enabledHighlight);
     })
@@ -262,9 +262,9 @@ checkboxesHighlightGroupAND.forEach(function (checkboxItem) {
         document.getElementById('highlight-AND-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
 
         if (checkboxItem.checked) {
-            console.log("[User]", user.split('/')[2], "[interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
         } else {
-            console.log("[User]", user.split('/')[2], "[interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "[Date]", new Date().toISOString());
+            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
         }
         checkboxAND.checked ? highlightNodesByPropertyAND(node, enabledHighlight) : highlightNodesByPropertyOR(node, enabledHighlight);
     })
