@@ -360,7 +360,7 @@ function drawObjectAsDot(nodeEnter, object, itemOrder) {
         })
         .attr("fill", object.color)
         .style("stroke", "black")
-        .style("stroke-width", "0.5px")
+        .style("stroke-width", "1.5px")
         .attr("opacity", function (d) {
             if (d.parent === undefined) return 0;
             return retrieveAttributeFromComment(d, object.name);
@@ -1780,7 +1780,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     })
                     .attr("fill", colorFeature[i])
                     .style("stroke", "black")
-                    .style("stroke-width", "0.5px")
+                    .style("stroke-width", "1.5px")
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
                         listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
@@ -1893,7 +1893,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         return sizeImage(d.radius, 0);
                     })
                     .style("stroke", "black")
-                    .style("stroke-width", "0.5px")
+                    .style("stroke-width", "1.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
@@ -1948,7 +1948,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         return sizeImage(d.radius + d.radius / 5.0, 0);
                     })
                     .style("stroke", "black")
-                    .style("stroke-width", "0.5px")
+                    .style("stroke-width", "1.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
@@ -2008,7 +2008,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         return sizeImage(d.radius, 0);
                     })
                     .style("stroke", "black")
-                    .style("stroke-width", "0.5px")
+                    .style("stroke-width", "1.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
@@ -2141,7 +2141,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("transform", "translate(" + 35 + "," + 0 + ")")
                 .attr("fill", colorFeature[0])
                 .style("stroke", "black")
-                .style("stroke-width", "0.5px")
+                .style("stroke-width", "1.5px")
                 .attr("opacity", function (d) {
                     if (d.argumentation) return 1 //If node contains argumentation
                     return 0 //We hide it if it has no argumentation
@@ -2157,7 +2157,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("transform", "translate(" + 45 + "," + 0 + ")")
                 .attr("fill", colorFeature[1])
                 .style("stroke", "black")
-                .style("stroke-width", "0.5px")
+                .style("stroke-width", "1.5px")
                 .attr("opacity", function (d) {
                     if (d.constructiveness) return 1
                     return 0
@@ -2172,7 +2172,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("transform", "translate(" + 55 + "," + 0 + ")")
                 .attr("fill", colorFeature[2])
                 .style("stroke", "black")
-                .style("stroke-width", "0.5px")
+                .style("stroke-width", "1.5px")
                 .attr("opacity", function (d) {
                     if (d.sarcasm) return 1
                     return 0
@@ -2187,7 +2187,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("transform", "translate(" + 65 + "," + 0 + ")")
                 .attr("fill", colorFeature[3])
                 .style("stroke", "black")
-                .style("stroke-width", "0.5px")
+                .style("stroke-width", "1.5px")
                 .attr("opacity", function (d) {
                     if (d.mockery) return 1
                     return 0
@@ -2202,7 +2202,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("transform", "translate(" + 75 + "," + 0 + ")")
                 .attr("fill", colorFeature[4])
                 .style("stroke", "black")
-                .style("stroke-width", "0.5px")
+                .style("stroke-width", "1.5px")
                 .attr("opacity", function (d) {
                     if (d.intolerance) return 1
                     return 0
@@ -2219,7 +2219,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("transform", "translate(" + 95 + "," + 0 + ")")
                 .attr("fill", colorFeature[5])
                 .style("stroke", "black")
-                .style("stroke-width", "0.5px")
+                .style("stroke-width", "1.5px")
                 .attr("opacity", function (d) {
                     if (d.improper_language) return 1
                     return 0
@@ -2235,7 +2235,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("transform", "translate(" + 105 + "," + 0 + ")")
                 .attr("fill", colorFeature[6])
                 .style("stroke", "black")
-                .style("stroke-width", "0.5px")
+                .style("stroke-width", "1.5px")
                 .attr("opacity", function (d) {
                     if (d.insult) return 1
                     return 0
@@ -2250,7 +2250,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("transform", "translate(" + 115 + "," + 0 + ")")
                 .attr("fill", colorFeature[7])
                 .style("stroke", "black")
-                .style("stroke-width", "0.5px")
+                .style("stroke-width", "1.5px")
                 .attr("opacity", function (d) {
                     if (d.aggressiveness) return 1
                     return 0

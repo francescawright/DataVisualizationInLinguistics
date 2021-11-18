@@ -82,6 +82,47 @@ function computeDimensions(nodes) {
     };
 }
 
+let currentZoomScale;
+
+function getNodeStrokeWidth() {
+    return 1.5;
+}
+
+/**
+ * Set edge stroke width based on current zoom value
+ * */
+function getEdgeStrokeWidth() {
+    //console.log("Zoom: ", currentZoomScale)
+    switch (true) {
+        case (currentZoomScale > 7):
+            return 1
+        case (currentZoomScale > 6):
+            return 2
+        case (currentZoomScale > 4):
+            return 3
+        case (currentZoomScale > 3):
+            return 4
+        case (currentZoomScale > 1):
+            return 5
+        case (currentZoomScale > 0.6):
+            return 6
+        case (currentZoomScale > 0.5):
+            return 7
+        case (currentZoomScale > 0.4):
+            return 8
+        case (currentZoomScale > 0.3):
+            return 9
+        case (currentZoomScale > 0.2):
+            return 10
+        case (currentZoomScale > 0.1):
+            return 11
+        case (currentZoomScale > 0.075):
+            return 15
+        case (currentZoomScale > 0):
+            return 20
+    }
+}
+
 /**
  * Center graph and zoom to fit the whole graph visualization in our canvas
  * */
@@ -990,6 +1031,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          * d3.event.translate returns an array [x,y] with starting values [50, 200]
          * The values X and Y are swapped in zoomToFit() and we need to take that into account to give the new coordinates
          * */
+        currentZoomScale = d3.event.scale
+
         var movement = d3.event.translate;
         var newX = initialX + (movement[1] - 200);
         var newY = initialY + (movement[0] - 50);
@@ -1018,8 +1061,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var zoomListener = d3.behavior
         .zoom()
         .scaleExtent([0.1, 3])
-        .on("zoom", zoom);
-
+        .on("zoom", function () {
+            currentZoomScale = d3.event.scale
+            link.style("stroke-width", getEdgeStrokeWidth()); //Enlarge stroke-width on zoom out
+            node.select("circle").style("stroke-width", getNodeStrokeWidth()); //Enlarge stroke-width on zoom out
+            zoom();
+        });
 
     // define the baseSvg, attaching a class for styling and the zoomListener
     var baseSvg = d3
@@ -1029,6 +1076,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .attr("height", canvasHeight)
         .attr("class", "overlay")
         .call(zoomListener);
+
+
+    var svgGroup = baseSvg.append("g");
+
+    var link = svgGroup.selectAll("path.link"),
+        node = svgGroup.selectAll("g.node");
+
 
     /**
      * Center the screen to the position of the given node
@@ -1529,7 +1583,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     })
                     .attr("fill", colorFeature[i])
                     .style("stroke", "black")
-                    .style("stroke-width", "0.5px")
+                    .style("stroke-width", getNodeStrokeWidth())
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
                         listOpacity = [
@@ -1870,7 +1924,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         return sizeImage(d.radius, 0);
                     })
                     .style("stroke", "black")
-                    .style("stroke-width", "0.5px")
+                    .style("stroke-width", getNodeStrokeWidth())
                     .attr(
                         "href",
                         pathFeatures + localPath + allObjectsInNode[i].fileName
@@ -2156,7 +2210,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("transform", "translate(" + 35 + "," + 0 + ")")
                 .attr("fill", colorFeature[0])
                 .style("stroke", "black")
-                .style("stroke-width", "0.5px")
+                .style("stroke-width", getNodeStrokeWidth())
                 .attr("opacity", function (d) {
                     if (d.argumentation) return 1; //If node contains argumentation
                     return 0; //We hide it if it has no argumentation
@@ -2173,7 +2227,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("transform", "translate(" + 45 + "," + 0 + ")")
                 .attr("fill", colorFeature[1])
                 .style("stroke", "black")
-                .style("stroke-width", "0.5px")
+                .style("stroke-width", getNodeStrokeWidth())
                 .attr("opacity", function (d) {
                     if (d.constructiveness) return 1;
                     return 0;
@@ -2189,7 +2243,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("transform", "translate(" + 55 + "," + 0 + ")")
                 .attr("fill", colorFeature[2])
                 .style("stroke", "black")
-                .style("stroke-width", "0.5px")
+                .style("stroke-width", getNodeStrokeWidth())
                 .attr("opacity", function (d) {
                     if (d.sarcasm) return 1;
                     return 0;
@@ -2205,7 +2259,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("transform", "translate(" + 65 + "," + 0 + ")")
                 .attr("fill", colorFeature[3])
                 .style("stroke", "black")
-                .style("stroke-width", "0.5px")
+                .style("stroke-width", getNodeStrokeWidth())
                 .attr("opacity", function (d) {
                     if (d.mockery) return 1;
                     return 0;
@@ -2221,7 +2275,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("transform", "translate(" + 75 + "," + 0 + ")")
                 .attr("fill", colorFeature[4])
                 .style("stroke", "black")
-                .style("stroke-width", "0.5px")
+                .style("stroke-width", getNodeStrokeWidth())
                 .attr("opacity", function (d) {
                     if (d.intolerance) return 1;
                     return 0;
@@ -2238,7 +2292,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("transform", "translate(" + 95 + "," + 0 + ")")
                 .attr("fill", colorFeature[5])
                 .style("stroke", "black")
-                .style("stroke-width", "0.5px")
+                .style("stroke-width", getNodeStrokeWidth())
                 .attr("opacity", function (d) {
                     if (d.improper_language) return 1;
                     return 0;
@@ -2255,7 +2309,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("transform", "translate(" + 105 + "," + 0 + ")")
                 .attr("fill", colorFeature[6])
                 .style("stroke", "black")
-                .style("stroke-width", "0.5px")
+                .style("stroke-width", getNodeStrokeWidth())
                 .attr("opacity", function (d) {
                     if (d.insult) return 1;
                     return 0;
@@ -2271,7 +2325,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("transform", "translate(" + 115 + "," + 0 + ")")
                 .attr("fill", colorFeature[7])
                 .style("stroke", "black")
-                .style("stroke-width", "0.5px")
+                .style("stroke-width", getNodeStrokeWidth())
                 .attr("opacity", function (d) {
                     if (d.aggressiveness) return 1;
                     return 0;
@@ -3257,7 +3311,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .attr("class", "nodeCircle")
             .attr("r", "10.5")
             .style("stroke", "black")
-            .style("stroke-width", 0.5);
+            .style("stroke-width", getNodeStrokeWidth());
 
         // nodeEnter
         //     .append("text")
@@ -3878,7 +3932,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
 
     // Append a group which holds all nodes and which the zoom Listener can act upon.
-    var svgGroup = baseSvg.append("g");
 
     // Define the root position
     root.x0 = viewerHeight / 2;
