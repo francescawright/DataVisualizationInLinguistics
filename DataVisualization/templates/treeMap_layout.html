@@ -989,7 +989,6 @@
 
     window.onload = function () {
         if ("{{ cbCommons.and_group }}" === "1") {
-            console.log("and");
             document.getElementById("and_label").className = "btn btn-secondary active";
             document.getElementById("or_label").className = "btn btn-secondary";
 
@@ -1004,7 +1003,6 @@
 
 
         } else {
-            console.log("or");
             document.getElementById("and_label").className = "btn btn-secondary";
             document.getElementById("or_label").className = "btn btn-secondary active";
             document.getElementById("highlight_checks_AND").style = "display: none;";
