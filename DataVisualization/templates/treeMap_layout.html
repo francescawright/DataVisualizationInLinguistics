@@ -988,26 +988,8 @@
     });
 
     window.onload = function () {
-        /*var chk_targets = document.querySelectorAll('input[type=checkbox][name=cbTargets]');
-        var chk_features = document.querySelectorAll('input[type=checkbox][name=cbFeatures]');
-
-        for (i = 0; i < chk_targets.length; i++) {
-            var evt = document.createEvent("HTMLEvents");
-            evt.initEvent("change", false, true);
-            chk_targets[i].dispatchEvent(evt);
-        }
-
-        for (i = 0; i < chk_features.length; i++) {
-            var evt = document.createEvent("HTMLEvents");
-            evt.initEvent("change", false, true);
-            chk_features[i].dispatchEvent(evt);
-        }
-
-        var chk_enable_features = document.getElementById("feature-group")
-        var evt = document.createEvent("HTMLEvents");
-        evt.initEvent("change", false, true);
-        chk_enable_features.dispatchEvent(evt);*/
         if ("{{ cbCommons.and_group }}" === "1") {
+            console.log("and");
             document.getElementById("and_label").className = "btn btn-secondary active";
             document.getElementById("or_label").className = "btn btn-secondary";
 
@@ -1022,13 +1004,13 @@
 
 
         } else {
+            console.log("or");
             document.getElementById("and_label").className = "btn btn-secondary";
             document.getElementById("or_label").className = "btn btn-secondary active";
             document.getElementById("highlight_checks_AND").style = "display: none;";
             document.getElementById("highlight_checks_OR").style = "display: block;";
 
             var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightOR]");
-            console.log(checks);
             for (i = 0; i < checks.length; i++) {
                 var evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);

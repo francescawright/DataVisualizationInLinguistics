@@ -27,6 +27,19 @@ filter.append("feDropShadow")
     .attr("dx", 0)
     .attr("dy", 1)
 
+
+// Select which properties and if an intersection or union of those
+// let checkboxHighlightMenu = document.querySelector("input[name=cbHighlightMenu]");
+
+let checkboxesProperty = document.querySelectorAll("input[type=checkbox][name=cbHighlightProperty]");
+let checkboxAND = document.querySelector("input[type=radio][name=cbHighlightProperty][value=and-group]");
+let checkboxOR = document.querySelector("input[type=radio][name=cbHighlightProperty][value=or-group]");
+var checkboxesHighlightGroupOR = document.querySelectorAll("input[name=cbHighlightOR]");
+var checkboxesHighlightGroupAND = document.querySelectorAll("input[name=cbHighlightAND]");
+
+var enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
+console.log('[User]', user.split('/')[2], '| [interaction]', 'TreeMap_layout_loaded', '| [Date]', Date.now());
+
 treeJSON = d3.json(dataset, function (error, root) {
 //d3.json("https://ecemkavaz.github.io/jsonData/fakeDataCircle2.json", function(error, root) {
     if (error) throw error;
@@ -209,23 +222,10 @@ treeJSON = d3.json(dataset, function (error, root) {
         })
     });
 
-    highlightNodesByPropertyAND(node, enabledHighlight);
     highlightNodesByPropertyOR(node, enabledHighlight);
 
 });
 
-
-// Select which properties and if an intersection or union of those
-// let checkboxHighlightMenu = document.querySelector("input[name=cbHighlightMenu]");
-
-let checkboxesProperty = document.querySelectorAll("input[type=checkbox][name=cbHighlightProperty]");
-let checkboxAND = document.querySelector("input[type=radio][name=cbHighlightProperty][value=and-group]");
-let checkboxOR = document.querySelector("input[type=radio][name=cbHighlightProperty][value=or-group]");
-var checkboxesHighlightGroupOR = document.querySelectorAll("input[name=cbHighlightOR]");
-var checkboxesHighlightGroupAND = document.querySelectorAll("input[name=cbHighlightAND]");
-
-var enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
-console.log('[User]', user.split('/')[2], '| [interaction]', 'TreeMap_layout_loaded', '| [Date]', Date.now());
 
 //Listeners
 
