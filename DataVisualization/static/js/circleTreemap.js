@@ -121,6 +121,9 @@ treeJSON = d3.json(dataset, function (error, root) {
         .text(function (d) {
             return d.data.name;
         });
+    highlightNodesByPropertyOR(node, enabledHighlight);
+    highlightNodesByPropertyAND(node, enabledHighlight);
+
     try {
         $(document).ready(function () {
             checkboxAND.addEventListener("change", function () {
@@ -229,6 +232,7 @@ treeJSON = d3.json(dataset, function (error, root) {
         console.error("Error attaching buttons... trying again...");
     }
     highlightNodesByPropertyOR(node, enabledHighlight);
+    highlightNodesByPropertyAND(node, enabledHighlight);
 
 });
 
