@@ -995,6 +995,8 @@
             document.getElementById("highlight_checks_AND").style = "display: block;";
             document.getElementById("highlight_checks_OR").style = "display: none;";
             var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightAND]");
+            console.log("and checks");
+            console.log(checks);
             for (i = 0; i < checks.length; i++) {
                 var evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
@@ -1009,6 +1011,8 @@
             document.getElementById("highlight_checks_OR").style = "display: block;";
 
             var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightOR]");
+            console.log("or checks");
+            console.log(checks);
             for (i = 0; i < checks.length; i++) {
                 var evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
