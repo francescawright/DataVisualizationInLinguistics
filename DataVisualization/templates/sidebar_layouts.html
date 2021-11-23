@@ -1171,9 +1171,9 @@
 
     function CheckAll(chk) {
         if (chk.length > 3) {
-            console.log("[User] {{ user }}| [interaction] checkall_features | [Date]", new Date().toISOString());
+            console.log("[User] {{ user }}| [interaction] checkall_features | [Date]", Date.now());
         } else {
-            console.log("[User] {{ user }} | [interaction] checkall_targets | [Date]", new Date().toISOString());
+            console.log("[User] {{ user }} | [interaction] checkall_targets | [Date]", Date.now());
         }
         for (i = 0; i < chk.length; i++) {
             chk[i].checked = true;
@@ -1258,7 +1258,7 @@
 
         document.getElementById("highlight_checks_AND").style = "display: block;";
         document.getElementById("highlight_checks_OR").style = "display: none;";
-        console.log('[User]', user.split('/')[2], ' | [interaction]', 'AND_button', ' | [Date]', new Date().toISOString());
+        console.log('[User]', user.split('/')[2], ' | [interaction]', 'AND_button', ' | [Date]', Date.now());
     });
 
     jQuery("#or_button").click(function () {
@@ -1268,7 +1268,7 @@
         document.getElementById("or_label").className = "btn btn-secondary active";
         document.getElementById("highlight_checks_AND").style = "display: none;";
         document.getElementById("highlight_checks_OR").style = "display: block;";
-        console.log('[User]', user.split('/')[2], ' | [interaction]', 'OR_button', ' | [Date]', new Date().toISOString());
+        console.log('[User]', user.split('/')[2], ' | [interaction]', 'OR_button', ' | [Date]', Date.now());
     });
 
     var targets_accordion_expanded = false;
@@ -1276,11 +1276,11 @@
         if (!targets_accordion_expanded) {
             document.getElementById('plus_sign_targets').innerHTML = '&#8722;';
             targets_accordion_expanded = true;
-            console.log("[User]", user.split('/')[2], " | [interaction]", "showing_targets_accordion", " | [Date]", new Date().toISOString());
+            console.log("[User]", user.split('/')[2], " | [interaction]", "showing_targets_accordion", " | [Date]", Date.now());
         } else {
             document.getElementById('plus_sign_targets').innerHTML = '&#43;'
             targets_accordion_expanded = false;
-            console.log("[User]", user.split('/')[2], " | [interaction]", "hidding_targets_accordion", " | [Date]", new Date().toISOString());
+            console.log("[User]", user.split('/')[2], " | [interaction]", "hidding_targets_accordion", " | [Date]", Date.now());
         }
     });
 
@@ -1289,11 +1289,11 @@
         if (!features_accordion_expanded) {
             document.getElementById('plus_sign_features').innerHTML = '&#8722;';
             features_accordion_expanded = true;
-            console.log("[User]", user.split('/')[2], " | [interaction]", "showing_features_accordion", " | [Date]", new Date().toISOString());
+            console.log("[User]", user.split('/')[2], " | [interaction]", "showing_features_accordion", " | [Date]", Date.now());
         } else {
             document.getElementById('plus_sign_features').innerHTML = '&#43;'
             features_accordion_expanded = false;
-            console.log("[User]", user.split('/')[2], " | [interaction]", "hidding_features_accordion", " | [Date]", new Date().toISOString());
+            console.log("[User]", user.split('/')[2], " | [interaction]", "hidding_features_accordion", " | [Date]", Date.now());
         }
     });
 
@@ -1303,11 +1303,11 @@
         if (!highlight_accordion_expanded) {
             document.getElementById('plus_sign_highlight').innerHTML = '&#8722;';
             highlight_accordion_expanded = true;
-            console.log("[User]", user.split('/')[2], " | [interaction]", "showing_highlight_accordion", " | [Date]", new Date().toISOString());
+            console.log("[User]", user.split('/')[2], " | [interaction]", "showing_highlight_accordion", " | [Date]", Date.now());
         } else {
             document.getElementById('plus_sign_highlight').innerHTML = '&#43;'
             highlight_accordion_expanded = false;
-            console.log("[User]", user.split('/')[2], " | [interaction]", "hidding_highlight_accordion", " | [Date]", new Date().toISOString());
+            console.log("[User]", user.split('/')[2], " | [interaction]", "hidding_highlight_accordion", " | [Date]", Date.now());
         }
     });
 

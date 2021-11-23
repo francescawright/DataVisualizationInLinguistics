@@ -2652,9 +2652,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                                 .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
                         if (checkboxItem.checked) {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
+                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         } else {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
+                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         selectTargetVisualization(node);
                     })
@@ -2669,9 +2669,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                                 .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                                 .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
                         if (checkboxItem.checked) {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
+                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         } else {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
+                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         selectFeatureVisualization(node);
 
@@ -2703,9 +2703,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                         var filteredCompareFeatures = getLengthFilterByName(Array.from(enabledHighlight), "highlight-features-");
                         document.getElementById('highlight-OR-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
                         if (checkboxItem.checked) {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
+                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         } else {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
+                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
                     })
@@ -2728,9 +2728,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                         document.getElementById('highlight-AND-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
 
                         if (checkboxItem.checked) {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
+                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         } else {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", new Date().toISOString());
+                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
                     })
@@ -2788,13 +2788,13 @@ treeJSON = d3.json(dataset, function (error, json) {
                 document.getElementById('static_values_button').innerHTML = '&#8722;';
                 static_values_checked = true;
                 statisticBackground.style("visibility", "visible").html(writeStatisticText());
-                console.log('[User]', user.split('/')[2], ' | [interaction]', 'show_summary', ' | [Date]', new Date().toISOString());
+                console.log('[User]', user.split('/')[2], ' | [interaction]', 'show_summary', ' | [Date]', Date.now());
 
             } else {
                 document.getElementById('static_values_button').innerHTML = '&#43;'
                 static_values_checked = false;
                 statisticBackground.style("visibility", "hidden").html(writeStatisticText());
-                console.log('[User]', user.split('/')[2], ' | [interaction]', 'hide_summary', ' | [Date]', new Date().toISOString());
+                console.log('[User]', user.split('/')[2], ' | [interaction]', 'hide_summary', ' | [Date]', Date.now());
 
             }
         });
@@ -3240,7 +3240,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         //>YLabel.textContent = "Y: " + currentY.toFixed(0);
     }
 
-    console.log('[User]', user.split('/')[2], ' | [interaction]', 'Force_layout_loaded', ' | [Date]', new Date().toISOString());
+    console.log('[User]', user.split('/')[2], ' | [interaction]', 'Force_layout_loaded', ' | [Date]', Date.now());
 
 
 });
