@@ -174,8 +174,7 @@ treeJSON = d3.json(dataset, function (error, root) {
                             .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                             .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-                    console.log("or highlight enabled");
-                    console.log(enabledHighlight);
+
                     var filteredOriginalToxicity = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-toxicity-");
                     var filteredCompareToxicity = getLengthFilterByName(Array.from(enabledHighlight), "highlight-toxicity-");
                     document.getElementById('highlight-OR-selectAll-toxicity').checked = filteredOriginalToxicity === filteredCompareToxicity;
@@ -208,8 +207,7 @@ treeJSON = d3.json(dataset, function (error, root) {
                         Array.from(checkboxesHighlightGroupAND) // Convert checkboxes to an array to use filter and map.
                             .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                             .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
-                    console.log("and highlight enabled");
-                    console.log(enabledHighlight);
+
                     var filteredOriginalTarget = getLengthFilterByName(Array.from(checkboxesHighlightGroupAND).map(i => i.value), "highlight-target-");
                     var filteredCompareTarget = getLengthFilterByName(Array.from(enabledHighlight), "highlight-target-");
                     document.getElementById('highlight-AND-selectAll-target').checked = filteredOriginalTarget === filteredCompareTarget;
@@ -234,10 +232,8 @@ treeJSON = d3.json(dataset, function (error, root) {
     highlightNodesByPropertyOR(node, enabledHighlight);
     highlightNodesByPropertyAND(node, enabledHighlight);
 
-});
 
-
-//Listeners
+    //Listeners
 
 //Listener related to highlighting nodes and edges
 // checkboxHighlightMenu.addEventListener('change', function () {
@@ -274,165 +270,169 @@ treeJSON = d3.json(dataset, function (error, root) {
 
 // If AND is selected, uncheck the OR and highlight by property AND
 
-function getLengthFilterByName(array, stringToMatch, matchPositive = true) {
-    return Array.from(array).filter(function (val) {
-        if (matchPositive) {
-            return val.includes(stringToMatch);
-        } else {
-            return !val.includes(stringToMatch);
-        }
-    }).length;
-}
-
-
-/**
- * Return the value of a property (set from the JSON) of the given node
- *
- * @param d Datum of a node
- * @param {string} propertyNameToRetrieve The property whose value is returned
- * */
-function retrieveAttributeFromComment(d, propertyNameToRetrieve) {
-    //console.log(propertyNameToRetrieve);
-    switch (propertyNameToRetrieve) {
-        //Features
-        case "argumentation":
-            return d.argumentation;
-        case "constructiveness":
-            return d.constructiveness;
-        case "sarcasm":
-            return d.sarcasm;
-        case "mockery":
-            return d.mockery;
-        case "intolerance":
-            return d.intolerance;
-        case "improper_language":
-            return d.improper_language;
-        case "insult":
-            return d.insult;
-        case "aggressiveness":
-            return d.aggressiveness;
-        case "gray":
-            return 1;
-        case "gray-ring":
-            return 0.5;
-
-        //Targets
-        case "target-group":
-            return d.target_group;
-        case "target-person":
-            return d.target_person;
-        case "target-stereotype":
-            return d.stereotype;
-
-        //Toxicity
-        case "toxicity-0":
-            return d.toxicity_level === 0 ? 1 : 0;
-        case "toxicity-1":
-            return d.toxicity_level === 1 ? 1 : 0;
-        case "toxicity-2":
-            return d.toxicity_level === 2 ? 1 : 0;
-        case "toxicity-3":
-            return d.toxicity_level === 3 ? 1 : 0;
-
-        //Stances
-        case "positive":
-            return d.positive_stance;
-        case "negative":
-            return d.negative_stance;
-        case "neutral":
-            return !(d.positive_stance || d.negative_stance);
-        case "both":
-            return d.positive_stance && d.negative_stance;
-
-        default:
-            //console.log("An attribute could not be retrieved because the key word did not match any case...");
-            return 1;
+    function getLengthFilterByName(array, stringToMatch, matchPositive = true) {
+        return Array.from(array).filter(function (val) {
+            if (matchPositive) {
+                return val.includes(stringToMatch);
+            } else {
+                return !val.includes(stringToMatch);
+            }
+        }).length;
     }
-}
 
-function highlightNode(node, attributeName) {
-    node.filter(function (d) {
-        return retrieveAttributeFromComment(d.data, attributeName);
-    }).style("stroke", "black").style("color", "black").style("opacity", maxOpacityValue);
-}
 
-function unhighlightNode(node, attributeName) {
-    node.filter(function (d) {
-        return !retrieveAttributeFromComment(d.data, attributeName);
-    }).style("stroke", "black").style("color", "black").style("opacity", minOpacityValue);
-}
+    /**
+     * Return the value of a property (set from the JSON) of the given node
+     *
+     * @param d Datum of a node
+     * @param {string} propertyNameToRetrieve The property whose value is returned
+     * */
+    function retrieveAttributeFromComment(d, propertyNameToRetrieve) {
+        //console.log(propertyNameToRetrieve);
+        switch (propertyNameToRetrieve) {
+            //Features
+            case "argumentation":
+                return d.argumentation;
+            case "constructiveness":
+                return d.constructiveness;
+            case "sarcasm":
+                return d.sarcasm;
+            case "mockery":
+                return d.mockery;
+            case "intolerance":
+                return d.intolerance;
+            case "improper_language":
+                return d.improper_language;
+            case "insult":
+                return d.insult;
+            case "aggressiveness":
+                return d.aggressiveness;
+            case "gray":
+                return 1;
+            case "gray-ring":
+                return 0.5;
 
-/**
- * Highlight a node if the checkbox is checked and if the node presents a certain level of toxicity
- * */
-function highlightByToxicity(node, enabledHighlight, changeNodeOpacity) {
-    if (enabledHighlight.indexOf("highlight-toxicity-0") > -1) changeNodeOpacity(node, "toxicity-0");
-    if (enabledHighlight.indexOf("highlight-toxicity-1") > -1) changeNodeOpacity(node, "toxicity-1");
-    if (enabledHighlight.indexOf("highlight-toxicity-2") > -1) changeNodeOpacity(node, "toxicity-2");
-    if (enabledHighlight.indexOf("highlight-toxicity-3") > -1) changeNodeOpacity(node, "toxicity-3");
-}
+            //Targets
+            case "target-group":
+                return d.target_group;
+            case "target-person":
+                return d.target_person;
+            case "target-stereotype":
+                return d.stereotype;
 
-function highlightByStance(node, enabledHighlight, changeNodeOpacity) {
-    if (enabledHighlight.indexOf("highlight-stance-neutral") > -1) changeNodeOpacity(node, "neutral");
-    if (enabledHighlight.indexOf("highlight-stance-positive") > -1) changeNodeOpacity(node, "positive");
-    if (enabledHighlight.indexOf("highlight-stance-negative") > -1) changeNodeOpacity(node, "negative");
-    if (enabledHighlight.indexOf("highlight-both") > -1) changeNodeOpacity(node, "both");
-}
+            //Toxicity
+            case "toxicity-0":
+                return d.toxicity_level === 0 ? 1 : 0;
+            case "toxicity-1":
+                return d.toxicity_level === 1 ? 1 : 0;
+            case "toxicity-2":
+                return d.toxicity_level === 2 ? 1 : 0;
+            case "toxicity-3":
+                return d.toxicity_level === 3 ? 1 : 0;
 
-function highlightByTarget(node, enabledHighlight, changeNodeOpacity) {
-    if (enabledHighlight.indexOf("highlight-target-group") > -1) changeNodeOpacity(node, "target-group");
-    if (enabledHighlight.indexOf("highlight-target-person") > -1) changeNodeOpacity(node, "target-person");
-    if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) changeNodeOpacity(node, "target-stereotype");
-}
+            //Stances
+            case "positive":
+                return d.positive_stance;
+            case "negative":
+                return d.negative_stance;
+            case "neutral":
+                return !(d.positive_stance || d.negative_stance);
+            case "both":
+                return d.positive_stance && d.negative_stance;
 
-/**
- * Highlight a node if the checkbox is checked and if the node presents the feature
- * */
-function highlightByFeature(node, enabledHighlight, changeNodeOpacity) {
-    if (enabledHighlight.indexOf("highlight-features-argumentation") > -1) changeNodeOpacity(node, "argumentation");
-    if (enabledHighlight.indexOf("highlight-features-constructiveness") > -1) changeNodeOpacity(node, "constructiveness");
+            default:
+                //console.log("An attribute could not be retrieved because the key word did not match any case...");
+                return 1;
+        }
+    }
 
-    if (enabledHighlight.indexOf("highlight-features-sarcasm") > -1) changeNodeOpacity(node, "sarcasm");
-    if (enabledHighlight.indexOf("highlight-features-mockery") > -1) changeNodeOpacity(node, "mockery");
-    if (enabledHighlight.indexOf("highlight-features-intolerance") > -1) changeNodeOpacity(node, "intolerance");
+    function highlightNode(node, attributeName) {
+        node.filter(function (d) {
+            return retrieveAttributeFromComment(d.data, attributeName);
+        }).style("stroke", "black").style("color", "black").style("opacity", maxOpacityValue);
+    }
 
-    if (enabledHighlight.indexOf("highlight-features-improper-language") > -1) changeNodeOpacity(node, "improper_language");
-    if (enabledHighlight.indexOf("highlight-features-insult") > -1) changeNodeOpacity(node, "insult");
-    if (enabledHighlight.indexOf("highlight-features-aggressiveness") > -1) changeNodeOpacity(node, "aggressiveness");
-}
+    function unhighlightNode(node, attributeName) {
+        node.filter(function (d) {
+            return !retrieveAttributeFromComment(d.data, attributeName);
+        }).style("stroke", "black").style("color", "black").style("opacity", minOpacityValue);
+    }
+
+    /**
+     * Highlight a node if the checkbox is checked and if the node presents a certain level of toxicity
+     * */
+    function highlightByToxicity(node, enabledHighlight, changeNodeOpacity) {
+        if (enabledHighlight.indexOf("highlight-toxicity-0") > -1) changeNodeOpacity(node, "toxicity-0");
+        if (enabledHighlight.indexOf("highlight-toxicity-1") > -1) changeNodeOpacity(node, "toxicity-1");
+        if (enabledHighlight.indexOf("highlight-toxicity-2") > -1) changeNodeOpacity(node, "toxicity-2");
+        if (enabledHighlight.indexOf("highlight-toxicity-3") > -1) changeNodeOpacity(node, "toxicity-3");
+    }
+
+    function highlightByStance(node, enabledHighlight, changeNodeOpacity) {
+        if (enabledHighlight.indexOf("highlight-stance-neutral") > -1) changeNodeOpacity(node, "neutral");
+        if (enabledHighlight.indexOf("highlight-stance-positive") > -1) changeNodeOpacity(node, "positive");
+        if (enabledHighlight.indexOf("highlight-stance-negative") > -1) changeNodeOpacity(node, "negative");
+        if (enabledHighlight.indexOf("highlight-both") > -1) changeNodeOpacity(node, "both");
+    }
+
+    function highlightByTarget(node, enabledHighlight, changeNodeOpacity) {
+        if (enabledHighlight.indexOf("highlight-target-group") > -1) changeNodeOpacity(node, "target-group");
+        if (enabledHighlight.indexOf("highlight-target-person") > -1) changeNodeOpacity(node, "target-person");
+        if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) changeNodeOpacity(node, "target-stereotype");
+    }
+
+    /**
+     * Highlight a node if the checkbox is checked and if the node presents the feature
+     * */
+    function highlightByFeature(node, enabledHighlight, changeNodeOpacity) {
+        if (enabledHighlight.indexOf("highlight-features-argumentation") > -1) changeNodeOpacity(node, "argumentation");
+        if (enabledHighlight.indexOf("highlight-features-constructiveness") > -1) changeNodeOpacity(node, "constructiveness");
+
+        if (enabledHighlight.indexOf("highlight-features-sarcasm") > -1) changeNodeOpacity(node, "sarcasm");
+        if (enabledHighlight.indexOf("highlight-features-mockery") > -1) changeNodeOpacity(node, "mockery");
+        if (enabledHighlight.indexOf("highlight-features-intolerance") > -1) changeNodeOpacity(node, "intolerance");
+
+        if (enabledHighlight.indexOf("highlight-features-improper-language") > -1) changeNodeOpacity(node, "improper_language");
+        if (enabledHighlight.indexOf("highlight-features-insult") > -1) changeNodeOpacity(node, "insult");
+        if (enabledHighlight.indexOf("highlight-features-aggressiveness") > -1) changeNodeOpacity(node, "aggressiveness");
+    }
 
 //Functions to highlight/unhighlight
-function highlightNodesByPropertyOR(node, enabledHighlight) {
-    //If no tag (toxicity, stance,...) checkbox is selected: highlight all
-    if (enabledHighlight.length === 0) {
-        node.style("opacity", maxOpacityValue);
-    } else { //If some tag checkbox is selected behave as expected
-        //First, unhighlight everything
-        node.style("opacity", minOpacityValue);
+    function highlightNodesByPropertyOR(node, enabledHighlight) {
+        //If no tag (toxicity, stance,...) checkbox is selected: highlight all
+        if (enabledHighlight.length === 0) {
+            node.style("opacity", maxOpacityValue);
+        } else { //If some tag checkbox is selected behave as expected
+            //First, unhighlight everything
+            node.style("opacity", minOpacityValue);
 
-        //Then highlight if the node has the property
-        highlightByToxicity(node, enabledHighlight, highlightNode);
-        highlightByFeature(node, enabledHighlight, highlightNode);
-        highlightByStance(node, enabledHighlight, highlightNode);
-        highlightByTarget(node, enabledHighlight, highlightNode);
+            //Then highlight if the node has the property
+            highlightByToxicity(node, enabledHighlight, highlightNode);
+            highlightByFeature(node, enabledHighlight, highlightNode);
+            highlightByStance(node, enabledHighlight, highlightNode);
+            highlightByTarget(node, enabledHighlight, highlightNode);
+        }
+        node.filter(function (d) {
+            return d.depth === 0;
+        }).style("opacity", maxOpacityValue);
+
     }
-    node.filter(function (d) {
-        return d.depth === 0;
-    }).style("opacity", maxOpacityValue);
 
-}
+    function highlightNodesByPropertyAND(node, enabledHighlight) {
+        //First, highlight everything
+        node.style("opacity", maxOpacityValue);
 
-function highlightNodesByPropertyAND(node, enabledHighlight) {
-    //First, highlight everything
-    node.style("opacity", maxOpacityValue);
+        //Then unhighlight if the node does not have the property
+        highlightByToxicity(node, enabledHighlight, unhighlightNode);
+        highlightByFeature(node, enabledHighlight, unhighlightNode);
+        highlightByStance(node, enabledHighlight, unhighlightNode);
+        highlightByTarget(node, enabledHighlight, unhighlightNode);
+        node.filter(function (d) {
+            return d.depth === 0;
+        }).style("opacity", maxOpacityValue);
 
-    //Then unhighlight if the node does not have the property
-    highlightByToxicity(node, enabledHighlight, unhighlightNode);
-    highlightByFeature(node, enabledHighlight, unhighlightNode);
-    highlightByStance(node, enabledHighlight, unhighlightNode);
-    highlightByTarget(node, enabledHighlight, unhighlightNode);
-    node.filter(function (d) {
-        return d.depth === 0;
-    }).style("opacity", maxOpacityValue);
+    }
 
-}
+});
+
+
