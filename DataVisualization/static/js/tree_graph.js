@@ -745,7 +745,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .projection(function (d) {
             return [d.y, d.x];
         });
-
     // Hover rectangle in which the information of a node is displayed
     var tooltip = d3.select(container)
         .append("div")
@@ -3171,7 +3170,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var jsonNames = [
             "Comment ID",
             "Toxicity level",
-            "Comment level",
+            "Comment depth",
             "Argument",
             "Constructiveness",
             " ",
