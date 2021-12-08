@@ -1,11 +1,120 @@
-let svg = d3.select("#svg_treeMap"),
-    diameter = svg.attr("width"),
+let svg = d3.select("#svg_treeMap")
+//let svg = d3
+        //.select("#whole-container")
+        //.append("svg")
+        //.attr("width", 960)
+        //.attr("height", 960)
+
+    let diameter = svg.attr("width"),
     g = svg.append("g").attr("transform", "translate(2,2)"),
     format = d3.format(",d");
 
 let pack = d3.pack()
     .size([diameter - 2, diameter - 2])
     .padding(3);
+
+  // Hover rectangle in which the information of a node is displayed
+    var tooltip = d3.select("body")
+        .append("div")
+        .attr("class", "my-tooltip") //add the tooltip class
+        .style("position", "absolute")
+        .style("z-index", "10")
+        .style("visibility", "hidden");
+
+    var tooltipText;
+
+    function writeTooltipText(d) {
+        console.log("tooltiptext" ,d)
+        //I want to show Argument and Constructiveness in one line, I add a dummy space to keep that in the loop
+        var jsonValues = [
+            d.name,
+            d.toxicity_level,
+            d.depth,
+            d.argumentation,
+            d.constructiveness,
+            -1,
+            d.sarcasm,
+            d.mockery,
+            d.intolerance,
+            d.improper_language,
+            d.insult,
+            d.aggressiveness,
+            d.target_group,
+            d.target_person,
+            d.stereotype,
+        ];
+        var jsonNames = [
+            "Comment ID",
+            "Toxicity level",
+            "Comment depth",
+            "Argument",
+            "Constructiveness",
+            " ",
+            "Sarcasm",
+            "Mockery",
+            "Intolerance",
+            "Improper language",
+            "Insult",
+            "Aggressiveness",
+            "Target group",
+            "Target person",
+            "Stereotype",
+        ];
+        var i = 0;
+        tooltipText = "<table>";
+
+        for (i = 0; i < jsonValues.length; i++) {
+            if (i === 3 || i === 12) tooltipText += "<tr><td></td></tr>"; // I want a break between the first line and the features and the targets
+            if (i % 3 === 0) tooltipText += "<tr>"; //Start table line
+            if (i < 3)
+                tooltipText +=
+                    "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>";
+            //First ones without bold
+            else if (jsonValues[i] !== -1)
+                jsonValues[i] ?
+                    (tooltipText +=
+                        "<td><b>" +
+                        jsonNames[i] +
+                        ": " +
+                        jsonValues[i] +
+                        "</b></td>") :
+                    (tooltipText +=
+                        "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>");
+            if ((i + 1) % 3 === 0) tooltipText += "</tr>"; //End table line
+        }
+
+        tooltipText += "</table>";
+
+        tooltipText += "<br> <table>";
+        //If node is collapsed, we also want to add some information about its sons
+        if (d._children) {
+            var sonTitles = [
+                "Direct comments",
+                "Total number of generated comments",
+                "Not toxic",
+                "Mildly toxic",
+                "Toxic",
+                "Very toxic",
+            ];
+            var sonValues = [
+                d._children.length,
+                d.numberOfDescendants,
+                d.descendantsWithToxicity0,
+                d.descendantsWithToxicity1,
+                d.descendantsWithToxicity2,
+                d.descendantsWithToxicity3,
+            ];
+
+            for (i = 0; i < sonValues.length; i++) {
+                if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
+                tooltipText +=
+                    "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
+                if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
+            }
+        }
+        tooltipText += "</table>";
+        tooltipText += "<br>" + d.coment;
+    }
 
 var node;
 
@@ -74,6 +183,7 @@ treeJSON = d3.json(dataset, function (error, root) {
         })
 
 
+
     //node.append("title")
     //  .text(function(d) { return d.data.name + "\n" + format(d.value); });
     //
@@ -111,16 +221,37 @@ treeJSON = d3.json(dataset, function (error, root) {
                         return colourNewsArticle;
                 }
             }
-        }).style("stroke", "black");
+        }).style("stroke", "black")
+    .on("mouseover", function (d) {
+        console.log(d)
+        //    var highlighted_nodes = node.filter(function (n) {
+          //       console.log(n)
+            //        return n.highlighted;
+              //  })
+
+                    writeTooltipText(d.data);
+        return tooltip.style("visibility", "visible").text(tooltipText);
+
+            })
+        .on("mousemove", function (d) {
+                if (d !== root) {
+                    return tooltip
+                        .style("top", d3.event.pageY - 30 + "px")
+                        .style("left", d3.event.pageX - 480 + "px");
+                }
+            })
+        .on("mouseout", function () {
+                return tooltip.style("visibility", "hidden");
+            });
 
     // name of the node
-    node.filter(function (d) {
-        return !d.children;
-    }).append("text")
-        .attr("dy", "0.3em")
-        .text(function (d) {
-            return d.data.name;
-        });
+    //node.filter(function (d) {
+      //  return !d.children;
+    //}).append("text")
+      //  .attr("dy", "0.3em")
+       // .text(function (d) {
+         //   return d.data.name;
+       // });
     highlightNodesByPropertyOR(node, enabledHighlight);
     highlightNodesByPropertyAND(node, enabledHighlight);
 
@@ -432,6 +563,14 @@ treeJSON = d3.json(dataset, function (error, root) {
         }).style("opacity", maxOpacityValue);
 
     }
+
+     // Hover rectangle in which the information of a node is displayed
+    var tooltip = d3.select(container)
+        .append("div")
+        .attr("class", "my-tooltip") //add the tooltip class
+        .style("position", "absolute")
+        .style("z-index", "10")
+        .style("visibility", "hidden");
 
 });
 

@@ -2411,7 +2411,7 @@ treeJSON = d3.json(dataset, function (error, json) {
             d.sarcasm, d.mockery, d.intolerance,
             d.improper_language, d.insult, d.aggressiveness,
             d.target_group, d.target_person, d.stereotype];
-        var jsonNames = ["Comment ID", "Toxicity level", "Comment level",
+        var jsonNames = ["Comment ID", "Toxicity level", "Comment depth",
             "Argument", "Constructiveness", " ",
             "Sarcasm", "Mockery", "Intolerance",
             "Improper language", "Insult", "Aggressiveness",

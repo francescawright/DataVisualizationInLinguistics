@@ -19,6 +19,16 @@
         line-height: 1;
         height: 1200px;
     }
+    .my-tooltip {
+        background: rgba(174, 174, 243, 0.9);
+        /*background: rgb(0, 0, 255);*/
+        max-width: 400px;
+        min-width: 400px;
+        font-size: 14px;
+        font-family: sans-serif;
+        opacity: 1;
+        padding: 10px;
+    }
 </style>
 <head>
     {% load static %}
@@ -1049,7 +1059,10 @@
 
 </div>
 <div style="margin-left: 510px; margin-top: 100px;">
-    <svg id="svg_treeMap" width="960" height="960"></svg>
+   <div>
+<svg id="svg_treeMap" width="960" height="960"></svg>
+</div>
+
 </div>
 
 </body>
@@ -1057,6 +1070,7 @@
 <script>
     var dataset = "{% static dataset %}";
     var user = "{% static user %}";
+    var container = "#tree-container";
 </script>
 
 <style>
