@@ -2853,6 +2853,41 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         tooltipText += "<br>" + d.coment;
     }
 
+     function writeTooltipRoot(d) {
+
+            var sonTitles = [
+                "Direct comments",
+                "Total number of generated comments",
+                "Not toxic",
+                "Mildly toxic",
+                "Toxic",
+                "Very toxic",
+            ];
+            var sonValues = [
+                d.children.length,
+                totalNumberOfNodes,
+                totalNotToxic,
+                totalMildlyToxic,
+                totalToxic,
+                totalVeryToxic,
+            ];
+            tooltipText = "<table>";
+            tooltipText += "<br> <table>";
+
+            for (i = 0; i < sonValues.length; i++) {
+                if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
+                tooltipText +=
+                    "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
+                if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
+            }
+
+      tooltipText += "</table>";
+
+
+    }
+
+
+
     function update(source) {
 
         // Compute the new tree layout.
@@ -2894,6 +2929,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     writeTooltipText(d);
                     tooltip.style("visibility", "visible")
                         .html(tooltipText);
+                }
+                else if(d == root){
+                    writeTooltipRoot(d);
+                    tooltip.style("visibility", "visible").html(tooltipText);
                 }
             })
             .on("mousemove", function (d) {

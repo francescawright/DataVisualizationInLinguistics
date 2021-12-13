@@ -3148,6 +3148,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
 
+
     function writeTooltipText(d) {
         //I want to show Argument and Constructiveness in one line, I add a dummy space to keep that in the loop
         var jsonValues = [
@@ -3238,7 +3239,54 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
         tooltipText += "</table>";
         tooltipText += "<br>" + d.coment;
+
+
     }
+
+    //if d == root do somethihg
+    // else if d == highlighted nodes
+    // if rootnodeText write another fuction, tooltip style for this condition as well
+   // var rootToolTip = writeTooltipRoot(d);
+   //  var totalNumberOfNodesRoot = rootToolTip.children;
+   //
+   //  var totalNotToxicRoot = rootToolTip.toxicity0,
+   //      totalMildlyToxicRoot = rootToolTip.toxicity1,
+   //      totalToxicRoot = rootToolTip.toxicity2,
+   //      totalVeryToxicRoot = rootToolTip.toxicity3;
+
+    function writeTooltipRoot(d) {
+
+            var sonTitles = [
+                "Direct comments",
+                "Total number of generated comments",
+                "Not toxic",
+                "Mildly toxic",
+                "Toxic",
+                "Very toxic",
+            ];
+            var sonValues = [
+                d.children.length,
+                totalNumberOfNodes,
+                totalNotToxic,
+                totalMildlyToxic,
+                totalToxic,
+                totalVeryToxic,
+            ];
+            tooltipText = "<table>";
+            tooltipText += "<br> <table>";
+
+            for (i = 0; i < sonValues.length; i++) {
+                if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
+                tooltipText +=
+                    "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
+                if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
+            }
+
+      tooltipText += "</table>";
+
+
+    }
+
 
     function update(source) {
         tree = tree
@@ -3283,6 +3331,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 })[0].map(i => i.__data__.name); // don't ask..
                 if (d !== root && highlighted_nodes.includes(d.name)) {
                     writeTooltipText(d);
+                    tooltip.style("visibility", "visible").html(tooltipText);
+                }
+                else if(d == root){
+                    writeTooltipRoot(d);
                     tooltip.style("visibility", "visible").html(tooltipText);
                 }
             })
