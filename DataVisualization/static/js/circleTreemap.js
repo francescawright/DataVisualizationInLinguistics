@@ -5,6 +5,7 @@ let svg = d3.select("#svg_treeMap")
         //.attr("width", 960)
         //.attr("height", 960)
 
+
     let diameter = svg.attr("width"),
     g = svg.append("g").attr("transform", "translate(2,2)"),
     format = d3.format(",d");
@@ -13,15 +14,24 @@ let pack = d3.pack()
     .size([diameter - 2, diameter - 2])
     .padding(3);
 
+    var tooltipText;
+
   // Hover rectangle in which the information of a node is displayed
     var tooltip = d3.select("body")
         .append("div")
         .attr("class", "my-tooltip") //add the tooltip class
+        //.attr("class", "tooltip")
         .style("position", "absolute")
         .style("z-index", "10")
+        .style('opacity', 1)
+        .style("border", "solid")
+        .style("border-width", "2px")
+        .style("border-radius", "5px")
+        .style("padding", "5px")
         .style("visibility", "hidden");
 
-    var tooltipText;
+
+
 
     function writeTooltipText(d) {
         console.log("tooltiptext" ,d)
@@ -87,34 +97,34 @@ let pack = d3.pack()
 
         tooltipText += "<br> <table>";
         //If node is collapsed, we also want to add some information about its sons
-        if (d._children) {
-            var sonTitles = [
-                "Direct comments",
-                "Total number of generated comments",
-                "Not toxic",
-                "Mildly toxic",
-                "Toxic",
-                "Very toxic",
-            ];
-            var sonValues = [
-                d._children.length,
-                d.numberOfDescendants,
-                d.descendantsWithToxicity0,
-                d.descendantsWithToxicity1,
-                d.descendantsWithToxicity2,
-                d.descendantsWithToxicity3,
-            ];
-
-            for (i = 0; i < sonValues.length; i++) {
-                if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
-                tooltipText +=
-                    "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
-                if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
-            }
-        }
-        tooltipText += "</table>";
-        tooltipText += "<br>" + d.coment;
-    }
+        //if (d._children) {
+          //  var sonTitles = [
+            //    "Direct comments",
+              //  "Total number of generated comments",
+               // "Not toxic",
+    //             "Mildly toxic",
+    //             "Toxic",
+    //             "Very toxic",
+    //         ];
+    //         var sonValues = [
+    //             d._children.length,
+    //             d.numberOfDescendants,
+    //             d.descendantsWithToxicity0,
+    //             d.descendantsWithToxicity1,
+    //             d.descendantsWithToxicity2,
+    //             d.descendantsWithToxicity3,
+    //         ];
+    //
+    //         for (i = 0; i < sonValues.length; i++) {
+    //             if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
+    //             tooltipText +=
+    //                 "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
+    //             if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
+    //         }
+    //     }
+    //     tooltipText += "</table>";
+    //     tooltipText += "<br>" + d.coment;
+     }
 
 var node;
 
@@ -222,15 +232,16 @@ treeJSON = d3.json(dataset, function (error, root) {
                 }
             }
         }).style("stroke", "black")
-    .on("mouseover", function (d) {
+          .on("mouseover", function (d) {
         console.log(d)
         //    var highlighted_nodes = node.filter(function (n) {
           //       console.log(n)
             //        return n.highlighted;
               //  })
 
-                    writeTooltipText(d.data);
-        return tooltip.style("visibility", "visible").text(tooltipText);
+         return writeTooltipText(d.data);
+         tooltip.style("visibility", "visible").html(tooltipText);
+
 
             })
         .on("mousemove", function (d) {
@@ -243,6 +254,20 @@ treeJSON = d3.json(dataset, function (error, root) {
         .on("mouseout", function () {
                 return tooltip.style("visibility", "hidden");
             });
+        //    .on("mouseover", function(d){  console.log(d)
+        //        return tooltip.text(d.data.name).style("visibility", "visible").html("tooltip");})
+        //    .on("mousemove", function(){return tooltip.style("top", d3.event.pageY -30 +"px").style("left",d3.event.pageX + 480 +"px");})
+	    //    .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+
+
+
+
+    function hovered(hover) {
+    return function(d) {
+        d3.selectAll(d.ancestors().map(function(d) {}));
+  };
+}
+
 
     // name of the node
     //node.filter(function (d) {

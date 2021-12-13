@@ -62,19 +62,19 @@ function getNodeStrokeWidth() {
     //console.log("Zoom: ", currentZoomScale)
     switch (true) {
         case (currentZoomScale > 1):
-            return 1
-        case (currentZoomScale > 0.6):
-            return 2
-        case (currentZoomScale > 0.5):
-            return 3
-        case (currentZoomScale > 0.4):
             return 4
-        case (currentZoomScale > 0.3):
+        case (currentZoomScale > 0.6):
+            return 4
+        case (currentZoomScale > 0.5):
             return 5
+        case (currentZoomScale > 0.4):
+            return 5
+        case (currentZoomScale > 0.3):
+            return 6
         case (currentZoomScale > 0.2):
             return 6
         case (currentZoomScale > 0.1):
-            return 7
+            return 8
         case (currentZoomScale > 0.075):
             return 8
         case (currentZoomScale > 0):
@@ -2446,6 +2446,40 @@ treeJSON = d3.json(dataset, function (error, json) {
         tooltipText += "<br>" + d.coment;
     }
 
+    function writeTooltipRoot(d) {
+
+            var sonTitles = [
+                "Direct comments",
+                "Total number of generated comments",
+                "Not toxic",
+                "Mildly toxic",
+                "Toxic",
+                "Very toxic",
+            ];
+            var sonValues = [
+                d.children.length,
+                totalNumberOfNodes,
+                totalNotToxic,
+                totalMildlyToxic,
+                totalToxic,
+                totalVeryToxic,
+            ];
+            tooltipText = "<table>";
+            tooltipText += "<br> <table>";
+
+            for (i = 0; i < sonValues.length; i++) {
+                if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
+                tooltipText +=
+                    "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
+                if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
+            }
+
+      tooltipText += "</table>";
+
+
+    }
+
+
     function setCircularPositions(node, angle) {
         //console.log("Node: ", node, angle)
         if (!node.children && !node._children) {
@@ -2546,6 +2580,10 @@ treeJSON = d3.json(dataset, function (error, json) {
                     writeTooltipText(d);
                     tooltip.style("visibility", "visible")
                         .html(tooltipText);
+                }
+                else if(d == root){
+                    writeTooltipRoot(d);
+                    tooltip.style("visibility", "visible").html(tooltipText);
                 }
             })
             .on("mousemove", function (d) {
