@@ -1179,9 +1179,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var checkButtons = document.querySelectorAll("input[name=check_button_features]");
 
 
-    /*
-    Dropdown menus
-    * */
+    /* Dropdown menus */
     // var dropdownTargets = document.getElementById("dropdown-targets");
     var dropdownFeatures = document.getElementById("dropdown-features");
 

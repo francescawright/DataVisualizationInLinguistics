@@ -3771,4 +3771,78 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     //     document.body.removeChild(downloadLink);
     // }
 
+    /**
+     * Function that returns the number of nodes of a tree given its root node
+     * @param node tree root
+     * @returns {number} total number of nodes in subtree
+     */
+    function getNumberOfNodes(node) {
+        var treeSize = 1;
+        if (node.children) {
+            node.children.forEach(function (d) {
+                treeSize += getNumberOfNodes(d);
+            });
+        }
+        return treeSize;
+    }
+
+    /**
+     * Function that returns the height of a tree given its root node
+     * @param node tree root
+     * @returns {number} number of levels in subtree
+     */
+    function getTreeHeight(node) {
+        if (!node.children) {
+            return 0;
+        }
+        var maxHeight = 0;
+
+        if (node.children) {
+            node.children.forEach(function (d) {
+                currentHeight = getTreeHeight(d)+1;
+                if (currentHeight < maxHeight) {
+                    maxHeight = currentHeight;
+                }
+            });
+        }
+        return maxHeight;
+    }
+
+    /**
+     * Function that returns the number of leaf nodes in a tree given its root node
+     * @param node tree root
+     * @returns {number} number of leaves
+     */
+    function getNumberOfLeaves(node) {
+        if (!node.children) {
+            return 1; // Count leaf
+        }
+        var numLeaves = 0;
+        if (node.children) {
+            node.children.forEach(function (d) {
+                numLeaves += getNumberOfLeaves(d);
+            });
+        }
+        return numLeaves;
+    }
+
+    function getNodesInLevel(node, level) {
+        if (s == 1) {
+            return 1;
+        } else {
+            var totalNodes = 0;
+            if (node.children) {
+                node.children.forEach(function (d) {
+                    totalNodes += getNodesInLevel(d, level - 1);
+                });
+            }
+            return totalNodes;
+        }
+    }
+
+    function getGrowFactor(node, depth) {
+        if (!node.children) { return 0; }
+        var growFactor = getNodesInLevel(node, depth)/node.children.length;
+        return growFactor;
+    }
 });

@@ -594,9 +594,196 @@ treeJSON = d3.json(dataset, function (error, root) {
         .append("div")
         .attr("class", "my-tooltip") //add the tooltip class
         .style("position", "absolute")
-        .style("z-index", "10")
+        .style("z-index", "1")
         .style("visibility", "hidden");
 
+    // Div where the title of the "Static Values" is displayed
+    var statisticBackground = d3.select("#tree-container")
+        .append("div")
+        .attr("class", "my-statistic") //add the tooltip class
+        .style("position", "absolute")
+        .style("z-index", "1") //it has no change
+        .style("visibility", "visible");
+
+    // Div where the zoom buttons are displayed
+    var zoomBackground = d3.select(container)
+        .append("div")
+        .style("position", "absolute")
+        .style("z-index", "0") //it has no change
+        .style("visibility", "visible");
+
+    // Div where the sum up information of "Static Values" is displayed
+    var statisticTitleBackground = d3.select("#tree-container")
+        .append("div")
+        .attr("class", "my-statistic-title") //add the tooltip class
+        .style("position", "absolute")
+        .style("z-index", "0") //it has no change
+        .style("visibility", "visible");
+
+    /*SECTION zoom - TODO*/
+
+    /*SECTION checkboxes*/
+    //Check the values of the checkboxes and do something
+    var checkbox = document.querySelector("input[name=cbTargets]");
+    var checkboxesTargets = [document.getElementById("target-group"), document.getElementById("target-person"), document.getElementById("target-stereotype")];
+    let enabledTargets = []; //Variable which contains the string of the enabled options to display targets
+
+    // Select all checkboxes with the name 'cbFeatures' using querySelectorAll.
+    var checkboxes = document.querySelectorAll("input[type=checkbox][name=cbFeatures]");
+    let enabledFeatures = []; //Variable which contains the string of the enabled options to display features
+
+    // Select how to display the features: svg circles or trivial cheese (previous version)
+    var checkboxesPropertyFeature = document.querySelectorAll("input[type=checkbox][name=cbFeatureProperty]");
+
+    //Dropdown menu
+    var checkboxesPositioningFeature = document.querySelectorAll("input[type=checkbox][name=cbFeaturePositioning]");
+
+    // Select which properties and if an intersection or union of those
+    var checkboxesProperty = document.querySelectorAll("input[type=checkbox][name=cbHighlightProperty]");
+    var checkboxAND = document.querySelector("input[type=radio][name=cbHighlightProperty][value=and-group]");
+    var checkboxOR = document.querySelector("input[type=radio][name=cbHighlightProperty][value=or-group]");
+    var checkboxesHighlightGroupOR = document.querySelectorAll("input[name=cbHighlightOR]");
+    var checkboxesHighlightGroupAND = document.querySelectorAll("input[name=cbHighlightAND]");
+
+    let enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
+    /*END SECTION checkboxes*/
+
+    var checkButtons = document.querySelectorAll("input[name=check_button_features]");
+
+    /* Dropdown menus */
+    var dropdownFeatures = document.getElementById("dropdown-features");
+
+    var dotsFeatures = document.getElementById("dots_icon_button");
+    var glyphsFeatures = document.getElementById("glyphs_icon_button");
+
+    //Define objects after the checkbox where we keep if it is selected
+    var objTargetGroup = {
+            class: "targetGroup",
+            id: "targetGroup",
+            selected: enabledTargets.indexOf("target-group"),
+            x: -70,
+            y: -10,
+            xInside: -0.9,
+            yInside: -0.8,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Group.svg"
+        },
+        objTargetPerson = {
+            class: "targetPerson",
+            id: "targetPerson",
+            selected: enabledTargets.indexOf("target-person"),
+            x: -90,
+            y: -10,
+            xInside: -0.5,
+            yInside: 0,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Person.svg"
+        },
+        objTargetStereotype = {
+            class: "targetStereotype",
+            id: "targetStereotype",
+            selected: enabledTargets.indexOf("target-stereotype"),
+            x: -110,
+            y: -10,
+            xInside: -0.1,
+            yInside: -0.8,
+            height: targetIconHeight,
+            width: targetIconWidth,
+            fileName: "Stereotype.svg"
+        };
+
+    var objFeatArgumentation = {
+            class: "featArgumentation",
+            id: "featArgumentation",
+            selected: enabledFeatures.indexOf("argumentation"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Argumentation.svg"
+        },
+        objFeatConstructiveness = {
+            class: "featConstructiveness",
+            id: "featConstructiveness",
+            selected: enabledFeatures.indexOf("constructiveness"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Constructiveness.svg"
+        },
+        objFeatSarcasm = {
+            class: "featSarcasm",
+            id: "featSarcasm",
+            selected: enabledFeatures.indexOf("sarcasm"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Sarcasm.svg"
+        },
+        objFeatMockery = {
+            class: "featMockery",
+            id: "featMockery",
+            selected: enabledFeatures.indexOf("mockery"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Mockery.svg"
+        },
+        objFeatIntolerance = {
+            class: "featIntolerance",
+            id: "featIntolerance",
+            selected: enabledFeatures.indexOf("intolerance"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Intolerance.svg"
+        },
+        objFeatImproper = {
+            class: "featImproper",
+            id: "featImproper",
+            selected: enabledFeatures.indexOf("improper_language"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Improper.svg"
+        },
+        objFeatInsult = {
+            class: "featInsult",
+            id: "featInsult",
+            selected: enabledFeatures.indexOf("insult"),
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Insult.svg"
+        },
+        objFeatAggressiveness = {
+            class: "featAggressiveness",
+            selected: enabledFeatures.indexOf("aggressiveness"),
+            id: "featAggressiveness",
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Aggressiveness.svg"
+        },
+        objFeatGray = {
+            class: "featGray",
+            id: "featGray",
+            selected: 1,
+            x: cheeseX,
+            y: cheeseY,
+            height: cheeseHeight,
+            width: cheeseWidth,
+            fileName: "Gray.svg"
+        };
 });
 
 
