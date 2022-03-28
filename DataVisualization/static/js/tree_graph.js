@@ -3210,7 +3210,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         //Write growingFactor of node
         tooltipText += "</table>";
         var s = Math.floor(getTreeHeight(d)/2);
-        console.log('s = '+ s);
         tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr></table>";
         tooltipText += "<br> <table>";
 
@@ -3259,35 +3258,37 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     function writeTooltipRoot(d) {
 
-            var sonTitles = [
-                "Direct comments",
-                "Total number of generated comments",
-                "Not toxic",
-                "Mildly toxic",
-                "Toxic",
-                "Very toxic",
-            ];
-            var sonValues = [
-                d.children.length,
-                totalNumberOfNodes,
-                totalNotToxic,
-                totalMildlyToxic,
-                totalToxic,
-                totalVeryToxic,
-            ];
-            tooltipText = "<table>";
-            tooltipText += "<br> <table>";
+        var sonTitles = [
+            "Direct comments",
+            "Total number of generated comments",
+            "Not toxic",
+            "Mildly toxic",
+            "Toxic",
+            "Very toxic",
+        ];
+        var sonValues = [
+            d.children.length,
+            totalNumberOfNodes,
+            totalNotToxic,
+            totalMildlyToxic,
+            totalToxic,
+            totalVeryToxic,
+        ];
+        tooltipText = "<table>";
+        tooltipText += "<br> <table>";
 
-            for (i = 0; i < sonValues.length; i++) {
-                if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
-                tooltipText +=
-                    "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
-                if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
-            }
+        for (i = 0; i < sonValues.length; i++) {
+            if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
+            tooltipText +=
+                "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
+            if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
+        }
 
-      tooltipText += "</table>";
-
-
+        //Write growingFactor of root
+        tooltipText += "</table>";
+        var s = Math.floor(getTreeHeight(d)/2);
+        tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr></table>";
+        tooltipText += "<br> <table>";
     }
 
 
