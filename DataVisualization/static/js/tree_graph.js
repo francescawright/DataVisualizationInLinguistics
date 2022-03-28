@@ -3207,10 +3207,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>");
             if ((i + 1) % 3 === 0) tooltipText += "</tr>"; //End table line
         }
-
+        //Write growingFactor of node
         tooltipText += "</table>";
-
+        var s = Math.floor(getTreeHeight(d)/2);
+        console.log('s = '+ s);
+        tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr></table>";
         tooltipText += "<br> <table>";
+
         //If node is collapsed, we also want to add some information about its sons
         if (d._children) {
             var sonTitles = [
@@ -4128,5 +4131,93 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     //     downloadLink.click();
     //     document.body.removeChild(downloadLink);
     // }
+
+    /**
+     * Function that returns the number of nodes of a tree given its root node
+     * @param node tree root
+     * @returns {number} total number of nodes in subtree
+     */
+    function getNumberOfNodes(node) {
+        var treeSize = 1;
+        if (node.children) {
+            node.children.forEach(function (d) {
+                treeSize += getNumberOfNodes(d);
+            });
+        }
+        return treeSize;
+    }
+
+    /**
+     * Function that returns the height of a tree given its root node
+     * @param node tree root
+     * @returns {number} number of levels in subtree
+     */
+    function getTreeHeight(node) {
+        if (!node.children) {
+            console.log('leaf_node');
+            return 0;
+        }
+        var maxHeight = 0;
+        console.log('has_childs');
+        if (node.children) {
+            node.children.forEach(function (d) {
+                currentHeight = getTreeHeight(d)+1;
+                if (currentHeight > maxHeight) {
+                    maxHeight = currentHeight;
+                }
+            });
+        }
+        return maxHeight;
+    }
+
+    /**
+     * Function that returns the number of leaf nodes in a tree given its root node
+     * @param node tree root
+     * @returns {number} number of leaves
+     */
+    function getNumberOfLeaves(node) {
+        if (!node.children) {
+            return 1; // Count leaf
+        }
+        var numLeaves = 0;
+        if (node.children) {
+            node.children.forEach(function (d) {
+                numLeaves += getNumberOfLeaves(d);
+            });
+        }
+        return numLeaves;
+    }
+
+    /**
+     * Function that returns the number of children of a subtree in a given level
+     * @param node root of the subtree
+     * @param level depth level
+     * @returns {number|*} number of child nodes in level
+     */
+    function getChildrenInLevel(node, level) {
+        if (level == 0 && node.children) {
+            return node.children.length;
+        } else {
+            var totalNodes = 0;
+            if (node.children) {
+                node.children.forEach(function (d) {
+                    totalNodes += getChildrenInLevel(d, level - 1);
+                });
+            }
+            return totalNodes;
+        }
+    }
+
+    /**
+     * Function that calculates the growingFactor of a subtree given its root node and a depth
+     * @param node root of the subtree
+     * @param depth depth level
+     * @returns {number} growingFactor
+     */
+    function getGrowFactor(node, depth) {
+        if (!node.children) { return 0; } //If node is a leaf, return 0
+        var growFactor = getChildrenInLevel(node, depth)/node.children.length; //Calculate growingFactor
+        return growFactor;
+    }
 
 });

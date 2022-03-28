@@ -522,6 +522,8 @@ function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.2) {
 // Get JSON data
 treeJSON = d3.json(dataset, function (error, treeData) {
 
+    //console.log("Error parsing tree" + treeJSON);
+
     // Calculate total nodes, max label length
     var totalNodes = 0;
     var edgeLength = 300;
@@ -3111,9 +3113,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>");
             if ((i + 1) % 3 === 0) tooltipText += "</tr>"; //End table line
         }
-
+        //Write growingFactor of node
         tooltipText += "</table>";
-
+        var s = getTreeHeight(d)/2;
+        tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr></table>";
         tooltipText += "<br> <table>";
         //If node is collapsed, we also want to add some information about its sons
         if (d._children) {
