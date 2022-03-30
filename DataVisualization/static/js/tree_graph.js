@@ -598,6 +598,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var duration = 750;
     var root, rootName = "News Article";
     var nodes;
+    var GF = 0.25;
+    var tol = 0.15;
 
     /* Colours
      * */
@@ -3211,6 +3213,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         tooltipText += "</table>";
         var s = Math.floor(getTreeHeight(d)/2);
         tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr></table>";
+        //Calculate tendencies and hierarchy of nodes
+        tooltipText += "<br> <table>" +
+            "<tr>" +
+                "<td> ET: " + elongatedTendency(d, s) + "</td>" +
+                "<td> CT: " + compactTendency(d, s, GF) + "</td>" +
+            "</tr></table>"
         tooltipText += "<br> <table>";
 
         //If node is collapsed, we also want to add some information about its sons
@@ -3288,6 +3296,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         tooltipText += "</table>";
         var s = Math.floor(getTreeHeight(d)/2);
         tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr></table>";
+        //Calculate tendencies and hierarchy of nodes
+        tooltipText += "<br> <table>" +
+            "<tr>" +
+                "<td> ET: " + elongatedTendency(d, s) + "</td>" +
+                "<td> CT: " + compactTendency(d, s, GF) + "</td>" +
+            "</tr></table>"
         tooltipText += "<br> <table>";
     }
 
@@ -4171,6 +4185,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         return maxHeight;
     }
 
+    function getTreeWidth(node) {
+        return 4;
+    }
+
     /**
      * Function that returns the number of leaf nodes in a tree given its root node
      * @param node tree root
@@ -4219,6 +4237,38 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         if (!node.children) { return 0; } //If node is a leaf, return 0
         var growFactor = getChildrenInLevel(node, depth)/node.children.length; //Calculate growingFactor
         return growFactor;
+    }
+
+    function elongatedTendency(node, level) {
+        if (!node.children) { return false; }
+        if (node.children.length <= getTreeWidth(node)) {
+            var currentGF = 0;
+            var isElongated = true;
+            i = 0;
+            while (i <= level && isElongated) {
+                currentGF = getGrowFactor(node, i);
+                if ((1.0-tol) >= currentGF || currentGF >= (1.0+tol)) { isElongated = false; }
+                i++;
+            }
+            return isElongated;
+        }
+        return false;
+    }
+
+    function compactTendency(node, level, limitGF) {
+        if (!node.children) { return false; }
+        if (node.children.length >= getTreeWidth(node)) {
+            var currentGF = 0;
+            var isCompact = true;
+            i = 0;
+            while (i <= level && isCompact) {
+                currentGF = getGrowFactor(node, i);
+                if (currentGF < limitGF) { isCompact = false; }
+                i++;
+            }
+            return isCompact;
+        }
+        return false;
     }
 
 });
