@@ -585,7 +585,6 @@ function highlightNegativeAND(node, enabledHighlight, opacityValue = 0.1) {
     }
 }
 
-
 // Get JSON data
 treeJSON = d3.json(dataset, function (error, treeData) {
 
@@ -599,7 +598,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var root, rootName = "News Article";
     var nodes;
     var GF = 0.25;
-    var tol = 0.15;
+    var tol = 0.9;
 
     /* Colours
      * */
@@ -725,6 +724,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     var opacityValue = 0.1; // Opacity when a value is not highlighted
     var tooltipText; // The variable displaying the information of a node inside a floating rectangle
+
+    var N = 0.6 * canvasHeight / 40;
 
     root = treeData; //Define the root
 
@@ -4067,6 +4068,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         statisticText += "</table>";
+
+        getTreeData(root);
+
         return statisticText;
     }
 
@@ -4169,11 +4173,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      */
     function getTreeHeight(node) {
         if (!node.children) {
-            console.log('leaf_node');
             return 0;
         }
         var maxHeight = 0;
-        console.log('has_childs');
         if (node.children) {
             node.children.forEach(function (d) {
                 currentHeight = getTreeHeight(d)+1;
@@ -4185,8 +4187,30 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         return maxHeight;
     }
 
-    function getTreeWidth(node) {
-        return 4;
+    function getAvgWidth(node, level) {
+        var nodeList = new Array(level+1).fill(0);
+        if (level == 0) { return 1; }
+        console.log("initList: " + nodeList);
+        getNodesInLevel(node, 0, level, nodeList);
+        //var aux = nodeList.reduce((a, b) => a + b, 0);
+        var aux = 0;
+        for (i = 0; i < nodeList.length; i++) {
+            aux += nodeList[i];
+        }
+        console.log(aux + " : " + nodeList);
+        result = Math.max.apply(null, nodeList) / (aux/nodeList.length);
+        console.log(result);
+        return result;
+    }
+
+    function getNodesInLevel(node, current, level, nodeList) {
+        nodeList[current] += 1;
+        console.log("c: "+current+"; l: "+level+"; list:"+nodeList);
+        if (current < level && node.children) {
+            node.children.forEach(function (d) {
+               getNodesInLevel(d, current+1, level, nodeList);
+            });
+        }
     }
 
     /**
@@ -4241,7 +4265,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     function elongatedTendency(node, level) {
         if (!node.children) { return false; }
-        if (node.children.length <= getTreeWidth(node)) {
+        //if (node.children.length <= getAvgWidth(node, level)) {
+        if (node.children.length <= N) {
             var currentGF = 0;
             var isElongated = true;
             i = 0;
@@ -4257,7 +4282,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     function compactTendency(node, level, limitGF) {
         if (!node.children) { return false; }
-        if (node.children.length >= getTreeWidth(node)) {
+        //if (node.children.length >= getAvgWidth(node, level)) {
+        if (node.children.length >= N) {
             var currentGF = 0;
             var isCompact = true;
             i = 0;
@@ -4269,6 +4295,132 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             return isCompact;
         }
         return false;
+    }
+
+    function getHierarchy2(node, level, GF) {
+        if (elongatedTendency(node, level)) {
+            if (compactTendency(node, level, GF)) {
+                return 4;
+            } else {
+                return 1;
+            }
+        }
+        if (compactTendency(node, level, GF)) {
+            return 2;
+        }
+        return 0;
+    }
+
+    function getHierarchy(node, level, GF) {
+        //travel throug all nodes - check root tendency
+        //-> If ET: keep searching until you find a CT
+        //-> If CT: While NOT ET,
+        var isCompact = false;
+        var isElongated = false;
+        var d = Math.floor(level/2); //By default, set 'd' to level/2
+        if (elongatedTendency(node, level)) {
+            isElongated = true;
+            //visit L levels, if CT is hybrid, if not is elongated
+        }
+        if (compactTendency(node, level, GF)) {
+            //visit L levels, if ET is hybrid, if not is compact
+        }
+        return 0;
+    }
+
+    /*function auxHier(node, current, d, level, GF, isElongated, isCompact, h = 0) {
+        isElongated = elongatedTendency(node, level);
+        isCompact = compactTendency(node, level, GF);
+        if (isElongated) {
+            if (isCompact) { return 4; } // Hybrid hierarchy
+            //visit L levels, if CT is hybrid, if not is elongated
+        }
+        if (current == 0 && !isElongated) {
+            //visit L levels, if ET is hybrid, if not is compact
+        }
+    }*/
+
+    function auxHier(node, level, GF, current = 0, childs = []) {
+        var isCompact;
+        var isElongated;
+        var queue = [];
+        let explored = new Set();
+        queue.push(node);
+
+        explored.add(node);
+
+        while (!(queue.length == 0) && (current < level)) {
+            var t = queue.shift();
+            isElongated = elongatedTendency(t, level);
+            isCompact = compactTendency(t, level);
+        }
+    }
+
+    function getAvgHierarchy(node, level) {
+        var nodeList = new Array(level+1).fill(0);
+        if (level == 0) { return 3; }
+        console.log("initList: " + nodeList);
+        getAuxHier(node, 0, level, nodeList);
+        //var aux = nodeList.reduce((a, b) => a + b, 0);
+        var aux = 0;
+        for (i = 0; i < nodeList.length; i++) {
+            aux += nodeList[i];
+        }
+        console.log(aux + " : " + nodeList);
+        result = Math.max.apply(null, nodeList) / (aux/nodeList.length);
+        console.log(result);
+        return result;
+    }
+
+    function getAuxHier(node, current, level, nodeList) {
+        nodeList[current] += 1;
+        nodeList.push(2);
+        console.log("c: "+current+"; l: "+level+"; list:"+nodeList);
+        if (current < level && node.children) {
+            node.children.forEach(function (d) {
+               getNodesInLevel(d, current+1, level, nodeList);
+            });
+        }
+    }
+
+    function getTreeData(node, filename) {
+        //Define CSV params
+        let arrayHeader = ["Node", "Width", "Level", "Depth", "subNodes", "maxWidth", "L", "N", "GF",
+                            "GrowFactor", "ET", "CT"];
+        let header = arrayHeader.join(',') + '\n';
+        let csv = header;
+
+        let queue = [];
+        queue.push(node);
+        var i = 0; //Count nodes
+
+        while (queue.length > 0) {
+            let n = queue.shift();
+            let height = getTreeHeight(n);
+            let l = Math.floor(height/2);
+            let numChilds = 0;
+            if (n.children) { numChilds = n.children.length; }
+            let arrayData = [i, numChilds, n.depth, height, getNumberOfNodes(n), "TODO: GetMaxWidth",
+                l, N, GF, getGrowFactor(n, l), elongatedTendency(n, l), compactTendency(n, l, GF)];
+            csv += arrayData.join(',')+'\n';
+            if (n.children) {
+                //next level
+                n.children.forEach(d => {
+                    queue.push(d);
+                });
+            }
+            i++; //think of how to increase current level (cl)
+        }
+
+        //Write CSV
+        let csvData = new Blob([csv], { type: 'text/csv' });
+        let csvUrl = URL.createObjectURL(csvData);
+
+        let hiddenElement = document.createElement('a');
+        hiddenElement.href = csvUrl;
+        hiddenElement.target = '_blank';
+        hiddenElement.download = filename + '.csv';
+        hiddenElement.click();
     }
 
 });
