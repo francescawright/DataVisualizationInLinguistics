@@ -95,31 +95,31 @@ function getEdgeStrokeWidth() {
     //console.log("Zoom: ", currentZoomScale)
     switch (true) {
         case (currentZoomScale > 7):
-            return 1
+            return 1;
         case (currentZoomScale > 6):
-            return 2
+            return 2;
         case (currentZoomScale > 4):
-            return 3
+            return 3;
         case (currentZoomScale > 3):
-            return 4
+            return 4;
         case (currentZoomScale > 1):
-            return 5
+            return 5;
         case (currentZoomScale > 0.6):
-            return 6
+            return 6;
         case (currentZoomScale > 0.5):
-            return 7
+            return 7;
         case (currentZoomScale > 0.4):
-            return 8
+            return 8;
         case (currentZoomScale > 0.3):
-            return 9
+            return 9;
         case (currentZoomScale > 0.2):
-            return 10
+            return 10;
         case (currentZoomScale > 0.1):
-            return 11
+            return 11;
         case (currentZoomScale > 0.075):
-            return 15
+            return 15;
         case (currentZoomScale > 0):
-            return 20
+            return 20;
     }
 }
 
@@ -3296,12 +3296,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         //Write growingFactor of root
         tooltipText += "</table>";
         var s = Math.floor(getTreeHeight(d)/2);
-        tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr></table>";
+        tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr>";
         //Calculate tendencies and hierarchy of nodes
-        tooltipText += "<br> <table>" +
+        tooltipText +=
             "<tr>" +
-                "<td> ET: " + elongatedTendency(d, s) + "</td>" +
-                "<td> CT: " + compactTendency(d, s, GF) + "</td>" +
+                "<td> ET: " + elongatedTendency(d, s) +
+                " CT: " + compactTendency(d, s, GF) + "</td>" +
+            "</tr>"
+        //Calculate hierarchy
+        var t = Math.floor(getTreeHeight(s)/2);
+        tooltipText +=
+            "<tr>" +
+                "<td> Hierarchy: " + getHierarchy(d, s, GF, t) + "</td>" +
             "</tr></table>"
         tooltipText += "<br> <table>";
     }
@@ -4069,7 +4075,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         statisticText += "</table>";
 
-        getTreeData(root);
+        getTreeData(root, sel_item.split('/')[2]);
 
         return statisticText;
     }
@@ -4187,22 +4193,35 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         return maxHeight;
     }
 
-    function getAvgWidth(node, level) {
-        var nodeList = new Array(level+1).fill(0);
-        if (level == 0) { return 1; }
+    /**
+     * function that returns the maximum width of a subtree given its root node
+     * @param node tree root
+     * @param height depth of tree
+     * @returns {number|*} number of nodes in sublevel with max width
+     */
+    function getMaxWidth(node, height) {
+        var nodeList = new Array(height+1).fill(0);
+        if (height == 0) { return 1; }
         console.log("initList: " + nodeList);
-        getNodesInLevel(node, 0, level, nodeList);
+        getNodesInLevel(node, 0, height, nodeList);
         //var aux = nodeList.reduce((a, b) => a + b, 0);
         var aux = 0;
         for (i = 0; i < nodeList.length; i++) {
             aux += nodeList[i];
         }
         console.log(aux + " : " + nodeList);
-        result = Math.max.apply(null, nodeList) / (aux/nodeList.length);
+        result = Math.max.apply(null, nodeList);
         console.log(result);
         return result;
     }
 
+    /**
+     * auxiliar function that returns the number of nodes in a given level
+     * @param node tree root
+     * @param current current level in tree
+     * @param level desired level to scan
+     * @param nodeList list of nodes at desired level
+     */
     function getNodesInLevel(node, current, level, nodeList) {
         nodeList[current] += 1;
         console.log("c: "+current+"; l: "+level+"; list:"+nodeList);
@@ -4263,6 +4282,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         return growFactor;
     }
 
+    /**
+     * function that determines if a tree has an elongated tendency
+     * @param node tree root
+     * @param level L parameter
+     * @returns {boolean} true if tree is elongated, false if not
+     */
     function elongatedTendency(node, level) {
         if (!node.children) { return false; }
         //if (node.children.length <= getAvgWidth(node, level)) {
@@ -4280,6 +4305,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         return false;
     }
 
+    /**
+     * function that determines if a tree has a compact tendency
+     * @param node tree root
+     * @param level L parameter
+     * @param limitGF GF parameter
+     * @returns {boolean} true if tree is compact, false if not
+     */
     function compactTendency(node, level, limitGF) {
         if (!node.children) { return false; }
         //if (node.children.length >= getAvgWidth(node, level)) {
@@ -4297,21 +4329,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         return false;
     }
 
-    function getHierarchy2(node, level, GF) {
-        if (elongatedTendency(node, level)) {
-            if (compactTendency(node, level, GF)) {
-                return 4;
-            } else {
-                return 1;
-            }
-        }
-        if (compactTendency(node, level, GF)) {
-            return 2;
-        }
-        return 0;
-    }
-
-    function getHierarchy(node, level, GF) {
+    function getHierarchy4(node, level, GF) {
         //travel throug all nodes - check root tendency
         //-> If ET: keep searching until you find a CT
         //-> If CT: While NOT ET,
@@ -4356,22 +4374,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
-    function getAvgHierarchy(node, level) {
-        var nodeList = new Array(level+1).fill(0);
-        if (level == 0) { return 3; }
-        console.log("initList: " + nodeList);
-        getAuxHier(node, 0, level, nodeList);
-        //var aux = nodeList.reduce((a, b) => a + b, 0);
-        var aux = 0;
-        for (i = 0; i < nodeList.length; i++) {
-            aux += nodeList[i];
-        }
-        console.log(aux + " : " + nodeList);
-        result = Math.max.apply(null, nodeList) / (aux/nodeList.length);
-        console.log(result);
-        return result;
-    }
-
     function getAuxHier(node, current, level, nodeList) {
         nodeList[current] += 1;
         nodeList.push(2);
@@ -4383,6 +4385,82 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
+    function getHierarchy(node, level, limitGF, d) {
+        let queue = [];
+        queue.push(node);
+        if (elongatedTendency(node, level)) {
+            let found = false;
+            while (queue.length > 0 && !found) { //Search all tree until a CT node is found
+                let n = queue.shift();
+                let s = Math.floor(getTreeHeight(n)/2);
+                if (compactTendency(n, s, limitGF)) { found = true; }
+                if (n.children) {
+                    n.children.forEach(d => {
+                        queue.push(d);
+                    });
+                }
+            }
+            if (found) { return 4; } //Hybrid
+            else { return 1; } //Elongated
+        }
+
+        else if (compactTendency(node, level, limitGF) || findTendency(node, level, limitGF, d, 1)) {
+            let found = false;
+            while (queue.length > 0 && !found) { //Search all tree until an ET node is found
+                let n = queue.shift();
+                let s = Math.floor(getTreeHeight(n)/2);
+                if (elongatedTendency(n, s)) { found = true; }
+                if (n.children) {
+                    n.children.forEach(d => {
+                        queue.push(d);
+                    });
+                }
+            }
+            if (found) { return 4; } //Hybrid
+            else { //Compact or nComp
+                if (findTendency(node, level, limitGF, d, 2)) { return 3; } //nComp
+                else { return 2; } //Compact
+            }
+        }
+
+        else { return 4; } //Hybrid
+    }
+
+    function findTendency(node, level, limitGF, limit_d, type) {
+        let queue = [];
+        let found = false;
+        queue.push(node);
+
+        while (queue.length > 0 && !found) {
+            let n = queue.shift();
+            let s = Math.floor(getTreeHeight(n)/2);
+            switch(type) {
+                case 0: //Elongated
+                    return 0;
+                case 1: //Compact
+                    if (compactTendency(n, s, limitGF)) { found = true; }
+                    if (n.children) {
+                        n.children.forEach(d => {
+                            if (d.depth < limit_d) { queue.push(d); }
+                        });
+                    }
+                case 2: //nComp
+                    if ((n.depth >= limit_d) && compactTendency(n, s, limitGF)) { found = true; }
+                    if (n.children) {
+                        n.children.forEach(d => {
+                            queue.push(d);
+                        });
+                    }
+            }
+        }
+        return found;
+    }
+
+    /**
+     * function that downloads the data of a tree as a CSV document
+     * @param node tree root
+     * @param filename name of file
+     */
     function getTreeData(node, filename) {
         //Define CSV params
         let arrayHeader = ["Node", "Width", "Level", "Depth", "subNodes", "maxWidth", "L", "N", "GF",
@@ -4400,7 +4478,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             let l = Math.floor(height/2);
             let numChilds = 0;
             if (n.children) { numChilds = n.children.length; }
-            let arrayData = [i, numChilds, n.depth, height, getNumberOfNodes(n), "TODO: GetMaxWidth",
+            let arrayData = [i, numChilds, n.depth, height, getNumberOfNodes(n), getMaxWidth(n, height),
                 l, N, GF, getGrowFactor(n, l), elongatedTendency(n, l), compactTendency(n, l, GF)];
             csv += arrayData.join(',')+'\n';
             if (n.children) {
