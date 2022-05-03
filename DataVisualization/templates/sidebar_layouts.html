@@ -99,7 +99,7 @@
                                    id="target-person" form="main_form"
                                    {% if cbTargets.target_person == 1 %}checked{% else %}unchecked{% endif %}><label
                                 class="custom-control-label" style="vertical-align: center;"
-                                for="target-person">Taeget Person</label>
+                                for="target-person">Target Person</label>
                             <img src="{% static './images/targets/icons/Person.svg' %}" alt="Dat with blue person"
                                  width="20" height="20" style="float:right; ">
                         </div>
@@ -678,6 +678,7 @@
                                         </svg>
                                     </div>
                                 </div>
+
                             </div>
 
                             <div id="highlight_checks_AND" style="display: block;">
@@ -1006,7 +1007,77 @@
                 </div>
 
             </div>
+            <!-- Devtools -->
+            <div id="target-checkbox-group"
+                 style="margin-top: 5px;background-color: #c9daf8ff; padding-bottom: 10px;">
 
+                <div class="list-group list-group-flush" style="width: 261px;">
+                    <button id="targets_accordion_button" type="button"
+                            class="accordion btn btn-secondary active"><span
+                            style="text-align: center; font-weight: bold; vertical-align: center;" checked>
+                    Devtools</span>
+                        <div id="plus_sign_devtools" style="float: right;">
+                            &#8722;
+                        </div>
+                    </button>
+                    <div style="padding-left: 10px; padding-right: 10px; padding-top: 10px;" class="panel">
+                        <!-- Dropdown menu -->
+                        <!-- <label for="dropdown-targets">Style:</label>
+                        <select id="dropdown-targets" name="dropdown-targets">
+                            <option value="icon-outside-node">Icons outside the node</option>
+                            <option value="icon-on-node">Icons on the node</option>
+                            <option value="ring-on-node">Rings on the node</option>
+                        </select> -->
+                        <div class="text-center">
+                            <input class="btn btn-secondary" type="button" name="Check_All" value="Check All"
+                                   onClick="CheckAll(document.querySelectorAll('input[type=checkbox][name=cbDevtools]'))">
+                            <input class="btn btn-secondary" type="button" name="Un_CheckAll" value="Uncheck All"
+                                   onClick="UnCheckAll(document.querySelectorAll('input[type=checkbox][name=cbDevtools]'))">
+                        </div>
+
+                        <!-- Checkboxes-->
+                        <div class="custom-control custom-switch" style="margin-top: 10px; line-height: 23px;">
+                            <input type="checkbox" class="custom-control-input" name="cbDevtools"
+                                   value="elongated-tendency"
+                                   id="elongated-tendency"
+                                   form="main_form"
+                                   {% if cbDevtools.elongated_tendency == 1 %}checked{% else %}unchecked{% endif %}><label
+                                class="custom-control-label"
+                                for="elongated-tendency">Elongated Tendency</label>
+                            <img src="{% static './images/targets/icons/Group.svg' %}" alt="Purple people"
+                                 width="20"
+                                 height="20" style="float:right; ">
+                        </div>
+
+                        <div class="custom-control custom-switch" style="line-height: 23px;">
+                            <input type="checkbox" class="custom-control-input" name="cbDevtools"
+                                   value="compact-tendency"
+                                   id="compact-tendency"
+                                   form="main_form"
+                                   {% if cbDevtools.compact_tendency == 1 %}checked{% else %}unchecked{% endif %}><label
+                                class="custom-control-label" style="vertical-align: center;"
+                                for="compact-tendency">Compact Tendency</label>
+                            <img src="{% static './images/targets/icons/Person.svg' %}" alt="Dat with blue person"
+                                 width="20" height="20" style="float:right; ">
+                        </div>
+
+                        <div class="custom-control custom-switch" style="line-height: 23px;">
+                            <input type="checkbox" class="custom-control-input" name="cbDevtools"
+                                   value="significant-nodes"
+                                   id="significant-nodes"
+                                   form="main_form"
+                                   {% if cbDevtools.target_stereotype == 1 %}checked{% else %}unchecked{% endif %}><label
+                                class="custom-control-label"
+                                for="significant-nodes">Significant Nodes</label>
+                            <img src="{% static './images/targets/icons/Stereotype.svg' %}"
+                                 alt="Orange thinking cloud"
+                                 width="20" height="20" style="float:right;">
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
             <!--Legend-->
             {#            <div id="legendGroup">#}
             {#                <p#}
@@ -1170,7 +1241,8 @@
     }
 
     function CheckAll(chk) {
-        if (chk.length > 3) {
+        //if (chk.length > 3) {
+        if (chk.length > 4) {
             console.log("[User] {{ user }}| [interaction] checkall_features | [Date]", Date.now());
         } else {
             console.log("[User] {{ user }} | [interaction] checkall_targets | [Date]", Date.now());
@@ -1308,6 +1380,19 @@
             document.getElementById('plus_sign_highlight').innerHTML = '&#43;'
             highlight_accordion_expanded = false;
             console.log("[User]", user.split('/')[2], " | [interaction]", "hidding_highlight_accordion", " | [Date]", Date.now());
+        }
+    });
+
+    var devtools_accordion_expanded = false;
+    jQuery("#devtools_accordion_button").click(function () {
+        if (!devtools_accordion_expanded) {
+            document.getElementById('plus_sign_devtools').innerHTML = '&#8722;';
+            devtools_accordion_expanded = true;
+            console.log("[User]", user.split('/')[2], " | [interaction]", "showing_devtools_accordion", " | [Date]", Date.now());
+        } else {
+            document.getElementById('plus_sign_devtools').innerHTML = '&#43;'
+            devtools_accordion_expanded = false;
+            console.log("[User]", user.split('/')[2], " | [interaction]", "hidding_devtools_accordion", " | [Date]", Date.now());
         }
     });
 

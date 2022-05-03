@@ -796,6 +796,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     // for (var i = 0; i < checkboxesTargets.length; i++) {
     //     checkboxesTargets[i] = "target-" + checkboxesTargets[i];
     // }
+    var checkboxesDevtools = [document.getElementById("elongated-tendency"), document.getElementById("compact-tendency"),
+        document.getElementById("significant-nodes")];
 
     let enabledTargets = []; //Variable which contains the string of the enabled options to display targets
 
@@ -1218,6 +1220,44 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
                         listOpacity = [d.target_group, d.target_person, d.stereotype];
+                        return listOpacity[i];
+                    });
+            }
+        }
+    }
+
+    function drawDevtools(nodeEnter, localPath) {
+        removeThisTargets(nodeEnter);
+        var cbShowTargets = [
+            enabledTargets.indexOf("elongated-tendency"),
+            enabledTargets.indexOf("compact-tendency"),
+            enabledTargets.indexOf("significant-nodes"),
+        ];
+        var listOpacity;
+        var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
+
+        for (var i = 0; i < targets.length; i++) {
+            if (cbShowTargets[i] > -1) {
+                nodeEnter
+                    .append("image")
+                    .attr("class", targets[i].class)
+                    .attr("id", targets[i].id)
+                    .attr("x", targets[i].x)
+                    .attr("y", targets[i].y)
+                    .attr("height", targets[i].height)
+                    .attr("width", targets[i].width)
+                    .attr("href", pathTargets + localPath + targets[i].fileName)
+                    .attr("opacity", function (d) {
+                        if (d.parent === undefined) return 0;
+                        let l = getLevelRange(d);
+                        let ET = 0;
+                        let CT = 0;
+                        let Sig = 0;
+                        if (elongatedTendency(d, l)) { ET = 1; }
+                        if (compactTendency(d, l, GF)) { CT = 1; }
+                        //if (isSignificant(d, 0.15) && isSignificant(d.parent, 0.15)) { Sig = 1; }
+                        if (checkSignificant(d, 0.15)) { Sig = 1; }
+                        listOpacity = [ET, CT, Sig];
                         return listOpacity[i];
                     });
             }
@@ -3570,6 +3610,24 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
                     })
                 });
+
+                // Use Array.forEach to add an event listener to each checkbox.
+                // Draw target images
+                checkboxesDevtools.forEach(function (checkboxItem) {
+                    checkboxItem.addEventListener('change', function () {
+                        enabledTargets =
+                            Array.from(checkboxesDevtools) // Convert checkboxes to an array to use filter and map.
+                                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+                        if (checkboxItem.checked) {
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "| [Date]", Date.now());
+                        } else {
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "| [Date]", Date.now());
+                        }
+                        //selectTargetVisualization(nodeEnter); //change?
+                        drawDevtools(nodeEnter, "icons/");
+                    })
+                });
             });
 
         } catch (TypeError) {
@@ -3632,6 +3690,15 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
             selectFeatureVisualization(nodeEnter);
+        });
+
+        checkboxesDevtools.forEach(function (checkboxItem) {
+            enabledTargets =
+                Array.from(checkboxesDevtools) // Convert checkboxes to an array to use filter and map.
+                    .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                    .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
+            selectTargetVisualization(nodeEnter);
         });
 
         //Enable checkboxes and dropdown menu + show features if they are selected
@@ -4210,6 +4277,23 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         } else {
             return true;
         }
+    }
+
+    function checkSignificant(node, tol) {
+        if (node == root) { return true; } //ignore root case
+        let nodeList = [];
+        let found = false;
+        let currentNode = node;
+        while (!found) {
+            nodeList.push(currentNode);
+            if (currentNode.parent) { currentNode = currentNode.parent; }
+            else { found = true; }
+        }
+        while ((nodeList.length > 0) && found) {
+            n = nodeList.pop();
+            if (!isSignificant(n, tol)) { found = false; }
+        }
+        return found;
     }
 
     /**
