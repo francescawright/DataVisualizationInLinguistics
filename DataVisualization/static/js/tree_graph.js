@@ -597,8 +597,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var duration = 750;
     var root, rootName = "News Article";
     var nodes;
-    var GF = 0.25;
-    var tol = 0.9;
 
     /* Colours
      * */
@@ -626,6 +624,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var colorFeature = ["#90F6B2", "#1B8055",
         "#97CFFF", "#1795FF", "#0B5696",
         "#E3B7E8", "#A313B3", "#5E1566"
+    ];
+
+    var colorDevtools = ["#88FF00", "#FFBB00",
+        "#FF5500", "#90F6B2", "#1B8055",
+        "#97CFFF", "#1795FF", "#0B5696"
     ];
 
     /* Targets: size, position, local path, objects to draw the target as ring
@@ -725,7 +728,15 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var opacityValue = 0.1; // Opacity when a value is not highlighted
     var tooltipText; // The variable displaying the information of a node inside a floating rectangle
 
-    var N = 0.6 * canvasHeight / 40;
+    //var N = 0.6 * canvasHeight / 40; //(15 by default)
+
+    /* Vars for tendency and hierarchy calculations */
+    var N = document.getElementById("input-n-field").value;
+    var L = document.getElementById("input-l-field").value;
+    var GF = document.getElementById("input-gf-field").value;
+    var d_lvl = document.getElementById("input-d-field").value; //this is d, i was too lazy to change all other vars. names
+    var tol = document.getElementById("input-tol-field").value;
+    var eps = document.getElementById("input-eps-field").value;
 
     root = treeData; //Define the root
 
@@ -793,11 +804,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     //Check the values of the checkboxes and do something
     var checkbox = document.querySelector("input[name=cbTargets]");
     var checkboxesTargets = [document.getElementById("target-group"), document.getElementById("target-person"), document.getElementById("target-stereotype")]; //document.querySelectorAll("input[type=checkbox][name=cbTargets]");
-    // for (var i = 0; i < checkboxesTargets.length; i++) {
-    //     checkboxesTargets[i] = "target-" + checkboxesTargets[i];
-    // }
-    var checkboxesDevtools = [document.getElementById("elongated-tendency"), document.getElementById("compact-tendency"),
-        document.getElementById("significant-nodes")];
+    var checkboxesDevtools = document.querySelectorAll("input[type=checkbox][name=cbDevtools]");
 
     let enabledTargets = []; //Variable which contains the string of the enabled options to display targets
 
@@ -1227,37 +1234,66 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
     function drawDevtools(nodeEnter, localPath) {
+        removeThisFeatures(nodeEnter);
         removeThisTargets(nodeEnter);
         var cbShowTargets = [
             enabledTargets.indexOf("elongated-tendency"),
             enabledTargets.indexOf("compact-tendency"),
             enabledTargets.indexOf("significant-nodes"),
+            enabledTargets.indexOf("elongated-hierarchy"),
+            enabledTargets.indexOf("compact-hierarchy"),
+            enabledTargets.indexOf("nComp-hierarchy"),
+            enabledTargets.indexOf("hybrid-hierarchy")
         ];
+        console.log(cbShowTargets);
         var listOpacity;
-        var targets = [objTargetGroup, objTargetPerson, objTargetStereotype];
+        var targets = [
+            objTargetGroup,
+            objTargetPerson,
+            objTargetStereotype,
+            objFeatConstructiveness,
+            objFeatArgumentation,
+            objFeatSarcasm,
+            objFeatMockery
+        ];
 
         for (var i = 0; i < targets.length; i++) {
             if (cbShowTargets[i] > -1) {
                 nodeEnter
-                    .append("image")
+                    .append("rect")
                     .attr("class", targets[i].class)
                     .attr("id", targets[i].id)
                     .attr("x", targets[i].x)
                     .attr("y", targets[i].y)
                     .attr("height", targets[i].height)
                     .attr("width", targets[i].width)
-                    .attr("href", pathTargets + localPath + targets[i].fileName)
+                    .attr("fill", colorDevtools[i])
+                    .style("stroke", "black")
+                    .style("stroke-width", getNodeStrokeWidth())
                     .attr("opacity", function (d) {
                         if (d.parent === undefined) return 0;
-                        let l = getLevelRange(d);
-                        let ET = 0;
-                        let CT = 0;
-                        let Sig = 0;
-                        if (elongatedTendency(d, l)) { ET = 1; }
-                        if (compactTendency(d, l, GF)) { CT = 1; }
-                        //if (isSignificant(d, 0.15) && isSignificant(d.parent, 0.15)) { Sig = 1; }
-                        if (checkSignificant(d, 0.15)) { Sig = 1; }
-                        listOpacity = [ET, CT, Sig];
+                        //let l = getLevelRange(d);
+                        let l = L;
+                        let t = d_lvl;
+                        let h = getHierarchy(d, l, GF, t);
+                        listOpacity = [0, 0, 0, 0, 0 , 0, 0];
+                        if (elongatedTendency(d, l)) { listOpacity[0] = 1; }
+                        if (compactTendency(d, l, GF)) { listOpacity[1] = 1;}
+                        if (checkSignificant(d, 0.15)) { listOpacity[2] = 1; }
+                        switch (h) {
+                            case 1:
+                                listOpacity[3] = 1;
+                                break;
+                            case 2:
+                                listOpacity[4] = 1;
+                                break;
+                            case 3:
+                                listOpacity[5] = 1;
+                                break;
+                            case 4:
+                                listOpacity[6] = 1;
+                                break;
+                        }
                         return listOpacity[i];
                     });
             }
@@ -1578,7 +1614,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      * Delete the features of the node
      * Redraw the features of the node
      *
-     * Deleting the features firts helps us when the selected dropdown menu option changes
+     * Deleting the features first helps us when the selected dropdown menu option changes
      * */
     function drawFeatureDots(nodeEnter) {
         removeThisFeatures(nodeEnter);
@@ -2988,6 +3024,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             highlightTargetOR(node, enabledHighlight);
             highlightPositiveOR(node, enabledHighlight);
             highlightNegativeOR(node, enabledHighlight);
+            //highlightSignificantNodes(node, enabledHighlight);
         }
         //Highlight only the edges whose both endpoints are highlighted
         link.style("opacity", function (d) {
@@ -3009,6 +3046,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         highlightTargetAND(node, enabledHighlight);
         highlightPositiveAND(node, enabledHighlight);
         highlightNegativeAND(node, enabledHighlight);
+        highlightSignificantNodes(node, enabledHighlight);
 
         //Highlight only the edges whose both endpoints are highlighted
         link.style("opacity", function (d) {
@@ -3252,8 +3290,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
         //Write growingFactor of node
         tooltipText += "</table>";
-        //var s = Math.floor(getTreeHeight(d)/2);
-        var s = getLevelRange(d);
+        //var s = getLevelRange(d);
+        var s = L;
         console.log("L: " + s);
         tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr></table>";
         //Calculate tendencies and hierarchy of nodes
@@ -3337,8 +3375,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         //Write growingFactor of root
         tooltipText += "</table>";
-        //var s = Math.floor(getTreeHeight(d)/2);
-        var s = getLevelRange(d);
+        //var s = getLevelRange(d);
+        var s = L;
         console.log("L: " + s);
         tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr>";
         //Calculate tendencies and hierarchy of nodes
@@ -3348,7 +3386,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 " CT: " + compactTendency(d, s, GF) + "</td>" +
             "</tr>"
         //Calculate hierarchy
-        var t = Math.floor(s/2);
+        var t = d_lvl;
         tooltipText +=
             "<tr>" +
                 "<td> Hierarchy: " + getHierarchy(d, s, GF, t) + "</td>" +
@@ -3502,6 +3540,27 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 statisticBackground.style("visibility", "hidden").html(writeStatisticText());
                 console.log('[User]', user.split('/')[2], '| [interaction]', 'hide_summary', '| [Date]', Date.now());
             }
+        });
+
+        //Input values for vars
+        jQuery("#input-n-btn").click(function () {
+            N = document.getElementById('input-n-field').value;
+            console.log('[User]', user.split('/')[2], '| [interaction]', 'change_N_value_to: ' + N, '| [Date]', Date.now());
+        });
+
+        jQuery("#input-l-btn").click(function () {
+            L = document.getElementById('input-l-field').value;
+            console.log('[User]', user.split('/')[2], '| [interaction]', 'change_L_value_to: ' + L, '| [Date]', Date.now());
+        });
+
+        jQuery("#input-gf-btn").click(function () {
+            GF = document.getElementById('input-gf-field').value;
+            console.log('[User]', user.split('/')[2], '| [interaction]', 'change_GF_value_to: ' + GF, '| [Date]', Date.now());
+        });
+
+        jQuery("#input-tol-btn").click(function () {
+            tol = document.getElementById('input-tol-field').value;
+            console.log('[User]', user.split('/')[2], '| [interaction]', 'change_tol_value_to: ' + tol, '| [Date]', Date.now());
         });
 
         function getLengthFilterByName(array, stringToMatch, matchPositive = true) {
@@ -4263,14 +4322,24 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         return (numNodes == level);
     }
 
-    function isSignificant(node, tol) {
+    function highlightSignificantNodes(node, enabledHighlight) {
+        //Significant CB is checked
+        if (enabledHighlight.indexOf("significant-nodes") > -1) {
+            node.filter(function (d) {
+                if (isSignificant(d, 0.15)) d.highlighted = 1;
+                return (isSignificant(d, 0.15));
+            }).style("opacity", 1);
+        }
+    }
+
+    function isSignificant(node, eps) {
         if (node.parent) {
             if (node.children) {
                 //let aux = (node.children.length / node.parent.children.length);
                 let aux = (getNumberOfNodes(node) / getNumberOfNodes(node.parent));
                 /*console.log("node "+ node.name + " at lv " + node.depth + " with " + node.children.length
                     + " childs, has significance: " + aux);*/
-                return (aux >= tol);
+                return (aux >= eps);
             } else {
                 return false;
             }
@@ -4279,7 +4348,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
-    function checkSignificant(node, tol) {
+    function checkSignificant(node, eps) {
         if (node == root) { return true; } //ignore root case
         let nodeList = [];
         let found = false;
@@ -4290,8 +4359,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             else { found = true; }
         }
         while ((nodeList.length > 0) && found) {
-            n = nodeList.pop();
-            if (!isSignificant(n, tol)) { found = false; }
+            let n = nodeList.pop();
+            if (!isSignificant(n, eps)) { found = false; }
         }
         return found;
     }
@@ -4416,38 +4485,45 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
+    /**
+     * Function that returns the sum of children of SIGNIFICANT NODES in a subtree from a given level
+     * @param node root of the subtree
+     * @param level depth level
+     * @returns {number|*} number of SIGNIFICANT child nodes in level
+     */
     function getChildrenInLevel2(node, level) {
+        let totalNodes = 0;
         if (level == 0 && node.children) {
             return node.children.length;
         } else {
-            var totalNodes = 0;
             if (node.children) {
                 node.children.forEach(function (d) {
-                    if (isSignificant(d, 0.15)) {
+                    if (isSignificant(d, eps)) {
                         totalNodes += getChildrenInLevel2(d, level - 1);
                     }
                 });
             }
-            return totalNodes;
         }
+        return totalNodes;
     }
 
     /**
      * Function that calculates the growingFactor of a subtree given its root node and a depth
      * @param node root of the subtree
-     * @param depth depth level
+     * @param level depth level
      * @returns {number} growingFactor
      */
-    function getGrowFactor(node, depth) {
+    function getGrowFactor(node, level) {
         if (!node.children) { return 0; } //If node is a leaf, return 0
         //check if it has NO significant childs
         let found = false;
         node.children.forEach(d => {
-            if (isSignificant(d, 0.15)) { found = true; }
+            if (isSignificant(d, eps)) { found = true; }
         });
         if (!found) { return 1; }
+        let depth = Math.min(level, getTreeHeight(node));
         //var growFactor = getChildrenInLevel2(node, depth)/node.children.length; //Calculate growingFactor
-        var growFactor = getChildrenInLevel2(node, depth)/getChildrenInLevel2(node, 0); //Calculate growingFactor using significant childs
+        var growFactor = getChildrenInLevel2(node, depth)/getChildrenInLevel2(node, 0); //Calculate growingFactor using only significant childs
         return growFactor;
     }
 
@@ -4459,14 +4535,40 @@ treeJSON = d3.json(dataset, function (error, treeData) {
      */
     function elongatedTendency(node, level) {
         if (!node.children) { return false; }
-        //if (node.children.length <= getAvgWidth(node, level)) {
         if (node.children.length <= N) {
             let currentGF = 0;
             let isElongated = true;
+            let depth = Math.min(level, getTreeHeight(node));
+            i = 0;
+            while (i <= depth && isElongated) {
+                currentGF = getGrowFactor(node, i);
+                console.log("ET = " + currentGF);
+                if ((1.0-tol) >= currentGF || currentGF >= (1.0+tol)) { isElongated = false; }
+                i++;
+            }
+            return isElongated;
+        }
+        return false;
+    }
+
+    function elongatedTendency2(node, level) {
+        if (!node.children) { return false; }
+        if (node.children.length <= N) {
+            let currentGF = 0;
+            let isElongated = true;
+            let found = false;
+            let i = 0;
+
+            //Condition 1: no significant childs
+            while (i < node.children.length && !found) {
+                if (isSignificant(node.children[i], eps)) { found = true; } //found significant child
+            }
+            if (!found) { return isElongated; }
+
+            //Condition 2: GF -> 1 through L levels
             i = 0;
             while (i <= level && isElongated) {
                 currentGF = getGrowFactor(node, i);
-                console.log("ET = " + currentGF);
                 if ((1.0-tol) >= currentGF || currentGF >= (1.0+tol)) { isElongated = false; }
                 i++;
             }
@@ -4488,7 +4590,34 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         if (node.children.length >= N) {
             let currentGF = 0;
             let isCompact = true;
-            if (level == 1) { return isCompact; }
+            let depth = Math.min(level, getTreeHeight(node));
+            if (depth == 1) { return isCompact; }
+            i = 0;
+            while (i <= depth && isCompact) {
+                currentGF = getGrowFactor(node, i);
+                if (currentGF < limitGF) { isCompact = false; }
+                i++;
+            }
+            return isCompact;
+        }
+        return false;
+    }
+
+    function compactTendency2(node, level, limitGF) {
+        if (!node.children) { return false; }
+        if (node.children.length >= N) {
+            let currentGF = 0;
+            let isCompact = true;
+            let found = false;
+            let i = 0;
+
+            //Condition 1: no significant childs
+            while (i < node.children.length && !found) {
+                if (isSignificant(node.children[i], eps)) { found = true; } //found significant child
+            }
+            if (!found) { return isCompact; }
+
+            //Condition 2: GF -> 1 through L levels
             i = 0;
             while (i <= level && isCompact) {
                 currentGF = getGrowFactor(node, i);
@@ -4499,18 +4628,20 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
         return false;
     }
+
     //CHANGE NAME OF d, get CT node and search there for ET
     function getHierarchy(node, level, limitGF, d_level) {
         let queue = [];
         let CTnode = undefined;
+        //let depth = Math.min(L, getTreeHeight(node));
 
         if (elongatedTendency(node, level)) {
             queue.push(node);
             let found = false;
             while (queue.length > 0 && !found) { //Search all tree until a CT node is found
                 let n = queue.shift();
-                //let s = Math.floor(getTreeHeight(n)/2);
-                let s = getLevelRange(n);
+                //let s = getLevelRange(n);
+                let s = Math.min(L, getTreeHeight(n));
                 if ((n.depth + s) > level) { s = level - n.depth; }
                 if (compactTendency(n, s, limitGF)) { found = true; }
                 if (n.children && (s > 0)) {
@@ -4533,18 +4664,19 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             console.log("is Compact");
             while (queue.length > 0 && !found) { //Search all subtree until an ET node is found
                 let n = queue.shift();
-                let s = getLevelRange(n);
+                //let s = getLevelRange(n);
+                let s = Math.min(L, getTreeHeight(n));
                 if ((n.depth + s) > level) { s = level - n.depth; } //Limit search range?
                 if (elongatedTendency(n, s) && getGrowFactor(n, s) != 1) {
                     //if (!isSpine(n, s)) { found = true; } //ignore spines
-                    if (isSignificant(n, 0.15)) {
+                    if (isSignificant(n, eps)) {
                         console.log("found significant ET");
                         found = true;
                     }
                 }
                 if (n.children && (s > 0)) {
                     n.children.forEach(d => {
-                        if (isSignificant(d, 0.15)) { queue.push(d); }
+                        if (isSignificant(d, eps)) { queue.push(d); }
                     });
                 }
             }
@@ -4555,7 +4687,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 /*if (findTendency(node, level, limitGF, d_level, 2)) { return 3; } //nComp
                 else { return 2; } //Compact*/
                 CTnode = findTendency(node, level, limitGF, d_level, 2);
-                if (CTnode != undefined) { return 3; }
+                if (CTnode != undefined) {
+                    console.log(CTnode.name);
+                    return 3; }
                 else { return 2; }
             }
         }
@@ -4572,8 +4706,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         while (queue.length > 0 && !found) {
             let n = queue.shift();
-            //let s = Math.floor(getTreeHeight(n)/2);
-            let s = getLevelRange(n);
+            //let s = getLevelRange(n);
+            let s = Math.min(L, getTreeHeight(n));
             if ((n.depth + s) > level) { s = level - n.depth; }
             switch(type) {
                 case 0: //Elongated
@@ -4590,9 +4724,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     }
                 case 2: //nComp
                     if (limit_d == 0) { limit_d++; } //Ignore root case
-                    if ((n.depth >= limit_d) && compactTendency(n, s, limitGF)) {
-                        CTnode = n;
-                        found = true;
+                    if (n != node) {
+                        if ((n.depth >= limit_d) && compactTendency(n, s, limitGF)) {
+                            CTnode = n;
+                            found = true;
+                        }
                     }
                     if (n.children) {
                         n.children.forEach(d => {
@@ -4626,8 +4762,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         while (queue.length > 0) {
             let n = queue.shift();
             let height = getTreeHeight(n);
-            //let l = Math.floor(height/2);
-            let l = getLevelRange(n);
+            //let l = getLevelRange(n);
+            let l = Math.min(L, height);
             let numChilds = 0;
             let name = n.name;
             if (n == root) { name = 0; }
@@ -4671,7 +4807,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             if (n.children) {
                 //next level
                 n.children.forEach(d => {
-                    if (isSignificant(d, 0.15)) { queue.push(d); }
+                    if (isSignificant(d, eps)) { queue.push(d); }
                 });
             }
         }
