@@ -1233,7 +1233,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
-    function drawDevtools(nodeEnter, localPath) {
+    function drawDevtools(nodeEnter) {
         removeThisFeatures(nodeEnter);
         removeThisTargets(nodeEnter);
         var cbShowTargets = [
@@ -3046,7 +3046,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         highlightTargetAND(node, enabledHighlight);
         highlightPositiveAND(node, enabledHighlight);
         highlightNegativeAND(node, enabledHighlight);
-        highlightSignificantNodes(node, enabledHighlight);
+        //highlightSignificantNodes(node, enabledHighlight);
 
         //Highlight only the edges whose both endpoints are highlighted
         link.style("opacity", function (d) {
@@ -3680,11 +3680,29 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                                 .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
                         if (checkboxItem.checked) {
                             console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "| [Date]", Date.now());
+                            if (checkboxItem == document.getElementById('significant-nodes')) {
+                                nodes.forEach(function (d) {
+                                    d.highlighted = 0;
+                                });
+                                node.style("opacity", opacityValue);
+                                highlightSignificantNodes(node, enabledTargets);
+                            }
                         } else {
                             console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "| [Date]", Date.now());
+                            if (checkboxItem == document.getElementById('significant-nodes')) {
+                                nodes.forEach(function (d) {
+                                    d.highlighted = 1;
+                                });
+                                node.style("opacity", 1);
+                            }
                         }
-                        //selectTargetVisualization(nodeEnter); //change?
-                        drawDevtools(nodeEnter, "icons/");
+                        //Highlight only the edges whose both endpoints are highlighted
+                        link.style("opacity", function (d) {
+                            return d.source.highlighted && d.target.highlighted ?
+                                1 :
+                                opacityValue;
+                        });
+                        drawDevtools(nodeEnter);
                     })
                 });
             });
@@ -4326,8 +4344,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         //Significant CB is checked
         if (enabledHighlight.indexOf("significant-nodes") > -1) {
             node.filter(function (d) {
-                if (isSignificant(d, 0.15)) d.highlighted = 1;
-                return (isSignificant(d, 0.15));
+                if (checkSignificant(d, eps)) d.highlighted = 1;
+                return (checkSignificant(d, eps));
             }).style("opacity", 1);
         }
     }
@@ -4542,7 +4560,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             i = 0;
             while (i <= depth && isElongated) {
                 currentGF = getGrowFactor(node, i);
-                console.log("ET = " + currentGF);
+                //console.log("ET = " + currentGF);
                 if ((1.0-tol) >= currentGF || currentGF >= (1.0+tol)) { isElongated = false; }
                 i++;
             }
