@@ -4240,7 +4240,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         statisticText += "</table>";
-
         getTreeData(root, sel_item.split('/')[2]);
 
         return statisticText;
@@ -4742,11 +4741,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         //Define CSV params
         /*let arrayHeader = ["Node", "Width", "Level", "Depth", "subNodes", "maxWidth", "L", "N", "GFcomp",
                             "GFelon", "GrowFactor", "ET", "CT"];*/
-        let arrayHeader = ["Node", "Width", "Level", "Depth", "subNodes", "maxWidth", "L", "N", "GFcomp", "GFelon",
-                            "GrowFactor", "ET_c1", "ET_c2", "ET_final", "CT_c1", "CT_c2", "CT_final"];
+        let arrayHeader = ["Node", "Width", "Level", "Depth", "subNodes", "maxWidth", "L", "N", "GFcomp",
+                    "GFelon", "GrowFactor", "ET_c1", "ET_c2", "ET_final", "CT_c1", "CT_c2", "CT_final"];
         let header = arrayHeader.join(',') + '\n';
         let csv = header;
-
         let queue = [];
         queue.push(node);
         //let i = 0;
