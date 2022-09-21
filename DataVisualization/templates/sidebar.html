@@ -26,6 +26,53 @@
         overflow: hidden;
     }
 
+    /* Start Bootstrap - Simple Sidebar Custom Style */
+
+    .main-left-sidebar {
+        width: 300px;
+    }
+    #wrapper #sidebar-wrapper.main-left-sidebar {
+        margin-left: 0px !important;
+        transition: 0.5s;
+    }
+
+    /* If the navigation bar is hidden ("toggled" class added) */
+    @media (max-width: 1320px) {
+        #wrapper.toggled #sidebar-wrapper.main-left-sidebar {
+            margin-left: -301px !important;
+            transition: 0.5s;
+        }
+    }
+    .navbar-light .btn.navbar-toggler {
+        height: 40.7px;
+    }
+
+    @media (min-width: 992px){
+        #page-content-wrapper .navbar-expand-lg .navbar-toggler {
+            display: inline-block;
+        }
+    }
+
+    @media (max-width: 1320px) {
+        #page-content-wrapper .navbar.navbar-expand-lg {
+            margin-top: 0px;
+            transition: 0.5s;
+        }
+    }
+
+    @media (min-width: 1320px) {
+        #page-content-wrapper .navbar.navbar-expand-lg {
+            margin-top: -57.7px;
+            transition: 0.5s;
+        }
+    }
+
+    .container-fluid.sidebar-title-container {
+        padding-right: 15px;
+        padding-left: 35px;
+        padding-top: 35px;
+        padding-bottom: 15px;
+    }
 </style>
 <head>
 
@@ -38,7 +85,7 @@
 
 </head>
 <body>
-<div class="bg-light border-right" id="sidebar-wrapper">
+<div class="bg-light border-right main-left-sidebar" id="sidebar-wrapper">
 
     <div style="display: flex; vertical-align:center; text-align:center;" class="sidebar-heading">
         <a href="/">
@@ -114,7 +161,7 @@
                             {% csrf_token %}
                         </form>
                         {{ document.description }}</button>
-                    <button style="width: fit-content; height: 38px; margin-bottom: 5px;"
+                    <button style="width: 14.8%; height: 38px; margin-bottom: 5px;"
                             href="/delete_data"
                             class="btn btn-danger error"
                             name="delete_button" type="submit"
@@ -126,7 +173,7 @@
                         &#10005
 
                     </button>
-                    <button style="width: fit-content; height: 38px; margin-bottom: 5px;"
+                    <button style="width: 18.55%; height: 38px; margin-bottom: 5px;"
                             class="btn btn-primary"
                             name="edit_button"
                             value="{{ document.description }}" form="data_edit">

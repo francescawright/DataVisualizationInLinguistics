@@ -16,16 +16,22 @@
     <!-- Page Content -->
     <div id="page-content-wrapper">
 
-        <h1>Sign-up</h1>
-        <form action="{% url 'signup' %}" method="post">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit" class="btn btn-primary" value="Sign-up">
-        </form>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <button class="btn navbar-toggler" id="menu-toggle"><span class="navbar-toggler-icon"></span></button>
+        </nav>
+
+        <div class="container-fluid sidebar-title-container">
+            <h1>Sign-up</h1>
+            <form action="{% url 'signup' %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" class="btn btn-primary" value="Sign-up">
+            </form>
+        </div>
     </div>
 
 </div>
-</body>
+
 <!-- Bootstrap core JavaScript -->
 <script src="../static/vendor/jquery/jquery.min.js"></script>
 <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -66,7 +72,6 @@
                 }
             });
     });
-    <script>
-
-    </body>
-    </html>
+</script>
+</body>
+</html>
