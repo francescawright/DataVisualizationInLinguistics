@@ -142,6 +142,16 @@
         }
     }
 
+    .noselect {
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none; /* Non-prefixed version, currently
+                            supported by Chrome, Edge, Opera and Firefox */
+    }
+
 </style>
 
 <body>
@@ -166,18 +176,18 @@
 
         <table>
             <div class="row text-center" style="margin-top: 50px; align-items: center; justify-content: center;">
-                <div class="column" style="width: 32%">
+                <div class="column noselect" style="width: 32%">
                     <div id="image1"><img src="{% static 'images/landing_page/Immigration.svg' %}" style="width: 30%"
                                           alt="Immigration"/>
                     </div>
                     <br>Immigration
                 </div>
-                <div class="column" style="width: 32%">
+                <div class="column noselect" style="width: 32%">
                     <div id="image2"><img src="{% static 'images/landing_page/Society.svg' %}" style="width: 30%"
                                           alt="Society"/></div>
                     <br>Society
                 </div>
-                <div class="column" style="width: 32%">
+                <div class="column noselect" style="width: 32%">
                     <div id="image3"><img src="{% static 'images/landing_page/Crime.svg' %}" style="width: 30%"
                                           alt="Crime"/></div>
                     <br>Crime
@@ -208,18 +218,18 @@
 
         <table>
             <div class="row text-center" style="margin-top: 50px; margin-bottom: 50px; align-items: center; justify-content: center;">
-                <div class="column" style="width: 32%">
+                <div class="column noselect" style="width: 32%">
                     <div id="image1"><img src="{% static 'images/landing_page/Person.svg' %}" style="width: 30%"
                                           alt="Person"/>
                     </div>
                     <br>Person
                 </div>
-                <div class="column" style="width: 32%">
+                <div class="column noselect" style="width: 32%">
                     <div id="image2"><img src="{% static 'images/landing_page/Group.svg' %}" style="width: 30%"
                                           alt="Group"/></div>
                     <br>Group
                 </div>
-                <div class="column" style="width: 32%">
+                <div class="column noselect" style="width: 32%">
                     <div id="image3"><img src="{% static 'images/landing_page/Stereotype.svg' %}" style="width: 30%"
                                           alt="Stereotype"/></div>
                     <br>Stereotype
