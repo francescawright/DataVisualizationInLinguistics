@@ -603,7 +603,8 @@ treeJSON = d3.json(dataset, function (error, root) {
         .attr("class", "my-statistic") //add the tooltip class
         .style("position", "absolute")
         .style("z-index", "1") //it has no change
-        .style("visibility", "visible");
+        .style("visibility", "visible")
+        .style("right", "14%");
 
     // Div where the zoom buttons are displayed
     var zoomBackground = d3.select(container)

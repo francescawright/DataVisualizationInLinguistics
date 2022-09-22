@@ -58,8 +58,6 @@
         position: relative;
         top: 50px;
         left: 0px;
-
-
     }
 
     #arg {
@@ -76,7 +74,6 @@
         position: relative;
         top: 50px;
         left: -50px;
-
     }
 
     #moc {
@@ -85,7 +82,6 @@
         position: relative;
         top: 50px;
         left: 50px;
-
     }
 
     #into {
@@ -94,8 +90,6 @@
         position: relative;
         top: 50px;
         left: 0px;
-
-
     }
 
     #impro {
@@ -104,7 +98,6 @@
         position: relative;
         top: 50px;
         left: -75px;
-
     }
 
     #insult {
@@ -112,7 +105,6 @@
         --size: 10;
         position: relative;
         left: 225px;
-
     }
 
     #aggres {
@@ -120,7 +112,6 @@
         --size: 10;
         position: relative;
         left: -75px;
-
     }
 
     #neg {
@@ -128,7 +119,6 @@
         position: relative;
         left: -150px;
         --size: 9;
-
     }
 
     #pos {
@@ -137,7 +127,6 @@
         top: -47px;
         left: 200px;
         --size: 9;
-
     }
 
     #tox {
@@ -145,7 +134,12 @@
         position: relative;
         left: 0px;
         --size: 11;
+    }
 
+    @media (min-width: 767px) {
+        #main-page-color-texts {
+            padding-left: 30%;
+        }
     }
 
 </style>
@@ -193,7 +187,7 @@
 
 
         <table>
-            <div class="row text-center" style="align-items: center; justify-content: center;">
+            <div id="main-page-color-texts" class="row text-center" style="align-items: center; justify-content: center;">
                 <ul class="cloud" role="navigation"
                     style="margin-bottom: 75px; box-sizing: content-box">
                     <li><a href="#" data-weight="4" id='cons'>Constructiveness</a></li>

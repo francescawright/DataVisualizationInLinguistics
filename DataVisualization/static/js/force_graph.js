@@ -751,8 +751,9 @@ treeJSON = d3.json(dataset, function (error, json) {
         .append("div")
         .attr("class", "my-statistic") //add the tooltip class
         .style("position", "absolute")
-        .style("z-index", "0") //it has no change
-        .style("visibility", "visible");
+        .style("z-index", "1") //it has no change
+        .style("visibility", "visible")
+        .style("right", "14%");
 
     // Div where the title of the "Static Values" is displayed
     var statisticTitleBackground = d3.select("#tree-container")
@@ -3248,7 +3249,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
     function writeStatisticText() {
         // var statisticText = "<span style='font-size: 22px;'> Summary of " + sel_item.split('/')[2] + "</span>";
-        var statisticText = "<table style='width: 500px; margin-top: 50px; z-index: 100;'>";
+        var statisticText = "<table style='width: 530px; margin-top: 50px; z-index: 100;'>";
 
         var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];

@@ -30,6 +30,7 @@
 
     .main-left-sidebar {
         width: 300px;
+        z-index: 10;
     }
     #wrapper #sidebar-wrapper.main-left-sidebar {
         margin-left: 0px !important;
@@ -161,7 +162,7 @@
                             {% csrf_token %}
                         </form>
                         {{ document.description }}</button>
-                    <button style="width: 14.8%; height: 38px; margin-bottom: 5px;"
+                    <button style="width: 14.7%; height: 38px; margin-bottom: 5px;"
                             href="/delete_data"
                             class="btn btn-danger error"
                             name="delete_button" type="submit"
@@ -173,7 +174,7 @@
                         &#10005
 
                     </button>
-                    <button style="width: 18.55%; height: 38px; margin-bottom: 5px;"
+                    <button style="width: 18.5%; height: 38px; margin-bottom: 5px;"
                             class="btn btn-primary"
                             name="edit_button"
                             value="{{ document.description }}" form="data_edit">

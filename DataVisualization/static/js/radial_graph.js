@@ -1119,7 +1119,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .attr("class", "my-statistic") //add the tooltip class
         .style("position", "absolute")
         .style("z-index", "1") //it has no change
-        .style("visibility", "visible");
+        .style("visibility", "visible")
+        .style("right", "14%");
 
     // Div where the zoom buttons are displayed
     var zoomBackground = d3.select(container)
@@ -3556,7 +3557,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     function writeStatisticText() {
         // var statisticText = "<span style='font-size: 22px;'> Summary of " + sel_item.split('/')[2] + "</span> <button class='btn btn-primary'>+</button>";
-        var statisticText = "<table style='width: 500px; margin-top: 50px; z-index: 100;'>";
+        var statisticText = "<table style='width: 530px; margin-top: 50px; z-index: 100;'>";
 
         var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
