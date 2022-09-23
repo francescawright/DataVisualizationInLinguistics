@@ -775,7 +775,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .style("position", "absolute")
         .style("z-index", "1") //it has no change
         .style("visibility", "visible")
-        .style("right", "14%");
+        .style("right", "320px");
 
     // Div where the zoom buttons are displayed
     var zoomBackground = d3.select(container)

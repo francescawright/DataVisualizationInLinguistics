@@ -753,7 +753,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         .style("position", "absolute")
         .style("z-index", "1") //it has no change
         .style("visibility", "visible")
-        .style("right", "14%");
+        .style("right", "320px");
 
     // Div where the title of the "Static Values" is displayed
     var statisticTitleBackground = d3.select("#tree-container")

@@ -142,18 +142,18 @@
 
     body {
         height: fit-content;
-        width: fit-content;
+        width: auto;
     }
 </style>
 
 <body>
 
-<div class="topnav" style="display: flex; max-width: 2500px; padding: 0px; margin-left: 300px;">
+<div class="topnav row justify-content-center" style="display: flex; padding: 0px; width: fit-content; margin-left: 300px;">
     {#    <form style=" padding-left: 5px; padding-right: 45px; margin: 10px;">#}
     {#        <button style="margin-top: 4px;" class="btn btn-primary" formaction="{% url 'manage_data' %}">Manage Data#}
     {#        </button>#}
     {#    </form>#}
-    <div style="align-items: center;" class="btn-group btn-group-toggle" data-toggle="buttons">
+    <div style="align-items: center; margin-right: 50px; min-height: 100px;" class="btn-group btn-group-toggle" data-toggle="buttons">
         <div style="text-align: center; width: 250px; padding: 15px;">
             <a style="float: unset;" href="/">
                 <img src="{% static 'images/app_icon.svg' %}"
@@ -190,19 +190,19 @@
     </div>
     <!-- Layouts Radio Buttons -->
 
-    <div style="align-items: center; margin-left: 50px;" class="btn-group btn-group-toggle" id="layouts-radio-buttons" data-toggle="buttons">
-        <label id="tree_label" style="width: 250px; height:fit-content;"
+    <div style="align-items: center; margin-right: 50px; min-height: 100px;" class="col btn-group btn-group-toggle" id="layouts-radio-buttons" data-toggle="buttons">
+        <label id="tree_label" style="min-width: 210px; height:fit-content;"
                {% if checked_layout == "tree" %}class="btn btn-outline-primary active"
                {% else %}class="btn btn-outline-primary"{% endif %}>
             <input type="radio" id="tree_layout_button" name="tree_layout_button" value="checked"
                    autocomplete="off" form="main_form"
                    {% if checked_layout == "tree" %}checked{% endif %}>
 
-            Tree Layout &#8195;
+            Tree Layout&#8195;
             <img
                     src="{% static 'images/nav_bar/treeLayout.svg' %}" style="width: 60px;">
         </label>
-        <label id="force_label" style="width: 250px; height:fit-content;"
+        <label id="force_label" style="min-width: 210px; height:fit-content;"
                {% if checked_layout == "force" %}class="btn btn-outline-primary active"
                {% else %}class="btn btn-outline-primary"{% endif %}>
             <input type="radio" id="force_layout_button" form="main_form"
@@ -211,7 +211,7 @@
             <img
                     src="{% static 'images/nav_bar/forceLayout.svg' %}" style="width: 60px;">
         </label>
-        <label id="radial_label" style="width: 250px; height:fit-content;"
+        <label id="radial_label" style="min-width: 210px; height:fit-content;"
                {% if checked_layout == "radial" %}class="btn btn-outline-primary active"
                {% else %}class="btn btn-outline-primary"{% endif %}>
             <input type="radio" id="radial_layout_button" form="main_form"
@@ -220,12 +220,12 @@
             <img
                     src="{% static 'images/nav_bar/radialLayout.svg' %}" style="width: 60px;">
         </label>
-        <label id="treeMap_label" style="width: 250px; height:fit-content;"
+        <label id="treeMap_label" style="min-width: 210px; height:fit-content;"
                {% if checked_layout == "treeMap" %}class="btn btn-outline-primary active"
                {% else %}class="btn btn-outline-primary"{% endif %}>
             <input type="radio" id="treeMap_layout_button" form="main_form"
                    name="treeMap_layout_button" value="checked" autocomplete="off"
-                   {% if checked_layout == "TreeMap" %}checked{% endif %}>Circle Packing &#8195;
+                   {% if checked_layout == "TreeMap" %}checked{% endif %}>Circle Packing&#8195;
             <img
                     src="{% static 'images/nav_bar/circlePacking.svg' %}" style="width: 60px;">
         </label>
@@ -235,8 +235,8 @@
     {% if checked_layout != "treeMap" %}
         <!-- Glyphs Radio Buttons -->
 
-        <div style="align-items: center; margin-left: 50px;" id="glyphs-radio-buttons" class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label id="dots_label" style="width: 220px; height:fit-content;"
+        <div style="align-items: center; margin-right: 50px; min-height: 100px;" id="col glyphs-radio-buttons" class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label id="dots_label" style="min-width: 220px; height:fit-content;"
                    {% if selected_icons == "dots" %}class="btn btn-outline-primary active"
                    {% else %}class="btn btn-outline-primary"{% endif %}>
                 <input type="radio" name="dots_icon_button" id="dots_icon_button" form="main_form"
@@ -244,7 +244,7 @@
                 <img
                         src="{% static 'images/nav_bar/dots_1.svg' %}" style="width: 60px;">
             </label>
-            <label id="glyphs_label" style="width: 220px; height:fit-content;"
+            <label id="glyphs_label" style="min-width: 220px; height:fit-content;"
                    {% if selected_icons == "glyphs" %}class="btn btn-outline-primary active"
                    {% else %}class="btn btn-outline-primary"{% endif %}>
                 <input type="radio" name="glyphs_icon_button" id="glyphs_icon_button" form="main_form"
@@ -332,8 +332,6 @@
         document.getElementById("glyphs_label").className = "btn btn-primary active";
         console.log('[User]', user.split('/')[2], '| [interaction]', 'glyph_icons', '| [Date]', Date.now());
     });
-
-
 </script>
 </body>
 </html>

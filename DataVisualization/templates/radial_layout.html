@@ -8,6 +8,10 @@
 
     .overlay {
         background-color: #eff4fc;
+        width: 100%;
+        width: -moz-available;          /* WebKit-based browsers will ignore this. */
+        width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+        width: fill-available;
     }
 
     .node circle {
@@ -52,14 +56,12 @@
         width: 250px;
         padding: 19px;
         line-height: 1;
-    {#height: 30px; /* Should be removed. Only for demonstration */#}
     }
 
     .column2 {
         float: left;
-        width: 80%;
-        padding: 10px;
-        /*height: 300px; /* Should be removed. Only for demonstration */
+        width: calc(100vw - 300px);
+        padding: 10px 10px 19px 10px;
     }
 
     .gradient-line {
@@ -125,13 +127,11 @@
         margin-right: 3px;
     }
 
-
     .row_cust {
         flex-wrap: wrap;
         margin-right: -15px;
         margin-left: -15px;
     }
-
 
 </style>
 <head>
@@ -158,7 +158,6 @@
 <body>
 {% include 'nav_bar.html' %}
 {% include 'sidebar_layouts.html' %}
-
 </body>
 <!-- <script>
     Highcharts.chart('aux_graph', {
