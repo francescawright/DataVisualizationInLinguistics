@@ -1119,7 +1119,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .attr("class", "my-statistic") //add the tooltip class
         .style("position", "absolute")
         .style("z-index", "1") //it has no change
-        .style("visibility", "visible");
+        .style("visibility", "visible")
+        .style("right", "320px");
 
     // Div where the zoom buttons are displayed
     var zoomBackground = d3.select(container)
@@ -2935,7 +2936,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
             .on("mousemove", function (d) {
                 if (d !== root) {
-                    return tooltip.style("top", (d3.event.pageY - 30) + "px").style("left", (d3.event.pageX - 440) + "px");
+                    return tooltip.style("top", (d3.mouse(document.querySelector(".overlay"))[1] - 30) + "px").style("left", (d3.mouse(document.querySelector(".overlay"))[0] - 440) + "px");
                 }
             })
             .on("mouseout", function () {
@@ -3556,13 +3557,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     function writeStatisticText() {
         // var statisticText = "<span style='font-size: 22px;'> Summary of " + sel_item.split('/')[2] + "</span> <button class='btn btn-primary'>+</button>";
-        var statisticText = "<table style='width: 500px; margin-top: 50px; z-index: 100;'>";
+        var statisticText = "<table style='width: 530px; margin-top: 50px; z-index: 100;'>";
 
         var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
         var statValuesTox = [totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic];
         var statValuesTarg = [totalGroup, totalPerson, totalStereotype, totalNone];
-        var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "/icons/Blank.png"];
+        var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
         var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
         for (var i = 0; i < statTitlesToxicity.length; i++) {

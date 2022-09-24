@@ -3193,9 +3193,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
             .on("mousemove", function (d) {
                 if (d !== root) {
-                    return tooltip
-                        .style("top", d3.event.pageY - 30 + "px")
-                        .style("left", d3.event.pageX - 480 + "px");
+                    return tooltip.style("top", (d3.mouse(document.querySelector(".overlay"))[1] - 30) + "px").style("left", (d3.mouse(document.querySelector(".overlay"))[0] - 440) + "px");
                 }
             })
             .on("mouseout", function () {
@@ -3690,7 +3688,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
         var statValuesTox = [totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic];
         var statValuesTarg = [totalGroup, totalPerson, totalStereotype, totalNone];
-        var targetImagesPath = ["icons/Group.png", "icons/Person.png", "icons/Stereotype.png", "/icons/Blank.png"];
+        var targetImagesPath = ["icons/Group.png", "icons/Person.png", "icons/Stereotype.png", "icons/Blank.png"];
         var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
         for (var i = 0; i < statTitlesToxicity.length; i++) {

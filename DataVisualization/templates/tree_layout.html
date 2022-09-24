@@ -8,6 +8,10 @@
 
     .overlay {
         background-color: #eff4fc;
+        width: 100%;
+        width: -moz-available;          /* WebKit-based browsers will ignore this. */
+        width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+        width: fill-available;
     }
 
     .node circle {
@@ -55,9 +59,8 @@
 
     .column2 {
         float: left;
-        width: 80%;
-        padding: 10px;
-    {#height: 300px; /* Should be removed. Only for demonstration */#}
+        width: calc(100vw - 300px);
+        padding: 10px 10px 19px 10px;
     }
 
     .gradient-line {
@@ -153,7 +156,6 @@
 <body>
 {% include 'nav_bar.html' %}
 {% include 'sidebar_layouts.html' %}
-
 
 {#<canvas id="screenshot_canvas" style="width:2000px; height:2000px;"></canvas>#}
 
