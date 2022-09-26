@@ -316,7 +316,7 @@ def export_visualization():
 # ---------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import Loginform
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -337,7 +337,7 @@ def login_view(request):
             context = {'form': form,
                        'error': 'The login has been successful'}
 
-            return index(request)
+            return redirect('/')
         else:
             context = {'form': form,
                        'error': 'The username and password combination is incorrect'}
