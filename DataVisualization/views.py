@@ -337,7 +337,7 @@ def login_view(request):
             context = {'form': form,
                        'error': 'The login has been successful'}
 
-            return redirect('/')
+            return redirect('home')
         else:
             context = {'form': form,
                        'error': 'The username and password combination is incorrect'}
@@ -363,4 +363,5 @@ def signup_view(request):
 
 def logout_view(request):
     logout(request)
-    return index(request)
+    print(request.COOKIES)
+    return redirect('home')
