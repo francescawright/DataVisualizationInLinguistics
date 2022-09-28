@@ -1,4 +1,4 @@
-version: "3.1"
+version: "2.0"
 
 intents:
   - greet
@@ -8,6 +8,31 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
+  - logout
+  - restart
+
+actions:
+  - action_logout
+  - store_session_slots
+
+entities:
+  - sessionid
+  - csrftoken
+  - csrfmiddlewaretoken
+
+slots:
+  sessionid:
+    type: text
+    influence_conversation: false
+    auto_fill: true
+  csrftoken:
+    type: text
+    influence_conversation: false
+    auto_fill: true
+  csrfmiddlewaretoken:
+    type: text
+    influence_conversation: false
+    auto_fill: true
 
 responses:
   utter_greet:
@@ -32,3 +57,6 @@ responses:
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
+
+config:
+  store_entities_as_slots: true

@@ -1,4 +1,4 @@
-version: "3.1"
+version: "2.0"
 
 rules:
 
@@ -11,3 +11,8 @@ rules:
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+- rule: Log out whenever the user requests it
+  steps:
+  - intent: logout
+  - action: action_logout
