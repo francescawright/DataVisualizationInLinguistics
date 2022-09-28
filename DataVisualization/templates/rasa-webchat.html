@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- Action Forms -->
+
+<form id="logoutForm" action="{% url 'logout' %}" method="get" style="display: none;">
+    {% csrf_token %}
+</form>
+
+<!-- Rasa WebChat Style -->
+
 <style>
 .rw-conversation-container .rw-header {
     background-color: #fa7070;
@@ -14,10 +22,28 @@
 </style>
 
 <script>!(function () {
+
+    function getCookie(cookieName) {
+        let cookie = {};
+        document.cookie.split(';').forEach(function(el) {
+            let [key,value] = el.split('=');
+            cookie[key.trim()] = value;
+        })
+        return cookie[cookieName];
+    }
+
+    function generateInitPayload() {
+        let action = '/greet';
+        let sessionid = "{{ request.session.session_key }}";
+        let csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        let csrftoken = getCookie("csrftoken");
+        return action + '{\"csrfmiddlewaretoken\":\"' + csrfmiddlewaretoken + '\",\"csrftoken\":\"' + csrftoken + '\",\"sessionid\":\"' + sessionid + '\"}';
+    }
+
   let e = document.createElement("script"),
     t = document.head || document.getElementsByTagName("head")[0];
   (e.src =
-    "https://cdn.jsdelivr.net/npm/rasa-webchat@1.x.x/lib/index.js"),
+    "https://cdn.jsdelivr.net/npm/rasa-webchat@1.0.0/lib/index.js"),
     // Replace 1.x.x with the version that you want
     (e.async = !0),
     (e.onload = () => {
@@ -25,10 +51,11 @@
         {
             title: 'Rasa bot',
             subtitle: 'Say hi and get started!',
-            initPayload: '/greed',
+            initPayload: generateInitPayload(),
             customData: { language: "en" },
             socketUrl: "http://localhost:5005",
             showFullScreenButton: false,
+            // params: {storage: "session"},
             // add other props here
         },
         null
