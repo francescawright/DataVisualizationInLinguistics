@@ -51,7 +51,7 @@ class ActionLogout(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        requests.get(domainUrl + "selected_data/", params={"csrfmiddlewaretoken":tracker.get_slot("csrfmiddlewaretoken")},
+        requests.get(domainUrl + "logout/", params={"csrfmiddlewaretoken":tracker.get_slot("csrfmiddlewaretoken")},
                      cookies={"sessionid":tracker.get_slot("sessionid"),"csrftoken":tracker.get_slot("csrftoken")})
 
         if (tracker.get_slot("sessionid")):

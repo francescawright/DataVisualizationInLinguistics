@@ -33,3 +33,17 @@ stories:
   steps:
     - action: utter_greet
     - action: action_listen
+
+- story: User decides to log out
+  steps:
+    - intent: logout
+    - action: utter_logout_confirmation
+    - intent: logout_sure
+    - action: action_logout
+
+- story: User reconsiders and decides not to log out
+  steps:
+    - intent: logout
+    - action: utter_logout_confirmation
+    - intent: logout_none
+    - action: utter_logout_cancellation_received

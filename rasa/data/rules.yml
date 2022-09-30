@@ -12,7 +12,17 @@ rules:
   - intent: bot_challenge
   - action: utter_iamabot
 
-- rule: Log out whenever the user requests it
+- rule: Ask user for confirmation to logout
   steps:
   - intent: logout
+  - action: utter_logout_confirmation
+
+- rule: Log out when the user confirms
+  steps:
+  - intent: logout_sure
   - action: action_logout
+
+- rule: Warn the user that his session will remain open
+  steps:
+  - intent: logout_none
+  - action: utter_logout_cancellation_received

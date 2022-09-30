@@ -21,8 +21,7 @@
 }
 </style>
 
-<script>!(function () {
-
+<script>
     function getCookie(cookieName) {
         let cookie = {};
         document.cookie.split(';').forEach(function(el) {
@@ -40,29 +39,80 @@
         return action + '{\"csrfmiddlewaretoken\":\"' + csrfmiddlewaretoken + '\",\"csrftoken\":\"' + csrftoken + '\",\"sessionid\":\"' + sessionid + '\"}';
     }
 
-  let e = document.createElement("script"),
-    t = document.head || document.getElementsByTagName("head")[0];
-  (e.src =
-    "https://cdn.jsdelivr.net/npm/rasa-webchat@1.0.0/lib/index.js"),
-    // Replace 1.x.x with the version that you want
-    (e.async = !0),
-    (e.onload = () => {
-      window.WebChat.default(
-        {
-            title: 'Rasa bot',
-            subtitle: 'Say hi and get started!',
-            initPayload: generateInitPayload(),
-            customData: { language: "en" },
-            socketUrl: "http://localhost:5005",
-            showFullScreenButton: false,
-            // params: {storage: "session"},
-            // add other props here
-        },
-        null
-      );
-    }),
-    t.insertBefore(e, t.firstChild);
-})();
+    function doSomeCleanup() {
+        window.localstorage.clear()
+    }
 </script>
+
+<script>
+    !(function () {
+      let e = document.createElement("script"),
+        t = document.head || document.getElementsByTagName("head")[0];
+      (e.src =
+        "https://cdn.jsdelivr.net/npm/rasa-webchat@1.0.0/lib/index.js"),
+        // Replace 1.x.x with the version that you want
+        (e.async = !0),
+        (e.onload = () => {
+          window.WebChat.default(
+            {
+                title: 'Rasa bot',
+                subtitle: 'Say hi and get started!',
+                initPayload: generateInitPayload(),
+                customData: { language: "en" },
+                socketUrl: "http://localhost:5005",
+                showFullScreenButton: false,
+                customMessageDelay: (message) => {
+                    let delay = message.length * 30;
+                    if (delay > 2 * 1000) delay = 3 * 1000;
+                    if (delay < 400) delay = 1000;
+                    return delay;
+                },
+                onSocketEvent: {
+                    'bot_uttered': function(e) {console.log('the bot said something: ' + e.text)},
+                    'connect': function() {console.log('connection established')},
+                    'disconnect': function() {doSomeCleanup()},
+                },
+                onWidgetEvent: {
+                    onChatClose: function(widgetEvent) {
+                        console.log('connection onChatClose')
+                        // window.WebChat.send("/feedback") window.WebChat.close()
+                    },
+                    onChatOpen: function(widgetEvent) {
+                        console.log('connection onChatOpen')
+                    },
+                    onChatHidden: function(widgetEvent) {
+                        console.log('connection onChatHidden')
+                    },
+                },
+                // params: {storage: "session"},
+                // add other props here
+            },
+            null
+          );
+        }),
+        t.insertBefore(e, t.firstChild);
+    })();
+</script>
+
+{% comment %}<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.js"></script>
+<script>
+
+    // Connect to RASA server
+    const socket = io("http://localhost:5005");
+    console.log("NOT Connected to Socket.io server");
+    socket.on('connect', function () {
+        console.log("Connected to Socket.io server");
+    });
+
+    socket.on('connect_error', (error) => {
+        // Write any connection errors to the console
+        console.error(error);
+    });
+
+    socket.on('bot_uttered', (args) => {
+        // Write any connection errors to the console
+        console.log("test");
+    });
+</script>{% endcomment %}
 
 </html>

@@ -10,6 +10,8 @@ intents:
   - bot_challenge
   - logout
   - restart
+  - logout_sure
+  - logout_none
 
 actions:
   - action_logout
@@ -53,6 +55,17 @@ responses:
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
+
+  utter_logout_confirmation:
+  - text: "Sure you want to log out?"
+    buttons:
+      - title: "YES"
+        payload: "/logout_sure"
+      - title: "NO"
+        payload: "/logout_none"
+
+  utter_logout_cancellation_received:
+  - text: "Okay! I will not log you out"
 
 session_config:
   session_expiration_time: 60
