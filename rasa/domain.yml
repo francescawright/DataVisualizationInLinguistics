@@ -38,7 +38,8 @@ slots:
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
+  - text: "Hey! Need something?"
+  - text: "Hello! Can I help you with anything?"
 
   utter_cheer_up:
   - text: "Here is something to cheer you up:"

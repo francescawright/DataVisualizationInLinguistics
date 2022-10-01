@@ -8,6 +8,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
+from django.contrib import messages
 from .models import tbl_Authentication
 
 from DataVisualization.forms import FileForm
@@ -336,14 +337,13 @@ def login_view(request):
             login(request, user)
             context = {'form': form,
                        'error': 'The login has been successful'}
-
+            messages.success(request, 'The login has been successful')
             return redirect('home')
         else:
             context = {'form': form,
                        'error': 'The username and password combination is incorrect'}
-
-            return index(request)
-
+            messages.error(request, 'The username and password combination is incorrect')
+            return redirect("login")
     else:
         context = {'form': form}
         return render(request, 'login.html', context)
@@ -363,5 +363,10 @@ def signup_view(request):
 
 def logout_view(request):
     logout(request)
-    print(request.COOKIES)
-    return redirect('home')
+
+    if (request.GET.get("chatbot") == "true"):
+        response = render(request, 'index.html', context={'documents_uploaded': get_all_documents(), 'user': request.user, 'storage_clear': 'logout'})
+    else:
+        response = render(request, 'index.html', context={'documents_uploaded': get_all_documents(), 'user': request.user})
+
+    return response

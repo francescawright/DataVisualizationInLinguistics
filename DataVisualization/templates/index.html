@@ -156,6 +156,17 @@
 
 <body>
 
+<script>
+    function clearStorage() {
+        if ('{{storage_clear}}' && '{{storage_clear}}' === "logout") {
+            localStorage.setItem("chat_session", '{"metadata":{"tooltipSent":{},"linkTarget":"","userInput":"","domHighlight":{},"hintText":"","showTooltip":true},"conversation":[{"type":"text","component":{"compare":null,"displayName":"Connect(s)","defaultTypes":{"displayTypingIndication":false}},"text":"I have successfully logged you out","sender":"response","showAvatar":true}],"params":{"unreadCount":0,"connectingText":"Waiting for server...","oldUrl":"","connected":true,"docViewer":false,"isChatOpen":false,"disabledInput":false,"pageChangeCallbacks":{},"isChatVisible":true,"initialized":false,"messageDelayed":false},"version":"1.0.0"}');
+        } else if ('{{storage_clear}}' && '{{storage_clear}}' === "login") {
+            localStorage.setItem("chat_session", '{"metadata":{"tooltipSent":{},"linkTarget":"","userInput":"","domHighlight":{},"hintText":"","showTooltip":true},"conversation":[{"type":"text","component":{"compare":null,"displayName":"Connect(s)","defaultTypes":{"displayTypingIndication":false}},"text":"I have logged you in without any problem","sender":"response","showAvatar":true}],"params":{"unreadCount":0,"connectingText":"Waiting for server...","oldUrl":"","connected":true,"docViewer":false,"isChatOpen":false,"disabledInput":false,"pageChangeCallbacks":{},"isChatVisible":true,"initialized":false,"messageDelayed":false},"version":"1.0.0"}');
+        }
+    }
+    clearStorage();
+</script>
+
 {% include 'rasa-webchat.html' %}
 
 <div class="d-flex" id="wrapper">

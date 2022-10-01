@@ -51,15 +51,15 @@ class ActionLogout(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        requests.get(domainUrl + "logout/", params={"csrfmiddlewaretoken":tracker.get_slot("csrfmiddlewaretoken")},
-                     cookies={"sessionid":tracker.get_slot("sessionid"),"csrftoken":tracker.get_slot("csrftoken")})
-
-        if (tracker.get_slot("sessionid")):
-            print("yes sessionid")
+        if (tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None" ):
+            requests.get(domainUrl + "logout/", params={"csrfmiddlewaretoken":tracker.get_slot("csrfmiddlewaretoken")},
+                         cookies={"sessionid":tracker.get_slot("sessionid"),"csrftoken":tracker.get_slot("csrftoken")})
         else:
-            print("no sessionid")
+            dispatcher.utter_message(text="It is not possible to close a session that does not exist, you are not logged in...")
+            return []
+
         if (requests): # successful response
-            dispatcher.utter_message(text="The session has been successfully closed")
+            dispatcher.utter_message(text="I have successfully logged you out")
         else:
             dispatcher.utter_message(text="An error has occurred")
 

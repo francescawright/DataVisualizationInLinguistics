@@ -5,6 +5,7 @@
 
 <form id="logoutForm" action="{% url 'logout' %}" method="get" style="display: none;">
     {% csrf_token %}
+    <input type="hidden" name="chatbot" value="true">
 </form>
 
 <!-- Rasa WebChat Style -->
@@ -40,7 +41,19 @@
     }
 
     function doSomeCleanup() {
-        window.localstorage.clear()
+        localStorage.clear();
+    }
+
+    function botMessageEvent(e) {
+        console.log('the bot said something: ' + e.text);
+        doSomeCleanup();
+        
+        if (e.text === "I have successfully logged you out") {
+            if (document.getElementsByClassName("rw-widget-container")[0].classList.contains("rw-chat-open")) {
+                document.getElementsByClassName("rw-launcher")[0].click();
+            }
+            document.getElementById("logoutForm").submit()
+        }
     }
 </script>
 
@@ -68,14 +81,18 @@
                     return delay;
                 },
                 onSocketEvent: {
-                    'bot_uttered': function(e) {console.log('the bot said something: ' + e.text)},
-                    'connect': function() {console.log('connection established')},
-                    'disconnect': function() {doSomeCleanup()},
+                    'bot_uttered': botMessageEvent,
+                    'connect': function() {
+                        console.log('connection established')
+                    },
+                    'disconnect': function() {
+                        doSomeCleanup();
+                    },
                 },
                 onWidgetEvent: {
                     onChatClose: function(widgetEvent) {
                         console.log('connection onChatClose')
-                        // window.WebChat.send("/feedback") window.WebChat.close()
+                        // console.log(window.WebChat)
                     },
                     onChatOpen: function(widgetEvent) {
                         console.log('connection onChatOpen')
@@ -94,25 +111,24 @@
     })();
 </script>
 
-{% comment %}<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.js"></script>
-<script>
-
-    // Connect to RASA server
-    const socket = io("http://localhost:5005");
-    console.log("NOT Connected to Socket.io server");
-    socket.on('connect', function () {
-        console.log("Connected to Socket.io server");
-    });
-
-    socket.on('connect_error', (error) => {
-        // Write any connection errors to the console
-        console.error(error);
-    });
-
-    socket.on('bot_uttered', (args) => {
-        // Write any connection errors to the console
-        console.log("test");
-    });
-</script>{% endcomment %}
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.js"></script>#}
+{#<script>#}
+{#    let socketId = JSON.parse(localStorage.getItem('chat_session'))['session_id'];#}
+{#    // Connect to RASA server#}
+{#    const socket = io.sockets.sockets.get(socketId);#}
+{#    socket.on('connect', function () {#}
+{#        console.log("Connected to Socket.io server");#}
+{#    });#}
+{##}
+{#    socket.on('connect_error', (error) => {#}
+{#        // Write any connection errors to the console#}
+{#        console.error(error);#}
+{#    });#}
+{##}
+{#    socket.on('bot_uttered', (args) => {#}
+{#        // Write any connection errors to the console#}
+{#        console.log("test");#}
+{#    });#}
+{#</script>#}
 
 </html>
