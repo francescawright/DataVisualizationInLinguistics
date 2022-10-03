@@ -8,21 +8,69 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
-  - logout
-  - restart
+  - start_intent
+  - logout:
+      use_entities:
+        - action_requested
+  - login:
+      use_entities:
+        - action_requested
   - logout_sure
   - logout_none
+  - signup:
+      use_entities:
+        - action_requested
+  - change_layout:
+      use_entities:
+        - object_requested
+        - layout_requested
+  - select_document:
+      use_entities:
+        - object_requested
+        - document_requested
 
 actions:
   - action_logout
-  - store_session_slots
+  - action_login
+  - action_new_login
+  - action_signup
+  - action_store_session_slots
+  - action_change_layout
+  - action_open_document
+
+forms:
+  login_form:
+    username:
+      - type: from_text
+    password:
+      - type: from_text
+  signup_form:
+    username:
+      - type: from_text
+    password:
+      - type: from_text
+    password_confirmation:
+      - type: from_text
+  document_selection_form:
+    document_requested:
+      - type: from_text
 
 entities:
   - sessionid
   - csrftoken
   - csrfmiddlewaretoken
+  - username
+  - password
+  - password_confirmation
+  - action_requested
+  - object_requested
+  - layout_requested
+  - document_requested
 
 slots:
+  requested_slot:
+    type: text
+    influence_conversation: false
   sessionid:
     type: text
     influence_conversation: false
@@ -34,6 +82,21 @@ slots:
   csrfmiddlewaretoken:
     type: text
     influence_conversation: false
+    auto_fill: true
+  username:
+    type: text
+    influence_conversation: false
+    auto_fill: true
+  password:
+    type: text
+    influence_conversation: false
+    auto_fill: true
+  password_confirmation:
+    type: text
+    influence_conversation: false
+    auto_fill: true
+  document_requested:
+    type: text
     auto_fill: true
 
 responses:
@@ -60,13 +123,43 @@ responses:
   utter_logout_confirmation:
   - text: "Sure you want to log out?"
     buttons:
-      - title: "YES"
+      - title: "Yes"
         payload: "/logout_sure"
-      - title: "NO"
+      - title: "No"
         payload: "/logout_none"
 
   utter_logout_cancellation_received:
   - text: "Okay! I will not log you out"
+
+  utter_ask_username:
+  - text: "What is your username?"
+
+  utter_ask_signup_form_username:
+  - text: "What username would you like to have?"
+
+  utter_ask_login_form_password:
+  - text: "and the password?"
+
+  utter_ask_signup_form_password:
+  - text: "What password do you want to set?"
+
+  utter_ask_signup_form_password_confirmation:
+  - text: "Please retype the password to confirm it"
+
+  utter_layout_selection:
+  - text: "To which layout do you want to change?"
+    buttons:
+      - title: "Tree"
+        payload: '/change_layout{"object_requested":"layout","layout_requested":"tree"}'
+      - title: "Force"
+        payload: '/change_layout{"object_requested":"layout","layout_requested":"force"}'
+      - title: "Radial"
+        payload: '/change_layout{"object_requested":"layout","layout_requested":"radial"}'
+      - title: "Circle"
+        payload: '/change_layout{"object_requested":"layout","layout_requested":"circle"}'
+
+  utter_ask_document_selection_form_document_requested:
+  - text: "Which document do you want to open?"
 
 session_config:
   session_expiration_time: 60

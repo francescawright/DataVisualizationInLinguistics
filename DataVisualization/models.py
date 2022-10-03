@@ -6,7 +6,7 @@ from django.db import models
 
 class Document(models.Model):
     document_id = models.AutoField(primary_key=True)
-    description = models.CharField(max_length=255, blank=True)
+    description = models.CharField(max_length=255, unique=True)
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 

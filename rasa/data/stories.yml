@@ -29,8 +29,9 @@ stories:
   - intent: deny
   - action: utter_goodbye
 
-- story: Wait for user greeting
+- story: Wait for user request
   steps:
+    - intent: greet
     - action: utter_greet
     - action: action_listen
 
@@ -47,3 +48,86 @@ stories:
     - action: utter_logout_confirmation
     - intent: logout_none
     - action: utter_logout_cancellation_received
+
+- story: User logs in
+  steps:
+    - intent: login
+    - action: login_form
+    - active_loop: login_form
+    - slot_was_set:
+        - requested_slot: username
+    - slot_was_set:
+        - username: edu
+    - slot_was_set:
+        - requested_slot: password
+    - slot_was_set:
+        - password: patata5439
+    - slot_was_set:
+        - requested_slot: null
+    - active_loop: null
+    - action: action_login
+
+- story: User registers
+  steps:
+    - intent: signup
+    - action: signup_form
+    - active_loop: signup_form
+    - slot_was_set:
+        - requested_slot: username
+    - slot_was_set:
+        - username: ecem2
+    - slot_was_set:
+        - requested_slot: password
+    - slot_was_set:
+        - password: 123456test
+    - slot_was_set:
+        - requested_slot: password_confirmation
+    - slot_was_set:
+        - password_confirmation: 123456test
+    - slot_was_set:
+        - requested_slot: null
+    - active_loop: null
+    - action: action_signup
+
+- story: User changes display layout
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - action: action_listen
+    - intent: change_layout
+      entities:
+        - object_requested: "layout"
+        - layout_requested: "force"
+    - action: action_change_layout
+
+- story: The user requests to open a specific document
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - action: action_listen
+    - intent: select_document
+      entities:
+        - object_requested: "document"
+        - document_requested: "20200831_CR"
+    - slot_was_set:
+        - requested_slot: document_requested
+    - action: action_open_document
+
+- story: User requests to open an unspecified document
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - action: action_listen
+    - intent: select_document
+      entities:
+        - object_requested: "document"
+    - action: document_selection_form
+    - active_loop: document_selection_form
+    - slot_was_set:
+        - requested_slot: document_requested
+    - slot_was_set:
+        - document_requested: 20200708_MI
+    - slot_was_set:
+        - requested_slot: null
+    - active_loop: null
+    - action: action_open_document

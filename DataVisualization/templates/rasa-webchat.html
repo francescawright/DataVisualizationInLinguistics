@@ -8,6 +8,21 @@
     <input type="hidden" name="chatbot" value="true">
 </form>
 
+<form id="loginForm" action="{% url 'login' %}" method="post" style="display: none;">
+    {% csrf_token %}
+    <input id="username_input" type="hidden" name="username" value= "">
+    <input id="password_input" type="hidden" name="password" value= "">
+    <input type="hidden" name="chatbot" value="true">
+</form>
+
+<form id="signupForm" action="{% url 'signup' %}" method="post" style="display: none;">
+    {% csrf_token %}
+    <input id="signup_username_input" type="hidden" name="username" value= "">
+    <input id="signup_password_input" type="hidden" name="password1" value= "">
+    <input id="signup_password2_input" type="hidden" name="password2" value= "">
+    <input type="hidden" name="chatbot" value="true">
+</form>
+
 <!-- Rasa WebChat Style -->
 
 <style>
@@ -33,7 +48,7 @@
     }
 
     function generateInitPayload() {
-        let action = '/greet';
+        let action = '/start_intent';
         let sessionid = "{{ request.session.session_key }}";
         let csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
         let csrftoken = getCookie("csrftoken");
@@ -46,13 +61,19 @@
 
     function botMessageEvent(e) {
         console.log('the bot said something: ' + e.text);
-        doSomeCleanup();
-        
-        if (e.text === "I have successfully logged you out") {
-            if (document.getElementsByClassName("rw-widget-container")[0].classList.contains("rw-chat-open")) {
-                document.getElementsByClassName("rw-launcher")[0].click();
-            }
+
+        messageList = e.text.split(",");
+        if (messageList[0] === "intent_logout") {
             document.getElementById("logoutForm").submit()
+        } else if(messageList[0] === "intent_login") {
+            document.getElementById("username_input").value = messageList[1];
+            document.getElementById("password_input").value = messageList[2];
+            document.getElementById("loginForm").submit()
+        } else if(messageList[0] === "intent_signup") {
+            document.getElementById("signup_username_input").value = messageList[1];
+            document.getElementById("signup_password_input").value = messageList[2];
+            document.getElementById("signup_password2_input").value = messageList[3];
+            document.getElementById("signupForm").submit()
         }
     }
 </script>
@@ -101,6 +122,7 @@
                         console.log('connection onChatHidden')
                     },
                 },
+                // showMessageDate: true,
                 // params: {storage: "session"},
                 // add other props here
             },

@@ -91,11 +91,148 @@ nlu:
     - am I talking to a bot?
     - am I talking to a human?
 
-- intent: logout
+- synonym: logout
   examples: |
-    - I want to logout
-    - closes the session
-    - log me out
-    - logout
     - log out
     - log-out
+    - log off
+    - close
+    - exit
+    - leave
+
+- intent: logout
+  examples: |
+    - I want to [log out]{"entity": "action_requested", "value": "logout"}
+    - I want to [exit]{"entity": "action_requested", "value": "logout"} the session
+    - I want to [close]{"entity": "action_requested", "value": "logout"} my session
+    - log me out
+    - [logout]{"entity": "action_requested", "value": "logout"}
+    - [leave]{"entity": "action_requested", "value": "logout"} the session
+    - [log-out]{"entity": "action_requested", "value": "logout"} my session
+
+- synonym: login
+  examples: |
+    - log in
+    - log-in
+    - logon
+    - access
+    - log on
+    - sign in
+    - open
+    - start
+
+- intent: login
+  examples: |
+    - I want to [log in]{"entity": "action_requested", "value": "login"}
+    - I want to [access]{"entity": "action_requested", "value": "login"} my session
+    - I want to [start]{"entity": "action_requested", "value": "login"} the session
+    - [logon]{"entity": "action_requested", "value": "login"} to my account
+    - [sign in]{"entity": "action_requested", "value": "login"} my session
+    - [log-in]{"entity": "action_requested", "value": "login"} the session
+    - I want to enter my user
+    - I want to enter my username
+    - Enter my user
+    - Enter my username
+    - log me in
+    - [login]{"entity": "action_requested", "value": "login"}
+
+- synonym: signup
+  examples: |
+    - sign up
+    - sign-up
+    - register
+
+- intent: signup
+  examples: |
+    - I want to [register]{"entity": "action_requested", "value": "signup"}
+    - I would like to [register]{"entity": "action_requested", "value": "signup"}
+    - [sign up]{"entity": "action_requested", "value": "signup"} me on this website
+    - [sign-up]{"entity": "action_requested", "value": "signup"} me on this web
+    - sign me up
+    - [register]{"entity": "action_requested", "value": "signup"} me
+    - [signup]{"entity": "action_requested", "value": "signup"}
+
+- synonym: layout
+  examples: |
+    - visualization layout
+    - display layout
+    - design
+    - visualization design
+    - display design
+
+- synonym: tree
+  examples: |
+    - tree layout
+    - tree visualization
+    - tree design
+    - first visualization
+    - first design
+    - first layout
+
+- synonym: force
+  examples: |
+    - force layout
+    - force visualization
+    - force design
+    - second visualization
+    - second design
+    - second layout
+
+- synonym: radial
+  examples: |
+    - radial layout
+    - radial visualization
+    - radial design
+    - third visualization
+    - third design
+    - third layout
+
+- synonym: circle
+  examples: |
+    - circle layout
+    - circle visualization
+    - circle design
+    - circle packing
+    - circle packing visualization
+    - circle packing design
+    - fourth visualization
+    - fourth design
+    - fourth layout
+    - last visualization
+    - last design
+    - last layout
+
+- intent: change_layout
+  examples: |
+    - I want to change the [visualization layout]{"entity": "object_requested", "value": "layout"}
+    - I want to change the [display layout]{"entity": "object_requested", "value": "layout"}
+    - Change [design]{"entity": "object_requested", "value": "layout"}
+    - I want to see another [display design]{"entity": "object_requested", "value": "layout"}
+    - I would like to see another [visualization design]{"entity": "object_requested", "value": "layout"}
+    - Other [layout]{"entity": "object_requested", "value": "layout"}
+    - Change the [layout]{"entity": "object_requested", "value": "layout"} to [tree]{"entity": "layout_requested", "value": "tree"}
+    - Change [design]{"entity": "object_requested", "value": "layout"} to [tree visualization]{"entity": "layout_requested", "value": "tree"}
+    - Set the [tree design]{"entity": "layout_requested", "value": "tree"}
+    - Set [force layout]{"entity": "layout_requested", "value": "force"}
+    - Set the [design]{"entity": "object_requested", "value": "layout"} to the [force visualization]{"entity": "layout_requested", "value": "force"}
+    - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [force]{"entity": "layout_requested", "value": "force"}
+    - Displays the [radial layout]{"entity": "layout_requested", "value": "radial"}
+    - Displays [radial visualization]{"entity": "layout_requested", "value": "radial"}
+    - I want to see the [radial design]{"entity": "layout_requested", "value": "radial"}
+    - I would like to see the [radial]{"entity": "layout_requested", "value": "radial"}
+    - Show me the [circle layout]{"entity": "layout_requested", "value": "circle"}
+    - [circle packing]{"entity": "layout_requested", "value": "circle"}
+
+- synonym: file
+  examples: |
+    - document
+
+- intent: select_document
+  examples: |
+    - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Open the [document]{"entity": "object_requested", "value": "document"} [20190512_MI]{"entity": "document_requested"}
+    - Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
+    - Show me the [20190716_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - I want to open [20200608_SO]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - I want to see [20200618_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
+    - I want to see the [file]{"entity": "object_requested", "value": "document"} [20200715b_CR]{"entity": "document_requested"}

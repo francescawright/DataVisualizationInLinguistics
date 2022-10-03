@@ -9,11 +9,17 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import tbl_Authentication
+from django.contrib.sessions.models import Session
+from django.contrib.auth.models import User
 
 from DataVisualization.forms import FileForm
 from DataVisualization.models import Document, Commentary
 from DataVisualization.utilities.ExcelParser import ExcelParser
+
+from cryptography.fernet import Fernet
 
 TARGETS = ["target_group", "target_person", "target_stereotype"]
 FEATURES = ["argumentation", "constructiveness", "sarcasm", "mockery", "intolerance",
@@ -276,10 +282,12 @@ def edit_data(request):
 
 
 def handle_delete_data(request):
+    print(request.POST)
     try:
         selected_data = request.POST["delete_button"]
     except MultiValueDictKeyError as e:
         selected_data = Document.objects.first()
+    print(selected_data)
     delete_data(selected_data)
     return index(request)
 
@@ -324,49 +332,101 @@ from django.contrib.auth import authenticate, login, logout
 
 
 def login_view(request):
-    uservalue = ''
-    passwordvalue = ''
-
     form = Loginform(request.POST or None)
-    if form.is_valid():
+
+    if request.POST.get("username") and request.POST.get("password") and (request.POST.get("rasaserver") == "true" or request.POST.get("chatbot") == "true"):
+        print("test - 2")
+        return decrypt_login_params(request, form)
+
+    elif form.is_valid():
+        print("test - 3")
         uservalue = form.cleaned_data.get("username")
         passwordvalue = form.cleaned_data.get("password")
 
-        user = authenticate(username=uservalue, password=passwordvalue)
-        if user is not None:
-            login(request, user)
-            context = {'form': form,
-                       'error': 'The login has been successful'}
-            messages.success(request, 'The login has been successful')
-            return redirect('home')
-        else:
-            context = {'form': form,
-                       'error': 'The username and password combination is incorrect'}
-            messages.error(request, 'The username and password combination is incorrect')
-            return redirect("login")
+        return login_process(request, form, uservalue, passwordvalue)
     else:
+        print("test - 4")
         context = {'form': form}
         return render(request, 'login.html', context)
 
+def decrypt_login_params (request, form):
+    key = b'ZeuY3kEaYn2XkyPQPQKgDmDeDRJfKYM3-tTx_5NmMm4='
+    uservalue = decrypt(str.encode(request.POST.get("username")), key).decode()
+    passwordvalue = decrypt(str.encode(request.POST.get("password")), key).decode()
+    return login_process(request, form, uservalue, passwordvalue)
+
+def login_process(request, form, uservalue, passwordvalue):
+    user = authenticate(username=uservalue, password=passwordvalue)
+    print("test - 5")
+    if user is not None:
+        print("test - 6")
+        login(request, user)
+        context = {'form': form,
+                   'error': 'The login has been successful'}
+        messages.success(request, 'The login has been successful')
+        if request.POST.get("chatbot") == "true":
+            return render(request, 'index.html', context={'documents_uploaded': get_all_documents(), 'user': request.user, 'storage_clear': 'login'})
+        else:
+            return render(request, 'index.html', context={'documents_uploaded': get_all_documents(), 'user': request.user, 'storage_clear': 'nochat'})
+    else:
+        print("test - 7")
+        context = {'form': form,
+                   'error': 'The username and password combination is incorrect'}
+        messages.error(request, 'The username and password combination is incorrect')
+        return render(request, 'login.html', context)
 
 def signup_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
+        if request.POST.get("username") and request.POST.get("password1") and request.POST.get("password2") and (request.POST.get("rasaserver") == "true" or request.POST.get("chatbot") == "true"):
+            request = decrypt_signup_params(request)
+
+        if not request.POST.get("chatbot") == "true":
+            form = UserCreationForm(request.POST)
+            if form.is_valid():
+                user = form.save()
+                login(request, user)
+                return render(request, 'index.html',
+                              context={'documents_uploaded': get_all_documents(), 'user': request.user,
+                                       'storage_clear': 'nochat'})
+        else:
+            user = authenticate(username=request.POST['username'], password=request.POST['password1'])
             login(request, user)
-            return index(request)
+            return render(request, 'index.html',
+                          context={'documents_uploaded': get_all_documents(), 'user': request.user,
+                                   'storage_clear': 'signup'})
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
+def decrypt_signup_params (request):
+    key = b'JlgbJKpxVhwF3NXJf_n-lt4c4AvdCATnuXYDK4xivPY='
+    request.POST = request.POST.copy()
+    request.POST['username'] = decrypt(str.encode(request.POST.get("username")), key).decode()
+    request.POST['password1'] = decrypt(str.encode(request.POST.get("password1")), key).decode()
+    request.POST['password2'] = decrypt(str.encode(request.POST.get("password2")), key).decode()
+    print(request.POST['username'])
+    print(request.POST['password1'])
+    print(request.POST['password2'])
+
+    return request
+
+def signup_process(request, form):
+    user = form.save()
+    login(request, user)
+    return index(request)
 
 def logout_view(request):
-    logout(request)
 
     if (request.GET.get("chatbot") == "true"):
         response = render(request, 'index.html', context={'documents_uploaded': get_all_documents(), 'user': request.user, 'storage_clear': 'logout'})
     else:
-        response = render(request, 'index.html', context={'documents_uploaded': get_all_documents(), 'user': request.user})
+        logout(request)
+        response = render(request, 'index.html', context={'documents_uploaded': get_all_documents(), 'user': request.user, 'storage_clear': 'nochat'})
 
     return response
+
+def encrypt(message: bytes, key: bytes) -> bytes:
+    return Fernet(key).encrypt(message)
+
+def decrypt(token: bytes, key: bytes) -> bytes:
+    return Fernet(key).decrypt(token)

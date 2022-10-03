@@ -12,6 +12,12 @@ rules:
   - intent: bot_challenge
   - action: utter_iamabot
 
+- rule: First bot interaction with the user
+  steps:
+  - intent: start_intent
+  - action: utter_greet
+  - action: action_listen
+
 - rule: Ask user for confirmation to logout
   steps:
   - intent: logout
@@ -26,3 +32,43 @@ rules:
   steps:
   - intent: logout_none
   - action: utter_logout_cancellation_received
+
+- rule: The user has requested to log in and the data collection form is started
+  steps:
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+
+- rule: The user enters his or her data in the form to log in
+  condition:
+  - active_loop: login_form
+  steps:
+  - action: login_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_login
+
+- rule: The user has requested to register and the data collection form is started
+  steps:
+  - intent: signup
+  - action: signup_form
+  - active_loop: signup_form
+
+- rule: The user enters his data in the form to register on the website
+  condition:
+  - active_loop: signup_form
+  steps:
+  - action: signup_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_signup
+
+- rule: The user enters the document to be opened
+  steps:
+  - active_loop: document_selection_form
+  - active_loop: null
+  - slot_was_set:
+      - requested_slot: null
+  - action: action_open_document
