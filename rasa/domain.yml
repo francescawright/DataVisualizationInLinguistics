@@ -9,6 +9,7 @@ intents:
   - mood_unhappy
   - bot_challenge
   - start_intent
+  - new_start_intent
   - logout:
       use_entities:
         - action_requested
@@ -17,6 +18,10 @@ intents:
         - action_requested
   - logout_sure
   - logout_none
+  - logout_to_login_sure
+  - logout_to_login_none
+  - logout_to_signup_sure
+  - logout_to_signup_none
   - signup:
       use_entities:
         - action_requested
@@ -31,8 +36,11 @@ intents:
 
 actions:
   - action_logout
+  - action_logout_to_login
+  - action_logout_to_signup
+  - action_logout_to_login_cancellation
+  - action_logout_to_signup_cancellation
   - action_login
-  - action_new_login
   - action_signup
   - action_store_session_slots
   - action_change_layout
@@ -104,6 +112,10 @@ responses:
   - text: "Hey! Need something?"
   - text: "Hello! Can I help you with anything?"
 
+  utter_greet_again:
+  - text: "How else can I help you?"
+  - text: "What else can I do for you?"
+
   utter_cheer_up:
   - text: "Here is something to cheer you up:"
     image: "https://i.imgur.com/nGF1K8f.jpg"
@@ -128,8 +140,24 @@ responses:
       - title: "No"
         payload: "/logout_none"
 
-  utter_logout_cancellation_received:
+  utter_logout_cancellation:
   - text: "Okay! I will not log you out"
+
+  utter_logout_to_login:
+  - text: "You are already logged in, do you want me to log you out to start a new session?"
+    buttons:
+      - title: "Yes"
+        payload: "/logout_to_login_sure"
+      - title: "No"
+        payload: "/logout_to_login_none"
+
+  utter_logout_to_signup:
+  - text: "I need to close your current session in order to register the new user, is that ok?"
+    buttons:
+      - title: "Yes"
+        payload: "/logout_to_signup_sure"
+      - title: "No"
+        payload: "/logout_to_signup_none"
 
   utter_ask_username:
   - text: "What is your username?"

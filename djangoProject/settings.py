@@ -13,6 +13,15 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 # import dj_database_url
 from pathlib import Path
 import os
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+        messages.DEBUG: 'alert-secondary',
+        messages.INFO: 'alert-info',
+        messages.SUCCESS: 'alert-success',
+        messages.WARNING: 'alert-warning',
+        messages.ERROR: 'alert-danger',
+ }
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'DataVisualization',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +152,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

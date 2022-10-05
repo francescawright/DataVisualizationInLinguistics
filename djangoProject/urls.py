@@ -29,7 +29,7 @@ urlpatterns = [
 
     # Manage Data
     path('manage_data/', manage_data, name="manage_data"),
-    path('upload_file/', upload_file),
+    path('upload_file/', upload_file, name="upload_file"),
     path('delete_data/', handle_delete_data, name='delete_data'),
     path('edit_data/', edit_data, name='edit_data'),
 

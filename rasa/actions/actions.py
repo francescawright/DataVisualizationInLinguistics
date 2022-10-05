@@ -9,7 +9,7 @@
 
 from typing import Any, Text, Dict, List
 
-from rasa_sdk.events import SlotSet
+from rasa_sdk.events import SlotSet, FollowupAction
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
@@ -53,6 +53,31 @@ class ActionHelloWorld(Action):
 #
 #         return [SlotSet("csrftoken", "text2"),SlotSet("csrfmiddlewaretoken", "text3")]
 
+# class ActionLogout(Action):
+#
+#     def name(self) -> Text:
+#         return "action_logout"
+#
+#     def run(self, dispatcher: CollectingDispatcher,
+#             tracker: Tracker,
+#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#
+#         if (tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None"):
+#             response = requests.get(domainUrl + "logout/", params={"csrfmiddlewaretoken": tracker.get_slot("csrfmiddlewaretoken")},
+#                          cookies={"sessionid": tracker.get_slot("sessionid"),
+#                                   "csrftoken": tracker.get_slot("csrftoken")})
+#         else:
+#             dispatcher.utter_message(
+#                 text="It is not possible to close a session that does not exist, you are not logged in...")
+#             return []
+#
+#         if (response):  # successful response
+#             dispatcher.utter_message(text="intent_logout")
+#             return [SlotSet("sessionid", None)]
+#         else:
+#             dispatcher.utter_message(text="An error has occurred")
+#             return []
+
 class ActionLogout(Action):
 
     def name(self) -> Text:
@@ -62,22 +87,140 @@ class ActionLogout(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        if (tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None"):
-            response = requests.get(domainUrl + "logout/", params={"csrfmiddlewaretoken": tracker.get_slot("csrfmiddlewaretoken")},
-                         cookies={"sessionid": tracker.get_slot("sessionid"),
-                                  "csrftoken": tracker.get_slot("csrftoken")})
-        else:
-            dispatcher.utter_message(
-                text="It is not possible to close a session that does not exist, you are not logged in...")
-            return []
+        dispatcher.utter_message(text="intent_logout")
+        return [SlotSet("sessionid", None)]
 
-        if (response):  # successful response
-            dispatcher.utter_message(text="intent_logout")
-            return [SlotSet("csrftoken", None), SlotSet("csrfmiddlewaretoken", None), SlotSet("sessionid", None)]
-        else:
-            dispatcher.utter_message(text="An error has occurred")
-            return []
+class ActionLogoutToLogin(Action):
 
+    def name(self) -> Text:
+        return "action_logout_to_login"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        return [SlotSet("sessionid", None), FollowupAction("action_login")]
+
+class ActionLogoutToSignup(Action):
+
+    def name(self) -> Text:
+        return "action_logout_to_signup"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        return [SlotSet("sessionid", None), FollowupAction("action_signup")]
+
+class ActionLogoutToLoginCancellation(Action):
+
+    def name(self) -> Text:
+        return "action_logout_to_login_cancellation"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        dispatcher.utter_message(text="I will keep your current session open")
+        return [SlotSet("username", None),SlotSet("password", None)]
+
+class ActionLogoutToSignupCancellation(Action):
+
+    def name(self) -> Text:
+        return "action_logout_to_signup_cancellation"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        dispatcher.utter_message(text="I will not log you out, but the new user will not register")
+        return [SlotSet("username", None),SlotSet("password", None),SlotSet("password_confirmation", None)]
+
+# class ActionLogin(Action):
+#
+#     def name(self) -> Text:
+#         return "action_login"
+#
+#     def run(self, dispatcher: CollectingDispatcher,
+#             tracker: Tracker,
+#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#
+#         if (tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None"):
+#             dispatcher.utter_message(
+#                 text="You are already logged in, do you want me to log you out to start a new session?")
+#             # return [SlotSet("new_session", True)]
+#             return []
+#         else:
+#             key = b'ZeuY3kEaYn2XkyPQPQKgDmDeDRJfKYM3-tTx_5NmMm4='
+#             response = requests.post(domainUrl + "login/", data={"rasaserver": "true",
+#                     "csrfmiddlewaretoken": tracker.get_slot("csrfmiddlewaretoken"),
+#                     "username": encrypt(tracker.get_slot("username").encode(), key).decode(),
+#                     "password": encrypt(tracker.get_slot("password").encode(), key).decode()},
+#                     cookies={"csrftoken": tracker.get_slot("csrftoken")})
+#
+#         if (response):  # successful response
+#             dispatcher.utter_message(text='intent_login,' + encrypt(tracker.get_slot("username").encode(), key).decode() + ',' + encrypt(tracker.get_slot("password").encode(), key).decode())
+#             return []
+#         else:
+#             dispatcher.utter_message(text="An error has occurred")
+#             return [SlotSet("sessionid", None)]
+#
+#
+# class ActionNewSession(Action):
+#
+#     def name(self) -> Text:
+#         return "action_new_login"
+#
+#     def run(self, dispatcher: CollectingDispatcher,
+#             tracker: Tracker,
+#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#
+#         if (tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None"):
+#             response = requests.get(domainUrl + "logout/", params={"csrfmiddlewaretoken": tracker.get_slot("csrfmiddlewaretoken")},
+#                          cookies={"sessionid": tracker.get_slot("sessionid"),
+#                                   "csrftoken": tracker.get_slot("csrftoken")})
+#         else:
+#             dispatcher.utter_message(
+#                 text="I have lost the previous session, but you can start a new session anyway.")
+#
+#         if (response):  # successful response
+#             dispatcher.utter_message(text="intent_logout")
+#         else:
+#             dispatcher.utter_message(text="An error has occurred")
+#
+#         return [SlotSet("new_session", False)]
+#
+# class ActionSignup(Action):
+#
+#     def name(self) -> Text:
+#         return "action_signup"
+#
+#     def run(self, dispatcher: CollectingDispatcher,
+#             tracker: Tracker,
+#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#
+#         if (tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None"):
+#             dispatcher.utter_message(
+#                 text="You are logged in, do you want me to log you out so you can register as another user?")
+#             # return [SlotSet("new_session", True)]
+#             return []
+#         else:
+#             key = b'JlgbJKpxVhwF3NXJf_n-lt4c4AvdCATnuXYDK4xivPY='
+#             response = requests.post(domainUrl + "signup/", data={"rasaserver": "true",
+#                         "csrfmiddlewaretoken": tracker.get_slot("csrfmiddlewaretoken"),
+#                         "username": encrypt(tracker.get_slot("username").encode(), key).decode(),
+#                         "password1": encrypt(tracker.get_slot("password").encode(), key).decode(),
+#                         "password2": encrypt(tracker.get_slot("password_confirmation").encode(), key).decode()},
+#                         cookies={"csrftoken": tracker.get_slot("csrftoken")})
+#
+#         if (response):  # successful response
+#             dispatcher.utter_message(text='intent_signup,' + encrypt(tracker.get_slot("username").encode(), key).decode()
+#                                           + ',' + encrypt(tracker.get_slot("password").encode(), key).decode()
+#                                           + ',' + encrypt(tracker.get_slot("password_confirmation").encode(), key).decode())
+#             return []
+#         else:
+#             dispatcher.utter_message(text="An error has occurred")
+#             return [SlotSet("sessionid", None)]
 
 class ActionLogin(Action):
 
@@ -89,49 +232,13 @@ class ActionLogin(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         if (tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None"):
-            dispatcher.utter_message(
-                text="You are already logged in, do you want me to log you out to start a new session?")
-            # return [SlotSet("new_session", True)]
-            return []
+            return [FollowupAction("utter_logout_to_login")]
+
         else:
             key = b'ZeuY3kEaYn2XkyPQPQKgDmDeDRJfKYM3-tTx_5NmMm4='
-            response = requests.post(domainUrl + "login/", data={"rasaserver": "true",
-                    "csrfmiddlewaretoken": tracker.get_slot("csrfmiddlewaretoken"),
-                    "username": encrypt(tracker.get_slot("username").encode(), key).decode(),
-                    "password": encrypt(tracker.get_slot("password").encode(), key).decode()},
-                    cookies={"csrftoken": tracker.get_slot("csrftoken")})
-
-        if (response):  # successful response
             dispatcher.utter_message(text='intent_login,' + encrypt(tracker.get_slot("username").encode(), key).decode() + ',' + encrypt(tracker.get_slot("password").encode(), key).decode())
-            return []
-        else:
-            dispatcher.utter_message(text="An error has occurred")
-            return [SlotSet("csrftoken", None), SlotSet("csrfmiddlewaretoken", None), SlotSet("sessionid", None)]
+            return [SlotSet("username", None),SlotSet("password", None)]
 
-
-class ActionNewSession(Action):
-
-    def name(self) -> Text:
-        return "action_new_login"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        if (tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None"):
-            response = requests.get(domainUrl + "logout/", params={"csrfmiddlewaretoken": tracker.get_slot("csrfmiddlewaretoken")},
-                         cookies={"sessionid": tracker.get_slot("sessionid"),
-                                  "csrftoken": tracker.get_slot("csrftoken")})
-        else:
-            dispatcher.utter_message(
-                text="I have lost the previous session, but you can start a new session anyway.")
-
-        if (response):  # successful response
-            dispatcher.utter_message(text="intent_logout")
-        else:
-            dispatcher.utter_message(text="An error has occurred")
-
-        return [SlotSet("new_session", False)]
 
 class ActionSignup(Action):
 
@@ -143,27 +250,14 @@ class ActionSignup(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         if (tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None"):
-            dispatcher.utter_message(
-                text="You are logged in, do you want me to log you out so you can register as another user?")
-            # return [SlotSet("new_session", True)]
-            return []
+            return [FollowupAction("utter_logout_to_signup")]
         else:
             key = b'JlgbJKpxVhwF3NXJf_n-lt4c4AvdCATnuXYDK4xivPY='
-            response = requests.post(domainUrl + "signup/", data={"rasaserver": "true",
-                        "csrfmiddlewaretoken": tracker.get_slot("csrfmiddlewaretoken"),
-                        "username": encrypt(tracker.get_slot("username").encode(), key).decode(),
-                        "password1": encrypt(tracker.get_slot("password").encode(), key).decode(),
-                        "password2": encrypt(tracker.get_slot("password_confirmation").encode(), key).decode()},
-                        cookies={"csrftoken": tracker.get_slot("csrftoken")})
-
-        if (response):  # successful response
             dispatcher.utter_message(text='intent_signup,' + encrypt(tracker.get_slot("username").encode(), key).decode()
                                           + ',' + encrypt(tracker.get_slot("password").encode(), key).decode()
                                           + ',' + encrypt(tracker.get_slot("password_confirmation").encode(), key).decode())
-            return []
-        else:
-            dispatcher.utter_message(text="An error has occurred")
-            return [SlotSet("csrftoken", None), SlotSet("csrfmiddlewaretoken", None), SlotSet("sessionid", None)]
+            return [SlotSet("username", None), SlotSet("password", None), SlotSet("password_confirmation", None)]
+
 
 class ActionChangeLayout(Action):
 

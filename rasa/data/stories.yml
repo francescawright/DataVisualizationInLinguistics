@@ -47,7 +47,8 @@ stories:
     - intent: logout
     - action: utter_logout_confirmation
     - intent: logout_none
-    - action: utter_logout_cancellation_received
+    - action: utter_logout_cancellation
+
 
 - story: User logs in
   steps:

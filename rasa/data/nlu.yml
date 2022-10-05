@@ -223,9 +223,9 @@ nlu:
     - Show me the [circle layout]{"entity": "layout_requested", "value": "circle"}
     - [circle packing]{"entity": "layout_requested", "value": "circle"}
 
-- synonym: file
+- synonym: document
   examples: |
-    - document
+    - file
 
 - intent: select_document
   examples: |

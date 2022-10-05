@@ -9,6 +9,9 @@
 
 <body>
 
+{% include 'messages.html' %}
+{% load crispy_forms_tags %}
+
 <div class="d-flex" id="wrapper">
 
     {% include 'sidebar.html' with title="Sign-up" %}
@@ -24,7 +27,7 @@
             <h1>Sign-up</h1>
             <form action="{% url 'signup' %}" method="post">
                 {% csrf_token %}
-                {{ form }}
+                {{ form|crispy }}
                 <input type="submit" class="btn btn-primary" value="Sign-up">
             </form>
         </div>

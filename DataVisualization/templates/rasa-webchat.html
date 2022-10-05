@@ -38,6 +38,20 @@
 </style>
 
 <script>
+    (function clearStorage() {
+        if ('{{storage_clear}}') {
+            if ('{{storage_clear}}' === "logout") {
+                localStorage.setItem("chat_session", '{"metadata":{"tooltipSent":{},"linkTarget":"","userInput":"","domHighlight":{},"hintText":"","showTooltip":true},"conversation":[{"type":"text","component":{"compare":null,"displayName":"Connect(s)","defaultTypes":{"displayTypingIndication":false}},"text":"I have successfully logged you out","sender":"response","showAvatar":true}],"params":{"unreadCount":0,"connectingText":"Waiting for server...","oldUrl":"","connected":true,"docViewer":false,"isChatOpen":false,"disabledInput":false,"pageChangeCallbacks":{},"isChatVisible":true,"initialized":false,"messageDelayed":false},"version":"1.0.0"}');
+            } else if ('{{storage_clear}}' === "login") {
+                localStorage.setItem("chat_session", '{"metadata":{"tooltipSent":{},"linkTarget":"","userInput":"","domHighlight":{},"hintText":"","showTooltip":true},"conversation":[{"type":"text","component":{"compare":null,"displayName":"Connect(s)","defaultTypes":{"displayTypingIndication":false}},"text":"I have logged you in without any problem","sender":"response","showAvatar":true}],"params":{"unreadCount":0,"connectingText":"Waiting for server...","oldUrl":"","connected":true,"docViewer":false,"isChatOpen":false,"disabledInput":false,"pageChangeCallbacks":{},"isChatVisible":true,"initialized":false,"messageDelayed":false},"version":"1.0.0"}');
+            } else if ('{{storage_clear}}' === "signup") {
+                localStorage.setItem("chat_session", '{"metadata":{"tooltipSent":{},"linkTarget":"","userInput":"","domHighlight":{},"hintText":"","showTooltip":true},"conversation":[{"type":"text","component":{"compare":null,"displayName":"Connect(s)","defaultTypes":{"displayTypingIndication":false}},"text":"I have created your user and now you are logged in","sender":"response","showAvatar":true}],"params":{"unreadCount":0,"connectingText":"Waiting for server...","oldUrl":"","connected":true,"docViewer":false,"isChatOpen":false,"disabledInput":false,"pageChangeCallbacks":{},"isChatVisible":true,"initialized":false,"messageDelayed":false},"version":"1.0.0"}');
+            } else if ('{{storage_clear}}' === "nochat"){
+                localStorage.clear();
+            }
+        }
+    })();
+
     function getCookie(cookieName) {
         let cookie = {};
         document.cookie.split(';').forEach(function(el) {
@@ -48,7 +62,12 @@
     }
 
     function generateInitPayload() {
-        let action = '/start_intent';
+        let action;
+        if ('{{storage_clear}}') {
+            action = '/new_start_intent';
+        } else {
+            action = '/start_intent';
+        }
         let sessionid = "{{ request.session.session_key }}";
         let csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
         let csrftoken = getCookie("csrftoken");
@@ -61,21 +80,54 @@
 
     function botMessageEvent(e) {
         console.log('the bot said something: ' + e.text);
-
-        messageList = e.text.split(",");
-        if (messageList[0] === "intent_logout") {
-            document.getElementById("logoutForm").submit()
-        } else if(messageList[0] === "intent_login") {
-            document.getElementById("username_input").value = messageList[1];
-            document.getElementById("password_input").value = messageList[2];
-            document.getElementById("loginForm").submit()
-        } else if(messageList[0] === "intent_signup") {
-            document.getElementById("signup_username_input").value = messageList[1];
-            document.getElementById("signup_password_input").value = messageList[2];
-            document.getElementById("signup_password2_input").value = messageList[3];
-            document.getElementById("signupForm").submit()
+        if (e.text) {
+            messageList = e.text.split(",");
+            if (messageList[0] === "intent_logout") {
+                e.text = "I'm working on it";
+                document.getElementById("logoutForm").submit()
+            } else if(messageList[0] === "intent_login") {
+                e.text = "I'm working on it";
+                document.getElementById("username_input").value = messageList[1];
+                document.getElementById("password_input").value = messageList[2];
+                document.getElementById("loginForm").submit()
+            } else if(messageList[0] === "intent_signup") {
+                e.text = "I'm working on it";
+                document.getElementById("signup_username_input").value = messageList[1];
+                document.getElementById("signup_password_input").value = messageList[2];
+                document.getElementById("signup_password2_input").value = messageList[3];
+                document.getElementById("signupForm").submit()
+            }
         }
     }
+
+    (function chatbotErrorMessage(e) {
+        if ('{{chatbot_error}}') {
+            addToLocalStorageObject("chat_session", "conversation", '{{chatbot_error}}');
+        }
+    })();
+
+    /**
+     * Add an item to a localStorage() object
+     * @param {String} name  The localStorage() key
+     * @param {String} key   The localStorage() value object key
+     * @param {String} value The localStorage() value object value
+     */
+    function addToLocalStorageObject(name, key, value) {
+
+        // Get the existing data
+        var existing = localStorage.getItem(name);
+
+        // If no existing data, create an array
+        // Otherwise, convert the localStorage string to an array
+        existing = existing ? JSON.parse(existing) : {};
+
+        // Add new data to localStorage Array
+        existing[key].push({"type":"text","component":{"compare":null,"displayName":"Connect(s)","defaultTypes":{"displayTypingIndication":false}},"text": value,"sender":"response","showAvatar":true,"timestamp":Date.now()});
+
+        // Save back to localStorage
+        localStorage.setItem(name, JSON.stringify(existing));
+
+    };
 </script>
 
 <script>
