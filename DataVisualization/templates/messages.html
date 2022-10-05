@@ -1,6 +1,6 @@
 {% for message in messages %}
 <div class="container-fluid p-0">
-  <div class="alert m-0 text-center {{ message.tags }} alert-dismissible" role="alert" >
+  <div class="django-message alert m-0 text-center {{ message.tags }} alert-dismissible" role="alert" >
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="True">&times;</span>
     </button>
@@ -8,3 +8,13 @@
   </div>
 </div>
 {% endfor %}
+
+<script>
+    (function removeDjangoMessages() {
+        let elements = document.getElementsByClassName("django-message");
+
+        for (let j = 0; j < elements.length; j++) {
+            setTimeout(function(){ elements[0].parentNode.removeChild(elements[0]); }, 5000);
+        }
+    })();
+</script>

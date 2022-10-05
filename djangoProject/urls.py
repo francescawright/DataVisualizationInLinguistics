@@ -20,7 +20,7 @@ from DataVisualization.views import index, manage_data, \
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name="home"),
+    path('', index, name="index"),
 
     # Users
     path('login/', login_view, name="login"),
