@@ -187,8 +187,9 @@ nlu:
     - third design
     - third layout
 
-- synonym: circle
+- synonym: treeMap
   examples: |
+    - circle
     - circle layout
     - circle visualization
     - circle design
@@ -220,8 +221,8 @@ nlu:
     - Displays [radial visualization]{"entity": "layout_requested", "value": "radial"}
     - I want to see the [radial design]{"entity": "layout_requested", "value": "radial"}
     - I would like to see the [radial]{"entity": "layout_requested", "value": "radial"}
-    - Show me the [circle layout]{"entity": "layout_requested", "value": "circle"}
-    - [circle packing]{"entity": "layout_requested", "value": "circle"}
+    - Show me the [circle layout]{"entity": "layout_requested", "value": "treeMap"}
+    - [circle packing]{"entity": "layout_requested", "value": "treeMap"}
 
 - synonym: document
   examples: |

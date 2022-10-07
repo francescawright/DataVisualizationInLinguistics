@@ -106,6 +106,9 @@ slots:
   document_requested:
     type: text
     auto_fill: true
+  layout_requested:
+    type: text
+    auto_fill: true
 
 responses:
   utter_greet:
@@ -178,13 +181,13 @@ responses:
   - text: "To which layout do you want to change?"
     buttons:
       - title: "Tree"
-        payload: '/change_layout{"object_requested":"layout","layout_requested":"tree"}'
+        payload: '/change_layout{{"object_requested":"layout","layout_requested":"tree"}}'
       - title: "Force"
-        payload: '/change_layout{"object_requested":"layout","layout_requested":"force"}'
+        payload: '/change_layout{{"object_requested":"layout","layout_requested":"force"}}'
       - title: "Radial"
-        payload: '/change_layout{"object_requested":"layout","layout_requested":"radial"}'
+        payload: '/change_layout{{"object_requested":"layout","layout_requested":"radial"}}'
       - title: "Circle"
-        payload: '/change_layout{"object_requested":"layout","layout_requested":"circle"}'
+        payload: '/change_layout{{"object_requested":"layout","layout_requested":"treeMap"}}'
 
   utter_ask_document_selection_form_document_requested:
   - text: "Which document do you want to open?"

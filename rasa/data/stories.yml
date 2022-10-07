@@ -90,7 +90,7 @@ stories:
     - active_loop: null
     - action: action_signup
 
-- story: User changes display layout
+- story: User requests to switch to another specific layout
   steps:
     - intent: greet
     - action: utter_greet
@@ -99,6 +99,15 @@ stories:
       entities:
         - object_requested: "layout"
         - layout_requested: "force"
+    - action: action_change_layout
+
+- story: User requests to change layout
+  steps:
+    - intent: change_layout
+      entities:
+        - object_requested: "layout"
+    - action: utter_layout_selection
+    - intent: change_layout
     - action: action_change_layout
 
 - story: The user requests to open a specific document

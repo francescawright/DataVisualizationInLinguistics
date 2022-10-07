@@ -58,6 +58,35 @@ def get_all_documents():
 
 
 def main_form_handler(request):
+
+    # Check if there is an active session
+    user = getattr(request, 'user', None)
+    if not user or not getattr(user, 'is_authenticated', True):
+        return open_document_exception(request, "open_document_no_active_session")
+
+    storageClear = request.GET.get('storageClear', '')
+    errorMessage = request.GET.get('chatbotError', '')
+    if (errorMessage):
+        errorMessage = getChatErrorMessage(errorMessage)
+
+    try:
+        selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout = main_form_context(request)
+    except ObjectDoesNotExist:
+        return open_document_exception(request, "document_not_exist")
+
+    return render(request, template,
+                  {'dataset': 'output.json', 'options': get_all_documents(), 'layouts': LAYOUTS,
+                   'selected_layout': selected_layout,
+                   'checked_layout': checked_layout,
+                   'selected_item': selected_item,
+                   'selected_icons': selected_icons,
+                   # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
+                   # "d1": d1, "d2": d2,
+                   'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
+                   'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons, 'storage_clear': storageClear,
+                   'chatbot_error': errorMessage})
+
+def main_form_context(request):
     # CURRENT DATASET
     # ---------------------------------------------------------------------------------
     selected_item, dataset, doc = get_current_dataset(request)
@@ -91,17 +120,45 @@ def main_form_handler(request):
     # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
     # d1, d2 = auxiliary_charts(doc)
 
-    return render(request, template,
-                  {'dataset': 'output.json', 'options': get_all_documents(), 'layouts': LAYOUTS,
-                   'selected_layout': selected_layout,
-                   'checked_layout': checked_layout,
-                   'selected_item': selected_item,
-                   'selected_icons': selected_icons,
-                   # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
-                   # "d1": d1, "d2": d2,
-                   'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
-                   'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons})
+    return selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout
 
+def open_document_exception(request, error):
+    # Django Messages
+    if (error == "document_not_exist"):
+        messages.error(request, "The document you want to open does not exist")
+
+        request.POST = request.POST.copy()
+        if "from_button" in request.POST.keys():
+            request.POST['from_button'] = Document.objects.first().description
+        if "selected_data" in request.POST.keys():
+            request.POST["selected_data"] = Document.objects.first().description
+    elif (error == "open_document_no_active_session"):
+        messages.error(request, "Log in to access the documents")
+    else:
+        messages.error(request, "An error has occurred")
+
+    if (request.POST.get('chatbot') == "true"):
+        return getTemplateByPath(request, error)
+    else:
+        if (error == "open_document_no_active_session"):
+            return redirect("index")
+        else:
+            if "from_button" in request.POST.keys():
+                return redirect("index")
+            elif "selected_data" in request.POST.keys():
+                selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout = main_form_context(
+                    request)
+
+                return render(request, template,
+                              {'dataset': 'output.json', 'options': get_all_documents(), 'layouts': LAYOUTS,
+                               'selected_layout': selected_layout,
+                               'checked_layout': checked_layout,
+                               'selected_item': selected_item,
+                               'selected_icons': selected_icons,
+                               # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
+                               # "d1": d1, "d2": d2,
+                               'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
+                               'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons})
 
 # Auxiliary Form Handler functions
 # ---------------------------------------------------------------------------------
@@ -138,6 +195,8 @@ def get_current_dataset(request):
 
     try:
         doc = Document.objects.filter(description=selected_data).first()
+        if not(doc):
+            raise ObjectDoesNotExist('document_not_exist')
         selected_item = selected_data
     except MultiValueDictKeyError:
         doc = Document.objects.all()[0]
@@ -459,7 +518,7 @@ def logout_view(request):
     # Check if there is an active session
     user = getattr(request, 'user', None)
     if not user or not getattr(user, 'is_authenticated', True):
-        response = logout_exception(request, "no_active_session")
+        response = logout_exception(request, "logout_no_active_session")
     else:
         logout(request)
         messages.success(request, "Your session has been successfully closed")
@@ -496,7 +555,23 @@ def getTemplateByPath(request, errorMessage):
     elif path == "/signup/":
         return redirect(reverse('signup') + '?chatbotError=' + errorMessage)
     elif path == "/selected_data/":
-        return redirect(reverse('selected_data') + '?chatbotError=' + errorMessage)
+
+        if (errorMessage == "open_document_no_active_session"):
+            return redirect(reverse('index') + '?chatbotError=' + errorMessage)
+
+        selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout = main_form_context(request)
+
+        return render(request, template,
+                      {'dataset': 'output.json', 'options': get_all_documents(), 'layouts': LAYOUTS,
+                       'selected_layout': selected_layout,
+                       'checked_layout': checked_layout,
+                       'selected_item': selected_item,
+                       'selected_icons': selected_icons,
+                       # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
+                       # "d1": d1, "d2": d2,
+                       'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
+                       'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons, 'chatbot_error': errorMessage})
+
     elif path == "/upload_file/":
         return redirect(reverse('upload_file') + '?chatbotError=' + errorMessage)
 
@@ -505,7 +580,9 @@ def getChatErrorMessage(errorName):
                 'bad_credentials':"The username and password combination you have given me is not valid",
                 'passwords_not_match':"I have not been able to register the user, the two passwords you have given me do not match",
                 'username_already_exists':"I have not been able to register the user, there is already a user with this name",
-                'no_active_session':"It is not possible to close a session that does not exist, you are not logged in...",}
+                'logout_no_active_session':"It is not possible to close a session that does not exist, you are not logged in...",
+                'document_not_exist':"I cannot find any document with the name you have given me",
+                'open_document_no_active_session':"You need to be logged in to access the documents",}
     if errorName in messages:
         return messages[errorName]
     else:

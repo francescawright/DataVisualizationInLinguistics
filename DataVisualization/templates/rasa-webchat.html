@@ -23,6 +23,12 @@
     <input type="hidden" name="chatbot" value="true">
 </form>
 
+<form id="chatbotDataSelection" action="{% url 'selected_data' %}" style="display: none;" method="POST">
+    {% csrf_token %}
+    <input id="open_document_name" type="hidden" name="from_button" value= "">
+    <input type="hidden" name="chatbot" value="true">
+</form>
+
 <!-- Rasa WebChat Style -->
 
 <style>
@@ -96,6 +102,30 @@
                 document.getElementById("signup_password_input").value = messageList[2];
                 document.getElementById("signup_password2_input").value = messageList[3];
                 document.getElementById("signupForm").submit()
+            } else if(messageList[0] === "intent_open_document") {
+                e.text = "I'm working on it";
+                let documentName = messageList[1];
+                var mainForm = document.getElementById("main_form");
+                if (mainForm) {
+                    let inputDocument = document.createElement("input");
+                    inputDocument.setAttribute("type", "hidden");
+                    inputDocument.setAttribute("name", "selected_data");
+                    inputDocument.setAttribute("value", documentName);
+                    mainForm.appendChild(inputDocument);
+                    mainForm.submit()
+                } else {
+                    document.getElementById("open_document_name").value = documentName;
+                    document.getElementById("chatbotDataSelection").submit()
+                }
+            } else if(messageList[0] === "intent_change_layout") {
+                e.text = "I'm working on it";
+                if ('{{ selected_item }}') {
+                    addToLocalStorageObject("chat_session", "conversation", "Done!");
+                    document.getElementById(messageList[1] + "_layout_button").click()
+                } else {
+                    addToLocalStorageObject("chat_session", "conversation", "Open a document first to be able to change the layout");
+                    window.location = window.location.href.split("?")[0];
+                }
             }
         }
     }
