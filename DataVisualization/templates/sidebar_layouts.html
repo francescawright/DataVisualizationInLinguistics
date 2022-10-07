@@ -53,7 +53,7 @@
     {% load static %}
 </head>
 
-<div style="display: inline-block; width: calc(calc(100vw - (100vw - 100%)));">
+<div style="display: inline-block; width: calc(calc(100vw - (100vw - 100%)));overflow-x: clip;">
     <div class="row_cust" style="display: block;">
 
         <div id="menu-left" style="margin-top: -100px;" class="column3">
@@ -91,8 +91,8 @@
                             &#8722;
                         </div>
                     </button>
-                    {#                <p style="text-align: center; font-weight: bold; padding-top: 10px;">Targets</p>#}
-                    <div style="padding-left: 10px; padding-right: 10px; padding-top: 10px;" class="panel">
+
+                    <div style="padding-left: 10px; padding-right: 10px; padding-top: 10px;display: block;" class="panel">
                         <!-- Dropdown menu -->
                         <!-- <label for="dropdown-targets">Style:</label>
                         <select id="dropdown-targets" name="dropdown-targets">
@@ -113,9 +113,9 @@
                                    value="target-group"
                                    id="target-group"
                                    form="main_form"
-                                   {% if cbTargets.target_group == 1 %}checked{% else %}unchecked{% endif %}><label
-                                class="custom-control-label"
-                                for="target-group">Target Group</label>
+                                   {% if cbTargets.target_group == 1 %}checked{% else %}unchecked{% endif %}>
+                            <label class="custom-control-label" for="target-group">Target Group
+                            </label>
                             <img src="{% static './images/targets/icons/Group.svg' %}" alt="Purple people"
                                  width="20"
                                  height="20" style="float:right; ">
@@ -125,9 +125,9 @@
                             <input type="checkbox" class="custom-control-input" name="cbTargets"
                                    value="target-person"
                                    id="target-person" form="main_form"
-                                   {% if cbTargets.target_person == 1 %}checked{% else %}unchecked{% endif %}><label
-                                class="custom-control-label" style="vertical-align: center;"
-                                for="target-person">Target Person</label>
+                                   {% if cbTargets.target_person == 1 %}checked{% else %}unchecked{% endif %}>
+                            <label class="custom-control-label" style="vertical-align: center;" for="target-person">Target Person
+                            </label>
                             <img src="{% static './images/targets/icons/Person.svg' %}" alt="Dat with blue person"
                                  width="20" height="20" style="float:right; ">
                         </div>
@@ -136,9 +136,9 @@
                             <input type="checkbox" class="custom-control-input" name="cbTargets"
                                    value="target-stereotype"
                                    id="target-stereotype" form="main_form"
-                                   {% if cbTargets.target_stereotype == 1 %}checked{% else %}unchecked{% endif %}><label
-                                class="custom-control-label"
-                                for="target-stereotype">Stereotype</label>
+                                   {% if cbTargets.target_stereotype == 1 %}checked{% else %}unchecked{% endif %}>
+                            <label class="custom-control-label" for="target-stereotype">Stereotype
+                            </label>
                             <img src="{% static './images/targets/icons/Stereotype.svg' %}"
                                  alt="Orange thinking cloud"
                                  width="20" height="20" style="float:right;">
@@ -166,7 +166,7 @@
                         </div>
                     </button>
 
-                    <div style="padding-left: 10px; padding-right: 10px; padding-top: 10px;" class="panel">
+                    <div style="padding-left: 10px; padding-right: 10px; padding-top: 10px;display: block;" class="panel">
                         <div style="padding-bottom: 20px; display: none;">
                             <!-- Dropdown menu -->
                             {#                        <div>#}
@@ -191,11 +191,11 @@
                             {#                        </div>#}
                             <div style="display:none">
                                 <input type="checkbox" class="checkbox" name="cbFeatureProperty" value="dot-feat"
-                                       id="dot-feat" disabled="true"><label for="dot-feat">Dot</label>
+                                       id="dot-feat" disabled="true">
+                                <label for="dot-feat">Dot</label>
                                 <input type="checkbox" class="checkbox" name="cbFeatureProperty" value="cheese-feat"
-                                       id="cheese-feat" disabled="true"><label class="custom-control-label"
-                                                                               for="cheese-feat">Trivial
-                                cheese</label>
+                                       id="cheese-feat" disabled="true">
+                                <label class="custom-control-label" for="cheese-feat">Trivial cheese</label>
                             </div>
                         </div>
                         <div class="text-center">
@@ -217,9 +217,8 @@
                                 <input type="checkbox" class="custom-control-input" name="cbFeatures"
                                        value="constructiveness"
                                        id="constructiveness" disabled="true" form="main_form"
-                                       {% if cbFeatures.constructiveness == 1 %}checked{% else %}unchecked{% endif %}><label
-                                    class="custom-control-label"
-                                    for="constructiveness">Constructiveness</label>
+                                       {% if cbFeatures.constructiveness == 1 %}checked{% else %}unchecked{% endif %}>
+                                <label class="custom-control-label" for="constructiveness">Constructiveness</label>
                                 <div style="float: right">
                                     <svg height="20" width="30" style="display: inline-block;">
                                         <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -231,9 +230,8 @@
                                 <input type="checkbox" class="custom-control-input" name="cbFeatures"
                                        value="argumentation"
                                        id="argumentation" disabled="true" form="main_form"
-                                       {% if cbFeatures.argumentation == 1 %}checked{% else %}unchecked{% endif %}><label
-                                    class="custom-control-label"
-                                    for="argumentation">Argumentation</label>
+                                       {% if cbFeatures.argumentation == 1 %}checked{% else %}unchecked{% endif %}>
+                                <label class="custom-control-label" for="argumentation">Argumentation</label>
                                 <div style="float: right">
                                     <svg height="20" width="30" style="display: inline-block;">
                                         <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -249,9 +247,8 @@
                                        value="sarcasm"
                                        id="sarcasm"
                                        disabled="true" form="main_form"
-                                       {% if cbFeatures.sarcasm == 1 %}checked{% else %}unchecked{% endif %}><label
-                                    class="custom-control-label"
-                                    for="sarcasm">Sarcasm</label>
+                                       {% if cbFeatures.sarcasm == 1 %}checked{% else %}unchecked{% endif %}>
+                                <label class="custom-control-label" for="sarcasm">Sarcasm</label>
                                 <div style="float: right">
                                     <svg height="20" width="30" style="display: inline-block;">
                                         <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -265,9 +262,8 @@
                                        value="mockery"
                                        id="mockery"
                                        disabled="true" form="main_form"
-                                       {% if cbFeatures.mockery == 1 %}checked{% else %}unchecked{% endif %}><label
-                                    class="custom-control-label"
-                                    for="mockery">Mockery</label>
+                                       {% if cbFeatures.mockery == 1 %}checked{% else %}unchecked{% endif %}>
+                                <label class="custom-control-label" for="mockery">Mockery</label>
                                 <div style="float: right">
                                     <svg height="20" width="30" style="display: inline-block;">
                                         <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -280,9 +276,8 @@
                                 <input type="checkbox" class="custom-control-input" name="cbFeatures"
                                        value="intolerance"
                                        id="intolerance" disabled="true" form="main_form"
-                                       {% if cbFeatures.intolerance == 1 %}checked{% else %}unchecked{% endif %}><label
-                                    class="custom-control-label"
-                                    for="intolerance">Intolerance</label>
+                                       {% if cbFeatures.intolerance == 1 %}checked{% else %}unchecked{% endif %}>
+                                <label class="custom-control-label" for="intolerance">Intolerance</label>
                                 <div style="float: right">
                                     <svg height="20" width="30" style="display: inline-block;">
                                         <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -295,10 +290,8 @@
                                 <input type="checkbox" class="custom-control-input" name="cbFeatures"
                                        value="improper_language"
                                        id="improper_language" disabled="true" form="main_form"
-                                       {% if cbFeatures.improper_language == 1 %}checked{% else %}unchecked{% endif %}><label
-                                    class="custom-control-label"
-                                    for="improper_language">Improper
-                                language</label>
+                                       {% if cbFeatures.improper_language == 1 %}checked{% else %}unchecked{% endif %}>
+                                <label class="custom-control-label" for="improper_language">Improper language</label>
                                 <div style="float: right">
                                     <svg height="20" width="20" style="display: inline-block;">
                                         <circle cx="10" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -311,9 +304,8 @@
                                 <input type="checkbox" class="custom-control-input" name="cbFeatures" value="insult"
                                        id="insult"
                                        form="main_form" disabled="true"
-                                       {% if cbFeatures.insult == 1 %}checked{% else %}unchecked{% endif %}><label
-                                    class="custom-control-label"
-                                    for="insult">Insult</label>
+                                       {% if cbFeatures.insult == 1 %}checked{% else %}unchecked{% endif %}>
+                                <label class="custom-control-label" for="insult">Insult</label>
                                 <div style="float: right">
                                     <svg height="20" width="30" style="display: inline-block;">
                                         <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -326,9 +318,8 @@
                                 <input type="checkbox" class="custom-control-input" name="cbFeatures"
                                        value="aggressiveness"
                                        id="aggressiveness" disabled="true" form="main_form"
-                                       {% if cbFeatures.aggressiveness == 1 %}checked{% else %}unchecked{% endif %}><label
-                                    class="custom-control-label"
-                                    for="aggressiveness">Aggressiveness</label>
+                                       {% if cbFeatures.aggressiveness == 1 %}checked{% else %}unchecked{% endif %}>
+                                <label class="custom-control-label" for="aggressiveness">Aggressiveness</label>
                                 <div style="float: right">
                                     <svg height="20" width="30" style="display: inline-block;">
                                         <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -354,7 +345,7 @@
                                 &#8722;
                             </div>
                         </button>
-                        <div style="padding-top: 10px;padding-left: 10px;" class="panel">
+                        <div style="padding-top: 10px;padding-left: 10px; display: block;" class="panel">
                             {#                            <input type="checkbox" class="checkbox" name="cbHighlightMenu" value="highlight-group"#}
                             {#                                   id="highlight-group-cb"><label for="highlight-group-cb" style="font-weight: bold;">Filter</label>#}
 
@@ -395,16 +386,16 @@
                                                name="cbHighlightOR"
                                                value="highlight-OR-selectAll-toxicity"
                                                id="highlight-OR-selectAll-toxicity" form="main_form"
-                                               {% if cbFilterOR.highlight_OR_selectAll_toxicity == 1 %}checked{% else %}unchecked{% endif %}><label
-                                            class="custom-control-label"
-                                            for="highlight-OR-selectAll-toxicity">Select All</label>
+                                               {% if cbFilterOR.highlight_OR_selectAll_toxicity == 1 %}checked{% else %}unchecked{% endif %}>
+                                        <label class="custom-control-label" for="highlight-OR-selectAll-toxicity">Select All
+                                        </label>
                                     </div>
                                     <div class="custom-control custom-switch" style="line-height: 23px;">
                                         <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                                value="highlight-toxicity-0" id="highlight-toxicity-0OR" form="main_form"
-                                               {% if cbFilterOR.highlight_toxicity_0 == 1 %}checked{% else %}unchecked{% endif %}><label
-                                            class="custom-control-label"
-                                            for="highlight-toxicity-0OR">Not toxic</label>
+                                               {% if cbFilterOR.highlight_toxicity_0 == 1 %}checked{% else %}unchecked{% endif %}>
+                                        <label class="custom-control-label" for="highlight-toxicity-0OR">Not toxic
+                                        </label>
                                         <div style="float: right">
                                             <svg height="20" width="30" style="display: inline-block;">
                                                 <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -416,9 +407,9 @@
                                     <div class="custom-control custom-switch" style="line-height: 23px;">
                                         <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                                value="highlight-toxicity-1" id="highlight-toxicity-1OR" form="main_form"
-                                               {% if cbFilterOR.highlight_toxicity_1 == 1 %}checked{% else %}unchecked{% endif %}><label
-                                            class="custom-control-label"
-                                            for="highlight-toxicity-1OR">Mildly toxic</label>
+                                               {% if cbFilterOR.highlight_toxicity_1 == 1 %}checked{% else %}unchecked{% endif %}>
+                                        <label class="custom-control-label" for="highlight-toxicity-1OR">Mildly toxic
+                                        </label>
                                         <div style="float: right">
                                             <svg height="20" width="30" style="display: inline-block;">
                                                 <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -430,9 +421,8 @@
                                     <div class="custom-control custom-switch" style="line-height: 23px;">
                                         <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                                value="highlight-toxicity-2" id="highlight-toxicity-2OR" form="main_form"
-                                               {% if cbFilterOR.highlight_toxicity_2 == 1 %}checked{% else %}unchecked{% endif %}><label
-                                            class="custom-control-label"
-                                            for="highlight-toxicity-2OR">Toxic</label>
+                                               {% if cbFilterOR.highlight_toxicity_2 == 1 %}checked{% else %}unchecked{% endif %}>
+                                        <label class="custom-control-label" for="highlight-toxicity-2OR">Toxic</label>
                                         <div style="float: right">
                                             <svg height="20" width="30" style="display: inline-block;">
                                                 <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -444,9 +434,8 @@
                                     <div class="custom-control custom-switch" style="line-height: 23px;">
                                         <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                                value="highlight-toxicity-3" id="highlight-toxicity-3OR" form="main_form"
-                                               {% if cbFilterOR.highlight_toxicity_2 == 1 %}checked{% else %}unchecked{% endif %}><label
-                                            class="custom-control-label"
-                                            for="highlight-toxicity-3OR">Very toxic</label>
+                                               {% if cbFilterOR.highlight_toxicity_2 == 1 %}checked{% else %}unchecked{% endif %}>
+                                        <label class="custom-control-label" for="highlight-toxicity-3OR">Very toxic</label>
                                         <div style="float: right">
                                             <svg height="20" width="30" style="display: inline-block;">
                                                 <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -465,18 +454,15 @@
                                                name="cbHighlightOR"
                                                value="highlight-OR-selectAll-stance"
                                                id="highlight-OR-selectAll-stance" form="main_form"
-                                               {% if cbFilterOR.highlight_OR_selectAll_stance == 1 %}checked{% else %}unchecked{% endif %}><label
-                                            class="custom-control-label"
-                                            for="highlight-OR-selectAll-stance">Select All</label>
+                                               {% if cbFilterOR.highlight_OR_selectAll_stance == 1 %}checked{% else %}unchecked{% endif %}>
+                                        <label class="custom-control-label" for="highlight-OR-selectAll-stance">Select All</label>
                                     </div>
                                     <div class="custom-control custom-switch" style="line-height: 23px;">
                                         <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                                value="highlight-stance-neutral"
                                                id="highlight-stance-neutralOR" form="main_form"
-                                               {% if cbFilterOR.highlight_stance_neutral == 1 %}checked{% else %}unchecked{% endif %}><label
-                                            class="custom-control-label"
-                                            for="highlight-stance-neutralOR">Neutral
-                                        stance</label>
+                                               {% if cbFilterOR.highlight_stance_neutral == 1 %}checked{% else %}unchecked{% endif %}>
+                                        <label class="custom-control-label" for="highlight-stance-neutralOR">Neutral stance</label>
                                         <div style="float: right">
                                             <svg height=" 10" width="30" style="display: inline-block;">
                                                 <rect width="20" height="10" fill="#2b2727"/>
@@ -488,9 +474,8 @@
                                         <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                                value="highlight-stance-positive" id="highlight-stance-positiveOR"
                                                form="main_form"
-                                               {% if cbFilterOR.highlight_stance_positive == 1 %}checked{% else %}unchecked{% endif %}><label
-                                            class="custom-control-label"
-                                            for="highlight-stance-positiveOR">Positive stance</label>
+                                               {% if cbFilterOR.highlight_stance_positive == 1 %}checked{% else %}unchecked{% endif %}>
+                                        <label class="custom-control-label" for="highlight-stance-positiveOR">Positive stance</label>
                                         <div style="float: right">
                                             <svg height=" 10" width="30" style="display: inline-block;">
                                                 <rect width="20" height="10" fill="#77dd77"/>
@@ -502,9 +487,8 @@
                                         <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                                value="highlight-stance-negative" id="highlight-stance-negativeOR"
                                                form="main_form"
-                                               {% if cbFilterOR.highlight_stance_negative == 1 %}checked{% else %}unchecked{% endif %}><label
-                                            class="custom-control-label"
-                                            for="highlight-stance-negativeOR" checked>Negative stance</label>
+                                               {% if cbFilterOR.highlight_stance_negative == 1 %}checked{% else %}unchecked{% endif %}>
+                                        <label class="custom-control-label" for="highlight-stance-negativeOR" checked>Negative stance</label>
                                         <div style="float: right">
                                             <svg height=" 10" width="30" style="display: inline-block;">
                                                 <rect width="20" height="10" fill="#ff6961"/>
@@ -523,19 +507,16 @@
                                            name="cbHighlightOR"
                                            value="highlight-OR-selectAll-target"
                                            id="highlight-OR-selectAll-target" form="main_form"
-                                           {% if cbFilterOR.highlight_OR_selectAll_target == 1 %}checked{% else %}unchecked{% endif %}><label
-                                        class="custom-control-label"
-                                        for="highlight-OR-selectAll-target">Select All</label>
+                                           {% if cbFilterOR.highlight_OR_selectAll_target == 1 %}checked{% else %}unchecked{% endif %}>
+                                    <label class="custom-control-label" for="highlight-OR-selectAll-target">Select All</label>
                                 </div>
                                 <div class="custom-control custom-switch"
                                      style="line-height: 23px;">
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                            value="highlight-target-group"
                                            id="highlight-target-groupOR" form="main_form"
-                                           {% if cbFilterOR.highlight_target_group == 1 %}checked{% else %}unchecked{% endif %}><label
-                                        class="custom-control-label"
-                                        for="highlight-target-groupOR">Target
-                                    group</label>
+                                           {% if cbFilterOR.highlight_target_group == 1 %}checked{% else %}unchecked{% endif %}>
+                                    <label class="custom-control-label" for="highlight-target-groupOR">Target group</label>
                                     <img src="{% static './images/targets/icons/Group.svg' %}" alt="Purple people"
                                          width="20"
                                          height="20" style="float:right; margin-right: 10px;">
@@ -547,10 +528,8 @@
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                            value="highlight-target-person"
                                            id="highlight-target-personOR" form="main_form"
-                                           {% if cbFilterOR.highlight_target_person == 1 %}checked{% else %}unchecked{% endif %}><label
-                                        class="custom-control-label"
-                                        for="highlight-target-personOR">Target
-                                    person</label>
+                                           {% if cbFilterOR.highlight_target_person == 1 %}checked{% else %}unchecked{% endif %}>
+                                    <label class="custom-control-label" for="highlight-target-personOR">Target person</label>
                                     <img src="{% static './images/targets/icons/Person.svg' %}" alt="Purple people"
                                          width="20"
                                          height="20" style="float:right; margin-right: 10px;">
@@ -559,9 +538,8 @@
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                            value="highlight-target-stereotype"
                                            id="highlight-target-stereotypeOR" form="main_form"
-                                           {% if cbFilterOR.highlight_target_stereotype == 1 %}checked{% else %}unchecked{% endif %}><label
-                                        class="custom-control-label"
-                                        for="highlight-target-stereotypeOR">Stereotype</label>
+                                           {% if cbFilterOR.highlight_target_stereotype == 1 %}checked{% else %}unchecked{% endif %}>
+                                    <label class="custom-control-label" for="highlight-target-stereotypeOR">Stereotype</label>
                                     <img src="{% static './images/targets/icons/Stereotype.svg' %}"
                                          alt="Purple people"
                                          width="20"
@@ -577,9 +555,8 @@
                                            name="cbHighlightOR"
                                            value="highlight-OR-selectAll-features"
                                            id="highlight-OR-selectAll-features" form="main_form"
-                                           {% if cbFilterOR.highlight_OR_selectAll_features == 1 %}checked{% else %}unchecked{% endif %}><label
-                                        class="custom-control-label"
-                                        for="highlight-OR-selectAll-features">Select All</label>
+                                           {% if cbFilterOR.highlight_OR_selectAll_features == 1 %}checked{% else %}unchecked{% endif %}>
+                                    <label class="custom-control-label" for="highlight-OR-selectAll-features">Select All</label>
                                 </div>
 
 
@@ -588,10 +565,8 @@
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                            value="highlight-features-constructiveness"
                                            id="highlight-features-constructivenessOR" form="main_form"
-                                           {% if cbFilterOR.highlight_features_constructiveness == 1 %}checked{% else %}unchecked{% endif %}
-                                    ><label
-                                        class="custom-control-label"
-                                        for="highlight-features-constructivenessOR">Constructiveness</label>
+                                           {% if cbFilterOR.highlight_features_constructiveness == 1 %}checked{% else %}unchecked{% endif %}>
+                                    <label class="custom-control-label" for="highlight-features-constructivenessOR">Constructiveness</label>
                                     <div style="float: right; margin-right: 10px;">
                                         <svg height="20" width="30" style="display: inline-block;">
                                             <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -604,9 +579,8 @@
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                            value="highlight-features-argumentation"
                                            id="highlight-features-argumentationOR" form="main_form"
-                                           {% if cbFilterOR.highlight_features_argumentation == 1 %}checked{% else %}unchecked{% endif %}><label
-                                        class="custom-control-label"
-                                        for="highlight-features-argumentationOR">Argumentation</label>
+                                           {% if cbFilterOR.highlight_features_argumentation == 1 %}checked{% else %}unchecked{% endif %}>
+                                    <label class="custom-control-label" for="highlight-features-argumentationOR">Argumentation</label>
                                     <div style="float: right; margin-right: 10px;">
                                         <svg height="20" width="30" style="display: inline-block;">
                                             <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -620,9 +594,8 @@
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                            value="highlight-features-sarcasm"
                                            id="highlight-features-sarcasmOR" form="main_form"
-                                           {% if cbFilterOR.highlight_features_sarcasm == 1 %}checked{% else %}unchecked{% endif %}><label
-                                        class="custom-control-label"
-                                        for="highlight-features-sarcasmOR">Sarcasm</label>
+                                           {% if cbFilterOR.highlight_features_sarcasm == 1 %}checked{% else %}unchecked{% endif %}>
+                                    <label class="custom-control-label" for="highlight-features-sarcasmOR">Sarcasm</label>
                                     <div style="float: right; margin-right: 10px;">
                                         <svg height="20" width="30" style="display: inline-block;">
                                             <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -635,9 +608,8 @@
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                            value="highlight-features-mockery"
                                            id="highlight-features-mockeryOR" form="main_form"
-                                           {% if cbFilterOR.highlight_features_mockery == 1 %}checked{% else %}unchecked{% endif %}><label
-                                        class="custom-control-label"
-                                        for="highlight-features-mockeryOR">Mockery</label>
+                                           {% if cbFilterOR.highlight_features_mockery == 1 %}checked{% else %}unchecked{% endif %}>
+                                    <label class="custom-control-label" for="highlight-features-mockeryOR">Mockery</label>
                                     <div style="float: right; margin-right: 10px;">
                                         <svg height="20" width="30" style="display: inline-block;">
                                             <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -650,9 +622,8 @@
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                            value="highlight-features-intolerance"
                                            id="highlight-features-intoleranceOR" form="main_form"
-                                           {% if cbFilterOR.highlight_features_intolerance == 1 %}checked{% else %}unchecked{% endif %}><label
-                                        class="custom-control-label"
-                                        for="highlight-features-intoleranceOR">Intolerance</label>
+                                           {% if cbFilterOR.highlight_features_intolerance == 1 %}checked{% else %}unchecked{% endif %}>
+                                    <label class="custom-control-label" for="highlight-features-intoleranceOR">Intolerance</label>
                                     <div style="float: right; margin-right: 10px;">
                                         <svg height="20" width="30" style="display: inline-block;">
                                             <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -665,9 +636,8 @@
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                            value="highlight-features-improper-language"
                                            id="highlight-features-improper-languageOR" form="main_form"
-                                           {% if cbFilterOR.highlight_features_improper_language == 1 %}checked{% else %}unchecked{% endif %}><label
-                                        class="custom-control-label"
-                                        for="highlight-features-improper-languageOR">Improper
+                                           {% if cbFilterOR.highlight_features_improper_language == 1 %}checked{% else %}unchecked{% endif %}>
+                                    <label class="custom-control-label" for="highlight-features-improper-languageOR">Improper
                                     language</label>
                                     <div style="float: right; margin-right: 10px;">
                                         <svg height="20" width="30" style="display: inline-block;">
@@ -681,9 +651,8 @@
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                            value="highlight-features-insult"
                                            id="highlight-features-insultOR" form="main_form"
-                                           {% if cbFilterOR.highlight_features_insult == 1 %}checked{% else %}unchecked{% endif %}><label
-                                        class="custom-control-label"
-                                        for="highlight-features-insultOR">Insult</label>
+                                           {% if cbFilterOR.highlight_features_insult == 1 %}checked{% else %}unchecked{% endif %}>
+                                    <label class="custom-control-label" for="highlight-features-insultOR">Insult</label>
                                     <div style="float: right; margin-right: 10px;">
                                         <svg height="20" width="30" style="display: inline-block;">
                                             <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -696,9 +665,8 @@
                                     <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
                                            value="highlight-features-aggressiveness"
                                            id="highlight-features-aggressivenessOR" form="main_form"
-                                           {% if cbFilterOR.highlight_features_aggressiveness == 1 %}checked{% else %}unchecked{% endif %}><label
-                                        class="custom-control-label"
-                                        for="highlight-features-aggressivenessOR">Aggressiveness</label>
+                                           {% if cbFilterOR.highlight_features_aggressiveness == 1 %}checked{% else %}unchecked{% endif %}>
+                                    <label class="custom-control-label" for="highlight-features-aggressivenessOR">Aggressiveness</label>
                                     <div style="float: right; margin-right: 10px;">
                                         <svg height="20" width="30" style="display: inline-block;">
                                             <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -715,9 +683,8 @@
                                     <div class="custom-control custom-switch" style="line-height: 23px;">
                                         <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
                                                value="highlight-toxicity-0" id="highlight-toxicity-0" form="main_form"
-                                               {% if cbFilterAND.highlight_toxicity_0 == 1 %}checked{% else %}unchecked{% endif %}
-                                        ><label class="custom-control-label"
-                                                for="highlight-toxicity-0">Not toxic</label>
+                                               {% if cbFilterAND.highlight_toxicity_0 == 1 %}checked{% else %}unchecked{% endif %}>
+                                        <label class="custom-control-label" for="highlight-toxicity-0">Not toxic</label>
                                         <div style="float: right">
                                             <svg height="20" width="30" style="display: inline-block;">
                                                 <circle cx="20" cy="10" r="7" stroke="black" stroke-width="0.5"
@@ -1041,7 +1008,7 @@
                  style="margin-top: 5px;background-color: #c9daf8ff; padding-bottom: 10px;">
 
                 <div class="list-group list-group-flush" style="width: 261px;">
-                    <button id="targets_accordion_button" type="button"
+                    <button id="devtools_accordion_button" type="button"
                             class="accordion btn btn-secondary active"><span
                             style="text-align: center; font-weight: bold; vertical-align: center;" checked>
                     Devtools</span>
@@ -1049,7 +1016,7 @@
                             &#8722;
                         </div>
                     </button>
-                    <div style="padding-left: 10px; padding-right: 10px; padding-top: 10px;" class="panel">
+                    <div style="padding-left: 10px; padding-right: 10px; padding-top: 10px; display: block;" class="panel">
                         <!-- Dropdown menu -->
                         <!-- <label for="dropdown-targets">Style:</label>
                         <select id="dropdown-targets" name="dropdown-targets">
@@ -1070,9 +1037,8 @@
                                    value="elongated-tendency"
                                    id="elongated-tendency"
                                    form="main_form"
-                                   {% if cbDevtools.elongated_tendency == 1 %}checked{% else %}unchecked{% endif %}><label
-                                class="custom-control-label"
-                                for="elongated-tendency">Elongated Tendency</label>
+                                   {% if cbDevtools.elongated_tendency == 1 %}checked{% else %}unchecked{% endif %}>
+                            <label class="custom-control-label" for="elongated-tendency">Elongated Tendency</label>
                             <div style="float: right">
                                 <svg height="20" width="30" style="display: inline-block;">
                                     <rect x="10" y="5" width="15" height="15" stroke="black" fill="#88FF00" stroke-width="0.5"/>
@@ -1085,9 +1051,8 @@
                                    value="compact-tendency"
                                    id="compact-tendency"
                                    form="main_form"
-                                   {% if cbDevtools.compact_tendency == 1 %}checked{% else %}unchecked{% endif %}><label
-                                class="custom-control-label" style="vertical-align: center;"
-                                for="compact-tendency">Compact Tendency</label>
+                                   {% if cbDevtools.compact_tendency == 1 %}checked{% else %}unchecked{% endif %}>
+                            <label class="custom-control-label" style="vertical-align: center;" for="compact-tendency">Compact Tendency</label>
                             <div style="float: right">
                                 <svg height="20" width="30" style="display: inline-block;">
                                     <rect x="10" y="5" width="15" height="15" stroke="black" fill="#FFBB00" stroke-width="0.5"/>
@@ -1100,9 +1065,8 @@
                                    value="significant-nodes"
                                    id="significant-nodes"
                                    form="main_form"
-                                   {% if cbDevtools.significant_nodes == 1 %}checked{% else %}unchecked{% endif %}><label
-                                class="custom-control-label"
-                                for="significant-nodes">Significant Nodes</label>
+                                   {% if cbDevtools.significant_nodes == 1 %}checked{% else %}unchecked{% endif %}>
+                            <label class="custom-control-label" for="significant-nodes">Significant Nodes</label>
                             <div style="float: right">
                                 <svg height="20" width="30" style="display: inline-block;">
                                     <rect x="10" y="5" width="15" height="15" stroke="black" fill="#FF5500" stroke-width="0.5"/>
@@ -1117,9 +1081,8 @@
                                    value="elongated-hierarchy"
                                    id="elongated-hierarchy"
                                    form="main_form"
-                                   {% if cbDevtools.elongated_hierarchy == 1 %}checked{% else %}unchecked{% endif %}><label
-                                class="custom-control-label"
-                                for="elongated-hierarchy">Elongated Hierarchy</label>
+                                   {% if cbDevtools.elongated_hierarchy == 1 %}checked{% else %}unchecked{% endif %}>
+                            <label class="custom-control-label" for="elongated-hierarchy">Elongated Hierarchy</label>
                             <div style="float: right">
                                 <svg height="20" width="30" style="display: inline-block;">
                                     <rect x="10" y="5" width="15" height="15" stroke="black" fill="#90F6B2" stroke-width="0.5"/>
@@ -1132,9 +1095,8 @@
                                    value="compact-hierarchy"
                                    id="compact-hierarchy"
                                    form="main_form"
-                                   {% if cbDevtools.compact_hierarchy == 1 %}checked{% else %}unchecked{% endif %}><label
-                                class="custom-control-label"
-                                for="compact-hierarchy">Compact Hierarchy</label>
+                                   {% if cbDevtools.compact_hierarchy == 1 %}checked{% else %}unchecked{% endif %}>
+                            <label class="custom-control-label" for="compact-hierarchy">Compact Hierarchy</label>
                             <div style="float: right">
                                 <svg height="20" width="30" style="display: inline-block;">
                                     <rect x="10" y="5" width="15" height="15" stroke="black" fill="#1B8055" stroke-width="0.5"/>
@@ -1147,9 +1109,8 @@
                                    value="nComp-hierarchy"
                                    id="nComp-hierarchy"
                                    form="main_form"
-                                   {% if cbDevtools.nComp_hierarchy == 1 %}checked{% else %}unchecked{% endif %}><label
-                                class="custom-control-label"
-                                for="nComp-hierarchy">nCompact Hierarchy</label>
+                                   {% if cbDevtools.nComp_hierarchy == 1 %}checked{% else %}unchecked{% endif %}>
+                            <label class="custom-control-label" for="nComp-hierarchy">nCompact Hierarchy</label>
                             <div style="float: right">
                                 <svg height="20" width="30" style="display: inline-block;">
                                     <rect x="10" y="5" width="15" height="15" stroke="black" fill="#97CFFF" stroke-width="0.5"/>
@@ -1162,9 +1123,8 @@
                                    value="hybrid-hierarchy"
                                    id="hybrid-hierarchy"
                                    form="main_form"
-                                   {% if cbDevtools.hybrid_hierarchy == 1 %}checked{% else %}unchecked{% endif %}><label
-                                class="custom-control-label"
-                                for="hybrid-hierarchy">Hybrid Hierarchy</label>
+                                   {% if cbDevtools.hybrid_hierarchy == 1 %}checked{% else %}unchecked{% endif %}>
+                            <label class="custom-control-label" for="hybrid-hierarchy">Hybrid Hierarchy</label>
                             <div style="float: right">
                                 <svg height="20" width="30" style="display: inline-block;">
                                     <rect x="10" y="5" width="15" height="15" stroke="black" fill="#1795FF" stroke-width="0.5"/>
@@ -1439,7 +1399,7 @@
     {#                Some interesting statistics here#}
     {#            </div>#}
     {#        </table>#}
-</div>
+    </div>
 
 </div>
 
@@ -1574,7 +1534,7 @@
         console.log('[User]', user.split('/')[2], ' | [interaction]', 'OR_button', ' | [Date]', Date.now());
     });
 
-    var targets_accordion_expanded = false;
+    var targets_accordion_expanded = true;
     jQuery("#targets_accordion_button").click(function () {
         if (!targets_accordion_expanded) {
             document.getElementById('plus_sign_targets').innerHTML = '&#8722;';
@@ -1587,7 +1547,7 @@
         }
     });
 
-    var features_accordion_expanded = false;
+    var features_accordion_expanded = true;
     jQuery("#features_accordion_button").click(function () {
         if (!features_accordion_expanded) {
             document.getElementById('plus_sign_features').innerHTML = '&#8722;';
@@ -1601,7 +1561,7 @@
     });
 
 
-    var highlight_accordion_expanded = false;
+    var highlight_accordion_expanded = true;
     jQuery("#highlight_accordion_button").click(function () {
         if (!highlight_accordion_expanded) {
             document.getElementById('plus_sign_highlight').innerHTML = '&#8722;';
@@ -1614,7 +1574,7 @@
         }
     });
 
-    var devtools_accordion_expanded = false;
+    var devtools_accordion_expanded = true;
     jQuery("#devtools_accordion_button").click(function () {
         if (!devtools_accordion_expanded) {
             document.getElementById('plus_sign_devtools').innerHTML = '&#8722;';

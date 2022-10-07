@@ -558,19 +558,20 @@ def getTemplateByPath(request, errorMessage):
 
         if (errorMessage == "open_document_no_active_session"):
             return redirect(reverse('index') + '?chatbotError=' + errorMessage)
+        return redirect(reverse('selected_data') + '?chatbotError=' + errorMessage)
 
-        selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout = main_form_context(request)
-
-        return render(request, template,
-                      {'dataset': 'output.json', 'options': get_all_documents(), 'layouts': LAYOUTS,
-                       'selected_layout': selected_layout,
-                       'checked_layout': checked_layout,
-                       'selected_item': selected_item,
-                       'selected_icons': selected_icons,
-                       # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
-                       # "d1": d1, "d2": d2,
-                       'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
-                       'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons, 'chatbot_error': errorMessage})
+        # selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout = main_form_context(request)
+        #
+        # return render(request, template,
+        #               {'dataset': 'output.json', 'options': get_all_documents(), 'layouts': LAYOUTS,
+        #                'selected_layout': selected_layout,
+        #                'checked_layout': checked_layout,
+        #                'selected_item': selected_item,
+        #                'selected_icons': selected_icons,
+        #                # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
+        #                # "d1": d1, "d2": d2,
+        #                'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
+        #                'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons, 'chatbot_error': errorMessage})
 
     elif path == "/upload_file/":
         return redirect(reverse('upload_file') + '?chatbotError=' + errorMessage)

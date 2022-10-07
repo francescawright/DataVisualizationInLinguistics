@@ -343,7 +343,7 @@
                             &#8722;
                         </div>
                     </button>
-                    <div style="padding-top: 10px;padding-left: 10px;" class="panel">
+                    <div style="padding-top: 10px;padding-left: 10px;display: block;" class="panel">
                         {#                            <input type="checkbox" class="checkbox" name="cbHighlightMenu" value="highlight-group"#}
                         {#                                   id="highlight-group-cb"><label for="highlight-group-cb" style="font-weight: bold;">Filter</label>#}
 
@@ -1146,7 +1146,7 @@
         });
     }
 
-    var highlight_accordion_expanded = false;
+    var highlight_accordion_expanded = true;
     jQuery("#highlight_accordion_button").click(function () {
         if (!highlight_accordion_expanded) {
             document.getElementById('plus_sign_highlight').innerHTML = '&#8722;';
