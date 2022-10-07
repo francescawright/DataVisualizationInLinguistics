@@ -29,7 +29,6 @@
     /* Start Bootstrap - Simple Sidebar Custom Style */
 
     .main-left-sidebar {
-        width: 300px;
         z-index: 10;
     }
     #wrapper #sidebar-wrapper.main-left-sidebar {
@@ -146,12 +145,12 @@
         </div>
 
         {% if user.is_authenticated %}
-            <button id="data_button" type="button" class="accordion"><span style="font-size:22px;"> View Data</span>
+            <button id="data_button" type="button" class="accordion active"><span style="font-size:22px;"> View Data</span>
                 <div id="plus_sign_data" style="float: right; font-size: 22px;">
-                    &#43;
+                    &#8722;
                 </div>
             </button>
-            <div class="panel">
+            <div class="panel" style="display: block;">
                 {% for document in documents_uploaded %}
                     <button href="/manage_data" class="list-group-item-action bg-light btn btn-secondary"
                             name="from_button"
@@ -287,7 +286,7 @@
             });
     });
 
-    var data_accordion_expanded = false;
+    var data_accordion_expanded = true;
     jQuery("#data_button").click(function () {
         if (!data_accordion_expanded) {
             document.getElementById('plus_sign_data').innerHTML = '&#8722;';

@@ -4239,7 +4239,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         statisticText += "</table>";
-        getTreeData(root, sel_item.split('/')[2]);
+        //getTreeData(root, sel_item.split('/')[2]);
 
         return statisticText;
     }

@@ -75,7 +75,6 @@
 
     .my-statistic {
         margin-top: 35px;
-        margin-left: 1500px;
         max-width: 300px;
         font-size: 14px;
         font-family: sans-serif;
@@ -150,17 +149,17 @@
     var user = "{% static user %}";
 </script>
 
-
-<script src="{% static 'js/tree_graph.js' %}"></script>
-{# <script src="{% static 'js/tree_graph_duplicated.js' %}"></script> #}
 <body>
 {% include 'messages.html' %}
 {% include 'nav_bar.html' %}
-{% include 'sidebar_layouts.html' %}
+{% include 'sidebar_layouts.html' with template_selected="tree"%}
 
 {#<canvas id="screenshot_canvas" style="width:2000px; height:2000px;"></canvas>#}
 
 <!-- {% include 'auxiliary_charts.html' %} -->
+
+<script src="{% static 'js/tree_graph.js' %}"></script>
+{# <script src="{% static 'js/tree_graph_duplicated.js' %}"></script> #}
 </body>
 
 <script>

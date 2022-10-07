@@ -77,7 +77,6 @@
 
     .my-statistic {
         margin-top: 35px;
-        margin-left: 1500px;
         max-width: 300px;
         font-size: 14px;
         font-family: sans-serif;
@@ -153,12 +152,11 @@
     var user = "{% static user %}";
 </script>
 
-
-<script src="{% static 'js/force_graph.js' %}"></script>
 <body>
 {% include 'messages.html' %}
 {% include 'nav_bar.html' %}
-{% include 'sidebar_layouts.html' %}
+{% include 'sidebar_layouts.html' with template_selected="force" %}
+<script src="{% static 'js/force_graph.js' %}"></script>
 </body>
 
 <!-- <script>

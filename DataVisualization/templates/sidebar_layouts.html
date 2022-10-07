@@ -43,6 +43,10 @@
         margin-right: 0;
     }
 
+    #tree-container #static_values_button.btn-primary.focus, #tree-container #static_values_button.btn-primary:focus{
+            color: #000000;
+    }
+
 </style>
 
 <head>
@@ -1032,6 +1036,7 @@
 
             </div>
             <!-- Devtools -->
+            {% if template_selected and template_selected == "tree" %}
             <div id="target-checkbox-group"
                  style="margin-top: 5px;background-color: #c9daf8ff; padding-bottom: 10px;">
 
@@ -1296,6 +1301,7 @@
                 </div>
 
             </div>
+            {% endif %}
             <!--Legend-->
             {#            <div id="legendGroup">#}
             {#                <p#}
@@ -1444,8 +1450,8 @@
     function sidebarCheckMarginTop() {
         const topnavHeight = document.querySelector('.topnav').offsetHeight;
         document.querySelector('#menu-left').style.marginTop = -topnavHeight + "px";
-        console.log("eee");
     }
+    window.ready = sidebarCheckMarginTop();
     window.onresize = sidebarCheckMarginTop;
 
     var acc = document.getElementsByClassName("accordion");
@@ -1466,8 +1472,6 @@
             }
         });
     }
-
-
 
     function CheckAll(chk) {
         //if (chk.length > 3) {
@@ -1500,8 +1504,6 @@
     }
 
     window.onload = function () {
-
-        sidebarCheckMarginTop();
 
         /*var chk_targets = document.querySelectorAll('input[type=checkbox][name=cbTargets]');
         var chk_features = document.querySelectorAll('input[type=checkbox][name=cbFeatures]');
