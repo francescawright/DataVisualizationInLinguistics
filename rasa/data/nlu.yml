@@ -39,16 +39,49 @@ nlu:
     - of course
     - that sounds good
     - correct
+    - affirmative
+    - fine
+    - good
+    - okay
+    - true
+    - yea
+    - yep
+    - all right
+    - aye
+    - beyond a doubt
+    - by all means
+    - certainly
+    - definitely
+    - exactly
+    - good enough
+    - granted
+    - indubitably
+    - most assuredly
+    - naturally
+    - sure
+    - undoubtedly
+    - convinced
+    - positive
+    - decided
+    - doubtless
 
 - intent: deny
   examples: |
     - no
     - n
     - never
+    - not
+    - nop
+    - nope
     - I don't think so
     - don't like that
     - no way
     - not really
+    - negative
+    - absolutely not
+    - by no means
+    - not at all
+    - not by any means
 
 - intent: mood_great
   examples: |

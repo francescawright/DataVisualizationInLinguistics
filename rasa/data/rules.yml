@@ -24,52 +24,16 @@ rules:
   - action: utter_greet_again
   - action: action_listen
 
-- rule: First bot interaction with the user
-  steps:
-  - intent: start_intent
-  - action: utter_greet
-  - action: action_listen
-
 - rule: Ask user for confirmation to logout
   steps:
   - intent: logout
   - action: utter_logout_confirmation
 
-- rule: Log out when the user confirms
-  steps:
-  - intent: logout_sure
-  - action: action_logout
-
-- rule: Warn the user that his session will remain open
-  steps:
-  - intent: logout_none
-  - action: utter_logout_cancellation
-
-- rule: Log out the current session so that the user can log in with another user
-  steps:
-  - intent: logout_to_login_sure
-  - action: action_logout_to_login
-
-- rule: User chooses not to log out and stay with the current user
-  steps:
-  - intent: logout_to_login_none
-  - action: action_logout_to_login_cancellation
-
-- rule: Log out the current session so that the user can register with another user
-  steps:
-  - intent: logout_to_signup_sure
-  - action: action_logout_to_signup
-
-- rule: User decides not to log out and therefore not to register the new user
-  steps:
-  - intent: logout_to_signup_none
-  - action: action_logout_to_signup_cancellation
-
 - rule: The user has requested to log in and the data collection form is started
   steps:
   - intent: login
-  - action: login_form
-  - active_loop: login_form
+  - action: action_check_session_login
+  wait_for_user_input: false
 
 - rule: The user enters his or her data in the form to log in
   condition:
@@ -84,8 +48,8 @@ rules:
 - rule: The user has requested to register and the data collection form is started
   steps:
   - intent: signup
-  - action: signup_form
-  - active_loop: signup_form
+  - action: action_check_session_signup
+  wait_for_user_input: false
 
 - rule: The user enters his data in the form to register on the website
   condition:

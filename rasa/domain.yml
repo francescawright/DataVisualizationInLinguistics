@@ -16,12 +16,6 @@ intents:
   - login:
       use_entities:
         - action_requested
-  - logout_sure
-  - logout_none
-  - logout_to_login_sure
-  - logout_to_login_none
-  - logout_to_signup_sure
-  - logout_to_signup_none
   - signup:
       use_entities:
         - action_requested
@@ -36,8 +30,8 @@ intents:
 
 actions:
   - action_logout
-  - action_logout_to_login
-  - action_logout_to_signup
+  - action_check_session_login
+  - action_check_session_signup
   - action_logout_to_login_cancellation
   - action_logout_to_signup_cancellation
   - action_login
@@ -137,30 +131,15 @@ responses:
 
   utter_logout_confirmation:
   - text: "Sure you want to log out?"
-    buttons:
-      - title: "Yes"
-        payload: "/logout_sure"
-      - title: "No"
-        payload: "/logout_none"
 
   utter_logout_cancellation:
   - text: "Okay! I will not log you out"
 
   utter_logout_to_login:
   - text: "You are already logged in, do you want me to log you out to start a new session?"
-    buttons:
-      - title: "Yes"
-        payload: "/logout_to_login_sure"
-      - title: "No"
-        payload: "/logout_to_login_none"
 
   utter_logout_to_signup:
   - text: "I need to close your current session in order to register the new user, is that ok?"
-    buttons:
-      - title: "Yes"
-        payload: "/logout_to_signup_sure"
-      - title: "No"
-        payload: "/logout_to_signup_none"
 
   utter_ask_username:
   - text: "What is your username?"

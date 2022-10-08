@@ -90,27 +90,33 @@ class ActionLogout(Action):
         dispatcher.utter_message(text="intent_logout")
         return [SlotSet("sessionid", None)]
 
-class ActionLogoutToLogin(Action):
+class ActionCheckSessionLogin(Action):
 
     def name(self) -> Text:
-        return "action_logout_to_login"
+        return "action_check_session_login"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        return [SlotSet("sessionid", None), FollowupAction("action_login")]
+        if (tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None"):
+            return [FollowupAction("utter_logout_to_login")]
+        else:
+            return [FollowupAction("login_form")]
 
-class ActionLogoutToSignup(Action):
+class ActionCheckSessionSignup(Action):
 
     def name(self) -> Text:
-        return "action_logout_to_signup"
+        return "action_check_session_signup"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        return [SlotSet("sessionid", None), FollowupAction("action_signup")]
+        if (tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None"):
+            return [FollowupAction("utter_logout_to_signup")]
+        else:
+            return [FollowupAction("signup_form")]
 
 class ActionLogoutToLoginCancellation(Action):
 
@@ -231,13 +237,9 @@ class ActionLogin(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        if (tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None"):
-            return [FollowupAction("utter_logout_to_login")]
-
-        else:
-            key = b'ZeuY3kEaYn2XkyPQPQKgDmDeDRJfKYM3-tTx_5NmMm4='
-            dispatcher.utter_message(text='intent_login,' + encrypt(tracker.get_slot("username").encode(), key).decode() + ',' + encrypt(tracker.get_slot("password").encode(), key).decode())
-            return [SlotSet("username", None),SlotSet("password", None)]
+        key = b'ZeuY3kEaYn2XkyPQPQKgDmDeDRJfKYM3-tTx_5NmMm4='
+        dispatcher.utter_message(text='intent_login,' + encrypt(tracker.get_slot("username").encode(), key).decode() + ',' + encrypt(tracker.get_slot("password").encode(), key).decode())
+        return [SlotSet("username", None),SlotSet("password", None)]
 
 
 class ActionSignup(Action):
@@ -249,14 +251,12 @@ class ActionSignup(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        if (tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None"):
-            return [FollowupAction("utter_logout_to_signup")]
-        else:
-            key = b'JlgbJKpxVhwF3NXJf_n-lt4c4AvdCATnuXYDK4xivPY='
-            dispatcher.utter_message(text='intent_signup,' + encrypt(tracker.get_slot("username").encode(), key).decode()
-                                          + ',' + encrypt(tracker.get_slot("password").encode(), key).decode()
-                                          + ',' + encrypt(tracker.get_slot("password_confirmation").encode(), key).decode())
-            return [SlotSet("username", None), SlotSet("password", None), SlotSet("password_confirmation", None)]
+
+        key = b'JlgbJKpxVhwF3NXJf_n-lt4c4AvdCATnuXYDK4xivPY='
+        dispatcher.utter_message(text='intent_signup,' + encrypt(tracker.get_slot("username").encode(), key).decode()
+                                      + ',' + encrypt(tracker.get_slot("password").encode(), key).decode()
+                                      + ',' + encrypt(tracker.get_slot("password_confirmation").encode(), key).decode())
+        return [SlotSet("username", None), SlotSet("password", None), SlotSet("password_confirmation", None)]
 
 
 class ActionOpenDocument(Action):

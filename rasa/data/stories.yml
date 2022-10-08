@@ -35,24 +35,59 @@ stories:
     - action: utter_greet
     - action: action_listen
 
-- story: User decides to log out
+- story: User decides to log out and confirms
   steps:
     - intent: logout
     - action: utter_logout_confirmation
-    - intent: logout_sure
+    - intent: affirm
     - action: action_logout
 
-- story: User reconsiders and decides not to log out
+- story: The user decides to log out, but reconsiders and does not confirm. He is warned that his session will remain open.
   steps:
     - intent: logout
     - action: utter_logout_confirmation
-    - intent: logout_none
+    - intent: deny
     - action: utter_logout_cancellation
-
 
 - story: User logs in
   steps:
+    - slot_was_set:
+        - sessionid: null
     - intent: login
+    - action: action_check_session_login
+    - action: login_form
+    - active_loop: login_form
+    - slot_was_set:
+        - requested_slot: username
+    - slot_was_set:
+        - username: edu
+    - slot_was_set:
+        - requested_slot: password
+    - slot_was_set:
+        - password: patata5439
+    - slot_was_set:
+        - requested_slot: null
+    - active_loop: null
+    - action: action_login
+
+- story: User attempts to log in with an active session, but regrets and remains in current session
+  steps:
+    - slot_was_set:
+        - sessionid: j0lvx14zf3f2itg0wmj9utl8ipml12ed
+    - intent: login
+    - action: action_check_session_login
+    - action: utter_logout_to_login
+    - intent: deny
+    - action: action_logout_to_login_cancellation
+
+- story: The user logs in and replaces his current session with another one
+  steps:
+    - slot_was_set:
+        - sessionid: m29srwgqfjsqmm8fprrxiwhl68m5gi70
+    - intent: login
+    - action: action_check_session_login
+    - action: utter_logout_to_login
+    - intent: affirm
     - action: login_form
     - active_loop: login_form
     - slot_was_set:
@@ -70,7 +105,47 @@ stories:
 
 - story: User registers
   steps:
+    - slot_was_set:
+        - sessionid: null
     - intent: signup
+    - action: action_check_session_signup
+    - action: signup_form
+    - active_loop: signup_form
+    - slot_was_set:
+        - requested_slot: username
+    - slot_was_set:
+        - username: ecem2
+    - slot_was_set:
+        - requested_slot: password
+    - slot_was_set:
+        - password: 123456test
+    - slot_was_set:
+        - requested_slot: password_confirmation
+    - slot_was_set:
+        - password_confirmation: 123456test
+    - slot_was_set:
+        - requested_slot: null
+    - active_loop: null
+    - action: action_signup
+
+- story: User attempts to register with an active session, but decides to stay in the current session rather than registering
+  steps:
+    - slot_was_set:
+        - sessionid: j0lvx14zf3f2itg0wmj9utl8ipml12ed
+    - intent: signup
+    - action: action_check_session_signup
+    - action: utter_logout_to_signup
+    - intent: deny
+    - action: action_logout_to_signup_cancellation
+
+- story: The user registers and replaces his current session with the new registered user
+  steps:
+    - slot_was_set:
+        - sessionid: m29srwgqfjsqmm8fprrxiwhl68m5gi70
+    - intent: signup
+    - action: action_check_session_signup
+    - action: utter_logout_to_signup
+    - intent: affirm
     - action: signup_form
     - active_loop: signup_form
     - slot_was_set:
