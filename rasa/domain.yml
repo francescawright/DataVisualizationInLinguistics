@@ -39,6 +39,7 @@ actions:
   - action_store_session_slots
   - action_change_layout
   - action_open_document
+  - validate_signup_form
 
 forms:
   login_form:
