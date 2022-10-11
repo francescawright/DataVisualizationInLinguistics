@@ -240,6 +240,14 @@
 <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <script>
+
+    window.onload = function () {
+        setTimeout(function () {
+            //Activates a listener to detect user inputs
+            saveUserInputLog();
+        }, 200);
+    }
+
     var acc = document.getElementsByClassName("accordion");
     var i;
 

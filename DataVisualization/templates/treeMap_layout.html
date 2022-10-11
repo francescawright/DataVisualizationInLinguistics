@@ -1094,6 +1094,11 @@
 <script>
 
     window.onload = function () {
+        setTimeout(function () {
+            //Activates a listener to detect user inputs
+            saveUserInputLog();
+        }, 200);
+
         if ("{{ cbCommons.and_group }}" === "1") {
             document.getElementById("and_label").className = "btn btn-secondary active";
             document.getElementById("or_label").className = "btn btn-secondary";

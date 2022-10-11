@@ -1,8 +1,9 @@
 from django.db import models
-
+from django.contrib.auth.admin import User
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 # Create your models here.
-
 
 class Document(models.Model):
     document_id = models.AutoField(primary_key=True)
@@ -12,7 +13,6 @@ class Document(models.Model):
 
     def __str__(self):
         return f"Title: {self.description}| File name: {self.document.name} | Uploaded at: {self.uploaded_at}"
-
 
 class Commentary(models.Model):
     document_id = models.ForeignKey(Document, on_delete=models.CASCADE)
@@ -44,10 +44,6 @@ class Commentary(models.Model):
                f"Thread: {self.comment_level} | Toxicity Level: {self.toxicity_level} | " \
                f"Positive Stance: {self.positive_stance} | Negative Stance: {self.negative_stance}"
 
-
-from django.db import models
-
-
 class tbl_Authentication(models.Model):
     Empcode = models.IntegerField()
     username = models.CharField(max_length=50, default='')
@@ -58,3 +54,16 @@ class tbl_Authentication(models.Model):
         return self.username
 
     empAuth_objects = models.Manager()
+
+class ChatProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    age = models.IntegerField(null=True, blank=True)
+    nickname = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
+
+    @receiver(post_save, sender=User)
+    def create_chat_profile(sender, instance, created, **kwargs):
+        if created:
+            ChatProfile.objects.create(user=instance)

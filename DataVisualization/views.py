@@ -1,10 +1,12 @@
 import json
 import os
+import logging
 from urllib.parse import urlparse
 
 from django.conf import settings as django_settings
 from django.db.models import Count, Q
 from django.utils.datastructures import MultiValueDictKeyError
+from django.http import HttpResponse
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
@@ -47,18 +49,56 @@ def index(request):
     storageClear = request.GET.get('storageClear', '')
     errorMessage = request.GET.get('chatbotError', '')
     if (errorMessage):
-        errorMessage = getChatErrorMessage(errorMessage)
+        errorMessage = getChatErrorMessage(request, errorMessage)
 
     return render(request, 'index.html', context={'documents_uploaded': get_all_documents(), 'user': request.user,
                                                   'storage_clear': storageClear, 'chatbot_error': errorMessage})
 
+def storage_clear_index (request, clear_type):
+    # textMsg = ''
+    # if clear_type == 'logout':
+    #     textMsg = "I have successfully logged you out"
+    # elif clear_type == 'login':
+    #     textMsg = "I have logged you in without any problem"
+    # elif clear_type == 'signup':
+    #     textMsg = "I have created your user and now you are logged in"
+    #
+    # if clear_type != "nochat":
+    #     db_logger = logging.getLogger('db')
+    #     db_logger.warning(textMsg,
+    #                       extra={'user': request.user.username, 'session_id': request.POST['session_id'],
+    #                           'sender': 'response', 'is_action': False})
+    return redirect(reverse('index') + '?storageClear=' + clear_type)
 
 def get_all_documents():
     return Document.objects.all()
 
 
-def main_form_handler(request):
+def save_user_chat(request):
+    db_logger = logging.getLogger('db')
+    db_logger.info(request.POST['chat_msg'],
+                   extra={'user': request.user.username, 'session_id': request.POST['session_id'],
+                          'sender': 'client', 'is_action': False})
+    return HttpResponse(status=204)
 
+
+def save_bot_chat(request):
+    db_logger = logging.getLogger('db')
+    db_logger.warning(request.POST['chat_msg'],
+                      extra={'user': request.user.username, 'session_id': request.POST['session_id'],
+                          'sender': 'response', 'is_action': request.POST['is_action'] == 'true'})
+    return HttpResponse(status=204)
+
+
+def save_error_chat(request):
+    db_logger = logging.getLogger('db')
+    db_logger.error(request.POST['chat_msg'],
+                    extra={'user': request.user.username, 'session_id': request.POST['session_id'],
+                           'sender': 'response', 'is_action': False})
+    return HttpResponse(status=204)
+
+
+def main_form_handler(request):
     # Check if there is an active session
     user = getattr(request, 'user', None)
     if not user or not getattr(user, 'is_authenticated', True):
@@ -67,10 +107,11 @@ def main_form_handler(request):
     storageClear = request.GET.get('storageClear', '')
     errorMessage = request.GET.get('chatbotError', '')
     if (errorMessage):
-        errorMessage = getChatErrorMessage(errorMessage)
+        errorMessage = getChatErrorMessage(request, errorMessage)
 
     try:
-        selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout = main_form_context(request)
+        selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout = main_form_context(
+            request)
     except ObjectDoesNotExist:
         return open_document_exception(request, "document_not_exist")
 
@@ -85,6 +126,7 @@ def main_form_handler(request):
                    'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
                    'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons, 'storage_clear': storageClear,
                    'chatbot_error': errorMessage})
+
 
 def main_form_context(request):
     # CURRENT DATASET
@@ -121,6 +163,7 @@ def main_form_context(request):
     # d1, d2 = auxiliary_charts(doc)
 
     return selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout
+
 
 def open_document_exception(request, error):
     # Django Messages
@@ -160,6 +203,7 @@ def open_document_exception(request, error):
                                'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
                                'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons})
 
+
 # Auxiliary Form Handler functions
 # ---------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------
@@ -195,7 +239,7 @@ def get_current_dataset(request):
 
     try:
         doc = Document.objects.filter(description=selected_data).first()
-        if not(doc):
+        if not (doc):
             raise ObjectDoesNotExist('document_not_exist')
         selected_item = selected_data
     except MultiValueDictKeyError:
@@ -398,11 +442,10 @@ from django.contrib.auth import authenticate, login, logout
 
 
 def login_view(request):
-
     storageClear = request.GET.get('storageClear', '')
     errorMessage = request.GET.get('chatbotError', '')
     if (errorMessage):
-        errorMessage = getChatErrorMessage(errorMessage)
+        errorMessage = getChatErrorMessage(request, errorMessage)
 
     if request.POST.get('username') and request.POST.get('password') and request.POST.get('chatbot') == "true":
         request = decrypt_login_params(request)
@@ -421,12 +464,14 @@ def login_view(request):
         context = {'form': form, 'storage_clear': storageClear, 'chatbot_error': errorMessage}
         return render(request, 'login.html', context)
 
-def decrypt_login_params (request):
+
+def decrypt_login_params(request):
     key = b'ZeuY3kEaYn2XkyPQPQKgDmDeDRJfKYM3-tTx_5NmMm4='
     request.POST = request.POST.copy()
     request.POST['username'] = decrypt(str.encode(request.POST.get('username')), key).decode()
     request.POST['password'] = decrypt(str.encode(request.POST.get('password')), key).decode()
     return request
+
 
 def login_process(request, form, uservalue, passwordvalue):
     user = authenticate(username=uservalue, password=passwordvalue)
@@ -434,16 +479,17 @@ def login_process(request, form, uservalue, passwordvalue):
         login(request, user)
         messages.success(request, "The login has been successful")
         if request.POST.get('chatbot') == "true":
-            return redirect(reverse('index') + '?storageClear=login')
+            return storage_clear_index(request, 'login')
         else:
-            return redirect(reverse('index') + '?storageClear=nochat')
+            return storage_clear_index(request, 'nochat')
     elif user is not None and request.user.get_username() == user.get_username():
-        return login_exception(request,"same_username", form)
+        return login_exception(request, "same_username", form)
     else:
         return login_exception(request, "bad_credentials", form)
 
+
 def login_exception(request, error, form):
-    #Django Messages
+    # Django Messages
     if (error == "same_username"):
         messages.error(request, "Attempting to log in as the current user")
     elif (error == "bad_credentials"):
@@ -454,17 +500,18 @@ def login_exception(request, error, form):
     if (request.POST.get('chatbot') == "true"):
         return getTemplateByPath(request, error)
     else:
-        return render(request, 'login.html', context = {'form': form})
+        return render(request, 'login.html', context={'form': form})
+
 
 def signup_view(request):
-
     storageClear = request.GET.get('storageClear', '')
     errorMessage = request.GET.get('chatbotError', '')
     if (errorMessage):
-        errorMessage = getChatErrorMessage(errorMessage)
+        errorMessage = getChatErrorMessage(request, errorMessage)
 
     if request.method == 'POST':
-        if request.POST.get('username') and request.POST.get('password1') and request.POST.get('password2') and request.POST.get('chatbot') == "true":
+        if request.POST.get('username') and request.POST.get('password1') and request.POST.get(
+                'password2') and request.POST.get('chatbot') == "true":
             request = decrypt_signup_params(request)
 
         form = UserCreationForm(request.POST)
@@ -480,17 +527,19 @@ def signup_view(request):
                 user = form.save()
                 login(request, user)
                 messages.success(request, messageText)
-                return redirect(reverse('index') + '?storageClear=nochat')
+                return storage_clear_index(request, 'nochat')
         else:
             user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
             login(request, user)
             messages.success(request, messageText)
-            return redirect(reverse('index') + '?storageClear=signup')
+            return storage_clear_index(request, 'signup')
     else:
         form = UserCreationForm()
-    return render(request, 'signup.html', context = {'form': form, 'storage_clear': storageClear, 'chatbot_error': errorMessage})
+    return render(request, 'signup.html',
+                  context={'form': form, 'storage_clear': storageClear, 'chatbot_error': errorMessage})
 
-def decrypt_signup_params (request):
+
+def decrypt_signup_params(request):
     key = b'JlgbJKpxVhwF3NXJf_n-lt4c4AvdCATnuXYDK4xivPY='
     request.POST = request.POST.copy()
     request.POST['username'] = decrypt(str.encode(request.POST.get("username")), key).decode()
@@ -498,6 +547,7 @@ def decrypt_signup_params (request):
     request.POST['password2'] = decrypt(str.encode(request.POST.get("password2")), key).decode()
 
     return request
+
 
 def signup_exception(request, error, form):
     # Django Messages
@@ -511,10 +561,10 @@ def signup_exception(request, error, form):
     if (request.POST.get('chatbot') == "true"):
         return getTemplateByPath(request, error)
     else:
-        return render(request, 'signup.html', context = {'form': form})
+        return render(request, 'signup.html', context={'form': form})
+
 
 def logout_view(request):
-
     # Check if there is an active session
     user = getattr(request, 'user', None)
     if not user or not getattr(user, 'is_authenticated', True):
@@ -523,11 +573,12 @@ def logout_view(request):
         logout(request)
         messages.success(request, "Your session has been successfully closed")
         if (request.GET.get("chatbot") == "true"):
-            response = redirect(reverse('index') + '?storageClear=logout')
+            response = storage_clear_index(request, 'logout')
         else:
-            response = redirect(reverse('index') + '?storageClear=nochat')
+            response = storage_clear_index(request, 'nochat')
 
     return response
+
 
 def logout_exception(request, error):
     messages.error(request, "No active session detected to be closed")
@@ -536,13 +587,22 @@ def logout_exception(request, error):
     else:
         return redirect(reverse('index'))
 
+
 def encrypt(message: bytes, key: bytes) -> bytes:
     return Fernet(key).encrypt(message)
+
 
 def decrypt(token: bytes, key: bytes) -> bytes:
     return Fernet(key).decrypt(token)
 
+
 def getTemplateByPath(request, errorMessage):
+
+    # Add error to user log
+    db_logger = logging.getLogger('db')
+    db_logger.error(errorMessage,
+                    extra={'user': request.user.username, 'session_id': request.POST['session_id'],
+                           'sender': 'response', 'is_action': False})
 
     path = urlparse(request.META['HTTP_REFERER']).path
 
@@ -558,32 +618,39 @@ def getTemplateByPath(request, errorMessage):
 
         if (errorMessage == "open_document_no_active_session"):
             return redirect(reverse('index') + '?chatbotError=' + errorMessage)
+        elif (errorMessage == "document_not_exist"):
+
+            errorMessage = getChatErrorMessage(request, errorMessage)
+
+            selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout = main_form_context(request)
+
+            return render(request, template,
+                          {'dataset': 'output.json', 'options': get_all_documents(), 'layouts': LAYOUTS,
+                           'selected_layout': selected_layout,
+                           'checked_layout': checked_layout,
+                           'selected_item': selected_item,
+                           'selected_icons': selected_icons,
+                           # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
+                           # "d1": d1, "d2": d2,
+                           'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
+                           'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons, 'chatbot_error': errorMessage})
+
         return redirect(reverse('selected_data') + '?chatbotError=' + errorMessage)
 
-        # selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout = main_form_context(request)
-        #
-        # return render(request, template,
-        #               {'dataset': 'output.json', 'options': get_all_documents(), 'layouts': LAYOUTS,
-        #                'selected_layout': selected_layout,
-        #                'checked_layout': checked_layout,
-        #                'selected_item': selected_item,
-        #                'selected_icons': selected_icons,
-        #                # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
-        #                # "d1": d1, "d2": d2,
-        #                'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
-        #                'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons, 'chatbot_error': errorMessage})
+
 
     elif path == "/upload_file/":
         return redirect(reverse('upload_file') + '?chatbotError=' + errorMessage)
 
-def getChatErrorMessage(errorName):
-    messages = {'same_username':"The username you have given me matches the username of your current session",
-                'bad_credentials':"The username and password combination you have given me is not valid",
-                'passwords_not_match':"I have not been able to register the user, the two passwords you have given me do not match",
-                'username_already_exists':"I have not been able to register the user, there is already a user with this name",
-                'logout_no_active_session':"It is not possible to close a session that does not exist, you are not logged in...",
-                'document_not_exist':"I cannot find any document with the name you have given me",
-                'open_document_no_active_session':"You need to be logged in to access the documents",}
+
+def getChatErrorMessage(request, errorName):
+    messages = {'same_username': "The username you have given me matches the username of your current session",
+                'bad_credentials': "The username and password combination you have given me is not valid",
+                'passwords_not_match': "I have not been able to register the user, the two passwords you have given me do not match",
+                'username_already_exists': "I have not been able to register the user, there is already a user with this name",
+                'logout_no_active_session': "It is not possible to close a session that does not exist, you are not logged in...",
+                'document_not_exist': "I cannot find any document with the name you have given me",
+                'open_document_no_active_session': "You need to be logged in to access the documents", }
     if errorName in messages:
         return messages[errorName]
     else:

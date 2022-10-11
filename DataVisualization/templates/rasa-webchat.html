@@ -6,6 +6,7 @@
 <form id="logoutForm" action="{% url 'logout' %}" method="get" style="display: none;">
     {% csrf_token %}
     <input type="hidden" name="chatbot" value="true">
+    <input id="logout_chat_session_id" type="hidden" name="session_id" value= "">
 </form>
 
 <form id="loginForm" action="{% url 'login' %}" method="post" style="display: none;">
@@ -13,6 +14,7 @@
     <input id="username_input" type="hidden" name="username" value= "">
     <input id="password_input" type="hidden" name="password" value= "">
     <input type="hidden" name="chatbot" value="true">
+    <input id="login_chat_session_id" type="hidden" name="session_id" value= "">
 </form>
 
 <form id="signupForm" action="{% url 'signup' %}" method="post" style="display: none;">
@@ -21,12 +23,21 @@
     <input id="signup_password_input" type="hidden" name="password1" value= "">
     <input id="signup_password2_input" type="hidden" name="password2" value= "">
     <input type="hidden" name="chatbot" value="true">
+    <input id="signup_chat_session_id" type="hidden" name="session_id" value= "">
 </form>
 
 <form id="chatbotDataSelection" action="{% url 'selected_data' %}" style="display: none;" method="POST">
     {% csrf_token %}
     <input id="open_document_name" type="hidden" name="from_button" value= "">
     <input type="hidden" name="chatbot" value="true">
+    <input id="data_selection_chat_session_id" type="hidden" name="session_id" value= "">
+</form>
+
+<form id="userLogForm" action="" method="post" style="display: none;">
+    {% csrf_token %}
+    <input id="chat_msg" type="hidden" name="chat_msg" value= "">
+    <input id="user_chat_session_id" type="hidden" name="session_id" value= "">
+    <input id="chat_msg_is_action" type="hidden" name="is_action" value= "">
 </form>
 
 <!-- Rasa WebChat Style -->
@@ -46,14 +57,19 @@
 <script>
     (function clearStorage() {
         if ('{{storage_clear}}') {
+            let text;
             if ('{{storage_clear}}' === "logout") {
-                localStorage.setItem("chat_session", '{"metadata":{"tooltipSent":{},"linkTarget":"","userInput":"","domHighlight":{},"hintText":"","showTooltip":true},"conversation":[{"type":"text","component":{"compare":null,"displayName":"Connect(s)","defaultTypes":{"displayTypingIndication":false}},"text":"I have successfully logged you out","sender":"response","showAvatar":true}],"params":{"unreadCount":0,"connectingText":"Waiting for server...","oldUrl":"","connected":true,"docViewer":false,"isChatOpen":false,"disabledInput":false,"pageChangeCallbacks":{},"isChatVisible":true,"initialized":false,"messageDelayed":false},"version":"1.0.0"}');
+                text = "I have successfully logged you out";
             } else if ('{{storage_clear}}' === "login") {
-                localStorage.setItem("chat_session", '{"metadata":{"tooltipSent":{},"linkTarget":"","userInput":"","domHighlight":{},"hintText":"","showTooltip":true},"conversation":[{"type":"text","component":{"compare":null,"displayName":"Connect(s)","defaultTypes":{"displayTypingIndication":false}},"text":"I have logged you in without any problem","sender":"response","showAvatar":true}],"params":{"unreadCount":0,"connectingText":"Waiting for server...","oldUrl":"","connected":true,"docViewer":false,"isChatOpen":false,"disabledInput":false,"pageChangeCallbacks":{},"isChatVisible":true,"initialized":false,"messageDelayed":false},"version":"1.0.0"}');
+                text = "I have logged you in without any problem";
             } else if ('{{storage_clear}}' === "signup") {
-                localStorage.setItem("chat_session", '{"metadata":{"tooltipSent":{},"linkTarget":"","userInput":"","domHighlight":{},"hintText":"","showTooltip":true},"conversation":[{"type":"text","component":{"compare":null,"displayName":"Connect(s)","defaultTypes":{"displayTypingIndication":false}},"text":"I have created your user and now you are logged in","sender":"response","showAvatar":true}],"params":{"unreadCount":0,"connectingText":"Waiting for server...","oldUrl":"","connected":true,"docViewer":false,"isChatOpen":false,"disabledInput":false,"pageChangeCallbacks":{},"isChatVisible":true,"initialized":false,"messageDelayed":false},"version":"1.0.0"}');
+                text = "I have created your user and now you are logged in";
             } else if ('{{storage_clear}}' === "nochat"){
                 localStorage.clear();
+            }
+
+            if ('{{storage_clear}}' !== "nochat") {
+                localStorage.setItem("chat_session", '{"metadata":{"tooltipSent":{},"linkTarget":"","userInput":"","domHighlight":{},"hintText":"","showTooltip":true},"conversation":[{"type":"text","component":{"compare":null,"displayName":"Connect(s)","defaultTypes":{"displayTypingIndication":false}},"text":"' + text + '","sender":"response","showAvatar":true}],"params":{"unreadCount":0,"connectingText":"Waiting for server...","oldUrl":"","connected":true,"docViewer":false,"isChatOpen":false,"disabledInput":false,"pageChangeCallbacks":{},"isChatVisible":true,"initialized":false,"messageDelayed":false},"version":"1.0.0"}');
             }
         }
     })();
@@ -87,53 +103,173 @@
     function botMessageEvent(e) {
         console.log('the bot said something: ' + e.text);
         if (e.text) {
-            messageList = e.text.split(",");
+
+            // Get the existing localStorage data
+            var existingStorage = localStorage.getItem("chat_session");
+            // If no existing data, create an array
+            // Otherwise, convert the localStorage string to an array
+            existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
+
+            let messageList = e.text.split(",");
             switch (messageList[0]) {
                 case "intent_logout":
+                    saveBotAction(e.text, existingStorage["session_id"]);
                     e.text = "I'm working on it";
-                    document.getElementById("logoutForm").submit();
+                    document.getElementById("logout_chat_session_id").value = existingStorage["session_id"];
+                    setTimeout(function () {
+                        document.getElementById("logoutForm").submit();
+                    }, 150);
+
                     break;
                 case "intent_login":
+                    saveBotAction(e.text, existingStorage["session_id"]);
                     e.text = "I'm working on it";
                     document.getElementById("username_input").value = messageList[1];
                     document.getElementById("password_input").value = messageList[2];
-                    document.getElementById("loginForm").submit();
+                    document.getElementById("login_chat_session_id").value = existingStorage["session_id"];
+                    setTimeout(function () {
+                        document.getElementById("loginForm").submit();
+                    }, 150);
                     break;
                 case "intent_signup":
+                    saveBotAction(e.text, existingStorage["session_id"]);
                     e.text = "I'm working on it";
                     document.getElementById("signup_username_input").value = messageList[1];
                     document.getElementById("signup_password_input").value = messageList[2];
                     document.getElementById("signup_password2_input").value = messageList[3];
-                    document.getElementById("signupForm").submit();
+                    document.getElementById("signup_chat_session_id").value = existingStorage["session_id"];
+                    setTimeout(function () {
+                        document.getElementById("signupForm").submit();
+                    }, 150);
                     break;
                 case "intent_open_document":
+                    saveBotAction(e.text, existingStorage["session_id"]);
                     e.text = "I'm working on it";
                     let documentName = messageList[1];
                     var mainForm = document.getElementById("main_form");
                     if (mainForm) {
-                        let inputDocument = document.createElement("input");
-                        inputDocument.setAttribute("type", "hidden");
-                        inputDocument.setAttribute("name", "selected_data");
-                        inputDocument.setAttribute("value", documentName);
-                        mainForm.appendChild(inputDocument);
-                        mainForm.submit()
+                        createOpenDocumentInputs(mainForm, documentName, existingStorage);
+                        setTimeout(function () {
+                            mainForm.submit()
+                        }, 150);
                     } else {
+                        document.getElementById("data_selection_chat_session_id").value = existingStorage["session_id"];
                         document.getElementById("open_document_name").value = documentName;
-                        document.getElementById("chatbotDataSelection").submit()
+                        setTimeout(function () {
+                            document.getElementById("chatbotDataSelection").submit();
+                        }, 150);
                     }
                     break;
                 case "intent_change_layout":
+                    saveBotAction(e.text, existingStorage["session_id"]);
                     e.text = "I'm working on it";
                     if ('{{ selected_item }}') {
                         addToLocalStorageObject("chat_session", "conversation", "Done!");
-                        document.getElementById(messageList[1] + "_layout_button").click()
+                        setTimeout(function () {
+                            document.getElementById(messageList[1] + "_layout_button").click();
+                        }, 150);
                     } else {
                         addToLocalStorageObject("chat_session", "conversation", "Open a document first to be able to change the layout");
-                        window.location = window.location.href.split("?")[0];
+                        // Saving in the log the message received from the bot
+                        document.getElementById("chat_msg").value = "Open a document first to be able to change the layout";
+                        document.getElementById("user_chat_session_id").value = existingStorage["session_id"];
+                        form = document.getElementById("userLogForm");
+                        form.action = "{% url 'error_chat_log' %}";
+                        form.submit();
+                        setTimeout(function () {
+                            window.location = window.location.href.split("?")[0];
+                        }, 150);
                     }
                     break;
+                default:
+                    // Saving in the log the message received from the bot
+                    document.getElementById("chat_msg").value = e.text;
+                    document.getElementById("user_chat_session_id").value = existingStorage["session_id"];
+                    form = document.getElementById("userLogForm");
+                    form.action = "{% url 'bot_chat_log' %}";
+                    form.submit();
             }
         }
+    }
+
+    function createOpenDocumentInputs(mainForm, documentName, existingStorage) {
+        let inputDocument = document.createElement("input");
+        inputDocument.setAttribute("type", "hidden");
+        inputDocument.setAttribute("name", "selected_data");
+        inputDocument.setAttribute("value", documentName);
+        mainForm.appendChild(inputDocument);
+        let inputChatbot = document.createElement("input");
+        inputChatbot.setAttribute("type", "hidden");
+        inputChatbot.setAttribute("name", "chatbot");
+        inputChatbot.setAttribute("value", "true");
+        mainForm.appendChild(inputChatbot);
+        let chatSessionId = document.createElement("input");
+        chatSessionId.setAttribute("type", "hidden");
+        chatSessionId.setAttribute("name", "session_id");
+        chatSessionId.setAttribute("value", existingStorage["session_id"]);
+        mainForm.appendChild(chatSessionId);
+    }
+
+    function saveUserInputLog() {
+        setTimeout(function () {
+            if (document.querySelector('#rw-messages')) {
+                // Select the target node.
+                var target = document.querySelector('#rw-messages')
+
+                // Get the existing localStorage data
+                var existingStorage = localStorage.getItem("chat_session");
+
+                // If no existing data, create an array
+                // Otherwise, convert the localStorage string to an array
+                existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
+
+                // Create an observer instance.
+                var observer = new MutationObserver(function(mutations) {
+                    groupMessage = document.querySelectorAll(".rw-group-message:last-child");
+                    // the NodeList is defined, has elements and the first instance belongs to the class "rw-from-client".
+                    if (typeof groupMessage !== 'undefined' && groupMessage.length !== 0 && groupMessage[0].classList.contains("rw-from-client")){
+                        document.getElementById("chat_msg").value = groupMessage[0].innerText;
+                        document.getElementById("user_chat_session_id").value = existingStorage["session_id"];
+                        let form = document.getElementById("userLogForm");
+                        form.action = "{% url 'user_chat_log' %}";
+                        form.submit();
+                        // Create an observer instance.
+                        // In case the user writes before the chatbot has responded to the last input
+                        var secondObserver = new MutationObserver(function(mutations) {
+                            moreMessages = document.querySelectorAll(".rw-group-message:last-child .rw-message:last-child .rw-client:last-child");
+                            document.getElementById("chat_msg").value = moreMessages[0].innerText;
+                            document.getElementById("user_chat_session_id").value = existingStorage["session_id"];
+                            let form = document.getElementById("userLogForm");
+                            form.action = "{% url 'user_chat_log' %}";
+                            form.submit();
+                        });
+
+                        secondObserver.observe(groupMessage[0], {
+                            attributes:    true,
+                            childList:     true,
+                            characterData: true
+                        });
+                    }
+                });
+
+                // Pass in the target node, as well as the observer options.
+                observer.observe(target, {
+                    attributes:    true,
+                    childList:     true,
+                    characterData: true
+                });
+            }
+        }, 200);
+    }
+
+    function saveBotAction(msgText, session_id) {
+        // Saving in the log the message received from the bot
+        document.getElementById("chat_msg").value = msgText;
+        document.getElementById("chat_msg_is_action").value = 'true';
+        document.getElementById("user_chat_session_id").value = session_id;
+        form = document.getElementById("userLogForm");
+        form.action = "{% url 'bot_chat_log' %}";
+        form.submit();
     }
 
     (function chatbotErrorMessage(e) {
@@ -184,15 +320,15 @@
                 socketUrl: "http://localhost:5005",
                 showFullScreenButton: false,
                 customMessageDelay: (message) => {
-                    let delay = message.length * 30;
-                    if (delay > 2 * 1000) delay = 3 * 1000;
-                    if (delay < 400) delay = 1000;
+                    let delay = message.length * 10;
+                    if (delay > 2 * 1000) delay = 2 * 1000;
+                    if (delay < 300) delay = 300;
                     return delay;
                 },
                 onSocketEvent: {
                     'bot_uttered': botMessageEvent,
                     'connect': function() {
-                        console.log('connection established')
+                        console.log('connection established');
                     },
                     'disconnect': function() {
                         doSomeCleanup();
@@ -200,13 +336,14 @@
                 },
                 onWidgetEvent: {
                     onChatClose: function(widgetEvent) {
-                        console.log('connection onChatClose')
+                        console.log('connection onChatClose');
                     },
                     onChatOpen: function(widgetEvent) {
-                        console.log('connection onChatOpen')
+                        console.log('connection onChatOpen');
+                        saveUserInputLog();
                     },
                     onChatHidden: function(widgetEvent) {
-                        console.log('connection onChatHidden')
+                        console.log('connection onChatHidden');
                     },
                 },
                 // showMessageDate: true,
