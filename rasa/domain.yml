@@ -40,8 +40,16 @@ actions:
   - action_change_layout
   - action_open_document
   - validate_signup_form
+  - validate_nickname_form
+  - validate_nickname_request_form
 
 forms:
+  nickname_form:
+    nickname_requested:
+      - type: from_text
+  nickname_request_form:
+    nickname_requested:
+      - type: from_text
   login_form:
     username:
       - type: from_text
@@ -69,6 +77,9 @@ entities:
   - object_requested
   - layout_requested
   - document_requested
+  - nickname_requested
+  - first_login
+  - nickname
 
 slots:
   requested_slot:
@@ -104,15 +115,31 @@ slots:
   layout_requested:
     type: text
     auto_fill: true
+  nickname_requested:
+    type: text
+    auto_fill: true
+  first_login:
+    type: bool
+    influence_conversation: False
+  nickname:
+    type: text
+    auto_fill: true
+    influence_conversation: False
 
 responses:
   utter_greet:
-  - text: "Hey! Need something?"
-  - text: "Hello! Can I help you with anything?"
+  - text: "Hey! Nice to see you here 😄"
+  - text: "Hello! I'm here if you need me 😊"
+  - text: "Hi, how are you? 😄"
+  - text: "Hello there 😁"
+
+  utter_offers_help:
+  - text: "Need something?"
+  - text: "Can I help you with anything?"
 
   utter_greet_again:
-  - text: "How else can I help you?"
-  - text: "What else can I do for you?"
+  - text: "How else can I help you? 😉"
+  - text: "What else can I do for you? 😉"
 
   utter_cheer_up:
   - text: "Here is something to cheer you up:"
@@ -126,9 +153,20 @@ responses:
 
   utter_goodbye:
   - text: "Bye"
+  - text: "Goodbye!"
+  - text: "See you later"
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
+
+  utter_ask_nickname_form_nickname_requested:
+  - text: "May I know your name?"
+
+  utter_ask_nickname_request_form_nickname_requested:
+  - text: "What do you want me to call you?"
+  - text: "How do you want me to refer to you?"
+  - text: "What is your nickname?"
+  - text: "What is your name?"
 
   utter_logout_confirmation:
   - text: "Sure you want to log out?"
@@ -171,6 +209,9 @@ responses:
 
   utter_ask_document_selection_form_document_requested:
   - text: "Which document do you want to open?"
+
+  utter_remember:
+    - text: "I will remember it!"
 
 session_config:
   session_expiration_time: 60

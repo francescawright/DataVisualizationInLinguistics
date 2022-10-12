@@ -5,14 +5,14 @@ stories:
 - story: happy path
   steps:
   - intent: greet
-  - action: utter_greet
+  - action: utter_offers_help
   - intent: mood_great
   - action: utter_happy
 
 - story: sad path 1
   steps:
   - intent: greet
-  - action: utter_greet
+  - action: utter_offers_help
   - intent: mood_unhappy
   - action: utter_cheer_up
   - action: utter_did_that_help
@@ -22,7 +22,7 @@ stories:
 - story: sad path 2
   steps:
   - intent: greet
-  - action: utter_greet
+  - action: utter_offers_help
   - intent: mood_unhappy
   - action: utter_cheer_up
   - action: utter_did_that_help
@@ -32,7 +32,7 @@ stories:
 - story: Wait for user request
   steps:
     - intent: greet
-    - action: utter_greet
+    - action: utter_offers_help
     - action: action_listen
 
 - story: User decides to log out and confirms
@@ -168,7 +168,7 @@ stories:
 - story: User requests to switch to another specific layout
   steps:
     - intent: greet
-    - action: utter_greet
+    - action: utter_offers_help
     - action: action_listen
     - intent: change_layout
       entities:
@@ -188,7 +188,7 @@ stories:
 - story: The user requests to open a specific document
   steps:
     - intent: greet
-    - action: utter_greet
+    - action: utter_offers_help
     - action: action_listen
     - intent: select_document
       entities:
@@ -198,10 +198,19 @@ stories:
         - requested_slot: document_requested
     - action: action_open_document
 
+- story: User provides the name of a document
+  steps:
+    - intent: select_document
+      entities:
+        - document_requested: "20200831_CR"
+    - slot_was_set:
+        - requested_slot: document_requested
+    - action: action_open_document
+
 - story: User requests to open an unspecified document
   steps:
     - intent: greet
-    - action: utter_greet
+    - action: utter_offers_help
     - action: action_listen
     - intent: select_document
       entities:

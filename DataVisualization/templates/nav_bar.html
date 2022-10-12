@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
+    <!-- Add jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
+
     {% load static %}
 
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -227,7 +231,7 @@
                {% else %}class="btn btn-outline-primary"{% endif %}>
             <input type="radio" id="treeMap_layout_button" form="main_form"
                    name="treeMap_layout_button" value="checked" autocomplete="off"
-                   {% if checked_layout == "TreeMap" %}checked{% endif %}>Circle Packing&#8195;
+                   {% if checked_layout == "treeMap" %}checked{% endif %}>Circle Packing&#8195;
             <img
                     src="{% static 'images/nav_bar/circlePacking.svg' %}" style="width: 60px;">
         </label>

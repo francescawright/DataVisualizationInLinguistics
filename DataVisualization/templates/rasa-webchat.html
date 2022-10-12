@@ -7,6 +7,7 @@
     {% csrf_token %}
     <input type="hidden" name="chatbot" value="true">
     <input id="logout_chat_session_id" type="hidden" name="session_id" value= "">
+    <input id="logout_form_submit" type="submit">
 </form>
 
 <form id="loginForm" action="{% url 'login' %}" method="post" style="display: none;">
@@ -15,6 +16,7 @@
     <input id="password_input" type="hidden" name="password" value= "">
     <input type="hidden" name="chatbot" value="true">
     <input id="login_chat_session_id" type="hidden" name="session_id" value= "">
+    <input id="login_form_submit" type="submit">
 </form>
 
 <form id="signupForm" action="{% url 'signup' %}" method="post" style="display: none;">
@@ -24,20 +26,31 @@
     <input id="signup_password2_input" type="hidden" name="password2" value= "">
     <input type="hidden" name="chatbot" value="true">
     <input id="signup_chat_session_id" type="hidden" name="session_id" value= "">
+    <input id="signup_form_submit" type="submit">
 </form>
 
-<form id="chatbotDataSelection" action="{% url 'selected_data' %}" style="display: none;" method="POST">
+<form id="chatbotDataSelection" action="{% url 'selected_data' %}" style="display: none;" method="post">
     {% csrf_token %}
     <input id="open_document_name" type="hidden" name="from_button" value= "">
     <input type="hidden" name="chatbot" value="true">
     <input id="data_selection_chat_session_id" type="hidden" name="session_id" value= "">
+    <input id="data_selection_form_submit" type="submit">
 </form>
 
-<form id="userLogForm" action="" method="post" style="display: none;">
+<form id="userLogForm" style="display: none;">
     {% csrf_token %}
     <input id="chat_msg" type="hidden" name="chat_msg" value= "">
     <input id="user_chat_session_id" type="hidden" name="session_id" value= "">
+    <input id="user_log_form_submit" type="submit">
+</form>
+
+<form id="botLogForm" style="display: none;">
+    {% csrf_token %}
+    <input id="bot_chat_msg" type="hidden" name="chat_msg" value= "">
+    <input id="bot_chat_session_id" type="hidden" name="session_id" value= "">
     <input id="chat_msg_is_action" type="hidden" name="is_action" value= "">
+    <input id="bot_chat_action" type="hidden" name="action" value= "">
+    <input id="bot_log_form_submit" type="submit">
 </form>
 
 <!-- Rasa WebChat Style -->
@@ -93,7 +106,8 @@
         let sessionid = "{{ request.session.session_key }}";
         let csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
         let csrftoken = getCookie("csrftoken");
-        return action + '{\"csrfmiddlewaretoken\":\"' + csrfmiddlewaretoken + '\",\"csrftoken\":\"' + csrftoken + '\",\"sessionid\":\"' + sessionid + '\"}';
+        return action + '{\"csrfmiddlewaretoken\":\"' + csrfmiddlewaretoken + '\",\"csrftoken\":\"' + csrftoken + '\",\"sessionid\":\"' + sessionid + '\"' +
+            ',\"nickname\":\"' + '{{ user.chatprofile.nickname }}' + '\",\"first_login\":\"' + '{{ user.chatprofile.first_login }}' + '\"}';
     }
 
     function doSomeCleanup() {
@@ -116,9 +130,8 @@
                     saveBotAction(e.text, existingStorage["session_id"]);
                     e.text = "I'm working on it";
                     document.getElementById("logout_chat_session_id").value = existingStorage["session_id"];
-                    setTimeout(function () {
-                        document.getElementById("logoutForm").submit();
-                    }, 150);
+                    // setTimeout
+                    document.getElementById("logout_form_submit").click();
 
                     break;
                 case "intent_login":
@@ -127,9 +140,8 @@
                     document.getElementById("username_input").value = messageList[1];
                     document.getElementById("password_input").value = messageList[2];
                     document.getElementById("login_chat_session_id").value = existingStorage["session_id"];
-                    setTimeout(function () {
-                        document.getElementById("loginForm").submit();
-                    }, 150);
+                    // setTimeout
+                    document.getElementById("login_form_submit").click();
                     break;
                 case "intent_signup":
                     saveBotAction(e.text, existingStorage["session_id"]);
@@ -138,9 +150,8 @@
                     document.getElementById("signup_password_input").value = messageList[2];
                     document.getElementById("signup_password2_input").value = messageList[3];
                     document.getElementById("signup_chat_session_id").value = existingStorage["session_id"];
-                    setTimeout(function () {
-                        document.getElementById("signupForm").submit();
-                    }, 150);
+                    // setTimeout
+                    document.getElementById("signup_form_submit").click();
                     break;
                 case "intent_open_document":
                     saveBotAction(e.text, existingStorage["session_id"]);
@@ -149,15 +160,13 @@
                     var mainForm = document.getElementById("main_form");
                     if (mainForm) {
                         createOpenDocumentInputs(mainForm, documentName, existingStorage);
-                        setTimeout(function () {
-                            mainForm.submit()
-                        }, 150);
+                        // setTimeout
+                        mainForm.submit()
                     } else {
                         document.getElementById("data_selection_chat_session_id").value = existingStorage["session_id"];
                         document.getElementById("open_document_name").value = documentName;
-                        setTimeout(function () {
-                            document.getElementById("chatbotDataSelection").submit();
-                        }, 150);
+                        // setTimeout
+                        document.getElementById("data_selection_form_submit").click();
                     }
                     break;
                 case "intent_change_layout":
@@ -165,39 +174,33 @@
                     e.text = "I'm working on it";
                     if ('{{ selected_item }}') {
                         addToLocalStorageObject("chat_session", "conversation", "Done!");
-                        setTimeout(function () {
-                            document.getElementById(messageList[1] + "_layout_button").click();
-                        }, 150);
+                        // setTimeout
+                        document.getElementById(messageList[1] + "_layout_button").click();
                     } else {
                         addToLocalStorageObject("chat_session", "conversation", "Open a document first to be able to change the layout");
                         // Saving in the log the message received from the bot
-                        document.getElementById("chat_msg").value = "Open a document first to be able to change the layout";
-                        document.getElementById("user_chat_session_id").value = existingStorage["session_id"];
-                        form = document.getElementById("userLogForm");
-                        form.action = "{% url 'error_chat_log' %}";
-                        form.submit();
-                        setTimeout(function () {
-                            window.location = window.location.href.split("?")[0];
-                        }, 150);
+                        document.getElementById("bot_chat_msg").value = "Open a document first to be able to change the layout";
+                        document.getElementById("bot_chat_session_id").value = existingStorage["session_id"];
+                        document.getElementById("bot_chat_action").value = "{% url 'bot_chat_log' %}";
+                        document.getElementById("bot_log_form_submit").click();
+                        // setTimeout
+                        window.location = window.location.href.split("?")[0];
                     }
                     break;
                 default:
                     // Saving in the log the message received from the bot
-                    document.getElementById("chat_msg").value = e.text;
-                    document.getElementById("user_chat_session_id").value = existingStorage["session_id"];
-                    form = document.getElementById("userLogForm");
-                    form.action = "{% url 'bot_chat_log' %}";
-                    form.submit();
+                    document.getElementById("bot_chat_msg").value = e.text;
+                    document.getElementById("bot_chat_session_id").value = existingStorage["session_id"];
+                    document.getElementById("bot_chat_action").value = "{% url 'bot_chat_log' %}";
+                    document.getElementById("bot_log_form_submit").click();
             }
         }
     }
 
     function createOpenDocumentInputs(mainForm, documentName, existingStorage) {
-        let inputDocument = document.createElement("input");
-        inputDocument.setAttribute("type", "hidden");
-        inputDocument.setAttribute("name", "selected_data");
-        inputDocument.setAttribute("value", documentName);
-        mainForm.appendChild(inputDocument);
+        // Change select's option
+        document.getElementById("dataset_dropdown").value = documentName;
+
         let inputChatbot = document.createElement("input");
         inputChatbot.setAttribute("type", "hidden");
         inputChatbot.setAttribute("name", "chatbot");
@@ -230,18 +233,14 @@
                     if (typeof groupMessage !== 'undefined' && groupMessage.length !== 0 && groupMessage[0].classList.contains("rw-from-client")){
                         document.getElementById("chat_msg").value = groupMessage[0].innerText;
                         document.getElementById("user_chat_session_id").value = existingStorage["session_id"];
-                        let form = document.getElementById("userLogForm");
-                        form.action = "{% url 'user_chat_log' %}";
-                        form.submit();
+                        document.getElementById("user_log_form_submit").click();
                         // Create an observer instance.
                         // In case the user writes before the chatbot has responded to the last input
                         var secondObserver = new MutationObserver(function(mutations) {
                             moreMessages = document.querySelectorAll(".rw-group-message:last-child .rw-message:last-child .rw-client:last-child");
                             document.getElementById("chat_msg").value = moreMessages[0].innerText;
                             document.getElementById("user_chat_session_id").value = existingStorage["session_id"];
-                            let form = document.getElementById("userLogForm");
-                            form.action = "{% url 'user_chat_log' %}";
-                            form.submit();
+                            document.getElementById("user_log_form_submit").click();
                         });
 
                         secondObserver.observe(groupMessage[0], {
@@ -258,18 +257,19 @@
                     childList:     true,
                     characterData: true
                 });
+            } else {
+                console.log("Error: Chat message section not found")
             }
         }, 200);
     }
 
     function saveBotAction(msgText, session_id) {
         // Saving in the log the message received from the bot
-        document.getElementById("chat_msg").value = msgText;
+        document.getElementById("bot_chat_msg").value = msgText;
         document.getElementById("chat_msg_is_action").value = 'true';
-        document.getElementById("user_chat_session_id").value = session_id;
-        form = document.getElementById("userLogForm");
-        form.action = "{% url 'bot_chat_log' %}";
-        form.submit();
+        document.getElementById("bot_chat_session_id").value = session_id;
+        document.getElementById("bot_chat_action").value = "{% url 'bot_chat_log' %}";
+        document.getElementById("bot_log_form_submit").click();
     }
 
     (function chatbotErrorMessage(e) {
@@ -300,6 +300,82 @@
         localStorage.setItem(name, JSON.stringify(existing));
 
     };
+
+    function getProfileAvatar() {
+        let num = Math.floor(Math.random() * 6) + 1;
+        return "../static/images/profile_avatar/profile-avatar-" + num + ".png";
+    }
+
+    function getChatSubtitle() {
+        let text;
+        if ("{{ user.chatprofile.first_login }}" === "true") {
+            text = "Welcome to chat section";
+        } else if ("{{ user.chatprofile.first_login }}" === "false" && "{{ user.chatprofile.nickname }}" !== "None") {
+            text = "Say hi and get started!";
+        } else {
+            text = "Tell me your nickname at any time";
+        }
+        return text;
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(document).on('submit','#userLogForm', function (e){
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "{% url 'user_chat_log' %}",
+            data: {
+                chat_msg: $('#chat_msg').val(),
+                session_id: $('#user_chat_session_id').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            },
+            // handle a successful response
+            success: function (data) {
+
+            },
+            // handle a non-successful response
+            error: function(jqXHR, textStatus, errorThrown) { // on error..
+                if (jqXHR.status === 0) {
+                    alert('Not connect: Verify Network.');
+                } else if (jqXHR.status === 404) {
+                    alert('Requested page not found [404]');
+                } else if (jqXHR.status === 500) {
+                    alert('Internal Server Error [500].');
+                } else if (textStatus === 'parsererror') {
+                    alert('Requested JSON parse failed.');
+                } else if (textStatus === 'timeout') {
+                    alert('Time out error.');
+                } else if (textStatus === 'abort') {
+                    alert('Ajax request aborted.');
+                } else {
+                    alert('Uncaught Error: ' + jqXHR.responseText);
+                }
+            }
+        })
+    })
+    $(document).on('submit','#botLogForm', function (e){
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: $('#bot_chat_action').val(),
+            data: {
+                chat_msg: $('#bot_chat_msg').val(),
+                session_id: $('#bot_chat_session_id').val(),
+                is_action: $('#chat_msg_is_action').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            },
+            // handle a successful response
+            success: function (data) {
+
+            },
+            // handle a non-successful response
+            error: function(jqXHR, textStatus, errorThrown) { // on error..
+
+            }
+        })
+    })
 </script>
 
 <script>
@@ -314,10 +390,11 @@
           window.WebChat.default(
             {
                 title: 'Rasa bot',
-                subtitle: 'Say hi and get started!',
+                subtitle: getChatSubtitle(),
                 initPayload: generateInitPayload(),
                 customData: { language: "en" },
                 socketUrl: "http://localhost:5005",
+                profileAvatar:getProfileAvatar(),
                 showFullScreenButton: false,
                 customMessageDelay: (message) => {
                     let delay = message.length * 10;
@@ -329,6 +406,7 @@
                     'bot_uttered': botMessageEvent,
                     'connect': function() {
                         console.log('connection established');
+                        saveUserInputLog();
                     },
                     'disconnect': function() {
                         doSomeCleanup();
@@ -344,6 +422,9 @@
                     },
                     onChatHidden: function(widgetEvent) {
                         console.log('connection onChatHidden');
+                    },
+                    onChatVisible: function(widgetEvent) {
+                        console.log('connection onChatVisible');
                     },
                 },
                 // showMessageDate: true,

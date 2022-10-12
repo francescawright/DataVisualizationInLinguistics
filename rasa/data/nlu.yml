@@ -82,6 +82,7 @@ nlu:
     - by no means
     - not at all
     - not by any means
+    - not now
 
 - intent: mood_great
   examples: |
@@ -264,9 +265,29 @@ nlu:
 - intent: select_document
   examples: |
     - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - Open the [document]{"entity": "object_requested", "value": "document"} [20190512_MI]{"entity": "document_requested"}
+    - Open [Compact_200]{"entity": "document_requested"}
+    - Open [document]{"entity": "object_requested", "value": "document"}
+    - Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
     - Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
-    - Show me the [20190716_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - I want to open [20200608_SO]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - I want to see [20200618_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
-    - I want to see the [file]{"entity": "object_requested", "value": "document"} [20200715b_CR]{"entity": "document_requested"}
+    - Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - I want to open a [file]{"entity": "object_requested", "value": "document"}
+    - I want to open [wide]{"entity": "document_requested"}
+    - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
+    - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
+
+- synonym: nickname
+  examples: |
+    - name
+
+- intent: say_name
+  examples: |
+    - My [name]{"entity": "object_requested", "value": "nickname"} is [Eloi]{"entity": "nickname_requested"}
+    - I want to tell you my [name]{"entity": "object_requested", "value": "nickname"}
+    - I want to give you my [nickname]{"entity": "object_requested", "value": "nickname"}
+    - You can call me [Ecem]{"entity": "nickname_requested"}
+    - You can refer to me as [edu]{"entity": "nickname_requested"}
+    - Call me [Anna]{"entity": "nickname_requested"}
+    - My name is [Inma]{"entity": "nickname_requested"}
+    - Say [name]{"entity": "object_requested", "value": "nickname"}
+    - Give [nickname]{"entity": "object_requested", "value": "nickname"}

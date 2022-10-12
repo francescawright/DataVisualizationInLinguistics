@@ -75,6 +75,8 @@
     }
 </style>
 <head>
+     <!-- Add jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
 
     {% load static %}
     <!-- Bootstrap core CSS -->
@@ -240,13 +242,6 @@
 <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <script>
-
-    window.onload = function () {
-        setTimeout(function () {
-            //Activates a listener to detect user inputs
-            saveUserInputLog();
-        }, 200);
-    }
 
     var acc = document.getElementsByClassName("accordion");
     var i;

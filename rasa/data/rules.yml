@@ -24,6 +24,12 @@ rules:
   - action: utter_greet_again
   - action: action_listen
 
+- rule: Bot offers assistance to the user after being greeted
+  steps:
+  - intent: greet
+  - action: utter_offers_help
+  - action: action_listen
+
 - rule: Ask user for confirmation to logout
   steps:
   - intent: logout
