@@ -356,3 +356,46 @@ class ActionChangeLayout(Action):
             else:
                 dispatcher.utter_message(text='intent_change_layout,' + tracker.get_slot("layout_requested"))
                 return [SlotSet("layout_requested", None)]
+
+class ActionCheckNickname(Action):
+
+    def name(self) -> Text:
+        return "action_check_nickname"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        if not tracker.get_slot("nickname"):
+            if tracker.get_slot("first_login") == "True":
+                return [FollowupAction("utter_know_nickname")]
+        return []
+
+class ActionRememberNickname(Action):
+
+    def name(self) -> Text:
+        return "action_remember_nickname"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        # Save in the database that the user has made his first chat connection
+
+
+        dispatcher.utter_message(text="Okay " + tracker.get_slot("nickname") + ", I'll remember it!")
+        return [SlotSet("nickname", tracker.get_slot("nickname")), SlotSet("first_login", "False")]
+
+class ActionRefusedNickname(Action):
+
+    def name(self) -> Text:
+        return "action_refused_nickname"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        # Save in the database that the user has made his first chat connection
+
+        dispatcher.utter_message(text="All right, anyway, remember you can tell me at any time")
+        return [SlotSet("first_login", "False")]

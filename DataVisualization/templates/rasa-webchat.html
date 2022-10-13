@@ -3,14 +3,14 @@
 
 <!-- Action Forms -->
 
-<form id="logoutForm" action="{% url 'logout' %}" method="get" style="display: none;">
+<form id="logoutForm" action="{% url 'logout' %}" method="GET" style="display: none;">
     {% csrf_token %}
     <input type="hidden" name="chatbot" value="true">
     <input id="logout_chat_session_id" type="hidden" name="session_id" value= "">
     <input id="logout_form_submit" type="submit">
 </form>
 
-<form id="loginForm" action="{% url 'login' %}" method="post" style="display: none;">
+<form id="loginForm" action="{% url 'login' %}" method="POST" style="display: none;">
     {% csrf_token %}
     <input id="username_input" type="hidden" name="username" value= "">
     <input id="password_input" type="hidden" name="password" value= "">
@@ -19,7 +19,7 @@
     <input id="login_form_submit" type="submit">
 </form>
 
-<form id="signupForm" action="{% url 'signup' %}" method="post" style="display: none;">
+<form id="signupForm" action="{% url 'signup' %}" method="POST" style="display: none;">
     {% csrf_token %}
     <input id="signup_username_input" type="hidden" name="username" value= "">
     <input id="signup_password_input" type="hidden" name="password1" value= "">
@@ -29,7 +29,7 @@
     <input id="signup_form_submit" type="submit">
 </form>
 
-<form id="chatbotDataSelection" action="{% url 'selected_data' %}" style="display: none;" method="post">
+<form id="chatbotDataSelection" action="{% url 'selected_data' %}" style="display: none;" method="POST">
     {% csrf_token %}
     <input id="open_document_name" type="hidden" name="from_button" value= "">
     <input type="hidden" name="chatbot" value="true">
@@ -98,7 +98,7 @@
 
     function generateInitPayload() {
         let action;
-        if ('{{storage_clear}}') {
+        if ('{{storage_clear}}' && '{{storage_clear}}' !== "nochat") {
             action = '/new_start_intent';
         } else {
             action = '/start_intent';
@@ -258,7 +258,7 @@
                     characterData: true
                 });
             } else {
-                console.log("Error: Chat message section not found")
+                console.log("Chat section hidden")
             }
         }, 200);
     }
@@ -308,9 +308,9 @@
 
     function getChatSubtitle() {
         let text;
-        if ("{{ user.chatprofile.first_login }}" === "true") {
+        if ("{{ user.chatprofile.first_login }}" === "True") {
             text = "Welcome to chat section";
-        } else if ("{{ user.chatprofile.first_login }}" === "false" && "{{ user.chatprofile.nickname }}" !== "None") {
+        } else if ("{{ user.chatprofile.first_login }}" === "False" && "{{ user.chatprofile.nickname }}") {
             text = "Say hi and get started!";
         } else {
             text = "Tell me your nickname at any time";

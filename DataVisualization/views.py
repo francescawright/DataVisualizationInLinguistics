@@ -598,10 +598,15 @@ def decrypt(token: bytes, key: bytes) -> bytes:
 
 def getTemplateByPath(request, errorMessage):
 
+    if request.method == 'POST':
+        session_id = request.POST['session_id']
+    if request.method == 'GET':
+        session_id = request.GET["session_id"]
+
     # Add error to user log
     db_logger = logging.getLogger('db')
     db_logger.error(errorMessage,
-                    extra={'user': request.user.username, 'session_id': request.POST['session_id'],
+                    extra={'user': request.user.username, 'session_id': session_id,
                            'sender': 'response', 'is_action': False})
 
     path = urlparse(request.META['HTTP_REFERER']).path

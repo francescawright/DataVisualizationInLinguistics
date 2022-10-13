@@ -58,7 +58,7 @@ class tbl_Authentication(models.Model):
 class ChatProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     age = models.IntegerField(null=True, blank=True)
-    nickname = models.CharField(max_length=100, null=True, blank=True)
+    nickname = models.CharField(max_length=100, blank=True)
     first_login = models.BooleanField()
 
     def __str__(self):
@@ -67,7 +67,7 @@ class ChatProfile(models.Model):
     @receiver(post_save, sender=User)
     def create_chat_profile(sender, instance, created, **kwargs):
         if created:
-            ChatProfile.objects.create(user=instance,first_login=True)
+            ChatProfile.objects.create(user=instance,first_login=True, nickname="")
 
     @receiver(post_save, sender=User)
     def save_chat_profile(sender, instance, **kwargs):

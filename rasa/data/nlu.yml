@@ -83,6 +83,7 @@ nlu:
     - not at all
     - not by any means
     - not now
+    - cancel
 
 - intent: mood_great
   examples: |
@@ -285,9 +286,13 @@ nlu:
     - My [name]{"entity": "object_requested", "value": "nickname"} is [Eloi]{"entity": "nickname_requested"}
     - I want to tell you my [name]{"entity": "object_requested", "value": "nickname"}
     - I want to give you my [nickname]{"entity": "object_requested", "value": "nickname"}
+    - I want to give you [name]{"entity": "object_requested", "value": "nickname"}
     - You can call me [Ecem]{"entity": "nickname_requested"}
     - You can refer to me as [edu]{"entity": "nickname_requested"}
     - Call me [Anna]{"entity": "nickname_requested"}
     - My name is [Inma]{"entity": "nickname_requested"}
     - Say [name]{"entity": "object_requested", "value": "nickname"}
     - Give [nickname]{"entity": "object_requested", "value": "nickname"}
+    - [Alex]{"entity": "nickname_requested"}
+    - [felix]{"entity": "nickname_requested"}
+    - [raul22]{"entity": "nickname_requested"}

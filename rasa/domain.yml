@@ -40,14 +40,13 @@ actions:
   - action_change_layout
   - action_open_document
   - validate_signup_form
+  - action_check_nickname
   - validate_nickname_form
-  - validate_nickname_request_form
+  - action_remember_nickname
+  - action_refused_nickname
 
 forms:
   nickname_form:
-    nickname_requested:
-      - type: from_text
-  nickname_request_form:
     nickname_requested:
       - type: from_text
   login_form:
@@ -134,8 +133,8 @@ responses:
   - text: "Hello there 😁"
 
   utter_offers_help:
-  - text: "Need something?"
-  - text: "Can I help you with anything?"
+  - text: "Need something? 😊"
+  - text: "Can I help you with anything? 😄"
 
   utter_greet_again:
   - text: "How else can I help you? 😉"
@@ -160,13 +159,13 @@ responses:
   - text: "I am a bot, powered by Rasa."
 
   utter_ask_nickname_form_nickname_requested:
-  - text: "May I know your name?"
-
-  utter_ask_nickname_request_form_nickname_requested:
+  - text: "Please tell me what I should call you"
   - text: "What do you want me to call you?"
   - text: "How do you want me to refer to you?"
-  - text: "What is your nickname?"
   - text: "What is your name?"
+
+  utter_know_nickname:
+  - text: "May I know your name?"
 
   utter_logout_confirmation:
   - text: "Sure you want to log out?"
@@ -209,9 +208,6 @@ responses:
 
   utter_ask_document_selection_form_document_requested:
   - text: "Which document do you want to open?"
-
-  utter_remember:
-    - text: "I will remember it!"
 
 session_config:
   session_expiration_time: 60

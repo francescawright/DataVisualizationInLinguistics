@@ -12,17 +12,19 @@ rules:
   - intent: bot_challenge
   - action: utter_iamabot
 
+# Check if it is the user's first connection. Ask for his name if it is.
 - rule: First bot interaction with the user
   steps:
   - intent: start_intent
   - action: utter_greet
-  - action: action_listen
+  - action: action_check_nickname
 
+# Check if it is the user's first connection. Ask for his name if it is.
 - rule: New bot interaction with user after previous messages
   steps:
   - intent: new_start_intent
   - action: utter_greet_again
-  - action: action_listen
+  - action: action_check_nickname
 
 - rule: Bot offers assistance to the user after being greeted
   steps:
