@@ -1,3 +1,6 @@
+// Variable to check if the ready function code has been completely executed
+var codeReady = false;
+
 //Graph
 const canvasHeight = 1000, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
 const canvasFactor = 1;
@@ -1160,8 +1163,6 @@ treeJSON = d3.json(dataset, function (error, json) {
     }
 
     /*END section*/
-
-    var svgGroup = svg.append("g");
 
     /* SECTION TO DRAW TARGETS */
 
@@ -2515,7 +2516,6 @@ treeJSON = d3.json(dataset, function (error, json) {
         root.x = canvasWidth / 2;
         root.y = canvasHeight / 2;
 
-
         // Restart the force layout.
         force
             .nodes(nodes)
@@ -2690,9 +2690,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                                 .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
                         if (checkboxItem.checked) {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         } else {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         selectTargetVisualization(node);
                     })
@@ -2707,9 +2707,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                                 .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                                 .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
                         if (checkboxItem.checked) {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         } else {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         selectFeatureVisualization(node);
 
@@ -2741,9 +2741,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                         var filteredCompareFeatures = getLengthFilterByName(Array.from(enabledHighlight), "highlight-features-");
                         document.getElementById('highlight-OR-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
                         if (checkboxItem.checked) {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         } else {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
                     })
@@ -2766,13 +2766,22 @@ treeJSON = d3.json(dataset, function (error, json) {
                         document.getElementById('highlight-AND-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
 
                         if (checkboxItem.checked) {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         } else {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
                     })
                 });
+
+                // To notify the DOM that the ready function has finished executing.
+                // This to be able to manage the filters if it is given the case that the code of the onLoad function finishes before.
+                const event = new Event('codeReady');
+
+                // Dispatch the event.
+                document.querySelector("body").dispatchEvent(event);
+
+                codeReady = true;
             });
             /*END section cb*/
 
@@ -2826,13 +2835,13 @@ treeJSON = d3.json(dataset, function (error, json) {
                 document.getElementById('static_values_button').innerHTML = '&#8722;';
                 static_values_checked = true;
                 statisticBackground.style("visibility", "visible").html(writeStatisticText());
-                console.log('[User]', user.split('/')[2], ' | [interaction]', 'show_summary', ' | [Date]', Date.now());
+                console.log('[User]', user.split('/')[2], '| [interaction]', 'show_summary', ' | [Date]', Date.now());
 
             } else {
                 document.getElementById('static_values_button').innerHTML = '&#43;'
                 static_values_checked = false;
                 statisticBackground.style("visibility", "hidden").html(writeStatisticText());
-                console.log('[User]', user.split('/')[2], ' | [interaction]', 'hide_summary', ' | [Date]', Date.now());
+                console.log('[User]', user.split('/')[2], '| [interaction]', 'hide_summary', ' | [Date]', Date.now());
 
             }
         });
@@ -3105,8 +3114,6 @@ treeJSON = d3.json(dataset, function (error, json) {
         return nodes;
     }
 
-    /*
-    * */
     var svgGroup = svg.append("g"); //We define it here, otherwise, svg is not defined
     root = json;
     update();
@@ -3146,88 +3153,6 @@ treeJSON = d3.json(dataset, function (error, json) {
         // statisticTitleBackground.style("visibility", "visible").html(statisticTitle);
         // statisticBackground.style("visibility", "visible").html(writeStatisticText(totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic,
         //     totalGroup, totalPerson, totalStereotype, totalNone));
-    }
-
-    /**
-     * Recursive function to compute the global statistics
-     * counts nodes by toxicity and by targets
-     * */
-    function getStatisticValues(node) {
-        if (!node.children) {
-            return {
-                children: 0,
-                toxicityLevel: node.toxicity_level,
-                toxicity0: 0,
-                toxicity1: 0,
-                toxicity2: 0,
-                toxicity3: 0,
-                totalTargGroup: 0,
-                totalTargPerson: 0,
-                totalTargStereotype: 0,
-                totalTargNone: 0,
-                targGroup: node.target_group,
-                targPerson: node.target_person,
-                targStereotype: node.stereotype,
-                targNone: 0
-            };
-        }
-        var total = 0, childrenList = [],
-            totalToxic0 = 0, totalToxic1 = 0, totalToxic2 = 0, totalToxic3 = 0,
-            totalTargGroup = 0, totalTargPerson = 0, totalTargStereotype = 0, totalTargNone = 0;
-
-        if (node.children) {
-            node.children.forEach(function (d) {
-                childrenList = getStatisticValues(d);
-                total += childrenList.children + 1;
-
-                totalToxic0 += childrenList.toxicity0;
-                totalToxic1 += childrenList.toxicity1;
-                totalToxic2 += childrenList.toxicity2;
-                totalToxic3 += childrenList.toxicity3;
-
-                switch (childrenList.toxicityLevel) {
-
-                    case 0:
-                        totalToxic0 += 1;
-                        break;
-
-                    case 1:
-                        totalToxic1 += 1;
-                        break;
-
-                    case 2:
-                        totalToxic2 += 1;
-                        break;
-
-                    case 3:
-                        totalToxic3 += 1;
-                        break;
-                }
-
-                //Targets are not exclusive
-                childrenList.targGroup ? totalTargGroup += childrenList.totalTargGroup + 1 : totalTargGroup += childrenList.totalTargGroup;
-                childrenList.targPerson ? totalTargPerson += childrenList.totalTargPerson + 1 : totalTargPerson += childrenList.totalTargPerson;
-                childrenList.targStereotype ? totalTargStereotype += childrenList.totalTargStereotype + 1 : totalTargStereotype += childrenList.totalTargStereotype;
-                (!childrenList.targGroup && !childrenList.targPerson && !childrenList.targStereotype) ? totalTargNone += childrenList.totalTargNone + 1 : totalTargNone += childrenList.totalTargNone;
-            })
-        }
-
-        return {
-            children: total,
-            toxicityLevel: node.toxicity_level,
-            toxicity0: totalToxic0,
-            toxicity1: totalToxic1,
-            toxicity2: totalToxic2,
-            toxicity3: totalToxic3,
-            totalTargGroup: totalTargGroup,
-            totalTargPerson: totalTargPerson,
-            totalTargStereotype: totalTargStereotype,
-            totalTargNone: totalTargNone,
-            targGroup: node.target_group,
-            targPerson: node.target_person,
-            targStereotype: node.stereotype,
-            targNone: 0
-        };
     }
 
     //I compute the values for the statistic data showing in the background
@@ -3273,12 +3198,12 @@ treeJSON = d3.json(dataset, function (error, json) {
 
     function drawZoomValue(zoomLevel) {
         //console.log("Zoom Level", zoomLevel);
-        zoomLabel.textContent = "Zoom: " + ((((zoomLevel - minZoom) / maxZoom) * 100) + 1).toFixed(0) + '%';
+        //zoomLabel.textContent = "Zoom: " + ((((zoomLevel - minZoom) / maxZoom) * 100) + 1).toFixed(0) + '%';
         //XLabel.textContent = "X: " + currentX.toFixed(0);
         //>YLabel.textContent = "Y: " + currentY.toFixed(0);
     }
 
-    console.log('[User]', user.split('/')[2], ' | [interaction]', 'Force_layout_loaded', ' | [Date]', Date.now());
+    console.log('[User]', user.split('/')[2], '| [interaction]', 'Force_layout_loaded', ' | [Date]', Date.now());
 
 
 });

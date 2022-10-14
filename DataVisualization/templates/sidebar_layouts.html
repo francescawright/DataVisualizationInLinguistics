@@ -1436,7 +1436,7 @@
     function CheckAll(chk) {
         //if (chk.length > 3) {
         if (chk.length > 4) {
-            console.log("[User] {{ user }}| [interaction] checkall_features | [Date]", Date.now());
+            console.log("[User] {{ user }} | [interaction] checkall_features | [Date]", Date.now());
         } else {
             console.log("[User] {{ user }} | [interaction] checkall_targets | [Date]", Date.now());
         }
@@ -1463,35 +1463,17 @@
 
     }
 
-    window.onload = function () {
-        /*var chk_targets = document.querySelectorAll('input[type=checkbox][name=cbTargets]');
-        var chk_features = document.querySelectorAll('input[type=checkbox][name=cbFeatures]');
-
-        for (i = 0; i < chk_targets.length; i++) {
-            var evt = document.createEvent("HTMLEvents");
-            evt.initEvent("change", false, true);
-            chk_targets[i].dispatchEvent(evt);
-        }
-
-        for (i = 0; i < chk_features.length; i++) {
-            var evt = document.createEvent("HTMLEvents");
-            evt.initEvent("change", false, true);
-            chk_features[i].dispatchEvent(evt);
-        }
-
-        var chk_enable_features = document.getElementById("feature-group")
-        var evt = document.createEvent("HTMLEvents");
-        evt.initEvent("change", false, true);
-        chk_enable_features.dispatchEvent(evt);*/
+    function codeReadyAndRendered() {
+        var checks, evt;
         if ("{{ cbCommons.and_group }}" === "1") {
             document.getElementById("and_label").className = "btn btn-secondary active";
             document.getElementById("or_label").className = "btn btn-secondary";
 
             document.getElementById("highlight_checks_AND").style = "display: block;";
             document.getElementById("highlight_checks_OR").style = "display: none;";
-            var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightAND]");
+            checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightAND]");
             for (i = 0; i < checks.length; i++) {
-                var evt = document.createEvent("HTMLEvents");
+                evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
                 checks[i].dispatchEvent(evt);
             }
@@ -1502,15 +1484,25 @@
             document.getElementById("highlight_checks_AND").style = "display: none;";
             document.getElementById("highlight_checks_OR").style = "display: block;";
 
-            var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightOR]");
+            checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightOR]");
             for (i = 0; i < checks.length; i++) {
-                var evt = document.createEvent("HTMLEvents");
+                evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
                 checks[i].dispatchEvent(evt);
             }
         }
     }
 
+    window.onload = function () {
+        // To update the view on the filters
+        if (codeReady) {
+            codeReadyAndRendered();
+        } else {
+            // If the onLoad function code ends before the ready function code.
+            // Listen for the event.
+            document.querySelector("body").addEventListener('codeReady', codeReadyAndRendered);
+        }
+    }
 
     jQuery("#and_button").click(function () {
         $(this).attr("checked", true);
@@ -1520,7 +1512,7 @@
 
         document.getElementById("highlight_checks_AND").style = "display: block;";
         document.getElementById("highlight_checks_OR").style = "display: none;";
-        console.log('[User]', user.split('/')[2], ' | [interaction]', 'AND_button', ' | [Date]', Date.now());
+        console.log('[User]', user.split('/')[2], '| [interaction]', 'AND_button', ' | [Date]', Date.now());
     });
 
     jQuery("#or_button").click(function () {
@@ -1530,7 +1522,7 @@
         document.getElementById("or_label").className = "btn btn-secondary active";
         document.getElementById("highlight_checks_AND").style = "display: none;";
         document.getElementById("highlight_checks_OR").style = "display: block;";
-        console.log('[User]', user.split('/')[2], ' | [interaction]', 'OR_button', ' | [Date]', Date.now());
+        console.log('[User]', user.split('/')[2], '| [interaction]', 'OR_button', ' | [Date]', Date.now());
     });
 
     var targets_accordion_expanded = true;
@@ -1538,11 +1530,11 @@
         if (!targets_accordion_expanded) {
             document.getElementById('plus_sign_targets').innerHTML = '&#8722;';
             targets_accordion_expanded = true;
-            console.log("[User]", user.split('/')[2], " | [interaction]", "showing_targets_accordion", " | [Date]", Date.now());
+            console.log("[User]", user.split('/')[2], "| [interaction]", "showing_targets_accordion", " | [Date]", Date.now());
         } else {
             document.getElementById('plus_sign_targets').innerHTML = '&#43;'
             targets_accordion_expanded = false;
-            console.log("[User]", user.split('/')[2], " | [interaction]", "hidding_targets_accordion", " | [Date]", Date.now());
+            console.log("[User]", user.split('/')[2], "| [interaction]", "hidding_targets_accordion", " | [Date]", Date.now());
         }
     });
 
@@ -1551,11 +1543,11 @@
         if (!features_accordion_expanded) {
             document.getElementById('plus_sign_features').innerHTML = '&#8722;';
             features_accordion_expanded = true;
-            console.log("[User]", user.split('/')[2], " | [interaction]", "showing_features_accordion", " | [Date]", Date.now());
+            console.log("[User]", user.split('/')[2], "| [interaction]", "showing_features_accordion", " | [Date]", Date.now());
         } else {
             document.getElementById('plus_sign_features').innerHTML = '&#43;'
             features_accordion_expanded = false;
-            console.log("[User]", user.split('/')[2], " | [interaction]", "hidding_features_accordion", " | [Date]", Date.now());
+            console.log("[User]", user.split('/')[2], "| [interaction]", "hidding_features_accordion", " | [Date]", Date.now());
         }
     });
 
@@ -1565,11 +1557,11 @@
         if (!highlight_accordion_expanded) {
             document.getElementById('plus_sign_highlight').innerHTML = '&#8722;';
             highlight_accordion_expanded = true;
-            console.log("[User]", user.split('/')[2], " | [interaction]", "showing_highlight_accordion", " | [Date]", Date.now());
+            console.log("[User]", user.split('/')[2], "| [interaction]", "showing_highlight_accordion", " | [Date]", Date.now());
         } else {
             document.getElementById('plus_sign_highlight').innerHTML = '&#43;'
             highlight_accordion_expanded = false;
-            console.log("[User]", user.split('/')[2], " | [interaction]", "hidding_highlight_accordion", " | [Date]", Date.now());
+            console.log("[User]", user.split('/')[2], "| [interaction]", "hidding_highlight_accordion", " | [Date]", Date.now());
         }
     });
 
@@ -1578,11 +1570,11 @@
         if (!devtools_accordion_expanded) {
             document.getElementById('plus_sign_devtools').innerHTML = '&#8722;';
             devtools_accordion_expanded = true;
-            console.log("[User]", user.split('/')[2], " | [interaction]", "showing_devtools_accordion", " | [Date]", Date.now());
+            console.log("[User]", user.split('/')[2], "| [interaction]", "showing_devtools_accordion", " | [Date]", Date.now());
         } else {
             document.getElementById('plus_sign_devtools').innerHTML = '&#43;'
             devtools_accordion_expanded = false;
-            console.log("[User]", user.split('/')[2], " | [interaction]", "hidding_devtools_accordion", " | [Date]", Date.now());
+            console.log("[User]", user.split('/')[2], "| [interaction]", "hidding_devtools_accordion", " | [Date]", Date.now());
         }
     });
 

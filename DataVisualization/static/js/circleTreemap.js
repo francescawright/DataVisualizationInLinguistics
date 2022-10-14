@@ -1,3 +1,6 @@
+// Variable to check if the ready function code has been completely executed
+var codeReady = false;
+
 let svg = d3.select("#svg_treeMap")
 //let svg = d3
         //.select("#whole-container")
@@ -14,108 +17,15 @@ let pack = d3.pack()
     .size([diameter - 2, diameter - 2])
     .padding(3);
 
-    var tooltipText;
+var tooltipText;
 
-     // Hover rectangle in which the information of a node is displayed
-    var tooltip = d3.select("#circletree-container")
-        .append("div")
-        .attr("class", "my-tooltip") //add the tooltip class
-        .style("position", "absolute")
-        .style("z-index", "1")
-        .style("visibility", "hidden");
-
-
-    function writeTooltipText(d) {
-        //I want to show Argument and Constructiveness in one line, I add a dummy space to keep that in the loop
-        var jsonValues = [
-            d.name,
-            d.toxicity_level,
-            d.depth,
-            d.argumentation,
-            d.constructiveness,
-            -1,
-            d.sarcasm,
-            d.mockery,
-            d.intolerance,
-            d.improper_language,
-            d.insult,
-            d.aggressiveness,
-            d.target_group,
-            d.target_person,
-            d.stereotype,
-        ];
-        var jsonNames = [
-            "Comment ID",
-            "Toxicity level",
-            "Comment depth",
-            "Argument",
-            "Constructiveness",
-            " ",
-            "Sarcasm",
-            "Mockery",
-            "Intolerance",
-            "Improper language",
-            "Insult",
-            "Aggressiveness",
-            "Target group",
-            "Target person",
-            "Stereotype",
-        ];
-        var i = 0;
-        tooltipText = "<table>";
-
-        for (i = 0; i < jsonValues.length; i++) {
-            if (i === 3 || i === 12) tooltipText += "<tr><td></td></tr>"; // I want a break between the first line and the features and the targets
-            if (i % 3 === 0) tooltipText += "<tr>"; //Start table line
-            if (i < 3)
-                tooltipText +=
-                    "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>";
-            //First ones without bold
-            else if (jsonValues[i] !== -1)
-                jsonValues[i] ?
-                    (tooltipText +=
-                        "<td><b>" +
-                        jsonNames[i] +
-                        ": " +
-                        jsonValues[i] +
-                        "</b></td>") :
-                    (tooltipText +=
-                        "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>");
-            if ((i + 1) % 3 === 0) tooltipText += "</tr>"; //End table line
-        }
-
-        tooltipText += "</table>";
-
-        tooltipText += "<br> <table>";
-        //If node is collapsed, we also want to add some information about its sons
-        if (d._children) {
-           var sonTitles = [
-               "Direct comments",
-               "Total number of generated comments",
-               "Not toxic",
-                "Mildly toxic",
-                "Toxic",
-                "Very toxic",
-            ];
-            var sonValues = [
-                d._children.length,
-                d.numberOfDescendants,
-                d.descendantsWithToxicity0,
-                d.descendantsWithToxicity1,
-                d.descendantsWithToxicity2,
-                d.descendantsWithToxicity3,
-            ];
-
-            for (i = 0; i < sonValues.length; i++) {
-                if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
-                tooltipText +=
-                    "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
-                if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
-            }
-        }
-        tooltipText += "</table>";
-        tooltipText += "<br>" + d.coment;
-     }
+ // Hover rectangle in which the information of a node is displayed
+var tooltip = d3.select("#circletree-container")
+    .append("div")
+    .attr("class", "my-tooltip") //add the tooltip class
+    .style("position", "absolute")
+    .style("z-index", "1")
+    .style("visibility", "hidden");
 
 var node;
 
@@ -148,7 +58,7 @@ var checkboxesHighlightGroupOR = document.querySelectorAll("input[type=checkbox]
 var checkboxesHighlightGroupAND = document.querySelectorAll("input[type=checkbox][name=cbHighlightAND]");
 
 console.log('[User]', user.split('/')[2], '| [interaction]', 'TreeMap_layout_loaded', '| [Date]', Date.now());
-
+var enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
 treeJSON = d3.json(dataset, function (error, root) {
 
         /*SECTION checkboxes*/
@@ -181,7 +91,6 @@ treeJSON = d3.json(dataset, function (error, root) {
 
     root = d3.hierarchy(root)
         .sum(function (d) {
-            //console.log(d);
             switch (d.comment_level) {
                 //case 0:
                 //return colourToxicity0;
@@ -197,7 +106,7 @@ treeJSON = d3.json(dataset, function (error, root) {
             return b.comment_level - a.comment_level;
         });
 
-    node = g.selectAll(".node")
+    var node = g.selectAll(".node")
         .data(pack(root).descendants())
         .enter().append("g")
         .attr("class", function (d) {
@@ -206,7 +115,6 @@ treeJSON = d3.json(dataset, function (error, root) {
         .attr("transform", function (d) {
             return "translate(" + d.x + "," + d.y + ")";
         })
-
 
 
     //node.append("title")
@@ -249,10 +157,12 @@ treeJSON = d3.json(dataset, function (error, root) {
         }).style("stroke", "black")
           .on("mouseover", function (d) {
                 if (d !== root) {
+                    writeTooltipText(d.data, d.depth);
                     tooltip.style("visibility", "visible").html(tooltipText);
-                    return writeTooltipText(d.data);
+                } else {
+                    writeTooltipRoot(d.data, d.depth);
+                    tooltip.style("visibility", "visible").html(tooltipText);
                 }
-
             })
         .on("mousemove", function (d) {
                 if (d !== root) {
@@ -267,26 +177,261 @@ treeJSON = d3.json(dataset, function (error, root) {
         //    .on("mousemove", function(){return tooltip.style("top", d3.event.pageY -30 +"px").style("left",d3.event.pageX + 480 +"px");})
 	    //    .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
+/**
+ * Recursive function to compute the global statistics
+ * counts nodes by toxicity and by targets
+ * */
+function getStatisticValues(node) {
+    if (!node.children) {
+        return {
+            children: 0,
+            toxicityLevel: node.data.toxicity_level,
+            toxicity0: 0,
+            toxicity1: 0,
+            toxicity2: 0,
+            toxicity3: 0,
+            totalTargGroup: 0,
+            totalTargPerson: 0,
+            totalTargStereotype: 0,
+            totalTargNone: 0,
+            targGroup: node.data.target_group,
+            targPerson: node.data.target_person,
+            targStereotype: node.data.stereotype,
+            targNone: 0
+        };
+    }
+    var total = 0, childrenList = [],
+        totalToxic0 = 0, totalToxic1 = 0, totalToxic2 = 0, totalToxic3 = 0,
+        totalTargGroup = 0, totalTargPerson = 0, totalTargStereotype = 0, totalTargNone = 0;
 
+    if (node.children) {
+        node.children.forEach(function (d) {
+            childrenList = getStatisticValues(d);
+            total += childrenList.children + 1;
 
+            totalToxic0 += childrenList.toxicity0;
+            totalToxic1 += childrenList.toxicity1;
+            totalToxic2 += childrenList.toxicity2;
+            totalToxic3 += childrenList.toxicity3;
 
-    function hovered(hover) {
+            switch (childrenList.toxicityLevel) {
+
+                case 0:
+                    totalToxic0 += 1;
+                    break;
+
+                case 1:
+                    totalToxic1 += 1;
+                    break;
+
+                case 2:
+                    totalToxic2 += 1;
+                    break;
+
+                case 3:
+                    totalToxic3 += 1;
+                    break;
+            }
+
+            //Targets are not exclusive
+            childrenList.targGroup ? totalTargGroup += childrenList.totalTargGroup + 1 : totalTargGroup += childrenList.totalTargGroup;
+            childrenList.targPerson ? totalTargPerson += childrenList.totalTargPerson + 1 : totalTargPerson += childrenList.totalTargPerson;
+            childrenList.targStereotype ? totalTargStereotype += childrenList.totalTargStereotype + 1 : totalTargStereotype += childrenList.totalTargStereotype;
+            (!childrenList.targGroup && !childrenList.targPerson && !childrenList.targStereotype) ? totalTargNone += childrenList.totalTargNone + 1 : totalTargNone += childrenList.totalTargNone;
+        })
+    }
+
+    return {
+        children: total,
+        toxicityLevel: node.data.toxicity_level,
+        toxicity0: totalToxic0,
+        toxicity1: totalToxic1,
+        toxicity2: totalToxic2,
+        toxicity3: totalToxic3,
+        totalTargGroup: totalTargGroup,
+        totalTargPerson: totalTargPerson,
+        totalTargStereotype: totalTargStereotype,
+        totalTargNone: totalTargNone,
+        targGroup: node.data.target_group,
+        targPerson: node.data.target_person,
+        targStereotype: node.data.stereotype,
+        targNone: 0
+    };
+}
+
+//I compute the values for the statistic data showing in the background
+var listStatistics = getStatisticValues(root);
+var totalNumberOfNodes = listStatistics.children;
+
+var totalNotToxic = listStatistics.toxicity0,
+    totalMildlyToxic = listStatistics.toxicity1,
+    totalToxic = listStatistics.toxicity2,
+    totalVeryToxic = listStatistics.toxicity3;
+
+function writeTooltipRoot(d) {
+
+    var sonTitles = [
+        "Direct comments",
+        "Total number of generated comments",
+        "Not toxic",
+        "Mildly toxic",
+        "Toxic",
+        "Very toxic",
+    ];
+    var sonValues = [
+        d.children.length,
+        totalNumberOfNodes,
+        totalNotToxic,
+        totalMildlyToxic,
+        totalToxic,
+        totalVeryToxic,
+    ];
+    tooltipText = "<table>";
+    tooltipText += "<table>";
+
+    for (i = 0; i < sonValues.length; i++) {
+        if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
+        tooltipText +=
+            "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
+        if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
+    }
+
+    tooltipText += "<br> <table>";
+}
+
+function writeTooltipText(d, depth) {
+    //I want to show Argument and Constructiveness in one line, I add a dummy space to keep that in the loop
+    var jsonValues = [
+        d.name,
+        d.toxicity_level,
+        depth,
+        d.argumentation,
+        d.constructiveness,
+        -1,
+        d.sarcasm,
+        d.mockery,
+        d.intolerance,
+        d.improper_language,
+        d.insult,
+        d.aggressiveness,
+        d.target_group,
+        d.target_person,
+        d.stereotype,
+    ];
+    var jsonNames = [
+        "Comment ID",
+        "Toxicity level",
+        "Comment depth",
+        "Argument",
+        "Constructiveness",
+        " ",
+        "Sarcasm",
+        "Mockery",
+        "Intolerance",
+        "Improper language",
+        "Insult",
+        "Aggressiveness",
+        "Target group",
+        "Target person",
+        "Stereotype",
+    ];
+    var i = 0;
+    tooltipText = "<table>";
+
+    for (i = 0; i < jsonValues.length; i++) {
+        if (i === 3 || i === 12) tooltipText += "<tr><td></td></tr>"; // I want a break between the first line and the features and the targets
+        if (i % 3 === 0) tooltipText += "<tr>"; //Start table line
+        if (i < 3)
+            tooltipText +=
+                "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>";
+        //First ones without bold
+        else if (jsonValues[i] !== -1)
+            jsonValues[i] ?
+                (tooltipText +=
+                    "<td><b>" +
+                    jsonNames[i] +
+                    ": " +
+                    jsonValues[i] +
+                    "</b></td>") :
+                (tooltipText +=
+                    "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>");
+        if ((i + 1) % 3 === 0) tooltipText += "</tr>"; //End table line
+    }
+
+    tooltipText += "</table>";
+
+    tooltipText += "<br> <table>";
+    //If node is collapsed, we also want to add some information about its sons
+    if (d._children) {
+       var sonTitles = [
+           "Direct comments",
+           "Total number of generated comments",
+           "Not toxic",
+            "Mildly toxic",
+            "Toxic",
+            "Very toxic",
+        ];
+        var sonValues = [
+            d._children.length,
+            d.numberOfDescendants,
+            d.descendantsWithToxicity0,
+            d.descendantsWithToxicity1,
+            d.descendantsWithToxicity2,
+            d.descendantsWithToxicity3,
+        ];
+
+        for (i = 0; i < sonValues.length; i++) {
+            if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
+            tooltipText +=
+                "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
+            if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
+        }
+    }
+    tooltipText += "</table>";
+    tooltipText += "<br>" + d.coment;
+ }
+
+function hovered(hover) {
     return function(d) {
         d3.selectAll(d.ancestors().map(function(d) {}));
   };
 }
 
+//Functions to highlight/unhighlight
+function highlightNodesByPropertyOR(node, enabledHighlight) {
+    //If no tag (toxicity, stance,...) checkbox is selected: highlight all
+    if (enabledHighlight.length === 0) {
+        node.style("opacity", maxOpacityValue);
+    } else { //If some tag checkbox is selected behave as expected
+        //First, unhighlight everything
+        node.style("opacity", minOpacityValue);
 
-    // name of the node
-    //node.filter(function (d) {
-      //  return !d.children;
-    //}).append("text")
-      //  .attr("dy", "0.3em")
-       // .text(function (d) {
-         //   return d.data.name;
-       // });
-    highlightNodesByPropertyOR(node, enabledHighlight);
-    highlightNodesByPropertyAND(node, enabledHighlight);
+        //Then highlight if the node has the property
+        highlightByToxicity(node, enabledHighlight, highlightNode);
+        highlightByFeature(node, enabledHighlight, highlightNode);
+        highlightByStance(node, enabledHighlight, highlightNode);
+        highlightByTarget(node, enabledHighlight, highlightNode);
+    }
+    node.filter(function (d) {
+        return d.depth === 0;
+    }).style("opacity", maxOpacityValue);
+
+}
+
+function highlightNodesByPropertyAND(node, enabledHighlight) {
+    //First, highlight everything
+    node.style("opacity", maxOpacityValue);
+
+    //Then unhighlight if the node does not have the property
+    highlightByToxicity(node, enabledHighlight, unhighlightNode);
+    highlightByFeature(node, enabledHighlight, unhighlightNode);
+    highlightByStance(node, enabledHighlight, unhighlightNode);
+    highlightByTarget(node, enabledHighlight, unhighlightNode);
+    node.filter(function (d) {
+        return d.depth === 0;
+    }).style("opacity", maxOpacityValue);
+
+}
 
     try {
         $(document).ready(function () {
@@ -381,14 +526,23 @@ treeJSON = d3.json(dataset, function (error, root) {
                     document.getElementById('highlight-AND-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
 
                     if (checkboxItem.checked) {
-                        console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
+                        console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                     } else {
-                        console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
+                        console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                     }
                     checkboxAND.checked ? highlightNodesByPropertyAND(node, enabledHighlight) : highlightNodesByPropertyOR(node, enabledHighlight);
                 })
             });
-        })
+
+            // To notify the DOM that the ready function has finished executing.
+            // This to be able to manage the filters if it is given the case that the code of the onLoad function finishes before.
+            const event = new Event('codeReady');
+
+            // Dispatch the event.
+            document.querySelector("body").dispatchEvent(event);
+
+            codeReady = true;
+        });
     } catch
         (TypeError) {
         console.error("Error attaching buttons... trying again...");
@@ -558,42 +712,6 @@ treeJSON = d3.json(dataset, function (error, root) {
         if (enabledHighlight.indexOf("highlight-features-improper-language") > -1) changeNodeOpacity(node, "improper_language");
         if (enabledHighlight.indexOf("highlight-features-insult") > -1) changeNodeOpacity(node, "insult");
         if (enabledHighlight.indexOf("highlight-features-aggressiveness") > -1) changeNodeOpacity(node, "aggressiveness");
-    }
-
-//Functions to highlight/unhighlight
-    function highlightNodesByPropertyOR(node, enabledHighlight) {
-        //If no tag (toxicity, stance,...) checkbox is selected: highlight all
-        if (enabledHighlight.length === 0) {
-            node.style("opacity", maxOpacityValue);
-        } else { //If some tag checkbox is selected behave as expected
-            //First, unhighlight everything
-            node.style("opacity", minOpacityValue);
-
-            //Then highlight if the node has the property
-            highlightByToxicity(node, enabledHighlight, highlightNode);
-            highlightByFeature(node, enabledHighlight, highlightNode);
-            highlightByStance(node, enabledHighlight, highlightNode);
-            highlightByTarget(node, enabledHighlight, highlightNode);
-        }
-        node.filter(function (d) {
-            return d.depth === 0;
-        }).style("opacity", maxOpacityValue);
-
-    }
-
-    function highlightNodesByPropertyAND(node, enabledHighlight) {
-        //First, highlight everything
-        node.style("opacity", maxOpacityValue);
-
-        //Then unhighlight if the node does not have the property
-        highlightByToxicity(node, enabledHighlight, unhighlightNode);
-        highlightByFeature(node, enabledHighlight, unhighlightNode);
-        highlightByStance(node, enabledHighlight, unhighlightNode);
-        highlightByTarget(node, enabledHighlight, unhighlightNode);
-        node.filter(function (d) {
-            return d.depth === 0;
-        }).style("opacity", maxOpacityValue);
-
     }
 
     // Div where the title of the "Static Values" is displayed

@@ -25,6 +25,9 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
+// Variable to check if the ready function code has been completely executed
+var codeReady = false;
+
 /**
  * Compute the radius of the node based on the number of children it has
  * */
@@ -3620,7 +3623,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         if (checkboxItem.checked) {
                             console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "| [Date]", Date.now());
                         } else {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         selectFeatureVisualization(nodeEnter);
                     })
@@ -3652,9 +3655,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
                         //console.log(enabledHighlight);
                         if (checkboxItem.checked) {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         } else {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
                     })
@@ -3679,9 +3682,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
 
                         if (checkboxItem.checked) {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         } else {
-                            console.log("[User]", user.split('/')[2], " | [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
                     })
@@ -3722,6 +3725,15 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         drawDevtools(nodeEnter);
                     })
                 });
+
+                // To notify the DOM that the ready function has finished executing.
+                // This to be able to manage the filters if it is given the case that the code of the onLoad function finishes before.
+                const event = new Event('codeReady');
+
+                // Dispatch the event.
+                document.querySelector("body").dispatchEvent(event);
+
+                codeReady = true;
             });
 
         } catch (TypeError) {
@@ -3982,7 +3994,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             zoomListener.scale(currentScale)
                 // .translate([2200 - currentX - currentScale, 900 - currentY - currentScale])
                 .event(svgGroup);
-            console.log('[User]', user.split('/')[2], ' | [interaction]', 'zoom_in', ' | [Date]', Date.now());
+            console.log('[User]', user.split('/')[2], '| [interaction]', 'zoom_in', ' | [Date]', Date.now());
         });
 
         d3.select("#zoom_out_icon").on("click", function () {
@@ -3991,7 +4003,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             zoomListener.scale(currentScale)
                 // .translate([2200 - currentX + currentScale, 900 - currentY + currentScale])
                 .event(svgGroup);
-            console.log('[User]', user.split('/')[2], ' | [interaction]', 'zoom_in', ' | [Date]', Date.now());
+            console.log('[User]', user.split('/')[2], '| [interaction]', 'zoom_in', ' | [Date]', Date.now());
         });
 
         d3.select("#zoom_reset_icon").on("click", function () {
@@ -4000,7 +4012,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             zoomListener.scale(currentScale)
                 .translate([currentX - currentScale, currentY - currentScale])
                 .event(svgGroup);
-            console.log('[User]', user.split('/')[2], ' | [interaction]', 'reset_zoom', ' | [Date]', Date.now());
+            console.log('[User]', user.split('/')[2], '| [interaction]', 'reset_zoom', ' | [Date]', Date.now());
         });
 
         // Use Array.forEach to add an event listener to each checkbox.
@@ -4247,7 +4259,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     function drawZoomValue(zoomLevel) {
         // console.log("Zoom Level", zoomLevel);
         //try {
-        zoomLabel.textContent = "Zoom: " + ((((zoomLevel - 0.1) / 2.9) * 100).toFixed(0) - 1) + '%';
+        //zoomLabel.textContent = "Zoom: " + ((((zoomLevel - 0.1) / 2.9) * 100).toFixed(0) - 1) + '%';
         //XLabel.textContent = "X: " + currentX.toFixed(0);
         //YLabel.textContent = "Y: " + currentY.toFixed(0);
         //} catch (TypeError) {
@@ -4256,7 +4268,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         //}
     }
 
-    console.log('[User]', user.split('/')[2], ' | [interaction]', 'Tree_layout_loaded', ' | [Date]', Date.now());
+    console.log('[User]', user.split('/')[2], '| [interaction]', 'Tree_layout_loaded', ' | [Date]', Date.now());
     //window.addEventListener('DOMContentLoaded', (event) => {
     //drawZoomValue(zoomListener.scale());
     //screenshotButton.addEventListener('click', function () {

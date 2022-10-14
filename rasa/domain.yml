@@ -27,6 +27,10 @@ intents:
       use_entities:
         - object_requested
         - document_requested
+  - say_name:
+      use_entities:
+        - object_requested
+        - nickname_requested
 
 actions:
   - action_logout
@@ -107,6 +111,9 @@ slots:
   password_confirmation:
     type: text
     influence_conversation: false
+    auto_fill: true
+  object_requested:
+    type: text
     auto_fill: true
   document_requested:
     type: text

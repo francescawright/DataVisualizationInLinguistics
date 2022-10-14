@@ -1093,22 +1093,21 @@
 
 <script>
 
-    window.onload = function () {
-
+    function codeReadyAndRendered() {
+        var checks, evt;
         if ("{{ cbCommons.and_group }}" === "1") {
             document.getElementById("and_label").className = "btn btn-secondary active";
             document.getElementById("or_label").className = "btn btn-secondary";
 
             document.getElementById("highlight_checks_AND").style = "display: block;";
             document.getElementById("highlight_checks_OR").style = "display: none;";
-            var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightAND]");
+            checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightAND]");
 
             for (i = 0; i < checks.length; i++) {
-                var evt = document.createEvent("HTMLEvents");
+                evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
                 checks[i].dispatchEvent(evt);
             }
-
 
         } else {
             document.getElementById("and_label").className = "btn btn-secondary";
@@ -1116,15 +1115,24 @@
             document.getElementById("highlight_checks_AND").style = "display: none;";
             document.getElementById("highlight_checks_OR").style = "display: block;";
 
-            var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightOR]");
+            checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightOR]");
 
             for (i = 0; i < checks.length; i++) {
-                var evt = document.createEvent("HTMLEvents");
+                evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
                 checks[i].dispatchEvent(evt);
             }
+        }
+    }
 
-
+    window.onload = function () {
+        // To update the view on the filters
+        if (codeReady) {
+            codeReadyAndRendered();
+        } else {
+            // If the onLoad function code ends before the ready function code.
+            // Listen for the event.
+            document.querySelector("body").addEventListener('codeReady', codeReadyAndRendered);
         }
     }
 
@@ -1152,11 +1160,11 @@
         if (!highlight_accordion_expanded) {
             document.getElementById('plus_sign_highlight').innerHTML = '&#8722;';
             highlight_accordion_expanded = true;
-            console.log("[User]", user.split('/')[2], " | [interaction]", "showing_highlight_accordion", " | [Date]", Date.now());
+            console.log("[User]", user.split('/')[2], "| [interaction]", "showing_highlight_accordion", " | [Date]", Date.now());
         } else {
             document.getElementById('plus_sign_highlight').innerHTML = '&#43;'
             highlight_accordion_expanded = false;
-            console.log("[User]", user.split('/')[2], " | [interaction]", "hidding_highlight_accordion", " | [Date]", Date.now());
+            console.log("[User]", user.split('/')[2], "| [interaction]", "hidding_highlight_accordion", " | [Date]", Date.now());
         }
     });
 
@@ -1168,7 +1176,7 @@
 
         document.getElementById("highlight_checks_AND").style = "display: block;";
         document.getElementById("highlight_checks_OR").style = "display: none;";
-        console.log('[User]', user.split('/')[2], ' | [interaction]', 'AND_button', ' | [Date]', Date.now());
+        console.log('[User]', user.split('/')[2], '| [interaction]', 'AND_button', ' | [Date]', Date.now());
     });
 
     jQuery("#or_button").click(function () {
@@ -1178,7 +1186,7 @@
         document.getElementById("or_label").className = "btn btn-secondary active";
         document.getElementById("highlight_checks_AND").style = "display: none;";
         document.getElementById("highlight_checks_OR").style = "display: block;";
-        console.log('[User]', user.split('/')[2], ' | [interaction]', 'OR_button', ' | [Date]', Date.now());
+        console.log('[User]', user.split('/')[2], '| [interaction]', 'OR_button', ' | [Date]', Date.now());
     });
 
     var checkboxesToxicityAND = document.querySelectorAll("input[type=checkbox][name=cbHighlightAND][id^=highlight-toxicity-]");
