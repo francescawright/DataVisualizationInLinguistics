@@ -3404,7 +3404,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var nodeExit = node.exit().transition()
             .duration(duration)
             .attr("transform", function (d) {
-                return d.x < 180 ? "translate(0)" : "rotate(180)translate(-" + (d.name.length + 50) + ")";
+                return d.x < 180 ? "translate(0)" : "rotate(180)translate(-" + (d.name + 50) + ")";
             })
             .remove();
 

@@ -776,8 +776,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         .call(zoomListener) //Allow zoom
         .append("g");
 
-    var drag = force.drag() //Define behaviour on drag
-        .on("dragstart", dragstart);
+
 
     var link = svg.selectAll("path.link"),
         node = svg.selectAll(".node");
@@ -1467,7 +1466,14 @@ treeJSON = d3.json(dataset, function (error, json) {
 
         for (var i = 0; i < 8; i++) {
             if (cbFeatureEnabled[i] > -1) {
-                nodeEnter.append("circle")
+                nodeEnter.filter(function (d) {
+                    if (d.parent === null) {
+                        return false;
+                    } else {
+                        listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
+                        return listOpacity[i];
+                    }
+                }).append("circle")
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
                     .attr("r", dotRadius)
@@ -1478,12 +1484,12 @@ treeJSON = d3.json(dataset, function (error, json) {
                     })
                     .attr("fill", features[i].color)
                     .style("stroke", "black")
-                    .style("stroke-width", "0.5px")
-                    .attr("opacity", function (d) {
-                        if (d.parent === null) return 0;
-                        listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
-                        return listOpacity[i];
-                    });
+                    .style("stroke-width", "0.5px");
+                    // .attr("opacity", function (d) {
+                    //     if (d.parent === null) return 0;
+                    //     listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
+                    //     return listOpacity[i];
+                    // });
             }
         }
 
@@ -1688,7 +1694,18 @@ treeJSON = d3.json(dataset, function (error, json) {
 
         for (var i = 0; i < allObjectsInNode.length; i++) {
             if (cbShowTargets[i] > -1) { //If the checkbox is checked, display it if it has the property
-                nodeEnter.append("image")
+                nodeEnter.filter(function (d) {
+                        if (d.parent === null) {
+                            return false;
+                        } else {
+                            listOpacity = [1,
+                            d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
+                            d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
+                            d.target_group, d.target_person, d.stereotype];
+
+                            return listOpacity[i];
+                        }
+                    }).append("image")
                     .attr('class', allObjectsInNode[i].class)
                     .attr('id', allObjectsInNode[i].id)
                     .attr("x", function (d) {
@@ -1705,17 +1722,17 @@ treeJSON = d3.json(dataset, function (error, json) {
                     })
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
-                    .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
-                    .attr("opacity", function (d) {
-                        if (d.parent === null) return 0;
-
-                        listOpacity = [1,
-                            d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
-                            d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
-                            d.target_group, d.target_person, d.stereotype];
-
-                        return listOpacity[i];
-                    });
+                    .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName);
+                    // .attr("opacity", function (d) {
+                    //     if (d.parent === null) return 0;
+                    //
+                    //     listOpacity = [1,
+                    //         d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
+                    //         d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
+                    //         d.target_group, d.target_person, d.stereotype];
+                    //
+                    //     return listOpacity[i];
+                    // });
             }
         }
     }
@@ -2562,6 +2579,13 @@ treeJSON = d3.json(dataset, function (error, json) {
                 return d.id;
             });
 
+        var drag = force.drag() //Define behaviour on drag
+        .on("dragstart", dragstart);
+
+        var isDblclick = false;
+        var timeoutTiming = 350;
+        var clickTimeout, dblclickTimeout;
+
         // Create a container so we draw several elements along with the node
         // Enter nodes
         var container = node.enter().append("g")
@@ -2599,12 +2623,53 @@ treeJSON = d3.json(dataset, function (error, json) {
             })
             .on("dblclick", dblclick) //Add function on double click over the node
             .on("click", function (d) {
-                click(d);
-                if (document.querySelector("#tree-container div.my-statistic").style.visibility === "visible") {
-                    statisticBackground.html(writeStatisticText());
+                var eventDefaultPrevented = d3.event.defaultPrevented;
+                if (!eventDefaultPrevented) {
+                    clearTimeout(clickTimeout);
+                    clickTimeout = setTimeout(function () {
+                        if(!isDblclick) { // A simple click.
+                            click(d, eventDefaultPrevented);
+                            if (document.querySelector("#tree-container div.my-statistic").style.visibility === "visible") {
+                                statisticBackground.html(writeStatisticText());
+                            }
+                        }
+                    }, timeoutTiming);
+
                 }
             })
             .call(drag); //We let it, so we can drag nodes when the svg ring targets are being shown
+
+        /**
+         * Defines the double click behaviour
+         * If the node was in a fixed position, unfix it and remove the green ring associated
+         *
+         * NOTE: since the node is in a container, we can double click it even if it has SVGs or images showing around/above it
+         * */
+        function dblclick(d) {
+            // double clicked! not click.
+            isDblclick = true;
+            clearTimeout(dblclickTimeout);
+            dblclickTimeout = setTimeout(function () {
+                isDblclick = false;
+            }, timeoutTiming);
+
+            d3.event.preventDefault();
+            d3.event.stopPropagation();
+            d3.select(this).select("circle").classed("fixed", d.fixed = false); //We delete the ring
+
+            //d3.select(this).classed("fixed", d.fixed = false); //We delete the ring
+            //NOTE: when the node is showing svg, you cannot double click
+        }
+
+        /**
+         * Defines the dragging of a node
+         * When the drag stops, fixes the node in its current position and makes appear a green ring
+         * */
+        function dragstart(d) {
+            d3.event.sourceEvent.preventDefault();
+            d3.event.sourceEvent.stopPropagation();
+            d3.select(this).select("circle").classed("fixed", d.fixed = true);
+        }
 
         container.append("circle")
             .attr("r", 10);
@@ -3040,30 +3105,6 @@ treeJSON = d3.json(dataset, function (error, json) {
     }
 
     /**
-     * Defines the double click behaviour
-     * If the node was in a fixed position, unfix it and remove the green ring associated
-     *
-     * NOTE: since the node is in a container, we can double click it even if it has SVGs or images showing around/above it
-     * */
-    function dblclick(d) {
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-        d3.select(this).select("circle").classed("fixed", d.fixed = false); //We delete the ring
-        //d3.select(this).classed("fixed", d.fixed = false); //We delete the ring
-        //NOTE: when the node is showing svg, you cannot double click
-    }
-
-    /**
-     * Defines the dragging of a node
-     * When the drag stops, fixes the node in its current position and makes appear a green ring
-     * */
-    function dragstart(d) {
-        d3.event.sourceEvent.preventDefault();
-        d3.event.sourceEvent.stopPropagation();
-        d3.select(this).select("circle").classed("fixed", d.fixed = true);
-    }
-
-    /**
      * Defines zoom listener
      * */
     function zoom() {
@@ -3088,7 +3129,7 @@ treeJSON = d3.json(dataset, function (error, json) {
      * Toggle children on click
      * Updates the layout
      * */
-    function click(d) {
+    function click(d, eventDefaultPrevented) {
         //Compute children data (quantity and how many with each toxicity) before collapsing the node
         var descendantsData = getDescendants(d);
         d.numberOfDescendants = descendantsData.children;
@@ -3097,7 +3138,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         d.descendantsWithToxicity2 = descendantsData.toxicity2;
         d.descendantsWithToxicity3 = descendantsData.toxicity3;
 
-        if (!d3.event.defaultPrevented) {
+        if (!eventDefaultPrevented) {
             if (d.children) {
                 d._children = d.children;
                 d.children = null;
