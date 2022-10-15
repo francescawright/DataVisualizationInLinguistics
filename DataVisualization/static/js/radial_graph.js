@@ -841,8 +841,7 @@ function highlightPositiveAND(node, enabledHighlight, opacityValue = 0.1) {
     //Argumentation CB is checked
     if (enabledHighlight.indexOf("highlight-features-argumentation") > -1) {
         node.filter(function (d) {
-            if (!d.argumentation) ;
-            d.highlighted = 0;
+            if (!d.argumentation) d.highlighted = 0;
             return (!d.argumentation);
         }).style("opacity", opacityValue);
     }
@@ -850,8 +849,7 @@ function highlightPositiveAND(node, enabledHighlight, opacityValue = 0.1) {
     //Constructiveness CB is checked
     if (enabledHighlight.indexOf("highlight-features-constructiveness") > -1) {
         node.filter(function (d) {
-            if (!d.constructiveness) ;
-            d.highlighted = 0;
+            if (!d.constructiveness) d.highlighted = 0;
             return (!d.constructiveness);
         }).style("opacity", opacityValue);
     }
