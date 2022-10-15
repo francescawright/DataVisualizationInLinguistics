@@ -24,7 +24,7 @@ var tooltip = d3.select("#circletree-container")
     .append("div")
     .attr("class", "my-tooltip") //add the tooltip class
     .style("position", "absolute")
-    .style("z-index", "1")
+    .style("z-index", "60")
     .style("visibility", "hidden");
 
 var node;
@@ -165,9 +165,9 @@ treeJSON = d3.json(dataset, function (error, root) {
                 }
             })
         .on("mousemove", function (d) {
-                if (d !== root) {
+                // if (d !== root) {
                     return tooltip.style("top", (d3.mouse(document.querySelector("#circletree-container"))[1] + 60) + "px").style("left", (d3.mouse(document.querySelector("#circletree-container"))[0] + 65) + "px");
-                }
+                // }
             })
         .on("mouseout", function () {
                 return tooltip.style("visibility", "hidden");
@@ -279,7 +279,7 @@ function writeTooltipRoot(d) {
         "Very toxic",
     ];
     var sonValues = [
-        d.children.length,
+        d.children ? d.children.length : null,
         totalNumberOfNodes,
         totalNotToxic,
         totalMildlyToxic,

@@ -136,14 +136,6 @@
         box-shadow: none, 0 0 0 0.2rem rgba(201, 218, 248, 0.5);
     }
 
-    #glyphs-radio-buttons {
-        margin: 0 50px;
-    }
-
-    #glyphs-radio-buttons .btn {
-        padding: 0.375rem 0.65rem;
-    }
-
     body {
         height: fit-content;
         width: auto;
@@ -241,7 +233,7 @@
     {% if checked_layout != "treeMap" %}
         <!-- Glyphs Radio Buttons -->
 
-        <div style="align-items: center; margin-right: 50px; min-height: 100px;" id="col glyphs-radio-buttons" class="btn-group btn-group-toggle" data-toggle="buttons">
+        <div style="align-items: center; margin-right: 50px; min-height: 100px;" id="glyphs-radio-buttons" class="btn-group btn-group-toggle" data-toggle="buttons">
             <label id="dots_label" style="min-width: 220px; height:fit-content;"
                    {% if selected_icons == "dots" %}class="btn btn-outline-primary active"
                    {% else %}class="btn btn-outline-primary"{% endif %}>
@@ -274,67 +266,67 @@
     });
 
     jQuery("#tree_layout_button").click(function () {
-        $(this).attr("checked", true);
+        $(this).prop("checked", true);
         document.getElementById("tree_label").className = "btn btn-primary active";
-        $('#force_layout_button').attr("checked", false);
+        $('#force_layout_button').prop("checked", false);
         document.getElementById("force_label").className = "btn btn-primary";
-        $('#radial_layout_button').attr("checked", false);
+        $('#radial_layout_button').prop("checked", false);
         document.getElementById("radial_label").className = "btn btn-primary";
-        $('#treeMap_layout_button').attr("checked", false);
+        $('#treeMap_layout_button').prop("checked", false);
         document.getElementById("treeMap_label").className = "btn btn-primary";
         //$('#main_form')https://docs.docker.com/compose/compose-file/.submit();
         $('#main_form').submit();
     });
 
     jQuery("#force_layout_button").click(function () {
-        $('#tree_layout_button').attr("checked", false);
+        $('#tree_layout_button').prop("checked", false);
         document.getElementById("tree_label").className = "btn btn-primary";
-        $(this).attr("checked", true);
+        $(this).prop("checked", true);
         document.getElementById("force_label").className = "btn btn-primary active";
-        $('#radial_layout_button').attr("checked", false);
+        $('#radial_layout_button').prop("checked", false);
         document.getElementById("radial_label").className = "btn btn-primary";
-        $('#treeMap_layout_button').attr("checked", false);
+        $('#treeMap_layout_button').prop("checked", false);
         document.getElementById("treeMap_label").className = "btn btn-primary";
         $('#main_form').submit();
     });
 
     jQuery("#radial_layout_button").click(function () {
-        $('#tree_layout_button').attr("checked", false);
+        $('#tree_layout_button').prop("checked", false);
         document.getElementById("tree_label").className = "btn btn-primary";
-        $('#force_layout_button').attr("checked", false);
+        $('#force_layout_button').prop("checked", false);
         document.getElementById("force_label").className = "btn btn-primary";
-        $(this).attr("checked", true);
+        $(this).prop("checked", true);
         document.getElementById("radial_label").className = "btn btn-primary active";
-        $('#treeMap_layout_button').attr("checked", false);
+        $('#treeMap_layout_button').prop("checked", false);
         document.getElementById("treeMap_label").className = "btn btn-primary";
         $('#main_form').submit();
     });
 
     jQuery("#treeMap_layout_button").click(function () {
-        $('#tree_layout_button').attr("checked", false);
+        $('#tree_layout_button').prop("checked", false);
         document.getElementById("tree_label").className = "btn btn-primary";
-        $('#force_layout_button').attr("checked", false);
+        $('#force_layout_button').prop("checked", false);
         document.getElementById("force_label").className = "btn btn-primary";
         document.getElementById("radial_label").className = "btn btn-primary";
-        $('#radial_layout_button').attr("checked", false);
-        $(this).attr("checked", true);
+        $('#radial_layout_button').prop("checked", false);
+        $(this).prop("checked", true);
         document.getElementById("treeMap_label").className = "btn btn-primary active";
         $('#main_form').submit();
     });
 
 
     jQuery("#dots_icon_button").click(function () {
-        $(this).attr("checked", true);
+        $(this).prop("checked", true);
         document.getElementById("dots_label").className = "btn btn-primary active";
-        $('#glyphs_icon_button').attr("checked", false);
+        $('#glyphs_icon_button').prop("checked", false);
         document.getElementById("glyphs_label").className = "btn btn-primary";
         console.log('[User]', user.split('/')[2], '| [interaction]', 'dots_icons', '| [Date]', Date.now());
     });
 
     jQuery("#glyphs_icon_button").click(function () {
-        $('#dots_icon_button').attr("checked", false);
+        $('#dots_icon_button').prop("checked", false);
         document.getElementById("dots_label").className = "btn btn-primary";
-        $(this).attr("checked", true);
+        $(this).prop("checked", true);
         document.getElementById("glyphs_label").className = "btn btn-primary active";
         console.log('[User]', user.split('/')[2], '| [interaction]', 'glyph_icons', '| [Date]', Date.now());
     });

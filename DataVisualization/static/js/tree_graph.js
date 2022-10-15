@@ -768,7 +768,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .append("div")
         .attr("class", "my-tooltip") //add the tooltip class
         .style("position", "absolute")
-        .style("z-index", "10")
+        .style("z-index", "60")
         .style("visibility", "hidden");
 
     // Div where the title of the "Static Values" is displayed
@@ -1170,7 +1170,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         d.descendantsWithToxicity3 = descendantsData.toxicity3;
 
         d = toggleChildren(d); //Collapse node
-        update(d); //NOTE: we are passing each sun that was collapsed
+        update(d, false,document.querySelector("#tree-container div.my-statistic").style.visibility === "visible"); //NOTE: we are passing each sun that was collapsed
         //centerNode(d); We deactivated because is annoying when we collapse a thread to appear
     }
 
@@ -3182,34 +3182,37 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 totalToxic2 += childrenList.toxicity2;
                 totalToxic3 += childrenList.toxicity3;
 
-                switch (childrenList.toxicityLevel) {
-                    case 0:
-                        totalToxic0 += 1;
-                        break;
-                    case 1:
-                        totalToxic1 += 1;
-                        break;
-                    case 2:
-                        totalToxic2 += 1;
-                        break;
-                    case 3:
-                        totalToxic3 += 1;
-                        break;
+                if (d.highlighted) {
+                    switch (childrenList.toxicityLevel) {
+                        case 0:
+                            totalToxic0 += 1;
+                            break;
+                        case 1:
+                            totalToxic1 += 1;
+                            break;
+                        case 2:
+                            totalToxic2 += 1;
+                            break;
+                        case 3:
+                            totalToxic3 += 1;
+                            break;
+                    }
                 }
 
                 //Targets are not exclusive
-                childrenList.targGroup ?
+                childrenList.targGroup && d.highlighted ?
                     (totalTargGroup += childrenList.totalTargGroup + 1) :
                     (totalTargGroup += childrenList.totalTargGroup);
-                childrenList.targPerson ?
+                childrenList.targPerson && d.highlighted ?
                     (totalTargPerson += childrenList.totalTargPerson + 1) :
                     (totalTargPerson += childrenList.totalTargPerson);
-                childrenList.targStereotype ?
+                childrenList.targStereotype && d.highlighted ?
                     (totalTargStereotype += childrenList.totalTargStereotype + 1) :
                     (totalTargStereotype += childrenList.totalTargStereotype);
                 !childrenList.targGroup &&
                 !childrenList.targPerson &&
-                !childrenList.targStereotype ?
+                !childrenList.targStereotype &&
+                d.highlighted ?
                     (totalTargNone += childrenList.totalTargNone + 1) :
                     (totalTargNone += childrenList.totalTargNone);
             });
@@ -3361,7 +3364,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             "Very toxic",
         ];
         var sonValues = [
-            d.children.length,
+            d.children ? d.children.length : null,
             totalNumberOfNodes,
             totalNotToxic,
             totalMildlyToxic,
@@ -3407,7 +3410,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
 
-    function update(source) {
+    function update(source, first_call, static_values_checked_param = false) {
         tree = tree
             .nodeSize([separationHeight, 0]) //heigth and width of the rectangles that define the node space
             .separation(function (a, b) {
@@ -3443,6 +3446,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
             .on("click", function (d) {
                 click(d, nodeEnter);
+                if (document.querySelector("#tree-container div.my-statistic").style.visibility === "visible") {
+                    statisticBackground.html(writeStatisticText());
+                }
             })
             .on("mouseover", function (d) {
                 var highlighted_nodes = node.filter(function (n) {
@@ -3458,9 +3464,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 }
             })
             .on("mousemove", function (d) {
-                if (d !== root) {
+                // if (d !== root) {
                     return tooltip.style("top", (d3.mouse(document.querySelector(".overlay"))[1] - 30) + "px").style("left", (d3.mouse(document.querySelector(".overlay"))[0] - 440) + "px");
-                }
+                // }
             })
             .on("mouseout", function () {
                 return tooltip.style("visibility", "hidden");
@@ -3537,7 +3543,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             selectFeatureVisualization(nodeEnter);
         });
 
-        var static_values_checked = false;
+        var static_values_checked = static_values_checked_param;
         jQuery("#static_values_button").click(function () {
             if (!static_values_checked) {
                 document.getElementById('static_values_button').innerHTML = '&#8722;';
@@ -3595,6 +3601,38 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         try {
             $(document).ready(function () {
+
+                if (first_call) {
+                    checkboxesTargets.forEach(function (checkboxItem) {
+                        enabledTargets =
+                            Array.from(checkboxesTargets) // Convert checkboxes to an array to use filter and map.
+                                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
+                        selectTargetVisualization(nodeEnter);
+                    });
+
+                    checkboxes.forEach(function (checkboxItem) {
+                        enabledFeatures =
+                            Array.from(checkboxes) // Convert checkboxes to an array to use filter and map.
+                                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
+                        selectFeatureVisualization(nodeEnter);
+                    });
+
+                    checkboxesDevtools.forEach(function (checkboxItem) {
+                        enabledTargets =
+                            Array.from(checkboxesDevtools) // Convert checkboxes to an array to use filter and map.
+                                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
+                        selectTargetVisualization(nodeEnter);
+                    });
+
+                    selectTargetVisualization(nodeEnter);
+                    selectFeatureVisualization(nodeEnter);
+                }
 
                 /*SECTION checkboxes listener*/
                 // Use Array.forEach to add an event listener to each checkbox.
@@ -3660,6 +3698,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                             console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
+                        if (static_values_checked) {
+                            statisticBackground.html(writeStatisticText());
+                        }
                     })
                 });
 
@@ -3687,6 +3728,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                             console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
+                        if (static_values_checked) {
+                            statisticBackground.html(writeStatisticText());
+                        }
                     })
                 });
 
@@ -3706,6 +3750,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                                 });
                                 node.style("opacity", opacityValue);
                                 highlightSignificantNodes(node, enabledTargets);
+                                if (static_values_checked) {
+                                    statisticBackground.html(writeStatisticText());
+                                }
                             }
                         } else {
                             console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "| [Date]", Date.now());
@@ -3714,6 +3761,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                                     d.highlighted = 1;
                                 });
                                 node.style("opacity", 1);
+                                if (static_values_checked) {
+                                    statisticBackground.html(writeStatisticText());
+                                }
                             }
                         }
                         //Highlight only the edges whose both endpoints are highlighted
@@ -3780,32 +3830,34 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             }
         });
 
-        checkboxesTargets.forEach(function (checkboxItem) {
-            enabledTargets =
-                Array.from(checkboxesTargets) // Convert checkboxes to an array to use filter and map.
-                    .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
-                    .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+        if (!first_call) {
+            checkboxesTargets.forEach(function (checkboxItem) {
+                enabledTargets =
+                    Array.from(checkboxesTargets) // Convert checkboxes to an array to use filter and map.
+                        .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                        .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-            selectTargetVisualization(nodeEnter);
-        });
+                selectTargetVisualization(nodeEnter);
+            });
 
-        checkboxes.forEach(function (checkboxItem) {
-            enabledFeatures =
-                Array.from(checkboxes) // Convert checkboxes to an array to use filter and map.
-                    .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
-                    .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+            checkboxes.forEach(function (checkboxItem) {
+                enabledFeatures =
+                    Array.from(checkboxes) // Convert checkboxes to an array to use filter and map.
+                        .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                        .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-            selectFeatureVisualization(nodeEnter);
-        });
+                selectFeatureVisualization(nodeEnter);
+            });
 
-        checkboxesDevtools.forEach(function (checkboxItem) {
-            enabledTargets =
-                Array.from(checkboxesDevtools) // Convert checkboxes to an array to use filter and map.
-                    .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
-                    .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+            checkboxesDevtools.forEach(function (checkboxItem) {
+                enabledTargets =
+                    Array.from(checkboxesDevtools) // Convert checkboxes to an array to use filter and map.
+                        .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                        .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-            selectTargetVisualization(nodeEnter);
-        });
+                selectTargetVisualization(nodeEnter);
+            });
+        }
 
         //Enable checkboxes and dropdown menu + show features if they are selected
         checkboxesPropertyFeature.forEach(function (checkboxItem) {
@@ -3840,7 +3892,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         // ) {
         //     document.querySelector("input[value=on-node]").checked = true;
         // }
-        selectFeatureVisualization(nodeEnter);
+        // selectFeatureVisualization(nodeEnter);
 
         // if the option to show features is checked, enable checkboxes and dropdown menu
         // checkboxFeatureMenu.addEventListener("change", function () {
@@ -4028,8 +4080,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
           - show the features if necessary
           - highlight nodes and edges
           * */
-        selectTargetVisualization(nodeEnter);
-        selectFeatureVisualization(nodeEnter);
+        if (!first_call) {
+            selectTargetVisualization(nodeEnter);
+            selectFeatureVisualization(nodeEnter);
+        }
+
         // checkboxFeatureMenu.checked ?
         //     selectFeatureVisualization(nodeEnter) :
         //     removeAllFeatures();
@@ -4154,10 +4209,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         // Transition links to their new position.
         link.transition().duration(duration).attr("d", diagonal);
 
-        // if (checkboxHighlightMenu.checked && source.children)
-        // checkboxOR.checked ?
-        highlightNodesByPropertyOR(node, link);
-        // highlightNodesByPropertyAND(node, link);
+        checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
 
         // Transition exiting nodes to the parent's new position.
         link
@@ -4191,7 +4243,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     root.y0 = 0;
 
     // Layout the tree initially and center on the root node.
-    update(root);
+    document.querySelector("#tree-container div.my-statistic").style.visibility = "hidden";
+    update(root, true, false);
     centerNode(root);
 
     var box = computeDimensions(nodes);
@@ -4233,10 +4286,22 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         var statisticText = "<table style='width: 530px; margin-top: 50px; z-index: 100;'>";
 
+        var listStatisticsUpdate = getStatisticValues(root);
+
+        var totalNotToxicUpdate = listStatisticsUpdate.toxicity0,
+            totalMildlyToxicUpdate = listStatisticsUpdate.toxicity1,
+            totalToxicUpdate = listStatisticsUpdate.toxicity2,
+            totalVeryToxicUpdate = listStatisticsUpdate.toxicity3;
+
+        var totalGroupUpdate = listStatisticsUpdate.totalTargGroup,
+            totalPersonUpdate = listStatisticsUpdate.totalTargPerson,
+            totalStereotypeUpdate = listStatisticsUpdate.totalTargStereotype,
+            totalNoneUpdate = listStatisticsUpdate.totalTargNone;
+
         var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
-        var statValuesTox = [totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic];
-        var statValuesTarg = [totalGroup, totalPerson, totalStereotype, totalNone];
+        var statValuesTox = [totalNotToxicUpdate, totalMildlyToxicUpdate, totalToxicUpdate, totalVeryToxicUpdate];
+        var statValuesTarg = [totalGroupUpdate, totalPersonUpdate, totalStereotypeUpdate, totalNoneUpdate];
         var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
         var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 

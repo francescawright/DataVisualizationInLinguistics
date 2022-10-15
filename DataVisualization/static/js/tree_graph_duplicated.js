@@ -686,7 +686,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .append("div")
         .attr("class", "my-tooltip") //add the tooltip class
         .style("position", "absolute")
-        .style("z-index", "10")
+        .style("z-index", "60")
         .style("visibility", "hidden");
 
     // Div where the title of the "Static Values" is displayed
@@ -3192,9 +3192,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 }
             })
             .on("mousemove", function (d) {
-                if (d !== root) {
+                // if (d !== root) {
                     return tooltip.style("top", (d3.mouse(document.querySelector(".overlay"))[1] - 30) + "px").style("left", (d3.mouse(document.querySelector(".overlay"))[0] - 440) + "px");
-                }
+                // }
             })
             .on("mouseout", function () {
                 return tooltip.style("visibility", "hidden");

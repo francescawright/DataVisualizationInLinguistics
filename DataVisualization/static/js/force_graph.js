@@ -746,7 +746,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         .append("div")
         .attr("class", "my-tooltip") //add the tooltip class
         .style("position", "absolute")
-        .style("z-index", "10")
+        .style("z-index", "60")
         .style("visibility", "hidden");
 
     // Div where the sum up information of "Static Values" is displayed
@@ -2364,26 +2364,28 @@ treeJSON = d3.json(dataset, function (error, json) {
                 totalToxic2 += childrenList.toxicity2;
                 totalToxic3 += childrenList.toxicity3;
 
-                switch (childrenList.toxicityLevel) {
-                    case 0:
-                        totalToxic0 += 1;
-                        break;
-                    case 1:
-                        totalToxic1 += 1;
-                        break;
-                    case 2:
-                        totalToxic2 += 1;
-                        break;
-                    case 3:
-                        totalToxic3 += 1;
-                        break;
+                if (d.highlighted) {
+                    switch (childrenList.toxicityLevel) {
+                        case 0:
+                            totalToxic0 += 1;
+                            break;
+                        case 1:
+                            totalToxic1 += 1;
+                            break;
+                        case 2:
+                            totalToxic2 += 1;
+                            break;
+                        case 3:
+                            totalToxic3 += 1;
+                            break;
+                    }
                 }
 
                 //Targets are not exclusive
-                childrenList.targGroup ? totalTargGroup += childrenList.totalTargGroup + 1 : totalTargGroup += childrenList.totalTargGroup;
-                childrenList.targPerson ? totalTargPerson += childrenList.totalTargPerson + 1 : totalTargPerson += childrenList.totalTargPerson;
-                childrenList.targStereotype ? totalTargStereotype += childrenList.totalTargStereotype + 1 : totalTargStereotype += childrenList.totalTargStereotype;
-                (!childrenList.targGroup && !childrenList.targPerson && !childrenList.targStereotype) ? totalTargNone += childrenList.totalTargNone + 1 : totalTargNone += childrenList.totalTargNone;
+                childrenList.targGroup && d.highlighted ? totalTargGroup += childrenList.totalTargGroup + 1 : totalTargGroup += childrenList.totalTargGroup;
+                childrenList.targPerson && d.highlighted ? totalTargPerson += childrenList.totalTargPerson + 1 : totalTargPerson += childrenList.totalTargPerson;
+                childrenList.targStereotype && d.highlighted ? totalTargStereotype += childrenList.totalTargStereotype + 1 : totalTargStereotype += childrenList.totalTargStereotype;
+                (!childrenList.targGroup && !childrenList.targPerson && !childrenList.targStereotype && d.highlighted) ? totalTargNone += childrenList.totalTargNone + 1 : totalTargNone += childrenList.totalTargNone;
             })
         }
 
@@ -2459,7 +2461,7 @@ treeJSON = d3.json(dataset, function (error, json) {
                 "Very toxic",
             ];
             var sonValues = [
-                d.children.length,
+                d.children ? d.children.length : null,
                 totalNumberOfNodes,
                 totalNotToxic,
                 totalMildlyToxic,
@@ -2506,7 +2508,7 @@ treeJSON = d3.json(dataset, function (error, json) {
     /*
     Functions
     * */
-    function update() {
+    function update(static_values_checked_param = false) {
         nodes = flatten(root); //get nodes as a list
         var links = d3.layout.tree().links(nodes);
 
@@ -2588,15 +2590,20 @@ treeJSON = d3.json(dataset, function (error, json) {
                 }
             })
             .on("mousemove", function (d) {
-                if (d !== root) {
+                // if (d !== root) {
                     return tooltip.style("top", (d3.mouse(document.querySelector(".overlay"))[1] - 30) + "px").style("left", (d3.mouse(document.querySelector(".overlay"))[0] - 440) + "px");
-                }
+                // }
             })
             .on("mouseout", function () {
                 return tooltip.style("visibility", "hidden");
             })
             .on("dblclick", dblclick) //Add function on double click over the node
-            .on("click", click) //Add function on single click over the node
+            .on("click", function (d) {
+                click(d);
+                if (document.querySelector("#tree-container div.my-statistic").style.visibility === "visible") {
+                    statisticBackground.html(writeStatisticText());
+                }
+            })
             .call(drag); //We let it, so we can drag nodes when the svg ring targets are being shown
 
         container.append("circle")
@@ -2680,6 +2687,23 @@ treeJSON = d3.json(dataset, function (error, json) {
             }).length;
         }
 
+        var static_values_checked = static_values_checked_param;
+        jQuery("#static_values_button").click(function () {
+            if (!static_values_checked) {
+                document.getElementById('static_values_button').innerHTML = '&#8722;';
+                static_values_checked = true;
+                statisticBackground.style("visibility", "visible").html(writeStatisticText());
+                console.log('[User]', user.split('/')[2], '| [interaction]', 'show_summary', ' | [Date]', Date.now());
+
+            } else {
+                document.getElementById('static_values_button').innerHTML = '&#43;'
+                static_values_checked = false;
+                statisticBackground.style("visibility", "hidden").html(writeStatisticText());
+                console.log('[User]', user.split('/')[2], '| [interaction]', 'hide_summary', ' | [Date]', Date.now());
+
+            }
+        });
+
         try {
             $(document).ready(function () {
                 checkboxesTargets.forEach(function (checkboxItem) {
@@ -2746,6 +2770,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                             console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
+                        if (static_values_checked) {
+                            statisticBackground.html(writeStatisticText());
+                        }
                     })
                 });
 
@@ -2771,6 +2798,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                             console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
+                        if (static_values_checked) {
+                            statisticBackground.html(writeStatisticText());
+                        }
                     })
                 });
 
@@ -2829,27 +2859,10 @@ treeJSON = d3.json(dataset, function (error, json) {
             document.querySelector("input[value=dot-feat]").checked = true;
         }
 
-        var static_values_checked = false;
-        jQuery("#static_values_button").click(function () {
-            if (!static_values_checked) {
-                document.getElementById('static_values_button').innerHTML = '&#8722;';
-                static_values_checked = true;
-                statisticBackground.style("visibility", "visible").html(writeStatisticText());
-                console.log('[User]', user.split('/')[2], '| [interaction]', 'show_summary', ' | [Date]', Date.now());
-
-            } else {
-                document.getElementById('static_values_button').innerHTML = '&#43;'
-                static_values_checked = false;
-                statisticBackground.style("visibility", "hidden").html(writeStatisticText());
-                console.log('[User]', user.split('/')[2], '| [interaction]', 'hide_summary', ' | [Date]', Date.now());
-
-            }
-        });
-
         // if (!document.querySelector("input[value=on-node]").checked && !document.querySelector("input[value=node-outside]").checked) {
         //     document.querySelector("input[value=on-node]").checked = true;
         // }
-        selectFeatureVisualization(node);
+        // selectFeatureVisualization(node);
 
         //Listener related to the visualization of features
         // checkboxFeatureMenu.addEventListener('change', function () {
@@ -2944,7 +2957,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         //     }
         // });
 
-// If AND is selected, uncheck the OR and highlight by property AND
+        // If AND is selected, uncheck the OR and highlight by property AND
         checkboxAND.addEventListener("change", function () {
             if (this.checked) {
                 checkboxOR.checked = false;
@@ -2985,6 +2998,7 @@ treeJSON = d3.json(dataset, function (error, json) {
             }
         });
 
+        checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
 
         /* NOTE: the nodes that get to the function update()
        are root and the ones that were collapsed
@@ -3092,7 +3106,7 @@ treeJSON = d3.json(dataset, function (error, json) {
                 d._children = null;
             }
         }
-        update();
+        update(document.querySelector("#tree-container div.my-statistic").style.visibility === "visible");
     }
 
     /**
@@ -3116,7 +3130,8 @@ treeJSON = d3.json(dataset, function (error, json) {
 
     var svgGroup = svg.append("g"); //We define it here, otherwise, svg is not defined
     root = json;
-    update();
+    document.querySelector("#tree-container div.my-statistic").style.visibility = "hidden";
+    update(false);
 
     force.alpha(1.5); //Restart the timer of the cooling parameter with a high value to reach better initial positioning
 
@@ -3175,10 +3190,22 @@ treeJSON = d3.json(dataset, function (error, json) {
         // var statisticText = "<span style='font-size: 22px;'> Summary of " + sel_item.split('/')[2] + "</span>";
         var statisticText = "<table style='width: 530px; margin-top: 50px; z-index: 100;'>";
 
+        var listStatisticsUpdate = getStatisticValues(root);
+
+        var totalNotToxicUpdate = listStatisticsUpdate.toxicity0,
+            totalMildlyToxicUpdate = listStatisticsUpdate.toxicity1,
+            totalToxicUpdate = listStatisticsUpdate.toxicity2,
+            totalVeryToxicUpdate = listStatisticsUpdate.toxicity3;
+
+        var totalGroupUpdate = listStatisticsUpdate.totalTargGroup,
+            totalPersonUpdate = listStatisticsUpdate.totalTargPerson,
+            totalStereotypeUpdate = listStatisticsUpdate.totalTargStereotype,
+            totalNoneUpdate = listStatisticsUpdate.totalTargNone;
+
         var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
-        var statValuesTox = [totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic];
-        var statValuesTarg = [totalGroup, totalPerson, totalStereotype, totalNone];
+        var statValuesTox = [totalNotToxicUpdate, totalMildlyToxicUpdate, totalToxicUpdate, totalVeryToxicUpdate];
+        var statValuesTarg = [totalGroupUpdate, totalPersonUpdate, totalStereotypeUpdate, totalNoneUpdate];
         var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
         var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
