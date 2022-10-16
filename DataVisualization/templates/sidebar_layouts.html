@@ -47,6 +47,18 @@
             color: #000000;
     }
 
+    #input-n-btn, #input-l-btn, #input-gfcomp-btn, #input-gfelon-btn, #input-d-btn, #input-tol-btn {
+        padding: 1px 2px;
+        margin: 3.2px;
+    }
+
+    .devtools-span-input {
+        width: 100%;
+        width: -moz-available;
+        width: -webkit-fill-available;
+        width: fill-available;
+        margin: auto;
+    }
 </style>
 
 <head>
@@ -1137,54 +1149,54 @@
                         <div class="container">
                             <form name="input-N"
                                   autocomplete="off"
+                                  style="display: flex;"
                                   class="btn-form">
-                                <b style="float: left">N:</b>
-                                <input type="button"
-                                       style="float: right"
-                                       name="btnSubmit"
-                                       id="input-n-btn"
-                                       value="Submit">
-                                <span class="form-span">
+                                <b style="float: left; margin: auto;">N:</b>
+                                <span class="form-span devtools-span-input">
                                     <input type="number"
                                            id="input-n-field"
                                            class="field-input"
                                            value="25"
                                            min="0" max = "100"/>
                                 </span>
+                                <input type="button"
+                                       class="btn btn-secondary"
+                                       style="float: right"
+                                       name="btnSubmit"
+                                       id="input-n-btn"
+                                       value="Submit">
                             </form>
                         </div>
 
                         <div class="container">
                             <form name="input-L"
                                   class="btn-form"
+                                  style="display: flex;"
                                   autocomplete="off">
-                                <b style="float: left">L:</b>
-                                <input type="button"
-                                       style="float: right"
-                                       name="btnSubmit"
-                                       id="input-l-btn"
-                                       value="Submit">
-                                <span class="form-span">
+                                <b style="float: left; margin: auto;">L:</b>
+                                <span class="form-span devtools-span-input">
                                     <input type="number"
                                        id="input-l-field"
                                        class="field-input"
                                        value="4"
                                        min="0" max = "100"/>
                                 </span>
+                                <input type="button"
+                                       class="btn btn-secondary"
+                                       style="float: right"
+                                       name="btnSubmit"
+                                       id="input-l-btn"
+                                       value="Submit">
                             </form>
                         </div>
 
                         <div class="container">
                             <form name="input-GFcomp"
                                   class="btn-form"
+                                  style="display: flex;"
                                   autocomplete="off">
-                                <b style="float: left">GFc:</b>
-                                <input type="button"
-                                       style="float: right"
-                                       name="btnSubmit"
-                                       id="input-gfcomp-btn"
-                                       value="Submit">
-                                <span class="form-span">
+                                <b style="float: left; margin: auto;">GFc:</b>
+                                <span class="form-span devtools-span-input">
                                     <input type="number"
                                            id="input-gfcomp-field"
                                            class="field-input"
@@ -1192,20 +1204,22 @@
                                            step="0.05"
                                            min="0" max = "1"/>
                                 </span>
+                                <input type="button"
+                                       class="btn btn-secondary"
+                                       style="float: right"
+                                       name="btnSubmit"
+                                       id="input-gfcomp-btn"
+                                       value="Submit">
                             </form>
                         </div>
 
                         <div class="container">
                             <form name="input-GFelon"
                                   class="btn-form"
+                                  style="display: flex;"
                                   autocomplete="off">
-                                <b style="float: left">GFe:</b>
-                                <input type="button"
-                                           style="float: right"
-                                           name="btnSubmit"
-                                           id="input-gfelon-btn"
-                                           value="Submit">
-                                <span class="form-span">
+                                <b style="float: left; margin: auto;">GFe:</b>
+                                <span class="form-span devtools-span-input">
                                     <input type="number"
                                            id="input-gfelon-field"
                                            class="field-input"
@@ -1213,40 +1227,44 @@
                                            step="0.05"
                                            min="0" max = "100"/>
                                 </span>
+                                <input type="button"
+                                       class="btn btn-secondary"
+                                       style="float: right"
+                                       name="btnSubmit"
+                                       id="input-gfelon-btn"
+                                       value="Submit">
                             </form>
                         </div>
 
                         <div class="container">
                                 <form name="input-d"
                                       class="btn-form"
+                                      style="display: flex;"
                                       autocomplete="off">
-                                    <b style="float: left">d:</b>
-                                    <input type="button"
-                                           style="float: right"
-                                           name="btnSubmit"
-                                           id="input-d-btn"
-                                           value="Submit">
-                                    <span class="form-span">
+                                    <b style="float: left; margin: auto;">d:</b>
+                                    <span class="form-span devtools-span-input">
                                         <input type="number"
                                                id="input-d-field"
                                                class="field-input"
                                                value="6"
                                                min="0" max = "100"/>
                                     </span>
+                                    <input type="button"
+                                           class="btn btn-secondary"
+                                           style="float: right"
+                                           name="btnSubmit"
+                                           id="input-d-btn"
+                                           value="Submit">
                                 </form>
                             </div>
 
                             <div class="container">
                                 <form name="input-tol"
                                       class="btn-form"
+                                      style="display: flex;"
                                       autocomplete="off">
-                                    <b style="float: left">tol:</b>
-                                    <input type="button"
-                                               style="float: right"
-                                               name="btnSubmit"
-                                               id="input-tol-btn"
-                                               value="Submit">
-                                    <span class="form-span">
+                                    <b style="float: left; margin: auto;">tol:</b>
+                                    <span class="form-span devtools-span-input">
                                         <input type="number"
                                                id="input-tol-field"
                                                class="field-input"
@@ -1254,6 +1272,12 @@
                                                step="0.05"
                                                min="0" max = "1"/>
                                     </span>
+                                    <input type="button"
+                                           class="btn btn-secondary"
+                                           style="float: right"
+                                           name="btnSubmit"
+                                           id="input-tol-btn"
+                                           value="Submit">
                                 </form>
                             </div>
 

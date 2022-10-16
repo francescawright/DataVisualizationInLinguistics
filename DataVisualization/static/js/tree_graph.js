@@ -1248,7 +1248,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             enabledTargets.indexOf("nComp-hierarchy"),
             enabledTargets.indexOf("hybrid-hierarchy")
         ];
-        console.log(cbShowTargets);
+
         var listOpacity;
         var targets = [
             objTargetGroup,
@@ -3027,7 +3027,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             highlightTargetOR(node, enabledHighlight);
             highlightPositiveOR(node, enabledHighlight);
             highlightNegativeOR(node, enabledHighlight);
-            //highlightSignificantNodes(node, enabledHighlight);
         }
         //Highlight only the edges whose both endpoints are highlighted
         link.style("opacity", function (d) {
@@ -3049,7 +3048,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         highlightTargetAND(node, enabledHighlight);
         highlightPositiveAND(node, enabledHighlight);
         highlightNegativeAND(node, enabledHighlight);
-        //highlightSignificantNodes(node, enabledHighlight);
 
         //Highlight only the edges whose both endpoints are highlighted
         link.style("opacity", function (d) {
@@ -3556,35 +3554,55 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             }
         });
 
+        function buttonsDevtoolsClick() {
+            enabledTargets =
+                Array.from(checkboxesDevtools) // Convert checkboxes to an array to use filter and map.
+                    .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                    .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
+            highlightDevtoolsAND(node, link, enabledTargets);
+
+            if (static_values_checked) {
+                statisticBackground.html(writeStatisticText());
+            }
+            drawDevtools(nodeEnter);
+        };
+
         //Input values for vars
         jQuery("#input-n-btn").click(function () {
             N = document.getElementById('input-n-field').value;
             console.log('[User]', user.split('/')[2], '| [interaction]', 'change_N_value_to: ' + N, '| [Date]', Date.now());
+            buttonsDevtoolsClick();
         });
 
         jQuery("#input-l-btn").click(function () {
             L = document.getElementById('input-l-field').value;
             console.log('[User]', user.split('/')[2], '| [interaction]', 'change_L_value_to: ' + L, '| [Date]', Date.now());
+            buttonsDevtoolsClick();
         });
 
         jQuery("#input-gfcomp-btn").click(function () {
             GFcomp = document.getElementById('input-gfcomp-field').value;
             console.log('[User]', user.split('/')[2], '| [interaction]', 'change_GFc_value_to: ' + GFcomp, '| [Date]', Date.now());
+            buttonsDevtoolsClick();
         });
 
         jQuery("#input-d-btn").click(function () {
             d_lvl = document.getElementById('input-d-field').value;
             console.log('[User]', user.split('/')[2], '| [interaction]', 'change_d_value_to: ' + d_lvl, '| [Date]', Date.now());
+            buttonsDevtoolsClick();
         });
 
         jQuery("#input-gfelon-btn").click(function () {
             GFelon = document.getElementById('input-gfelon-field').value;
             console.log('[User]', user.split('/')[2], '| [interaction]', 'change_GFe_value_to: ' + GFelon, '| [Date]', Date.now());
+            buttonsDevtoolsClick();
         });
 
         jQuery("#input-tol-btn").click(function () {
             tol = document.getElementById('input-tol-field').value;
             console.log('[User]', user.split('/')[2], '| [interaction]', 'change_tol_value_to: ' + tol, '| [Date]', Date.now());
+            buttonsDevtoolsClick();
         });
 
         function getLengthFilterByName(array, stringToMatch, matchPositive = true) {
@@ -3740,36 +3758,18 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                             Array.from(checkboxesDevtools) // Convert checkboxes to an array to use filter and map.
                                 .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                                 .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
                         if (checkboxItem.checked) {
                             console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, "| [Date]", Date.now());
-                            if (checkboxItem == document.getElementById('significant-nodes')) {
-                                nodes.forEach(function (d) {
-                                    d.highlighted = 0;
-                                });
-                                node.style("opacity", opacityValue);
-                                highlightSignificantNodes(node, enabledTargets);
-                                if (static_values_checked) {
-                                    statisticBackground.html(writeStatisticText());
-                                }
-                            }
                         } else {
                             console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, "| [Date]", Date.now());
-                            if (checkboxItem == document.getElementById('significant-nodes')) {
-                                nodes.forEach(function (d) {
-                                    d.highlighted = 1;
-                                });
-                                node.style("opacity", 1);
-                                if (static_values_checked) {
-                                    statisticBackground.html(writeStatisticText());
-                                }
-                            }
                         }
-                        //Highlight only the edges whose both endpoints are highlighted
-                        link.style("opacity", function (d) {
-                            return d.source.highlighted && d.target.highlighted ?
-                                1 :
-                                opacityValue;
-                        });
+
+                        highlightDevtoolsAND(node, link, enabledTargets);
+
+                        if (static_values_checked) {
+                            statisticBackground.html(writeStatisticText());
+                        }
                         drawDevtools(nodeEnter);
                     })
                 });
@@ -4441,15 +4441,42 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         return (numNodes == level);
     }
 
-    function highlightSignificantNodes(node, enabledHighlight) {
+    function highlightDevtoolsAND(node, link, enabledTargetsValue, opacityValue = 0.1) {
+
+        nodes.forEach(function (d) {
+            d.highlighted = 1;
+        });
+        node.style("opacity", 1);
+
         //Significant CB is checked
-        if (enabledHighlight.indexOf("significant-nodes") > -1) {
+        if (enabledTargetsValue.indexOf("significant-nodes") > -1) {
             node.filter(function (d) {
                 if (isSignificant(d, tol)) {console.log("node "+d.name+" is significant with tol "+tol);}
-                if (checkSignificant(d, tol)) d.highlighted = 1;
-                return (checkSignificant(d, tol));
-            }).style("opacity", 1);
+                if (!checkSignificant(d, tol)) d.highlighted = 0;
+                return (!checkSignificant(d, tol));
+            }).style("opacity", opacityValue);
         }
+        //Elongated CB is checked
+        if (enabledTargetsValue.indexOf("elongated-tendency") > -1) {
+            node.filter(function (d) {
+                if (!elongatedTendency(d, L)) d.highlighted = 0;
+                return (!elongatedTendency(d, L));
+            }).style("opacity", opacityValue);
+        }
+        //Compact CB is checked
+        if (enabledTargetsValue.indexOf("compact-tendency") > -1) {
+            node.filter(function (d) {
+                if (!compactTendency(d, L, GFcomp)) d.highlighted = 0;
+                return (!compactTendency(d, L, GFcomp));
+            }).style("opacity", opacityValue);
+        }
+
+        //Highlight only the edges whose both endpoints are highlighted
+        link.style("opacity", function (d) {
+            return d.source.highlighted && d.target.highlighted ?
+                1 :
+                opacityValue;
+        });
     }
 
     function isSignificant(node, tol) {

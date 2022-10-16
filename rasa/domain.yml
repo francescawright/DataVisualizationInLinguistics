@@ -137,7 +137,7 @@ responses:
   - text: "Hey! Nice to see you here 😄"
   - text: "Hello! I'm here if you need me 😊"
   - text: "Hi, how are you? 😄"
-  - text: "Hello there 😁"
+  - text: "Hello there 😄"
 
   utter_offers_help:
   - text: "Need something? 😊"
