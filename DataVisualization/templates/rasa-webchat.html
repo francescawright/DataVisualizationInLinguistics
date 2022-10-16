@@ -128,6 +128,7 @@
             switch (messageList[0]) {
                 case "intent_logout":
                     saveBotAction(e.text, existingStorage["session_id"]);
+                    e.hidden = true;
                     e.text = "I'm working on it";
                     document.getElementById("logout_chat_session_id").value = existingStorage["session_id"];
                     // setTimeout
@@ -136,7 +137,8 @@
                     break;
                 case "intent_login":
                     saveBotAction(e.text, existingStorage["session_id"]);
-                    e.text = "I'm working on it";
+                    e.hidden = true;
+                    e.text = "I'll start your session right away";
                     document.getElementById("username_input").value = messageList[1];
                     document.getElementById("password_input").value = messageList[2];
                     document.getElementById("login_chat_session_id").value = existingStorage["session_id"];
@@ -145,7 +147,8 @@
                     break;
                 case "intent_signup":
                     saveBotAction(e.text, existingStorage["session_id"]);
-                    e.text = "I'm working on it";
+                    e.hidden = true;
+                    e.text = "In no time it will be done";
                     document.getElementById("signup_username_input").value = messageList[1];
                     document.getElementById("signup_password_input").value = messageList[2];
                     document.getElementById("signup_password2_input").value = messageList[3];
@@ -155,7 +158,8 @@
                     break;
                 case "intent_open_document":
                     saveBotAction(e.text, existingStorage["session_id"]);
-                    e.text = "I'm working on it";
+                    e.hidden = true;
+                    e.text = "I'm opening the document";
                     let documentName = messageList[1];
                     var mainForm = document.getElementById("main_form");
                     if (mainForm) {
@@ -171,20 +175,84 @@
                     break;
                 case "intent_change_layout":
                     saveBotAction(e.text, existingStorage["session_id"]);
-                    e.text = "I'm working on it";
                     if ('{{ selected_item }}') {
-                        addToLocalStorageObject("chat_session", "conversation", "Done!");
-                        // setTimeout
-                        document.getElementById(messageList[1] + "_layout_button").click();
+                        if (messageList[1] === "tree" && document.getElementById("tree_label").classList.contains("active")) {
+                            e.text = "Already in the layout Tree";
+                        } else if (messageList[1] === "force" && document.getElementById("force_label").classList.contains("active")) {
+                            e.text = "Already in the layout Force";
+                        } else if (messageList[1] === "radial" && document.getElementById("radial_label").classList.contains("active")) {
+                            e.text = "Already in the layout Radial";
+                        } else if (messageList[1] === "treeMap" && document.getElementById("treeMap_label").classList.contains("active")) {
+                            e.text = "Already in the layout Circle Packing";
+                        } else {
+                            e.text = "Layout changed";
+                            // setTimeout
+                            document.getElementById(messageList[1] + "_layout_button").click();
+                        }
                     } else {
-                        addToLocalStorageObject("chat_session", "conversation", "Open a document first to be able to change the layout");
-                        // Saving in the log the message received from the bot
-                        document.getElementById("bot_chat_msg").value = "Open a document first to be able to change the layout";
-                        document.getElementById("bot_chat_session_id").value = existingStorage["session_id"];
-                        document.getElementById("bot_chat_action").value = "{% url 'bot_chat_log' %}";
-                        document.getElementById("bot_log_form_submit").click();
-                        // setTimeout
-                        window.location = window.location.href.split("?")[0];
+                        e.text =  "Open a document first, in order to perform this action";
+                        // selectedDataError(existingStorage);
+                    }
+                    break;
+                case "intent_switch_or_and":
+                    saveBotAction(e.text, existingStorage["session_id"]);
+                    if ('{{ selected_item }}') {
+                        if (messageList[1] === "or_button" && document.getElementById("or_label").classList.contains("active")) {
+                            e.text =  "OR is already set";
+                        } else if (messageList[1] === "and_button" && document.getElementById("and_label").classList.contains("active")) {
+                            e.text =  "AND is already set";
+                        } else {
+                            e.text =  messageList[2];
+                            // setTimeout
+                            document.getElementById(messageList[1]).click();
+                        }
+                    } else {
+                        e.text =  "Open a document first, in order to perform this action";
+                        // selectedDataError(existingStorage);
+                    }
+                    break;
+                case "intent_filter":
+                    saveBotAction(e.text, existingStorage["session_id"]);
+                    if ('{{ selected_item }}') {
+                        var filterChecked;
+
+                        if (document.getElementById("or_label").classList.contains("active")) {
+                            filterChecked = document.getElementById(messageList[1] + "OR").checked;
+                            document.getElementById(messageList[1] + "OR").click();
+                        } else if (document.getElementById("and_label").classList.contains("active")) {
+                            filterChecked = document.getElementById(messageList[1]).checked;
+                            document.getElementById(messageList[1]).click();
+                        }
+                        if (filterChecked) {
+                            e.text = "The check box has been switched"
+                        } else {
+                            e.text =  messageList[2];
+                        }
+                    } else {
+                        e.text =  "Open a document first, in order to perform this action";
+                        // selectedDataError(existingStorage);
+                    }
+                    break;
+                case "intent_filter_all":
+                    saveBotAction(e.text, existingStorage["session_id"]);
+                    if ('{{ selected_item }}') {
+                        var filterAllChecked;
+
+                        if (document.getElementById("or_label").classList.contains("active")) {
+                            filterAllChecked = document.getElementById("highlight-OR-" + messageList[1]).checked;
+                            document.getElementById("highlight-OR-" + messageList[1]).click();
+                        } else if (document.getElementById("and_label").classList.contains("active")) {
+                            filterAllChecked = document.getElementById("highlight-AND-" + messageList[1]).checked;
+                            document.getElementById("highlight-AND-" + messageList[1]).click();
+                        }
+                        if (filterAllChecked) {
+                            e.text = "The check box has been switched"
+                        } else {
+                            e.text =  messageList[2];
+                        }
+                    } else {
+                        e.text =  "Open a document first, in order to perform this action";
+                        // selectedDataError(existingStorage);
                     }
                     break;
                 default:
@@ -195,6 +263,17 @@
                     document.getElementById("bot_log_form_submit").click();
             }
         }
+    }
+
+    function selectedDataError(existingStorage, errorMsg = "Open a document first, in order to perform this action"){
+        addToLocalStorageObject("chat_session", "conversation", errorMsg);
+        // Saving in the log the message received from the bot
+        document.getElementById("bot_chat_msg").value = errorMsg;
+        document.getElementById("bot_chat_session_id").value = existingStorage["session_id"];
+        document.getElementById("bot_chat_action").value = "{% url 'error_chat_log' %}";
+        document.getElementById("bot_log_form_submit").click();
+        // setTimeout
+        window.location = window.location.href.split("?")[0];
     }
 
     function createOpenDocumentInputs(mainForm, documentName, existingStorage) {

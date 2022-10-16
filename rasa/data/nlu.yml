@@ -296,3 +296,308 @@ nlu:
     - [Alex]{"entity": "nickname_requested"}
     - [felix]{"entity": "nickname_requested"}
     - [raul22]{"entity": "nickname_requested"}
+
+# Ask bot to change to OR / AND
+- intent: switch_or
+  examples: |
+    - Change to or
+    - Switch to OR
+    - I want to switch to OR
+    - I want to change to or
+    - I would like to switch to or
+    - I would like to change to RO
+    - I want to change the highlights to RO
+    - I want to change highlights to or
+    - I want to switch the highlights to or
+    - I want to switch highlights to OR
+    - Change the highlight to OR
+    - Change highlight to or
+    - Switch the highlight to or
+    - Switch highlight to OR
+
+- intent: switch_and
+  examples: |
+    - Change to and
+    - Switch to AND
+    - I want to switch to AND
+    - I want to change to and
+    - I would like to switch to and
+    - I would like to change to AND
+    - I want to change the highlights to AND
+    - I want to change highlights to and
+    - I want to switch the highlights to and
+    - I want to switch highlights to AND
+    - Change the highlight to AND
+    - Change highlight to and
+    - Switch the highlight to and
+    - Switch highlight to AND
+
+# toxicity--> not toxic, mildly toxic, toxic, very toxic
+
+- synonym: non toxic
+  examples: |
+    - least toxic
+    - least toxicity
+    - level 0 toxic
+    - level 0 toxicity
+    - toxic level 0
+    - toxicity level 0
+    - not toxic
+
+- synonym: very toxic
+  examples: |
+    - most toxic
+    - highest toxicity
+    - level 3 toxic
+    - level 3 toxicity
+    - toxic level 3
+    - toxicity level 3
+
+- synonym: mildly toxic
+  examples: |
+    - slightly toxic
+    - level 1 toxic
+    - level 1 toxicity
+    - toxic level 1
+    - toxicity level 1
+
+- synonym: toxic
+  examples: |
+    - level 2 toxic
+    - level 2 toxicity
+    - toxic level 2
+    - toxicity level 2
+
+- intent: non_toxic
+  examples: |
+    - I want to see [non toxic]{"entity": "object_requested", "value": "non toxic"} nodes
+    - I want to see [not toxic]{"entity": "object_requested", "value": "non toxic"}
+    - I want to see [not toxic]{"entity": "object_requested", "value": "non toxic"} ones
+    - highlight [level 0 toxicity]{"entity": "object_requested", "value": "non toxic"} nodes
+    - highlight [not toxic]{"entity": "object_requested", "value": "non toxic"}
+    - highlight [toxic level 0]{"entity": "object_requested", "value": "non toxic"} ones
+    - show me [not toxic]{"entity": "object_requested", "value": "non toxic"} nodes
+    - show me [not toxic]{"entity": "object_requested", "value": "non toxic"}
+    - show me [non toxic]{"entity": "object_requested", "value": "non toxic"} ones
+    - show [least toxic]{"entity": "object_requested", "value": "non toxic"} nodes
+    - show [least toxicity]{"entity": "object_requested", "value": "non toxic"} ones
+    - Which nodes have the [least toxicity]{"entity": "object_requested", "value": "non toxic"}?
+    - Which nodes are the [least toxic]{"entity": "object_requested", "value": "non toxic"}?
+    - Which nodes are [non toxic]{"entity": "object_requested", "value": "non toxic"}?
+    - Can you show me the [least toxic]{"entity": "object_requested", "value": "non toxic"} nodes?
+
+- intent: mildly_toxic
+  examples: |
+    - I want to see [mildly toxic]{"entity": "object_requested", "value": "mildly toxic"} nodes
+    - I want to see [mildly toxic]{"entity": "object_requested", "value": "mildly toxic"}
+    - I want to see [slightly toxic]{"entity": "object_requested", "value": "mildly toxic"} ones
+    - highlight [slightly toxic]{"entity": "object_requested", "value": "mildly toxic"} nodes
+    - highlight [midly toxic]{"entity": "object_requested", "value": "mildly toxic"}
+    - highlight [mildly toxic]{"entity": "object_requested", "value": "mildly toxic"} ones
+    - show me [level 1 toxic]{"entity": "object_requested", "value": "mildly toxic"} nodes
+    - show me [mildly toxic]{"entity": "object_requested", "value": "mildly toxic"}
+    - show me [level 1 toxicity]{"entity": "object_requested", "value": "mildly toxic"} ones
+    - show [toxicity level 1]{"entity": "object_requested", "value": "mildly toxic"} nodes
+    - show [mildly toxic]{"entity": "object_requested", "value": "mildly toxic"} ones
+    - Which nodes are [toxic level 1]{"entity": "object_requested", "value": "mildly toxic"}?
+    - Can you show me [mildly toxic]{"entity": "object_requested", "value": "mildly toxic"} nodes?
+
+- intent: toxic
+  examples: |
+    - I want to see [toxic]{"entity": "object_requested", "value": "toxic"} nodes
+    - I want to see [toxic]{"entity": "object_requested", "value": "toxic"}
+    - I want to see [toxic]{"entity": "object_requested", "value": "toxic"} ones
+    - highlight [level 2 toxic]{"entity": "object_requested", "value": "toxic"} nodes
+    - highlight [toxic]{"entity": "object_requested", "value": "toxic"}
+    - highlight [toxic]{"entity": "object_requested", "value": "toxic"} ones
+    - show me [toxic]{"entity": "object_requested", "value": "toxic"} nodes
+    - show me [toxic]{"entity": "object_requested", "value": "toxic"}
+    - show me [level 2 toxicity]{"entity": "object_requested", "value": "toxic"} ones
+    - show [toxicity level 2]{"entity": "object_requested", "value": "toxic"} nodes
+    - show [toxic]{"entity": "object_requested", "value": "toxic"} ones
+    - Which nodes are [toxic level 2]{"entity": "object_requested", "value": "toxic"}?
+    - Can you show me [toxic]{"entity": "object_requested", "value": "toxic"} nodes?
+
+- intent: very_toxic
+  examples: |
+    - I want to see [very toxic]{"entity": "object_requested", "value": "very toxic"} nodes
+    - I want to see [level 3 toxic]{"entity": "object_requested", "value": "very toxic"}
+    - I want to see [very toxic]{"entity": "object_requested", "value": "very toxic"} ones
+    - highlight [very toxic]{"entity": "object_requested", "value": "very toxic"} nodes
+    - highlight [very toxic]{"entity": "object_requested", "value": "very toxic"}
+    - highlight [very toxic]{"entity": "object_requested", "value": "very toxic"} ones
+    - show me [level 3 toxicity]{"entity": "object_requested", "value": "very toxic"} nodes
+    - show me [very toxic]{"entity": "object_requested", "value": "very toxic"}
+    - show me [very toxic]{"entity": "object_requested", "value": "very toxic"} ones
+    - show [very toxic]{"entity": "object_requested", "value": "very toxic"} nodes
+    - show [very toxic]{"entity": "object_requested", "value": "very toxic"}
+    - show [toxicity level 3]{"entity": "object_requested", "value": "very toxic"} ones
+    - Which nodes have the [highest toxicity]{"entity": "object_requested", "value": "very toxic"}?
+    - Which nodes are [toxic level 3]{"entity": "object_requested", "value": "very toxic"}?
+    - Which nodes are the [most toxic]{"entity": "object_requested", "value": "very toxic"}?
+    - Can you show me [very toxic]{"entity": "object_requested", "value": "very toxic"} nodes?
+
+# positive, negative, neutral stance
+
+- intent: positive_stance
+  examples: |
+    - I want to see nodes with positive stance
+    - Show me nodes with positive stance
+    - Highlight nodes with positive stance
+    - Show nodes with positive stance
+
+- intent: negative_stance
+  examples: |
+    - I want to see nodes with negative stance
+    - Show me nodes with negative stance
+    - Highlight nodes with negative stance
+    - Show nodes with negative stance
+
+- intent: neutral_stance
+  examples: |
+    - I want to see nodes with neutral stance
+    - Show me nodes with neutral stance
+    - Highlight nodes with neutral stance
+    - Show nodes with neutral stance
+
+# targets --> target person, target group, stereotype
+- intent: target_person
+  examples: |
+    - I want to see nodes with target person
+    - Show me nodes with target person
+    - Highlight nodes with target person
+    - Show nodes with target person
+
+- intent: target_group
+  examples: |
+    - I want to see nodes with target group
+    - Show me nodes with target group
+    - Highlight nodes with target group
+    - Show nodes with target group
+
+- intent: stereotype
+  examples: |
+    - I want to see nodes with stereotype
+    - Show me nodes with stereotype
+    - Highlight nodes with stereotype
+    - Show nodes with stereotype
+
+# targets select all
+- intent: target_all
+  examples: |
+    - I want to select all targets
+    - Select all targets
+    - I want to select all targets checkbox
+    - Select all targets checkbox
+    - I want to select all targets option
+    - Select all targets option
+    - I want to see nodes with all targets
+    - Show me nodes with all targets
+    - Highlight nodes with all targets
+    - Show nodes with all targets
+
+# features--> constructiveness, argumentation
+- intent: constructiveness
+  examples: |
+    - I want to see nodes with constructiveness
+    - Show me nodes with constructiveness
+    - Highlight nodes with constructiveness
+    - Show nodes with constructiveness
+    - I want to see constructive nodes
+    - Show me constructive nodes
+    - Highlight constructive nodes
+    - Show constructive nodes
+
+- intent: argumentation
+  examples: |
+    - I want to see nodes with argumentation
+    - Show me nodes with argumentation
+    - Highlight nodes with argumentation
+    - Show nodes with argumentation
+    - I want to see argumentation nodes
+    - Show me argumentation nodes
+    - Highlight argumentation nodes
+    - Show argumentation nodes
+
+# features--> sarcasm, mockery, intolerance
+- intent: sarcasm
+  examples: |
+    - I want to see nodes with sarcasm
+    - Show me nodes with sarcasm
+    - Highlight nodes with sarcasm
+    - Show nodes with sarcasm
+    - I want to see sarcastic nodes
+    - Show me sarcastic nodes
+    - Highlight sarcastic nodes
+    - Show sarcastic nodes
+
+- intent: mockery
+  examples: |
+    - I want to see nodes with mockery
+    - Show me nodes with mockery
+    - Highlight nodes with mockery
+    - Show nodes with mockery
+    - I want to see mockery nodes
+    - Show me mockery nodes
+    - Highlight mockery nodes
+    - Show mockery nodes
+
+- intent: intolerance
+  examples: |
+    - I want to see nodes with intolerance
+    - Show me nodes with intolerance
+    - Highlight nodes with intolerance
+    - Show nodes with intolerance
+    - I want to see intolerance nodes
+    - Show me intolerance nodes
+    - Highlight intolerance nodes
+    - Show intolerance nodes
+
+# features--> improper language, insult, aggressiveness - ?
+
+- intent: improper_language
+  examples: |
+    - I want to see nodes with improper language
+    - Show me nodes with improper language
+    - Highlight nodes with improper language
+    - Show nodes with improper language
+    - I want to see improper language nodes
+    - Show me improper language nodes
+    - Highlight improper language nodes
+    - Show improper language nodes
+
+- intent: insult
+  examples: |
+    - I want to see nodes with insult
+    - Show me nodes with insult
+    - Highlight nodes with insult
+    - Show nodes with insult
+    - I want to see insult nodes
+    - Show me insult nodes
+    - Highlight insult nodes
+    - Show insult nodes
+
+- intent: aggressiveness
+  examples: |
+    - I want to see nodes with aggressiveness
+    - Show me nodes with aggressiveness
+    - Highlight nodes with aggressiveness
+    - Show nodes with aggressiveness
+    - I want to see aggressive nodes
+    - Show me aggressive nodes
+    - Highlight aggressive nodes
+    - Show aggressive nodes
+
+# features select all
+- intent: features_all
+  examples: |
+    - I want to select all features
+    - Select all features
+    - I want to select all features checkbox
+    - Select all features checkbox
+    - I want to select all features option
+    - Select all features option
+    - I want to see nodes with all features
+    - Show me nodes with all features
+    - Highlight nodes with all features
+    - Show nodes with all features

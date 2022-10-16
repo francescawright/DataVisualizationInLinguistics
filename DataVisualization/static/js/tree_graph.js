@@ -359,24 +359,7 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.1) {
     //Negative stance CB is checked
     if (enabledHighlight.indexOf("highlight-stance-negative") > -1) {
         node.filter(function (d) {
-            if (d.depth === 0) {
-                return 0;
-            }
-            console.log(d.name, !d.negative_stance, d.parent.name, !d.parent.negative_stance);
             if (!d.negative_stance) d.highlighted = 0;
-            var someChild = true;
-            if (d.children) {
-                d.children.forEach((child) => {
-                    if (!child.negative_stance) {
-                        d.highlighted = 0;
-                        someChild = false;
-                        //child.highlighted = 0;
-                    } else {
-                        d.highlighted = 1;
-                        //child.highlighted = 1;
-                    }
-                });
-            }
             return !d.negative_stance;
         }) //.select("circle.nodeCircle")
             .style("position", "relative")
@@ -385,14 +368,7 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.1) {
         node.filter(function (d) {
             return !d.highlighted;
         }).style("opacity", opacityValue);
-        var toEnable = node.map(function (d) {
-            if (d.depth !== 0 && d.highlighted) {
-                return d.parent;
-            }
-        });
-        //Array.from(toEnable).style("opacity", 1);
     }
-
 }
 
 function highlightTargetOR(node, enabledHighlight) {
