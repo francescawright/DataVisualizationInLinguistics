@@ -176,18 +176,18 @@
                 case "intent_change_layout":
                     saveBotAction(e.text, existingStorage["session_id"]);
                     if ('{{ selected_item }}') {
-                        if (messageList[1] === "tree" && document.getElementById("tree_label").classList.contains("active")) {
+                        if (messageList[1] === "tree_layout_button" && document.getElementById("tree_label").classList.contains("active")) {
                             e.text = "Already in the layout Tree";
-                        } else if (messageList[1] === "force" && document.getElementById("force_label").classList.contains("active")) {
+                        } else if (messageList[1] === "force_layout_button" && document.getElementById("force_label").classList.contains("active")) {
                             e.text = "Already in the layout Force";
-                        } else if (messageList[1] === "radial" && document.getElementById("radial_label").classList.contains("active")) {
+                        } else if (messageList[1] === "radial_layout_button" && document.getElementById("radial_label").classList.contains("active")) {
                             e.text = "Already in the layout Radial";
-                        } else if (messageList[1] === "treeMap" && document.getElementById("treeMap_label").classList.contains("active")) {
+                        } else if (messageList[1] === "treeMap_layout_button" && document.getElementById("treeMap_label").classList.contains("active")) {
                             e.text = "Already in the layout Circle Packing";
                         } else {
                             e.text = "Layout changed";
                             // setTimeout
-                            document.getElementById(messageList[1] + "_layout_button").click();
+                            document.getElementById(messageList[1]).click();
                         }
                     } else {
                         e.text =  "Open a document first, in order to perform this action";

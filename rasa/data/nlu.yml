@@ -246,16 +246,64 @@ nlu:
     - I want to see another [display design]{"entity": "object_requested", "value": "layout"}
     - I would like to see another [visualization design]{"entity": "object_requested", "value": "layout"}
     - Other [layout]{"entity": "object_requested", "value": "layout"}
+
+- intent: change_layout_tree
+  examples: |
     - Change the [layout]{"entity": "object_requested", "value": "layout"} to [tree]{"entity": "layout_requested", "value": "tree"}
     - Change [design]{"entity": "object_requested", "value": "layout"} to [tree visualization]{"entity": "layout_requested", "value": "tree"}
     - Set the [tree design]{"entity": "layout_requested", "value": "tree"}
+    - Set [tree layout]{"entity": "layout_requested", "value": "tree"}
+    - Set the [design]{"entity": "object_requested", "value": "layout"} to the [tree visualization]{"entity": "layout_requested", "value": "tree"}
+    - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [tree]{"entity": "layout_requested", "value": "tree"}
+    - Displays the [tree layout]{"entity": "layout_requested", "value": "tree"}
+    - Displays [tree visualization]{"entity": "layout_requested", "value": "tree"}
+    - I want to see the [tree design]{"entity": "layout_requested", "value": "tree"}
+    - I would like to see the [tree]{"entity": "layout_requested", "value": "tree"}
+    - Show me the [tree layout]{"entity": "layout_requested", "value": "tree"}
+    - [tree]{"entity": "layout_requested", "value": "tree"}
+
+- intent: change_layout_force
+  examples: |
+    - Change the [layout]{"entity": "object_requested", "value": "layout"} to [force]{"entity": "layout_requested", "value": "force"}
+    - Change [design]{"entity": "object_requested", "value": "layout"} to [force visualization]{"entity": "layout_requested", "value": "force"}
+    - Set the [force design]{"entity": "layout_requested", "value": "force"}
     - Set [force layout]{"entity": "layout_requested", "value": "force"}
     - Set the [design]{"entity": "object_requested", "value": "layout"} to the [force visualization]{"entity": "layout_requested", "value": "force"}
     - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [force]{"entity": "layout_requested", "value": "force"}
+    - Displays the [force layout]{"entity": "layout_requested", "value": "force"}
+    - Displays [force visualization]{"entity": "layout_requested", "value": "force"}
+    - I want to see the [force design]{"entity": "layout_requested", "value": "force"}
+    - I would like to see the [force]{"entity": "layout_requested", "value": "force"}
+    - Show me the [force layout]{"entity": "layout_requested", "value": "force"}
+    - [force]{"entity": "layout_requested", "value": "force"}
+
+- intent: change_layout_radial
+  examples: |
+    - Change the [layout]{"entity": "object_requested", "value": "layout"} to [radial]{"entity": "layout_requested", "value": "radial"}
+    - Change [design]{"entity": "object_requested", "value": "layout"} to [radial visualization]{"entity": "layout_requested", "value": "radial"}
+    - Set the [radial design]{"entity": "layout_requested", "value": "radial"}
+    - Set [radial layout]{"entity": "layout_requested", "value": "radial"}
+    - Set the [design]{"entity": "object_requested", "value": "layout"} to the [radial visualization]{"entity": "layout_requested", "value": "radial"}
+    - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [radial]{"entity": "layout_requested", "value": "radial"}
     - Displays the [radial layout]{"entity": "layout_requested", "value": "radial"}
     - Displays [radial visualization]{"entity": "layout_requested", "value": "radial"}
     - I want to see the [radial design]{"entity": "layout_requested", "value": "radial"}
     - I would like to see the [radial]{"entity": "layout_requested", "value": "radial"}
+    - Show me the [radial layout]{"entity": "layout_requested", "value": "radial"}
+    - [radial]{"entity": "layout_requested", "value": "radial"}
+
+- intent: change_layout_treeMap
+  examples: |
+    - Change the [layout]{"entity": "object_requested", "value": "layout"} to [circle]{"entity": "layout_requested", "value": "treeMap"}
+    - Change [design]{"entity": "object_requested", "value": "layout"} to [circle visualization]{"entity": "layout_requested", "value": "treeMap"}
+    - Set the [circle design]{"entity": "layout_requested", "value": "treeMap"}
+    - Set [circle layout]{"entity": "layout_requested", "value": "treeMap"}
+    - Set the [design]{"entity": "object_requested", "value": "layout"} to the [circle visualization]{"entity": "layout_requested", "value": "treeMap"}
+    - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [circle packing]{"entity": "layout_requested", "value": "treeMap"}
+    - Displays the [circle layout]{"entity": "layout_requested", "value": "treeMap"}
+    - Displays [circle packing visualization]{"entity": "layout_requested", "value": "treeMap"}
+    - I want to see the [circle packing design]{"entity": "layout_requested", "value": "treeMap"}
+    - I would like to see the [circle]{"entity": "layout_requested", "value": "treeMap"}
     - Show me the [circle layout]{"entity": "layout_requested", "value": "treeMap"}
     - [circle packing]{"entity": "layout_requested", "value": "treeMap"}
 

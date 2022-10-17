@@ -339,24 +339,6 @@ class ActionOpenDocument(Action):
             dispatcher.utter_message(text='intent_open_document,' + tracker.get_slot("document_requested"))
             return [SlotSet("document_requested", None)]
 
-
-class ActionChangeLayout(Action):
-
-    def name(self) -> Text:
-        return "action_change_layout"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-            lay = tracker.get_slot("layout_requested")
-
-            if (lay != 'tree' and lay != 'force' and lay != 'radial' and lay != 'treeMap'):
-                return [SlotSet("layout_requested", None),FollowupAction("utter_layout_selection")]
-            else:
-                dispatcher.utter_message(text='intent_change_layout,' + tracker.get_slot("layout_requested"))
-                return [SlotSet("layout_requested", None)]
-
 class ActionCheckNickname(Action):
 
     def name(self) -> Text:

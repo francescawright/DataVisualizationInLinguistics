@@ -78,118 +78,144 @@ rules:
       - requested_slot: null
   - action: action_open_document
 
+# change the layout
+- rule: User wants to change the layout, without specifying to which one
+  steps:
+  - intent: change_layout
+  - action: utter_change_layout
+
+- rule: User wants to change the layout to Tree
+  steps:
+  - intent: change_layout_tree
+  - action: utter_change_layout_tree
+
+- rule: User wants to change the layout to Force
+  steps:
+  - intent: change_layout_force
+  - action: utter_change_layout_force
+
+- rule: User wants to change the layout to Radial
+  steps:
+  - intent: change_layout_radial
+  - action: utter_change_layout_radial
+
+- rule: User wants to change the layout to Circle Packing
+  steps:
+  - intent: change_layout_treeMap
+  - action: utter_change_layout_treeMap
+
 # OR / AND highlighting
 - rule: User wants to change the highlighting option to AND
   steps:
-    - intent: switch_and
-    - action: utter_switch_and
+  - intent: switch_and
+  - action: utter_switch_and
 
 - rule: User wants to change the highlighting option to OR
   steps:
-    - intent: switch_or
-    - action: utter_switch_or
+  - intent: switch_or
+  - action: utter_switch_or
 
 # highlight toxicity
 - rule: User wants to see non toxic nodes
   steps:
-    - intent: non_toxic
-    - action: utter_non_toxic
+  - intent: non_toxic
+  - action: utter_non_toxic
 
 - rule: User wants to see mildly toxic nodes
   steps:
-    - intent: mildly_toxic
-    - action: utter_mildly_toxic
+  - intent: mildly_toxic
+  - action: utter_mildly_toxic
 
 - rule: User wants to see toxic nodes
   steps:
-    - intent: toxic
-    - action: utter_toxic
+  - intent: toxic
+  - action: utter_toxic
 
 - rule: User wants to see very toxic nodes
   steps:
-    - intent: very_toxic
-    - action: utter_very_toxic
+  - intent: very_toxic
+  - action: utter_very_toxic
 
 # highlight positive negative neutral stance
 - rule: User wants to see positive stance nodes
   steps:
-    - intent: positive_stance
-    - action: utter_positive_stance
+  - intent: positive_stance
+  - action: utter_positive_stance
 
 - rule: User wants to see negative stance nodes
   steps:
-    - intent: negative_stance
-    - action: utter_negative_stance
+  - intent: negative_stance
+  - action: utter_negative_stance
 
 - rule: User wants to see neutral stance nodes
   steps:
-    - intent: neutral_stance
-    - action: utter_neutral_stance
+  - intent: neutral_stance
+  - action: utter_neutral_stance
 
 # highlight targets
 - rule: User wants to see target person nodes
   steps:
-    - intent: target_person
-    - action: utter_target_person
+  - intent: target_person
+  - action: utter_target_person
 
 - rule: User wants to see target group nodes
   steps:
-    - intent: target_group
-    - action: utter_target_group
+  - intent: target_group
+  - action: utter_target_group
 
 - rule: User wants to see stereotype nodes
   steps:
-    - intent: stereotype
-    - action: utter_stereotype
+  - intent: stereotype
+  - action: utter_stereotype
 
 - rule: User wants to select all targets
   steps:
-    - intent: target_all
-    - action: utter_target_all
+  - intent: target_all
+  - action: utter_target_all
 
 # highlight features
 - rule: User wants to see constructiveness nodes
   steps:
-    - intent: constructiveness
-    - action: utter_constructiveness
+  - intent: constructiveness
+  - action: utter_constructiveness
 
 
 - rule: User wants to see argumentation nodes
   steps:
-    - intent: argumentation
-    - action: utter_argumentation
+  - intent: argumentation
+  - action: utter_argumentation
 
 - rule: User wants to see sarcasm nodes
   steps:
-    - intent: sarcasm
-    - action: utter_sarcasm
+  - intent: sarcasm
+  - action: utter_sarcasm
 
 - rule: User wants to see mockery nodes
   steps:
-    - intent: mockery
-    - action: utter_mockery
+  - intent: mockery
+  - action: utter_mockery
 
 - rule: User wants to see intolerance nodes
   steps:
-    - intent: intolerance
-    - action: utter_intolerance
+  - intent: intolerance
+  - action: utter_intolerance
 
 - rule: User wants to see improper language nodes
   steps:
-    - intent: improper_language
-    - action: utter_improper_language
+  - intent: improper_language
+  - action: utter_improper_language
 
 - rule: User wants to see insult nodes
   steps:
-    - intent: insult
-    - action: utter_insult
+  - intent: insult
+  - action: utter_insult
 
 - rule: User wants to see aggressiveness nodes
   steps:
-    - intent: aggressiveness
-    - action: utter_aggressiveness
+  - intent: aggressiveness
+  - action: utter_aggressiveness
 
 - rule: User wants to select all features
   steps:
-    - intent: features_all
-    - action: utter_features_all
+  - intent: features_all
+  - action: utter_features_all
