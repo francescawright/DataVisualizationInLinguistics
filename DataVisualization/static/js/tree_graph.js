@@ -3748,7 +3748,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          * Sets the array of nodes belonging to the deepest threads in the global variable
          * @returns {number} number of threads with maximum depth and value of maximum depth
          */
-        document.body.addEventListener("longest_thread", function () {
+        $(document.body).off("longest_thread");
+        $(document.body).on("longest_thread", function () {
             let deepestNodes = getDeepestNodes(root);
 
             var textMsg;

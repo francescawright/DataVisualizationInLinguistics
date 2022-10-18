@@ -180,8 +180,8 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
 
     return {
         initialZoom: scale,
-        initialY: newX,
-        initialX: newY
+        initialY: newY,
+        initialX: newX
     }
 }
 
@@ -2681,7 +2681,8 @@ treeJSON = d3.json(dataset, function (error, json) {
      * Sets the array of nodes belonging to the deepest threads in the global variable
      * @returns {number} number of threads with maximum depth and value of maximum depth
      */
-    document.body.addEventListener("longest_thread", function () {
+    $(document.body).off("longest_thread");
+    $(document.body).on("longest_thread", function () {
         let deepestNodes = getDeepestNodes(root);
 
         var textMsg;
@@ -3225,37 +3226,12 @@ treeJSON = d3.json(dataset, function (error, json) {
     //console.log("box", box);
     let initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root);
 
-
-    // size of the diagram
-    var viewerWidth = 100;
-    var viewerHeight = 400;
-
-        /**
-     * Center the screen to the position of the given node
-     * */
-    function centerNode(source) {
-        scale = zoomListener.scale();
-        x = -source.y0;
-        y = -source.x0;
-        x = x * scale + viewerWidth / 2;
-        y = y * scale + viewerHeight / 2;
-        d3.select("g")
-            .transition()
-            .duration(duration)
-            .attr(
-                "transform",
-                "translate(" + x + "," + y + ")scale(" + scale + ")"
-            );
-        zoomListener.scale(scale);
-        zoomListener.translate([x, y]);
-    }
-
-    centerNode(root);
-
-
     initialZoom = initialSight.initialZoom;
     initialX = initialSight.initialX;
     initialY = initialSight.initialY;
+
+    zoomListener.scale(initialZoom);
+    zoomListener.translate([initialX, initialY]);
 
     /**
      * Wrap call to compute statistics and to write them in a hover text

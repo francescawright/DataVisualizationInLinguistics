@@ -433,6 +433,19 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
 
 }
 
+function highlightLongestThread(node) {
+
+    node.style("opacity", maxOpacityValue);
+
+    node.filter(function (d) {
+        return (!deepestNodesPath.includes(d));
+    }).style("stroke", "black").style("color", "black").style("opacity", minOpacityValue);
+
+    node.filter(function (d) {
+        return d.depth === 0;
+    }).style("opacity", maxOpacityValue);
+}
+
     try {
         $(document).ready(function () {
             checkboxAND.addEventListener("change", function () {
@@ -550,6 +563,40 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
     highlightNodesByPropertyOR(node, enabledHighlight);
     highlightNodesByPropertyAND(node, enabledHighlight);
 
+    /**
+     * Sets the array of nodes belonging to the deepest threads in the global variable
+     * @returns {number} number of threads with maximum depth and value of maximum depth
+     */
+    $(document.body).off("longest_thread");
+    $(document.body).on("longest_thread", function () {
+        let deepestNodes = getDeepestNodes(root);
+
+        var textMsg;
+        if (deepestNodes.length > 1) {
+            textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
+        } else {
+            textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
+        }
+        // Get the existing localStorage data
+        var existingStorage = localStorage.getItem("chat_session");
+        // If no existing data, create an array
+        // Otherwise, convert the localStorage string to an array
+        existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:5005/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+        "name": "generate_response_message",
+        "entities": {
+            "response_message": textMsg
+        }
+        }));
+
+        deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
+        // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
+        highlightLongestThread(node);
+    });
 
     //Listeners
 
@@ -739,6 +786,46 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
         .style("visibility", "visible");
 
     /*SECTION zoom - TODO*/
+
+/*******************************
+*   Categorization Functions   *
+********************************/
+
+    /**
+     * Finding the deepest nodes in a hierarchy
+     * @param node tree root
+     * @returns {Array} array of nodes with greater depth
+     */
+    function getDeepestNodes(node) {
+        let hierarchy = d3.hierarchy(node);
+        let lenght = d3.max(hierarchy.descendants(), d => d.depth);
+        return hierarchy.descendants().filter(function (d) {
+            return (d.depth === lenght);
+        });
+    }
+
+    /**
+     * Finds the path between end nodes and the root in a hierarchy
+     * By default, if the parameter endNodes is not provided, the function finds the deepest nodes path in a hierarchy
+     * @param root tree root
+     * @param endNodes End nodes array to find their thread to the root
+     * @returns {Array} array of nodes that belong to the threads between the end nodes and the root.
+     * If the parameter endNodes is not provided, returns array of nodes that belong to the threads with greater depth.
+     */
+    function getDeepestNodesPath(root, endNodes = getDeepestNodes(root)) {
+        let nodesPath = [];
+        let deepestNodes = endNodes;
+        let currentNode;
+        for (let i = 0; i < deepestNodes.length; i++) {
+            currentNode = deepestNodes[i];
+            while(currentNode.data !== root){
+                nodesPath.push(currentNode.data);
+                currentNode = currentNode.parent;
+            }
+        }
+        nodesPath.push(root);
+        return nodesPath;
+    }
 });
 
 

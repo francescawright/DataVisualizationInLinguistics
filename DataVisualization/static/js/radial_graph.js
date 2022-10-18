@@ -2753,6 +2753,26 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         });
     }
 
+    function highlightLongestThread(node, link) {
+        nodes.forEach(function (d) {
+            d.highlighted = 0;
+        });
+        node.style("opacity", opacityValue);
+
+        node.filter(function (d) {
+            if (deepestNodesPath.includes(d)) d.highlighted = 1;
+            //console.log(d);
+            return (deepestNodesPath.includes(d));
+        }).style("opacity", 1);
+
+        //Highlight only the edges whose both endpoints are highlighted
+        link.style("opacity", function (d) {
+            return d.source.highlighted && d.target.highlighted ?
+                1 :
+                opacityValue;
+        });
+    }
+
     /*END section */
 
 
@@ -3140,15 +3160,41 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         } catch (TypeError) {
             console.error("Error attaching buttons... trying again...");
         }
-        // checkboxStaticValues.addEventListener("change", function () {
-        //     this.checked ?
-        //         statisticBackground
-        //             .style("visibility", "visible")
-        //             .html(writeStatisticText()) :
-        //         statisticBackground
-        //             .style("visibility", "hidden")
-        //             .html(writeStatisticText());
-        // });
+
+        /**
+         * Sets the array of nodes belonging to the deepest threads in the global variable
+         * @returns {number} number of threads with maximum depth and value of maximum depth
+         */
+        $(document.body).off("longest_thread");
+        $(document.body).on("longest_thread", function () {
+            let deepestNodes = getDeepestNodes(root);
+
+            var textMsg;
+            if (deepestNodes.length > 1) {
+                textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
+            } else {
+                textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
+            }
+            // Get the existing localStorage data
+            var existingStorage = localStorage.getItem("chat_session");
+            // If no existing data, create an array
+            // Otherwise, convert the localStorage string to an array
+            existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:5005/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+            "name": "generate_response_message",
+            "entities": {
+                "response_message": textMsg
+            }
+            }));
+
+            deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
+            // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
+            highlightLongestThread(node, link);
+        });
 
         if (!first_call) {
             checkboxesTargets.forEach(function (checkboxItem) {
@@ -3660,5 +3706,44 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     console.log('[User]', user.split('/')[2], '| [interaction]', 'Radial_layout_loaded', ' | [Date]', Date.now());
 
+/*******************************
+*   Categorization Functions   *
+********************************/
+
+    /**
+     * Finding the deepest nodes in a hierarchy
+     * @param node tree root
+     * @returns {Array} array of nodes with greater depth
+     */
+    function getDeepestNodes(node) {
+        let hierarchy = d3.hierarchy(node);
+        let lenght = d3.max(hierarchy.descendants(), d => d.depth);
+        return hierarchy.descendants().filter(function (d) {
+            return (d.depth === lenght);
+        });
+    }
+
+    /**
+     * Finds the path between end nodes and the root in a hierarchy
+     * By default, if the parameter endNodes is not provided, the function finds the deepest nodes path in a hierarchy
+     * @param root tree root
+     * @param endNodes End nodes array to find their thread to the root
+     * @returns {Array} array of nodes that belong to the threads between the end nodes and the root.
+     * If the parameter endNodes is not provided, returns array of nodes that belong to the threads with greater depth.
+     */
+    function getDeepestNodesPath(root, endNodes = getDeepestNodes(root)) {
+        let nodesPath = [];
+        let deepestNodes = endNodes;
+        let currentNode;
+        for (let i = 0; i < deepestNodes.length; i++) {
+            currentNode = deepestNodes[i];
+            while(currentNode.data !== root){
+                nodesPath.push(currentNode.data);
+                currentNode = currentNode.parent;
+            }
+        }
+        nodesPath.push(root);
+        return nodesPath;
+    }
 
 });
