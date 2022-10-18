@@ -587,6 +587,8 @@ treeJSON = d3.json(dataset, function (error, json) {
         fileName: "root.png"
     };
 
+    // Used to obtain the nodes belonging to the deepest thread
+    var deepestNodesPath;
 
     var imgRatio = 20; //Percentage of difference between the radii of a node and its associated image
 
@@ -1204,7 +1206,14 @@ treeJSON = d3.json(dataset, function (error, json) {
 
         for (var i = 0; i < targets.length; i++) {
             if (cbShowTargets[i] > -1) {
-                nodeEnter.append("image")
+                nodeEnter.filter(function (d) {
+                    if (d.parent === null) {
+                        return false;
+                    } else {
+                        listOpacity = [d.target_group, d.target_person, d.stereotype];
+                        return listOpacity[i];
+                    }
+                }).append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
                     .attr("x", targets[i].x)
@@ -1212,11 +1221,6 @@ treeJSON = d3.json(dataset, function (error, json) {
                     .attr("height", targets[i].height)
                     .attr("width", targets[i].width)
                     .attr("href", pathTargets + localPath + targets[i].fileName)
-                    .attr("opacity", function (d) {
-                        if (d.parent === null) return 0;
-                        listOpacity = [d.target_group, d.target_person, d.stereotype];
-                        return listOpacity[i];
-                    });
             }
         }
     }
@@ -1483,11 +1487,6 @@ treeJSON = d3.json(dataset, function (error, json) {
                     .attr("fill", features[i].color)
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px");
-                    // .attr("opacity", function (d) {
-                    //     if (d.parent === null) return 0;
-                    //     listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
-                    //     return listOpacity[i];
-                    // });
             }
         }
 
@@ -1528,7 +1527,14 @@ treeJSON = d3.json(dataset, function (error, json) {
 
         for (var i = 0; i < features.length; i++) {
             if (cbFeatureEnabled[i] > -1) {
-                nodeEnter.append("image")
+                nodeEnter.filter(function (d) {
+                    if (d.parent === null) {
+                        return false;
+                    } else {
+                        listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
+                        return listOpacity[i];
+                    }
+                }).append("image")
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
                     .attr("x", function (d) {
@@ -1544,11 +1550,6 @@ treeJSON = d3.json(dataset, function (error, json) {
                         return sizeImage(d.radius);
                     })
                     .attr("href", pathFeatures + localPath + features[i].fileName)
-                    .attr("opacity", function (d) {
-                        if (d.parent === null) return 0;
-                        listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
-                        return listOpacity[i];
-                    });
             }
         }
     }
@@ -1721,16 +1722,6 @@ treeJSON = d3.json(dataset, function (error, json) {
                     .style("stroke", "black")
                     .style("stroke-width", "0.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName);
-                    // .attr("opacity", function (d) {
-                    //     if (d.parent === null) return 0;
-                    //
-                    //     listOpacity = [1,
-                    //         d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
-                    //         d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
-                    //         d.target_group, d.target_person, d.stereotype];
-                    //
-                    //     return listOpacity[i];
-                    // });
             }
         }
     }
@@ -2281,6 +2272,26 @@ treeJSON = d3.json(dataset, function (error, json) {
         });
     }
 
+    function highlightLongestThread(node, link) {
+        nodes.forEach(function (d) {
+            d.highlighted = 0;
+        });
+        node.style("opacity", opacityValue);
+
+        node.filter(function (d) {
+            if (deepestNodesPath.includes(d)) d.highlighted = 1;
+            //console.log(d);
+            return (deepestNodesPath.includes(d));
+        }).style("opacity", 1);
+
+        //Highlight only the edges whose both endpoints are highlighted
+        link.style("opacity", function (d) {
+            return d.source.highlighted && d.target.highlighted ?
+                1 :
+                opacityValue;
+        });
+    }
+
     /*END section */
 
     /**
@@ -2665,6 +2676,40 @@ treeJSON = d3.json(dataset, function (error, json) {
     } catch (TypeError) {
         console.error("Error attaching buttons... trying again...");
     }
+
+    /**
+     * Sets the array of nodes belonging to the deepest threads in the global variable
+     * @returns {number} number of threads with maximum depth and value of maximum depth
+     */
+    document.body.addEventListener("longest_thread", function () {
+        let deepestNodes = getDeepestNodes(root);
+
+        var textMsg;
+        if (deepestNodes.length > 1) {
+            textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
+        } else {
+            textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
+        }
+        // Get the existing localStorage data
+        var existingStorage = localStorage.getItem("chat_session");
+        // If no existing data, create an array
+        // Otherwise, convert the localStorage string to an array
+        existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:5005/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+        "name": "generate_response_message",
+        "entities": {
+            "response_message": textMsg
+        }
+        }));
+
+        deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
+        // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
+        highlightLongestThread(node, link);
+    });
 
     /*
     Functions
@@ -3181,6 +3226,33 @@ treeJSON = d3.json(dataset, function (error, json) {
     let initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root);
 
 
+    // size of the diagram
+    var viewerWidth = 100;
+    var viewerHeight = 400;
+
+        /**
+     * Center the screen to the position of the given node
+     * */
+    function centerNode(source) {
+        scale = zoomListener.scale();
+        x = -source.y0;
+        y = -source.x0;
+        x = x * scale + viewerWidth / 2;
+        y = y * scale + viewerHeight / 2;
+        d3.select("g")
+            .transition()
+            .duration(duration)
+            .attr(
+                "transform",
+                "translate(" + x + "," + y + ")scale(" + scale + ")"
+            );
+        zoomListener.scale(scale);
+        zoomListener.translate([x, y]);
+    }
+
+    centerNode(root);
+
+
     initialZoom = initialSight.initialZoom;
     initialX = initialSight.initialX;
     initialY = initialSight.initialY;
@@ -3271,5 +3343,43 @@ treeJSON = d3.json(dataset, function (error, json) {
 
     console.log('[User]', user.split('/')[2], '| [interaction]', 'Force_layout_loaded', ' | [Date]', Date.now());
 
+/*******************************
+*   Categorization Functions   *
+********************************/
 
+    /**
+     * Finding the deepest nodes in a hierarchy
+     * @param node tree root
+     * @returns {Array} array of nodes with greater depth
+     */
+    function getDeepestNodes(node) {
+        let hierarchy = d3.hierarchy(node);
+        let lenght = d3.max(hierarchy.descendants(), d => d.depth);
+        return hierarchy.descendants().filter(function (d) {
+            return (d.depth === lenght);
+        });
+    }
+
+    /**
+     * Finds the path between end nodes and the root in a hierarchy
+     * By default, if the parameter endNodes is not provided, the function finds the deepest nodes path in a hierarchy
+     * @param root tree root
+     * @param endNodes End nodes array to find their thread to the root
+     * @returns {Array} array of nodes that belong to the threads between the end nodes and the root.
+     * If the parameter endNodes is not provided, returns array of nodes that belong to the threads with greater depth.
+     */
+    function getDeepestNodesPath(root, endNodes = getDeepestNodes(root)) {
+        let nodesPath = [];
+        let deepestNodes = endNodes;
+        let currentNode;
+        for (let i = 0; i < deepestNodes.length; i++) {
+            currentNode = deepestNodes[i];
+            while(currentNode.data !== root){
+                nodesPath.push(currentNode.data);
+                currentNode = currentNode.parent;
+            }
+        }
+        nodesPath.push(root);
+        return nodesPath;
+    }
 });

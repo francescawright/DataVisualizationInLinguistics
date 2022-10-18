@@ -10,6 +10,9 @@ intents:
   - bot_challenge
   - start_intent
   - new_start_intent
+  - generate_response_message:
+      use_entities:
+        - response_message
   - logout:
       use_entities:
         - action_requested
@@ -70,6 +73,7 @@ intents:
   - aggressiveness
   - target_all
   - features_all
+  - longest_thread
 
 actions:
   - action_logout
@@ -86,6 +90,7 @@ actions:
   - validate_nickname_form
   - action_remember_nickname
   - action_refused_nickname
+  - action_generate_response_message
 
 forms:
   nickname_form:
@@ -121,6 +126,7 @@ entities:
   - nickname_requested
   - first_login
   - nickname
+  - response_message
 
 slots:
   requested_slot:
@@ -402,6 +408,13 @@ responses:
   - text: "intent_filter_all,selectAll-features,Here you have it"
   - text: "intent_filter_all,selectAll-features,All nodes with all features are now displayed"
   - text: "intent_filter_all,selectAll-features,Here you have nodes with all features. Would you like to see something else?"
+
+# complex intent responses
+
+# longest, largest, widest, most toxic
+  utter_longest_thread:
+  - text: "intent_longest_thread,Here you have it"
+  - text: "intent_longest_thread,I've highlighted it in your graph"
 
 session_config:
   session_expiration_time: 60

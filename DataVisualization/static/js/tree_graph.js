@@ -718,6 +718,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     root = treeData; //Define the root
 
+    // Used to obtain the nodes belonging to the deepest thread
+    var deepestNodesPath;
+
     /* Creation of the tree with nodeSize
      * We indicate the reserved area for each node as [height, width] since our tree grows horizontally
      * Sorts nodes by level of toxicity (from lower to higher)
@@ -1194,8 +1197,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         for (var i = 0; i < targets.length; i++) {
             if (cbShowTargets[i] > -1) {
-                nodeEnter
-                    .append("image")
+                nodeEnter.filter(function (d) {
+                    if (d.parent === undefined) {
+                        return false;
+                    } else {
+                        listOpacity = [d.target_group, d.target_person, d.stereotype];
+                        return listOpacity[i];
+                    }
+                }).append("image")
                     .attr("class", targets[i].class)
                     .attr("id", targets[i].id)
                     .attr("x", targets[i].x)
@@ -1203,11 +1212,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr("height", targets[i].height)
                     .attr("width", targets[i].width)
                     .attr("href", pathTargets + localPath + targets[i].fileName)
-                    .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
-                        listOpacity = [d.target_group, d.target_person, d.stereotype];
-                        return listOpacity[i];
-                    });
             }
         }
     }
@@ -1624,8 +1628,23 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         for (var i = 0; i < 8; i++) {
             if (cbFeatureEnabled[i] > -1) {
-                nodeEnter
-                    .append("circle")
+                nodeEnter.filter(function (d) {
+                    if (d.parent === undefined) {
+                        return false;
+                    } else {
+                        listOpacity = [
+                            d.argumentation,
+                            d.constructiveness,
+                            d.sarcasm,
+                            d.mockery,
+                            d.intolerance,
+                            d.improper_language,
+                            d.insult,
+                            d.aggressiveness,
+                        ];
+                        return listOpacity[i];
+                    }
+                }).append("circle")
                     .attr("class", features[i].class)
                     .attr("id", features[i].id)
                     .attr("r", "10.5")
@@ -1641,20 +1660,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr("fill", colorFeature[i])
                     .style("stroke", "black")
                     .style("stroke-width", getNodeStrokeWidth())
-                    .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
-                        listOpacity = [
-                            d.argumentation,
-                            d.constructiveness,
-                            d.sarcasm,
-                            d.mockery,
-                            d.intolerance,
-                            d.improper_language,
-                            d.insult,
-                            d.aggressiveness,
-                        ];
-                        return listOpacity[i];
-                    });
             }
         }
     }
@@ -1735,8 +1740,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         removeToxicities(nodeEnter); //Remove all the pngs for toxicity
 
         //Add the gray cheese
-        nodeEnter
-            .append("image")
+        nodeEnter.filter(function (d) {
+                    return d.parent !== null;
+                }).append("image")
             .attr("class", objFeatGray.class)
             .attr("id", objFeatGray.id)
             .attr("x", function (d) {
@@ -1753,7 +1759,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
             .attr("href", pathFeatures + localPath + objFeatGray.fileName)
             .attr("opacity", function (d) {
-                if (d.parent === undefined) return 0;
                 return 0.5;
             });
 
@@ -1782,8 +1787,23 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         for (var i = 0; i < features.length; i++) {
             if (cbFeatureEnabled[i] > -1) {
-                nodeEnter
-                    .append("image")
+                nodeEnter.filter(function (d) {
+                    if (d.parent === undefined) {
+                        return false;
+                    } else {
+                        listOpacity = [
+                            d.argumentation,
+                            d.constructiveness,
+                            d.sarcasm,
+                            d.mockery,
+                            d.intolerance,
+                            d.improper_language,
+                            d.insult,
+                            d.aggressiveness,
+                        ];
+                        return listOpacity[i];
+                    }
+                }).append("image")
                     .attr("class", features[i].class)
                     .attr("id", features[i].id)
                     .attr("x", function (d) {
@@ -1799,20 +1819,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         return sizeImage(d.radius);
                     })
                     .attr("href", pathFeatures + localPath + features[i].fileName)
-                    .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
-                        listOpacity = [
-                            d.argumentation,
-                            d.constructiveness,
-                            d.sarcasm,
-                            d.mockery,
-                            d.intolerance,
-                            d.improper_language,
-                            d.insult,
-                            d.aggressiveness,
-                        ];
-                        return listOpacity[i];
-                    });
             }
         }
     }
@@ -1964,8 +1970,31 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         for (var i = 0; i < allObjectsInNode.length; i++) {
             if (cbShowTargets[i] > -1) {
                 //If the checkbox is checked, display it if it has the property
-                nodeEnter
-                    .append("image")
+                nodeEnter.filter(function (d) {
+                    if (d.parent === undefined) {
+                        return false;
+                    } else {
+                        listOpacity = [
+                            1,
+                            d.argumentation,
+                            d.constructiveness,
+                            d.sarcasm,
+                            d.mockery,
+                            d.intolerance,
+                            d.improper_language,
+                            d.insult,
+                            d.aggressiveness,
+                            d.toxicity_level === 0 ? 1 : 0,
+                            d.toxicity_level === 1 ? 1 : 0,
+                            d.toxicity_level === 2 ? 1 : 0,
+                            d.toxicity_level === 3 ? 1 : 0,
+                            d.target_group,
+                            d.target_person,
+                            d.stereotype,
+                        ];
+                        return listOpacity[i];
+                    }
+                }).append("image")
                     .attr("class", allObjectsInNode[i].class)
                     .attr("id", allObjectsInNode[i].id)
                     .attr("x", function (d) {
@@ -1986,30 +2015,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         "href",
                         pathFeatures + localPath + allObjectsInNode[i].fileName
                     )
-                    .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
-
-                        listOpacity = [
-                            1,
-                            d.argumentation,
-                            d.constructiveness,
-                            d.sarcasm,
-                            d.mockery,
-                            d.intolerance,
-                            d.improper_language,
-                            d.insult,
-                            d.aggressiveness,
-                            d.toxicity_level === 0 ? 1 : 0,
-                            d.toxicity_level === 1 ? 1 : 0,
-                            d.toxicity_level === 2 ? 1 : 0,
-                            d.toxicity_level === 3 ? 1 : 0,
-                            d.target_group,
-                            d.target_person,
-                            d.stereotype,
-                        ];
-
-                        return listOpacity[i];
-                    });
             }
         }
     }
@@ -3033,6 +3038,26 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         });
     }
 
+    function highlightLongestThread(node, link) {
+        nodes.forEach(function (d) {
+            d.highlighted = 0;
+        });
+        node.style("opacity", opacityValue);
+
+        node.filter(function (d) {
+            if (deepestNodesPath.includes(d)) d.highlighted = 1;
+            //console.log(d);
+            return (deepestNodesPath.includes(d));
+        }).style("opacity", 1);
+
+        //Highlight only the edges whose both endpoints are highlighted
+        link.style("opacity", function (d) {
+            return d.source.highlighted && d.target.highlighted ?
+                1 :
+                opacityValue;
+        });
+    }
+
     /*END section */
 
     function writeIdLabel(nodeEnter) {
@@ -3418,8 +3443,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
             .on("click", function (d) {
                 click(d, nodeEnter);
-                if (document.querySelector("#tree-container div.my-statistic").style.visibility === "visible") {
-                    statisticBackground.html(writeStatisticText());
+                if (!d3.event.defaultPrevented) {
+                    if (document.querySelector("#tree-container div.my-statistic").style.visibility === "visible") {
+                        statisticBackground.html(writeStatisticText());
+                    }
                 }
             })
             .on("mouseover", function (d) {
@@ -3459,28 +3486,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .style("stroke", "black")
             .style("stroke-width", getNodeStrokeWidth());
 
-        // nodeEnter
-        //     .append("text")
-        //     .attr("x", 25)
-        //     .attr("dy", ".35em")
-        //     .attr("class", "nodeText")
-        //     .attr("id", "nodeText")
-        //     .attr("text-anchor", "end")
-        //     .text(function (d) {
-        //         return d.name;
-        //     });
-        // .style("opacity", function (d) {
-        //     return checkboxId.checked ? 1 : 0;
-        // }
-        // );
-
-        //Dropdown menus
-        // dropdownTargets.addEventListener("change", function () {
-        //     selectTargetVisualization(nodeEnter);
-        // });
-        // dropdownFeatures.addEventListener("change", function () {
-        //     selectFeatureVisualization(nodeEnter);
-        // });
 
         dotsFeatures.addEventListener("click", function () {
             selectFeatureVisualization(nodeEnter);
@@ -3491,21 +3496,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         });
 
         /*SECTION checkboxes listener*/
-        // checkboxId.addEventListener("change", function () {
-        //     this.checked ?
-        //         writeIdLabel(nodeEnter) :
-        //         d3.selectAll("#nodeText").remove();
-        // });
-
-        // checkboxStaticValues.addEventListener("change", function () {
-        //     this.checked ?
-        //         statisticBackground
-        //             .style("visibility", "visible")
-        //             .html(writeStatisticText()) :
-        //         statisticBackground
-        //             .style("visibility", "hidden")
-        //             .html(writeStatisticText());
-        // });
 
         dotsFeatures.addEventListener("change", function () {
             selectFeatureVisualization(nodeEnter);
@@ -3594,43 +3584,33 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         try {
             $(document).ready(function () {
 
-                if (first_call) {
-                    checkboxesTargets.forEach(function (checkboxItem) {
-                        enabledTargets =
-                            Array.from(checkboxesTargets) // Convert checkboxes to an array to use filter and map.
-                                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
-                                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
-
-                        selectTargetVisualization(nodeEnter);
-                    });
-
-                    checkboxes.forEach(function (checkboxItem) {
-                        enabledFeatures =
-                            Array.from(checkboxes) // Convert checkboxes to an array to use filter and map.
-                                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
-                                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
-
-                        selectFeatureVisualization(nodeEnter);
-                    });
-
-                    checkboxesDevtools.forEach(function (checkboxItem) {
-                        enabledTargets =
-                            Array.from(checkboxesDevtools) // Convert checkboxes to an array to use filter and map.
-                                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
-                                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
-
-                        selectTargetVisualization(nodeEnter);
-                    });
+                checkboxesTargets.forEach(function (checkboxItem) {
+                    enabledTargets =
+                        Array.from(checkboxesTargets) // Convert checkboxes to an array to use filter and map.
+                            .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                            .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
                     selectTargetVisualization(nodeEnter);
+                });
+
+                checkboxes.forEach(function (checkboxItem) {
+                    enabledFeatures =
+                        Array.from(checkboxes) // Convert checkboxes to an array to use filter and map.
+                            .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                            .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
                     selectFeatureVisualization(nodeEnter);
-                }
+                });
+
 
                 /*SECTION checkboxes listener*/
+                
                 // Use Array.forEach to add an event listener to each checkbox.
                 // Draw target images
                 checkboxesTargets.forEach(function (checkboxItem) {
+
                     checkboxItem.addEventListener('change', function () {
+                        console.log(checkboxItem)
                         enabledTargets =
                             Array.from(checkboxesTargets) // Convert checkboxes to an array to use filter and map.
                                 .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
@@ -3764,6 +3744,40 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             console.error("Error attaching buttons... trying again...");
         }
 
+        /**
+         * Sets the array of nodes belonging to the deepest threads in the global variable
+         * @returns {number} number of threads with maximum depth and value of maximum depth
+         */
+        document.body.addEventListener("longest_thread", function () {
+            let deepestNodes = getDeepestNodes(root);
+
+            var textMsg;
+            if (deepestNodes.length > 1) {
+                textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
+            } else {
+                textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
+            }
+            // Get the existing localStorage data
+            var existingStorage = localStorage.getItem("chat_session");
+            // If no existing data, create an array
+            // Otherwise, convert the localStorage string to an array
+            existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:5005/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+            "name": "generate_response_message",
+            "entities": {
+                "response_message": textMsg
+            }
+            }));
+
+            deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
+            // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
+            highlightLongestThread(node, link);
+        });
+
         checkboxAND.addEventListener("change", function () {
             if (this.checked) {
                 checkboxOR.checked = false;
@@ -3859,159 +3873,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             //checkboxFeatureCheese.checked ? drawFeaturesCheese(nodeEnter) : drawFeatures(nodeEnter);
             //console.log(enabledFeatures);
         }
-
-        // if (
-        //     !document.querySelector("input[value=on-node]").checked &&
-        //     !document.querySelector("input[value=node-outside]").checked
-        // ) {
-        //     document.querySelector("input[value=on-node]").checked = true;
-        // }
-        // selectFeatureVisualization(nodeEnter);
-
-        // if the option to show features is checked, enable checkboxes and dropdown menu
-        // checkboxFeatureMenu.addEventListener("change", function () {
-        //     if (this.checked) {
-        //         //Enable checkboxes and dropdown menu + show features if they are selected
-        //         checkboxesPropertyFeature.forEach(function (checkboxItem) {
-        //             checkboxItem.removeAttribute("disabled");
-        //         });
-        //         checkboxesPositioningFeature.forEach(function (checkboxItem) {
-        //             checkboxItem.removeAttribute("disabled");
-        //         });
-        //         checkboxes.forEach(function (checkboxItem) {
-        //             checkboxItem.removeAttribute("disabled");
-        //         });
-        //         // dropdownFeatures.removeAttribute("disabled");
-        //
-        //         checkButtons.forEach(function (button) {
-        //             button.removeAttribute("disabled");
-        //         });
-        //
-        //         if (
-        //             !document.querySelector("input[value=dot-feat]").checked &&
-        //             !document.querySelector("input[value=cheese-feat]").checked
-        //         ) {
-        //             document.querySelector("input[value=dot-feat]").checked = true;
-        //             //drawFeatures(nodeEnter);
-        //         } else {
-        //             //checkboxFeatureCheese.checked ? drawFeaturesCheese(nodeEnter) : drawFeatures(nodeEnter);
-        //             console.log(enabledFeatures);
-        //         }
-        //
-        //         // if (
-        //         //     !document.querySelector("input[value=on-node]").checked &&
-        //         //     !document.querySelector("input[value=node-outside]").checked
-        //         // ) {
-        //         //     document.querySelector("input[value=on-node]").checked = true;
-        //         // }
-        //         selectFeatureVisualization(nodeEnter);
-        //     } else {
-        //         //Disable checkboxes and dropdown menu + remove all the features
-        //         checkboxesPropertyFeature.forEach(function (checkboxItem) {
-        //             checkboxItem.setAttribute("disabled", "disabled");
-        //         });
-        //         checkboxesPositioningFeature.forEach(function (checkboxItem) {
-        //             checkboxItem.setAttribute("disabled", "disabled");
-        //         });
-        //         // document.getElementById(
-        //         //     "feature-over-node-or-outside"
-        //         // ).style.display = "none";
-        //         // dropdownFeatures.setAttribute("disabled", "disabled");
-        //
-        //         checkboxes.forEach(function (checkboxItem) {
-        //             checkboxItem.setAttribute("disabled", "disabled");
-        //         });
-        //         checkButtons.forEach(function (button) {
-        //             button.setAttribute("disabled", "disabled");
-        //         });
-        //
-        //         removeAllFeatures(); //Hide all features when the cb is unchecked
-        //     }
-        // });
-
-        /*        // if DOT is checked, uncheck OR
-                  checkboxFeatureDot.addEventListener('change', function() {
-                      if (this.checked){
-                          checkboxFeatureCheese.checked = false;
-                          drawFeatures(nodeEnter);
-                      }
-                      else {
-                          checkboxFeatureCheese.checked = true;
-                          drawFeaturesCheese(nodeEnter);
-                      }
-
-                  });
-                  // if CHEESE is checked, uncheck AND
-                  checkboxFeatureCheese.addEventListener('change', function() {
-                      if (this.checked) {
-                          checkboxFeatureDot.checked = false;
-                          drawFeaturesCheese(nodeEnter);
-                      }
-                      else {
-                          checkboxFeatureDot.checked = true;
-                          drawFeatures(nodeEnter);
-                      }
-                  });*/
-
-        // if DOT is checked, uncheck OR
-        // cbFeatureInside.addEventListener("change", function () {
-        //     this.checked ?
-        //         (cbFeatureOutside.checked = false) :
-        //         (cbFeatureOutside.checked = true);
-        //     selectFeatureVisualization(nodeEnter);
-        // });
-        // // if CHEESE is checked, uncheck AND
-        // cbFeatureOutside.addEventListener("change", function () {
-        //     this.checked ?
-        //         (cbFeatureInside.checked = false) :
-        //         (cbFeatureInside.checked = true);
-        //     selectFeatureVisualization(nodeEnter);
-        // });
-
-        // Use Array.forEach to add an event listener to each checkbox.
-        // Draw feature circles
-
-
-        //Listener related to highlighting nodes and edges
-        // checkboxHighlightMenu.addEventListener("change", function () {
-        //     if (this.checked) {
-        //         checkboxesProperty.forEach(function (checkboxItem) {
-        //             checkboxItem.removeAttribute("disabled");
-        //         });
-        //         checkboxesHighlightGroup.forEach(function (checkboxItem) {
-        //             checkboxItem.removeAttribute("disabled");
-        //         });
-        //
-        //         if (
-        //             !document.querySelector("input[value=and-group]").checked &&
-        //             !document.querySelector("input[value=or-group]").checked
-        //         ) {
-        //             document.querySelector("input[value=and-group]").checked = true;
-        //             highlightNodesByPropertyAND(node, link);
-        //         } else {
-        //             checkboxAND.checked ?
-        //                 highlightNodesByPropertyAND(node, link) :
-        //                 highlightNodesByPropertyOR(node, link);
-        //             console.log(enabledHighlight);
-        //         }
-        //         getStatisticValues(node);
-        //         writeStatisticText();
-        //     } else {
-        //         console.log("We disable all checkboxes ...");
-        //         checkboxesProperty.forEach(function (checkboxItem) {
-        //             checkboxItem.setAttribute("disabled", "disabled");
-        //         });
-        //         checkboxesHighlightGroup.forEach(function (checkboxItem) {
-        //             checkboxItem.setAttribute("disabled", "disabled");
-        //         });
-        //
-        //         //We make all nodes and links visible again
-        //         node.style("opacity", 1);
-        //         link.style("opacity", 1);
-        //     }
-        // });
-
-        // If AND is selected, uncheck the OR and highlight by property AND
 
 
         d3.select("#zoom_in_icon").on("click", function () {
@@ -4507,6 +4368,55 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             });
         }
         return maxHeight;
+    }
+
+    /**
+     * Find the length of the longest chain in a hierarchy
+     * @param node tree root
+     * @returns {number} length going to the root to the deepest node in the data structure
+     */
+    function getLengthDeepestNode(node) {
+        var hierarchy = d3.hierarchy(node);
+        var longest = d3.max(hierarchy.descendants().map(function(d) {
+          return d.depth
+        }));
+        // console.log("The longest chain has " + (longest) + " levels.")
+    }
+
+    /**
+     * Finding the deepest nodes in a hierarchy
+     * @param node tree root
+     * @returns {Array} array of nodes with greater depth
+     */
+    function getDeepestNodes(node) {
+        let hierarchy = d3.hierarchy(node);
+        let lenght = d3.max(hierarchy.descendants(), d => d.depth);
+        return hierarchy.descendants().filter(function (d) {
+            return (d.depth === lenght);
+        });
+    }
+
+    /**
+     * Finds the path between end nodes and the root in a hierarchy
+     * By default, if the parameter endNodes is not provided, the function finds the deepest nodes path in a hierarchy
+     * @param root tree root
+     * @param endNodes End nodes array to find their thread to the root
+     * @returns {Array} array of nodes that belong to the threads between the end nodes and the root.
+     * If the parameter endNodes is not provided, returns array of nodes that belong to the threads with greater depth.
+     */
+    function getDeepestNodesPath(root, endNodes = getDeepestNodes(root)) {
+        let nodesPath = [];
+        let deepestNodes = endNodes;
+        let currentNode;
+        for (let i = 0; i < deepestNodes.length; i++) {
+            currentNode = deepestNodes[i];
+            while(currentNode.data !== root){
+                nodesPath.push(currentNode.data);
+                currentNode = currentNode.parent;
+            }
+        }
+        nodesPath.push(root);
+        return nodesPath;
     }
 
     /**

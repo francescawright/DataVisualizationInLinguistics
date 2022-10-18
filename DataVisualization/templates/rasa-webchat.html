@@ -53,6 +53,8 @@
     <input id="bot_log_form_submit" type="submit">
 </form>
 
+<!-- <div id="jsConnector" style="display: none;"></div> -->
+
 <!-- Rasa WebChat Style -->
 
 <style>
@@ -113,6 +115,52 @@
     function doSomeCleanup() {
         localStorage.clear();
     }
+
+    {% comment %}
+    // Set a listener for when an element is modified
+    var values;
+    var textMsg;
+    // Select the target node.
+    var target = document.getElementById('jsConnector');
+    // Create an observer instance.
+    var observer = new MutationObserver(function(mutations) {
+        values = target.innerHTML.split(",");
+        if (values[0] === "longest_thread") {
+            if (values[1] > 1) {
+                textMsg = "I have found " + parseInt(values[1]) + " threads with a maximum depth of " + parseInt(values[2]);
+            } else {
+                textMsg = "Here is the longest thread and it has a depth of " + values[2];
+            }
+        }
+        addChatBotMessage(textMsg)
+    });
+    // Pass in the target node, as well as the observer options.
+    observer.observe(target, {
+        attributes:    true,
+        childList:     true,
+        characterData: true
+    });
+
+    function addChatBotMessage(textMsg) {
+        let imgsrc = document.querySelector(".rw-header-and-loading img.rw-avatar").src;
+        //let html = '<div class="rw-message rw-typing-indication rw-with-avatar"><img src="' + imgsrc + '" class="rw-avatar" alt="profile"><div class="rw-response"><div id="wave"><span class="rw-dot"></span><span class="rw-dot"></span><span class="rw-dot"></span></div></div></div>';
+        let html = '<div class="rw-group-message rw-from-response"><div class="rw-message rw-with-avatar"><img src="' + imgsrc + '" class="rw-avatar" alt="profile"><div class="rw-response"><div class="rw-message-text"><div class="rw-markdown"><p>' + textMsg + ' </p></div></div></div></div></div>'
+        document.getElementById("rw-messages").appendChild(htmlToElement(html));
+        addToLocalStorageObject("chat_session", "conversation", textMsg);
+    }
+
+    /**
+     * @param {String} html representing a single element
+     * @return {Element}
+     */
+    function htmlToElement(html) {
+        var template = document.createElement('template');
+        html = html.trim(); // Never return a text node of whitespace as the result
+        template.innerHTML = html;
+        return template.content.firstChild;
+    }
+
+    {% endcomment %}
 
     function botMessageEvent(e) {
         console.log('the bot said something: ' + e.text);
@@ -214,7 +262,7 @@
                 case "intent_filter":
                     saveBotAction(e.text, existingStorage["session_id"]);
                     if ('{{ selected_item }}') {
-                        var filterChecked;
+                        let filterChecked;
 
                         if (document.getElementById("or_label").classList.contains("active")) {
                             filterChecked = document.getElementById(messageList[1] + "OR").checked;
@@ -236,7 +284,7 @@
                 case "intent_filter_all":
                     saveBotAction(e.text, existingStorage["session_id"]);
                     if ('{{ selected_item }}') {
-                        var filterAllChecked;
+                        let filterAllChecked;
 
                         if (document.getElementById("or_label").classList.contains("active")) {
                             filterAllChecked = document.getElementById("highlight-OR-" + messageList[1]).checked;
@@ -250,6 +298,17 @@
                         } else {
                             e.text =  messageList[2];
                         }
+                    } else {
+                        e.text =  "Open a document first, in order to perform this action";
+                        // selectedDataError(existingStorage);
+                    }
+                    break;
+                case "intent_longest_thread":
+                    saveBotAction(e.text, existingStorage["session_id"]);
+                    if ('{{ selected_item }}') {
+                        e.text = messageList[1];
+                        const event = new Event('longest_thread');
+                        document.body.dispatchEvent(event);
                     } else {
                         e.text =  "Open a document first, in order to perform this action";
                         // selectedDataError(existingStorage);
@@ -366,7 +425,7 @@
     function addToLocalStorageObject(name, key, value) {
 
         // Get the existing data
-        var existing = localStorage.getItem(name);
+        let existing = localStorage.getItem(name);
 
         // If no existing data, create an array
         // Otherwise, convert the localStorage string to an array
@@ -476,9 +535,9 @@
                 profileAvatar:getProfileAvatar(),
                 showFullScreenButton: false,
                 customMessageDelay: (message) => {
-                    let delay = message.length * 10;
-                    if (delay > 2 * 1000) delay = 2 * 1000;
-                    if (delay < 300) delay = 300;
+                    let delay = message.length * 30;
+                    if (delay > 2 * 1000) delay = 3 * 1000;
+                    if (delay < 400) delay = 1000;
                     return delay;
                 },
                 onSocketEvent: {

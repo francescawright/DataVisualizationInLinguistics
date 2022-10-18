@@ -649,3 +649,24 @@ nlu:
     - Show me nodes with all features
     - Highlight nodes with all features
     - Show nodes with all features
+
+# complex intents -
+# related to depth
+- intent: longest_thread
+  examples: |
+    - Show me the longest thread
+    - I want to see the longest thread
+    - Which thread is the longest
+    - Can you show me the longest thread
+    - Which thread is the deepest
+    - Can you show me the deepest thread
+    - Show me the deepest thread
+    - I want to see deepest thread
+    - I would like to see deepest thread
+    - I would like to see the longest thread
+    - Display the longest thread
+    - Display the deepest thread
+    - Show the longest thread
+    - Display the longest thread
+    - deepest thread
+    - longest thread

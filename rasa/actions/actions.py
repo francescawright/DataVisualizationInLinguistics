@@ -381,3 +381,17 @@ class ActionRefusedNickname(Action):
 
         dispatcher.utter_message(text="All right, anyway, remember you can tell me at any time")
         return [SlotSet("first_login", "False")]
+
+class ActionGenerateResponseMessage(Action):
+
+    def name(self) -> Text:
+        return "action_generate_response_message"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        # Save in the database that the user has made his first chat connection
+
+        dispatcher.utter_message(text=tracker.latest_message['entities'][0]['value'])
+        return []

@@ -104,6 +104,11 @@ rules:
   - intent: change_layout_treeMap
   - action: utter_change_layout_treeMap
 
+- rule: Displays in the chat the message indicated by the User (client side)
+  steps:
+  - intent: generate_response_message
+  - action: action_generate_response_message
+
 # OR / AND highlighting
 - rule: User wants to change the highlighting option to AND
   steps:
@@ -219,3 +224,10 @@ rules:
   steps:
   - intent: features_all
   - action: utter_features_all
+
+# complex intent stories
+# highlight (for now) longest thread, largest thread, widest thread
+- rule: User wants to see the longest thread
+  steps:
+    - intent: longest_thread
+    - action: utter_longest_thread

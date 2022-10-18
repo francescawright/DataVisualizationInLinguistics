@@ -1171,9 +1171,9 @@
     });
 
     jQuery("#and_button").click(function () {
-        $(this).attr("checked", true);
+        $(this).prop("checked", true);
         document.getElementById("and_label").className = "btn btn-secondary active";
-        $('#or_button').attr("checked", false);
+        $('#or_button').prop("checked", false);
         document.getElementById("or_label").className = "btn btn-secondary";
 
         document.getElementById("highlight_checks_AND").style = "display: block;";
@@ -1182,9 +1182,9 @@
     });
 
     jQuery("#or_button").click(function () {
-        $('#and_button').attr("checked", false);
+        $('#and_button').prop("checked", false);
         document.getElementById("and_label").className = "btn btn-secondary";
-        $(this).attr("checked", true);
+        $(this).prop("checked", true);
         document.getElementById("or_label").className = "btn btn-secondary active";
         document.getElementById("highlight_checks_AND").style = "display: none;";
         document.getElementById("highlight_checks_OR").style = "display: block;";

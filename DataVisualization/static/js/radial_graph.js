@@ -1522,7 +1522,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         for (let i = 0; i < targets.length; i++) {
             if (cbShowTargets[i] > -1) {
-                nodeEnter.append("image")
+                nodeEnter.filter(function (d) {
+                    if (d.parent === undefined) {
+                        return false;
+                    } else {
+                        listOpacity = [d.target_group, d.target_person, d.stereotype];
+                        return listOpacity[i];
+                    }
+                }).append("image")
                     .attr('class', targets[i].class)
                     .attr('id', targets[i].id)
                     .attr("x", targets[i].x)
@@ -1530,11 +1537,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr("height", 40)
                     .attr("width", 40)
                     .attr("href", pathTargets + localPath + targets[i].fileName)
-                    .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
-                        listOpacity = [d.target_group, d.target_person, d.stereotype];
-                        return listOpacity[i];
-                    });
             }
         }
     }
@@ -1771,7 +1773,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         for (var i = 0; i < 8; i++) {
             if (cbFeatureEnabled[i] > -1) {
-                nodeEnter.append("circle")
+                nodeEnter.filter(function (d) {
+                    if (d.parent === undefined) {
+                        return false;
+                    } else {
+                        listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
+                        return listOpacity[i];
+                    }
+                }).append("circle")
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
                     .attr("r", dotRadius)
@@ -1781,11 +1790,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr("fill", colorFeature[i])
                     .style("stroke", "black")
                     .style("stroke-width", "1.5px")
-                    .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
-                        listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
-                        return listOpacity[i];
-                    });
             }
         }
 
@@ -1797,7 +1801,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         removeToxicities(nodeEnter); //Remove all the pngs for toxicity
 
         //Add the gray cheese
-        nodeEnter.append("image")
+        nodeEnter.filter(function (d) {
+                    return d.parent !== undefined;
+                }).append("image")
             .attr('class', objFeatGray.class)
             .attr('id', objFeatGray.id)
             .attr("x", function (d) {
@@ -1814,7 +1820,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
             .attr("href", pathFeatures + localPath + objFeatGray.fileName)
             .attr("opacity", function (d) {
-                if (d.parent === undefined) return 0;
                 return 0.5;
             });
 
@@ -1827,7 +1832,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         for (var i = 0; i < features.length; i++) {
             if (cbFeatureEnabled[i] > -1) {
-                nodeEnter.append("image")
+                nodeEnter.filter(function (d) {
+                    if (d.parent === undefined) {
+                        return false;
+                    } else {
+                        listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
+                        return listOpacity[i];
+                    }
+                }).append("image")
                     .attr('class', features[i].class)
                     .attr('id', features[i].id)
                     .attr("x", function (d) {
@@ -1843,11 +1855,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         return sizeImage(d.radius);
                     })
                     .attr("href", pathFeatures + localPath + features[i].fileName)
-                    .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
-                        listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
-                        return listOpacity[i];
-                    });
             }
         }
     }
@@ -1992,7 +1999,17 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         for (var i = 0; i < allObjectsInNode.length; i++) {
             if (cbShowTargets[i] > -1) { //If the checkbox is checked, display it if it has the property
-                nodeEnter.append("image")
+                nodeEnter.filter(function (d) {
+                    if (d.parent === undefined) {
+                        return false;
+                    } else {
+                        listOpacity = [1,
+                            d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
+                            d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
+                            d.target_group, d.target_person, d.stereotype];
+                        return listOpacity[i];
+                    }
+                }).append("image")
                     .attr('class', allObjectsInNode[i].class)
                     .attr('id', allObjectsInNode[i].id)
                     .attr("x", function (d) {
@@ -2010,16 +2027,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .style("stroke", "black")
                     .style("stroke-width", "1.5px")
                     .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
-                    .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
-
-                        listOpacity = [1,
-                            d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
-                            d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
-                            d.target_group, d.target_person, d.stereotype];
-
-                        return listOpacity[i];
-                    });
             }
         }
     }
@@ -2919,8 +2926,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
             .on('click', function (d) {
                 click(d);
-                if (document.querySelector("#tree-container div.my-statistic").style.visibility === "visible") {
-                    statisticBackground.html(writeStatisticText());
+                if (!d3.event.defaultPrevented){
+                    if (document.querySelector("#tree-container div.my-statistic").style.visibility === "visible") {
+                        statisticBackground.html(writeStatisticText());
+                    }
                 }
             })
             .on('mouseover', function (d) {
