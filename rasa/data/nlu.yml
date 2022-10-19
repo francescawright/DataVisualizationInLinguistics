@@ -670,3 +670,23 @@ nlu:
     - Display the longest thread
     - deepest thread
     - longest thread
+
+# related to the wideness
+- intent: widest_level
+  examples: |
+    - Show me the widest level
+    - I want to see the widest level
+    - Which level is the widest?
+    - Can you show me the widest level?
+    - I would like to see the widest level
+    - Display the widest level
+    - Show the widest level
+    - Show me the widest depth
+    - I want to see the widest depth
+    - Which depth is the widest?
+    - Can you show me the widest depth?
+    - I would like to see the widest depth
+    - Display the widest depth
+    - Show the widest depth
+    - widest level
+    - widest depth

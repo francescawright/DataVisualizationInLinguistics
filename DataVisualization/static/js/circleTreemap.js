@@ -61,6 +61,9 @@ console.log('[User]', user.split('/')[2], '| [interaction]', 'TreeMap_layout_loa
 var enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
 treeJSON = d3.json(dataset, function (error, root) {
 
+    // Used to obtain the nodes belonging to the deepest thread
+    var deepestNodesPath;
+
         /*SECTION checkboxes*/
     //Check the values of the checkboxes and do something
     var checkbox = document.querySelector("input[name=cbTargets]");
@@ -446,6 +449,19 @@ function highlightLongestThread(node) {
     }).style("opacity", maxOpacityValue);
 }
 
+function highlightWidestLevels(node, levelsIndexes) {
+
+    node.style("opacity", maxOpacityValue);
+
+    node.filter(function (d) {
+        return (!levelsIndexes.includes(d.depth));
+    }).style("stroke", "black").style("color", "black").style("opacity", minOpacityValue);
+
+    node.filter(function (d) {
+        return d.depth === 0;
+    }).style("opacity", maxOpacityValue);
+}
+
     try {
         $(document).ready(function () {
             checkboxAND.addEventListener("change", function () {
@@ -563,20 +579,7 @@ function highlightLongestThread(node) {
     highlightNodesByPropertyOR(node, enabledHighlight);
     highlightNodesByPropertyAND(node, enabledHighlight);
 
-    /**
-     * Sets the array of nodes belonging to the deepest threads in the global variable
-     * @returns {number} number of threads with maximum depth and value of maximum depth
-     */
-    $(document.body).off("longest_thread");
-    $(document.body).on("longest_thread", function () {
-        let deepestNodes = getDeepestNodes(root);
-
-        var textMsg;
-        if (deepestNodes.length > 1) {
-            textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
-        } else {
-            textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
-        }
+    function injectIntentConversation(textMsg){
         // Get the existing localStorage data
         var existingStorage = localStorage.getItem("chat_session");
         // If no existing data, create an array
@@ -592,10 +595,47 @@ function highlightLongestThread(node) {
             "response_message": textMsg
         }
         }));
+    }
+
+   /**
+     * Gets the array of nodes belonging to the deepest threads, highlights them,
+     * updating the network statistics, and displays the result in the chat
+     */
+    $(document.body).off("longest_thread");
+    $(document.body).on("longest_thread", function () {
+        let deepestNodes = getDeepestNodes(root);
+
+        var textMsg;
+        if (deepestNodes.length > 1) {
+            textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
+        } else {
+            textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
+        }
+
+        injectIntentConversation(textMsg);
 
         deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
         // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
         highlightLongestThread(node);
+    });
+
+    /**
+     * Obtains the indices of the widest levels of the graph, highlights the nodes that belong to those levels,
+     * updates the network statistics, and displays the result in the chat
+     */
+    $(document.body).off("widest_level");
+    $(document.body).on("widest_level", function () {
+        let widestLevels = getWidestLevels(root, getTreeHeight(root));
+        var textMsg;
+        if (widestLevels[0].length > 1) {
+            textMsg = "There are " + widestLevels[0].length + " levels &#91;" + widestLevels[0] + "&#93; with a maximum width of " + widestLevels[1];
+        } else {
+            textMsg = "The widest level is level " + widestLevels[0][0] + " which has a width of " + widestLevels[1];
+        }
+
+        injectIntentConversation(textMsg);
+
+        highlightWidestLevels(node, widestLevels[0]);
     });
 
     //Listeners
@@ -792,6 +832,27 @@ function highlightLongestThread(node) {
 ********************************/
 
     /**
+     * Function that returns the height of a tree given its root node
+     * @param node tree root
+     * @returns {number} number of levels in subtree
+     */
+    function getTreeHeight(node) {
+        if (!node.children) {
+            return 0;
+        }
+        let maxHeight = 0;
+        if (node.children) {
+            node.children.forEach(function (d) {
+                let currentHeight = getTreeHeight(d)+1;
+                if (currentHeight > maxHeight) {
+                    maxHeight = currentHeight;
+                }
+            });
+        }
+        return maxHeight;
+    }
+
+    /**
      * Finding the deepest nodes in a hierarchy
      * @param node tree root
      * @returns {Array} array of nodes with greater depth
@@ -825,6 +886,42 @@ function highlightLongestThread(node) {
         }
         nodesPath.push(root);
         return nodesPath;
+    }
+
+    /**
+     * auxiliar function that returns the number of nodes in a given level
+     * @param node tree root
+     * @param current current level in tree
+     * @param level desired level to scan
+     * @param nodeList list of nodes at desired level
+     */
+    function getNodesInLevel(node, current, level, nodeList) {
+        nodeList[current] += 1;
+        if (current < level && node.children) {
+            node.children.forEach(function (d) {
+               getNodesInLevel(d, current+1, level, nodeList);
+            });
+        }
+    }
+
+    /**
+     * function that returns the widest levels of a subtree and its width value, given its root node
+     * @param node tree root
+     * @param height depth of tree
+     * @returns {Array} graph level indexes with the greatest width
+     */
+    function getWidestLevels(node, height) {
+        var nodeList = new Array(height+1).fill(0);
+        if (height === 0) { return [[0],1]; }
+        getNodesInLevel(node, 0, height, nodeList);
+        const max = Math.max(...nodeList);
+        const indexes = [];
+        for (let index = 0; index < nodeList.length; index++) {
+          if (nodeList[index] === max) {
+            indexes.push(index);
+          }
+        }
+        return [indexes,max];
     }
 });
 

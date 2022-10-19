@@ -303,11 +303,11 @@
                         // selectedDataError(existingStorage);
                     }
                     break;
-                case "intent_longest_thread":
+                case "intent_highlight_graph":
                     saveBotAction(e.text, existingStorage["session_id"]);
                     if ('{{ selected_item }}') {
-                        e.text = messageList[1];
-                        $(document.body).trigger('longest_thread');
+                        e.text = messageList[2];
+                        $(document.body).trigger(messageList[1]);
                     } else {
                         e.text =  "Open a document first, in order to perform this action";
                         // selectedDataError(existingStorage);

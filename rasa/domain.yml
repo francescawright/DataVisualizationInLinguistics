@@ -73,7 +73,9 @@ intents:
   - aggressiveness
   - target_all
   - features_all
+  # Complex intents
   - longest_thread
+  - widest_level
 
 actions:
   - action_logout
@@ -413,8 +415,12 @@ responses:
 
 # longest, largest, widest, most toxic
   utter_longest_thread:
-  - text: "intent_longest_thread,Here you have it"
-  - text: "intent_longest_thread,I've highlighted it in your graph"
+  - text: "intent_highlight_graph,longest_thread,Here you have it"
+  - text: "intent_highlight_graph,longest_thread,I've highlighted it in your graph"
+
+  utter_widest_level:
+  - text: "intent_highlight_graph,widest_level,Here you have it"
+  - text: "intent_highlight_graph,widest_level,I've highlighted it in your graph"
 
 session_config:
   session_expiration_time: 60

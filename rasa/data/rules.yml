@@ -231,3 +231,8 @@ rules:
   steps:
     - intent: longest_thread
     - action: utter_longest_thread
+
+- rule: User wants to see the widest level
+  steps:
+    - intent: widest_level
+    - action: utter_widest_level

@@ -2292,6 +2292,26 @@ treeJSON = d3.json(dataset, function (error, json) {
         });
     }
 
+    function highlightWidestLevels(node, link, levelsIndexes) {
+        nodes.forEach(function (d) {
+            d.highlighted = 0;
+        });
+        node.style("opacity", opacityValue);
+
+        node.filter(function (d) {
+            if (levelsIndexes.includes(d.depth)) d.highlighted = 1;
+            //console.log(d);
+            return (levelsIndexes.includes(d.depth));
+        }).style("opacity", 1);
+
+        //Highlight only the edges whose both endpoints are highlighted
+        link.style("opacity", function (d) {
+            return d.source.highlighted && d.target.highlighted ?
+                1 :
+                opacityValue;
+        });
+    }
+
     /*END section */
 
     /**
@@ -2677,20 +2697,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         console.error("Error attaching buttons... trying again...");
     }
 
-    /**
-     * Sets the array of nodes belonging to the deepest threads in the global variable
-     * @returns {number} number of threads with maximum depth and value of maximum depth
-     */
-    $(document.body).off("longest_thread");
-    $(document.body).on("longest_thread", function () {
-        let deepestNodes = getDeepestNodes(root);
-
-        var textMsg;
-        if (deepestNodes.length > 1) {
-            textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
-        } else {
-            textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
-        }
+    function injectIntentConversation(textMsg){
         // Get the existing localStorage data
         var existingStorage = localStorage.getItem("chat_session");
         // If no existing data, create an array
@@ -2706,10 +2713,55 @@ treeJSON = d3.json(dataset, function (error, json) {
             "response_message": textMsg
         }
         }));
+    }
+
+    /**
+     * Gets the array of nodes belonging to the deepest threads, highlights them,
+     * updating the network statistics, and displays the result in the chat
+     */
+    $(document.body).off("longest_thread");
+    $(document.body).on("longest_thread", function () {
+        let deepestNodes = getDeepestNodes(root);
+
+        var textMsg;
+        if (deepestNodes.length > 1) {
+            textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
+        } else {
+            textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
+        }
+
+        injectIntentConversation(textMsg);
 
         deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
         // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
         highlightLongestThread(node, link);
+
+        if (static_values_checked) {
+            statisticBackground.html(writeStatisticText());
+        }
+    });
+
+    /**
+     * Obtains the indices of the widest levels of the graph, highlights the nodes that belong to those levels,
+     * updates the network statistics, and displays the result in the chat
+     */
+    $(document.body).off("widest_level");
+    $(document.body).on("widest_level", function () {
+        let widestLevels = getWidestLevels(root, getTreeHeight(root));
+        var textMsg;
+        if (widestLevels[0].length > 1) {
+            textMsg = "There are " + widestLevels[0].length + " levels &#91;" + widestLevels[0] + "&#93; with a maximum width of " + widestLevels[1];
+        } else {
+            textMsg = "The widest level is level " + widestLevels[0][0] + " which has a width of " + widestLevels[1];
+        }
+
+        injectIntentConversation(textMsg);
+
+        highlightWidestLevels(node, link, widestLevels[0]);
+
+        if (static_values_checked) {
+            statisticBackground.html(writeStatisticText());
+        }
     });
 
     /*
@@ -3230,9 +3282,6 @@ treeJSON = d3.json(dataset, function (error, json) {
     initialX = initialSight.initialX;
     initialY = initialSight.initialY;
 
-    zoomListener.scale(initialZoom);
-    zoomListener.translate([initialX, initialY]);
-
     /**
      * Wrap call to compute statistics and to write them in a hover text
      * */
@@ -3324,6 +3373,27 @@ treeJSON = d3.json(dataset, function (error, json) {
 ********************************/
 
     /**
+     * Function that returns the height of a tree given its root node
+     * @param node tree root
+     * @returns {number} number of levels in subtree
+     */
+    function getTreeHeight(node) {
+        if (!node.children) {
+            return 0;
+        }
+        let maxHeight = 0;
+        if (node.children) {
+            node.children.forEach(function (d) {
+                let currentHeight = getTreeHeight(d)+1;
+                if (currentHeight > maxHeight) {
+                    maxHeight = currentHeight;
+                }
+            });
+        }
+        return maxHeight;
+    }
+
+    /**
      * Finding the deepest nodes in a hierarchy
      * @param node tree root
      * @returns {Array} array of nodes with greater depth
@@ -3357,5 +3427,41 @@ treeJSON = d3.json(dataset, function (error, json) {
         }
         nodesPath.push(root);
         return nodesPath;
+    }
+
+    /**
+     * auxiliar function that returns the number of nodes in a given level
+     * @param node tree root
+     * @param current current level in tree
+     * @param level desired level to scan
+     * @param nodeList list of nodes at desired level
+     */
+    function getNodesInLevel(node, current, level, nodeList) {
+        nodeList[current] += 1;
+        if (current < level && node.children) {
+            node.children.forEach(function (d) {
+               getNodesInLevel(d, current+1, level, nodeList);
+            });
+        }
+    }
+
+    /**
+     * function that returns the widest levels of a subtree and its width value, given its root node
+     * @param node tree root
+     * @param height depth of tree
+     * @returns {Array} graph level indexes with the greatest width
+     */
+    function getWidestLevels(node, height) {
+        var nodeList = new Array(height+1).fill(0);
+        if (height === 0) { return [[0],1]; }
+        getNodesInLevel(node, 0, height, nodeList);
+        const max = Math.max(...nodeList);
+        const indexes = [];
+        for (let index = 0; index < nodeList.length; index++) {
+          if (nodeList[index] === max) {
+            indexes.push(index);
+          }
+        }
+        return [indexes,max];
     }
 });
