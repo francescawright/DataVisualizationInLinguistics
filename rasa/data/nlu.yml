@@ -311,6 +311,10 @@ nlu:
   examples: |
     - file
 
+- regex: document_requested
+  examples: |
+    - [a-zA-Z0-9_-]{1,255}
+
 - intent: select_document
   examples: |
     - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
@@ -329,21 +333,38 @@ nlu:
   examples: |
     - name
 
+- regex: nickname
+  examples: |
+    - [a-zA-Z]{1,100}
+
 - intent: say_name
   examples: |
-    - My [name]{"entity": "object_requested", "value": "nickname"} is [Eloi]{"entity": "nickname_requested"}
+    - My [name]{"entity": "object_requested", "value": "nickname"} is [Eloi]{"entity": "nickname"}
     - I want to tell you my [name]{"entity": "object_requested", "value": "nickname"}
     - I want to give you my [nickname]{"entity": "object_requested", "value": "nickname"}
     - I want to give you [name]{"entity": "object_requested", "value": "nickname"}
-    - You can call me [Ecem]{"entity": "nickname_requested"}
-    - You can refer to me as [edu]{"entity": "nickname_requested"}
-    - Call me [Anna]{"entity": "nickname_requested"}
-    - My name is [Inma]{"entity": "nickname_requested"}
+    - You can call me [Ecem]{"entity": "nickname"}
+    - You can refer to me as [edu]{"entity": "nickname"}
+    - Call me [Anna]{"entity": "nickname"}
+    - My name is [Inma]{"entity": "nickname"}
     - Say [name]{"entity": "object_requested", "value": "nickname"}
     - Give [nickname]{"entity": "object_requested", "value": "nickname"}
-    - [Alex]{"entity": "nickname_requested"}
-    - [felix]{"entity": "nickname_requested"}
-    - [raul22]{"entity": "nickname_requested"}
+    - [Alex]{"entity": "nickname"}
+    - [felix]{"entity": "nickname"}
+    - [raul22]{"entity": "nickname"}
+    - Change my [name]{"entity": "object_requested", "value": "nickname"} to [edu]{"entity": "nickname"}
+    - Change my [name]{"entity": "object_requested", "value": "nickname"}
+
+- intent: forget_name
+  examples: |
+    - Forget my name
+    - Forget name
+    - Do not keep my name
+    - Don't keep my name
+    - Do not save my name
+    - Don't save my name
+    - Remove my name
+    - Delete my name
 
 # Ask bot to change to OR / AND
 - intent: switch_or

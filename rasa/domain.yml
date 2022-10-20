@@ -3,16 +3,18 @@ version: "2.0"
 intents:
   - greet
   - goodbye
-  - affirm
-  - deny
+  - affirm:
+      use_entities: [] # ignore all entities
+  - deny:
+      use_entities: [] # ignore all entities
   - mood_great
   - mood_unhappy
   - bot_challenge
   - start_intent
-  - new_start_intent
   - generate_response_message:
       use_entities:
         - response_message
+  - set_slots
   - logout:
       use_entities:
         - action_requested
@@ -49,7 +51,8 @@ intents:
   - say_name:
       use_entities:
         - object_requested
-        - nickname_requested
+        - nickname
+  - forget_name
   # Filters
   - switch_or
   - switch_and
@@ -78,6 +81,7 @@ intents:
   - widest_level
 
 actions:
+  - action_greet
   - action_logout
   - action_check_session_login
   - action_check_session_signup
@@ -88,15 +92,16 @@ actions:
   - action_store_session_slots
   - action_open_document
   - validate_signup_form
-  - action_check_nickname
   - validate_nickname_form
   - action_remember_nickname
   - action_refused_nickname
   - action_generate_response_message
+  - action_set_slots
+  - action_forget_name
 
 forms:
   nickname_form:
-    nickname_requested:
+    nickname:
       - type: from_text
   login_form:
     username:
@@ -125,10 +130,10 @@ entities:
   - object_requested
   - layout_requested
   - document_requested
-  - nickname_requested
   - first_login
   - nickname
   - response_message
+  - greet_again
 
 slots:
   requested_slot:
@@ -160,38 +165,27 @@ slots:
     auto_fill: true
   object_requested:
     type: text
+    influence_conversation: false
     auto_fill: true
   document_requested:
     type: text
-    auto_fill: true
+    influence_conversation: false
   layout_requested:
     type: text
-    auto_fill: true
-  nickname_requested:
-    type: text
+    influence_conversation: false
     auto_fill: true
   first_login:
     type: bool
-    influence_conversation: False
   nickname:
     type: text
-    auto_fill: true
-    influence_conversation: False
+  user_is_logged_in:
+    type: bool
 
 responses:
-  utter_greet:
-  - text: "Hey! Nice to see you here 😄"
-  - text: "Hello! I'm here if you need me 😊"
-  - text: "Hi, how are you? 😄"
-  - text: "Hello there 😄"
 
   utter_offers_help:
   - text: "Need something? 😊"
-  - text: "Can I help you with anything? 😄"
-
-  utter_greet_again:
-  - text: "How else can I help you? 😉"
-  - text: "What else can I do for you? 😉"
+  - text: "Can I help you with anything? 😊"
 
   utter_cheer_up:
   - text: "Here is something to cheer you up:"
@@ -211,14 +205,17 @@ responses:
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
 
-  utter_ask_nickname_form_nickname_requested:
+  utter_ask_nickname_form_nickname:
   - text: "Please tell me what I should call you"
   - text: "What do you want me to call you?"
   - text: "How do you want me to refer to you?"
   - text: "What is your name?"
 
   utter_know_nickname:
-  - text: "May I know your name?"
+  - text: "Please tell me your name so I know what to call you"
+
+  utter_nickname_no_session:
+  - text: "Please log in so I can remember your name"
 
   utter_logout_confirmation:
   - text: "Sure you want to log out?"

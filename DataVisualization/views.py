@@ -12,6 +12,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 from django.core.exceptions import ObjectDoesNotExist, EmptyResultSet
 
 from .models import tbl_Authentication
@@ -54,7 +55,8 @@ def index(request):
     return render(request, 'index.html', context={'documents_uploaded': get_all_documents(), 'user': request.user,
                                                   'storage_clear': storageClear, 'chatbot_error': errorMessage})
 
-def storage_clear_index (request, clear_type):
+
+def storage_clear_index(request, clear_type):
     # textMsg = ''
     # if clear_type == 'logout':
     #     textMsg = "I have successfully logged you out"
@@ -70,10 +72,12 @@ def storage_clear_index (request, clear_type):
     #                           'sender': 'response', 'is_action': False})
     return redirect(reverse('index') + '?storageClear=' + clear_type)
 
+
 def get_all_documents():
     return Document.objects.all()
 
 
+@require_http_methods(["POST"])
 def save_user_chat(request):
     db_logger = logging.getLogger('db')
     db_logger.info(request.POST['chat_msg'],
@@ -82,19 +86,38 @@ def save_user_chat(request):
     return HttpResponse(status=204)
 
 
+@require_http_methods(["POST"])
 def save_bot_chat(request):
     db_logger = logging.getLogger('db')
     db_logger.warning(request.POST['chat_msg'],
                       extra={'user': request.user.username, 'session_id': request.POST['session_id'],
-                          'sender': 'response', 'is_action': request.POST['is_action'] == 'true'})
+                             'sender': 'response', 'is_action': request.POST['is_action'] == 'true'})
     return HttpResponse(status=204)
 
 
+@require_http_methods(["POST"])
 def save_error_chat(request):
     db_logger = logging.getLogger('db')
     db_logger.error(request.POST['chat_msg'],
                     extra={'user': request.user.username, 'session_id': request.POST['session_id'],
                            'sender': 'response', 'is_action': False})
+    return HttpResponse(status=204)
+
+
+@require_http_methods(["POST"])
+def save_nickname(request):
+    user = getattr(request, 'user', None)
+    print(request.POST)
+    user.chatprofile.nickname = request.POST['nickname']
+    user.save()
+    return HttpResponse(status=204)
+
+
+@require_http_methods(["POST"])
+def save_first_login(request):
+    user = getattr(request, 'user', None)
+    user.chatprofile.first_login = request.POST['first_login']
+    user.save()
     return HttpResponse(status=204)
 
 
@@ -597,7 +620,6 @@ def decrypt(token: bytes, key: bytes) -> bytes:
 
 
 def getTemplateByPath(request, errorMessage):
-
     if request.method == 'POST':
         session_id = request.POST['session_id']
     if request.method == 'GET':

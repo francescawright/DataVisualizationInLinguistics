@@ -167,6 +167,12 @@ stories:
 
 - story: User requests to change layout
   steps:
+    - intent: start_intent
+    - action: action_greet
+    - slot_was_set:
+        - first_login: false
+        - nickname: "Anna"
+        - user_is_logged_in: true
     - intent: greet
     - action: utter_offers_help
     - action: action_listen
@@ -178,6 +184,12 @@ stories:
 
 - story: User requests to change layout 2
   steps:
+    - intent: start_intent
+    - action: action_greet
+    - slot_was_set:
+        - first_login: false
+        - nickname: "Eloi"
+        - user_is_logged_in: true
     - intent: greet
     - action: utter_offers_help
     - action: action_listen
@@ -189,6 +201,11 @@ stories:
 
 - story: The user requests to open a specific document
   steps:
+    - intent: start_intent
+    - action: action_greet
+    - slot_was_set:
+        - first_login: false
+        - nickname: "Raúl"
     - intent: greet
     - action: utter_offers_help
     - action: action_listen
@@ -231,96 +248,46 @@ stories:
     - active_loop: null
     - action: action_open_document
 
-- story: The user affirms that he wants to give his nickname the first time he connects to the chat
-  steps:
-    - intent: start_intent
-    - slot_was_set:
-        - first_login: "True"
-        - nickname: ""
-    - action: utter_greet
-    - action: action_check_nickname
-    - action: utter_know_nickname
-    - intent: affirm
-    - action: nickname_form
-    - active_loop: nickname_form
-    - slot_was_set:
-        - requested_slot: nickname_requested
-    - slot_was_set:
-        - nickname_requested: test
-    - slot_was_set:
-        - requested_slot: null
-    - active_loop: null
-    - action: action_remember_nickname
-    - action: action_listen
-
 - story: User refuses to give his nickname the first time he connects to the chat
   steps:
-    - intent: start_intent
-    - slot_was_set:
-        - first_login: "True"
-        - nickname: ""
-    - action: utter_greet
-    - action: action_check_nickname
-    - action: utter_know_nickname
     - intent: deny
     - action: action_refused_nickname
 
-- story: User provides his nickname directly the first time he connects to the chat
+- story: User provides his nickname the first time he connects to the chat
   steps:
-    - intent: start_intent
-    - slot_was_set:
-        - first_login: "True"
-        - nickname: ""
-    - action: utter_greet
-    - action: action_check_nickname
-    - action: utter_know_nickname
     - intent: say_name
       entities:
-        - nickname_requested: "example"
+        - nickname: "example"
     - slot_was_set:
-        - nickname_requested: "example"
+        - nickname: "example"
     - action: action_remember_nickname
     - action: action_listen
 
-- story: User provides his nickname directly the first time he connects to the chat. Path 2
+- story: User provides his nickname the first time he connects to the chat. Path 2
   steps:
-    - intent: start_intent
-    - slot_was_set:
-        - first_login: "True"
-        - nickname: ""
-    - action: utter_greet
-    - action: action_check_nickname
-    - action: utter_know_nickname
     - intent: say_name
       entities:
-        - object_requested: "nickname"
-        - nickname_requested: "example"
+        - object_requested: nickname
+        - nickname: "example"
     - slot_was_set:
-        - object_requested: "nickname"
-        - nickname_requested: "example"
+        - object_requested: nickname
+        - nickname: "example"
     - action: action_remember_nickname
     - action: action_listen
 
 - story: The user confirms that he wants to give his nickname the first time he connects to the chat, without giving his nickname yet.
   steps:
-    - intent: start_intent
-    - slot_was_set:
-        - first_login: "True"
-        - nickname: ""
-    - action: utter_greet
-    - action: action_check_nickname
-    - action: utter_know_nickname
     - intent: say_name
       entities:
-        - object_requested: "nickname"
+        - object_requested: nickname
     - slot_was_set:
-        - object_requested: "nickname"
+        - object_requested: nickname
     - action: nickname_form
     - active_loop: nickname_form
     - slot_was_set:
-        - requested_slot: nickname_requested
+        - requested_slot: nickname
     - slot_was_set:
-        - nickname_requested: test
+        - nickname: "test"
     - slot_was_set:
         - requested_slot: null
     - active_loop: null

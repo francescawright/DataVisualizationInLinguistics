@@ -16,22 +16,69 @@ rules:
 - rule: First bot interaction with the user
   steps:
   - intent: start_intent
-  - action: utter_greet
-  - action: action_check_nickname
+  - action: action_greet
   wait_for_user_input: false
-
-# Check if it is the user's first connection. Ask for his name if it is.
-- rule: New bot interaction with user after previous messages
-  steps:
-  - intent: new_start_intent
-  - action: utter_greet_again
-  - action: action_check_nickname
 
 - rule: Bot offers assistance to the user after being greeted
   steps:
   - intent: greet
   - action: utter_offers_help
   - action: action_listen
+
+- rule: User wants to change his nickname
+  condition:
+  - slot_was_set:
+    - user_is_logged_in: true
+  steps:
+  - intent: say_name
+  - action: nickname_form
+  - active_loop: nickname_form
+
+- rule: User refuses to give his nickname
+  condition:
+  - slot_was_set:
+    - first_login: true
+    - user_is_logged_in: true
+  steps:
+  - action: utter_know_nickname
+  - intent: deny
+  - action: action_refused_nickname
+
+- rule: User wants to change his nickname
+  condition:
+  - slot_was_set:
+    - first_login: false
+    - user_is_logged_in: true
+  steps:
+  - intent: say_name
+  - action: nickname_form
+  - active_loop: nickname_form
+
+- rule: User tries to say his name without being logged in
+  condition:
+  - slot_was_set:
+    - user_is_logged_in: false
+  steps:
+  - intent: say_name
+  - action: utter_nickname_no_session
+
+- rule: Submit form nickname
+  condition:
+  # Condition that form is active.
+  - active_loop: nickname_form
+  steps:
+  # Form is deactivated
+  - action: nickname_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  # The actions we want to run when the form is submitted.
+  - action: action_remember_nickname
+
+- rule: Remove the user's nickname from the database on request
+  steps:
+  - intent: forget_name
+  - action: action_forget_name
 
 - rule: Ask user for confirmation to logout
   steps:
@@ -108,6 +155,11 @@ rules:
   steps:
   - intent: generate_response_message
   - action: action_generate_response_message
+
+- rule: Automatically fills slots with values passed as entities
+  steps:
+  - intent: set_slots
+  - action: action_set_slots
 
 # OR / AND highlighting
 - rule: User wants to change the highlighting option to AND
