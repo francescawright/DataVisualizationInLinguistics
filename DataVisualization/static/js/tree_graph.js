@@ -169,7 +169,7 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
 
     return {
         initialZoom: scale,
-        initialY: newX,
+        initialY: newX + root.radius * scale,
         initialX: newY
     }
 }
@@ -1009,21 +1009,21 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var currentY = initialY;
     var currentScale = initialZoom;
 
-
-    /**
+    /*
+    /!**
      * Define zoom and translation
-     * */
+     * *!/
     function zoom() {
-        /* The initial d3 events for scale and translation have initial values 1 and [x,y] = [50, 200] respectively
+        /!* The initial d3 events for scale and translation have initial values 1 and [x,y] = [50, 200] respectively
          * Therefore we need to take this into account and sum the difference to our initial scale and position attributes
          * defined in zoomToFit()
-         * */
+         * *!/
 
-        /*
+        /!*
          * NOTE: Add to the initial position values (initialX and initialY) the movement registered by d3.
          * d3.event.translate returns an array [x,y] with starting values [50, 200]
          * The values X and Y are swapped in zoomToFit() and we need to take that into account to give the new coordinates
-         * */
+         * *!/
         currentZoomScale = d3.event.scale
 
         var movement = d3.event.translate;
@@ -1032,12 +1032,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         currentX = newX;
         currentY = newY;
 
-        /*
+        /!*
          * NOTE:
          * If the scale is negative, we will see the graph upside-down and left-right swapped
          * If the scale is 0, we will not see the graph
          * Define the scale to be at least 0.1 and set it to the initialZoom + the difference of the listener and the d3.event initial scale
-         * */
+         * *!/
 
 
         var newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1)
@@ -1048,6 +1048,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         );
         drawZoomValue(newScale);
         currentScale = newScale;
+    }
+    */
+
+    function zoom() {
+        var zoom = d3.event;
+        svgGroup.attr("transform", "translate(" + zoom.translate + ")scale(" + zoom.scale + ")");
+        drawZoomValue(zoom.scale);
+        currentScale = zoom.scale;
     }
 
     // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
@@ -4147,11 +4155,20 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     update(root, true, false);
     centerNode(root);
 
+    let element = document.getElementById('tree-container');
+    let computedStyle = getComputedStyle(element);
+    let elementWidth = element.clientWidth;   // width with padding
+    elementWidth -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
+    canvasWidth = elementWidth;
+
     var box = computeDimensions(nodes);
     var initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root, canvasHeight, canvasWidth);
     initialZoom = initialSight.initialZoom;
     initialX = initialSight.initialX;
     initialY = initialSight.initialY;
+
+    zoomListener.scale(initialZoom);
+    zoomListener.translate([initialY, initialX]);
 
     //I compute the values for the statistic data showing in the background
     var listStatistics = getStatisticValues(root);

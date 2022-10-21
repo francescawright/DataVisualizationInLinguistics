@@ -2,7 +2,7 @@
 var codeReady = false;
 
 //Graph
-const canvasHeight = 1000, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
+var canvasHeight = 1000, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
 const canvasFactor = 1;
 let link, node;
 
@@ -180,8 +180,8 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
 
     return {
         initialZoom: scale,
-        initialY: newY,
-        initialX: newX
+        initialY: newX + root.radius * scale,
+        initialX: newY
     }
 }
 
@@ -598,13 +598,6 @@ treeJSON = d3.json(dataset, function (error, json) {
     var radiusFactor = 2; // The factor by which we multiply the radius of a node when collapsed with more than 2 children
     var opacityValue = 0.1; //Opacity when a node or link is not highlighted
 
-
-    /*    // Define the zoom function for the zoomable tree
-        function zoom() {
-            console.log("translate: ", d3.event.translate, "scale: ", d3.event.scale);
-            svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-        }*/
-
     var currentX = initialX;
     var currentY = initialY;
     var currentScale = initialZoom;
@@ -626,7 +619,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         * If the scale is 0, we will not see the graph
         * Define the scale to be at least 0.1 and set it to the initialZoom + the difference of the listener and the d3.event initial scale
         * */
-        let newScale = Math.max(initialZoomScale + (d3.event.scale - 1), 0.1); //Avoid the graph to be seen mirrored.
+        let newScale = Math.max(initialZoom + (d3.event.scale - 1), 0.1); //Avoid the graph to be seen mirrored.
         //console.log("New scale is: ", initialZoomScale + (d3.event.scale - 1))
         /*
         * NOTE: Add to the initial position values (initialX and initialY) the movement registered by d3.
@@ -634,9 +627,9 @@ treeJSON = d3.json(dataset, function (error, json) {
         * The values X and Y are swapped in zoomToFit() and we need to take that into account to give the new coordinates
         * */
         let movement = d3.event.translate;
-        let newX = initialX + (movement[1] - 200);
-        let newY = initialY + (movement[0] - 50);
-        svgGroup.attr("transform", "translate(" + [newY, newX] + ")scale(" + newScale + ")");
+        let newX = initialX + (movement[1]);
+        let newY = initialY + (movement[0]);
+        svg.attr("transform", "translate(" + [newY, newX] + ")scale(" + newScale + ")");
         drawZoomValue(newScale);
         currentScale = newScale;
 
@@ -3287,15 +3280,25 @@ treeJSON = d3.json(dataset, function (error, json) {
 
     force.alpha(1.5); //Restart the timer of the cooling parameter with a high value to reach better initial positioning
 
+    let element = document.getElementById('tree-container');
+    let computedStyle = getComputedStyle(element);
+    let elementWidth = element.clientWidth;   // width with padding
+    elementWidth -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
+    canvasWidth = elementWidth;
+
+
     //console.log("root number of children: ",root.children);
     //Try to center and zoom to fit the first initialization
     let box = computeDimensions(nodes);
-    //console.log("box", box);
-    let initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root);
+
+    let initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root, canvasHeight/2, canvasWidth/2);
 
     initialZoom = initialSight.initialZoom;
     initialX = initialSight.initialX;
     initialY = initialSight.initialY;
+
+    zoomListener.scale(initialZoom);
+    zoomListener.translate([initialY, initialX]);
 
     /**
      * Wrap call to compute statistics and to write them in a hover text

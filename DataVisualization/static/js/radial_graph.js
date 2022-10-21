@@ -30,7 +30,7 @@ var codeReady = false;
 
 //Graph
 let link, node;
-const canvasHeight = 1000, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
+var canvasHeight = 1000, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
 const canvasFactor = 1;
 
 const edgeLength = 24 * 20;
@@ -243,11 +243,13 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
     var newX = canvasWidth / 2.0,
         newY = canvasHeight / 2.0;
 
-    /*    if(canvasWidth/boxWidth < canvasHeight/boxHeight) {
-            newY -= midX * scale;
-            //newX -= midY * scale;
-        }
-        else newX -= midY * scale;*/
+    /*
+    if(canvasWidth/boxWidth < canvasHeight/boxHeight) {
+        newY -= midX * scale;
+        //newX -= midY * scale;
+    }
+    else newX -= midY * scale;
+    */
 
 
     //For nodes wider than tall, we need to displace them to the middle of the graph
@@ -255,12 +257,12 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
 
     d3.select('g').transition()
         .duration(duration)
-        .attr("transform", "translate(" + newX + "," + newY + ")scale(" + initialZoomScale + ")");
+        .attr("transform", "translate(" + (newX + root.radius * scale) + "," + newY + ")scale(" + scale + ")");
 
 
     return {
         initialZoom: scale,
-        initialY: newX,
+        initialY: newX + root.radius * scale,
         initialX: newY
     }
 
@@ -545,7 +547,6 @@ function computeNodeRadius(d, edgeLength = 300) {
     if (d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
     return d.radius;
 }
-
 /**
  * Computes the borders of a box containing our nodes
  * */
@@ -595,6 +596,37 @@ function computeDimensions(nodes) {
     return {
         maxYq1: maxYq1, maxYq2: maxYq2, maxYq3: maxYq3, maxYq4: maxYq4,
         xQ1: xQ1, xQ2: xQ2, xQ3: xQ3, xQ4: xQ4
+    };
+}
+
+/**
+ * Computes the borders of a box containing our nodes
+ * */
+function computeDimensions(nodes) {
+    /* Note our coordinate system:
+     *
+     *                     | X negative
+     *                     |
+     * Y negative <--------|-------> Y positive
+     *                     |
+     *                     | X positive
+     * And note we need to take into account the radius of the node
+     * */
+    var minX = Infinity,
+        minY = Infinity,
+        maxX = -Infinity,
+        maxY = -Infinity;
+    for (const n of nodes) {
+        if ((n.x - n.radius) < minX) minX = n.x - n.radius;
+        if ((n.y - n.radius) < minY) minY = n.y - n.radius;
+        if ((n.x + n.radius) > maxX) maxX = n.x + n.radius;
+        if ((n.y + n.radius) > maxY) maxY = n.y + n.radius;
+    }
+    return {
+        minX: minX,
+        minY: minY,
+        maxX: maxX,
+        maxY: maxY
     };
 }
 
@@ -1377,6 +1409,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         drawZoomValue(newScale);
         currentScale = newScale;
 
+    }
+
+    function zoom() {
+        var zoom = d3.event;
+        svgGroup.attr("transform", "translate(" + zoom.translate + ")scale(" + zoom.scale + ")");
+        drawZoomValue(zoom.scale);
+        currentScale = zoom.scale;
     }
 
     let zoomListener = d3.behavior.zoom().scaleExtent([minZoom, maxZoom]).on("zoom", function () {
@@ -3595,14 +3634,24 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 // Layout the tree initially and center on the root node.
     document.querySelector("#tree-container div.my-statistic").style.visibility = "hidden";
     update(root, true,false);
-//centerNode(root);
+
+    let element = document.getElementById('tree-container');
+    let computedStyle = getComputedStyle(element);
+    let elementWidth = element.clientWidth;   // width with padding
+    elementWidth -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
+    canvasWidth = elementWidth;
+
     var box = computeDimensions(nodes);
-    let initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root);
+    console.log(box)
+    let initialSight = zoomToFitGraph(box.minX-1500, box.minY-1500, box.maxX+1500, box.maxY+1500, root, canvasHeight, canvasWidth);
 
 
     initialZoom = initialSight.initialZoom;
     initialX = initialSight.initialX;
     initialY = initialSight.initialY;
+
+    zoomListener.scale(initialZoom);
+    zoomListener.translate([initialY, initialX]);
 
 //Set initial stroke widths
     link.style("stroke-width", 11); //Enlarge stroke-width on zoom out
