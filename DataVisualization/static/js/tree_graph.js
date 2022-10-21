@@ -3009,12 +3009,20 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             highlightPositiveOR(node, enabledHighlight);
             highlightNegativeOR(node, enabledHighlight);
         }
-        //Highlight only the edges whose both endpoints are highlighted
-        link.style("opacity", function (d) {
-            return d.source.highlighted && d.target.highlighted ?
-                1 :
-                opacityValue;
-        });
+
+        // If any stance checkboxes are checked, highlight the link from which it originates
+        if (enabledHighlight.indexOf("highlight-stance-negative") > -1 ||
+            enabledHighlight.indexOf("highlight-stance-positive") > -1 ||
+            enabledHighlight.indexOf("highlight-stance-neutral") > -1) {
+            link.style("opacity", function (d) {
+                return d.target.highlighted ? 1 : opacityValue;
+            });
+        } else {
+            //Highlight only the edges whose both endpoints are highlighted
+            link.style("opacity", function (d) {
+                return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+            });
+        }
     }
 
     function highlightNodesByPropertyAND(node, link) {
@@ -3030,12 +3038,20 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         highlightPositiveAND(node, enabledHighlight);
         highlightNegativeAND(node, enabledHighlight);
 
-        //Highlight only the edges whose both endpoints are highlighted
-        link.style("opacity", function (d) {
-            return d.source.highlighted && d.target.highlighted ?
-                1 :
-                opacityValue;
-        });
+
+        // If any stance checkboxes are checked, highlight the link from which it originates
+        if (enabledHighlight.indexOf("highlight-stance-negative") > -1 ||
+            enabledHighlight.indexOf("highlight-stance-positive") > -1 ||
+            enabledHighlight.indexOf("highlight-stance-neutral") > -1) {
+            link.style("opacity", function (d) {
+                return d.target.highlighted ? 1 : opacityValue;
+            });
+        } else {
+            //Highlight only the edges whose both endpoints are highlighted
+            link.style("opacity", function (d) {
+                return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+            });
+        }
     }
 
     function highlightLongestThread(node, link) {
@@ -3052,9 +3068,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         //Highlight only the edges whose both endpoints are highlighted
         link.style("opacity", function (d) {
-            return d.source.highlighted && d.target.highlighted ?
-                1 :
-                opacityValue;
+            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
         });
     }
 
@@ -3072,9 +3086,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         //Highlight only the edges whose both endpoints are highlighted
         link.style("opacity", function (d) {
-            return d.source.highlighted && d.target.highlighted ?
-                1 :
-                opacityValue;
+            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
         });
     }
 
