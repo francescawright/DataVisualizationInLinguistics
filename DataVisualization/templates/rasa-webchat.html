@@ -67,7 +67,79 @@
 .rw-launcher {
     background-color: #fa7070;
 }
+#stt-feature {
+    right: 95px;
+}
+#tts-feature {
+    right: 170px;
+}
+.chat-feature-btn {
+    position: fixed;
+    background-color: #6c757d;
+
+    -webkit-animation-delay: 0;
+    -webkit-animation-duration: .5s;
+    -webkit-animation-name: slide-in;
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-delay: 0;
+    -moz-animation-duration: .5s;
+    -moz-animation-name: slide-in;
+    -moz-animation-fill-mode: forwards;
+    animation-delay: 0;
+    animation-duration: .5s;
+    animation-name: slide-in;
+    animation-fill-mode: forwards;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 50%;
+    box-shadow: 0 2px 10px 1px #b5b5b5;
+    height: 60px;
+    margin: 0;
+    width: 60px;
+    box-sizing: border-box;
+    transition: all 0.3s;
+}
+.show-chat-feature {
+    display: flex;
+}
+.checked-chat-feature {
+    transform: scale(0.95) !important;
+    background-color: #545b62;
+}
+.chat-feature-btn:focus {
+    outline: none;
+}
+.chat-feature-img {
+    width: 27px;
+
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    margin-block-end: 0;
+
+    max-height: 70%;
+    object-fit: contain;
+
+    -webkit-animation-delay: 0;
+    -webkit-animation-duration: .5s;
+    -webkit-animation-name: rotation-lr;
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-delay: 0;
+    -moz-animation-duration: .5s;
+    -moz-animation-name: rotation-lr;
+    -moz-animation-fill-mode: forwards;
+    animation-delay: 0;
+    animation-duration: .5s;
+    animation-name: rotation-lr;
+    animation-fill-mode: forwards;
+}
 </style>
+
+<head>
+    {% load static %}
+</head>
 
 <script>
     (function clearStorage() {
@@ -394,7 +466,44 @@
             } else {
                 console.log("Chat section hidden")
             }
-        }, 200);
+        }, 100);
+    }
+
+    function showChatFeatures() {
+        document.getElementById('stt-feature').classList.add("show-chat-feature");
+        document.getElementById('tts-feature').classList.add("show-chat-feature");
+    }
+    function closeChatFeatures() {
+        document.getElementById('stt-feature').classList.remove("show-chat-feature");
+        document.getElementById('tts-feature').classList.remove("show-chat-feature");
+    }
+    function addNewFeatures() {
+        setTimeout(function () {
+            let ttsFeature = document.createElement("button");
+            ttsFeature.innerHTML = "<img src='{% static 'images/chat/features/speaker-svgrepo-com.svg' %}' class='chat-feature-img'>";
+            ttsFeature.type = "button";
+            ttsFeature.setAttribute('id', 'tts-feature');
+            ttsFeature.classList.add('chat-feature-btn');
+            document.querySelector(".rw-widget-container").appendChild(ttsFeature);
+
+            let sttFeature = document.createElement("button");
+            sttFeature.innerHTML = "<img src='{% static 'images/chat/features/microphone-svgrepo-com.svg' %}' class='chat-feature-img'>";
+            sttFeature.type = "button";
+            sttFeature.setAttribute('id', 'stt-feature');
+            sttFeature.classList.add('chat-feature-btn');
+            document.querySelector(".rw-widget-container").appendChild(sttFeature);
+
+            $("#stt-feature").click(function (){
+                $("#stt-feature").toggleClass('checked-chat-feature');
+            });
+            $("#tts-feature").click(function (){
+                $("#tts-feature").toggleClass('checked-chat-feature');
+            });
+
+            if(document.querySelector('.rw-widget-container').classList.contains('rw-chat-open')) {
+                showChatFeatures();
+            }
+        }, 100);
     }
 
     function saveBotAction(msgText, session_id) {
@@ -546,6 +655,7 @@
                     'connect': function() {
                         console.log('connection established');
                         saveUserInputLog();
+                        addNewFeatures();
                     },
                     'disconnect': function() {
                         doSomeCleanup();
@@ -554,9 +664,11 @@
                 onWidgetEvent: {
                     onChatClose: function(widgetEvent) {
                         console.log('connection onChatClose');
+                        closeChatFeatures();
                     },
                     onChatOpen: function(widgetEvent) {
                         console.log('connection onChatOpen');
+                        showChatFeatures();
                         saveUserInputLog();
                     },
                     onChatHidden: function(widgetEvent) {

@@ -107,7 +107,6 @@ def save_error_chat(request):
 @require_http_methods(["POST"])
 def save_nickname(request):
     user = getattr(request, 'user', None)
-    print(request.POST)
     user.chatprofile.nickname = request.POST['nickname']
     user.save()
     return HttpResponse(status=204)
@@ -415,12 +414,10 @@ def edit_data(request):
 
 
 def handle_delete_data(request):
-    print(request.POST)
     try:
         selected_data = request.POST["delete_button"]
     except MultiValueDictKeyError as e:
         selected_data = Document.objects.first()
-    print(selected_data)
     delete_data(selected_data)
     return index(request)
 

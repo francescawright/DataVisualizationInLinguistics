@@ -59,10 +59,138 @@
         width: fill-available;
         margin: auto;
     }
+
+    #target-checkbox-group, #highlight-checkbox-group, #feature-checkbox-group {
+        border-radius: 0.25rem;
+    }
+
+    #popup_btn {
+        padding: 10px 30px;
+        background: #fff;
+        border: 0;
+        outline: none;
+        cursor: pointer;
+        font-size: 22px;
+        font-weight: 500;
+        border-radius: 30px;
+    }
+
+/*
+    #popup {
+        border-radius: 6px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%) scale(0.1);
+        text-align: center;
+        padding: 0 30px 30px;
+        color: #333;
+        visibility: hidden;
+        transition: transform 0.4s, top 0.4s;
+    }
+    .open-popup {
+        visibility: visible;
+        top: 20%;
+        transform: translate(-50%,-50%) scale(1);
+    }
+ */
+
+    .modal .modal-content {
+        border-radius: .5rem;
+    }
+    .modal-open { overflow: auto !important; }
+    body { padding-right: 0 !important }
+    .modal .modal-dialog {
+        max-width: none;
+    }
+    .modal .modal-content {
+        margin: 2.75em 1.75rem 1.75rem 1.75rem;
+        width: 400px;
+        height: 300px;
+    }
+    .modal {
+        width: fit-content;
+        height: fit-content;
+        padding: 0 !important;
+        top: calc(20% - 172px);
+        left: calc(50% - 214px);
+        position: absolute;
+    }
+
+    .close-modal-button {
+        width: 38px;
+        height: 38px;
+        border: 2px solid #eef5df;
+        background-color: #ff5248;
+        border-radius: 50%;
+        }
+    .close-modal-button {
+        color: #fff;
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        z-index: 100;
+
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    .close-modal-button:hover {
+        color: #fff;
+        background-color: #c82333;
+        border-color: #bd2130;
+        text-decoration: none;
+    }
+    .close-modal-button:focus {
+        color: #fff;
+        background-color: #c82333;
+        border-color: #bd2130;
+        box-shadow: 0 0 0 0.2rem rgb(225 83 97 / 50%);
+        outline: none !important;
+    }
+    .modal-footer {
+      cursor: move;
+    }
+    .div-test {
+        width: 500px;
+        position: absolute;
+        height: 500px;
+        border-radius: 5%;
+        left: 200px;
+        top: -7px;
+        opacity: 0;
+        transition: all 0.3s;
+        background-color: #D4D6D8;
+        transform: scale(0);
+        transform-origin: top left;
+    }
+    .show-menu {
+        opacity: 1;
+        transform: scale(1);
+    }
+    .left-arrow:after {
+        content: '';
+        position: absolute;
+        left: -24px;
+        top: 30px;
+        margin: 0 auto;
+        width: 0;
+        height: 0;
+        border-top: 24px solid transparent;
+        border-right: 24px solid #D4D6D8;
+        border-bottom: 24px solid transparent;
+    }
 </style>
 
 <head>
     {% load static %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+
 </head>
 
 <div style="display: inline-block; width: calc(calc(100vw - (100vw - 100%)));overflow-x: clip;">
@@ -94,7 +222,7 @@
             <div id="target-checkbox-group"
                  style="margin-top: 5px;background-color: #c9daf8ff; padding-bottom: 10px;">
 
-                <div class="list-group list-group-flush" style="width: 261px;">
+                <div class="list-group list-group-flush" style="width: 262px;">
                     <button id="targets_accordion_button" type="button"
                             class="accordion btn btn-secondary active"><span
                             style="text-align: center; font-weight: bold; vertical-align: center;" checked>
@@ -168,7 +296,7 @@
                 {#                       {% if cbFeatures.feature_group == 1 %}checked{% else %}unchecked{% endif %}#}
                 {#                       form="main_form"><label for="feature-group" style="font-weight: bold;">Show features</label>#}
 
-                <div class="list-group list-group-flush" style="width: 261px;">
+                <div class="list-group list-group-flush" style="width: 262px;">
                     <button id="features_accordion_button" type="button"
                             class="accordion btn btn-secondary active"><span
                             style="text-align: center; font-weight: bold; vertical-align: center;" checked>
@@ -348,7 +476,7 @@
             <div id="highlight-checkbox-group"
                  style="margin-top: 10px;background-color: #c9daf8ff; padding-bottom: 10px;">
                 <div>
-                    <div class="list-group list-group-flush" style="width: 261px;">
+                    <div class="list-group list-group-flush" style="width: 262px;">
                         <button id="highlight_accordion_button" type="button"
                                 class="accordion btn btn-secondary active"><span
                                 style="text-align: center; font-weight: bold; vertical-align: center;" checked>
@@ -1019,7 +1147,7 @@
             <div id="target-checkbox-group"
                  style="margin-top: 5px;background-color: #c9daf8ff; padding-bottom: 10px;">
 
-                <div class="list-group list-group-flush" style="width: 261px;">
+                <div class="list-group list-group-flush" style="width: 262px;">
                     <button id="devtools_accordion_button" type="button"
                             class="accordion btn btn-secondary active"><span
                             style="text-align: center; font-weight: bold; vertical-align: center;" checked>
@@ -1324,7 +1452,29 @@
 
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="popupModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="popupModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <button type="button" class="close-modal-button" data-dismiss="modal">
+                <div style="text-align: center; margin-top: -4px; font-size: x-large;">&#215;</div>
+            </button>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="tree-container" class="column2" style="width: calc(calc(100vw - (100vw - 100%)) - 290px); position: sticky; position: -webkit-sticky; top: 19px; z-index: 10;">
+        <div style="z-index: 50; text-align:center; position: absolute; top: 20px; left: 20px;">
+            <button id="popup_btn" type="button" class="btn" data-toggle="modal" onclick="openModal()" data-target="#popupModal">Subtrees</button>
+        </div>
+
+        <div class="div-test left-arrow"></div>
 
         <div style="z-index: 50; text-align:center; position: absolute; margin-top: 35px; right: 356px; width: max-content;">
             <span style='font-size: 23px; top: 115px; vertical-align: middle;'
@@ -1772,4 +1922,34 @@
         }
     });
 
+    /*
+    let popup = document.getElementById("popupModal");
+
+    function openPopup(){
+        popup.classList.add("open-popup");
+    }
+    function closePopup(){
+        popup.classList.remove("open-popup");
+    }
+    */
+
+    function openModal(){
+        document.getElementById("popupModal").style.top = "calc(20% - 172px)";
+        document.getElementById("popupModal").style.left = "calc(50% - 214px)";
+        $(".div-test").toggleClass("show-menu");
+    }
+    function showSubtreesMenu(){
+
+    }
+    $(".modal").draggable({
+        handle: ".modal-footer",
+        cursor: "move",
+        containment: "document"
+    });
+    $(".modal .modal-content").resizable({
+        containment: "document",
+        minHeight: 300,
+        minWidth: 400,
+        autoHide: true
+    });
 </script>
