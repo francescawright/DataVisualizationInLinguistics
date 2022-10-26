@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.contrib.auth.admin import User
 from django.dispatch import receiver
@@ -43,6 +44,14 @@ class Commentary(models.Model):
         return f"Document id: {self.document_name} | Comment id: {self.comment_id} | User id: {self.user_id} | Date: {self.date} | " \
                f"Thread: {self.comment_level} | Toxicity Level: {self.toxicity_level} | " \
                f"Positive Stance: {self.positive_stance} | Negative Stance: {self.negative_stance}"
+
+class Subtree(models.Model):
+    document_id = models.ForeignKey(Document, on_delete=models.CASCADE)
+    user_ids = models.ManyToManyField(User)
+    node_ids = ArrayField(models.IntegerField(null=True, blank=True), null=True, blank=True)
+
+    def __str__(self):
+        return f"Document id: {self.document_id} | User ids: {self.user_ids} | Node ids: {self.node_ids}"
 
 class tbl_Authentication(models.Model):
     Empcode = models.IntegerField()

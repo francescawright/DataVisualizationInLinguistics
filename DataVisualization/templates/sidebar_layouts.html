@@ -102,28 +102,65 @@
     body { padding-right: 0 !important }
     .modal .modal-dialog {
         max-width: none;
+        margin: 0;
     }
     .modal .modal-content {
-        margin: 2.75em 1.75rem 1.75rem 1.75rem;
-        width: 400px;
-        height: 300px;
+        width: 500px;
+        height: 350px;
     }
     .modal {
         width: fit-content;
         height: fit-content;
         padding: 0 !important;
-        top: calc(20% - 172px);
-        left: calc(50% - 214px);
-        position: absolute;
+        top: calc(30% - 175px);
+        left: calc(50% - 250px);
+        overflow: visible !important;
     }
-
+    .tree-modal-button, .force-modal-button, .radial-modal-button, .circle-modal-button {
+        border: none;
+        background: none;
+        position: absolute;
+        z-index: 100;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        width: fit-content;
+        height: fit-content;
+        padding: 6px 6px;
+    }
+    .tree-modal-button img, .force-modal-button img, .radial-modal-button img, .circle-modal-button img {
+        width: 50px;
+        height: 50px;
+    }
+    .tree-modal-button:hover, .force-modal-button:hover, .radial-modal-button:hover, .circle-modal-button:hover {
+        text-decoration: none;
+    }
+    .tree-modal-button:focus, .force-modal-button:focus, .radial-modal-button:focus, .circle-modal-button:focus {
+        outline: none !important;
+    }
+    .tree-modal-button {
+        padding: 6px 6px 6px 12px;
+    }
+    .tree-modal-button{
+        left: 0;
+    }
+    .force-modal-button{
+        left: 76px;
+    }
+    .radial-modal-button{
+        left: 146px;
+    }
+    .circle-modal-button{
+        left: 216px;
+    }
     .close-modal-button {
         width: 38px;
         height: 38px;
         border: 2px solid #eef5df;
         background-color: #ff5248;
         border-radius: 50%;
-        }
+    }
     .close-modal-button {
         color: #fff;
         position: absolute;
@@ -180,6 +217,44 @@
         border-top: 24px solid transparent;
         border-right: 24px solid #D4D6D8;
         border-bottom: 24px solid transparent;
+    }
+    .modal .modal-body {
+        padding: 0;
+        background-color: #eff4fc;
+        border-radius: 0.5rem 0.5rem 0 0;
+    }
+    .modal .modal-footer {
+        display: block;
+    }
+    .modal .modal-footer .alert {
+        text-align: center;
+        display: none;
+    }
+    .modal .modal-footer form {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+    .modal .modal-footer form input {
+        max-width: 450px;
+    }
+    .modal-footer form>:not(:last-child) {
+        margin-right: 0.25rem;
+    }
+    .modal-footer form>:not(:first-child) {
+        margin-left: 0.25rem;
+    }
+    .overlay-popup {
+        background-color: #eff4fc;
+        height: 100%;
+        height: -moz-available;          /* WebKit-based browsers will ignore this. */
+        height: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+        height: fill-available;
+        width: 100%;
+        width: -moz-available;          /* WebKit-based browsers will ignore this. */
+        width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+        width: fill-available;
+        border-radius: 0.5rem 0.5rem 0 0;
     }
 </style>
 
@@ -1459,11 +1534,33 @@
             <button type="button" class="close-modal-button" data-dismiss="modal">
                 <div style="text-align: center; margin-top: -4px; font-size: x-large;">&#215;</div>
             </button>
-          <div class="modal-body">
-            ...
-          </div>
+            <div>
+            <button type="button" class="tree-modal-button">
+                <img src="{% static 'images/nav_bar/treeLayout.svg' %}">
+            </button>
+            <button type="button" class="force-modal-button">
+                <img src="{% static 'images/nav_bar/forceLayout.svg' %}">
+            </button>
+            <button type="button" class="radial-modal-button">
+                <img src="{% static 'images/nav_bar/radialLayout.svg' %}">
+            </button>
+            <button type="button" class="circle-modal-button">
+                <img src="{% static 'images/nav_bar/circlePacking.svg' %}">
+            </button>
+            </div>
+          <div class="modal-body"></div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary">Save changes</button>
+              <form id="addSubtreeForm">
+                <label for="subtree-name" class="col-form-label">Name:</label>
+                <input type="text" class="form-control" id="subtree-name">
+                <button id="subtree-save-btn" type="button" onclick="subtreeSuccessAlert()" class="btn btn-secondary">Save</button>
+              </form>
+              <div id="subtree-save-sucess" class="alert alert-success" role="alert">
+                Subtree has been saved!
+              </div>
+             <div id="subtree-save-error" class="alert alert-danger" role="alert">
+                You already have this subtree added!
+              </div>
           </div>
         </div>
       </div>
@@ -1576,8 +1673,9 @@
     </div>
 
 </div>
-
 </html>
+
+<script src="{% static 'js/popup.js' %}"></script>
 
 <script>
 
@@ -1934,17 +2032,25 @@
     */
 
     function openModal(){
-        document.getElementById("popupModal").style.top = "calc(20% - 172px)";
-        document.getElementById("popupModal").style.left = "calc(50% - 214px)";
+        document.querySelector(".modal .modal-content").style.width = "500px";
+        document.querySelector(".modal .modal-content").style.height = "350px";
+        document.getElementById("popupModal").style.top = "calc(30% - 175px)";
+        document.getElementById("popupModal").style.left = "calc(50% - 250px)";
         $(".div-test").toggleClass("show-menu");
+        $(document.body).trigger("initPopup");
     }
     function showSubtreesMenu(){
 
     }
+    function subtreeSuccessAlert(){
+        document.querySelector(".modal .modal-footer").style.padding = "0.375rem";
+        document.getElementById("addSubtreeForm").style.display = "none";
+        document.getElementById("subtree-save-sucess").style.display = "block";
+    }
     $(".modal").draggable({
         handle: ".modal-footer",
         cursor: "move",
-        containment: "document"
+        containment: "window"
     });
     $(".modal .modal-content").resizable({
         containment: "document",

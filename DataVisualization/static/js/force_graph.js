@@ -99,7 +99,7 @@ function computeNodeRadius(d, edgeLength = 500) {
     */
 
     d.radius = minNodeRadius;
-    if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 40
+    if ((d.children === undefined || d.children === null) && (d._children === undefined || d._children === null)) return d.radius; //If no children, radius = 40
 
     let children = d.children ?? d._children; //Assign children collapsed or not
 
@@ -1452,11 +1452,11 @@ treeJSON = d3.json(dataset, function (error, json) {
         removeThisFeatures(nodeEnter);
         removeToxicities(nodeEnter); //Remove all the pngs for toxicity
 
-        var cbFeatureEnabled = [enabledFeatures.indexOf("constructiveness"), enabledFeatures.indexOf("argumentation"),
+        var cbFeatureEnabled = [enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
             enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
             enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness")];
 
-        var features = [objFeatConstructiveness, objFeatArgumentation, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
+        var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
         var listOpacity;
 
         for (var i = 0; i < 8; i++) {
@@ -2559,223 +2559,10 @@ treeJSON = d3.json(dataset, function (error, json) {
         }
     }
 
-    /*SECTION  cb*/
-
-    // Listeners related to the visualization of targets
-    function getLengthFilterByName(array, stringToMatch, matchPositive = true) {
-        return Array.from(array).filter(function (val) {
-            if (matchPositive) {
-                return val.includes(stringToMatch);
-            } else {
-                return !val.includes(stringToMatch);
-            }
-        }).length;
-    }
-
-    document.querySelector("#tree-container div.my-statistic").style.visibility = "hidden";
-    var static_values_checked = document.querySelector("#tree-container div.my-statistic").style.visibility === "visible";
-    jQuery("#static_values_button").click(function () {
-        if (!static_values_checked) {
-            document.getElementById('static_values_button').innerHTML = '&#8722;';
-            static_values_checked = true;
-            statisticBackground.style("visibility", "visible").html(writeStatisticText());
-            console.log('[User]', user.split('/')[2], '| [interaction]', 'show_summary', ' | [Date]', Date.now());
-
-        } else {
-            document.getElementById('static_values_button').innerHTML = '&#43;'
-            static_values_checked = false;
-            statisticBackground.style("visibility", "hidden").html(writeStatisticText());
-            console.log('[User]', user.split('/')[2], '| [interaction]', 'hide_summary', ' | [Date]', Date.now());
-
-        }
-    });
-
-    try {
-        $(document).ready(function () {
-            checkboxesTargets.forEach(function (checkboxItem) {
-                checkboxItem.addEventListener('change', function () {
-                    enabledTargets =
-                        Array.from(checkboxesTargets) // Convert checkboxes to an array to use filter and map.
-                            .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
-                            .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
-
-                    if (checkboxItem.checked) {
-                        console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
-                    } else {
-                        console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
-                    }
-                    selectTargetVisualization(node);
-                })
-            });
-
-            // Use Array.forEach to add an event listener to each checkbox.
-            // Draw feature circles
-            checkboxes.forEach(function (checkboxItem) {
-                checkboxItem.addEventListener('change', function () {
-                    enabledFeatures =
-                        Array.from(checkboxes) // Convert checkboxes to an array to use filter and map.
-                            .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
-                            .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
-                    if (checkboxItem.checked) {
-                        console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
-                    } else {
-                        console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
-                    }
-                    selectFeatureVisualization(node);
-
-                })
-            });
-
-
-// Use Array.forEach to add an event listener to each checkbox.
-            checkboxesHighlightGroupOR.forEach(function (checkboxItem) {
-                checkboxItem.addEventListener('change', function () {
-                    enabledHighlight =
-                        Array.from(checkboxesHighlightGroupOR) // Convert checkboxes to an array to use filter and map.
-                            .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
-                            .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
-
-                    var filteredOriginalToxicity = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-toxicity-");
-                    var filteredCompareToxicity = getLengthFilterByName(Array.from(enabledHighlight), "highlight-toxicity-");
-                    document.getElementById('highlight-OR-selectAll-toxicity').checked = filteredOriginalToxicity === filteredCompareToxicity;
-
-                    var filteredOriginalStance = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-stance-");
-                    var filteredCompareStance = getLengthFilterByName(Array.from(enabledHighlight), "highlight-stance-");
-                    document.getElementById('highlight-OR-selectAll-stance').checked = filteredOriginalStance === filteredCompareStance;
-
-                    var filteredOriginalTarget = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-target-");
-                    var filteredCompareTarget = getLengthFilterByName(Array.from(enabledHighlight), "highlight-target-");
-                    document.getElementById('highlight-OR-selectAll-target').checked = filteredOriginalTarget === filteredCompareTarget;
-
-                    var filteredOriginalFeatures = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-features-");
-                    var filteredCompareFeatures = getLengthFilterByName(Array.from(enabledHighlight), "highlight-features-");
-                    document.getElementById('highlight-OR-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
-                    if (checkboxItem.checked) {
-                        console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
-                    } else {
-                        console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
-                    }
-                    checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
-                    if (static_values_checked) {
-                        statisticBackground.html(writeStatisticText());
-                    }
-                })
-            });
-
-            // Use Array.forEach to add an event listener to each checkbox.
-            checkboxesHighlightGroupAND.forEach(function (checkboxItem) {
-                checkboxItem.addEventListener('change', function () {
-                    enabledHighlight =
-                        Array.from(checkboxesHighlightGroupAND) // Convert checkboxes to an array to use filter and map.
-                            .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
-                            .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
-
-                    var filteredOriginalTarget = getLengthFilterByName(Array.from(checkboxesHighlightGroupAND).map(i => i.value), "highlight-target-");
-                    var filteredCompareTarget = getLengthFilterByName(Array.from(enabledHighlight), "highlight-target-");
-                    document.getElementById('highlight-AND-selectAll-target').checked = filteredOriginalTarget === filteredCompareTarget;
-
-                    var filteredOriginalFeatures = getLengthFilterByName(Array.from(checkboxesHighlightGroupAND).map(i => i.value), "highlight-features-");
-                    var filteredCompareFeatures = getLengthFilterByName(Array.from(enabledHighlight), "highlight-features-");
-                    document.getElementById('highlight-AND-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
-
-                    if (checkboxItem.checked) {
-                        console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
-                    } else {
-                        console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
-                    }
-                    checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
-                    if (static_values_checked) {
-                        statisticBackground.html(writeStatisticText());
-                    }
-                })
-            });
-
-            // To notify the DOM that the ready function has finished executing.
-            // This to be able to manage the filters if it is given the case that the code of the onLoad function finishes before.
-            const event = new Event('codeReady');
-
-            // Dispatch the event.
-            document.querySelector("body").dispatchEvent(event);
-
-            codeReady = true;
-        });
-        /*END section cb*/
-
-    } catch (TypeError) {
-        console.error("Error attaching buttons... trying again...");
-    }
-
-    function injectIntentConversation(textMsg){
-        // Get the existing localStorage data
-        var existingStorage = localStorage.getItem("chat_session");
-        // If no existing data, create an array
-        // Otherwise, convert the localStorage string to an array
-        existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:5005/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify({
-        "name": "generate_response_message",
-        "entities": {
-            "response_message": textMsg
-        }
-        }));
-    }
-
-    /**
-     * Gets the array of nodes belonging to the deepest threads, highlights them,
-     * updating the network statistics, and displays the result in the chat
-     */
-    $(document.body).off("longest_thread");
-    $(document.body).on("longest_thread", function () {
-        let deepestNodes = getDeepestNodes(root);
-
-        var textMsg;
-        if (deepestNodes.length > 1) {
-            textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
-        } else {
-            textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
-        }
-
-        injectIntentConversation(textMsg);
-
-        deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
-        // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
-        highlightLongestThread(node, link);
-
-        if (static_values_checked) {
-            statisticBackground.html(writeStatisticText());
-        }
-    });
-
-    /**
-     * Obtains the indices of the widest levels of the graph, highlights the nodes that belong to those levels,
-     * updates the network statistics, and displays the result in the chat
-     */
-    $(document.body).off("widest_level");
-    $(document.body).on("widest_level", function () {
-        let widestLevels = getWidestLevels(root, getTreeHeight(root));
-        var textMsg;
-        if (widestLevels[0].length > 1) {
-            textMsg = "There are " + widestLevels[0].length + " levels &#91;" + widestLevels[0] + "&#93; with a maximum width of " + widestLevels[1];
-        } else {
-            textMsg = "The widest level is level " + widestLevels[0][0] + " which has a width of " + widestLevels[1];
-        }
-
-        injectIntentConversation(textMsg);
-
-        highlightWidestLevels(node, link, widestLevels[0]);
-
-        if (static_values_checked) {
-            statisticBackground.html(writeStatisticText());
-        }
-    });
-
     /*
     Functions
     * */
-    function update() {
+    function update(static_values_checked_param = false) {
         nodes = flatten(root); //get nodes as a list
         var links = d3.layout.tree().links(nodes);
 
@@ -2971,23 +2758,241 @@ treeJSON = d3.json(dataset, function (error, json) {
         //     selectFeatureVisualization(node);
         // });
 
-        dotsFeatures.addEventListener("change", function () {
+        var dotsFeaturesJQuery = $("#dots_icon_button");
+        dotsFeaturesJQuery.off("change.update"); // remove duplicate listener
+        // NOTE: In this layout, unlike the Tree layout, we can do it this way, since all nodes are updated each time,
+        // and not only the new nodes added to the graph (variable nodeEnter in Tree layout).
+        dotsFeaturesJQuery.on("change.update", function () {
             selectFeatureVisualization(node);
         });
 
-        glyphsFeatures.addEventListener("change", function () {
+        var glyphsFeaturesJQuery = $("#glyphs_icon_button");
+        glyphsFeaturesJQuery.off("change.update"); // remove duplicate listener
+        glyphsFeaturesJQuery.on("change.update", function () {
             selectFeatureVisualization(node);
         });
 
-        // checkboxStaticValues.addEventListener("change", function () {
-        //     this.checked ?
-        //         statisticBackground
-        //             .style("visibility", "visible")
-        //             .html(writeStatisticText()) :
-        //         statisticBackground
-        //             .style("visibility", "hidden")
-        //             .html(writeStatisticText());
-        // });
+        /*SECTION  cb*/
+
+        // Listeners related to the visualization of targets
+        function getLengthFilterByName(array, stringToMatch, matchPositive = true) {
+            return Array.from(array).filter(function (val) {
+                if (matchPositive) {
+                    return val.includes(stringToMatch);
+                } else {
+                    return !val.includes(stringToMatch);
+                }
+            }).length;
+        }
+
+        var static_values_checked = static_values_checked_param;
+        jQuery("#static_values_button").click(function () {
+            if (!static_values_checked) {
+                document.getElementById('static_values_button').innerHTML = '&#8722;';
+                static_values_checked = true;
+                statisticBackground.style("visibility", "visible").html(writeStatisticText());
+                console.log('[User]', user.split('/')[2], '| [interaction]', 'show_summary', ' | [Date]', Date.now());
+
+            } else {
+                document.getElementById('static_values_button').innerHTML = '&#43;'
+                static_values_checked = false;
+                statisticBackground.style("visibility", "hidden").html(writeStatisticText());
+                console.log('[User]', user.split('/')[2], '| [interaction]', 'hide_summary', ' | [Date]', Date.now());
+
+            }
+        });
+
+        try {
+            $(document).ready(function () {
+
+                var checkboxesTargetsJQuery = $("input[type=checkbox][name=cbTargets]");
+                var checkboxesJQuery = $("input[type=checkbox][name=cbFeatures]");
+                var checkboxesHighlightGroupORJQuery = $("input[name=cbHighlightOR]");
+                var checkboxesHighlightGroupANDJQuery = $("input[name=cbHighlightAND]");
+
+                checkboxesTargetsJQuery.each(function () {
+                    $( this ).off("change.update"); // remove duplicate listener
+                    $( this ).on('change.update', function () {
+                        enabledTargets =
+                            Array.from(checkboxesTargets) // Convert checkboxes to an array to use filter and map.
+                                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
+                        if ($( this ).checked) {
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $( this ).name + '_' + $( this ).value, " | [Date]", Date.now());
+                        } else {
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $( this ).name + '_' + $( this ).value, " | [Date]", Date.now());
+                        }
+                        selectTargetVisualization(node);
+                    })
+                });
+
+                // Use Array.forEach to add an event listener to each checkbox.
+                // Draw feature circles
+                checkboxesJQuery.each(function () {
+                    $( this ).off("change.update"); // remove duplicate listener
+                    $( this ).on('change.update', function () {
+                        enabledFeatures =
+                            Array.from(checkboxes) // Convert checkboxes to an array to use filter and map.
+                                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+                        if ($( this ).checked) {
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $( this ).name + '_' + $( this ).value, " | [Date]", Date.now());
+                        } else {
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $( this ).name + '_' + $( this ).value, " | [Date]", Date.now());
+                        }
+                        selectFeatureVisualization(node);
+
+                    })
+                });
+
+
+    // Use Array.forEach to add an event listener to each checkbox.
+                checkboxesHighlightGroupORJQuery.each(function () {
+                    $( this ).off("change.update"); // remove duplicate listener
+                    $( this ).on('change.update', function () {
+                        enabledHighlight =
+                            Array.from(checkboxesHighlightGroupOR) // Convert checkboxes to an array to use filter and map.
+                                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
+                        var filteredOriginalToxicity = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-toxicity-");
+                        var filteredCompareToxicity = getLengthFilterByName(Array.from(enabledHighlight), "highlight-toxicity-");
+                        document.getElementById('highlight-OR-selectAll-toxicity').checked = filteredOriginalToxicity === filteredCompareToxicity;
+
+                        var filteredOriginalStance = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-stance-");
+                        var filteredCompareStance = getLengthFilterByName(Array.from(enabledHighlight), "highlight-stance-");
+                        document.getElementById('highlight-OR-selectAll-stance').checked = filteredOriginalStance === filteredCompareStance;
+
+                        var filteredOriginalTarget = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-target-");
+                        var filteredCompareTarget = getLengthFilterByName(Array.from(enabledHighlight), "highlight-target-");
+                        document.getElementById('highlight-OR-selectAll-target').checked = filteredOriginalTarget === filteredCompareTarget;
+
+                        var filteredOriginalFeatures = getLengthFilterByName(Array.from(checkboxesHighlightGroupOR).map(i => i.value), "highlight-features-");
+                        var filteredCompareFeatures = getLengthFilterByName(Array.from(enabledHighlight), "highlight-features-");
+                        document.getElementById('highlight-OR-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
+                        if ($( this ).checked) {
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $( this ).name + '_' + $( this ).value, " | [Date]", Date.now());
+                        } else {
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $( this ).name + '_' + $( this ).value, " | [Date]", Date.now());
+                        }
+                        checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
+                        if (static_values_checked) {
+                            statisticBackground.html(writeStatisticText());
+                        }
+                    })
+                });
+
+                // Use Array.forEach to add an event listener to each checkbox.
+                checkboxesHighlightGroupANDJQuery.each(function () {
+                    $( this ).off("change.update"); // remove duplicate listener
+                    $( this ).on('change.update', function () {
+                        enabledHighlight =
+                            Array.from(checkboxesHighlightGroupAND) // Convert checkboxes to an array to use filter and map.
+                                .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+                                .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
+                        var filteredOriginalTarget = getLengthFilterByName(Array.from(checkboxesHighlightGroupAND).map(i => i.value), "highlight-target-");
+                        var filteredCompareTarget = getLengthFilterByName(Array.from(enabledHighlight), "highlight-target-");
+                        document.getElementById('highlight-AND-selectAll-target').checked = filteredOriginalTarget === filteredCompareTarget;
+
+                        var filteredOriginalFeatures = getLengthFilterByName(Array.from(checkboxesHighlightGroupAND).map(i => i.value), "highlight-features-");
+                        var filteredCompareFeatures = getLengthFilterByName(Array.from(enabledHighlight), "highlight-features-");
+                        document.getElementById('highlight-AND-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
+
+                        if ($( this ).checked) {
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $( this ).name + '_' + $( this ).value, " | [Date]", Date.now());
+                        } else {
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $( this ).name + '_' + $( this ).value, " | [Date]", Date.now());
+                        }
+                        checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
+                        if (static_values_checked) {
+                            statisticBackground.html(writeStatisticText());
+                        }
+                    })
+                });
+
+                // To notify the DOM that the ready function has finished executing.
+                // This to be able to manage the filters if it is given the case that the code of the onLoad function finishes before.
+                const event = new Event('codeReady');
+
+                // Dispatch the event.
+                document.querySelector("body").dispatchEvent(event);
+
+                codeReady = true;
+            });
+            /*END section cb*/
+
+        } catch (TypeError) {
+            console.error("Error attaching buttons... trying again...");
+        }
+
+        function injectIntentConversation(textMsg){
+            // Get the existing localStorage data
+            var existingStorage = localStorage.getItem("chat_session");
+            // If no existing data, create an array
+            // Otherwise, convert the localStorage string to an array
+            existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:5005/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+            "name": "generate_response_message",
+            "entities": {
+                "response_message": textMsg
+            }
+            }));
+        }
+
+        /**
+         * Gets the array of nodes belonging to the deepest threads, highlights them,
+         * updating the network statistics, and displays the result in the chat
+         */
+        $(document.body).off("longest_thread");
+        $(document.body).on("longest_thread", function () {
+            let deepestNodes = getDeepestNodes(root);
+
+            var textMsg;
+            if (deepestNodes.length > 1) {
+                textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
+            } else {
+                textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
+            }
+
+            injectIntentConversation(textMsg);
+
+            deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
+            // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
+            highlightLongestThread(node, link);
+
+            if (static_values_checked) {
+                statisticBackground.html(writeStatisticText());
+            }
+        });
+
+        /**
+         * Obtains the indices of the widest levels of the graph, highlights the nodes that belong to those levels,
+         * updates the network statistics, and displays the result in the chat
+         */
+        $(document.body).off("widest_level");
+        $(document.body).on("widest_level", function () {
+            let widestLevels = getWidestLevels(root, getTreeHeight(root));
+            var textMsg;
+            if (widestLevels[0].length > 1) {
+                textMsg = "There are " + widestLevels[0].length + " levels &#91;" + widestLevels[0] + "&#93; with a maximum width of " + widestLevels[1];
+            } else {
+                textMsg = "The widest level is level " + widestLevels[0][0] + " which has a width of " + widestLevels[1];
+            }
+
+            injectIntentConversation(textMsg);
+
+            highlightWidestLevels(node, link, widestLevels[0]);
+
+            if (static_values_checked) {
+                statisticBackground.html(writeStatisticText());
+            }
+        });
 
         checkboxesTargets.forEach(function (checkboxItem) {
             enabledTargets =
@@ -3126,8 +3131,12 @@ treeJSON = d3.json(dataset, function (error, json) {
         //     }
         // });
 
+        var checkboxANDJQuery = $("input[type=radio][name=cbHighlightProperty][value=and-group]");
+        var checkboxORJQuery = $("input[type=radio][name=cbHighlightProperty][value=or-group]");
+
         // If AND is selected, uncheck the OR and highlight by property AND
-        checkboxAND.addEventListener("change", function () {
+        checkboxANDJQuery.off("change.update"); // remove duplicate listener
+        checkboxANDJQuery.on("change.update", function () {
             if (this.checked) {
                 checkboxOR.checked = false;
 
@@ -3147,7 +3156,8 @@ treeJSON = d3.json(dataset, function (error, json) {
             }
         });
         // If OR is selected, uncheck the AND and highlight by property OR
-        checkboxOR.addEventListener("change", function () {
+        checkboxORJQuery.off("change.update"); // remove duplicate listener
+        checkboxORJQuery.on("change.update", function () {
             if (this.checked) {
                 checkboxAND.checked = false;
 
@@ -3251,7 +3261,7 @@ treeJSON = d3.json(dataset, function (error, json) {
                 d._children = null;
             }
         }
-        update();
+        update(document.querySelector("#tree-container div.my-statistic").style.visibility === "visible");
     }
 
     /**
@@ -3276,7 +3286,8 @@ treeJSON = d3.json(dataset, function (error, json) {
     var svgGroup = svg.append("g"); //We define it here, otherwise, svg is not defined
     root = json;
 
-    update();
+    document.querySelector("#tree-container div.my-statistic").style.visibility = "hidden";
+    update(false);
 
     force.alpha(1.5); //Restart the timer of the cooling parameter with a high value to reach better initial positioning
 
@@ -3299,6 +3310,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
     zoomListener.scale(initialZoom);
     zoomListener.translate([initialY, initialX]);
+    zoomListener.event(svg);
 
     /**
      * Wrap call to compute statistics and to write them in a hover text

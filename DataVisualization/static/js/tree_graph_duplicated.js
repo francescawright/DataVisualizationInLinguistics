@@ -37,7 +37,7 @@ function computeNodeRadius(d, edgeLength = 300) {
         0 children: new radius = 10
     * */
     d.radius = 10;
-    if (d.children === undefined && d._children === undefined) return d.radius; //If no children, radius = 10
+    if ((d.children === undefined || d.children === null) && (d._children === undefined || d._children === null)) return d.radius; //If no children, radius = 10
 
     var children = d.children ?? d._children; //Assign children collapsed or not
 
