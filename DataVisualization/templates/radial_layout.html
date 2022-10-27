@@ -159,7 +159,7 @@
 
 <body>
 {% include 'messages.html' %}
-{% include 'nav_bar.html' %}
+{% include 'nav_bar.html' with template_selected="radial" %}
 {% include 'sidebar_layouts.html' with template_selected="radial" %}
 <script src="{% static 'js/radial_graph.js' %}"></script>
 </body>

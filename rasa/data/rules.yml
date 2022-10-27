@@ -25,24 +25,14 @@ rules:
   - action: utter_offers_help
   - action: action_listen
 
-- rule: User wants to change his nickname
-  condition:
-  - slot_was_set:
-    - user_is_logged_in: true
-  steps:
-  - intent: say_name
-  - action: nickname_form
-  - active_loop: nickname_form
-
-- rule: User refuses to give his nickname
+- rule: User gives his nickname at the first chat connection
   condition:
   - slot_was_set:
     - first_login: true
     - user_is_logged_in: true
   steps:
-  - action: utter_know_nickname
-  - intent: deny
-  - action: action_refused_nickname
+  - action: nickname_form
+  - active_loop: nickname_form
 
 - rule: User wants to change his nickname
   condition:
@@ -51,6 +41,7 @@ rules:
     - user_is_logged_in: true
   steps:
   - intent: say_name
+  - action: action_empty_slot_name
   - action: nickname_form
   - active_loop: nickname_form
 

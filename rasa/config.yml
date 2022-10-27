@@ -8,7 +8,8 @@ pipeline:
  # See https://rasa.com/docs/rasa/tuning-your-model for more information.
    - name: WhitespaceTokenizer
    - name: RegexFeaturizer
-   - name: RegexEntityExtractor
+   # - name: RegexEntityExtractor
+   # - name: SpacyEntityExtractor
    - name: LexicalSyntacticFeaturizer
    - name: CountVectorsFeaturizer
    - name: CountVectorsFeaturizer

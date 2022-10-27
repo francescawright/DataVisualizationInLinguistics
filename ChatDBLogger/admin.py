@@ -6,7 +6,7 @@ from django.utils.html import format_html
 
 from .models import StatusLog
 
-DJANGO_DB_LOGGER_ADMIN_LIST_PER_PAGE = 10
+DJANGO_DB_LOGGER_ADMIN_LIST_PER_PAGE = 300
 
 class StatusLogAdmin(admin.ModelAdmin):
     list_display = ('colored_msg', 'traceback', 'create_datetime_format', 'sender', 'is_action', 'user', 'session_id')

@@ -3362,8 +3362,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          * Gets the array of nodes belonging to the deepest threads, highlights them,
          * updating the network statistics, and displays the result in the chat
          */
-        $(document.body).off("longest_thread");
-        $(document.body).on("longest_thread", function () {
+        $(container).off("longest_thread");
+        $(container).on("longest_thread", function () {
             let deepestNodes = getDeepestNodes(root);
 
             var textMsg;
@@ -3388,8 +3388,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          * Obtains the indices of the widest levels of the graph, highlights the nodes that belong to those levels,
          * updates the network statistics, and displays the result in the chat
          */
-        $(document.body).off("widest_level");
-        $(document.body).on("widest_level", function () {
+        $(container).off("widest_level");
+        $(container).on("widest_level", function () {
             let widestLevels = getWidestLevels(root, getTreeHeight(root));
             var textMsg;
             if (widestLevels[0].length > 1) {

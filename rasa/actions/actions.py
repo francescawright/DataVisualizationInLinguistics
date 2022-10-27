@@ -413,7 +413,7 @@ class ActionGreet(Action):
                 dispatcher.utter_message(text=random.choice(messages))
 
             if first_login_value:
-                return [FollowupAction("utter_know_nickname"), SlotSet("nickname", nickname_value),
+                return [FollowupAction("nickname_form"), SlotSet("nickname", nickname_value),
                         SlotSet("first_login", True), SlotSet("user_is_logged_in", True)]
             else:
                 return [SlotSet("nickname", nickname_value), SlotSet("first_login", False),
@@ -527,6 +527,19 @@ class ActionForgetName(Action):
         else:
             dispatcher.utter_message(text="An error has occurred")
             return []
+
+
+class ActionEmptySlotName(Action):
+
+    def name(self) -> Text:
+        return "action_empty_slot_name"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        return [SlotSet("nickname", None)]
+
 
 class ActionGenerateResponseMessage(Action):
 

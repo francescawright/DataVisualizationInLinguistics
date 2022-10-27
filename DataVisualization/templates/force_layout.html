@@ -151,12 +151,13 @@
     var pr = "{% static 'images/' %}";
     var sel_item = "{% static selected_item %}";
     var user = "{% static user %}";
+    var container = "#tree-container";
     var popup_container = ".modal .modal-body";
 </script>
 
 <body>
 {% include 'messages.html' %}
-{% include 'nav_bar.html' %}
+{% include 'nav_bar.html' with template_selected="force" %}
 {% include 'sidebar_layouts.html' with template_selected="force" %}
 <script src="{% static 'js/force_graph.js' %}"></script>
 </body>

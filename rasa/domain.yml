@@ -98,6 +98,7 @@ actions:
   - action_generate_response_message
   - action_set_slots
   - action_forget_name
+  - action_empty_slot_name
 
 forms:
   nickname_form:
@@ -206,13 +207,11 @@ responses:
   - text: "I am a bot, powered by Rasa."
 
   utter_ask_nickname_form_nickname:
-  - text: "Please tell me what I should call you"
-  - text: "What do you want me to call you?"
-  - text: "How do you want me to refer to you?"
-  - text: "What is your name?"
-
-  utter_know_nickname:
-  - text: "Please tell me your name so I know what to call you"
+    - text: "Please enter your name, so I know what to call you:"
+    - text: "Please tell me what I should call you:"
+    - text: "What do you want me to call you?"
+    - text: "How do you want me to refer to you?"
+    - text: "What is your name?"
 
   utter_nickname_no_session:
   - text: "Please log in so I can remember your name"

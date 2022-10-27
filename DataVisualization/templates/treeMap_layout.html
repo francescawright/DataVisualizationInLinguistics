@@ -51,7 +51,7 @@
 <body>
 
 {% include 'messages.html' %}
-{% include 'nav_bar.html' %}
+{% include 'nav_bar.html' with template_selected="circle" %}
 <div class="row_cust" style="display: block; margin-top: -100px;">
 
     <div id="menu-left" class="column3">
@@ -1079,7 +1079,7 @@
 <script>
     var dataset = "{% static dataset %}";
     var user = "{% static user %}";
-    var container = "#tree-container";
+    var container = "#circletree-container";
 </script>
 
 <style>

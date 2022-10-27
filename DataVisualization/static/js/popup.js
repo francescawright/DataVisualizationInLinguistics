@@ -675,8 +675,8 @@ treeJSONPopup = d3.json(dataset, function (error, treeData) {
     var viewerWidthPopup = 100;
     var viewerHeightPopup = 400;
 
-    var canvasHeightPopup = 1000,
-        canvasWidthPopup = 2200; //Dimensions of our canvas (grayish area)
+    var canvasHeightPopup = document.querySelector(".modal .modal-body").offsetHeight,
+        canvasWidthPopup = document.querySelector(".modal .modal-body").offsetWidth; //Dimensions of our canvas (grayish area)
     var initialZoomPopup, initialXPopup, initialYPopup; //Initial zoom and central coordinates of the first visualization of the graph
 
     var separationHeightPopup = 10; //Desired separation between two node brothers
@@ -3549,18 +3549,10 @@ treeJSONPopup = d3.json(dataset, function (error, treeData) {
          * Gets the array of nodes belonging to the deepest threads, highlights them,
          * updating the network statistics, and displays the result in the chat
          */
-        $(document.body).off("longest_thread");
-        $(document.body).on("longest_thread", function () {
+        $(popup_container).off("longest_thread");
+        $(popup_container).on("longest_thread", function () {
+            console.log("iiiiiiiiiiiii")
             let deepestNodes = getDeepestNodes(rootPopup);
-
-            var textMsg;
-            if (deepestNodes.length > 1) {
-                textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
-            } else {
-                textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
-            }
-
-            injectIntentConversation(textMsg);
 
             deepestNodesPathPopup = getDeepestNodesPath(rootPopup, deepestNodes);
             // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
@@ -3571,17 +3563,9 @@ treeJSONPopup = d3.json(dataset, function (error, treeData) {
          * Obtains the indices of the widest levels of the graph, highlights the nodes that belong to those levels,
          * updates the network statistics, and displays the result in the chat
          */
-        $(document.body).off("widest_level");
-        $(document.body).on("widest_level", function () {
+        $(popup_container).off("widest_level");
+        $(popup_container).on("widest_level", function () {
             let widestLevels = getWidestLevels(rootPopup, getTreeHeight(rootPopup));
-            var textMsg;
-            if (widestLevels[0].length > 1) {
-                textMsg = "There are " + widestLevels[0].length + " levels &#91;" + widestLevels[0] + "&#93; with a maximum width of " + widestLevels[1];
-            } else {
-                textMsg = "The widest level is level " + widestLevels[0][0] + " which has a width of " + widestLevels[1];
-            }
-
-            injectIntentConversation(textMsg);
 
             highlightWidestLevels(node, link, widestLevels[0]);
         });
@@ -4975,23 +4959,6 @@ $(".force-modal-button").on("click", function () {
             .style("position", "absolute")
             .style("z-index", "60")
             .style("visibility", "hidden");
-
-        // Div where the sum up information of "Static Values" is displayed
-        var statisticBackground = d3.select(popup_container)
-            .append("div")
-            .attr("class", "my-statistic") //add the tooltip class
-            .style("position", "absolute")
-            .style("z-index", "1") //it has no change
-            .style("visibility", "visible")
-            .style("right", "320px");
-
-        // Div where the title of the "Static Values" is displayed
-        var statisticTitleBackground = d3.select(popup_container)
-            .append("div")
-            .attr("class", "my-statistic-title") //add the tooltip class
-            .style("position", "absolute")
-            .style("z-index", "0") //it has no change
-            .style("visibility", "visible");
 
 
         var svg = d3.select(popup_container) //Define the container that holds the layout
@@ -6812,13 +6779,11 @@ $(".force-modal-button").on("click", function () {
             if (!static_values_checked) {
                 document.getElementById('static_values_button').innerHTML = '&#8722;';
                 static_values_checked = true;
-                statisticBackground.style("visibility", "visible").html(writeStatisticText());
                 console.log('[User]', user.split('/')[2], '| [interaction]', 'show_summary', ' | [Date]', Date.now());
 
             } else {
                 document.getElementById('static_values_button').innerHTML = '&#43;'
                 static_values_checked = false;
-                statisticBackground.style("visibility", "hidden").html(writeStatisticText());
                 console.log('[User]', user.split('/')[2], '| [interaction]', 'hide_summary', ' | [Date]', Date.now());
 
             }
@@ -6890,9 +6855,6 @@ $(".force-modal-button").on("click", function () {
                             console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
-                        if (static_values_checked) {
-                            statisticBackground.html(writeStatisticText());
-                        }
                     })
                 });
 
@@ -6918,9 +6880,6 @@ $(".force-modal-button").on("click", function () {
                             console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                         }
                         checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
-                        if (static_values_checked) {
-                            statisticBackground.html(writeStatisticText());
-                        }
                     })
                 });
 
@@ -6961,26 +6920,13 @@ $(".force-modal-button").on("click", function () {
          * Gets the array of nodes belonging to the deepest threads, highlights them,
          * updating the network statistics, and displays the result in the chat
          */
-        $(document.body).off("longest_thread");
-        $(document.body).on("longest_thread", function () {
+        $(popup_container).off("longest_thread");
+        $(popup_container).on("longest_thread", function () {
             let deepestNodes = getDeepestNodes(root);
-
-            var textMsg;
-            if (deepestNodes.length > 1) {
-                textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
-            } else {
-                textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
-            }
-
-            injectIntentConversation(textMsg);
 
             deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
             // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
             highlightLongestThread(node, link);
-
-            if (static_values_checked) {
-                statisticBackground.html(writeStatisticText());
-            }
         });
 
         /**
@@ -6990,20 +6936,8 @@ $(".force-modal-button").on("click", function () {
         $(document.body).off("widest_level");
         $(document.body).on("widest_level", function () {
             let widestLevels = getWidestLevels(root, getTreeHeight(root));
-            var textMsg;
-            if (widestLevels[0].length > 1) {
-                textMsg = "There are " + widestLevels[0].length + " levels &#91;" + widestLevels[0] + "&#93; with a maximum width of " + widestLevels[1];
-            } else {
-                textMsg = "The widest level is level " + widestLevels[0][0] + " which has a width of " + widestLevels[1];
-            }
-
-            injectIntentConversation(textMsg);
 
             highlightWidestLevels(node, link, widestLevels[0]);
-
-            if (static_values_checked) {
-                statisticBackground.html(writeStatisticText());
-            }
         });
 
         /*
@@ -7113,9 +7047,6 @@ $(".force-modal-button").on("click", function () {
                         clickTimeout = setTimeout(function () {
                             if(!isDblclick) { // A simple click.
                                 click(d, eventDefaultPrevented);
-                                if (document.querySelector("#tree-container div.my-statistic").style.visibility === "visible") {
-                                    statisticBackground.html(writeStatisticText());
-                                }
                             }
                         }, timeoutTiming);
 
@@ -7212,16 +7143,6 @@ $(".force-modal-button").on("click", function () {
             glyphsFeatures.addEventListener("change", function () {
                 selectFeatureVisualization(node);
             });
-
-            // checkboxStaticValues.addEventListener("change", function () {
-            //     this.checked ?
-            //         statisticBackground
-            //             .style("visibility", "visible")
-            //             .html(writeStatisticText()) :
-            //         statisticBackground
-            //             .style("visibility", "hidden")
-            //             .html(writeStatisticText());
-            // });
 
             checkboxesTargets.forEach(function (checkboxItem) {
                 enabledTargets =
@@ -7559,8 +7480,6 @@ $(".force-modal-button").on("click", function () {
             totalPerson = listStatistics.totalTargPerson,
             totalStereotype = listStatistics.totalTargStereotype,
             totalNone = listStatistics.totalTargNone;
-
-        // statisticBackground.style("visibility", "visible").html(writeStatisticText());
 
         function writeStatisticText() {
             // var statisticText = "<span style='font-size: 22px;'> Summary of " + sel_item.split('/')[2] + "</span>";

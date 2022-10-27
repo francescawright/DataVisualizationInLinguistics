@@ -735,7 +735,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
 
     // Hover rectangle in which the information of a node is displayed
-    var tooltip = d3.select("#tree-container")
+    var tooltip = d3.select(container)
         .append("div")
         .attr("class", "my-tooltip") //add the tooltip class
         .style("position", "absolute")
@@ -743,7 +743,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         .style("visibility", "hidden");
 
     // Div where the sum up information of "Static Values" is displayed
-    var statisticBackground = d3.select("#tree-container")
+    var statisticBackground = d3.select(container)
         .append("div")
         .attr("class", "my-statistic") //add the tooltip class
         .style("position", "absolute")
@@ -752,7 +752,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         .style("right", "320px");
 
     // Div where the title of the "Static Values" is displayed
-    var statisticTitleBackground = d3.select("#tree-container")
+    var statisticTitleBackground = d3.select(container)
         .append("div")
         .attr("class", "my-statistic-title") //add the tooltip class
         .style("position", "absolute")
@@ -760,7 +760,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         .style("visibility", "visible");
 
 
-    var svg = d3.select("#tree-container") //Define the container that holds the layout
+    var svg = d3.select(container) //Define the container that holds the layout
         .append("svg")
         .attr("width", canvasWidth)
         .attr("height", canvasHeight)
@@ -2625,7 +2625,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
         // Create a container so we draw several elements along with the node
         // Enter nodes
-        var container = node.enter().append("g")
+        var containerNode = node.enter().append("g")
             .attr("class", "node")
             .attr("transform", function (d) {
                 if (d.parent && optimalK) {
@@ -2708,7 +2708,7 @@ treeJSON = d3.json(dataset, function (error, json) {
             d3.select(this).select("circle").classed("fixed", d.fixed = true);
         }
 
-        container.append("circle")
+        containerNode.append("circle")
             .attr("r", 10);
 
         //visualiseTargets(node); //Add images before the node circle
@@ -2949,8 +2949,8 @@ treeJSON = d3.json(dataset, function (error, json) {
          * Gets the array of nodes belonging to the deepest threads, highlights them,
          * updating the network statistics, and displays the result in the chat
          */
-        $(document.body).off("longest_thread");
-        $(document.body).on("longest_thread", function () {
+        $(container).off("longest_thread");
+        $(container).on("longest_thread", function () {
             let deepestNodes = getDeepestNodes(root);
 
             var textMsg;
@@ -2975,8 +2975,8 @@ treeJSON = d3.json(dataset, function (error, json) {
          * Obtains the indices of the widest levels of the graph, highlights the nodes that belong to those levels,
          * updates the network statistics, and displays the result in the chat
          */
-        $(document.body).off("widest_level");
-        $(document.body).on("widest_level", function () {
+        $(container).off("widest_level");
+        $(container).on("widest_level", function () {
             let widestLevels = getWidestLevels(root, getTreeHeight(root));
             var textMsg;
             if (widestLevels[0].length > 1) {

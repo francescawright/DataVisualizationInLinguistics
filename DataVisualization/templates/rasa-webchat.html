@@ -376,7 +376,12 @@
                     saveBotAction(e.text, existingStorage["session_id"]);
                     if ('{{ selected_item }}') {
                         e.text = messageList[2];
-                        $(document.body).trigger(messageList[1]);
+                        if ('{{template_selected}}' === "tree" || '{{template_selected}}' === "force" || '{{template_selected}}' === "radial"){
+                            $("#tree-container").trigger(messageList[1]);
+                        } else if ('{{template_selected}}' === "circle") {
+                            $("#circletree-container").trigger(messageList[1]);
+                        }
+                        $(".modal .modal-body").trigger(messageList[1]);
                     } else {
                         e.text =  "Open a document first, in order to perform this action";
                         // selectedDataError(existingStorage);

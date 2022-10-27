@@ -311,9 +311,9 @@ nlu:
   examples: |
     - file
 
-- regex: document_requested
-  examples: |
-    - [a-zA-Z0-9_-]{1,255}
+#- regex: document_requested
+#  examples: |
+#    - [a-zA-Z0-9_-]{1,255}
 
 - intent: select_document
   examples: |
@@ -333,27 +333,29 @@ nlu:
   examples: |
     - name
 
-- regex: nickname
-  examples: |
-    - [a-zA-Z]{1,100}
+#- regex: nickname
+#  examples: |
+#    - [a-zA-Z]{1,100}
 
 - intent: say_name
   examples: |
-    - My [name]{"entity": "object_requested", "value": "nickname"} is [Eloi]{"entity": "nickname"}
     - I want to tell you my [name]{"entity": "object_requested", "value": "nickname"}
     - I want to give you my [nickname]{"entity": "object_requested", "value": "nickname"}
     - I want to give you [name]{"entity": "object_requested", "value": "nickname"}
-    - You can call me [Ecem]{"entity": "nickname"}
-    - You can refer to me as [edu]{"entity": "nickname"}
-    - Call me [Anna]{"entity": "nickname"}
-    - My name is [Inma]{"entity": "nickname"}
     - Say [name]{"entity": "object_requested", "value": "nickname"}
     - Give [nickname]{"entity": "object_requested", "value": "nickname"}
-    - [Alex]{"entity": "nickname"}
-    - [felix]{"entity": "nickname"}
-    - [raul22]{"entity": "nickname"}
-    - Change my [name]{"entity": "object_requested", "value": "nickname"} to [edu]{"entity": "nickname"}
     - Change my [name]{"entity": "object_requested", "value": "nickname"}
+
+#    - My [name]{"entity": "object_requested", "value": "nickname"} is [Eloi]{"entity": "nickname"}
+#    - You can call me [Ecem]{"entity": "nickname"}
+#    - You can refer to me as [edu]{"entity": "nickname"}
+#    - Call me [Anna]{"entity": "nickname"}
+#    - My name is [Inma]{"entity": "nickname"}
+#    - Change my [name]{"entity": "object_requested", "value": "nickname"} to [edu]{"entity": "nickname"}
+#    - [Alex]{"entity": "nickname"}
+#    - [felix]{"entity": "nickname"}
+#    - [raul22]{"entity": "nickname"}
+
 
 - intent: forget_name
   examples: |

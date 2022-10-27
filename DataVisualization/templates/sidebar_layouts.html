@@ -2031,12 +2031,16 @@
     }
     */
 
+    $('#popupModal').on('shown.bs.modal', function() {
+        $(document).off('focusin.modal');
+    });
+
     function openModal(){
         document.querySelector(".modal .modal-content").style.width = "500px";
         document.querySelector(".modal .modal-content").style.height = "350px";
         document.getElementById("popupModal").style.top = "calc(30% - 175px)";
         document.getElementById("popupModal").style.left = "calc(50% - 250px)";
-        $(".div-test").toggleClass("show-menu");
+        // $(".div-test").toggleClass("show-menu");
         $(document.body).trigger("initPopup");
     }
     function showSubtreesMenu(){
