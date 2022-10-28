@@ -96,7 +96,7 @@
         color: darkslategray;
     }
 
-    /* Add a black background color to the top navigation */
+    /* Add background color to the top navigation */
     .topnav {
         background-color: #f2f2f2;
         overflow: hidden;
@@ -150,7 +150,6 @@
     var sel_item = "{% static selected_item %}";
     var container = "#tree-container";
     var popup_container = ".modal .modal-body";
-    var container_duplicated = "#tree-container-duplicated";
     var user = "{% static user %}";
 </script>
 
@@ -159,28 +158,9 @@
 {% include 'nav_bar.html' with template_selected="tree"%}
 {% include 'sidebar_layouts.html' with template_selected="tree"%}
 
-{#<canvas id="screenshot_canvas" style="width:2000px; height:2000px;"></canvas>#}
-
 <!-- {% include 'auxiliary_charts.html' %} -->
 
 <script src="{% static 'js/tree_graph.js' %}"></script>
-{# <script src="{% static 'js/tree_graph_duplicated.js' %}"></script> #}
 </body>
-
-<script>
-    var layout_shown = false;
-    jQuery("#add_layout_button").click(function () {
-        var duplicated = document.getElementById("tree-container-duplicated");
-        if (!layout_shown) {
-            duplicated.style.display = "flex";
-            layout_shown = true;
-        } else {
-            duplicated.style.display = "none";
-            layout_shown = false;
-
-        }
-    });
-
-</script>
 
 </html>

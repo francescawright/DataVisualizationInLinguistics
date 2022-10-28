@@ -1578,104 +1578,15 @@
                   class="my-statistic"> Summary of {{ selected_item }}
             </span>
             <button id="static_values_button" class="btn btn-primary"
-                    style=" top: 150px; z-index: 55; margin-left: 10px; vertical-align: middle; background-color: #eff4fc;">+
+                    style=" top: 150px; z-index: 55; margin-left: 10px; vertical-align: middle; background-color: #eff4fc;">&#8722;
             </button>
         </div>
-       <!-- <div>
-            <button id="zoom_in_icon"
-                    style="background: url('{% static './images/misc/zoom_in.svg' %}'); width: 35px; height: 35px; position: absolute; left: 350px; top: 1050px; border: none;">
-            </button>
-        </div>
-        <div>
-            <button id="zoom_out_icon"
-                    style="background: url('{% static './images/misc/zoom_out.svg' %}'); width: 35px; height: 35px; position: absolute; left: 400px; top: 1050px; border: none;">
-            </button>
-        </div>
-        <div>
-            <button id="zoom_reset_icon"
-                    style="background: url('{% static './images/misc/zoom_reset.svg' %}'); width: 35px; height: 35px; position: absolute; left: 450px; top: 1050px; border: none;">
-            </button>
-        </div>
-        <div>
-            <label id="zoom_level"
-                   style="width: 350px; position: absolute; left: 500px; top: 1055px;">Zoom: </label>
-        </div>
-        <div>
-            <label id="position_x"
-                   style="width: 350px; position: absolute; left: 500px; top: 1065px; display: none;">X: </label>
-        </div>
-        <div>
-            <label id="position_y"
-                   style="width: 350px; position: absolute; left: 550px; top: 1065px; display:none; ">Y: </label>
-        </div>
-        <div style="display:none;">
-            <button id="screenshot_icon"
-                    style="background: url('{% static './images/misc/screenshot_icon.svg' %}'); width: 35px; height: 35px; position: absolute; left: 630px; top: 1050px; border: none;">
-            </button>
-        </div>
-    </div>
--->
-
-    <!--
-    <div id="tree-container-duplicated" class="column2" style="display: none;">
-        <div>
-            <button id="zoom_in_icon"
-                style="background: url('{% static './images/misc/zoom_in.svg' %}'); width: 35px; height: 35px; position: absolute; left: 300px; top: 900px;">
-            </button>
-        </div>
-        <div>
-            <button id="zoom_out_icon"
-                style="background: url('{% static './images/misc/zoom_out.svg' %}'); width: 35px; height: 35px; position: absolute; left: 350px; top: 900px;">
-            </button>
-        </div>
-        <div>
-            <button id="zoom_reset_icon"
-                style="background: url('{% static './images/misc/zoom_reset.svg' %}'); width: 35px; height: 35px; position: absolute; left: 400px; top: 900px;">
-            </button>
-        </div>
-        <div>
-            <label id="zoom_level" style="width: 350px; position: absolute; left: 450px; top: 905px;">Zoom: </label>
-        </div>
-        <div>
-            <label id="position_x" style="width: 350px; position: absolute; left: 450px; top: 925px;">X: </label>
-        </div>
-        <div>
-            <label id="position_y" style="width: 350px; position: absolute; left: 450px; top: 945px;">Y: </label>
-        </div>
-        <div>
-            <button id="screenshot_icon"
-                style="background: url('{% static './images/misc/screenshot_icon.svg' %}'); width: 35px; height: 35px; position: absolute; left: 570px; top: 900px;">
-            </button>
-        </div>
-    </div> -->
-
-
-    {#    <table style="display: flex; margin-left: 150px;">#}
-    {#        <div class="row_cust" style="width: 48%; margin-left: 180px;">#}
-    {#            <div id="aux_graph" class="column2"></div>#}
-    {#        </div>#}
-    {#        <div id="aux_graph2" class="row" style="width: 48%">#}
-    {##}
-    {#        </div>#}
-    {#    </table>#}
-
-    {#        <table style="display: flex; margin-left: 150px;">#}
-    {#            <div class="row" style="width: 33%; margin-left: 180px;">#}
-    {#                <div id="aux_graph" class="column2"></div>#}
-    {#            </div>#}
-    {#            <div id="aux_graph2" class="row" style="width: 33%">#}
-    {##}
-    {#            </div>#}
-    {#            <div id="text" class="row" style="width: 33%">#}
-    {#                Some interesting statistics here#}
-    {#            </div>#}
-    {#        </table>#}
     </div>
 
 </div>
 </html>
 
-<script src="{% static 'js/popup.js' %}"></script>
+<!-- <script src="{% static 'js/popup.js' %}"></script> -->
 
 <script>
 
@@ -1689,7 +1600,7 @@
     var acc = document.getElementsByClassName("accordion");
     var i;
 
-    for (i = 0; i < acc.length; i++) {
+    for (let i = 0; i < acc.length; i++) {
         acc[i].addEventListener("click", function () {
             /* Toggle between adding and removing the "active" class,
             to highlight the button that controls the panel */
@@ -1706,13 +1617,8 @@
     }
 
     function CheckAll(chk) {
-        //if (chk.length > 3) {
-        if (chk.length > 4) {
-            console.log("[User] {{ user }} | [interaction] checkall_features | [Date]", Date.now());
-        } else {
-            console.log("[User] {{ user }} | [interaction] checkall_targets | [Date]", Date.now());
-        }
-        for (i = 0; i < chk.length; i++) {
+        console.log("[User] {{ user }} | [interaction] checkall | [Date]", Date.now());
+        for (let i = 0; i < chk.length; i++) {
             chk[i].checked = true;
             var evt = document.createEvent("HTMLEvents");
             evt.initEvent("change", false, true);
@@ -1721,12 +1627,8 @@
     }
 
     function UnCheckAll(chk) {
-        if (chk.length > 3) {
-            console.log("[User] {{ user }} | [interaction] uncheckall_features | [Date]", Date.now());
-        } else {
-            console.log("[User] {{ user }} | [interaction] uncheckall_targets | [Date]", Date.now());
-        }
-        for (i = 0; i < chk.length; i++) {
+        console.log("[User] {{ user }} | [interaction] uncheckall | [Date]", Date.now());
+        for (let i = 0; i < chk.length; i++) {
             chk[i].checked = false;
             var evt = document.createEvent("HTMLEvents");
             evt.initEvent("change", false, true);
@@ -1744,7 +1646,7 @@
             document.getElementById("highlight_checks_AND").style = "display: block;";
             document.getElementById("highlight_checks_OR").style = "display: none;";
             checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightAND]");
-            for (i = 0; i < checks.length; i++) {
+            for (let i = 0; i < checks.length; i++) {
                 evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
                 checks[i].dispatchEvent(evt);
@@ -1757,7 +1659,7 @@
             document.getElementById("highlight_checks_OR").style = "display: block;";
 
             checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightOR]");
-            for (i = 0; i < checks.length; i++) {
+            for (let i = 0; i < checks.length; i++) {
                 evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
                 checks[i].dispatchEvent(evt);
@@ -1908,14 +1810,14 @@
     jQuery('#highlight-OR-selectAll-toxicity').click(function () {
         var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightOR][id^=highlight-toxicity-]");
         if (this.checked) {
-            for (i = 0; i < checks.length; i++) {
+            for (let i = 0; i < checks.length; i++) {
                 checks[i].checked = true;
                 var evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
                 checks[i].dispatchEvent(evt);
             }
         } else {
-            for (i = 0; i < checks.length; i++) {
+            for (let i = 0; i < checks.length; i++) {
                 checks[i].checked = false;
                 var evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
@@ -1927,14 +1829,14 @@
     jQuery('#highlight-OR-selectAll-stance').click(function () {
         var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightOR][id^=highlight-stance-]");
         if (this.checked) {
-            for (i = 0; i < checks.length; i++) {
+            for (let i = 0; i < checks.length; i++) {
                 checks[i].checked = true;
                 var evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
                 checks[i].dispatchEvent(evt);
             }
         } else {
-            for (i = 0; i < checks.length; i++) {
+            for (let i = 0; i < checks.length; i++) {
                 checks[i].checked = false;
                 var evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
@@ -1946,14 +1848,14 @@
     jQuery('#highlight-OR-selectAll-target').click(function () {
         var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightOR][id^=highlight-target-]");
         if (this.checked) {
-            for (i = 0; i < checks.length; i++) {
+            for (let i = 0; i < checks.length; i++) {
                 checks[i].checked = true;
                 var evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
                 checks[i].dispatchEvent(evt);
             }
         } else {
-            for (i = 0; i < checks.length; i++) {
+            for (let i = 0; i < checks.length; i++) {
                 checks[i].checked = false;
                 var evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
@@ -1965,14 +1867,14 @@
     jQuery('#highlight-OR-selectAll-features').click(function () {
         var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightOR][id^=highlight-features-]");
         if (this.checked) {
-            for (i = 0; i < checks.length; i++) {
+            for (let i = 0; i < checks.length; i++) {
                 checks[i].checked = true;
                 var evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
                 checks[i].dispatchEvent(evt);
             }
         } else {
-            for (i = 0; i < checks.length; i++) {
+            for (let i = 0; i < checks.length; i++) {
                 checks[i].checked = false;
                 var evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
@@ -1985,14 +1887,14 @@
     jQuery('#highlight-AND-selectAll-target').click(function () {
         var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightAND][id^=highlight-target-]");
         if (this.checked) {
-            for (i = 0; i < checks.length; i++) {
+            for (let i = 0; i < checks.length; i++) {
                 checks[i].checked = true;
                 var evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
                 checks[i].dispatchEvent(evt);
             }
         } else {
-            for (i = 0; i < checks.length; i++) {
+            for (let i = 0; i < checks.length; i++) {
                 checks[i].checked = false;
                 var evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
@@ -2004,14 +1906,14 @@
     jQuery('#highlight-AND-selectAll-features').click(function () {
         var checks = document.querySelectorAll("input[type=checkbox][name=cbHighlightAND][id^=highlight-features-]");
         if (this.checked) {
-            for (i = 0; i < checks.length; i++) {
+            for (let i = 0; i < checks.length; i++) {
                 checks[i].checked = true;
                 var evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
                 checks[i].dispatchEvent(evt);
             }
         } else {
-            for (i = 0; i < checks.length; i++) {
+            for (let i = 0; i < checks.length; i++) {
                 checks[i].checked = false;
                 var evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
