@@ -1157,21 +1157,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .style("visibility", "visible")
         .style("right", "320px");
 
-    // Div where the zoom buttons are displayed
-    var zoomBackground = d3.select(container)
-        .append("div")
-        .style("position", "absolute")
-        .style("z-index", "0") //it has no change
-        .style("visibility", "visible");
-
-    // Div where the sum up information of "Static Values" is displayed
-    var statisticTitleBackground = d3.select("#tree-container")
-        .append("div")
-        .attr("class", "my-statistic-title") //add the tooltip class
-        .style("position", "absolute")
-        .style("z-index", "0") //it has no change
-        .style("visibility", "visible");
-
     /*SECTION zoom*/
     var zoomLabel = document.getElementById("zoom_level");
     var XLabel = document.getElementById("position_x");
@@ -2992,7 +2977,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
 
 
-    function update(source, first_call, static_values_checked_param = false) {
+    function update(source, first_call, static_values_checked_param = true) {
 
         // Compute the new tree layout.
         nodes = tree.nodes(root).reverse();
@@ -3378,7 +3363,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
             // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
             highlightLongestThread(node, link);
-            
+
             if (static_values_checked) {
                 statisticBackground.html(writeStatisticText());
             }
@@ -3774,8 +3759,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     root.y0 = 0;
 
 // Layout the tree initially and center on the root node.
-    document.querySelector("#tree-container div.my-statistic").style.visibility = "hidden";
-    update(root, true,false);
+    document.querySelector("#tree-container div.my-statistic").style.visibility = "visible";
+    update(root, true,true);
 
     let element = document.getElementById('tree-container');
     let computedStyle = getComputedStyle(element);
@@ -3784,7 +3769,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     canvasWidth = elementWidth;
 
     var box = computeDimensions(nodes);
-    console.log(box)
     let initialSight = zoomToFitGraph(box.minX-1500, box.minY-1500, box.maxX+1500, box.maxY+1500, root, canvasHeight, canvasWidth);
 
 
@@ -3796,33 +3780,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     zoomListener.translate([initialY, initialX]);
     zoomListener.event(baseSvg);
 
-//Set initial stroke widths
+    //Set initial stroke widths
     link.style("stroke-width", 11); //Enlarge stroke-width on zoom out
     node.select("circle.nodeCircle").style("stroke-width", 3); //Enlarge stroke-width on zoom out
-
-    /**
-     * Wrap call to compute statistics and to write them in a hover text
-     * */
-    function computeStatistics() {
-        //I compute the values for the statistic data showing in the background
-        var listStatistics = getStatisticValues(root);
-        var totalNumberOfNodes = listStatistics.children;
-
-        var totalNotToxic = listStatistics.toxicity0,
-            totalMildlyToxic = listStatistics.toxicity1,
-            totalToxic = listStatistics.toxicity2,
-            totalVeryToxic = listStatistics.toxicity3;
-
-        var totalGroup = listStatistics.totalTargGroup,
-            totalPerson = listStatistics.totalTargPerson,
-            totalStereotype = listStatistics.totalTargStereotype,
-            totalNone = listStatistics.totalTargNone;
-
-        var statisticTitle = "Static values of the news article";
-        statisticTitleBackground.style("visibility", "visible").html(statisticTitle);
-        // statisticBackground.style("visibility", "visible").html(writeStatisticText(totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic,
-        //     totalGroup, totalPerson, totalStereotype, totalNone));
-    }
 
     /**
      * Recursive function to compute the global statistics

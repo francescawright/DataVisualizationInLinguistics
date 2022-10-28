@@ -987,7 +987,6 @@ treeJSONPopup = d3.json(dataset, function (error, treeData) {
             "transform",
             "translate(" + [newY, newX] + ")scale(" + newScale + ")"
         );
-        drawZoomValue(newScale);
         currentScale = newScale;
     }
     */
@@ -995,7 +994,6 @@ treeJSONPopup = d3.json(dataset, function (error, treeData) {
     function zoomPopup() {
         var zoomPopup = d3.event;
         svgGroupPopup.attr("transform", "translate(" + zoomPopup.translate + ")scale(" + zoomPopup.scale + ")");
-        drawZoomValue(zoomPopup.scale);
         currentScalePopup = zoomPopup.scale;
     }
 
@@ -3864,82 +3862,7 @@ treeJSONPopup = d3.json(dataset, function (error, treeData) {
         totalStereotype = listStatistics.totalTargStereotype,
         totalNone = listStatistics.totalTargNone;
 
-    function drawZoomValue(zoomLevel) {
-        // console.log("Zoom Level", zoomLevel);
-        //try {
-        //zoomLabel.textContent = "Zoom: " + ((((zoomLevel - 0.1) / 2.9) * 100).toFixed(0) - 1) + '%';
-        //XLabel.textContent = "X: " + currentX.toFixed(0);
-        //YLabel.textContent = "Y: " + currentY.toFixed(0);
-        //} catch (TypeError) {
-        //    XLabel.textContent = "X: " + currentX;
-        //    YLabel.textContent = "Y: " + currentY;
-        //}
-    }
-
     console.log('[User]', user.split('/')[2], '| [interaction]', 'Tree_layout_loaded', ' | [Date]', Date.now());
-    //window.addEventListener('DOMContentLoaded', (event) => {
-    //drawZoomValue(zoomListener.scale());
-    //screenshotButton.addEventListener('click', function () {
-    // var ctx = canvas.getContext('2d');
-    // var data = (new XMLSerializer()).serializeToString(baseSvg.node());
-    // var DOMURL = window.URL || window.webkitURL || window;
-
-    // var img = new Image();
-    // var svgBlob = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
-    // var url = DOMURL.createObjectURL(svgBlob);
-
-    // img.onload = function () {
-    //     ctx.drawImage(img, 0, 0);
-    //     DOMURL.revokeObjectURL(url);
-
-    //     var imgURI = canvas
-    //         .toDataURL('image/png')
-    //         .replace('image/png', 'image/octet-stream');
-
-    //     triggerDownload(imgURI);
-    // };
-
-    // img.src = url;
-    //console.log(baseSvg);
-    //    saveSvgAsPng(baseSvg.node(), "tree_image.png");
-    //});
-    //});
-
-
-    // import saveSvgAsPng from './saveSvgAsPng.js';
-
-    var screenshotButton = document.getElementById("screenshot_icon");
-    var canvas = document.getElementById("screenshot_canvas");
-
-    function triggerDownload(imgURI) {
-        var evt = new MouseEvent('click', {
-            view: window,
-            bubbles: false,
-            cancelable: true
-        });
-
-        var a = document.createElement('a');
-        a.setAttribute('download', 'tree_image.png');
-        a.setAttribute('href', imgURI);
-        a.setAttribute('target', '_blank');
-
-        a.dispatchEvent(evt);
-    }
-
-
-    // function saveSvg(svgEl, name) {
-    //     //svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    //     var svgData = svgEl.outerHTML;
-    //     var preface = '<?xml version="1.0" standalone="no"?>\r\n';
-    //     var svgBlob = new Blob([preface, svgData], {type:"image/svg+xml;charset=utf-8"});
-    //     var svgUrl = URL.createObjectURL(svgBlob);
-    //     var downloadLink = document.createElement("a");
-    //     downloadLink.href = svgUrl;
-    //     downloadLink.download = name;
-    //     document.body.appendChild(downloadLink);
-    //     downloadLink.click();
-    //     document.body.removeChild(downloadLink);
-    // }
 
 /*******************************
 *   Categorization Functions   *
@@ -4848,7 +4771,6 @@ $(".force-modal-button").on("click", function () {
             let newX = initialX + (movement[1]);
             let newY = initialY + (movement[0]);
             svg.attr("transform", "translate(" + [newY, newX] + ")scale(" + newScale + ")");
-            drawZoomValue(newScale);
             currentScale = newScale;
 
         }
@@ -7369,7 +7291,6 @@ $(".force-modal-button").on("click", function () {
         function zoom() {
             var zoom = d3.event;
             svg.attr("transform", "translate(" + zoom.translate + ")scale(" + zoom.scale + ")");
-            drawZoomValue(zoom.scale);
             currentScale = zoom.scale;
         }
 
@@ -7516,13 +7437,6 @@ $(".force-modal-button").on("click", function () {
 
             statisticText += "</table>";
             return statisticText;
-        }
-
-        function drawZoomValue(zoomLevel) {
-            //console.log("Zoom Level", zoomLevel);
-            //zoomLabel.textContent = "Zoom: " + ((((zoomLevel - minZoom) / maxZoom) * 100) + 1).toFixed(0) + '%';
-            //XLabel.textContent = "X: " + currentX.toFixed(0);
-            //>YLabel.textContent = "Y: " + currentY.toFixed(0);
         }
 
         console.log('[User]', user.split('/')[2], '| [interaction]', 'Force_layout_loaded', ' | [Date]', Date.now());

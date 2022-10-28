@@ -361,9 +361,6 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.1) {
             .style("position", "relative")
             .style("z-index", 1)
             .style("opacity", opacityValue);
-        node.filter(function (d) {
-            return !d.highlighted;
-        }).style("opacity", opacityValue);
     }
 }
 
@@ -753,21 +750,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         .style("visibility", "visible")
         .style("right", "320px");
 
-    // Div where the zoom buttons are displayed
-    var zoomBackground = d3.select(container)
-        .append("div")
-        .style("position", "absolute")
-        .style("z-index", "0") //it has no change
-        .style("visibility", "visible");
-
-    // Div where the sum up information of "Static Values" is displayed
-    var statisticTitleBackground = d3.select(container)
-        .append("div")
-        .attr("class", "my-statistic-title") //add the tooltip class
-        .style("position", "absolute")
-        .style("z-index", "0") //it has no change
-        .style("visibility", "visible");
-
 
     /* SECTION Zoom*/
     var zoomLabel = document.getElementById("zoom_level");
@@ -1042,7 +1024,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             "transform",
             "translate(" + [newY, newX] + ")scale(" + newScale + ")"
         );
-        drawZoomValue(newScale);
         currentScale = newScale;
     }
     */
@@ -1050,7 +1031,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     function zoom() {
         var zoom = d3.event;
         svgGroup.attr("transform", "translate(" + zoom.translate + ")scale(" + zoom.scale + ")");
-        drawZoomValue(zoom.scale);
         currentScale = zoom.scale;
     }
 
@@ -3441,7 +3421,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
 
-    function update(source, first_call, static_values_checked_param = false) {
+    function update(source, first_call, static_values_checked_param = true) {
         tree = tree
             .nodeSize([separationHeight, 0]) //heigth and width of the rectangles that define the node space
             .separation(function (a, b) {
@@ -4299,8 +4279,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     root.y0 = 0;
 
     // Layout the tree initially and center on the root node.
-    document.querySelector("#tree-container div.my-statistic").style.visibility = "hidden";
-    update(root, true, false);
+    document.querySelector("#tree-container div.my-statistic").style.visibility = "visible";
+    update(root, true, true);
     centerNode(root);
 
     let element = document.getElementById('tree-container');
@@ -4339,12 +4319,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
 
     // statisticBackground.style("visibility", "visible").html(writeStatisticText());
-
-
-    function drawStaticStuff() {
-        writeStatisticText();
-        drawZoomIcons();
-    }
 
 
     function writeStatisticText() {
@@ -4387,82 +4361,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         return statisticText;
     }
 
-    function drawZoomValue(zoomLevel) {
-        // console.log("Zoom Level", zoomLevel);
-        //try {
-        //zoomLabel.textContent = "Zoom: " + ((((zoomLevel - 0.1) / 2.9) * 100).toFixed(0) - 1) + '%';
-        //XLabel.textContent = "X: " + currentX.toFixed(0);
-        //YLabel.textContent = "Y: " + currentY.toFixed(0);
-        //} catch (TypeError) {
-        //    XLabel.textContent = "X: " + currentX;
-        //    YLabel.textContent = "Y: " + currentY;
-        //}
-    }
-
     console.log('[User]', user.split('/')[2], '| [interaction]', 'Tree_layout_loaded', ' | [Date]', Date.now());
-    //window.addEventListener('DOMContentLoaded', (event) => {
-    //drawZoomValue(zoomListener.scale());
-    //screenshotButton.addEventListener('click', function () {
-    // var ctx = canvas.getContext('2d');
-    // var data = (new XMLSerializer()).serializeToString(baseSvg.node());
-    // var DOMURL = window.URL || window.webkitURL || window;
-
-    // var img = new Image();
-    // var svgBlob = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
-    // var url = DOMURL.createObjectURL(svgBlob);
-
-    // img.onload = function () {
-    //     ctx.drawImage(img, 0, 0);
-    //     DOMURL.revokeObjectURL(url);
-
-    //     var imgURI = canvas
-    //         .toDataURL('image/png')
-    //         .replace('image/png', 'image/octet-stream');
-
-    //     triggerDownload(imgURI);
-    // };
-
-    // img.src = url;
-    //console.log(baseSvg);
-    //    saveSvgAsPng(baseSvg.node(), "tree_image.png");
-    //});
-    //});
-
-
-    // import saveSvgAsPng from './saveSvgAsPng.js';
-
-    var screenshotButton = document.getElementById("screenshot_icon");
-    var canvas = document.getElementById("screenshot_canvas");
-
-    function triggerDownload(imgURI) {
-        var evt = new MouseEvent('click', {
-            view: window,
-            bubbles: false,
-            cancelable: true
-        });
-
-        var a = document.createElement('a');
-        a.setAttribute('download', 'tree_image.png');
-        a.setAttribute('href', imgURI);
-        a.setAttribute('target', '_blank');
-
-        a.dispatchEvent(evt);
-    }
-
-
-    // function saveSvg(svgEl, name) {
-    //     //svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    //     var svgData = svgEl.outerHTML;
-    //     var preface = '<?xml version="1.0" standalone="no"?>\r\n';
-    //     var svgBlob = new Blob([preface, svgData], {type:"image/svg+xml;charset=utf-8"});
-    //     var svgUrl = URL.createObjectURL(svgBlob);
-    //     var downloadLink = document.createElement("a");
-    //     downloadLink.href = svgUrl;
-    //     downloadLink.download = name;
-    //     document.body.appendChild(downloadLink);
-    //     downloadLink.click();
-    //     document.body.removeChild(downloadLink);
-    // }
 
 /*******************************
 *   Categorization Functions   *

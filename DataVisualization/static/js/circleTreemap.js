@@ -1,12 +1,13 @@
 // Variable to check if the ready function code has been completely executed
 var codeReady = false;
 
-let svg = d3.select("#svg_treeMap")
-//let svg = d3
-        //.select("#whole-container")
-        //.append("svg")
-        //.attr("width", 960)
-        //.attr("height", 960)
+var static_values_checked = true;
+
+let svg = d3.select(container)
+        .append("svg")
+        .attr("width", 960)
+        .attr("height", 960)
+        .attr("style", "overflow: visible; margin-top: 100px; margin-left: 180px;")
 
 
     let diameter = svg.attr("width"),
@@ -20,7 +21,7 @@ let pack = d3.pack()
 var tooltipText;
 
  // Hover rectangle in which the information of a node is displayed
-var tooltip = d3.select("#circletree-container")
+var tooltip = d3.select(container)
     .append("div")
     .attr("class", "my-tooltip") //add the tooltip class
     .style("position", "absolute")
@@ -59,6 +60,26 @@ var checkboxesHighlightGroupAND = document.querySelectorAll("input[type=checkbox
 
 console.log('[User]', user.split('/')[2], '| [interaction]', 'TreeMap_layout_loaded', '| [Date]', Date.now());
 var enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
+
+/**
+ * Returns a list of all nodes under the root.
+ * */
+function flatten(root) {
+    var nodes = [], i = 0;
+
+    function recurse(node, parent) {
+        node.parent = parent; //We assign a parent to the node
+        if (parent) node.depth = node.parent.depth + 1; //If parent is not null
+        if (node.children) node.children.forEach(element => recurse(element, node));
+        if (!node.id) node.id = ++i;
+        nodes.push(node);
+    }
+
+    root.depth = 0;
+    recurse(root, null);
+    return nodes;
+}
+
 treeJSON = d3.json(dataset, function (error, root) {
 
     // Used to obtain the nodes belonging to the deepest thread
@@ -119,6 +140,8 @@ treeJSON = d3.json(dataset, function (error, root) {
             return "translate(" + d.x + "," + d.y + ")";
         })
 
+    var nodes = flatten(root); //get nodes as a list
+
 
     //node.append("title")
     //  .text(function(d) { return d.data.name + "\n" + format(d.value); });
@@ -169,7 +192,7 @@ treeJSON = d3.json(dataset, function (error, root) {
             })
         .on("mousemove", function (d) {
                 // if (d !== root) {
-                    return tooltip.style("top", (d3.mouse(document.querySelector("#circletree-container"))[1] + 60) + "px").style("left", (d3.mouse(document.querySelector("#circletree-container"))[0] + 65) + "px");
+                    return tooltip.style("top", (d3.mouse(document.querySelector(container))[1] - 45) + "px").style("left", (d3.mouse(document.querySelector(container))[0] - 460) + "px");
                 // }
             })
         .on("mouseout", function () {
@@ -180,87 +203,84 @@ treeJSON = d3.json(dataset, function (error, root) {
         //    .on("mousemove", function(){return tooltip.style("top", d3.event.pageY -30 +"px").style("left",d3.event.pageX + 480 +"px");})
 	    //    .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
-/**
- * Recursive function to compute the global statistics
- * counts nodes by toxicity and by targets
- * */
-function getStatisticValues(node) {
-    if (!node.children) {
+    /**
+     * Recursive function to compute the global statistics
+     * counts nodes by toxicity and by targets
+     * */
+    function getStatisticValues(node) {
+        if (!node.children) {
+            return {
+                children: 0,
+                toxicityLevel: node.data.toxicity_level,
+                toxicity0: 0,
+                toxicity1: 0,
+                toxicity2: 0,
+                toxicity3: 0,
+                totalTargGroup: 0,
+                totalTargPerson: 0,
+                totalTargStereotype: 0,
+                totalTargNone: 0,
+                targGroup: node.data.target_group,
+                targPerson: node.data.target_person,
+                targStereotype: node.data.stereotype,
+                targNone: 0
+            };
+        }
+        var total = 0, childrenList = [],
+            totalToxic0 = 0, totalToxic1 = 0, totalToxic2 = 0, totalToxic3 = 0,
+            totalTargGroup = 0, totalTargPerson = 0, totalTargStereotype = 0, totalTargNone = 0;
+
+        if (node.children) {
+            node.children.forEach(function (d) {
+                childrenList = getStatisticValues(d);
+                total += childrenList.children + 1;
+
+                totalToxic0 += childrenList.toxicity0;
+                totalToxic1 += childrenList.toxicity1;
+                totalToxic2 += childrenList.toxicity2;
+                totalToxic3 += childrenList.toxicity3;
+                if (d.data.highlighted) {
+                    switch (childrenList.toxicityLevel) {
+                        case 0:
+                            totalToxic0 += 1;
+                            break;
+                        case 1:
+                            totalToxic1 += 1;
+                            break;
+                        case 2:
+                            totalToxic2 += 1;
+                            break;
+                        case 3:
+                            totalToxic3 += 1;
+                            break;
+                    }
+                }
+
+                //Targets are not exclusive
+                childrenList.targGroup && d.data.highlighted ? totalTargGroup += childrenList.totalTargGroup + 1 : totalTargGroup += childrenList.totalTargGroup;
+                childrenList.targPerson && d.data.highlighted ? totalTargPerson += childrenList.totalTargPerson + 1 : totalTargPerson += childrenList.totalTargPerson;
+                childrenList.targStereotype && d.data.highlighted ? totalTargStereotype += childrenList.totalTargStereotype + 1 : totalTargStereotype += childrenList.totalTargStereotype;
+                (!childrenList.targGroup && !childrenList.targPerson && !childrenList.targStereotype) && d.data.highlighted ? totalTargNone += childrenList.totalTargNone + 1 : totalTargNone += childrenList.totalTargNone;
+            })
+        }
+
         return {
-            children: 0,
+            children: total,
             toxicityLevel: node.data.toxicity_level,
-            toxicity0: 0,
-            toxicity1: 0,
-            toxicity2: 0,
-            toxicity3: 0,
-            totalTargGroup: 0,
-            totalTargPerson: 0,
-            totalTargStereotype: 0,
-            totalTargNone: 0,
+            toxicity0: totalToxic0,
+            toxicity1: totalToxic1,
+            toxicity2: totalToxic2,
+            toxicity3: totalToxic3,
+            totalTargGroup: totalTargGroup,
+            totalTargPerson: totalTargPerson,
+            totalTargStereotype: totalTargStereotype,
+            totalTargNone: totalTargNone,
             targGroup: node.data.target_group,
             targPerson: node.data.target_person,
             targStereotype: node.data.stereotype,
             targNone: 0
         };
     }
-    var total = 0, childrenList = [],
-        totalToxic0 = 0, totalToxic1 = 0, totalToxic2 = 0, totalToxic3 = 0,
-        totalTargGroup = 0, totalTargPerson = 0, totalTargStereotype = 0, totalTargNone = 0;
-
-    if (node.children) {
-        node.children.forEach(function (d) {
-            childrenList = getStatisticValues(d);
-            total += childrenList.children + 1;
-
-            totalToxic0 += childrenList.toxicity0;
-            totalToxic1 += childrenList.toxicity1;
-            totalToxic2 += childrenList.toxicity2;
-            totalToxic3 += childrenList.toxicity3;
-
-            switch (childrenList.toxicityLevel) {
-
-                case 0:
-                    totalToxic0 += 1;
-                    break;
-
-                case 1:
-                    totalToxic1 += 1;
-                    break;
-
-                case 2:
-                    totalToxic2 += 1;
-                    break;
-
-                case 3:
-                    totalToxic3 += 1;
-                    break;
-            }
-
-            //Targets are not exclusive
-            childrenList.targGroup ? totalTargGroup += childrenList.totalTargGroup + 1 : totalTargGroup += childrenList.totalTargGroup;
-            childrenList.targPerson ? totalTargPerson += childrenList.totalTargPerson + 1 : totalTargPerson += childrenList.totalTargPerson;
-            childrenList.targStereotype ? totalTargStereotype += childrenList.totalTargStereotype + 1 : totalTargStereotype += childrenList.totalTargStereotype;
-            (!childrenList.targGroup && !childrenList.targPerson && !childrenList.targStereotype) ? totalTargNone += childrenList.totalTargNone + 1 : totalTargNone += childrenList.totalTargNone;
-        })
-    }
-
-    return {
-        children: total,
-        toxicityLevel: node.data.toxicity_level,
-        toxicity0: totalToxic0,
-        toxicity1: totalToxic1,
-        toxicity2: totalToxic2,
-        toxicity3: totalToxic3,
-        totalTargGroup: totalTargGroup,
-        totalTargPerson: totalTargPerson,
-        totalTargStereotype: totalTargStereotype,
-        totalTargNone: totalTargNone,
-        targGroup: node.data.target_group,
-        targPerson: node.data.target_person,
-        targStereotype: node.data.stereotype,
-        targNone: 0
-    };
-}
 
 //I compute the values for the statistic data showing in the background
 var listStatistics = getStatisticValues(root);
@@ -404,9 +424,15 @@ function hovered(hover) {
 function highlightNodesByPropertyOR(node, enabledHighlight) {
     //If no tag (toxicity, stance,...) checkbox is selected: highlight all
     if (enabledHighlight.length === 0) {
+        nodes.forEach(function (d) {
+            d.data.highlighted = 1;
+        });
         node.style("opacity", maxOpacityValue);
     } else { //If some tag checkbox is selected behave as expected
         //First, unhighlight everything
+        nodes.forEach(function (d) {
+            d.data.highlighted = 0;
+        });
         node.style("opacity", minOpacityValue);
 
         //Then highlight if the node has the property
@@ -416,13 +442,20 @@ function highlightNodesByPropertyOR(node, enabledHighlight) {
         highlightByTarget(node, enabledHighlight, highlightNode);
     }
     node.filter(function (d) {
-        return d.depth === 0;
+        let result = d.depth === 0;
+        if (result){
+            d.data.highlighted = 1;
+        }
+        return result;
     }).style("opacity", maxOpacityValue);
 
 }
 
 function highlightNodesByPropertyAND(node, enabledHighlight) {
     //First, highlight everything
+    nodes.forEach(function (d) {
+        d.data.highlighted = 1;
+    });
     node.style("opacity", maxOpacityValue);
 
     //Then unhighlight if the node does not have the property
@@ -431,34 +464,62 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
     highlightByStance(node, enabledHighlight, unhighlightNode);
     highlightByTarget(node, enabledHighlight, unhighlightNode);
     node.filter(function (d) {
-        return d.depth === 0;
+        let result = d.depth === 0;
+        if (result){
+            d.data.highlighted = 1;
+        }
+        return result;
     }).style("opacity", maxOpacityValue);
 
 }
 
 function highlightLongestThread(node) {
 
+    nodes.forEach(function (d) {
+        d.data.highlighted = 1;
+    });
+
     node.style("opacity", maxOpacityValue);
 
     node.filter(function (d) {
-        return (!deepestNodesPath.includes(d));
+        let result = !deepestNodesPath.includes(d);
+        if (result){
+            d.data.highlighted = 0;
+        }
+        return result;
     }).style("stroke", "black").style("color", "black").style("opacity", minOpacityValue);
 
     node.filter(function (d) {
-        return d.depth === 0;
+        let result = d.depth === 0;
+        if (result){
+            d.data.highlighted = 1;
+        }
+        return result;
     }).style("opacity", maxOpacityValue);
 }
 
 function highlightWidestLevels(node, levelsIndexes) {
 
+    nodes.forEach(function (d) {
+        d.data.highlighted = 1;
+    });
+
     node.style("opacity", maxOpacityValue);
 
     node.filter(function (d) {
-        return (!levelsIndexes.includes(d.depth));
+        let result = !levelsIndexes.includes(d.depth);
+        if (result){
+            d.data.highlighted = 0;
+        }
+        return result;
     }).style("stroke", "black").style("color", "black").style("opacity", minOpacityValue);
 
     node.filter(function (d) {
-        return d.depth === 0;
+        let result = d.depth === 0;
+        if (result){
+            d.data.highlighted = 1;
+        }
+        return result;
     }).style("opacity", maxOpacityValue);
 }
 
@@ -535,6 +596,9 @@ function highlightWidestLevels(node, levelsIndexes) {
                         console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                     }
                     checkboxOR.checked ? highlightNodesByPropertyOR(node, enabledHighlight) : highlightNodesByPropertyAND(node, enabledHighlight);
+                    if (static_values_checked) {
+                        statisticBackground.html(writeStatisticText());
+                    }
                 })
             });
 
@@ -560,6 +624,9 @@ function highlightWidestLevels(node, levelsIndexes) {
                         console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + checkboxItem.name + '_' + checkboxItem.value, " | [Date]", Date.now());
                     }
                     checkboxAND.checked ? highlightNodesByPropertyAND(node, enabledHighlight) : highlightNodesByPropertyOR(node, enabledHighlight);
+                    if (static_values_checked) {
+                        statisticBackground.html(writeStatisticText());
+                    }
                 })
             });
 
@@ -571,6 +638,23 @@ function highlightWidestLevels(node, levelsIndexes) {
             document.querySelector("body").dispatchEvent(event);
 
             codeReady = true;
+
+            document.querySelector("#tree-container div.my-statistic").style.visibility = "visible";
+            jQuery("#static_values_button").click(function () {
+                if (!static_values_checked) {
+                    document.getElementById('static_values_button').innerHTML = '&#8722;';
+                    static_values_checked = true;
+                    statisticBackground.style("visibility", "visible").html(writeStatisticText());
+                    console.log('[User]', user.split('/')[2], '| [interaction]', 'show_summary', ' | [Date]', Date.now());
+
+                } else {
+                    document.getElementById('static_values_button').innerHTML = '&#43;'
+                    static_values_checked = false;
+                    statisticBackground.style("visibility", "hidden").html(writeStatisticText());
+                    console.log('[User]', user.split('/')[2], '| [interaction]', 'hide_summary', ' | [Date]', Date.now());
+
+                }
+            });
         });
     } catch
         (TypeError) {
@@ -617,6 +701,10 @@ function highlightWidestLevels(node, levelsIndexes) {
         deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
         // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
         highlightLongestThread(node);
+
+        if (static_values_checked) {
+            statisticBackground.html(writeStatisticText());
+        }
     });
 
     /**
@@ -636,6 +724,10 @@ function highlightWidestLevels(node, levelsIndexes) {
         injectIntentConversation(textMsg);
 
         highlightWidestLevels(node, widestLevels[0]);
+
+        if (static_values_checked) {
+            statisticBackground.html(writeStatisticText());
+        }
     });
 
     //Listeners
@@ -752,13 +844,21 @@ function highlightWidestLevels(node, levelsIndexes) {
 
     function highlightNode(node, attributeName) {
         node.filter(function (d) {
-            return retrieveAttributeFromComment(d.data, attributeName);
+            let result = retrieveAttributeFromComment(d.data, attributeName);
+            if (result){
+                d.data.highlighted = 1;
+            }
+            return result;
         }).style("stroke", "black").style("color", "black").style("opacity", maxOpacityValue);
     }
 
     function unhighlightNode(node, attributeName) {
         node.filter(function (d) {
-            return !retrieveAttributeFromComment(d.data, attributeName);
+            let result = !retrieveAttributeFromComment(d.data, attributeName);
+            if (result){
+                d.data.highlighted = 0;
+            }
+            return result;
         }).style("stroke", "black").style("color", "black").style("opacity", minOpacityValue);
     }
 
@@ -802,7 +902,7 @@ function highlightWidestLevels(node, levelsIndexes) {
     }
 
     // Div where the title of the "Static Values" is displayed
-    var statisticBackground = d3.select("#circletree-container")
+    var statisticBackground = d3.select(container)
         .append("div")
         .attr("class", "my-statistic") //add the tooltip class
         .style("position", "absolute")
@@ -810,22 +910,42 @@ function highlightWidestLevels(node, levelsIndexes) {
         .style("visibility", "visible")
         .style("right", "320px");
 
-    // Div where the zoom buttons are displayed
-    var zoomBackground = d3.select("body")
-        .append("div")
-        .style("position", "absolute")
-        .style("z-index", "0") //it has no change
-        .style("visibility", "visible");
+    function writeStatisticText() {
+        // var statisticText = "<span style='font-size: 22px;'> Summary of " + sel_item.split('/')[2] + "</span>";
+        var statisticText = "<table style='width: 530px; margin-top: 50px; z-index: 100;'>";
 
-    // Div where the sum up information of "Static Values" is displayed
-    var statisticTitleBackground = d3.select("#circletree-container")
-        .append("div")
-        .attr("class", "my-statistic-title") //add the tooltip class
-        .style("position", "absolute")
-        .style("z-index", "0") //it has no change
-        .style("visibility", "visible");
+        var listStatisticsUpdate = getStatisticValues(root);
 
-    /*SECTION zoom - TODO*/
+        var totalNotToxicUpdate = listStatisticsUpdate.toxicity0,
+            totalMildlyToxicUpdate = listStatisticsUpdate.toxicity1,
+            totalToxicUpdate = listStatisticsUpdate.toxicity2,
+            totalVeryToxicUpdate = listStatisticsUpdate.toxicity3;
+
+        var totalGroupUpdate = listStatisticsUpdate.totalTargGroup,
+            totalPersonUpdate = listStatisticsUpdate.totalTargPerson,
+            totalStereotypeUpdate = listStatisticsUpdate.totalTargStereotype,
+            totalNoneUpdate = listStatisticsUpdate.totalTargNone;
+
+        var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
+        var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
+        var statValuesTox = [totalNotToxicUpdate, totalMildlyToxicUpdate, totalToxicUpdate, totalVeryToxicUpdate];
+        var statValuesTarg = [totalGroupUpdate, totalPersonUpdate, totalStereotypeUpdate, totalNoneUpdate];
+        var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
+        var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
+
+        for (var i = 0; i < statTitlesToxicity.length; i++) {
+            statisticText += "<tr style='font-size: 20px;'>"; //Start table line
+
+            //Write toxicity and target line
+            statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td style='padding-right: 55px;'>" + statValuesTox[i].toString() + "</td>";
+            statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
+
+            statisticText += "</tr>"; //End table line
+        }
+
+        statisticText += "</table>";
+        return statisticText;
+    }
 
 /*******************************
 *   Categorization Functions   *

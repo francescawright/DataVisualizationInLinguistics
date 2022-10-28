@@ -630,7 +630,6 @@ treeJSON = d3.json(dataset, function (error, json) {
         let newX = initialX + (movement[1]);
         let newY = initialY + (movement[0]);
         svg.attr("transform", "translate(" + [newY, newX] + ")scale(" + newScale + ")");
-        drawZoomValue(newScale);
         currentScale = newScale;
 
     }
@@ -750,14 +749,6 @@ treeJSON = d3.json(dataset, function (error, json) {
         .style("z-index", "1") //it has no change
         .style("visibility", "visible")
         .style("right", "320px");
-
-    // Div where the title of the "Static Values" is displayed
-    var statisticTitleBackground = d3.select(container)
-        .append("div")
-        .attr("class", "my-statistic-title") //add the tooltip class
-        .style("position", "absolute")
-        .style("z-index", "0") //it has no change
-        .style("visibility", "visible");
 
 
     var svg = d3.select(container) //Define the container that holds the layout
@@ -2562,7 +2553,7 @@ treeJSON = d3.json(dataset, function (error, json) {
     /*
     Functions
     * */
-    function update(static_values_checked_param = false) {
+    function update(static_values_checked_param = true) {
         nodes = flatten(root); //get nodes as a list
         var links = d3.layout.tree().links(nodes);
 
@@ -3224,7 +3215,6 @@ treeJSON = d3.json(dataset, function (error, json) {
     function zoom() {
         var zoom = d3.event;
         svg.attr("transform", "translate(" + zoom.translate + ")scale(" + zoom.scale + ")");
-        drawZoomValue(zoom.scale);
         currentScale = zoom.scale;
     }
 
@@ -3286,8 +3276,8 @@ treeJSON = d3.json(dataset, function (error, json) {
     var svgGroup = svg.append("g"); //We define it here, otherwise, svg is not defined
     root = json;
 
-    document.querySelector("#tree-container div.my-statistic").style.visibility = "hidden";
-    update(false);
+    document.querySelector("#tree-container div.my-statistic").style.visibility = "visible";
+    update(true);
 
     force.alpha(1.5); //Restart the timer of the cooling parameter with a high value to reach better initial positioning
 
@@ -3329,11 +3319,6 @@ treeJSON = d3.json(dataset, function (error, json) {
             totalPerson = listStatistics.totalTargPerson,
             totalStereotype = listStatistics.totalTargStereotype,
             totalNone = listStatistics.totalTargNone;
-
-        // var statisticTitle = "Static values of the news article";
-        // statisticTitleBackground.style("visibility", "visible").html(statisticTitle);
-        // statisticBackground.style("visibility", "visible").html(writeStatisticText(totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic,
-        //     totalGroup, totalPerson, totalStereotype, totalNone));
     }
 
     //I compute the values for the statistic data showing in the background
@@ -3349,8 +3334,6 @@ treeJSON = d3.json(dataset, function (error, json) {
         totalPerson = listStatistics.totalTargPerson,
         totalStereotype = listStatistics.totalTargStereotype,
         totalNone = listStatistics.totalTargNone;
-
-    // statisticBackground.style("visibility", "visible").html(writeStatisticText());
 
     function writeStatisticText() {
         // var statisticText = "<span style='font-size: 22px;'> Summary of " + sel_item.split('/')[2] + "</span>";
@@ -3387,13 +3370,6 @@ treeJSON = d3.json(dataset, function (error, json) {
 
         statisticText += "</table>";
         return statisticText;
-    }
-
-    function drawZoomValue(zoomLevel) {
-        //console.log("Zoom Level", zoomLevel);
-        //zoomLabel.textContent = "Zoom: " + ((((zoomLevel - minZoom) / maxZoom) * 100) + 1).toFixed(0) + '%';
-        //XLabel.textContent = "X: " + currentX.toFixed(0);
-        //>YLabel.textContent = "Y: " + currentY.toFixed(0);
     }
 
     console.log('[User]', user.split('/')[2], '| [interaction]', 'Force_layout_loaded', ' | [Date]', Date.now());
