@@ -1,5 +1,6 @@
 from django import forms
 from DataVisualization.models import Document
+from django import forms
 
 
 class FileForm(forms.ModelForm):
@@ -8,7 +9,10 @@ class FileForm(forms.ModelForm):
         fields = "__all__"
 
 
-from django import forms
+class UpdateFileForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = ['description','title', 'text_URL', 'comments_URL']
 
 
 class Loginform(forms.Form):

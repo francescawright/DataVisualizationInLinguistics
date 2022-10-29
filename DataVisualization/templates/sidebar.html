@@ -90,7 +90,7 @@
 
 {% include 'rasa-webchat.html' %}
 
-<div class="bg-light border-right main-left-sidebar" id="sidebar-wrapper">
+<div class="bg-light border-right main-left-sidebar" id="sidebar-wrapper" style="width: 300px;">
 
     <div style="display: flex; vertical-align:center; text-align:center;" class="sidebar-heading">
         <a href="/">
@@ -170,9 +170,9 @@
                             href="/delete_data"
                             class="btn btn-danger error"
                             name="delete_button" type="submit"
-                            value="{{ document.description }}" form="data_deletion">
+                            value="{{ document.description }}" form="data_deletion_{{ document.pk }}">
                         <form style="justify-content: center; vertical-align: center;"
-                              action="{% url 'delete_data' %}" id="data_deletion" method="POST">
+                              action="{% url 'delete_data' %}" id="data_deletion_{{ document.pk }}" method="POST">
                             {% csrf_token %}
                         </form>
                         &#10005
@@ -181,9 +181,9 @@
                     <button style="width: 18.5%; height: 38px; margin-bottom: 5px;"
                             class="btn btn-primary"
                             name="edit_button"
-                            value="{{ document.description }}" form="data_edit">
+                            value="{{ document.description }}" form="data_edit_{{ document.pk }}">
                         <form style="justify-content: center; vertical-align: center;"
-                              action="{% url 'edit_data' %}" id="data_edit" method="POST">
+                              action="{% url 'edit_data' document.pk %}" id="data_edit_{{ document.pk }}" method="GET">
                             {% csrf_token %}
                         </form>
                         <span style="margin-right: 1px;">&#9998;</span>

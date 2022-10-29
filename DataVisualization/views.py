@@ -19,7 +19,7 @@ from .models import tbl_Authentication
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 
-from DataVisualization.forms import FileForm
+from DataVisualization.forms import FileForm, UpdateFileForm
 from DataVisualization.models import Document, Commentary
 from DataVisualization.utilities.ExcelParser import ExcelParser
 
@@ -314,7 +314,7 @@ def save_data_to_JSON(first_level, doc):
     # Recursivamente añadimos sus hijos.
     data_list = [recursive_add_node(node, doc) for node in first_level]
 
-    data = {"name": doc, "children": data_list}
+    data = {"name": doc, "title": doc.title, "text_URL" : doc.text_URL, "comments_URL" : doc.comments_URL, "children": data_list}
     with open(os.path.join('DataVisualization/' + django_settings.STATIC_URL, 'output.json'), 'w') as outfile:
         json.dump(data, outfile, default=str)
 
@@ -396,7 +396,13 @@ def upload_file(request):
             handle_uploaded_file(request.FILES['document'])
             file_form.save()
             parse_data(Document.objects.last())
+            messages.success(request, "Document has been uploaded correctly")
             return index(request)
+        else:
+            messages.error(request, "The form received is not valid")
+            file_form = FileForm()
+            return render(request, "upload_file.html",
+                          context={'form': file_form, 'documents_uploaded': get_all_documents()})
     else:
         file_form = FileForm()
         return render(request, "upload_file.html",
@@ -409,8 +415,21 @@ def handle_uploaded_file(f):
             destination.write(chunk)
 
 
-def edit_data(request):
-    return index(request)
+def edit_data(request, document_id):
+    document = Document.objects.get(pk=document_id)
+    form = UpdateFileForm(request.POST or None, instance=document)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Document has been updated correctly")
+            return index(request)
+        else:
+            messages.error(request, "The form received is not valid")
+            return render(request, "upload_file.html",
+                          context={'form': form, 'documents_uploaded': get_all_documents()})
+    else:
+        return render(request, 'update_file.html', {'documents_uploaded': get_all_documents(), 'document': document, 'form': form})
+
 
 
 def handle_delete_data(request):
@@ -497,7 +516,6 @@ def login_process(request, form, uservalue, passwordvalue):
     user = authenticate(username=uservalue, password=passwordvalue)
     if user is not None and request.user.get_username() != user.get_username():
         login(request, user)
-        messages.success(request, "The login has been successful")
         if request.POST.get('chatbot') == "true":
             return storage_clear_index(request, 'login')
         else:

@@ -9,11 +9,14 @@ from django.db.models.signals import post_save
 class Document(models.Model):
     document_id = models.AutoField(primary_key=True)
     description = models.CharField(max_length=255, unique=True)
+    title = models.CharField(max_length=500)
+    text_URL = models.URLField(max_length=2040)
+    comments_URL = models.URLField(max_length=2040)
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Title: {self.description}| File name: {self.document.name} | Uploaded at: {self.uploaded_at}"
+        return f"Description: {self.description}| Title: {self.title} | Text: {self.text_URL} | Comments: {self.comments_URL} | File name: {self.document.name} | Uploaded at: {self.uploaded_at}"
 
 class Commentary(models.Model):
     document_id = models.ForeignKey(Document, on_delete=models.CASCADE)

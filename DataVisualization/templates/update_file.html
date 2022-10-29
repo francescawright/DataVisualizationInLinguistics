@@ -26,12 +26,12 @@
 
         <div class="container-fluid sidebar-title-container">
 
-            <h2 class="display-4">Upload File</h2>
+            <h2 class="display-4">Update File</h2>
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form|crispy }}
                 <button type="submit" style="color: #fff; background-color: #007bff; border-color: #007bff"
-                        class="btn btn-default">Parse and Upload file
+                        class="btn btn-default"> Save changes
                 </button>
             </form>
         </div>

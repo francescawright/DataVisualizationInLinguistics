@@ -50,6 +50,7 @@
         font-family: sans-serif;
         opacity: 1;
         padding: 10px;
+        pointer-events: none;
     }
 
     /* Create two equal columns that floats next to each other */
@@ -161,6 +162,8 @@
 {% include 'messages.html' %}
 {% include 'nav_bar.html' with template_selected="radial" %}
 {% include 'sidebar_layouts.html' with template_selected="radial" %}
+
+<script src="{% static 'js/categorization_functions.js' %}"></script>
 <script src="{% static 'js/radial_graph.js' %}"></script>
 </body>
 

@@ -2923,11 +2923,23 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             if ((i + 1) % 3 === 0) tooltipText += "</tr>"; //End table line
         }
 
+        //Write growingFactor of node
         tooltipText += "</table>";
+        //var s = getLevelRange(d);
+        var s = L;
+        console.log("L: " + s);
+        tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr>";
+        //Calculate tendencies and hierarchy of nodes
+        tooltipText +=
+            "<tr>" +
+                "<td> ET: " + elongatedTendency(d, s) +
+                " CT: " + compactTendency(d, s, GFcomp) + "</td>" +
+            "</tr></table>"
 
-        tooltipText += "<br> <table>";
         //If node is collapsed, we also want to add some information about its sons
         if (d._children) {
+            tooltipText += "<br> <table>";
+
             var sonTitles = ["Direct comments", "Total number of generated comments", "Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
             var sonValues = [d._children.length, d.numberOfDescendants, d.descendantsWithToxicity0, d.descendantsWithToxicity1, d.descendantsWithToxicity2, d.descendantsWithToxicity3];
 
@@ -2936,9 +2948,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 tooltipText += "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
                 if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
             }
-
+            tooltipText += "</table>";
         }
-        tooltipText += "</table>";
         tooltipText += "<br>" + d.coment;
     }
 
@@ -2960,8 +2971,14 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 totalToxic,
                 totalVeryToxic,
             ];
-            tooltipText = "<table>";
-            tooltipText += "<br> <table>";
+            var hierarchyList = [
+                "Unspecified",
+                "Elongated",
+                "Compact",
+                "nCompact",
+                "Hybrid",
+            ];
+            tooltipText = "<br> <table>";
 
             for (i = 0; i < sonValues.length; i++) {
                 if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
@@ -2970,9 +2987,32 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
             }
 
-      tooltipText += "</table>";
+        //Write growingFactor of root
+        tooltipText += "</table>";
+        var s = L;
+        tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr>";
+        //Calculate tendencies and hierarchy of nodes
+        tooltipText +=
+            "<tr>" +
+                "<td> ET: " + elongatedTendency(d, s) +
+                " CT: " + compactTendency(d, s, GFcomp) + "</td>" +
+            "</tr>"
+        //Calculate hierarchy
+        var t = d_lvl;
+        var h = getHierarchy(d, s, GFcomp, t);
+        tooltipText +=
+            "<tr>" +
+                "<td> Hierarchy: " + hierarchyList[h] + "</td>" +
+            "</tr></table>"
 
-
+        // Add news information
+        tooltipText += "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Title:</b> " + d.title + "</td></tr></table>" +
+            "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Text URL:</b> " + d.text_URL + "</td>" +
+            "</tr>" +
+            "<tr>" +
+                "<td> <b>Comments URL:</b> " + d.comments_URL + "</td>" +
+            "</tr></table>"
+        tooltipText += "<br>";
     }
 
 

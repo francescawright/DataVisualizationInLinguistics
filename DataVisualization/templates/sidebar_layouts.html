@@ -256,6 +256,9 @@
         width: fill-available;
         border-radius: 0.5rem 0.5rem 0 0;
     }
+    .blue-background {
+        background: #eff4fc !important;
+    }
 </style>
 
 <head>
@@ -294,6 +297,7 @@
             {#                </div>#}
             {#        </div>#}
             <!-- Targets -->
+            {% if template_selected and template_selected != "circle" %}
             <div id="target-checkbox-group"
                  style="margin-top: 5px;background-color: #c9daf8ff; padding-bottom: 10px;">
 
@@ -547,6 +551,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
             <!-- Highligth -->
             <div id="highlight-checkbox-group"
                  style="margin-top: 10px;background-color: #c9daf8ff; padding-bottom: 10px;">
@@ -1964,4 +1969,8 @@
         minWidth: 400,
         autoHide: true
     });
+
+    if ("{{ template_selected }}" === "circle") {
+        document.getElementById("popup_btn").classList.add("blue-background");
+    }
 </script>
