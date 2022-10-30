@@ -2927,7 +2927,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         tooltipText += "</table>";
         //var s = getLevelRange(d);
         var s = L;
-        console.log("L: " + s);
         tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr>";
         //Calculate tendencies and hierarchy of nodes
         tooltipText +=
@@ -3567,7 +3566,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         // If AND is selected, uncheck the OR and highlight by property AND
         function checkboxANDListener () {
-            console.log("test")
             if (nodeEnter[0].length) {
                 Object.keys(nodeEnter[0]).forEach(key => {
                     if (!nodeEnter[0][key].viewportElement) nodeEnter[0][key] = null;
@@ -3578,7 +3576,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 })
 
                 if (nodeEnter[0].length) {
-                    console.log("test2")
                     if (this.checked) {
                         checkboxOR.checked = false;
 
@@ -3617,7 +3614,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 })
 
                 if (nodeEnter[0].length) {
-                    console.log("test2")
                     if (this.checked) {
                         checkboxAND.checked = false;
 

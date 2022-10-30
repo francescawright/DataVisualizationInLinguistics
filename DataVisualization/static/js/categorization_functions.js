@@ -200,7 +200,6 @@ function getDeepestNodesPath(root, endNodes = getDeepestNodes(root)) {
 function getMaxWidth(node, height) {
     var nodeList = new Array(height+1).fill(0);
     if (height == 0) { return 1; }
-    console.log("initList: " + nodeList);
     getNodesInLevel(node, 0, height, nodeList);
     //var aux = nodeList.reduce((a, b) => a + b, 0);
     let aux = 0;
@@ -445,7 +444,7 @@ function getHierarchy(node, level, limitGF, d_level) {
     if (CTnode != undefined) {
         queue.push(CTnode);
         let found = false;
-        console.log("is Compact");
+        // is Compact
         while (queue.length > 0 && !found) { //Search all subtree until an ET node is found
             let n = queue.shift();
             //let s = getLevelRange(n);
@@ -454,7 +453,7 @@ function getHierarchy(node, level, limitGF, d_level) {
             if (elongatedTendency(n, s) && getGrowFactor(n, s) != 1) {
                 //if (!isSpine(n, s)) { found = true; } //ignore spines
                 if (isSignificant(n, tol)) {
-                    console.log("found significant ET");
+                    // found significant ET
                     found = true;
                 }
             }
@@ -466,12 +465,10 @@ function getHierarchy(node, level, limitGF, d_level) {
         }
         if (found) { return 4; } //Hybrid
         else { //Compact or nComp
-            console.log("d: " + d_level);
             /*if (findTendency(node, level, limitGF, d_level, 2)) { return 3; } //nComp
             else { return 2; } //Compact*/
             CTnode = findTendency(node, level, limitGF, d_level, 2);
             if (CTnode != undefined) {
-                console.log(CTnode.name);
                 return 3; }
             else { return 2; }
         }

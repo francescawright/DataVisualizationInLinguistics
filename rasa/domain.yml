@@ -171,6 +171,7 @@ slots:
   document_requested:
     type: text
     influence_conversation: false
+    auto_fill: true
   layout_requested:
     type: text
     influence_conversation: false

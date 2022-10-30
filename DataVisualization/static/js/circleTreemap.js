@@ -408,7 +408,6 @@ function writeTooltipText(d) {
     tooltipText += "</table>";
     //var s = getLevelRange(d);
     var s = L;
-    console.log("L: " + s);
     tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr>";
     //Calculate tendencies and hierarchy of nodes
     tooltipText +=

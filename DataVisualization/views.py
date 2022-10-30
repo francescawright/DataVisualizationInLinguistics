@@ -120,6 +120,33 @@ def save_first_login(request):
     return HttpResponse(status=204)
 
 
+def generate_dataset (request):
+    # Check if there is an active session
+    user = getattr(request, 'user', None)
+    if not user or not getattr(user, 'is_authenticated', True):
+        return HttpResponse("open_document_no_active_session")
+
+    # CURRENT ITEM
+    # ---------------------------------------------------------------------------------
+    selected_item = None
+    if "from_button" in request.POST.keys():
+        selected_item = request.POST['from_button']
+    if "selected_data" in request.POST.keys():
+        selected_item = request.POST["selected_data"]
+    # ---------------------------------------------------------------------------------
+    # JSON PARSING & CURRENT DATASET
+    # ---------------------------------------------------------------------------------
+    print(request.POST)
+    try:
+        dataset, doc = get_current_dataset(request, selected_item)
+    except ObjectDoesNotExist:
+        return HttpResponse("document_not_exist")
+    # Filter first level childs
+    first_level = dataset.filter(comment_level=1)
+    save_data_to_JSON(first_level, doc)
+    # ---------------------------------------------------------------------------------
+    return HttpResponse("/static/output.json")
+
 def main_form_handler(request):
     # Check if there is an active session
     user = getattr(request, 'user', None)
@@ -130,6 +157,10 @@ def main_form_handler(request):
     errorMessage = request.GET.get('chatbotError', '')
     if (errorMessage):
         errorMessage = getChatErrorMessage(request, errorMessage)
+
+    successMessage = ''
+    if (request.POST.get('chatbot') == "true"):
+        successMessage = "I have selected the best visualization according to the graph characteristics"
 
     try:
         selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout = main_form_context(
@@ -147,13 +178,17 @@ def main_form_handler(request):
                    # "d1": d1, "d2": d2,
                    'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
                    'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons, 'storage_clear': storageClear,
-                   'chatbot_error': errorMessage})
+                   'chatbot_error': errorMessage, 'chatbot_success': successMessage})
 
 
 def main_form_context(request):
-    # CURRENT DATASET
+    # CURRENT ITEM
     # ---------------------------------------------------------------------------------
-    selected_item, dataset, doc = get_current_dataset(request)
+    selected_item = Document.objects.first().description
+    if "from_button" in request.POST.keys():
+        selected_item = request.POST['from_button']
+    if "selected_data" in request.POST.keys():
+        selected_item = request.POST["selected_data"]
     # ---------------------------------------------------------------------------------
 
     # CHECKBOXES
@@ -172,11 +207,16 @@ def main_form_context(request):
     selected_icons = handle_icons(request)
     # ---------------------------------------------------------------------------------
 
-    # JSON PARSING
+    # JSON PARSING & CURRENT DATASET
     # ---------------------------------------------------------------------------------
-    # Filter first level childs
-    first_level = dataset.filter(comment_level=1)
-    save_data_to_JSON(first_level, doc)
+    # Indicates whether the request is to work on the previous file,
+    # for which the best display layout has already been selected.
+    best_layout_selected = request.POST.get('best_layout_selected')
+    if not best_layout_selected:
+        dataset, doc = get_current_dataset(request, selected_item)
+        # Filter first level childs
+        first_level = dataset.filter(comment_level=1)
+        save_data_to_JSON(first_level, doc)
     # ---------------------------------------------------------------------------------
 
     selected_layout, template, checked_layout = get_selected_layout(request)
@@ -252,23 +292,12 @@ def handle_checkboxes(request, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, c
         cbCommons["and_group"] = 1
 
 
-def get_current_dataset(request):
-    selected_data = Document.objects.first().description
-    if "from_button" in request.POST.keys():
-        selected_data = request.POST['from_button']
-    if "selected_data" in request.POST.keys():
-        selected_data = request.POST["selected_data"]
-
-    try:
-        doc = Document.objects.filter(description=selected_data).first()
-        if not (doc):
-            raise ObjectDoesNotExist('document_not_exist')
-        selected_item = selected_data
-    except MultiValueDictKeyError:
-        doc = Document.objects.all()[0]
-        selected_item = Document.objects.all()[0].description
+def get_current_dataset(request, selected_data):
+    doc = Document.objects.filter(description=selected_data).first()
+    if not (doc):
+        raise ObjectDoesNotExist('document_not_exist')
     dataset = Commentary.objects.filter(document_id=doc).all()
-    return selected_item, dataset, doc
+    return dataset, doc
 
 
 def handle_icons(request):
@@ -320,7 +349,12 @@ def save_data_to_JSON(first_level, doc):
 
 
 def get_selected_layout(request):
-    if TREE_LAYOUT in request.POST.keys():
+    best_layout_selected = request.POST.get('best_layout_selected')
+    if best_layout_selected:
+        selected_layout = best_layout_selected + "_layout.html"
+        template = best_layout_selected + "_layout.html"
+        button_checked = best_layout_selected
+    elif TREE_LAYOUT in request.POST.keys():
         selected_layout = "tree_layout.html"
         template = "tree_layout.html"
         button_checked = "tree"
@@ -697,3 +731,7 @@ def getChatErrorMessage(request, errorName):
         return messages[errorName]
     else:
         return "An error has occurred"
+
+def getChatSuccessMessage(request, successName):
+    messages = {'best_layout': "I have selected the best visualization according to the graph characteristics"}
+    return messages[successName]

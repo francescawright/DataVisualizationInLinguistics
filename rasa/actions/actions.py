@@ -367,7 +367,7 @@ class ActionOpenDocument(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        document_requested_value = tracker.get_slot("nickname")
+        document_requested_value = tracker.get_slot("document_requested")
 
         for e in tracker.latest_message['entities']:
             if e['entity'] == 'document_requested':

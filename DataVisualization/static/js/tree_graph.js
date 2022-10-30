@@ -3312,7 +3312,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         tooltipText += "</table>";
         //var s = getLevelRange(d);
         var s = L;
-        console.log("L: " + s);
         tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr>";
         //Calculate tendencies and hierarchy of nodes
         tooltipText +=
@@ -3949,7 +3948,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 })
 
                 if (nodeEnter[0].length) {
-                    console.log("test2")
                     if (this.checked) {
                         checkboxOR.checked = false;
 
@@ -3988,7 +3986,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 })
 
                 if (nodeEnter[0].length) {
-                    console.log("test2")
                     if (this.checked) {
                         checkboxAND.checked = false;
 

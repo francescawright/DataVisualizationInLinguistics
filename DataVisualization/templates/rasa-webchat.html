@@ -34,7 +34,7 @@
     <input id="open_document_name" type="hidden" name="from_button" value= "">
     <input type="hidden" name="chatbot" value="true">
     <input id="data_selection_chat_session_id" type="hidden" name="session_id" value= "">
-    <input id="data_selection_form_submit" type="submit">
+    <input id="layout_name_chat" type="hidden" name="best_layout_selected" value="">
 </form>
 
 <form id="userLogForm" style="display: none;">
@@ -278,17 +278,102 @@
                     e.hidden = true;
                     e.text = "I'm opening the document";
                     let documentName = messageList[1];
-                    var mainForm = document.getElementById("main_form");
-                    if (mainForm) {
-                        createOpenDocumentInputs(mainForm, documentName, existingStorage);
-                        // setTimeout
-                        mainForm.submit()
+                    var mainForm = '{{ selected_item }}' ? document.getElementById("main_form") : document.getElementById("chatbotDataSelection");
+
+                    var dataset_dropdown_value = document.getElementById("dataset_dropdown").value;
+
+                    if ('{{ selected_item }}') {
+                        // Change select's option
+                        document.getElementById("dataset_dropdown").value = documentName;
                     } else {
-                        document.getElementById("data_selection_chat_session_id").value = existingStorage["session_id"];
                         document.getElementById("open_document_name").value = documentName;
-                        // setTimeout
-                        document.getElementById("data_selection_form_submit").click();
                     }
+
+                    let formData = new FormData(mainForm);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{% url 'generate_dataset' %}",
+                        data: formData,
+                        // handle a successful response
+                        success: function (data) {
+                            if (data === "document_not_exist") {
+                                document.getElementById("dataset_dropdown").value = dataset_dropdown_value;
+                                injectIntentConversation("I cannot find any document with the name you have given me");
+                            } else if (data === "open_document_no_active_session") {
+                                document.getElementById("dataset_dropdown").value = dataset_dropdown_value;
+                                injectIntentConversation("You need to be logged in to access the documents");
+                            } else {
+                                if ('{{ selected_item }}') {
+                                    createOpenDocumentInputs(mainForm, documentName, existingStorage);
+                                } else {
+                                    document.getElementById("data_selection_chat_session_id").value = existingStorage["session_id"];
+                                }
+
+                                d3.json(data, function (error, treeData) {
+                                    let root = treeData;
+                                    var i = 0;
+
+                                    function recurse(node, parent) {
+                                        node.parent = parent; //We assign a parent to the node
+                                        if (parent) node.depth = node.parent.depth + 1; //If parent is not null
+                                        if (node.children) node.children.forEach(element => recurse(element, node));
+                                        if (!node.id) node.id = ++i;
+                                    }
+
+                                    root.depth = 0;
+                                    recurse(root, null);
+
+                                    let hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
+                                    let layout;
+                                    switch (hierarchyName) {
+                                        case "Unspecified":
+                                            layout = "force";
+                                            break;
+                                        case "Elongated":
+                                            layout = "tree";
+                                            break;
+                                        case "Compact":
+                                            layout = "radial";
+                                            break;
+                                        case "nCompact":
+                                            layout = "force";
+                                            break;
+                                        case "Hybrid":
+                                            layout = "force";
+                                            break;
+                                    }
+                                    if ('{{ selected_item }}') {
+                                        document.getElementById("layout_name_item").value = layout;
+                                    } else {
+                                        document.getElementById("layout_name_chat").value = layout;
+                                    }
+                                    mainForm.submit()
+                                });
+                            }
+                        },
+                        // handle a non-successful response
+                        error: function(jqXHR, textStatus, errorThrown) { // on error..
+                            if (jqXHR.status === 0) {
+                                alert('Not connect: Verify Network.');
+                            } else if (jqXHR.status === 404) {
+                                alert('Requested page not found [404]');
+                            } else if (jqXHR.status === 500) {
+                                alert('Internal Server Error [500].');
+                            } else if (textStatus === 'parsererror') {
+                                alert('Requested JSON parse failed.');
+                            } else if (textStatus === 'timeout') {
+                                alert('Time out error.');
+                            } else if (textStatus === 'abort') {
+                                alert('Ajax request aborted.');
+                            } else {
+                                alert('Uncaught Error: ' + jqXHR.responseText);
+                            }
+                        },
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                    })
                     break;
                 case "intent_change_layout":
                     saveBotAction(e.text, existingStorage["session_id"]);
@@ -393,6 +478,24 @@
         }
     }
 
+    function injectIntentConversation(textMsg){
+        // Get the existing localStorage data
+        var existingStorage = localStorage.getItem("chat_session");
+        // If no existing data, create an array
+        // Otherwise, convert the localStorage string to an array
+        existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:5005/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+        "name": "generate_response_message",
+        "entities": {
+            "response_message": textMsg
+        }
+        }));
+    }
+
     function selectedDataError(existingStorage, errorMsg = "Open a document first, in order to perform this action"){
         addToLocalStorageObject("chat_session", "conversation", errorMsg);
         // Saving in the log the message received from the bot
@@ -405,14 +508,17 @@
     }
 
     function createOpenDocumentInputs(mainForm, documentName, existingStorage) {
-        // Change select's option
-        document.getElementById("dataset_dropdown").value = documentName;
-
         let inputChatbot = document.createElement("input");
         inputChatbot.setAttribute("type", "hidden");
         inputChatbot.setAttribute("name", "chatbot");
         inputChatbot.setAttribute("value", "true");
         mainForm.appendChild(inputChatbot);
+        let inputLayoutName = document.createElement("input");
+        inputLayoutName.setAttribute("id", "layout_name_item");
+        inputLayoutName.setAttribute("type", "hidden");
+        inputLayoutName.setAttribute("name", "best_layout_selected");
+        inputLayoutName.setAttribute("value", "");
+        mainForm.appendChild(inputLayoutName);
         let chatSessionId = document.createElement("input");
         chatSessionId.setAttribute("type", "hidden");
         chatSessionId.setAttribute("name", "session_id");
@@ -516,9 +622,12 @@
         document.getElementById("bot_log_form_submit").click();
     }
 
-    (function chatbotErrorMessage(e) {
+    (function chatbotMessage(e) {
         if ('{{chatbot_error}}') {
             addToLocalStorageObject("chat_session", "conversation", '{{chatbot_error}}');
+        }
+        if ('{{chatbot_success}}') {
+            addToLocalStorageObject("chat_session", "conversation", '{{chatbot_success}}');
         }
     })();
 

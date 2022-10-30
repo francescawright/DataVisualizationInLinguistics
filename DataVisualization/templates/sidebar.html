@@ -86,6 +86,11 @@
     <link href="{% static  'css/simple-sidebar.css' %}" rel="stylesheet">
 
 </head>
+
+<!-- To select the best display layout -->
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="{% static 'js/categorization_functions.js' %}"></script>
+
 <body>
 
 {% include 'rasa-webchat.html' %}
@@ -154,16 +159,17 @@
             </button>
             <div class="panel" style="display: block;">
                 {% for document in documents_uploaded %}
-                    <button href="/manage_data" class="list-group-item-action bg-light btn btn-secondary"
-                            name="from_button"
+                    <button class="list-group-item-action bg-light btn btn-secondary"
+                            type="button"
                             style="width: 63%; margin-top: 10px; vertical-align: unset;"
-                            value="{{ document.description }}"
-                            form="data_selection">
+                            onclick="getBestLayout('{{ document.pk }}')">
                         <form style="justify-content: center; vertical-align: center;"
                               action="{% url 'selected_data' %}"
-                              id="data_selection"
+                              id="data_selection_{{ document.pk }}"
                               method="POST">
                             {% csrf_token %}
+                            <input type="hidden" name="from_button" value="{{ document.description }}">
+                            <input id="layout_doc_{{ document.pk }}" type="hidden" name="best_layout_selected" value="">
                         </form>
                         {{ document.description }}</button>
                     <button style="width: 14.7%; height: 38px; margin-bottom: 5px;"
@@ -241,6 +247,7 @@
 <script src="../static/vendor/jquery/jquery.min.js"></script>
 <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+
 <script>
 
     var acc = document.getElementsByClassName("accordion");
@@ -311,4 +318,72 @@
         }
     });
 
+    function getBestLayout(id) {
+
+        let formData = new FormData(document.getElementById("data_selection_" + id));
+
+        $.ajax({
+            type: "POST",
+            url: "{% url 'generate_dataset' %}",
+            data: formData,
+            // handle a successful response
+            success: function (data) {
+                d3.json(data, function (error, treeData) {
+                    let root = treeData;
+                    var i = 0;
+
+                    function recurse(node, parent) {
+                        node.parent = parent; //We assign a parent to the node
+                        if (parent) node.depth = node.parent.depth + 1; //If parent is not null
+                        if (node.children) node.children.forEach(element => recurse(element, node));
+                        if (!node.id) node.id = ++i;
+                    }
+                    root.depth = 0;
+                    recurse(root, null);
+
+                    let hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
+
+                    switch(hierarchyName) {
+                      case "Unspecified":
+                        document.getElementById("layout_doc_" + id).value = "force";
+                        break;
+                      case "Elongated":
+                        document.getElementById("layout_doc_" + id).value = "tree";
+                        break;
+                      case "Compact":
+                        document.getElementById("layout_doc_" + id).value = "radial";
+                        break;
+                      case "nCompact":
+                        document.getElementById("layout_doc_" + id).value = "force";
+                        break;
+                      case "Hybrid":
+                        document.getElementById("layout_doc_" + id).value = "force";
+                        break;
+                    }
+                    $('#data_selection_' + id).submit();
+                });
+            },
+            // handle a non-successful response
+            error: function(jqXHR, textStatus, errorThrown) { // on error..
+                if (jqXHR.status === 0) {
+                    alert('Not connect: Verify Network.');
+                } else if (jqXHR.status === 404) {
+                    alert('Requested page not found [404]');
+                } else if (jqXHR.status === 500) {
+                    alert('Internal Server Error [500].');
+                } else if (textStatus === 'parsererror') {
+                    alert('Requested JSON parse failed.');
+                } else if (textStatus === 'timeout') {
+                    alert('Time out error.');
+                } else if (textStatus === 'abort') {
+                    alert('Ajax request aborted.');
+                } else {
+                    alert('Uncaught Error: ' + jqXHR.responseText);
+                }
+            },
+            cache: false,
+            contentType: false,
+            processData: false,
+        })
+    }
 </script>
