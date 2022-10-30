@@ -2524,13 +2524,6 @@ treeJSON = d3.json(dataset, function (error, json) {
                 totalToxic,
                 totalVeryToxic,
             ];
-            var hierarchyList = [
-                "Unspecified",
-                "Elongated",
-                "Compact",
-                "nCompact",
-                "Hybrid",
-            ];
             tooltipText = "<table>";
             tooltipText += "<br> <table>";
 
@@ -2553,10 +2546,9 @@ treeJSON = d3.json(dataset, function (error, json) {
             "</tr>"
         //Calculate hierarchy
         var t = d_lvl;
-        var h = getHierarchy(d, s, GFcomp, t);
         tooltipText +=
             "<tr>" +
-                "<td> Hierarchy: " + hierarchyList[h] + "</td>" +
+                "<td> Hierarchy: " + getHierarchyName(d, s, GFcomp, t) + "</td>" +
             "</tr></table>"
 
         // Add news information

@@ -183,10 +183,10 @@ treeJSON = d3.json(dataset, function (error, root) {
         }).style("stroke", "black")
           .on("mouseover", function (d) {
                 if (d !== root) {
-                    writeTooltipText(d.data, d.depth);
+                    writeTooltipText(d);
                     tooltip.style("visibility", "visible").html(tooltipText);
                 } else {
-                    writeTooltipRoot(d.data, d.depth);
+                    writeTooltipRoot(d);
                     tooltip.style("visibility", "visible").html(tooltipText);
                 }
             })
@@ -309,13 +309,6 @@ function writeTooltipRoot(d) {
         totalToxic,
         totalVeryToxic,
     ];
-    var hierarchyList = [
-        "Unspecified",
-        "Elongated",
-        "Compact",
-        "nCompact",
-        "Hybrid",
-    ];
     tooltipText = "<br> <table>";
 
     for (i = 0; i < sonValues.length; i++) {
@@ -337,40 +330,39 @@ function writeTooltipRoot(d) {
         "</tr>"
     //Calculate hierarchy
     var t = d_lvl;
-    var h = getHierarchy(d, s, GFcomp, t);
     tooltipText +=
         "<tr>" +
-            "<td> Hierarchy: " + hierarchyList[h] + "</td>" +
+            "<td> Hierarchy: " + getHierarchyName(d, s, GFcomp, t) + "</td>" +
         "</tr></table>"
 
     // Add news information
-    tooltipText += "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Title:</b> " + d.title + "</td></tr></table>" +
-        "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Text URL:</b> " + d.text_URL + "</td>" +
+    tooltipText += "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Title:</b> " + d.data.title + "</td></tr></table>" +
+        "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Text URL:</b> " + d.data.text_URL + "</td>" +
         "</tr>" +
         "<tr>" +
-            "<td> <b>Comments URL:</b> " + d.comments_URL + "</td>" +
+            "<td> <b>Comments URL:</b> " + d.data.comments_URL + "</td>" +
         "</tr></table>"
     tooltipText += "<br>";
 }
 
-function writeTooltipText(d, depth) {
+function writeTooltipText(d) {
     //I want to show Argument and Constructiveness in one line, I add a dummy space to keep that in the loop
     var jsonValues = [
-        d.name,
-        d.toxicity_level,
-        depth,
-        d.argumentation,
-        d.constructiveness,
+        d.data.name,
+        d.data.toxicity_level,
+        d.depth,
+        d.data.argumentation,
+        d.data.constructiveness,
         -1,
-        d.sarcasm,
-        d.mockery,
-        d.intolerance,
-        d.improper_language,
-        d.insult,
-        d.aggressiveness,
-        d.target_group,
-        d.target_person,
-        d.stereotype,
+        d.data.sarcasm,
+        d.data.mockery,
+        d.data.intolerance,
+        d.data.improper_language,
+        d.data.insult,
+        d.data.aggressiveness,
+        d.data.target_group,
+        d.data.target_person,
+        d.data.stereotype,
     ];
     var jsonNames = [
         "Comment ID",
@@ -454,7 +446,7 @@ function writeTooltipText(d, depth) {
         }
         tooltipText += "</table>";
     }
-    tooltipText += "<br>" + d.coment;
+    tooltipText += "<br>" + d.data.coment;
  }
 
 function hovered(hover) {

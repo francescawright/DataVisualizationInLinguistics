@@ -401,6 +401,18 @@ function compactTendency(node, level, limitGF) {
     return false;
 }
 
+const hierarchyList = [
+    "Unspecified",
+    "Elongated",
+    "Compact",
+    "nCompact",
+    "Hybrid",
+];
+
+function getHierarchyName(node, level, limitGF, d_level){
+    return hierarchyList[getHierarchy(node, level, limitGF, d_level)];
+}
+
 //CHANGE NAME OF d, get CT node and search there for ET
 function getHierarchy(node, level, limitGF, d_level) {
     let queue = [];
