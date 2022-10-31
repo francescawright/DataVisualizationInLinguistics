@@ -1,6 +1,5 @@
 import json
 import os
-import logging
 from urllib.parse import urlparse
 
 from django.conf import settings as django_settings
@@ -57,51 +56,11 @@ def index(request):
 
 
 def storage_clear_index(request, clear_type):
-    # textMsg = ''
-    # if clear_type == 'logout':
-    #     textMsg = "I have successfully logged you out"
-    # elif clear_type == 'login':
-    #     textMsg = "I have logged you in without any problem"
-    # elif clear_type == 'signup':
-    #     textMsg = "I have created your user and now you are logged in"
-    #
-    # if clear_type != "nochat":
-    #     db_logger = logging.getLogger('db')
-    #     db_logger.warning(textMsg,
-    #                       extra={'user': request.user.username, 'session_id': request.POST['session_id'],
-    #                           'sender': 'response', 'is_action': False})
     return redirect(reverse('index') + '?storageClear=' + clear_type)
 
 
 def get_all_documents():
     return Document.objects.all()
-
-
-@require_http_methods(["POST"])
-def save_user_chat(request):
-    db_logger = logging.getLogger('db')
-    db_logger.info(request.POST['chat_msg'],
-                   extra={'user': request.user.username, 'session_id': request.POST['session_id'],
-                          'sender': 'client', 'is_action': False})
-    return HttpResponse(status=204)
-
-
-@require_http_methods(["POST"])
-def save_bot_chat(request):
-    db_logger = logging.getLogger('db')
-    db_logger.warning(request.POST['chat_msg'],
-                      extra={'user': request.user.username, 'session_id': request.POST['session_id'],
-                             'sender': 'response', 'is_action': request.POST['is_action'] == 'true'})
-    return HttpResponse(status=204)
-
-
-@require_http_methods(["POST"])
-def save_error_chat(request):
-    db_logger = logging.getLogger('db')
-    db_logger.error(request.POST['chat_msg'],
-                    extra={'user': request.user.username, 'session_id': request.POST['session_id'],
-                           'sender': 'response', 'is_action': False})
-    return HttpResponse(status=204)
 
 
 @require_http_methods(["POST"])
@@ -668,16 +627,6 @@ def decrypt(token: bytes, key: bytes) -> bytes:
 
 
 def getTemplateByPath(request, errorMessage):
-    if request.method == 'POST':
-        session_id = request.POST['session_id']
-    if request.method == 'GET':
-        session_id = request.GET["session_id"]
-
-    # Add error to user log
-    db_logger = logging.getLogger('db')
-    db_logger.error(errorMessage,
-                    extra={'user': request.user.username, 'session_id': session_id,
-                           'sender': 'response', 'is_action': False})
 
     path = urlparse(request.META['HTTP_REFERER']).path
 

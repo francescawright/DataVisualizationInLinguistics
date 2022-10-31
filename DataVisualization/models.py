@@ -6,6 +6,7 @@ from django.db.models.signals import post_save
 
 # Create your models here.
 
+
 class Document(models.Model):
     document_id = models.AutoField(primary_key=True)
     description = models.CharField(max_length=255, unique=True)
@@ -17,6 +18,7 @@ class Document(models.Model):
 
     def __str__(self):
         return f"Description: {self.description}| Title: {self.title} | Text: {self.text_URL} | Comments: {self.comments_URL} | File name: {self.document.name} | Uploaded at: {self.uploaded_at}"
+
 
 class Commentary(models.Model):
     document_id = models.ForeignKey(Document, on_delete=models.CASCADE)
@@ -56,6 +58,7 @@ class Commentary(models.Model):
 #     def __str__(self):
 #         return f"Document id: {self.document_id} | User ids: {self.user_ids} | Node ids: {self.node_ids}"
 
+
 class tbl_Authentication(models.Model):
     Empcode = models.IntegerField()
     username = models.CharField(max_length=50, default='')
@@ -66,6 +69,7 @@ class tbl_Authentication(models.Model):
         return self.username
 
     empAuth_objects = models.Manager()
+
 
 class ChatProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

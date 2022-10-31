@@ -37,22 +37,6 @@
     <input id="layout_name_chat" type="hidden" name="best_layout_selected" value="">
 </form>
 
-<form id="userLogForm" style="display: none;">
-    {% csrf_token %}
-    <input id="chat_msg" type="hidden" name="chat_msg" value= "">
-    <input id="user_chat_session_id" type="hidden" name="session_id" value= "">
-    <input id="user_log_form_submit" type="submit">
-</form>
-
-<form id="botLogForm" style="display: none;">
-    {% csrf_token %}
-    <input id="bot_chat_msg" type="hidden" name="chat_msg" value= "">
-    <input id="bot_chat_session_id" type="hidden" name="session_id" value= "">
-    <input id="chat_msg_is_action" type="hidden" name="is_action" value= "">
-    <input id="bot_chat_action" type="hidden" name="action" value= "">
-    <input id="bot_log_form_submit" type="submit">
-</form>
-
 <!-- <div id="jsConnector" style="display: none;"></div> -->
 
 <!-- Rasa WebChat Style -->
@@ -244,37 +228,30 @@
             let messageList = e.text.split(",");
             switch (messageList[0]) {
                 case "intent_logout":
-                    saveBotAction(e.text, existingStorage["session_id"]);
                     e.hidden = true;
                     e.text = "I'm working on it";
                     document.getElementById("logout_chat_session_id").value = existingStorage["session_id"];
-                    // setTimeout
                     document.getElementById("logout_form_submit").click();
 
                     break;
                 case "intent_login":
-                    saveBotAction(e.text, existingStorage["session_id"]);
                     e.hidden = true;
                     e.text = "I'll start your session right away";
                     document.getElementById("username_input").value = messageList[1];
                     document.getElementById("password_input").value = messageList[2];
                     document.getElementById("login_chat_session_id").value = existingStorage["session_id"];
-                    // setTimeout
                     document.getElementById("login_form_submit").click();
                     break;
                 case "intent_signup":
-                    saveBotAction(e.text, existingStorage["session_id"]);
                     e.hidden = true;
                     e.text = "In no time it will be done";
                     document.getElementById("signup_username_input").value = messageList[1];
                     document.getElementById("signup_password_input").value = messageList[2];
                     document.getElementById("signup_password2_input").value = messageList[3];
                     document.getElementById("signup_chat_session_id").value = existingStorage["session_id"];
-                    // setTimeout
                     document.getElementById("signup_form_submit").click();
                     break;
                 case "intent_open_document":
-                    saveBotAction(e.text, existingStorage["session_id"]);
                     e.hidden = true;
                     e.text = "I'm opening the document";
                     let documentName = messageList[1];
@@ -382,7 +359,6 @@
                     })
                     break;
                 case "intent_change_layout":
-                    saveBotAction(e.text, existingStorage["session_id"]);
                     if ('{{ selected_item }}') {
                         if (messageList[1] === "tree_layout_button" && document.getElementById("tree_label").classList.contains("active")) {
                             e.text = "Already in the layout Tree";
@@ -394,7 +370,6 @@
                             e.text = "Already in the layout Circle Packing";
                         } else {
                             e.text = "Layout changed";
-                            // setTimeout
                             document.getElementById(messageList[1]).click();
                         }
                     } else {
@@ -403,7 +378,6 @@
                     }
                     break;
                 case "intent_switch_or_and":
-                    saveBotAction(e.text, existingStorage["session_id"]);
                     if ('{{ selected_item }}') {
                         if (messageList[1] === "or_button" && document.getElementById("or_label").classList.contains("active")) {
                             e.text =  "OR is already set";
@@ -411,7 +385,6 @@
                             e.text =  "AND is already set";
                         } else {
                             e.text =  messageList[2];
-                            // setTimeout
                             document.getElementById(messageList[1]).click();
                         }
                     } else {
@@ -420,7 +393,6 @@
                     }
                     break;
                 case "intent_filter":
-                    saveBotAction(e.text, existingStorage["session_id"]);
                     if ('{{ selected_item }}') {
                         let filterChecked;
 
@@ -442,7 +414,6 @@
                     }
                     break;
                 case "intent_filter_all":
-                    saveBotAction(e.text, existingStorage["session_id"]);
                     if ('{{ selected_item }}') {
                         let filterAllChecked;
 
@@ -464,7 +435,6 @@
                     }
                     break;
                 case "intent_highlight_graph":
-                    saveBotAction(e.text, existingStorage["session_id"]);
                     if ('{{ selected_item }}') {
                         e.text = messageList[2];
                         $("#tree-container").trigger(messageList[1]);
@@ -473,13 +443,6 @@
                         e.text =  "Open a document first, in order to perform this action";
                         // selectedDataError(existingStorage);
                     }
-                    break;
-                default:
-                    // Saving in the log the message received from the bot
-                    document.getElementById("bot_chat_msg").value = e.text;
-                    document.getElementById("bot_chat_session_id").value = existingStorage["session_id"];
-                    document.getElementById("bot_chat_action").value = "{% url 'bot_chat_log' %}";
-                    document.getElementById("bot_log_form_submit").click();
             }
         }
     }
@@ -504,12 +467,6 @@
 
     function selectedDataError(existingStorage, errorMsg = "Open a document first, in order to perform this action"){
         addToLocalStorageObject("chat_session", "conversation", errorMsg);
-        // Saving in the log the message received from the bot
-        document.getElementById("bot_chat_msg").value = errorMsg;
-        document.getElementById("bot_chat_session_id").value = existingStorage["session_id"];
-        document.getElementById("bot_chat_action").value = "{% url 'error_chat_log' %}";
-        document.getElementById("bot_log_form_submit").click();
-        // setTimeout
         window.location = window.location.href.split("?")[0];
     }
 
@@ -530,56 +487,6 @@
         chatSessionId.setAttribute("name", "session_id");
         chatSessionId.setAttribute("value", existingStorage["session_id"]);
         mainForm.appendChild(chatSessionId);
-    }
-
-    function saveUserInputLog() {
-        setTimeout(function () {
-            if (document.querySelector('#rw-messages')) {
-                // Select the target node.
-                var target = document.querySelector('#rw-messages')
-
-                // Get the existing localStorage data
-                var existingStorage = localStorage.getItem("chat_session");
-
-                // If no existing data, create an array
-                // Otherwise, convert the localStorage string to an array
-                existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
-
-                // Create an observer instance.
-                var observer = new MutationObserver(function(mutations) {
-                    groupMessage = document.querySelectorAll(".rw-group-message:last-child");
-                    // the NodeList is defined, has elements and the first instance belongs to the class "rw-from-client".
-                    if (typeof groupMessage !== 'undefined' && groupMessage.length !== 0 && groupMessage[0].classList.contains("rw-from-client")){
-                        document.getElementById("chat_msg").value = groupMessage[0].innerText;
-                        document.getElementById("user_chat_session_id").value = existingStorage["session_id"];
-                        document.getElementById("user_log_form_submit").click();
-                        // Create an observer instance.
-                        // In case the user writes before the chatbot has responded to the last input
-                        var secondObserver = new MutationObserver(function(mutations) {
-                            moreMessages = document.querySelectorAll(".rw-group-message:last-child .rw-message:last-child .rw-client:last-child");
-                            document.getElementById("chat_msg").value = moreMessages[0].innerText;
-                            document.getElementById("user_chat_session_id").value = existingStorage["session_id"];
-                            document.getElementById("user_log_form_submit").click();
-                        });
-
-                        secondObserver.observe(groupMessage[0], {
-                            attributes:    true,
-                            childList:     true,
-                            characterData: true
-                        });
-                    }
-                });
-
-                // Pass in the target node, as well as the observer options.
-                observer.observe(target, {
-                    attributes:    true,
-                    childList:     true,
-                    characterData: true
-                });
-            } else {
-                console.log("Chat section hidden")
-            }
-        }, 200);
     }
 
     function showChatFeatures() {
@@ -617,15 +524,6 @@
                 showChatFeatures();
             }
         }, 200);
-    }
-
-    function saveBotAction(msgText, session_id) {
-        // Saving in the log the message received from the bot
-        document.getElementById("bot_chat_msg").value = msgText;
-        document.getElementById("chat_msg_is_action").value = 'true';
-        document.getElementById("bot_chat_session_id").value = session_id;
-        document.getElementById("bot_chat_action").value = "{% url 'bot_chat_log' %}";
-        document.getElementById("bot_log_form_submit").click();
     }
 
     (function chatbotMessage(e) {
@@ -684,64 +582,6 @@
 
 </script>
 
-<script type="text/javascript">
-    $(document).on('submit','#userLogForm', function (e){
-        e.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: "{% url 'user_chat_log' %}",
-            data: {
-                chat_msg: $('#chat_msg').val(),
-                session_id: $('#user_chat_session_id').val(),
-                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-            },
-            // handle a successful response
-            success: function (data) {
-
-            },
-            // handle a non-successful response
-            error: function(jqXHR, textStatus, errorThrown) { // on error..
-{% comment %}                if (jqXHR.status === 0) {
-                    alert('Not connect: Verify Network.');
-                } else if (jqXHR.status === 404) {
-                    alert('Requested page not found [404]');
-                } else if (jqXHR.status === 500) {
-                    alert('Internal Server Error [500].');
-                } else if (textStatus === 'parsererror') {
-                    alert('Requested JSON parse failed.');
-                } else if (textStatus === 'timeout') {
-                    alert('Time out error.');
-                } else if (textStatus === 'abort') {
-                    alert('Ajax request aborted.');
-                } else {
-                    alert('Uncaught Error: ' + jqXHR.responseText);
-                }{% endcomment %}
-            }
-        })
-    })
-    $(document).on('submit','#botLogForm', function (e){
-        e.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: $('#bot_chat_action').val(),
-            data: {
-                chat_msg: $('#bot_chat_msg').val(),
-                session_id: $('#bot_chat_session_id').val(),
-                is_action: $('#chat_msg_is_action').val(),
-                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-            },
-            // handle a successful response
-            success: function (data) {
-
-            },
-            // handle a non-successful response
-            error: function(jqXHR, textStatus, errorThrown) { // on error..
-
-            }
-        })
-    })
-</script>
-
 <script>
     !(function () {
       let e = document.createElement("script"),
@@ -770,7 +610,6 @@
                     'bot_uttered': botMessageEvent,
                     'connect': function() {
                         console.log('connection established');
-                        saveUserInputLog();
                         addNewFeatures();
                     },
                     'disconnect': function() {
@@ -785,7 +624,6 @@
                     onChatOpen: function(widgetEvent) {
                         console.log('connection onChatOpen');
                         showChatFeatures();
-                        saveUserInputLog();
                     },
                     onChatHidden: function(widgetEvent) {
                         console.log('connection onChatHidden');

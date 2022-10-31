@@ -16,8 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from DataVisualization.views import index, manage_data, upload_file, main_form_handler, edit_data, \
-    handle_delete_data, signup_view, login_view, logout_view, save_user_chat, save_bot_chat, save_error_chat, \
-    save_nickname, save_first_login, generate_dataset
+    handle_delete_data, signup_view, login_view, logout_view, save_nickname, save_first_login, generate_dataset
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,11 +38,6 @@ urlpatterns = [
     path('generate_dataset/', generate_dataset, name='generate_dataset'),
     path('selected_data/', main_form_handler, name='selected_data'),
     path('selected_layout/', main_form_handler, name='dropdown_layout'),
-
-    # Chat logs paths
-    path('user_chat_log/', save_user_chat, name='user_chat_log'),
-    path('bot_chat_log/', save_bot_chat, name='bot_chat_log'),
-    path('error_chat_log/', save_error_chat, name='error_chat_log'),
 
     # User chat attributes
     path('save_nickname/', save_nickname, name='save_nickname'),
