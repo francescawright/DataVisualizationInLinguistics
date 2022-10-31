@@ -3,7 +3,7 @@ var codeReady = false;
 
 var static_values_checked = true;
 
-let svg = d3.select(container)
+let svg = d3v4.select(container)
         .append("svg")
         .attr("width", 960)
         .attr("height", 960)
@@ -12,16 +12,16 @@ let svg = d3.select(container)
 
     let diameter = svg.attr("width"),
     g = svg.append("g").attr("transform", "translate(2,2)"),
-    format = d3.format(",d");
+    format = d3v4.format(",d");
 
-let pack = d3.pack()
+let pack = d3v4.pack()
     .size([diameter - 2, diameter - 2])
     .padding(3);
 
 var tooltipText;
 
  // Hover rectangle in which the information of a node is displayed
-var tooltip = d3.select(container)
+var tooltip = d3v4.select(container)
     .append("div")
     .attr("class", "my-tooltip") //add the tooltip class
     .style("position", "absolute")
@@ -80,7 +80,7 @@ function flatten(root) {
     return nodes;
 }
 
-treeJSON = d3.json(dataset, function (error, root) {
+treeJSON = d3v4.json(dataset, function (error, root) {
 
     // Used to obtain the nodes belonging to the deepest thread
     var deepestNodesPath;
@@ -113,7 +113,7 @@ treeJSON = d3.json(dataset, function (error, root) {
     if (error) throw error;
 
 
-    root = d3.hierarchy(root)
+    root = d3v4.hierarchy(root)
         .sum(function (d) {
             switch (d.comment_level) {
                 //case 0:
@@ -192,7 +192,7 @@ treeJSON = d3.json(dataset, function (error, root) {
             })
         .on("mousemove", function (d) {
                 // if (d !== root) {
-                    return tooltip.style("top", (d3.mouse(document.querySelector(container))[1] - 45) + "px").style("left", (d3.mouse(document.querySelector(container))[0] - 460) + "px");
+                    return tooltip.style("top", (d3v4.mouse(document.querySelector(container))[1] - 45) + "px").style("left", (d3v4.mouse(document.querySelector(container))[0] - 460) + "px");
                 // }
             })
         .on("mouseout", function () {
@@ -200,7 +200,7 @@ treeJSON = d3.json(dataset, function (error, root) {
             });
         //    .on("mouseover", function(d){  console.log(d)
         //        return tooltip.text(d.data.name).style("visibility", "visible").html("tooltip");})
-        //    .on("mousemove", function(){return tooltip.style("top", d3.event.pageY -30 +"px").style("left",d3.event.pageX + 480 +"px");})
+        //    .on("mousemove", function(){return tooltip.style("top", d3v4.event.pageY -30 +"px").style("left",d3v4.event.pageX + 480 +"px");})
 	    //    .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
     /**
@@ -450,7 +450,7 @@ function writeTooltipText(d) {
 
 function hovered(hover) {
     return function(d) {
-        d3.selectAll(d.ancestors().map(function(d) {}));
+        d3v4.selectAll(d.ancestors().map(function(d) {}));
   };
 }
 
@@ -936,7 +936,7 @@ function highlightWidestLevels(node, levelsIndexes) {
     }
 
     // Div where the title of the "Static Values" is displayed
-    var statisticBackground = d3.select(container)
+    var statisticBackground = d3v4.select(container)
         .append("div")
         .attr("class", "my-statistic") //add the tooltip class
         .style("position", "absolute")
@@ -1012,8 +1012,8 @@ function highlightWidestLevels(node, levelsIndexes) {
      * @returns {Array} array of nodes with greater depth
      */
     function getDeepestNodes(node) {
-        let hierarchy = d3.hierarchy(node);
-        let lenght = d3.max(hierarchy.descendants(), d => d.depth);
+        let hierarchy = d3v4.hierarchy(node);
+        let lenght = d3v4.max(hierarchy.descendants(), d => d.depth);
         return hierarchy.descendants().filter(function (d) {
             return (d.depth === lenght);
         });

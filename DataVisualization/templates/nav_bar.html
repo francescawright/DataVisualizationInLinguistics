@@ -12,6 +12,15 @@
 
     <!-- Custom styles for this template -->
     <link href="{% static  'css/simple-sidebar.css' %}" rel="stylesheet">
+
+    <!-- To select the best display layout -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script>
+        var d3v4 = window.d3;
+        window.d3 = null;
+    </script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="{% static 'js/categorization_functions.js' %}"></script>
 </head>
 
 
@@ -144,7 +153,7 @@
 
 <body>
 
-{% include 'rasa-webchat.html' %}
+{% include 'rasa_webchat.html' %}
 
 <div class="topnav row justify-content-center" style="display: flex; padding: 0px; margin-left: 300px;width: calc(100% - 300px);">
     {#    <form style=" padding-left: 5px; padding-right: 45px; margin: 10px;">#}
@@ -260,9 +269,83 @@
 
     $(document).ready(function () {
         $('#dataset_dropdown').change(function () {
-            $('#main_form').submit();
+
+            let form = document.getElementById("main_form")
+            let formData = new FormData(form);
+
+            $.ajax({
+                type: "POST",
+                url: "{% url 'generate_dataset' %}",
+                data: formData,
+                // handle a successful response
+                success: function (data) {
+
+                    let inputLayoutName = document.createElement("input");
+                    inputLayoutName.setAttribute("id", "layout_name_item");
+                    inputLayoutName.setAttribute("type", "hidden");
+                    inputLayoutName.setAttribute("name", "best_layout_selected");
+                    inputLayoutName.setAttribute("value", "");
+                    form.appendChild(inputLayoutName);
+
+                    d3.json(data, function (error, treeData) {
+                        let root = treeData;
+                        var i = 0;
+
+                        function recurse(node, parent) {
+                            node.parent = parent; //We assign a parent to the node
+                            if (parent) node.depth = node.parent.depth + 1; //If parent is not null
+                            if (node.children) node.children.forEach(element => recurse(element, node));
+                            if (!node.id) node.id = ++i;
+                        }
+                        root.depth = 0;
+                        recurse(root, null);
+
+                        let hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
+                        let layoutNameElem = document.getElementById("layout_name_item");
+
+                        switch(hierarchyName) {
+                          case "Unspecified":
+                            layoutNameElem.value = "force";
+                            break;
+                          case "Elongated":
+                            layoutNameElem.value = "tree";
+                            break;
+                          case "Compact":
+                            layoutNameElem.value = "radial";
+                            break;
+                          case "nCompact":
+                            layoutNameElem.value = "force";
+                            break;
+                          case "Hybrid":
+                            layoutNameElem.value = "force";
+                            break;
+                        }
+                        form.submit();
+                    });
+                },
+                // handle a non-successful response
+                error: function(jqXHR, textStatus, errorThrown) { // on error..
+                    if (jqXHR.status === 0) {
+                        alert('Not connect: Verify Network.');
+                    } else if (jqXHR.status === 404) {
+                        alert('Requested page not found [404]');
+                    } else if (jqXHR.status === 500) {
+                        alert('Internal Server Error [500].');
+                    } else if (textStatus === 'parsererror') {
+                        alert('Requested JSON parse failed.');
+                    } else if (textStatus === 'timeout') {
+                        alert('Time out error.');
+                    } else if (textStatus === 'abort') {
+                        alert('Ajax request aborted.');
+                    } else {
+                        alert('Uncaught Error: ' + jqXHR.responseText);
+                    }
+                },
+                cache: false,
+                contentType: false,
+                processData: false,
+            })
         });
-        console.log('[User]', user.split('/')[2], '| [interaction]', 'has_loaded_' + $('#dataset_dropdown').val(), '| [Date]', Date.now());
     });
 
     jQuery("#tree_layout_button").click(function () {

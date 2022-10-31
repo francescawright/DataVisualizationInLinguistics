@@ -279,12 +279,14 @@
                     e.text = "I'm opening the document";
                     let documentName = messageList[1];
                     var mainForm = '{{ selected_item }}' ? document.getElementById("main_form") : document.getElementById("chatbotDataSelection");
-
-                    var dataset_dropdown_value = document.getElementById("dataset_dropdown").value;
+                    console.log(dataset_dropdown_value)
+                    var dataset_dropdown_value;
 
                     if ('{{ selected_item }}') {
                         // Change select's option
-                        document.getElementById("dataset_dropdown").value = documentName;
+                        let datasetDropdown = document.getElementById("dataset_dropdown");
+                        dataset_dropdown_value = datasetDropdown.value;
+                        datasetDropdown.value = documentName;
                     } else {
                         document.getElementById("open_document_name").value = documentName;
                     }
@@ -298,10 +300,14 @@
                         // handle a successful response
                         success: function (data) {
                             if (data === "document_not_exist") {
-                                document.getElementById("dataset_dropdown").value = dataset_dropdown_value;
+                                if ('{{ selected_item }}') {
+                                    document.getElementById("dataset_dropdown").value = dataset_dropdown_value;
+                                }
                                 injectIntentConversation("I cannot find any document with the name you have given me");
                             } else if (data === "open_document_no_active_session") {
-                                document.getElementById("dataset_dropdown").value = dataset_dropdown_value;
+                                if ('{{ selected_item }}') {
+                                    document.getElementById("dataset_dropdown").value = dataset_dropdown_value;
+                                }
                                 injectIntentConversation("You need to be logged in to access the documents");
                             } else {
                                 if ('{{ selected_item }}') {

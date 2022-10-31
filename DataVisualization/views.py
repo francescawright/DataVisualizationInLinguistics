@@ -136,7 +136,6 @@ def generate_dataset (request):
     # ---------------------------------------------------------------------------------
     # JSON PARSING & CURRENT DATASET
     # ---------------------------------------------------------------------------------
-    print(request.POST)
     try:
         dataset, doc = get_current_dataset(request, selected_item)
     except ObjectDoesNotExist:

@@ -85,15 +85,14 @@
     <!-- Custom styles for this template -->
     <link href="{% static  'css/simple-sidebar.css' %}" rel="stylesheet">
 
+    <!-- To select the best display layout -->
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="{% static 'js/categorization_functions.js' %}"></script>
 </head>
-
-<!-- To select the best display layout -->
-<script src="https://d3js.org/d3.v3.min.js"></script>
-<script src="{% static 'js/categorization_functions.js' %}"></script>
 
 <body>
 
-{% include 'rasa-webchat.html' %}
+{% include 'rasa_webchat.html' %}
 
 <div class="bg-light border-right main-left-sidebar" id="sidebar-wrapper" style="width: 300px;">
 
@@ -342,22 +341,23 @@
                     recurse(root, null);
 
                     let hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
+                    let layoutNameElem = document.getElementById("layout_doc_" + id);
 
                     switch(hierarchyName) {
                       case "Unspecified":
-                        document.getElementById("layout_doc_" + id).value = "force";
+                        layoutNameElem.value = "force";
                         break;
                       case "Elongated":
-                        document.getElementById("layout_doc_" + id).value = "tree";
+                        layoutNameElem.value = "tree";
                         break;
                       case "Compact":
-                        document.getElementById("layout_doc_" + id).value = "radial";
+                        layoutNameElem.value = "radial";
                         break;
                       case "nCompact":
-                        document.getElementById("layout_doc_" + id).value = "force";
+                        layoutNameElem.value = "force";
                         break;
                       case "Hybrid":
-                        document.getElementById("layout_doc_" + id).value = "force";
+                        layoutNameElem.value = "force";
                         break;
                     }
                     $('#data_selection_' + id).submit();
