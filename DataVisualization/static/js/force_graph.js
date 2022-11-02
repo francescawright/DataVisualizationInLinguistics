@@ -2,14 +2,14 @@
 var codeReady = false;
 
 //Graph
-var canvasHeight = 1000, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
+var canvasHeight = 1000, canvasWidth = document.getElementById("tree-container").offsetWidth; //Dimensions of our canvas (grayish area)
 const canvasFactor = 1;
 let link, node;
 
 //Zoom
 const minZoom = 0.05, maxZoom = 8; //Zoom range
 let currentZoomScale; //Current scale
-const initialZoomScale = 1; //Initial zoom scale to display almost the whole graph
+const initialZoomScale = 0.1; //Initial zoom scale to display almost the whole graph
 
 
 //Node radius
@@ -2283,7 +2283,6 @@ treeJSON = d3.json(dataset, function (error, json) {
 
         node.filter(function (d) {
             if (deepestNodesPath.includes(d)) d.highlighted = 1;
-            //console.log(d);
             return (deepestNodesPath.includes(d));
         }).style("opacity", 1);
 
@@ -2552,10 +2551,10 @@ treeJSON = d3.json(dataset, function (error, json) {
 
         // Add news information
         tooltipText += "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Title:</b> " + d.title + "</td></tr></table>" +
-            "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Text URL:</b> " + d.text_URL + "</td>" +
+            "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Text URL:</b> <a href=" + d.text_URL + ">" + d.text_URL + "</a></td>" +
             "</tr>" +
             "<tr>" +
-                "<td> <b>Comments URL:</b> " + d.comments_URL + "</td>" +
+                "<td> <b>Comments URL:</b> <a href=" + d.comments_URL + ">" + d.comments_URL + "</a></td>" +
             "</tr></table>"
         tooltipText += "<br>";
     }
@@ -2592,8 +2591,8 @@ treeJSON = d3.json(dataset, function (error, json) {
         optimalK = getOptimalK(nodes); // compute optimal distance between nodes
 
         root.fixed = true;
-        root.x = canvasWidth / 2;
-        root.y = canvasHeight / 2;
+        root.x = 0;
+        root.y = 0;
 
         // Restart the force layout.
         force
@@ -3313,26 +3312,11 @@ treeJSON = d3.json(dataset, function (error, json) {
 
     force.alpha(1.5); //Restart the timer of the cooling parameter with a high value to reach better initial positioning
 
-    let element = document.getElementById('tree-container');
-    let computedStyle = getComputedStyle(element);
-    let elementWidth = element.clientWidth;   // width with padding
-    elementWidth -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
-    canvasWidth = elementWidth;
-
-
-    //console.log("root number of children: ",root.children);
-    //Try to center and zoom to fit the first initialization
-    let box = computeDimensions(nodes);
-
-    let initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root, canvasHeight/2, canvasWidth/2);
-
-    initialZoom = initialSight.initialZoom;
-    initialX = initialSight.initialX;
-    initialY = initialSight.initialY;
-
-    zoomListener.scale(initialZoom);
-    zoomListener.translate([initialY, initialX]);
-    zoomListener.event(svg);
+    $(document).ready(function () {
+        zoomListener.scale(initialZoomScale);
+        zoomListener.translate([canvasWidth / 2, canvasHeight / 2]);
+        zoomListener.event(svg);
+    });
 
     /**
      * Wrap call to compute statistics and to write them in a hover text

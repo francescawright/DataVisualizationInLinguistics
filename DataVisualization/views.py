@@ -79,7 +79,7 @@ def save_first_login(request):
     return HttpResponse(status=204)
 
 
-def generate_dataset (request):
+def generate_dataset(request):
     # Check if there is an active session
     user = getattr(request, 'user', None)
     if not user or not getattr(user, 'is_authenticated', True):
@@ -104,6 +104,32 @@ def generate_dataset (request):
     save_data_to_JSON(first_level, doc)
     # ---------------------------------------------------------------------------------
     return HttpResponse("/static/output.json")
+
+
+def generate_dataset_popup(request):
+    # Check if there is an active session
+    user = getattr(request, 'user', None)
+    if not user or not getattr(user, 'is_authenticated', True):
+        return HttpResponse("open_document_no_active_session")
+
+    # CURRENT ITEM
+    # ---------------------------------------------------------------------------------
+    selected_item = None
+    if "selected_data" in request.POST.keys():
+        selected_item = request.POST["selected_data"]
+    nodes = list(map(int,request.POST["nodes"].split(",")))
+    # ---------------------------------------------------------------------------------
+    # JSON PARSING & CURRENT DATASET
+    # ---------------------------------------------------------------------------------
+    try:
+        # Filter first level childs
+        dataset_first_level, doc = get_current_dataset_popup(request, nodes, selected_item)
+    except ObjectDoesNotExist:
+        return HttpResponse("document_not_exist")
+    save_data_to_JSON_popup(dataset_first_level, nodes, doc)
+    # ---------------------------------------------------------------------------------
+    return HttpResponse("/static/output_popup.json")
+
 
 def main_form_handler(request):
     # Check if there is an active session
@@ -258,6 +284,14 @@ def get_current_dataset(request, selected_data):
     return dataset, doc
 
 
+def get_current_dataset_popup(request, nodes, selected_data):
+    doc = Document.objects.filter(description=selected_data).first()
+    if not (doc):
+        raise ObjectDoesNotExist('document_not_exist')
+    dataset = Commentary.objects.filter(document_id=doc,comment_level=1, comment_id__in=nodes).all()
+    return dataset, doc
+
+
 def handle_icons(request):
     if "dots_icon_button" in request.POST.keys():
         return "dots"
@@ -266,8 +300,8 @@ def handle_icons(request):
     return "dots"
 
 
-def recursive_add_node(node, doc):
-    result = {
+def get_result_node (node):
+    return {
         "name": node.comment_id,
         "user_id": node.user_id,
         "date": node.date,
@@ -290,6 +324,10 @@ def recursive_add_node(node, doc):
         "toxicity": node.toxicity,
         "toxicity_level": node.toxicity_level,
     }
+
+
+def recursive_add_node(node, doc):
+    result = get_result_node(node)
     children = [recursive_add_node(c, doc) for c in
                 Commentary.objects.filter(document_id=doc).all().filter(thread=node.comment_id, comment_level=2)]
     if children:
@@ -297,12 +335,32 @@ def recursive_add_node(node, doc):
     return result
 
 
+def recursive_add_node_popup(node, nodes, doc):
+    result = get_result_node(node)
+    children = [recursive_add_node_popup(c, nodes, doc) for c in
+                Commentary.objects.filter(document_id=doc).all().filter(thread=node.comment_id, comment_level=2)
+                if c.comment_id in nodes]
+    if children:
+        result["children"] = children
+    return result
+
 def save_data_to_JSON(first_level, doc):
     # Recursivamente añadimos sus hijos.
     data_list = [recursive_add_node(node, doc) for node in first_level]
 
-    data = {"name": doc, "title": doc.title, "text_URL" : doc.text_URL, "comments_URL" : doc.comments_URL, "children": data_list}
+    data = {"name": doc, "title": doc.title, "text_URL": doc.text_URL, "comments_URL": doc.comments_URL,
+            "children": data_list}
     with open(os.path.join('DataVisualization/' + django_settings.STATIC_URL, 'output.json'), 'w') as outfile:
+        json.dump(data, outfile, default=str)
+
+
+def save_data_to_JSON_popup(first_level, nodes, doc):
+    # Recursivamente añadimos sus hijos.
+    data_list = [recursive_add_node_popup(node, nodes, doc) for node in first_level]
+
+    data = {"name": doc, "title": doc.title, "text_URL": doc.text_URL, "comments_URL": doc.comments_URL,
+            "children": data_list}
+    with open(os.path.join('DataVisualization/' + django_settings.STATIC_URL, 'output_popup.json'), 'w') as outfile:
         json.dump(data, outfile, default=str)
 
 
@@ -420,8 +478,8 @@ def edit_data(request, document_id):
             return render(request, "upload_file.html",
                           context={'form': form, 'documents_uploaded': get_all_documents()})
     else:
-        return render(request, 'update_file.html', {'documents_uploaded': get_all_documents(), 'document': document, 'form': form})
-
+        return render(request, 'update_file.html',
+                      {'documents_uploaded': get_all_documents(), 'document': document, 'form': form})
 
 
 def handle_delete_data(request):
@@ -627,7 +685,6 @@ def decrypt(token: bytes, key: bytes) -> bytes:
 
 
 def getTemplateByPath(request, errorMessage):
-
     path = urlparse(request.META['HTTP_REFERER']).path
 
     # Other tempaltes such as /edit_data/ will have to be added when they are implemented
@@ -646,7 +703,8 @@ def getTemplateByPath(request, errorMessage):
 
             errorMessage = getChatErrorMessage(request, errorMessage)
 
-            selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout = main_form_context(request)
+            selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout = main_form_context(
+                request)
 
             return render(request, template,
                           {'dataset': 'output.json', 'options': get_all_documents(), 'layouts': LAYOUTS,
@@ -679,6 +737,7 @@ def getChatErrorMessage(request, errorName):
         return messages[errorName]
     else:
         return "An error has occurred"
+
 
 def getChatSuccessMessage(request, successName):
     messages = {'best_layout': "I have selected the best visualization according to the graph characteristics"}

@@ -5,6 +5,9 @@ var GFelon = 2;
 var d_lvl = 6;
 var tol = 0.15;
 
+var datasetPopup;
+var hierarchyName;
+
 /*******************************
 *   Categorization Functions   *
 ********************************/
@@ -60,7 +63,6 @@ function highlightDevtoolsAND(node, link, enabledTargetsValue, opacityValue = 0.
     //Significant CB is checked
     if (enabledTargetsValue.indexOf("significant-nodes") > -1) {
         node.filter(function (d) {
-            if (isSignificant(d, tol)) {console.log("node "+d.name+" is significant with tol "+tol);}
             if (!checkSignificant(d, tol)) d.highlighted = 0;
             return (!checkSignificant(d, tol));
         }).style("opacity", opacityValue);
@@ -600,4 +602,86 @@ function getTreeData(node, filename) {
     hiddenElement.target = '_blank';
     hiddenElement.download = filename + '.csv';
     hiddenElement.click();
+}
+
+function highlightLongestThread(nodes, root, opacityValue, deepestNodesPath, node, link) {
+    nodes.forEach(function (d) {
+        d.highlighted = 0;
+    });
+    node.style("opacity", opacityValue);
+
+    let highlighted_nodes = node.filter(function (d) {
+        if (deepestNodesPath.includes(d)) d.highlighted = 1;
+        return (deepestNodesPath.includes(d));
+    }).style("opacity", 1);
+
+    let highlighted_comments = highlighted_nodes.filter(function (d) {
+        return (d !== root);
+    });
+
+    var comment_ids = highlighted_comments[0].map(function(comment) {
+      return comment['__data__']['name'];
+    });
+
+    const formData = new FormData();
+    formData.append('csrfmiddlewaretoken', document.getElementsByName('csrfmiddlewaretoken')[0].value);
+    formData.append('selected_data', document.getElementById("dataset_dropdown").value);
+    formData.append('nodes', comment_ids);
+
+    $.ajax({
+        type: "POST",
+        url: "/generate_dataset_popup/",
+        data: formData,
+        // handle a successful response
+        success: function (data) {
+            d3.json(data, function (error, treeData) {
+                let root = treeData;
+                var i = 0;
+
+                function recurse(node, parent) {
+                    node.parent = parent; //We assign a parent to the node
+                    if (parent) node.depth = node.parent.depth + 1; //If parent is not null
+                    if (node.children) node.children.forEach(element => recurse(element, node));
+                    if (!node.id) node.id = ++i;
+                }
+                root.depth = 0;
+                recurse(root, null);
+
+                hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
+                datasetPopup = data;
+                if (!document.getElementById("graph-container")) {
+                    $("#popup_btn").click();
+                } else {
+                    removeLayout();
+                }
+                $(popup_container).trigger("open");
+            });
+        },
+        // handle a non-successful response
+        error: function(jqXHR, textStatus, errorThrown) { // on error..
+            if (jqXHR.status === 0) {
+                alert('Not connect: Verify Network.');
+            } else if (jqXHR.status === 404) {
+                alert('Requested page not found [404]');
+            } else if (jqXHR.status === 500) {
+                alert('Internal Server Error [500].');
+            } else if (textStatus === 'parsererror') {
+                alert('Requested JSON parse failed.');
+            } else if (textStatus === 'timeout') {
+                alert('Time out error.');
+            } else if (textStatus === 'abort') {
+                alert('Ajax request aborted.');
+            } else {
+                alert('Uncaught Error: ' + jqXHR.responseText);
+            }
+        },
+        cache: false,
+        contentType: false,
+        processData: false,
+    })
+
+    //Highlight only the edges whose both endpoints are highlighted
+    link.style("opacity", function (d) {
+        return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+    });
 }

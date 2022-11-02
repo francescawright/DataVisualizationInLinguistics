@@ -3549,7 +3549,6 @@ treeJSONPopup = d3.json(dataset, function (error, treeData) {
          */
         $(popup_container).off("longest_thread");
         $(popup_container).on("longest_thread", function () {
-            console.log("iiiiiiiiiiiii")
             let deepestNodes = getDeepestNodes(rootPopup);
 
             deepestNodesPathPopup = getDeepestNodesPath(rootPopup, deepestNodes);
@@ -3838,16 +3837,13 @@ treeJSONPopup = d3.json(dataset, function (error, treeData) {
     initialXPopup = initialSightPopup.initialX;
     initialYPopup = initialSightPopup.initialY;
 
-
-    $(document.body).on("initPopup", initPositionTreePopup);
-
     function initPositionTreePopup() {
         zoomListenerPopup.scale(initialZoomPopup);
         zoomListenerPopup.translate([initialYPopup, initialXPopup]);
         zoomListenerPopup.event(baseSvgPopup);
     };
     initPositionTreePopup()
-    
+
     //I compute the values for the statistic data showing in the background
     var listStatistics = getStatisticValues(rootPopup);
     var totalNumberOfNodes = listStatistics.children;

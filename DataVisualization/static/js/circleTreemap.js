@@ -3,16 +3,22 @@ var codeReady = false;
 
 var static_values_checked = true;
 
-let svg = d3v4.select(container)
+let div = document.createElement("div");
+div.setAttribute("id", "div-circle-container");
+div.style.textAlign = "center";
+div.style.marginRight = "520px";
+document.querySelector(container).appendChild(div);
+
+let svg = d3v4.select("#div-circle-container")
         .append("svg")
         .attr("width", 960)
         .attr("height", 960)
-        .attr("style", "overflow: visible; margin-top: 100px; margin-left: 180px;")
+        .attr("style", "overflow: visible; margin-top: 100px; margin-left: 130px;")
 
 
-    let diameter = svg.attr("width"),
-    g = svg.append("g").attr("transform", "translate(2,2)"),
-    format = d3v4.format(",d");
+let diameter = svg.attr("width"),
+g = svg.append("g").attr("transform", "translate(2,2)"),
+format = d3v4.format(",d");
 
 let pack = d3v4.pack()
     .size([diameter - 2, diameter - 2])
@@ -337,10 +343,10 @@ function writeTooltipRoot(d) {
 
     // Add news information
     tooltipText += "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Title:</b> " + d.data.title + "</td></tr></table>" +
-        "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Text URL:</b> " + d.data.text_URL + "</td>" +
+        "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Text URL:</b> <a href=" + d.data.text_URL + ">" + d.data.text_URL + "</a></td>" +
         "</tr>" +
         "<tr>" +
-            "<td> <b>Comments URL:</b> " + d.data.comments_URL + "</td>" +
+            "<td> <b>Comments URL:</b> <a href=" + d.data.comments_URL + ">" + d.data.comments_URL + "</a></td>" +
         "</tr></table>"
     tooltipText += "<br>";
 }
@@ -507,7 +513,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
 
 }
 
-function highlightLongestThread(node) {
+function highlightLongestThreadCircle(node) {
 
     nodes.forEach(function (d) {
         d.data.highlighted = 1;
@@ -532,7 +538,7 @@ function highlightLongestThread(node) {
     }).style("opacity", maxOpacityValue);
 }
 
-function highlightWidestLevels(node, levelsIndexes) {
+function highlightWidestLevelsCircle(node, levelsIndexes) {
 
     nodes.forEach(function (d) {
         d.data.highlighted = 1;
@@ -734,7 +740,7 @@ function highlightWidestLevels(node, levelsIndexes) {
 
         deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
         // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
-        highlightLongestThread(node);
+        highlightLongestThreadCircle(node);
 
         if (static_values_checked) {
             statisticBackground.html(writeStatisticText());
@@ -757,7 +763,7 @@ function highlightWidestLevels(node, levelsIndexes) {
 
         injectIntentConversation(textMsg);
 
-        highlightWidestLevels(node, widestLevels[0]);
+        highlightWidestLevelsCircle(node, widestLevels[0]);
 
         if (static_values_checked) {
             statisticBackground.html(writeStatisticText());

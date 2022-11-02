@@ -127,7 +127,7 @@
         user-select: none;
         width: fit-content;
         height: fit-content;
-        padding: 6px 6px;
+        padding: 12px 6px 6px 6px;
     }
     .tree-modal-button img, .force-modal-button img, .radial-modal-button img, .circle-modal-button img {
         width: 50px;
@@ -140,7 +140,7 @@
         outline: none !important;
     }
     .tree-modal-button {
-        padding: 6px 6px 6px 12px;
+        padding: 12px 6px 6px 12px;
     }
     .tree-modal-button{
         left: 0;
@@ -222,6 +222,7 @@
         padding: 0;
         background-color: #eff4fc;
         border-radius: 0.5rem 0.5rem 0 0;
+        overflow: hidden;
     }
     .modal .modal-footer {
         display: block;
@@ -1536,7 +1537,7 @@
     <div class="modal fade" id="popupModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="popupModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <button type="button" class="close-modal-button" data-dismiss="modal">
+            <button type="button" class="close-modal-button" data-dismiss="modal" onclick="removeLayout()">
                 <div style="text-align: center; margin-top: -4px; font-size: x-large;">&#215;</div>
             </button>
             <div>
@@ -1573,7 +1574,7 @@
 
     <div id="tree-container" class="column2" style="width: calc(calc(100vw - (100vw - 100%)) - 290px); position: sticky; position: -webkit-sticky; top: 19px; z-index: 10;">
         <div style="z-index: 50; text-align:center; position: absolute; top: 20px; left: 20px;">
-            <button id="popup_btn" type="button" class="btn" data-toggle="modal" onclick="openModal()" data-target="#popupModal">Subtrees</button>
+            <button id="popup_btn" type="button" class="btn" data-toggle="modal" data-target="#popupModal">Subtrees</button>
         </div>
 
         <div class="div-test left-arrow"></div>
@@ -1591,7 +1592,7 @@
 </div>
 </html>
 
-<!-- <script src="{% static 'js/popup.js' %}"></script> -->
+<script src="{% static 'js/layouts.js' %}"></script>
 
 <script>
 
@@ -1599,7 +1600,7 @@
         const topnavHeight = document.querySelector('.topnav').offsetHeight;
         document.querySelector('#menu-left').style.marginTop = -topnavHeight + "px";
     }
-    window.ready = sidebarCheckMarginTop();
+    $(document).ready(sidebarCheckMarginTop);
     window.onresize = sidebarCheckMarginTop;
 
     var acc = document.getElementsByClassName("accordion");
@@ -1942,14 +1943,6 @@
         $(document).off('focusin.modal');
     });
 
-    function openModal(){
-        document.querySelector(".modal .modal-content").style.width = "500px";
-        document.querySelector(".modal .modal-content").style.height = "350px";
-        document.getElementById("popupModal").style.top = "calc(30% - 175px)";
-        document.getElementById("popupModal").style.left = "calc(50% - 250px)";
-        // $(".div-test").toggleClass("show-menu");
-        $(document.body).trigger("initPopup");
-    }
     function showSubtreesMenu(){
 
     }

@@ -30,11 +30,11 @@ var codeReady = false;
 
 //Graph
 let link, node;
-var canvasHeight = 1000, canvasWidth = 2200; //Dimensions of our canvas (grayish area)
+var canvasHeight = 1000, canvasWidth = document.getElementById("tree-container").offsetWidth; //Dimensions of our canvas (grayish area)
 const canvasFactor = 1;
 
 const edgeLength = 24 * 20;
-const initialZoomScale = 0.17; //Initial zoom scale to display almost the whole graph
+const initialZoomScale = 0.2; //Initial zoom scale to display almost the whole graph
 var initialZoom, initialX, initialY; //Initial zoom and central coordinates of the first visualization of the graph
 
 //Node radius
@@ -2807,7 +2807,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         node.filter(function (d) {
             if (deepestNodesPath.includes(d)) d.highlighted = 1;
-            //console.log(d);
             return (deepestNodesPath.includes(d));
         }).style("opacity", 1);
 
@@ -2998,10 +2997,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         // Add news information
         tooltipText += "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Title:</b> " + d.title + "</td></tr></table>" +
-            "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Text URL:</b> " + d.text_URL + "</td>" +
+            "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Text URL:</b> <a href=" + d.text_URL + ">" + d.text_URL + "</a></td>" +
             "</tr>" +
             "<tr>" +
-                "<td> <b>Comments URL:</b> " + d.comments_URL + "</td>" +
+                "<td> <b>Comments URL:</b> <a href=" + d.comments_URL + ">" + d.comments_URL + "</a></td>" +
             "</tr></table>"
         tooltipText += "<br>";
     }
@@ -3790,27 +3789,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     document.querySelector("#tree-container div.my-statistic").style.visibility = "visible";
     update(root, true,true);
 
-    let element = document.getElementById('tree-container');
-    let computedStyle = getComputedStyle(element);
-    let elementWidth = element.clientWidth;   // width with padding
-    elementWidth -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
-    canvasWidth = elementWidth;
-
-    var box = computeDimensions(nodes);
-    let initialSight = zoomToFitGraph(box.minX-1500, box.minY-1500, box.maxX+1500, box.maxY+1500, root, canvasHeight, canvasWidth);
-
-
-    initialZoom = initialSight.initialZoom;
-    initialX = initialSight.initialX;
-    initialY = initialSight.initialY;
-
-    zoomListener.scale(initialZoom);
-    zoomListener.translate([initialY, initialX]);
-    zoomListener.event(baseSvg);
-
-    //Set initial stroke widths
-    link.style("stroke-width", 11); //Enlarge stroke-width on zoom out
-    node.select("circle.nodeCircle").style("stroke-width", 3); //Enlarge stroke-width on zoom out
+    $(document).ready(function () {
+        zoomListener.scale(initialZoomScale);
+        zoomListener.translate([canvasWidth / 2, canvasHeight / 2]);
+        zoomListener.event(baseSvg);
+    });
 
     /**
      * Recursive function to compute the global statistics
