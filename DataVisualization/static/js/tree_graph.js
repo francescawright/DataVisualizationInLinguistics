@@ -591,7 +591,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var imageOffset = 4; //Radii size difference between a node and its associated image
     var imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
 
-    var colorFeature = ["#1B8055","#90F6B2",
+    var colorFeature = ["#90F6B2", "#1B8055",
         "#97CFFF", "#1795FF", "#0B5696",
         "#E3B7E8", "#A313B3", "#5E1566"
     ];
@@ -600,6 +600,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         "#FF5500", "#90F6B2", "#1B8055",
         "#97CFFF", "#1795FF", "#0B5696"
     ];
+
+    var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
+    var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
     /* Targets: size, position, local path, objects to draw the target as ring
      * */
@@ -1246,7 +1249,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         listOpacity = [0, 0, 0, 0, 0 , 0, 0];
                         if (elongatedTendency(d, l)) { listOpacity[0] = 1; }
                         if (compactTendency(d, l, GFcomp)) { listOpacity[1] = 1;}
-                        if (checkSignificant(d, tol)) { listOpacity[2] = 1; }
+                        if (checkSignificant(root, d, tol)) { listOpacity[2] = 1; }
                         switch (h) {
                             case 1:
                                 listOpacity[3] = 1;
@@ -1588,8 +1591,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         removeToxicities(nodeEnter); //Remove all the pngs for toxicity
 
         var cbFeatureEnabled = [
-            enabledFeatures.indexOf("argumentation"),
             enabledFeatures.indexOf("constructiveness"),
+            enabledFeatures.indexOf("argumentation"),
             enabledFeatures.indexOf("sarcasm"),
             enabledFeatures.indexOf("mockery"),
             enabledFeatures.indexOf("intolerance"),
@@ -1599,8 +1602,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         ];
 
         var features = [
-            objFeatArgumentation,
             objFeatConstructiveness,
+            objFeatArgumentation,
             objFeatSarcasm,
             objFeatMockery,
             objFeatIntolerance,
@@ -1617,8 +1620,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         return false;
                     } else {
                         listOpacity = [
-                            d.argumentation,
                             d.constructiveness,
+                            d.argumentation,
                             d.sarcasm,
                             d.mockery,
                             d.intolerance,
@@ -2246,22 +2249,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     function drawFeatures(nodeEnter) {
         hideCheese();
-        // Argumentation
-        if (enabledFeatures.indexOf("argumentation") > -1) {
-            nodeEnter
-                .append("circle")
-                .attr("class", "featureArgumentation")
-                .attr("id", "featureArgumentation")
-                .attr("r", "4.5")
-                .attr("transform", "translate(" + 35 + "," + 0 + ")")
-                .attr("fill", colorFeature[0])
-                .style("stroke", "black")
-                .style("stroke-width", getNodeStrokeWidth())
-                .attr("opacity", function (d) {
-                    if (d.argumentation) return 1; //If node contains argumentation
-                    return 0; //We hide it if it has no argumentation
-                });
-        }
 
         if (enabledFeatures.indexOf("constructiveness") > -1) {
             // Constructiveness
@@ -2271,12 +2258,28 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr("id", "featureConstructiveness")
                 .attr("r", "4.5")
                 .attr("transform", "translate(" + 45 + "," + 0 + ")")
-                .attr("fill", colorFeature[1])
+                .attr("fill", colorFeature[0])
                 .style("stroke", "black")
                 .style("stroke-width", getNodeStrokeWidth())
                 .attr("opacity", function (d) {
                     if (d.constructiveness) return 1;
                     return 0;
+                });
+        }
+        // Argumentation
+        if (enabledFeatures.indexOf("argumentation") > -1) {
+            nodeEnter
+                .append("circle")
+                .attr("class", "featureArgumentation")
+                .attr("id", "featureArgumentation")
+                .attr("r", "4.5")
+                .attr("transform", "translate(" + 35 + "," + 0 + ")")
+                .attr("fill", colorFeature[1])
+                .style("stroke", "black")
+                .style("stroke-width", getNodeStrokeWidth())
+                .attr("opacity", function (d) {
+                    if (d.argumentation) return 1; //If node contains argumentation
+                    return 0; //We hide it if it has no argumentation
                 });
         }
         if (enabledFeatures.indexOf("sarcasm") > -1) {
@@ -3231,77 +3234,92 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     }
 
 
-
     function writeTooltipText(d) {
-        //I want to show Argument and Constructiveness in one line, I add a dummy space to keep that in the loop
-        var jsonValues = [
-            d.name,
-            d.toxicity_level,
-            d.depth,
-            d.argumentation,
+        var featuresValues = [
             d.constructiveness,
-            -1,
+            d.argumentation,
             d.sarcasm,
             d.mockery,
             d.intolerance,
             d.improper_language,
             d.insult,
             d.aggressiveness,
-            d.target_group,
-            d.target_person,
-            d.stereotype,
         ];
-        var jsonNames = [
-            "Comment ID",
-            "Toxicity level",
-            "Comment depth",
-            "Argument",
+        var featuresNames = [
             "Constructiveness",
-            " ",
+            "Argument",
             "Sarcasm",
             "Mockery",
             "Intolerance",
-            "Improper language",
+            "Improper",
             "Insult",
             "Aggressiveness",
-            "Target group",
-            "Target person",
-            "Stereotype",
         ];
-        var i = 0;
-        tooltipText = "<table>";
 
-        for (i = 0; i < jsonValues.length; i++) {
-            if (i === 3 || i === 12) tooltipText += "<tr><td></td></tr>"; // I want a break between the first line and the features and the targets
-            if (i % 3 === 0) tooltipText += "<tr>"; //Start table line
-            if (i < 3)
-                tooltipText +=
-                    "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>";
-            //First ones without bold
-            else if (jsonValues[i] !== -1)
-                jsonValues[i] ?
-                    (tooltipText +=
-                        "<td><b>" +
-                        jsonNames[i] +
-                        ": " +
-                        jsonValues[i] +
-                        "</b></td>") :
-                    (tooltipText +=
-                        "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>");
-            if ((i + 1) % 3 === 0) tooltipText += "</tr>"; //End table line
+        tooltipText = "<div style='margin: 0 10px;'>";
+
+        tooltipText += "<div style='font-size: medium;'>Comment ID: " + d.name + "<br>"
+                    + "Comment Level: " + d.comment_level + "<br>"
+                    + "Comment Depth: " + d.depth + "<br>"
+                    + "Toxicity level: " + d.toxicity_level + "</div><br>";
+
+        let i;
+        tooltipText += "<ul class='tooltip-features'>";
+
+        for (i = 0; i < featuresValues.length ; i++) {
+            if (featuresValues[i]) {
+                tooltipText += '<li><span style="color:' + colorFeature[i] + '; font-weight:bold; font-size: larger;">' + featuresNames[i] + '</span></li>'
+            } else {
+                tooltipText += '<li><span style="color:#cccccc; font-weight:bold; font-size: larger;">' + featuresNames[i] + '</span></li>'
+            }
+
         }
 
+        tooltipText += "</ul>";
+
+        tooltipText += "<br><span style='font-size: medium; margin-right: 20px;'>Stance:</span>";
+        tooltipText += '<svg height=" 20" width="80" style="display: inline-block; margin-bottom: 5px;';
+        if (d.positive_stance) {
+            tooltipText += ' opacity: 1;';
+        } else {
+            tooltipText += ' opacity: 0.3;';
+        }
+        tooltipText += '"> <rect width="60" height="20" fill=' + colourPositiveStance + '></rect> </svg>';
+        tooltipText += '<svg height=" 20" width="60" style="display: inline-block; margin-bottom: 5px;';
+        if (d.negative_stance) {
+            tooltipText += ' opacity: 1;';
+        } else {
+            tooltipText += ' opacity: 0.3;';
+        }
+        tooltipText += '"> <rect width="60" height="20" fill=' + colourNegativeStance + '></rect> </svg>';
+
+        tooltipText += "<br><br><span style='font-size: medium; margin-right: 20px;'>Target:</span>";
+        tooltipText += '<img src=' + pt + targetImagesPath[1] + ' style="width: 55px; margin-right: 20px;';
+        if (d.target_person) {
+            tooltipText += ' opacity: 1;';
+        } else {
+            tooltipText += ' opacity: 0.3;';
+        }
+        tooltipText += '"><img src=' + pt + targetImagesPath[0] + ' style="width: 55px; margin-right: 20px;';
+        if (d.target_group) {
+            tooltipText += ' opacity: 1;';
+        } else {
+            tooltipText += ' opacity: 0.3;';
+        }
+        tooltipText += '"><img src=' + pt + targetImagesPath[2] + ' style="width: 55px; margin-right: 20px;';
+        if (d.stereotype) {
+            tooltipText += ' opacity: 1;';
+        } else {
+            tooltipText += ' opacity: 0.3;';
+        }
+        tooltipText += '">';
+
         //Write growingFactor of node
-        tooltipText += "</table>";
-        //var s = getLevelRange(d);
-        var s = L;
-        tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr>";
         //Calculate tendencies and hierarchy of nodes
-        tooltipText +=
-            "<tr>" +
-                "<td> ET: " + elongatedTendency(d, s) +
-                " CT: " + compactTendency(d, s, GFcomp) + "</td>" +
-            "</tr></table>"
+        var s = L;
+        tooltipText += "<br><br>Growing Factor: " + getGrowFactor(d,s)
+                    + "<br>ET: " + elongatedTendency(d, s)
+                    + "&nbsp;&nbsp;&nbsp;&nbsp;CT: " + compactTendency(d, s, GFcomp) + "<br>";
 
         //If node is collapsed, we also want to add some information about its sons
         if (d._children) {
@@ -3327,12 +3345,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             for (i = 0; i < sonValues.length; i++) {
                 if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
                 tooltipText +=
-                    "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
+                    "<td><b>" + sonTitles[i] + ":</b> " + sonValues[i] + "</td>";
                 if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
             }
             tooltipText += "</table>";
         }
-        tooltipText += "<br>" + d.coment;
+        tooltipText += "<br>" + d.coment + "</div>";
     }
 
     //if d == root do somethihg
@@ -3357,7 +3375,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             "Very toxic",
         ];
         var sonValues = [
-            d.children ? d.children.length : null,
+            d.children ? d.children.length : 0,
             totalNumberOfNodes,
             totalNotToxic,
             totalMildlyToxic,
@@ -3369,26 +3387,20 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         for (i = 0; i < sonValues.length; i++) {
             if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
             tooltipText +=
-                "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
+                "<td><b>" + sonTitles[i] + ":</b> " + sonValues[i] + "</td>";
             if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
         }
 
         //Write growingFactor of root
         tooltipText += "</table>";
         var s = L;
-        tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr>";
-        //Calculate tendencies and hierarchy of nodes
-        tooltipText +=
-            "<tr>" +
-                "<td> ET: " + elongatedTendency(d, s) +
-                " CT: " + compactTendency(d, s, GFcomp) + "</td>" +
-            "</tr>"
         //Calculate hierarchy
         var t = d_lvl;
-        tooltipText +=
-            "<tr>" +
-                "<td> Hierarchy: " + getHierarchyName(d, s, GFcomp, t) + "</td>" +
-            "</tr></table>"
+        //Calculate tendencies and hierarchy of nodes
+        tooltipText += "<br><br><b>Growing Factor:</b> " + getGrowFactor(d,s)
+                    + "<br><b>ET:</b> " + elongatedTendency(d, s)
+                    + "&nbsp;&nbsp;&nbsp;&nbsp;<b>CT:</b> " + compactTendency(d, s, GFcomp)
+                    + "<br><b>Hierarchy:</b> " + getHierarchyName(d, s, GFcomp, t) + "<br>";
 
         // Add news information
         tooltipText += "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Title:</b> " + d.title + "</td></tr></table>" +
@@ -3461,7 +3473,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
             .on("mousemove", function (d) {
                 // if (d !== root) {
-                    return tooltip.style("top", (d3.mouse(document.querySelector(".overlay"))[1] - 30) + "px").style("left", (d3.mouse(document.querySelector(".overlay"))[0] - 440) + "px");
+                    return tooltip.style("top", (d3.mouse(document.querySelector(".overlay"))[1] - 130) + "px").style("left", (d3.mouse(document.querySelector(".overlay"))[0] - 490) + "px");
                 // }
             })
             .on("mouseout", function () {
@@ -3535,7 +3547,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                     .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-            highlightDevtoolsAND(node, link, enabledTargets);
+            highlightDevtoolsAND(nodes, root, node, link, enabledTargets);
 
             if (static_values_checked) {
                 statisticBackground.html(writeStatisticText());
@@ -3816,7 +3828,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                                 console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + event.target.name + '_' + event.target.value, "| [Date]", Date.now());
                             }
 
-                            highlightDevtoolsAND(node, link, enabledTargets);
+                            highlightDevtoolsAND(nodes, root, node, link, enabledTargets);
 
                             if (static_values_checked) {
                                 statisticBackground.html(writeStatisticText());
@@ -4322,8 +4334,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
         var statValuesTox = [totalNotToxicUpdate, totalMildlyToxicUpdate, totalToxicUpdate, totalVeryToxicUpdate];
         var statValuesTarg = [totalGroupUpdate, totalPersonUpdate, totalStereotypeUpdate, totalNoneUpdate];
-        var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
-        var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
         for (var i = 0; i < statTitlesToxicity.length; i++) {
             statisticText += "<tr style='font-size: 20px;'>"; //Start table line

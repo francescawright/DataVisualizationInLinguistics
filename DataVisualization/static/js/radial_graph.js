@@ -73,6 +73,9 @@ var colorFeature = ["#a1d99b", "#31a354",
     "#fee5d9", "#fcbba1", "#fc9272",
     "#fb6a4a", "#de2d26", "#a50f15"];
 
+var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
+var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
+
 // Objects for target images
 const objTargetGroup = {
         class: "targetGroup",
@@ -1013,7 +1016,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         colourNeutralStance = "#2b2727";
     var colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
         colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue", colourCollapsed1Son = "lightsteelblue";
-    var colorFeature = ["#1B8055", "#90F6B2",
+    var colorFeature = ["#90F6B2", "#1B8055",
         "#97CFFF", "#1795FF", "#0B5696",
         "#E3B7E8", "#A313B3", "#5E1566"
     ];
@@ -1791,11 +1794,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         removeThisFeatures(nodeEnter);
         removeToxicities(nodeEnter); //Remove all the pngs for toxicity
 
-        var cbFeatureEnabled = [enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+        var cbFeatureEnabled = [enabledFeatures.indexOf("constructiveness"), enabledFeatures.indexOf("argumentation"),
             enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
             enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness")];
 
-        var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
+        var features = [objFeatConstructiveness, objFeatArgumentation, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
         var listOpacity;
 
         for (var i = 0; i < 8; i++) {
@@ -1804,7 +1807,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     if (d.parent === undefined) {
                         return false;
                     } else {
-                        listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
+                        listOpacity = [d.constructiveness, d.argumentation, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
                         return listOpacity[i];
                     }
                 }).append("circle")
@@ -2166,21 +2169,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     function drawFeatures(nodeEnter) {
         hideCheese();
-        // Argumentation
-        if (enabledFeatures.indexOf("argumentation") > -1) {
-            nodeEnter.append("circle")
-                .attr('class', 'featureArgumentation')
-                .attr('id', 'featureArgumentation')
-                .attr("r", "4.5")
-                .attr("transform", "translate(" + 35 + "," + 0 + ")")
-                .attr("fill", colorFeature[0])
-                .style("stroke", "black")
-                .style("stroke-width", "1.5px")
-                .attr("opacity", function (d) {
-                    if (d.argumentation) return 1 //If node contains argumentation
-                    return 0 //We hide it if it has no argumentation
-                });
-        }
 
         if (enabledFeatures.indexOf("constructiveness") > -1) {
             // Constructiveness
@@ -2189,12 +2177,27 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 .attr('id', 'featureConstructiveness')
                 .attr("r", "4.5")
                 .attr("transform", "translate(" + 45 + "," + 0 + ")")
-                .attr("fill", colorFeature[1])
+                .attr("fill", colorFeature[0])
                 .style("stroke", "black")
                 .style("stroke-width", "1.5px")
                 .attr("opacity", function (d) {
                     if (d.constructiveness) return 1
                     return 0
+                });
+        }
+        // Argumentation
+        if (enabledFeatures.indexOf("argumentation") > -1) {
+            nodeEnter.append("circle")
+                .attr('class', 'featureArgumentation')
+                .attr('id', 'featureArgumentation')
+                .attr("r", "4.5")
+                .attr("transform", "translate(" + 35 + "," + 0 + ")")
+                .attr("fill", colorFeature[1])
+                .style("stroke", "black")
+                .style("stroke-width", "1.5px")
+                .attr("opacity", function (d) {
+                    if (d.argumentation) return 1 //If node contains argumentation
+                    return 0 //We hide it if it has no argumentation
                 });
         }
         if (enabledFeatures.indexOf("sarcasm") > -1) {
@@ -3064,7 +3067,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
             .on("mousemove", function (d) {
                 // if (d !== root) {
-                    return tooltip.style("top", (d3.mouse(document.querySelector(".overlay"))[1] - 30) + "px").style("left", (d3.mouse(document.querySelector(".overlay"))[0] - 440) + "px");
+                    return tooltip.style("top", (d3.mouse(document.querySelector(".overlay"))[1] - 130) + "px").style("left", (d3.mouse(document.querySelector(".overlay"))[0] - 490) + "px");
                 // }
             })
             .on("mouseout", function () {
@@ -3913,8 +3916,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
         var statValuesTox = [totalNotToxicUpdate, totalMildlyToxicUpdate, totalToxicUpdate, totalVeryToxicUpdate];
         var statValuesTarg = [totalGroupUpdate, totalPersonUpdate, totalStereotypeUpdate, totalNoneUpdate];
-        var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
-        var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
         for (var i = 0; i < statTitlesToxicity.length; i++) {
             statisticText += "<tr style='font-size: 20px;'>"; //Start table line

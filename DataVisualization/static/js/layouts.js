@@ -75,7 +75,7 @@ var colourBothStancesPopup = "#FFA500", colourPositiveStancePopup = "#77dd77", c
 var colourToxicity0Popup = "#f7f7f7", colourToxicity1Popup = "#cccccc", colourToxicity2Popup = "#737373",
     colourToxicity3Popup = "#000000", colourNewsArticlePopup = "lightsteelblue", colourCollapsed1SonPopup = "lightsteelblue";
 
-var colorFeaturePopup = ["#1B8055","#90F6B2",
+var colorFeaturePopup = ["#90F6B2", "#1B8055",
     "#97CFFF", "#1795FF", "#0B5696",
     "#E3B7E8", "#A313B3", "#5E1566"
 ];
@@ -84,6 +84,8 @@ const colourConstructivenessPopup = "#90F6B2", colourArgumentationPopup = "#1B80
     colourMockeryPopup = "#1795FF",
     colourIntolerancePopup = "#0B5696", colourImproperPopup = "#E3B7E8", colourInsultPopup = "#A313B3",
     colourAggressivenessPopup = "#5E1566";
+
+var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
 
 /* Icon for the root node */
 var rootPathPopup = pr;
@@ -1934,7 +1936,7 @@ $(popup_container).on("open", function () {
                                 if (compactTendency(d, l, GFcomp)) {
                                     listOpacity[1] = 1;
                                 }
-                                if (checkSignificant(d, tol)) {
+                                if (checkSignificant(root, d, tol)) {
                                     listOpacity[2] = 1;
                                 }
                                 switch (h) {
@@ -2254,8 +2256,8 @@ $(popup_container).on("open", function () {
                 removeToxicities(nodeEnter); //Remove all the pngs for toxicity
 
                 var cbFeatureEnabled = [
-                    enabledFeatures.indexOf("argumentation"),
                     enabledFeatures.indexOf("constructiveness"),
+                    enabledFeatures.indexOf("argumentation"),
                     enabledFeatures.indexOf("sarcasm"),
                     enabledFeatures.indexOf("mockery"),
                     enabledFeatures.indexOf("intolerance"),
@@ -2265,8 +2267,8 @@ $(popup_container).on("open", function () {
                 ];
 
                 var features = [
-                    objFeatArgumentation,
                     objFeatConstructiveness,
+                    objFeatArgumentation,
                     objFeatSarcasm,
                     objFeatMockery,
                     objFeatIntolerance,
@@ -2283,8 +2285,8 @@ $(popup_container).on("open", function () {
                                 return false;
                             } else {
                                 listOpacity = [
-                                    d.argumentation,
                                     d.constructiveness,
+                                    d.argumentation,
                                     d.sarcasm,
                                     d.mockery,
                                     d.intolerance,
@@ -2905,22 +2907,6 @@ $(popup_container).on("open", function () {
 
             function drawFeatures(nodeEnter) {
                 hideCheese();
-                // Argumentation
-                if (enabledFeatures.indexOf("argumentation") > -1) {
-                    nodeEnter
-                        .append("circle")
-                        .attr("class", "featureArgumentation")
-                        .attr("id", "featureArgumentation")
-                        .attr("r", "4.5")
-                        .attr("transform", "translate(" + 35 + "," + 0 + ")")
-                        .attr("fill", colorFeaturePopup[0])
-                        .style("stroke", "black")
-                        .style("stroke-width", getNodeStrokeWidthTree())
-                        .attr("opacity", function (d) {
-                            if (d.argumentation) return 1; //If node contains argumentation
-                            return 0; //We hide it if it has no argumentation
-                        });
-                }
 
                 if (enabledFeatures.indexOf("constructiveness") > -1) {
                     // Constructiveness
@@ -2930,12 +2916,28 @@ $(popup_container).on("open", function () {
                         .attr("id", "featureConstructiveness")
                         .attr("r", "4.5")
                         .attr("transform", "translate(" + 45 + "," + 0 + ")")
-                        .attr("fill", colorFeaturePopup[1])
+                        .attr("fill", colorFeaturePopup[0])
                         .style("stroke", "black")
                         .style("stroke-width", getNodeStrokeWidthTree())
                         .attr("opacity", function (d) {
                             if (d.constructiveness) return 1;
                             return 0;
+                        });
+                }
+                // Argumentation
+                if (enabledFeatures.indexOf("argumentation") > -1) {
+                    nodeEnter
+                        .append("circle")
+                        .attr("class", "featureArgumentation")
+                        .attr("id", "featureArgumentation")
+                        .attr("r", "4.5")
+                        .attr("transform", "translate(" + 35 + "," + 0 + ")")
+                        .attr("fill", colorFeaturePopup[1])
+                        .style("stroke", "black")
+                        .style("stroke-width", getNodeStrokeWidthTree())
+                        .attr("opacity", function (d) {
+                            if (d.argumentation) return 1; //If node contains argumentation
+                            return 0; //We hide it if it has no argumentation
                         });
                 }
                 if (enabledFeatures.indexOf("sarcasm") > -1) {
@@ -3999,7 +4001,7 @@ $(popup_container).on("open", function () {
                     })
                     .on("mousemove", function (d) {
                         // if (d !== root) {
-                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 30) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] - 440) + "px");
+                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 130) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] - 490) + "px");
                         // }
                     })
                     .on("mouseout", function () {
@@ -4059,7 +4061,7 @@ $(popup_container).on("open", function () {
                             .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                             .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
-                    highlightDevtoolsAND(node, link, enabledTargets);
+                    highlightDevtoolsAND(nodesPopup, rootPopup, node, link, enabledTargets);
 
                     drawDevtools(nodeEnter);
                 };
@@ -4334,7 +4336,7 @@ $(popup_container).on("open", function () {
                                         console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + event.target.name + '_' + event.target.value, "| [Date]", Date.now());
                                     }
 
-                                    highlightDevtoolsAND(node, link, enabledTargets);
+                                    highlightDevtoolsAND(nodesPopup, rootPopup, node, link, enabledTargets);
 
                                     drawDevtools(nodeEnter);
                                 }
@@ -6640,7 +6642,7 @@ $(popup_container).on("open", function () {
                     })
                     .on("mousemove", function (d) {
                         // if (d !== root) {
-                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 30) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] - 440) + "px");
+                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 130) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] - 490) + "px");
                         // }
                     })
                     .on("mouseout", function () {
@@ -7223,7 +7225,7 @@ $(popup_container).on("open", function () {
             var colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
                 colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue",
                 colourCollapsed1Son = "lightsteelblue";
-            var colorFeature = ["#1B8055", "#90F6B2",
+            var colorFeature = ["#90F6B2", "#1B8055",
                 "#97CFFF", "#1795FF", "#0B5696",
                 "#E3B7E8", "#A313B3", "#5E1566"
             ];
@@ -8089,11 +8091,11 @@ $(popup_container).on("open", function () {
                 removeThisFeatures(nodeEnter);
                 removeToxicities(nodeEnter); //Remove all the pngs for toxicity
 
-                var cbFeatureEnabled = [enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+                var cbFeatureEnabled = [enabledFeatures.indexOf("constructiveness"), enabledFeatures.indexOf("argumentation"),
                     enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
                     enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness")];
 
-                var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
+                var features = [objFeatConstructiveness, objFeatArgumentation, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
                 var listOpacity;
 
                 for (var i = 0; i < 8; i++) {
@@ -8102,7 +8104,7 @@ $(popup_container).on("open", function () {
                             if (d.parent === undefined) {
                                 return false;
                             } else {
-                                listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
+                                listOpacity = [d.constructiveness, d.argumentation, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
                                 return listOpacity[i];
                             }
                         }).append("circle")
@@ -8464,21 +8466,6 @@ $(popup_container).on("open", function () {
 
             function drawFeatures(nodeEnter) {
                 hideCheese();
-                // Argumentation
-                if (enabledFeatures.indexOf("argumentation") > -1) {
-                    nodeEnter.append("circle")
-                        .attr('class', 'featureArgumentation')
-                        .attr('id', 'featureArgumentation')
-                        .attr("r", "4.5")
-                        .attr("transform", "translate(" + 35 + "," + 0 + ")")
-                        .attr("fill", colorFeature[0])
-                        .style("stroke", "black")
-                        .style("stroke-width", "1.5px")
-                        .attr("opacity", function (d) {
-                            if (d.argumentation) return 1 //If node contains argumentation
-                            return 0 //We hide it if it has no argumentation
-                        });
-                }
 
                 if (enabledFeatures.indexOf("constructiveness") > -1) {
                     // Constructiveness
@@ -8487,12 +8474,27 @@ $(popup_container).on("open", function () {
                         .attr('id', 'featureConstructiveness')
                         .attr("r", "4.5")
                         .attr("transform", "translate(" + 45 + "," + 0 + ")")
-                        .attr("fill", colorFeature[1])
+                        .attr("fill", colorFeature[0])
                         .style("stroke", "black")
                         .style("stroke-width", "1.5px")
                         .attr("opacity", function (d) {
                             if (d.constructiveness) return 1
                             return 0
+                        });
+                }
+                // Argumentation
+                if (enabledFeatures.indexOf("argumentation") > -1) {
+                    nodeEnter.append("circle")
+                        .attr('class', 'featureArgumentation')
+                        .attr('id', 'featureArgumentation')
+                        .attr("r", "4.5")
+                        .attr("transform", "translate(" + 35 + "," + 0 + ")")
+                        .attr("fill", colorFeature[1])
+                        .style("stroke", "black")
+                        .style("stroke-width", "1.5px")
+                        .attr("opacity", function (d) {
+                            if (d.argumentation) return 1 //If node contains argumentation
+                            return 0 //We hide it if it has no argumentation
                         });
                 }
                 if (enabledFeatures.indexOf("sarcasm") > -1) {
@@ -9289,7 +9291,7 @@ $(popup_container).on("open", function () {
                     })
                     .on("mousemove", function (d) {
                         // if (d !== root) {
-                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 30) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] - 440) + "px");
+                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 130) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] - 490) + "px");
                         // }
                     })
                     .on("mouseout", function () {
@@ -10113,7 +10115,7 @@ $(popup_container).on("open", function () {
                 })
                 .on("mousemove", function (d) {
                     // if (d !== root) {
-                    return tooltip.style("top", (d3v4.mouse(document.querySelector(popup_container))[1] - 45) + "px").style("left", (d3v4.mouse(document.querySelector(popup_container))[0] - 460) + "px");
+                    return tooltip.style("top", (d3v4.mouse(document.querySelector(popup_container))[1] - 145) + "px").style("left", (d3v4.mouse(document.querySelector(popup_container))[0] - 510) + "px");
                     // }
                 })
                 .on("mouseout", function () {

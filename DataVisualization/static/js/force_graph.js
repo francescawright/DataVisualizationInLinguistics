@@ -25,6 +25,8 @@ const colourConstructiveness = "#90F6B2", colourArgumentation = "#1B8055", colou
     colourIntolerance = "#0B5696", colourImproper = "#E3B7E8", colourInsult = "#A313B3",
     colourAggressiveness = "#5E1566";
 
+var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
+var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
 /**
  * Set edge stroke width based on current zoom value
@@ -1443,11 +1445,11 @@ treeJSON = d3.json(dataset, function (error, json) {
         removeThisFeatures(nodeEnter);
         removeToxicities(nodeEnter); //Remove all the pngs for toxicity
 
-        var cbFeatureEnabled = [enabledFeatures.indexOf("argumentation"), enabledFeatures.indexOf("constructiveness"),
+        var cbFeatureEnabled = [enabledFeatures.indexOf("constructiveness"), enabledFeatures.indexOf("argumentation"),
             enabledFeatures.indexOf("sarcasm"), enabledFeatures.indexOf("mockery"), enabledFeatures.indexOf("intolerance"),
             enabledFeatures.indexOf("improper_language"), enabledFeatures.indexOf("insult"), enabledFeatures.indexOf("aggressiveness")];
 
-        var features = [objFeatArgumentation, objFeatConstructiveness, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
+        var features = [objFeatConstructiveness, objFeatArgumentation, objFeatSarcasm, objFeatMockery, objFeatIntolerance, objFeatImproper, objFeatInsult, objFeatAggressiveness];
         var listOpacity;
 
         for (var i = 0; i < 8; i++) {
@@ -1456,7 +1458,7 @@ treeJSON = d3.json(dataset, function (error, json) {
                     if (d.parent === null) {
                         return false;
                     } else {
-                        listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
+                        listOpacity = [d.constructiveness, d.argumentation, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
                         return listOpacity[i];
                     }
                 }).append("circle")
@@ -2674,7 +2676,7 @@ treeJSON = d3.json(dataset, function (error, json) {
             })
             .on("mousemove", function (d) {
                 // if (d !== root) {
-                    return tooltip.style("top", (d3.mouse(document.querySelector(".overlay"))[1] - 30) + "px").style("left", (d3.mouse(document.querySelector(".overlay"))[0] - 440) + "px");
+                    return tooltip.style("top", (d3.mouse(document.querySelector(".overlay"))[1] - 130) + "px").style("left", (d3.mouse(document.querySelector(".overlay"))[0] - 490) + "px");
                 // }
             })
             .on("mouseout", function () {
@@ -3371,8 +3373,6 @@ treeJSON = d3.json(dataset, function (error, json) {
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
         var statValuesTox = [totalNotToxicUpdate, totalMildlyToxicUpdate, totalToxicUpdate, totalVeryToxicUpdate];
         var statValuesTarg = [totalGroupUpdate, totalPersonUpdate, totalStereotypeUpdate, totalNoneUpdate];
-        var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
-        var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
         for (var i = 0; i < statTitlesToxicity.length; i++) {
             statisticText += "<tr style='font-size: 20px;'>"; //Start table line

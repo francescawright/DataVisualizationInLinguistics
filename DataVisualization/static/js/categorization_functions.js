@@ -53,7 +53,7 @@ function isSpine(node, level) {
     return (numNodes == level);
 }
 
-function highlightDevtoolsAND(node, link, enabledTargetsValue, opacityValue = 0.1) {
+function highlightDevtoolsAND(nodes, root, node, link, enabledTargetsValue, opacityValue = 0.1) {
 
     nodes.forEach(function (d) {
         d.highlighted = 1;
@@ -63,8 +63,8 @@ function highlightDevtoolsAND(node, link, enabledTargetsValue, opacityValue = 0.
     //Significant CB is checked
     if (enabledTargetsValue.indexOf("significant-nodes") > -1) {
         node.filter(function (d) {
-            if (!checkSignificant(d, tol)) d.highlighted = 0;
-            return (!checkSignificant(d, tol));
+            if (!checkSignificant(root, d, tol)) d.highlighted = 0;
+            return (!checkSignificant(root, d, tol));
         }).style("opacity", opacityValue);
     }
     //Elongated CB is checked
@@ -106,7 +106,7 @@ function isSignificant(node, tol) {
     }
 }
 
-function checkSignificant(node, tol) {
+function checkSignificant(root, node, tol) {
     if (node == root) { return true; } //ignore root case
     let nodeList = [];
     let found = false;
@@ -527,7 +527,7 @@ function findTendency(node, level, limitGF, limit_d, type) {
  * @param node tree root
  * @param filename name of file
  */
-function getTreeData(node, filename) {
+function getTreeData(root, node, filename) {
     //Define CSV params
     /*let arrayHeader = ["Node", "Width", "Level", "Depth", "subNodes", "maxWidth", "L", "N", "GFcomp",
                         "GFelon", "GrowFactor", "ET", "CT"];*/

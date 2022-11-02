@@ -41,6 +41,17 @@ var root;
 const colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
     colourToxicity3 = "#000000", colourNewsArticle = "#C8EAFC";
 
+var colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
+    colourNeutralStance = "#2b2727";
+
+var colorFeature = ["#90F6B2", "#1B8055",
+    "#97CFFF", "#1795FF", "#0B5696",
+    "#E3B7E8", "#A313B3", "#5E1566"
+];
+
+var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
+var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
+
 const minOpacityValue = 0.2, maxOpacityValue = 1;
 
 // shadow filter //
@@ -198,7 +209,7 @@ treeJSON = d3v4.json(dataset, function (error, root) {
             })
         .on("mousemove", function (d) {
                 // if (d !== root) {
-                    return tooltip.style("top", (d3v4.mouse(document.querySelector(container))[1] - 45) + "px").style("left", (d3v4.mouse(document.querySelector(container))[0] - 460) + "px");
+                    return tooltip.style("top", (d3v4.mouse(document.querySelector(container))[1] - 145) + "px").style("left", (d3v4.mouse(document.querySelector(container))[0] - 510) + "px");
                 // }
             })
         .on("mouseout", function () {
@@ -970,8 +981,6 @@ function highlightWidestLevelsCircle(node, levelsIndexes) {
         var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
         var statValuesTox = [totalNotToxicUpdate, totalMildlyToxicUpdate, totalToxicUpdate, totalVeryToxicUpdate];
         var statValuesTarg = [totalGroupUpdate, totalPersonUpdate, totalStereotypeUpdate, totalNoneUpdate];
-        var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
-        var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
         for (var i = 0; i < statTitlesToxicity.length; i++) {
             statisticText += "<tr style='font-size: 20px;'>"; //Start table line
