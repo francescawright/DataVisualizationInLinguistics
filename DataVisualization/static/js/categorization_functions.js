@@ -610,17 +610,17 @@ function highlightLongestThread(nodes, root, opacityValue, deepestNodesPath, nod
     });
     node.style("opacity", opacityValue);
 
-    let highlighted_nodes = node.filter(function (d) {
+    node.filter(function (d) {
         if (deepestNodesPath.includes(d)) d.highlighted = 1;
         return (deepestNodesPath.includes(d));
     }).style("opacity", 1);
 
-    let highlighted_comments = highlighted_nodes.filter(function (d) {
+    let deepest_nodes_path = deepestNodesPath.filter(function (d) {
         return (d !== root);
     });
 
-    var comment_ids = highlighted_comments[0].map(function(comment) {
-      return comment['__data__']['name'];
+    var comment_ids = deepest_nodes_path.map(function(comment) {
+      return comment['name'];
     });
 
     const formData = new FormData();
@@ -650,7 +650,7 @@ function highlightLongestThread(nodes, root, opacityValue, deepestNodesPath, nod
                 hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
                 datasetPopup = data;
                 if (!document.getElementById("graph-container")) {
-                    $("#popup_btn").click();
+                    $("#popup-btn").click();
                 } else {
                     removeLayout();
                 }

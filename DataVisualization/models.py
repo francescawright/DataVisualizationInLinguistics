@@ -50,13 +50,16 @@ class Commentary(models.Model):
                f"Thread: {self.comment_level} | Toxicity Level: {self.toxicity_level} | " \
                f"Positive Stance: {self.positive_stance} | Negative Stance: {self.negative_stance}"
 
-# class Subtree(models.Model):
-#     document_id = models.ForeignKey(Document, on_delete=models.CASCADE)
-#     user_ids = models.ManyToManyField(User)
-#     node_ids = ArrayField(models.IntegerField(null=True, blank=True), null=True, blank=True)
-#
-#     def __str__(self):
-#         return f"Document id: {self.document_id} | User ids: {self.user_ids} | Node ids: {self.node_ids}"
+
+class Subtree(models.Model):
+    subtree_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    document = models.ForeignKey(Document, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    node_ids = ArrayField(models.IntegerField(null=True, blank=True), null=True, blank=True)
+
+    def __str__(self):
+        return f"Document id: {self.document} | User ids: {self.user} | Node ids: {self.node_ids}"
 
 
 class tbl_Authentication(models.Model):
@@ -73,7 +76,6 @@ class tbl_Authentication(models.Model):
 
 class ChatProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    age = models.IntegerField(null=True, blank=True)
     nickname = models.CharField(max_length=100, blank=True)
     first_login = models.BooleanField()
 

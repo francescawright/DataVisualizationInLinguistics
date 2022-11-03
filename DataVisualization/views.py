@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.core.exceptions import ObjectDoesNotExist, EmptyResultSet
 
-from .models import tbl_Authentication
+from .models import tbl_Authentication, Subtree
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 
@@ -151,6 +151,10 @@ def main_form_handler(request):
             request)
     except ObjectDoesNotExist:
         return open_document_exception(request, "document_not_exist")
+
+    best_layout_selected = request.POST.get('best_layout_selected')
+    if best_layout_selected:
+        messages.success(request, "The best visualization according to the graph characteristics has been selected")
 
     return render(request, template,
                   {'dataset': 'output.json', 'options': get_all_documents(), 'layouts': LAYOUTS,
@@ -463,6 +467,25 @@ def handle_uploaded_file(f):
     with open('DataVisualization/static/' + f.name, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
+
+
+def create_subtree(request):
+    # Check if there is an active session
+    user = getattr(request, 'user', None)
+    if not user or not getattr(user, 'is_authenticated', True):
+        return open_document_exception(request, "create_subtree_no_active_session")
+
+    selected_item = request.POST["selected_item"]
+    doc = Document.objects.filter(description=selected_item).first()
+    if not (doc):
+        raise ObjectDoesNotExist('create_subtree_document_not_exist')
+
+    node_ids = request.POST["node_ids"]
+    Subtree.objects.create(name="x",document=doc, user=user, node_ids=node_ids)
+    return HttpResponse(status=204)
+
+def delete_subtree(request, subtree_id):
+    pass
 
 
 def edit_data(request, document_id):
