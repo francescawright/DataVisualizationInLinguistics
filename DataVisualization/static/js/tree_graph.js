@@ -3439,6 +3439,12 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             return d.id || (d.id = ++i);
         });
 
+        // Variables to check if the tooltip is positioned outside the viewPort, and place it correctly if so.
+        // var isOutTooltip;
+        // var elemTooltip = document.querySelector(".my-tooltip");
+        // let offsetTop = 130;
+        // let offsetLeft = 490
+
         // Enter any new nodes at the parent's previous position.
         var nodeEnter = node
             .enter()
@@ -3459,6 +3465,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 }
             })
             .on("mouseover", function (d) {
+                // Checks if the tooltip is positioned outside the viewport
+                // tooltip.style("top", (d3.mouse(document.querySelector(".overlay"))[1] - offsetTop) + "px").style("left", (d3.mouse(document.querySelector(".overlay"))[0] - offsetLeft) + "px");
+                // isOutTooltip = isOutOfViewport(elemTooltip);
+
                 var highlighted_nodes = node.filter(function (n) {
                     return n.highlighted;
                 })[0].map(i => i.__data__.name); // don't ask..
@@ -3473,11 +3483,23 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             })
             .on("mousemove", function (d) {
                 // if (d !== root) {
+
+                    // Left side is out of viewport
+                    // if (isOutTooltip.left) {
+                    //     offsetLeft = -50
+                    // }
+                    //
+                    // // Bottom is out of viewport
+                    // if (isOutTooltip.bottom) {
+                    //     offsetTop = 430;
+                    // }
                     return tooltip.style("top", (d3.mouse(document.querySelector(".overlay"))[1] - 130) + "px").style("left", (d3.mouse(document.querySelector(".overlay"))[0] - 490) + "px");
                 // }
             })
             .on("mouseout", function () {
-                return tooltip.style("visibility", "hidden");
+                tooltip.style("visibility", "hidden");
+                // offsetTop = 130;
+                // offsetLeft = 490
             });
 
         nodeEnter

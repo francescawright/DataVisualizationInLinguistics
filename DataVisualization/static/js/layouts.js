@@ -1432,8 +1432,8 @@ $(popup_container).on("open", function () {
                 .append("div")
                 .attr("id", "my-tooltip")
                 .attr("class", "my-tooltip") //add the tooltip class
-                .style("position", "absolute")
-                .style("z-index", "60")
+                .style("position", "fixed")
+                .style("z-index", 110)
                 .style("visibility", "hidden");
 
             /* SECTION Zoom*/
@@ -1936,7 +1936,7 @@ $(popup_container).on("open", function () {
                                 if (compactTendency(d, l, GFcomp)) {
                                     listOpacity[1] = 1;
                                 }
-                                if (checkSignificant(root, d, tol)) {
+                                if (checkSignificant(rootPopup, d, tol)) {
                                     listOpacity[2] = 1;
                                 }
                                 switch (h) {
@@ -4001,7 +4001,7 @@ $(popup_container).on("open", function () {
                     })
                     .on("mousemove", function (d) {
                         // if (d !== root) {
-                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 130) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] - 490) + "px");
+                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 40) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] - 340) + "px");
                         // }
                     })
                     .on("mouseout", function () {
@@ -4897,8 +4897,8 @@ $(popup_container).on("open", function () {
                 .append("div")
                 .attr("id", "my-tooltip")
                 .attr("class", "my-tooltip") //add the tooltip class
-                .style("position", "absolute")
-                .style("z-index", "60")
+                .style("position", "fixed")
+                .style("z-index", 110)
                 .style("visibility", "hidden");
 
             var svg = d3.select(popup_container) //Define the container that holds the layout
@@ -6642,7 +6642,7 @@ $(popup_container).on("open", function () {
                     })
                     .on("mousemove", function (d) {
                         // if (d !== root) {
-                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 130) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] - 490) + "px");
+                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 40) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] + 30) + "px");
                         // }
                     })
                     .on("mouseout", function () {
@@ -7355,8 +7355,8 @@ $(popup_container).on("open", function () {
                 .append("div")
                 .attr("id", "my-tooltip")
                 .attr("class", "my-tooltip") //add the tooltip class
-                .style("position", "absolute")
-                .style("z-index", "60")
+                .style("position", "fixed")
+                .style("z-index", 110)
                 .style("visibility", "hidden");
 
             /*SECTION zoom*/
@@ -9291,7 +9291,7 @@ $(popup_container).on("open", function () {
                     })
                     .on("mousemove", function (d) {
                         // if (d !== root) {
-                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 130) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] - 490) + "px");
+                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 40) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] + 30) + "px");
                         // }
                     })
                     .on("mouseout", function () {
@@ -9989,8 +9989,8 @@ $(popup_container).on("open", function () {
                 .append("div")
                 .attr("id", "my-tooltip")
                 .attr("class", "my-tooltip") //add the tooltip class
-                .style("position", "absolute")
-                .style("z-index", "60")
+                .style("position", "fixed")
+                .style("z-index", 110)
                 .style("visibility", "hidden");
 
             const colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
@@ -10115,7 +10115,7 @@ $(popup_container).on("open", function () {
                 })
                 .on("mousemove", function (d) {
                     // if (d !== root) {
-                    return tooltip.style("top", (d3v4.mouse(document.querySelector(popup_container))[1] - 145) + "px").style("left", (d3v4.mouse(document.querySelector(popup_container))[0] - 510) + "px");
+                    return tooltip.style("top", (d3v4.mouse(document.querySelector(popup_container))[1] - 40) + "px").style("left", (d3v4.mouse(document.querySelector(popup_container))[0] + 30) + "px");
                     // }
                 })
                 .on("mouseout", function () {
