@@ -50,7 +50,8 @@ function computeNodeRadius(d, edgeLength = 300) {
             :
             d.radius = 13; //One child
     //Avoid the root node from being so large that overlaps/hides its children
-    if (d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
+    if (!d.parent && d.radius < 90) d.radius = 90;
+    if (!d.parent && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
     return d.radius;
 }
 
@@ -2414,7 +2415,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         //Filter the nodes and append an icon just for the root node
         node
             .filter(function (d) {
-                return d.parent === undefined;
+                return !d.parent;
             })
             .append("image")
             .attr("class", objRoot.class)

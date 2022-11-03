@@ -25,12 +25,6 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 
-/*************************************
-*   Popup Categorization Functions   *
-**************************************/
-
-
-
 /****************************************
 *   GLOBAL VARIABLES - TREE/ALL GRAPH   *
 *****************************************/
@@ -285,7 +279,8 @@ function computeNodeRadiusTree(d, edgeLength = 300) {
             :
             d.radius = 13; //One child
     //Avoid the root node from being so large that overlaps/hides its children
-    if (d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
+    if (!d.parent && d.radius < 90) d.radius = 90;
+    if (!d.parent && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
     return d.radius;
 }
 
@@ -917,7 +912,8 @@ function computeNodeRadiusForce(d, edgeLength = 500) {
         : children.length === 2 ? d.radius = minNodeRadiusPopup + incrementRadiusFactorPerChildPopup * 2 //2 children
             : d.radius = minNodeRadiusPopup + incrementRadiusFactorPerChildPopup; //One child
     //Avoid the root node from being so large that overlaps/hides its children
-    if (d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
+    if (!d.parent && d.radius < 180) d.radius = 180;
+    if (!d.parent && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
     return Math.min(d.radius, 300);
 }
 
@@ -1142,7 +1138,8 @@ function computeNodeRadiusRadial(d, edgeLength = 300) {
             : d.radius = minNodeRadiusPopup + incrementRadiusFactorPerChildPopup; //One child
 
     //Avoid the root node from being so large that overlaps/hides its children
-    if (d.parent === undefined && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
+    if (!d.parent && d.radius < 180) d.radius = 180;
+    if (!d.parent && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
     return d.radius;
 }
 
@@ -1155,8 +1152,14 @@ function removeLayout() {
     //document.body.classList.remove('force')
     //document.body.classList.remove('radial')
     //document.body.classList.remove('circle')
+    $(".modal .modal-content").resizable( "option", "aspectRatio", false );
     document.querySelector(".modal-body .my-tooltip").remove();
-    document.querySelector(".modal-body #graph-container").remove();
+    let circleContainer = document.querySelector(".modal-body #circle-container-popup");
+    if (circleContainer) {
+        circleContainer.remove();
+    } else {
+        document.querySelector(".modal-body #graph-container").remove();
+    }
 }
 
 $(popup_container).on("open", function () {
@@ -1269,6 +1272,7 @@ $(popup_container).on("open", function () {
                     $('.radial-modal-button').css('opacity', '0.4');
                     graphContainerJQuery.removeClass('tree force radial').addClass("circle");
                     removeLayout();
+                    $(".modal .modal-content").resizable( "option", "aspectRatio", true );
                     createCircleGraph();
                 }
             });
@@ -1432,7 +1436,7 @@ $(popup_container).on("open", function () {
                 .append("div")
                 .attr("id", "my-tooltip")
                 .attr("class", "my-tooltip") //add the tooltip class
-                .style("position", "fixed")
+                .style("position", "absolute")
                 .style("z-index", 110)
                 .style("visibility", "hidden");
 
@@ -3072,7 +3076,7 @@ $(popup_container).on("open", function () {
                 //Filter the nodes and append an icon just for the root node
                 node
                     .filter(function (d) {
-                        return d.parent === undefined;
+                        return !d.parent;
                     })
                     .append("image")
                     .attr("class", objRootPopup.class)
@@ -4001,7 +4005,7 @@ $(popup_container).on("open", function () {
                     })
                     .on("mousemove", function (d) {
                         // if (d !== root) {
-                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 40) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] - 340) + "px");
+                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 130) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] - 490) + "px");
                         // }
                     })
                     .on("mouseout", function () {
@@ -4897,7 +4901,7 @@ $(popup_container).on("open", function () {
                 .append("div")
                 .attr("id", "my-tooltip")
                 .attr("class", "my-tooltip") //add the tooltip class
-                .style("position", "fixed")
+                .style("position", "absolute")
                 .style("z-index", 110)
                 .style("visibility", "hidden");
 
@@ -5909,7 +5913,7 @@ $(popup_container).on("open", function () {
 
                 //Filter the nodes and append an icon just for the root node
                 node.filter(function (d) {
-                    return d.parent === null;
+                    return !d.parent;
                 }).append("image")
                     .attr('class', objRootPopup.class)
                     .attr('id', objRootPopup.id)
@@ -6642,7 +6646,7 @@ $(popup_container).on("open", function () {
                     })
                     .on("mousemove", function (d) {
                         // if (d !== root) {
-                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 40) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] + 30) + "px");
+                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 130) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] - 490) + "px");
                         // }
                     })
                     .on("mouseout", function () {
@@ -6722,8 +6726,6 @@ $(popup_container).on("open", function () {
                     .style("stroke", "black")
                     .style("stroke-width", getNodeStrokeWidthForce())
                     .style("z-index", 3);
-
-                visualiseRootIcon(node); //Draw an icon for the root node
 
                 visualiseRootIcon(node); //Draw an icon for the root node
 
@@ -7355,7 +7357,7 @@ $(popup_container).on("open", function () {
                 .append("div")
                 .attr("id", "my-tooltip")
                 .attr("class", "my-tooltip") //add the tooltip class
-                .style("position", "fixed")
+                .style("position", "absolute")
                 .style("z-index", 110)
                 .style("visibility", "hidden");
 
@@ -8616,9 +8618,10 @@ $(popup_container).on("open", function () {
              * Draw an icon for the root node
              * */
             function visualiseRootIcon(node) {
+
                 //Filter the nodes and append an icon just for the root node
                 node.filter(function (d) {
-                    return d.parent === undefined;
+                    return !d.parent;
                 }).append("image")
                     .attr('class', objRoot.class)
                     .attr('id', objRoot.id)
@@ -9291,7 +9294,7 @@ $(popup_container).on("open", function () {
                     })
                     .on("mousemove", function (d) {
                         // if (d !== root) {
-                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 40) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] + 30) + "px");
+                        return tooltip.style("top", (d3.mouse(document.querySelector(".overlay-popup"))[1] - 130) + "px").style("left", (d3.mouse(document.querySelector(".overlay-popup"))[0] - 490) + "px");
                         // }
                     })
                     .on("mouseout", function () {
@@ -9967,13 +9970,21 @@ $(popup_container).on("open", function () {
 
             rootPopup = treeData; //Define the root
 
-            let svg = d3v4.select(popup_container)
+            let div = document.createElement("div");
+            div.setAttribute("id", "circle-container-popup");
+            div.style.textAlign = "center";
+            div.style.overflow = "hidden";
+            div.style.width = "100%";
+            div.style.height = "100%";
+            document.querySelector(popup_container).appendChild(div);
+
+            let svg = d3v4.select('#circle-container-popup')
                 .append("svg")
                 .attr("id", "graph-container")
                 .attr("width", 300)
                 .attr("height", 300)
                 .attr("viewBox", "0 0 300 300")
-                .attr("style", "overflow: visible; margin: 100px auto auto 126px;")
+                .attr("style", "overflow: visible;")
 
 
             let diameter = svg.attr("width"),
@@ -9989,7 +10000,7 @@ $(popup_container).on("open", function () {
                 .append("div")
                 .attr("id", "my-tooltip")
                 .attr("class", "my-tooltip") //add the tooltip class
-                .style("position", "fixed")
+                .style("position", "absolute")
                 .style("z-index", 110)
                 .style("visibility", "hidden");
 
@@ -10001,7 +10012,8 @@ $(popup_container).on("open", function () {
             // shadow filter //
             const defs = svg.append("defs");
 
-            document.getElementById("graph-container").style.width = "65%";
+            document.getElementById("graph-container").style.marginTop = "13%";
+            document.getElementById("graph-container").style.width = "49%";
             document.getElementById("graph-container").style.height = "65%";
 
             let filter = defs.append("filter")
@@ -10115,7 +10127,7 @@ $(popup_container).on("open", function () {
                 })
                 .on("mousemove", function (d) {
                     // if (d !== root) {
-                    return tooltip.style("top", (d3v4.mouse(document.querySelector(popup_container))[1] - 40) + "px").style("left", (d3v4.mouse(document.querySelector(popup_container))[0] + 30) + "px");
+                    return tooltip.style("top", (d3v4.mouse(document.querySelector(popup_container))[1] - 145) + "px").style("left", (d3v4.mouse(document.querySelector(popup_container))[0] - 510) + "px");
                     // }
                 })
                 .on("mouseout", function () {

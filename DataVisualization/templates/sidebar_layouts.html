@@ -96,7 +96,8 @@
  */
 
     .modal .modal-content {
-        border-radius: .5rem;
+        border-radius: 13px;
+        border-width: 5px;
     }
     .modal-open { overflow: auto !important; }
     body { padding-right: 0 !important }
@@ -164,8 +165,8 @@
     .close-modal-button {
         color: #fff;
         position: absolute;
-        top: -10px;
-        right: -10px;
+        top: -15px;
+        right: -15px;
         z-index: 100;
 
         -webkit-user-select: none;
@@ -221,8 +222,9 @@
     .modal .modal-body {
         padding: 0;
         background-color: #eff4fc;
-        border-radius: 0.5rem 0.5rem 0 0;
-        overflow: hidden;
+        border-radius: 13px 13px 0 0;
+        overflow: visible;
+        display: flex;
     }
     .modal .modal-footer {
         display: block;
