@@ -28,6 +28,33 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 // Variable to check if the ready function code has been completely executed
 var codeReady = false;
 
+// Variables to display the tooltip
+var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
+var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
+
+/* Colours
+ * */
+var colorFeature = ["#90F6B2", "#1B8055",
+    "#97CFFF", "#1795FF", "#0B5696",
+    "#E3B7E8", "#A313B3", "#5E1566"
+];
+
+var colorDevtools = ["#88FF00", "#FFBB00",
+    "#FF5500", "#90F6B2", "#1B8055",
+    "#97CFFF", "#1795FF", "#0B5696"
+];
+var colourBothStances = "#FFA500",
+    colourPositiveStance = "#77dd77",
+    colourNegativeStance = "#ff6961",
+    colourNeutralStance = "#2b2727";
+
+var colourToxicity0 = "#f7f7f7",
+    colourToxicity1 = "#cccccc",
+    colourToxicity2 = "#737373",
+    colourToxicity3 = "#000000",
+    colourNewsArticle = "lightsteelblue",
+    colourCollapsed1Son = "lightsteelblue";
+
 /**
  * Compute the radius of the node based on the number of children it has
  * */
@@ -50,8 +77,8 @@ function computeNodeRadius(d, edgeLength = 300) {
             :
             d.radius = 13; //One child
     //Avoid the root node from being so large that overlaps/hides its children
-    if (!d.parent && d.radius < 90) d.radius = 90;
-    if (!d.parent && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
+    if ((d.parent === null || d.parent === undefined) && d.radius < 90) d.radius = 90;
+    if ((d.parent === null || d.parent === undefined) && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
     return d.radius;
 }
 
@@ -569,21 +596,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     var root, rootName = "News Article";
     var nodes;
 
-    /* Colours
-     * */
-    var colourBothStances = "#FFA500",
-        colourPositiveStance = "#77dd77",
-        colourNegativeStance = "#ff6961",
-        colourNeutralStance = "#2b2727";
-
-    var colourToxicity0 = "#f7f7f7",
-        colourToxicity1 = "#cccccc",
-        colourToxicity2 = "#737373",
-        colourToxicity3 = "#000000",
-        colourNewsArticle = "lightsteelblue",
-        colourCollapsed1Son = "lightsteelblue";
-
-
     var objRoot = {
         class: "rootNode",
         id: "rootNode",
@@ -591,19 +603,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     };
     var imageOffset = 4; //Radii size difference between a node and its associated image
     var imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
-
-    var colorFeature = ["#90F6B2", "#1B8055",
-        "#97CFFF", "#1795FF", "#0B5696",
-        "#E3B7E8", "#A313B3", "#5E1566"
-    ];
-
-    var colorDevtools = ["#88FF00", "#FFBB00",
-        "#FF5500", "#90F6B2", "#1B8055",
-        "#97CFFF", "#1795FF", "#0B5696"
-    ];
-
-    var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
-    var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
     /* Targets: size, position, local path, objects to draw the target as ring
      * */
@@ -1186,7 +1185,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         for (var i = 0; i < targets.length; i++) {
             if (cbShowTargets[i] > -1) {
                 nodeEnter.filter(function (d) {
-                    if (d.parent === undefined) {
+                    if (d.parent === null || d.parent === undefined) {
                         return false;
                     } else {
                         listOpacity = [d.target_group, d.target_person, d.stereotype];
@@ -1242,7 +1241,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .style("stroke", "black")
                     .style("stroke-width", getNodeStrokeWidth())
                     .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
+                        if (d.parent === null || d.parent === undefined) return 0;
                         //let l = getLevelRange(d);
                         let l = L;
                         let t = d_lvl;
@@ -1302,7 +1301,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr("width", targets[i].width)
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
+                        if (d.parent === null || d.parent === undefined) return 0;
                         listOpacity = [d.target_group, d.target_person, d.stereotype];
                         return listOpacity[i];
                     });
@@ -1355,7 +1354,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     })
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
+                        if (d.parent === null || d.parent === undefined) return 0;
                         listOpacity = [d.target_group, d.target_person, d.stereotype];
                         return listOpacity[i];
                     });
@@ -1406,7 +1405,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     })
                     .attr("href", pathTargets + localPath + targets[i].fileName)
                     .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
+                        if (d.parent === null || d.parent === undefined) return 0;
                         listOpacity = [
                             0.5,
                             d.target_group,
@@ -1617,7 +1616,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         for (var i = 0; i < 8; i++) {
             if (cbFeatureEnabled[i] > -1) {
                 nodeEnter.filter(function (d) {
-                    if (d.parent === undefined) {
+                    if (d.parent === null || d.parent === undefined) {
                         return false;
                     } else {
                         listOpacity = [
@@ -1667,7 +1666,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .attr("width", objFeatGray.width)
             .attr("href", pathFeatures + localPath + objFeatGray.fileName)
             .attr("opacity", function (d) {
-                if (d.parent === undefined) return 0;
+                if (d.parent === null || d.parent === undefined) return 0;
                 return 0.5;
             });
 
@@ -1706,7 +1705,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     .attr("width", features[i].width)
                     .attr("href", pathFeatures + localPath + features[i].fileName)
                     .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
+                        if (d.parent === null || d.parent === undefined) return 0;
                         listOpacity = [
                             d.argumentation,
                             d.constructiveness,
@@ -1776,7 +1775,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         for (var i = 0; i < features.length; i++) {
             if (cbFeatureEnabled[i] > -1) {
                 nodeEnter.filter(function (d) {
-                    if (d.parent === undefined) {
+                    if (d.parent === null || d.parent === undefined) {
                         return false;
                     } else {
                         listOpacity = [
@@ -1874,7 +1873,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                         pathFeatures + localPath + allObjectsInNode[i].fileName
                     )
                     .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
+                        if (d.parent === null || d.parent === undefined) return 0;
 
                         listOpacity = [
                             d.toxicity_level === 0 ? 1 : 0,
@@ -1959,7 +1958,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             if (cbShowTargets[i] > -1) {
                 //If the checkbox is checked, display it if it has the property
                 nodeEnter.filter(function (d) {
-                    if (d.parent === undefined) {
+                    if (d.parent === null || d.parent === undefined) {
                         return false;
                     } else {
                         listOpacity = [
@@ -2415,7 +2414,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         //Filter the nodes and append an icon just for the root node
         node
             .filter(function (d) {
-                return !d.parent;
+                return (d.parent === null || d.parent === undefined);
             })
             .append("image")
             .attr("class", objRoot.class)
@@ -3234,186 +3233,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         };
     }
 
-
-    function writeTooltipText(d) {
-        var featuresValues = [
-            d.constructiveness,
-            d.argumentation,
-            d.sarcasm,
-            d.mockery,
-            d.intolerance,
-            d.improper_language,
-            d.insult,
-            d.aggressiveness,
-        ];
-        var featuresNames = [
-            "Constructiveness",
-            "Argument",
-            "Sarcasm",
-            "Mockery",
-            "Intolerance",
-            "Improper",
-            "Insult",
-            "Aggressiveness",
-        ];
-
-        tooltipText = "<div style='margin: 0 10px;'>";
-
-        tooltipText += "<div style='font-size: medium;'>Comment ID: " + d.name + "<br>"
-                    + "Comment Level: " + d.comment_level + "<br>"
-                    + "Comment Depth: " + d.depth + "<br>"
-                    + "Toxicity level: " + d.toxicity_level + "</div><br>";
-
-        let i;
-        tooltipText += "<ul class='tooltip-features'>";
-
-        for (i = 0; i < featuresValues.length ; i++) {
-            if (featuresValues[i]) {
-                tooltipText += '<li><span style="color:' + colorFeature[i] + '; font-weight:bold; font-size: larger;">' + featuresNames[i] + '</span></li>'
-            } else {
-                tooltipText += '<li><span style="color:#cccccc; font-weight:bold; font-size: larger;">' + featuresNames[i] + '</span></li>'
-            }
-
-        }
-
-        tooltipText += "</ul>";
-
-        tooltipText += "<br><span style='font-size: medium; margin-right: 20px;'>Stance:</span>";
-        tooltipText += '<svg height=" 20" width="80" style="display: inline-block; margin-bottom: 5px;';
-        if (d.positive_stance) {
-            tooltipText += ' opacity: 1;';
-        } else {
-            tooltipText += ' opacity: 0.3;';
-        }
-        tooltipText += '"> <rect width="60" height="20" fill=' + colourPositiveStance + '></rect> </svg>';
-        tooltipText += '<svg height=" 20" width="60" style="display: inline-block; margin-bottom: 5px;';
-        if (d.negative_stance) {
-            tooltipText += ' opacity: 1;';
-        } else {
-            tooltipText += ' opacity: 0.3;';
-        }
-        tooltipText += '"> <rect width="60" height="20" fill=' + colourNegativeStance + '></rect> </svg>';
-
-        tooltipText += "<br><br><span style='font-size: medium; margin-right: 20px;'>Target:</span>";
-        tooltipText += '<img src=' + pt + targetImagesPath[1] + ' style="width: 55px; margin-right: 20px;';
-        if (d.target_person) {
-            tooltipText += ' opacity: 1;';
-        } else {
-            tooltipText += ' opacity: 0.3;';
-        }
-        tooltipText += '"><img src=' + pt + targetImagesPath[0] + ' style="width: 55px; margin-right: 20px;';
-        if (d.target_group) {
-            tooltipText += ' opacity: 1;';
-        } else {
-            tooltipText += ' opacity: 0.3;';
-        }
-        tooltipText += '"><img src=' + pt + targetImagesPath[2] + ' style="width: 55px; margin-right: 20px;';
-        if (d.stereotype) {
-            tooltipText += ' opacity: 1;';
-        } else {
-            tooltipText += ' opacity: 0.3;';
-        }
-        tooltipText += '">';
-
-        //Write growingFactor of node
-        //Calculate tendencies and hierarchy of nodes
-        var s = L;
-        tooltipText += "<br><br>Growing Factor: " + getGrowFactor(d,s)
-                    + "<br>ET: " + elongatedTendency(d, s)
-                    + "&nbsp;&nbsp;&nbsp;&nbsp;CT: " + compactTendency(d, s, GFcomp) + "<br>";
-
-        //If node is collapsed, we also want to add some information about its sons
-        if (d._children) {
-            tooltipText += "<br> <table>";
-
-            var sonTitles = [
-                "Direct comments",
-                "Total number of generated comments",
-                "Not toxic",
-                "Mildly toxic",
-                "Toxic",
-                "Very toxic",
-            ];
-            var sonValues = [
-                d._children.length,
-                d.numberOfDescendants,
-                d.descendantsWithToxicity0,
-                d.descendantsWithToxicity1,
-                d.descendantsWithToxicity2,
-                d.descendantsWithToxicity3,
-            ];
-
-            for (i = 0; i < sonValues.length; i++) {
-                if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
-                tooltipText +=
-                    "<td><b>" + sonTitles[i] + ":</b> " + sonValues[i] + "</td>";
-                if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
-            }
-            tooltipText += "</table>";
-        }
-        tooltipText += "<br>" + d.coment + "</div>";
-    }
-
-    //if d == root do somethihg
-    // else if d == highlighted nodes
-    // if rootnodeText write another fuction, tooltip style for this condition as well
-   // var rootToolTip = writeTooltipRoot(d);
-   //  var totalNumberOfNodesRoot = rootToolTip.children;
-   //
-   //  var totalNotToxicRoot = rootToolTip.toxicity0,
-   //      totalMildlyToxicRoot = rootToolTip.toxicity1,
-   //      totalToxicRoot = rootToolTip.toxicity2,
-   //      totalVeryToxicRoot = rootToolTip.toxicity3;
-
-    function writeTooltipRoot(d) {
-
-        var sonTitles = [
-            "Direct comments",
-            "Total number of generated comments",
-            "Not toxic",
-            "Mildly toxic",
-            "Toxic",
-            "Very toxic",
-        ];
-        var sonValues = [
-            d.children ? d.children.length : 0,
-            totalNumberOfNodes,
-            totalNotToxic,
-            totalMildlyToxic,
-            totalToxic,
-            totalVeryToxic,
-        ];
-        tooltipText = "<br> <table>";
-
-        for (i = 0; i < sonValues.length; i++) {
-            if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
-            tooltipText +=
-                "<td><b>" + sonTitles[i] + ":</b> " + sonValues[i] + "</td>";
-            if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
-        }
-
-        //Write growingFactor of root
-        tooltipText += "</table>";
-        var s = L;
-        //Calculate hierarchy
-        var t = d_lvl;
-        //Calculate tendencies and hierarchy of nodes
-        tooltipText += "<br><br><b>Growing Factor:</b> " + getGrowFactor(d,s)
-                    + "<br><b>ET:</b> " + elongatedTendency(d, s)
-                    + "&nbsp;&nbsp;&nbsp;&nbsp;<b>CT:</b> " + compactTendency(d, s, GFcomp)
-                    + "<br><b>Hierarchy:</b> " + getHierarchyName(d, s, GFcomp, t) + "<br>";
-
-        // Add news information
-        tooltipText += "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Title:</b> " + d.title + "</td></tr></table>" +
-            "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Text URL:</b> <a href=" + d.text_URL + ">" + d.text_URL + "</a></td>" +
-            "</tr>" +
-            "<tr>" +
-                "<td> <b>Comments URL:</b> <a href=" + d.comments_URL + ">" + d.comments_URL + "</a></td>" +
-            "</tr></table>"
-        tooltipText += "<br>";
-    }
-
-
     function update(source, first_call, static_values_checked_param = true) {
         tree = tree
             .nodeSize([separationHeight, 0]) //heigth and width of the rectangles that define the node space
@@ -3440,12 +3259,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             return d.id || (d.id = ++i);
         });
 
-        // Variables to check if the tooltip is positioned outside the viewPort, and place it correctly if so.
-        // var isOutTooltip;
-        // var elemTooltip = document.querySelector(".my-tooltip");
-        // let offsetTop = 130;
-        // let offsetLeft = 490
-
         // Enter any new nodes at the parent's previous position.
         var nodeEnter = node
             .enter()
@@ -3466,41 +3279,25 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 }
             })
             .on("mouseover", function (d) {
-                // Checks if the tooltip is positioned outside the viewport
-                // tooltip.style("top", (d3.mouse(document.querySelector(".overlay"))[1] - offsetTop) + "px").style("left", (d3.mouse(document.querySelector(".overlay"))[0] - offsetLeft) + "px");
-                // isOutTooltip = isOutOfViewport(elemTooltip);
-
                 var highlighted_nodes = node.filter(function (n) {
                     return n.highlighted;
                 })[0].map(i => i.__data__.name); // don't ask..
                 if (d !== root && highlighted_nodes.includes(d.name)) {
-                    writeTooltipText(d);
+                    tooltipText = writeTooltipText(d);
                     tooltip.style("visibility", "visible").html(tooltipText);
                 }
                 else if(d == root){
-                    writeTooltipRoot(d);
+                    tooltipText = writeTooltipRoot(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
                     tooltip.style("visibility", "visible").html(tooltipText);
                 }
             })
             .on("mousemove", function (d) {
                 // if (d !== root) {
-
-                    // Left side is out of viewport
-                    // if (isOutTooltip.left) {
-                    //     offsetLeft = -50
-                    // }
-                    //
-                    // // Bottom is out of viewport
-                    // if (isOutTooltip.bottom) {
-                    //     offsetTop = 430;
-                    // }
                     return tooltip.style("top", (d3.mouse(document.querySelector(".overlay"))[1] - 130) + "px").style("left", (d3.mouse(document.querySelector(".overlay"))[0] - 490) + "px");
                 // }
             })
             .on("mouseout", function () {
                 tooltip.style("visibility", "hidden");
-                // offsetTop = 130;
-                // offsetLeft = 490
             });
 
         nodeEnter
@@ -3886,24 +3683,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         } catch (TypeError) {
             console.error("Error attaching buttons... trying again...");
-        }
-
-        function injectIntentConversation(textMsg){
-            // Get the existing localStorage data
-            var existingStorage = localStorage.getItem("chat_session");
-            // If no existing data, create an array
-            // Otherwise, convert the localStorage string to an array
-            existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
-
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://localhost:5005/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify({
-            "name": "generate_response_message",
-            "entities": {
-                "response_message": textMsg
-            }
-            }));
         }
 
         /**

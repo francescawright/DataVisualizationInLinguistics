@@ -113,8 +113,8 @@
         width: fit-content;
         height: fit-content;
         padding: 0 !important;
-        top: calc(30% - 175px);
-        left: calc(50% - 250px);
+        top: calc(30% - 150px);
+        left: calc(50% - 225px);
         overflow: visible !important;
     }
     .tree-modal-button, .force-modal-button, .radial-modal-button, .circle-modal-button {
@@ -155,37 +155,77 @@
     .circle-modal-button{
         left: 216px;
     }
-    .close-modal-button {
+    .feature-modal-button {
         width: 38px;
         height: 38px;
-        border: 2px solid #eef5df;
-        background-color: #ff5248;
         border-radius: 50%;
-    }
-    .close-modal-button {
-        color: #fff;
         position: absolute;
-        top: -15px;
-        right: -15px;
         z-index: 100;
-
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
     }
+    .feature-modal-button:hover {
+        text-decoration: none;
+    }
+    .feature-modal-button:focus {
+        outline: none !important;
+    }
+    .close-modal-button {
+        border: #ff5248;
+        background-color: #ff5248;
+        color: #fff;
+        top: 5px;
+        right: 5px;
+    }
     .close-modal-button:hover {
         color: #fff;
         background-color: #c82333;
         border-color: #bd2130;
-        text-decoration: none;
     }
     .close-modal-button:focus {
         color: #fff;
         background-color: #c82333;
         border-color: #bd2130;
         box-shadow: 0 0 0 0.2rem rgb(225 83 97 / 50%);
-        outline: none !important;
+    }
+    .increase-modal-button, .decrease-modal-button {
+        border: #6c757d;
+        color: #fff;
+        background-color: #6c757d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .increase-modal-button {
+        top: 5px;
+        right: 50px;
+    }
+    .decrease-modal-button {
+        top: 5px;
+        right: 95px;
+    }
+    .increase-modal-button:hover, .decrease-modal-button:hover {
+        color: #fff;
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
+    .increase-modal-button:focus, .decrease-modal-button:focus {
+        color: #fff;
+        background-color: #5a6268;
+        border-color: #545b62;
+        box-shadow: 0 0 0 0.2rem rgb(130 138 145 / 50%);
+    }
+    .modal-feature-img {
+        width: 16px;
+        border: 0;
+        font-size: 100%;
+        vertical-align: baseline;
+        margin-block-end: 0;
+
+        max-height: 70%;
+        object-fit: contain;
     }
     .modal-footer {
       cursor: move;
@@ -1551,8 +1591,14 @@
     <div class="modal fade" id="popupModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="popupModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <button type="button" class="close-modal-button" data-dismiss="modal" onclick="removeLayout()">
-                <div style="text-align: center; margin-top: -4px; font-size: x-large;">&#215;</div>
+            <button type="button" class="feature-modal-button close-modal-button" data-dismiss="modal" onclick="removeLayout()">
+                <div style="text-align: center; margin-top: -10px; font-size: xx-large;">&#215;</div>
+            </button>
+            <button type="button" class="feature-modal-button increase-modal-button" onclick="maxPopupSize()">
+                <img src='{% static 'images/popup/increase-size.png' %}' class='modal-feature-img'>
+            </button>
+            <button type="button" class="feature-modal-button decrease-modal-button" onclick="minPopupSize()">
+                <img src='{% static 'images/popup/decrease-size.png' %}' class='modal-feature-img'>
             </button>
             <div>
             <button type="button" class="tree-modal-button">
@@ -1974,7 +2020,7 @@
     $(".modal .modal-content").resizable({
         containment: "document",
         minHeight: 300,
-        minWidth: 400,
+        minWidth: 450,
         autoHide: true
     });
 

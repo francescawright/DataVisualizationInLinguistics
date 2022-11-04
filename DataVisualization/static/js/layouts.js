@@ -279,8 +279,8 @@ function computeNodeRadiusTree(d, edgeLength = 300) {
             :
             d.radius = 13; //One child
     //Avoid the root node from being so large that overlaps/hides its children
-    if (!d.parent && d.radius < 90) d.radius = 90;
-    if (!d.parent && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
+    if ((d.parent === null || d.parent === undefined) && d.radius < 90) d.radius = 90;
+    if ((d.parent === null || d.parent === undefined) && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
     return d.radius;
 }
 
@@ -862,6 +862,85 @@ function getStatisticValues(node) {
     };
 }
 
+/**
+ * Recursive function to compute the global statistics
+ * counts nodes by toxicity and by targets
+ * */
+function getStatisticValuesCircle(node) {
+    if (!node.children) {
+        return {
+            children: 0,
+            toxicityLevel: node.data.toxicity_level,
+            toxicity0: 0,
+            toxicity1: 0,
+            toxicity2: 0,
+            toxicity3: 0,
+            totalTargGroup: 0,
+            totalTargPerson: 0,
+            totalTargStereotype: 0,
+            totalTargNone: 0,
+            targGroup: node.data.target_group,
+            targPerson: node.data.target_person,
+            targStereotype: node.data.stereotype,
+            targNone: 0
+        };
+    }
+    var total = 0, childrenList = [],
+        totalToxic0 = 0, totalToxic1 = 0, totalToxic2 = 0, totalToxic3 = 0,
+        totalTargGroup = 0, totalTargPerson = 0, totalTargStereotype = 0, totalTargNone = 0;
+
+    if (node.children) {
+        node.children.forEach(function (d) {
+            childrenList = getStatisticValuesCircle(d);
+            total += childrenList.children + 1;
+
+            totalToxic0 += childrenList.toxicity0;
+            totalToxic1 += childrenList.toxicity1;
+            totalToxic2 += childrenList.toxicity2;
+            totalToxic3 += childrenList.toxicity3;
+            if (d.data.highlighted) {
+                switch (childrenList.toxicityLevel) {
+                    case 0:
+                        totalToxic0 += 1;
+                        break;
+                    case 1:
+                        totalToxic1 += 1;
+                        break;
+                    case 2:
+                        totalToxic2 += 1;
+                        break;
+                    case 3:
+                        totalToxic3 += 1;
+                        break;
+                }
+            }
+
+            //Targets are not exclusive
+            childrenList.targGroup && d.data.highlighted ? totalTargGroup += childrenList.totalTargGroup + 1 : totalTargGroup += childrenList.totalTargGroup;
+            childrenList.targPerson && d.data.highlighted ? totalTargPerson += childrenList.totalTargPerson + 1 : totalTargPerson += childrenList.totalTargPerson;
+            childrenList.targStereotype && d.data.highlighted ? totalTargStereotype += childrenList.totalTargStereotype + 1 : totalTargStereotype += childrenList.totalTargStereotype;
+            (!childrenList.targGroup && !childrenList.targPerson && !childrenList.targStereotype) && d.data.highlighted ? totalTargNone += childrenList.totalTargNone + 1 : totalTargNone += childrenList.totalTargNone;
+        })
+    }
+
+    return {
+        children: total,
+        toxicityLevel: node.data.toxicity_level,
+        toxicity0: totalToxic0,
+        toxicity1: totalToxic1,
+        toxicity2: totalToxic2,
+        toxicity3: totalToxic3,
+        totalTargGroup: totalTargGroup,
+        totalTargPerson: totalTargPerson,
+        totalTargStereotype: totalTargStereotype,
+        totalTargNone: totalTargNone,
+        targGroup: node.data.target_group,
+        targPerson: node.data.target_person,
+        targStereotype: node.data.stereotype,
+        targNone: 0
+    };
+}
+
 /*************************************
 *   GLOBAL FUNCTIONS - FORCE GRAPH   *
 **************************************/
@@ -912,8 +991,8 @@ function computeNodeRadiusForce(d, edgeLength = 500) {
         : children.length === 2 ? d.radius = minNodeRadiusPopup + incrementRadiusFactorPerChildPopup * 2 //2 children
             : d.radius = minNodeRadiusPopup + incrementRadiusFactorPerChildPopup; //One child
     //Avoid the root node from being so large that overlaps/hides its children
-    if (!d.parent && d.radius < 180) d.radius = 180;
-    if (!d.parent && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
+    if ((d.parent === null || d.parent === undefined) && d.radius < 180) d.radius = 180;
+    if ((d.parent === null || d.parent === undefined) && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
     return Math.min(d.radius, 300);
 }
 
@@ -1138,8 +1217,8 @@ function computeNodeRadiusRadial(d, edgeLength = 300) {
             : d.radius = minNodeRadiusPopup + incrementRadiusFactorPerChildPopup; //One child
 
     //Avoid the root node from being so large that overlaps/hides its children
-    if (!d.parent && d.radius < 180) d.radius = 180;
-    if (!d.parent && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
+    if ((d.parent === null || d.parent === undefined) && d.radius < 180) d.radius = 180;
+    if ((d.parent === null || d.parent === undefined) && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
     return d.radius;
 }
 
@@ -1162,6 +1241,42 @@ function removeLayout() {
     }
 }
 
+function minPopupSize() {
+    let circleContainer = document.querySelector(".modal-body #circle-container-popup");
+    // We maintain the aspect ratio if the Circle Packing layout is being displayed
+    if (circleContainer) {
+        document.querySelector(".modal .modal-content").style.width = "450px";
+        document.querySelector(".modal .modal-content").style.height = "388px";
+    } else {
+        document.querySelector(".modal .modal-content").style.width = "450px";
+        document.querySelector(".modal .modal-content").style.height = "300px";
+    }
+}
+function maxPopupSize() {
+    let circleContainer = document.querySelector(".modal-body #circle-container-popup");
+    let w = window.innerWidth * 0.8;
+    let h = window.innerHeight * 0.8;
+    // We maintain the aspect ratio if the Circle Packing layout is being displayed
+    if (circleContainer) {
+        if (w > h) {
+            document.querySelector(".modal .modal-content").style.width = h * 1.16 + 'px';
+            document.querySelector(".modal .modal-content").style.height = h + 'px';
+            document.getElementById("popupModal").style.top = "calc(50% - " + h/2 + "px)";
+            document.getElementById("popupModal").style.left = "calc(50% - " + (h * 1.16)/2 + "px)";
+        } else {
+            document.querySelector(".modal .modal-content").style.width = w + 'px';
+            document.querySelector(".modal .modal-content").style.height = w * 0.862 + 'px';
+            document.getElementById("popupModal").style.top = "calc(50% - " + ( w * 0.862)/2 + "px)";
+            document.getElementById("popupModal").style.left = "calc(50% - " + w/2 + "px)";
+        }
+    } else {
+        document.querySelector(".modal .modal-content").style.width = w + 'px';
+        document.querySelector(".modal .modal-content").style.height = h + 'px';
+        document.getElementById("popupModal").style.top = "calc(50% - " + h/2 + "px)";
+        document.getElementById("popupModal").style.left = "calc(50% - " + w/2 + "px)";
+    }
+}
+
 $(popup_container).on("open", function () {
     // Get JSON data
     treeJSON = d3.json(datasetPopup, function (error, treeData) {
@@ -1179,10 +1294,10 @@ $(popup_container).on("open", function () {
 
         switch (hierarchyName) {
             case "Elongated":
-                document.querySelector(".modal .modal-content").style.width = "1472px";
+                document.querySelector(".modal .modal-content").style.width = window.innerWidth * 0.8 + "px";
                 document.querySelector(".modal .modal-content").style.height = "522px";
                 document.getElementById("popupModal").style.top = "calc(30% - 261px)";
-                document.getElementById("popupModal").style.left = "calc(50% - 736px)";
+                document.getElementById("popupModal").style.left = "calc(50% - " + (window.innerWidth * 0.8)/2 + "px)";
                 initialCanvasHeightPopup = 450;
                 initialCanvasWidthPopup = 1400;
                 treeModalButton.css('opacity', '1');
@@ -1214,10 +1329,10 @@ $(popup_container).on("open", function () {
         $(document).ready(function () {
             jQuery(".tree-modal-button").click(function () {
                 if (!graphContainerJQuery.hasClass("tree")) {
-                    document.querySelector(".modal .modal-content").style.width = "1472px";
+                    document.querySelector(".modal .modal-content").style.width = window.innerWidth * 0.8 + "px";
                     document.querySelector(".modal .modal-content").style.height = "522px";
                     document.getElementById("popupModal").style.top = "calc(30% - 261px)";
-                    document.getElementById("popupModal").style.left = "calc(50% - 736px)";
+                    document.getElementById("popupModal").style.left = "calc(50% - " + (window.innerWidth * 0.8)/2 + "px)";
                     $(this).css('opacity', '1');
                     $('.force-modal-button').css('opacity', '0.4');
                     $('.radial-modal-button').css('opacity', '0.4');
@@ -1872,7 +1987,7 @@ $(popup_container).on("open", function () {
                 for (var i = 0; i < targets.length; i++) {
                     if (cbShowTargets[i] > -1) {
                         nodeEnter.filter(function (d) {
-                            if (d.parent === undefined) {
+                            if (d.parent === null || d.parent === undefined) {
                                 return false;
                             } else {
                                 listOpacity = [d.target_group, d.target_person, d.stereotype];
@@ -1928,7 +2043,7 @@ $(popup_container).on("open", function () {
                             .style("stroke", "black")
                             .style("stroke-width", getNodeStrokeWidthTree())
                             .attr("opacity", function (d) {
-                                if (d.parent === undefined) return 0;
+                                if (d.parent === null || d.parent === undefined) return 0;
                                 //let l = getLevelRange(d);
                                 let l = L;
                                 let t = d_lvl;
@@ -1994,7 +2109,7 @@ $(popup_container).on("open", function () {
                             .attr("width", targets[i].width)
                             .attr("href", pathTargetsPopup + localPath + targets[i].fileName)
                             .attr("opacity", function (d) {
-                                if (d.parent === undefined) return 0;
+                                if (d.parent === null || d.parent === undefined) return 0;
                                 listOpacity = [d.target_group, d.target_person, d.stereotype];
                                 return listOpacity[i];
                             });
@@ -2047,7 +2162,7 @@ $(popup_container).on("open", function () {
                             })
                             .attr("href", pathTargetsPopup + localPath + targets[i].fileName)
                             .attr("opacity", function (d) {
-                                if (d.parent === undefined) return 0;
+                                if (d.parent === null || d.parent === undefined) return 0;
                                 listOpacity = [d.target_group, d.target_person, d.stereotype];
                                 return listOpacity[i];
                             });
@@ -2098,7 +2213,7 @@ $(popup_container).on("open", function () {
                             })
                             .attr("href", pathTargetsPopup + localPath + targets[i].fileName)
                             .attr("opacity", function (d) {
-                                if (d.parent === undefined) return 0;
+                                if (d.parent === null || d.parent === undefined) return 0;
                                 listOpacity = [
                                     0.5,
                                     d.target_group,
@@ -2285,7 +2400,7 @@ $(popup_container).on("open", function () {
                 for (var i = 0; i < 8; i++) {
                     if (cbFeatureEnabled[i] > -1) {
                         nodeEnter.filter(function (d) {
-                            if (d.parent === undefined) {
+                            if (d.parent === null || d.parent === undefined) {
                                 return false;
                             } else {
                                 listOpacity = [
@@ -2335,7 +2450,7 @@ $(popup_container).on("open", function () {
                     .attr("width", objFeatGray.width)
                     .attr("href", pathFeatures + localPath + objFeatGray.fileName)
                     .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
+                        if (d.parent === null || d.parent === undefined) return 0;
                         return 0.5;
                     });
 
@@ -2374,7 +2489,7 @@ $(popup_container).on("open", function () {
                             .attr("width", features[i].width)
                             .attr("href", pathFeatures + localPath + features[i].fileName)
                             .attr("opacity", function (d) {
-                                if (d.parent === undefined) return 0;
+                                if (d.parent === null || d.parent === undefined) return 0;
                                 listOpacity = [
                                     d.argumentation,
                                     d.constructiveness,
@@ -2444,7 +2559,7 @@ $(popup_container).on("open", function () {
                 for (var i = 0; i < features.length; i++) {
                     if (cbFeatureEnabled[i] > -1) {
                         nodeEnter.filter(function (d) {
-                            if (d.parent === undefined) {
+                            if (d.parent === null || d.parent === undefined) {
                                 return false;
                             } else {
                                 listOpacity = [
@@ -2542,7 +2657,7 @@ $(popup_container).on("open", function () {
                                 pathFeatures + localPath + allObjectsInNode[i].fileName
                             )
                             .attr("opacity", function (d) {
-                                if (d.parent === undefined) return 0;
+                                if (d.parent === null || d.parent === undefined) return 0;
 
                                 listOpacity = [
                                     d.toxicity_level === 0 ? 1 : 0,
@@ -2627,7 +2742,7 @@ $(popup_container).on("open", function () {
                     if (cbShowTargets[i] > -1) {
                         //If the checkbox is checked, display it if it has the property
                         nodeEnter.filter(function (d) {
-                            if (d.parent === undefined) {
+                            if (d.parent === null || d.parent === undefined) {
                                 return false;
                             } else {
                                 listOpacity = [
@@ -3076,7 +3191,7 @@ $(popup_container).on("open", function () {
                 //Filter the nodes and append an icon just for the root node
                 node
                     .filter(function (d) {
-                        return !d.parent;
+                        return (d.parent === null || d.parent === undefined);
                     })
                     .append("image")
                     .attr("class", objRootPopup.class)
@@ -3780,176 +3895,6 @@ $(popup_container).on("open", function () {
                 };
             }
 
-            function writeTooltipText(d) {
-                //I want to show Argument and Constructiveness in one line, I add a dummy space to keep that in the loop
-                var jsonValues = [
-                    d.name,
-                    d.toxicity_level,
-                    d.depth,
-                    d.argumentation,
-                    d.constructiveness,
-                    -1,
-                    d.sarcasm,
-                    d.mockery,
-                    d.intolerance,
-                    d.improper_language,
-                    d.insult,
-                    d.aggressiveness,
-                    d.target_group,
-                    d.target_person,
-                    d.stereotype,
-                ];
-                var jsonNames = [
-                    "Comment ID",
-                    "Toxicity level",
-                    "Comment depth",
-                    "Argument",
-                    "Constructiveness",
-                    " ",
-                    "Sarcasm",
-                    "Mockery",
-                    "Intolerance",
-                    "Improper language",
-                    "Insult",
-                    "Aggressiveness",
-                    "Target group",
-                    "Target person",
-                    "Stereotype",
-                ];
-                var i = 0;
-                tooltipTextPopup = "<table>";
-
-                for (i = 0; i < jsonValues.length; i++) {
-                    if (i === 3 || i === 12) tooltipTextPopup += "<tr><td></td></tr>"; // I want a break between the first line and the features and the targets
-                    if (i % 3 === 0) tooltipTextPopup += "<tr>"; //Start table line
-                    if (i < 3)
-                        tooltipTextPopup +=
-                            "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>";
-                    //First ones without bold
-                    else if (jsonValues[i] !== -1)
-                        jsonValues[i] ?
-                            (tooltipTextPopup +=
-                                "<td><b>" +
-                                jsonNames[i] +
-                                ": " +
-                                jsonValues[i] +
-                                "</b></td>") :
-                            (tooltipTextPopup +=
-                                "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>");
-                    if ((i + 1) % 3 === 0) tooltipTextPopup += "</tr>"; //End table line
-                }
-                //Write growingFactor of node
-                tooltipTextPopup += "</table>";
-                //var s = getLevelRange(d);
-                var s = L;
-                tooltipTextPopup += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d, s) + "</td></tr></table>";
-                //Calculate tendencies and hierarchy of nodes
-                tooltipTextPopup += "<br> <table>" +
-                    "<tr>" +
-                    "<td> ET: " + elongatedTendency(d, s) + "</td>" +
-                    "<td> CT: " + compactTendency(d, s, GFcomp) + "</td>" +
-                    "</tr></table>"
-                tooltipTextPopup += "<br> <table>";
-
-                //If node is collapsed, we also want to add some information about its sons
-                if (d._children) {
-                    var sonTitles = [
-                        "Direct comments",
-                        "Total number of generated comments",
-                        "Not toxic",
-                        "Mildly toxic",
-                        "Toxic",
-                        "Very toxic",
-                    ];
-                    var sonValues = [
-                        d._children.length,
-                        d.numberOfDescendants,
-                        d.descendantsWithToxicity0,
-                        d.descendantsWithToxicity1,
-                        d.descendantsWithToxicity2,
-                        d.descendantsWithToxicity3,
-                    ];
-
-                    for (i = 0; i < sonValues.length; i++) {
-                        if (i % 2 === 0) tooltipTextPopup += "<tr>"; //Start table line
-                        tooltipTextPopup +=
-                            "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
-                        if ((i + 1) % 2 === 0) tooltipTextPopup += "</tr>"; //End table line
-                    }
-                }
-                tooltipTextPopup += "</table>";
-                tooltipTextPopup += "<br>" + d.coment;
-
-
-            }
-
-            //if d == root do somethihg
-            // else if d == highlighted nodes
-            // if rootnodeText write another fuction, tooltip style for this condition as well
-            // var rootToolTip = writeTooltipRoot(d);
-            //  var totalNumberOfNodesRoot = rootToolTip.children;
-            //
-            //  var totalNotToxicRoot = rootToolTip.toxicity0,
-            //      totalMildlyToxicRoot = rootToolTip.toxicity1,
-            //      totalToxicRoot = rootToolTip.toxicity2,
-            //      totalVeryToxicRoot = rootToolTip.toxicity3;
-
-            function writeTooltipRoot(d) {
-
-                var sonTitles = [
-                    "Direct comments",
-                    "Total number of generated comments",
-                    "Not toxic",
-                    "Mildly toxic",
-                    "Toxic",
-                    "Very toxic",
-                ];
-                var sonValues = [
-                    d.children ? d.children.length : null,
-                    totalNumberOfNodes,
-                    totalNotToxic,
-                    totalMildlyToxic,
-                    totalToxic,
-                    totalVeryToxic,
-                ];
-                var hierarchyList = [
-                    "Unspecified",
-                    "Elongated",
-                    "Compact",
-                    "nCompact",
-                    "Hybrid",
-                ];
-                tooltipTextPopup = "<table>";
-                tooltipTextPopup += "<br> <table>";
-
-                for (i = 0; i < sonValues.length; i++) {
-                    if (i % 2 === 0) tooltipTextPopup += "<tr>"; //Start table line
-                    tooltipTextPopup +=
-                        "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
-                    if ((i + 1) % 2 === 0) tooltipTextPopup += "</tr>"; //End table line
-                }
-
-                //Write growingFactor of root
-                tooltipTextPopup += "</table>";
-                //var s = getLevelRange(d);
-                var s = L;
-                tooltipTextPopup += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d, s) + "</td></tr>";
-                //Calculate tendencies and hierarchy of nodes
-                tooltipTextPopup +=
-                    "<tr>" +
-                    "<td> ET: " + elongatedTendency(d, s) +
-                    " CT: " + compactTendency(d, s, GFcomp) + "</td>" +
-                    "</tr>"
-                //Calculate hierarchy
-                var t = d_lvl;
-                var h = getHierarchy(d, s, GFcomp, t);
-                tooltipTextPopup +=
-                    "<tr>" +
-                    "<td> Hierarchy: " + hierarchyList[h] + "</td>" +
-                    "</tr></table>"
-                tooltipTextPopup += "<br> <table>";
-            }
-
 
             function update(source, first_call) {
                 tree = tree
@@ -3996,10 +3941,10 @@ $(popup_container).on("open", function () {
                             return n.highlighted;
                         })[0].map(i => i.__data__.name); // don't ask..
                         if (d !== rootPopup && highlighted_nodes.includes(d.name)) {
-                            writeTooltipText(d);
+                            tooltipTextPopup = writeTooltipText(d);
                             tooltip.style("visibility", "visible").html(tooltipTextPopup);
                         } else if (d == rootPopup) {
-                            writeTooltipRoot(d);
+                            tooltipTextPopup = writeTooltipRoot(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
                             tooltip.style("visibility", "visible").html(tooltipTextPopup);
                         }
                     })
@@ -5335,7 +5280,7 @@ $(popup_container).on("open", function () {
                 for (var i = 0; i < targets.length; i++) {
                     if (cbShowTargets[i] > -1) {
                         nodeEnter.filter(function (d) {
-                            if (d.parent === null) {
+                            if (d.parent === null || d.parent === undefined) {
                                 return false;
                             } else {
                                 listOpacity = [d.target_group, d.target_person, d.stereotype];
@@ -5385,7 +5330,7 @@ $(popup_container).on("open", function () {
                             })
                             .attr("href", pathTargetsPopup + localPath + targets[i].fileName)
                             .attr("opacity", function (d) {
-                                if (d.parent === null) return 0;
+                                if (d.parent === null || d.parent === undefined) return 0;
                                 listOpacity = [0.5, d.target_group, d.target_person, d.stereotype]; //Note: the opacity of the gray ring
                                 return listOpacity[i];
                             });
@@ -5468,7 +5413,7 @@ $(popup_container).on("open", function () {
                             .attr("width", targets[i].width)
                             .attr("href", pathTargetsPopup + localPath + targets[i].fileName)
                             .attr("opacity", function (d) {
-                                if (d.parent === null) return 0;
+                                if (d.parent === null || d.parent === undefined) return 0;
                                 listOpacity = [d.target_group, d.target_person, d.stereotype];
                                 return listOpacity[i];
                             });
@@ -5509,7 +5454,7 @@ $(popup_container).on("open", function () {
                             })
                             .attr("href", pathTargetsPopup + localPath + targets[i].fileName)
                             .attr("opacity", function (d) {
-                                if (d.parent === null) return 0;
+                                if (d.parent === null || d.parent === undefined) return 0;
                                 listOpacity = [d.target_group, d.target_person, d.stereotype];
                                 return listOpacity[i];
                             });
@@ -5573,7 +5518,7 @@ $(popup_container).on("open", function () {
                 for (var i = 0; i < 8; i++) {
                     if (cbFeatureEnabled[i] > -1) {
                         nodeEnter.filter(function (d) {
-                            if (d.parent === null) {
+                            if (d.parent === null || d.parent === undefined) {
                                 return false;
                             } else {
                                 listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
@@ -5618,7 +5563,7 @@ $(popup_container).on("open", function () {
                     })
                     .attr("href", pathFeatures + localPath + objFeatGray.fileName)
                     .attr("opacity", function (d) {
-                        if (d.parent === null) return 0;
+                        if (d.parent === null || d.parent === undefined) return 0;
                         return 0.5;
                     });
 
@@ -5632,7 +5577,7 @@ $(popup_container).on("open", function () {
                 for (var i = 0; i < features.length; i++) {
                     if (cbFeatureEnabled[i] > -1) {
                         nodeEnter.filter(function (d) {
-                            if (d.parent === null) {
+                            if (d.parent === null || d.parent === undefined) {
                                 return false;
                             } else {
                                 listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
@@ -5701,7 +5646,7 @@ $(popup_container).on("open", function () {
                             .style("stroke-width", "0.5px")
                             .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
                             .attr("opacity", function (d) {
-                                if (d.parent === null) return 0;
+                                if (d.parent === null || d.parent === undefined) return 0;
 
                                 listOpacity = [d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
                                     d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
@@ -5756,7 +5701,7 @@ $(popup_container).on("open", function () {
                             .style("stroke-width", "0.5px")
                             .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
                             .attr("opacity", function (d) {
-                                if (d.parent === null) return 0;
+                                if (d.parent === null || d.parent === undefined) return 0;
 
                                 listOpacity = [d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
                                     d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
@@ -5798,7 +5743,7 @@ $(popup_container).on("open", function () {
                 for (var i = 0; i < allObjectsInNode.length; i++) {
                     if (cbShowTargets[i] > -1) { //If the checkbox is checked, display it if it has the property
                         nodeEnter.filter(function (d) {
-                            if (d.parent === null) {
+                            if (d.parent === null || d.parent === undefined) {
                                 return false;
                             } else {
                                 listOpacity = [1,
@@ -5913,7 +5858,7 @@ $(popup_container).on("open", function () {
 
                 //Filter the nodes and append an icon just for the root node
                 node.filter(function (d) {
-                    return !d.parent;
+                    return (d.parent === null || d.parent === undefined);
                 }).append("image")
                     .attr('class', objRootPopup.class)
                     .attr('id', objRootPopup.id)
@@ -6456,83 +6401,6 @@ $(popup_container).on("open", function () {
                 };
             }
 
-            function writeTooltipText(d) {
-
-                //I want to show Argument and Constructiveness in one line, I add a dummy space to keep that in the loop
-                var jsonValues = [d.name, d.toxicity_level, d.depth,
-                    d.argumentation, d.constructiveness, -1,
-                    d.sarcasm, d.mockery, d.intolerance,
-                    d.improper_language, d.insult, d.aggressiveness,
-                    d.target_group, d.target_person, d.stereotype];
-                var jsonNames = ["Comment ID", "Toxicity level", "Comment depth",
-                    "Argument", "Constructiveness", " ",
-                    "Sarcasm", "Mockery", "Intolerance",
-                    "Improper language", "Insult", "Aggressiveness",
-                    "Target group", "Target person", "Stereotype"];
-                var i = 0;
-                tooltipTextPopup = "<table>";
-
-                for (i = 0; i < jsonValues.length; i++) {
-                    if (i === 3 || i === 12) tooltipTextPopup += "<tr><td></td></tr>"; // I want a break between the first line and the features and the targets
-                    if (i % 3 === 0) tooltipTextPopup += "<tr>"; //Start table line
-                    if (i < 3) tooltipTextPopup += "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>"; //First ones without bold
-                    else if (jsonValues[i] !== -1) jsonValues[i] ? tooltipTextPopup += "<td><b>" + jsonNames[i] + ": " + jsonValues[i] + "</b></td>" : tooltipTextPopup += "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>";
-                    if ((i + 1) % 3 === 0) tooltipTextPopup += "</tr>"; //End table line
-                }
-
-                tooltipTextPopup += "</table>";
-
-                tooltipTextPopup += "<br> <table>";
-                //If node is collapsed, we also want to add some information about its sons
-                if (d._children) {
-                    var sonTitles = ["Direct comments", "Total number of generated comments", "Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
-                    var sonValues = [d._children.length, d.numberOfDescendants, d.descendantsWithToxicity0, d.descendantsWithToxicity1, d.descendantsWithToxicity2, d.descendantsWithToxicity3];
-
-                    for (i = 0; i < sonValues.length; i++) {
-                        if (i % 2 === 0) tooltipTextPopup += "<tr>"; //Start table line
-                        tooltipTextPopup += "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
-                        if ((i + 1) % 2 === 0) tooltipTextPopup += "</tr>"; //End table line
-                    }
-
-                }
-                tooltipTextPopup += "</table>";
-                tooltipTextPopup += "<br>" + d.coment;
-            }
-
-            function writeTooltipRoot(d) {
-
-                var sonTitles = [
-                    "Direct comments",
-                    "Total number of generated comments",
-                    "Not toxic",
-                    "Mildly toxic",
-                    "Toxic",
-                    "Very toxic",
-                ];
-                var sonValues = [
-                    d.children ? d.children.length : null,
-                    totalNumberOfNodes,
-                    totalNotToxic,
-                    totalMildlyToxic,
-                    totalToxic,
-                    totalVeryToxic,
-                ];
-                tooltipTextPopup = "<table>";
-                tooltipTextPopup += "<br> <table>";
-
-                for (i = 0; i < sonValues.length; i++) {
-                    if (i % 2 === 0) tooltipTextPopup += "<tr>"; //Start table line
-                    tooltipTextPopup +=
-                        "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
-                    if ((i + 1) % 2 === 0) tooltipTextPopup += "</tr>"; //End table line
-                }
-
-                tooltipTextPopup += "</table>";
-
-
-            }
-
-
             function setCircularPositions(node, angle) {
                 //console.log("Node: ", node, angle)
                 if (!node.children && !node._children) {
@@ -6636,11 +6504,11 @@ $(popup_container).on("open", function () {
                             return n.highlighted;
                         })[0].map(i => i.__data__.name); // don't ask..
                         if (d !== rootPopup && highlighted_nodes.includes(d.name)) {
-                            writeTooltipText(d);
+                            tooltipTextPopup = writeTooltipText(d);
                             tooltip.style("visibility", "visible")
                                 .html(tooltipTextPopup);
                         } else if (d == rootPopup) {
-                            writeTooltipRoot(d);
+                            tooltipTextPopup = writeTooltipRoot(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
                             tooltip.style("visibility", "visible").html(tooltipTextPopup);
                         }
                     })
@@ -7740,7 +7608,7 @@ $(popup_container).on("open", function () {
                     .attr("width", object.width)
                     .attr("href", path + object.fileName)
                     .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
+                        if (d.parent === null || d.parent === undefined) return 0;
                         return retrieveAttributeFromCommentRadial(d, object.name);
                     });
             }
@@ -7808,7 +7676,7 @@ $(popup_container).on("open", function () {
                 for (let i = 0; i < targets.length; i++) {
                     if (cbShowTargets[i] > -1) {
                         nodeEnter.filter(function (d) {
-                            if (d.parent === undefined) {
+                            if (d.parent === null || d.parent === undefined) {
                                 return false;
                             } else {
                                 listOpacity = [d.target_group, d.target_person, d.stereotype];
@@ -7858,7 +7726,7 @@ $(popup_container).on("open", function () {
                             })
                             .attr("href", pathTargetsPopup + localPath + targets[i].fileName)
                             .attr("opacity", function (d) {
-                                if (d.parent === undefined) return 0;
+                                if (d.parent === null || d.parent === undefined) return 0;
                                 listOpacity = [0.5, d.target_group, d.target_person, d.stereotype]; //Note: the opacity of the gray ring
                                 return listOpacity[i];
                             });
@@ -7950,7 +7818,7 @@ $(popup_container).on("open", function () {
                             })
                             .attr("href", pathTargetsPopup + localPath + targets[i].fileName)
                             .attr("opacity", function (d) {
-                                if (d.parent === undefined) return 0;
+                                if (d.parent === null || d.parent === undefined) return 0;
                                 listOpacity = [d.target_group, d.target_person, d.stereotype];
                                 return listOpacity[i];
                             });
@@ -8042,7 +7910,7 @@ $(popup_container).on("open", function () {
                     .style("stroke", "black")
                     .style("stroke-width", "1.5px")
                     .attr("opacity", function (d) {
-                        if (d.parent === undefined) return 0;
+                        if (d.parent === null || d.parent === undefined) return 0;
                         return retrieveAttributeFromCommentRadial(d, object.name);
                     });
             }
@@ -8103,7 +7971,7 @@ $(popup_container).on("open", function () {
                 for (var i = 0; i < 8; i++) {
                     if (cbFeatureEnabled[i] > -1) {
                         nodeEnter.filter(function (d) {
-                            if (d.parent === undefined) {
+                            if (d.parent === null || d.parent === undefined) {
                                 return false;
                             } else {
                                 listOpacity = [d.constructiveness, d.argumentation, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
@@ -8162,7 +8030,7 @@ $(popup_container).on("open", function () {
                 for (var i = 0; i < features.length; i++) {
                     if (cbFeatureEnabled[i] > -1) {
                         nodeEnter.filter(function (d) {
-                            if (d.parent === undefined) {
+                            if (d.parent === null || d.parent === undefined) {
                                 return false;
                             } else {
                                 listOpacity = [d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
@@ -8232,7 +8100,7 @@ $(popup_container).on("open", function () {
                             .style("stroke-width", "1.5px")
                             .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
                             .attr("opacity", function (d) {
-                                if (d.parent === undefined) return 0;
+                                if (d.parent === null || d.parent === undefined) return 0;
 
                                 listOpacity = [d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
                                     d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
@@ -8287,7 +8155,7 @@ $(popup_container).on("open", function () {
                             .style("stroke-width", "1.5px")
                             .attr("href", pathFeatures + localPath + allObjectsInNode[i].fileName)
                             .attr("opacity", function (d) {
-                                if (d.parent === undefined) return 0;
+                                if (d.parent === null || d.parent === undefined) return 0;
 
                                 listOpacity = [d.toxicity_level === 0 ? 1 : 0, d.toxicity_level === 1 ? 1 : 0, d.toxicity_level === 2 ? 1 : 0, d.toxicity_level === 3 ? 1 : 0,
                                     d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness,
@@ -8329,7 +8197,7 @@ $(popup_container).on("open", function () {
                 for (var i = 0; i < allObjectsInNode.length; i++) {
                     if (cbShowTargets[i] > -1) { //If the checkbox is checked, display it if it has the property
                         nodeEnter.filter(function (d) {
-                            if (d.parent === undefined) {
+                            if (d.parent === null || d.parent === undefined) {
                                 return false;
                             } else {
                                 listOpacity = [1,
@@ -8457,7 +8325,7 @@ $(popup_container).on("open", function () {
                             .attr("width", cheeseWidth)
                             .attr("href", listCheeseImgPath[i])
                             .attr("opacity", function (d) {
-                                if (d.parent === undefined) return 0;
+                                if (d.parent === null || d.parent === undefined) return 0;
                                 listCheeseOpacity = [0.5, d.argumentation, d.constructiveness, d.sarcasm, d.mockery, d.intolerance, d.improper_language, d.insult, d.aggressiveness];
                                 return listCheeseOpacity[i];
                             });
@@ -8621,7 +8489,7 @@ $(popup_container).on("open", function () {
 
                 //Filter the nodes and append an icon just for the root node
                 node.filter(function (d) {
-                    return !d.parent;
+                    return (d.parent === null || d.parent === undefined);
                 }).append("image")
                     .attr('class', objRoot.class)
                     .attr('id', objRoot.id)
@@ -9163,86 +9031,6 @@ $(popup_container).on("open", function () {
                 };
             }
 
-            /**
-             * Write tooltip text in a table with bold lyrics if the feature is present
-             * */
-            function writeTooltipText(d) {
-
-                //I want to show Argument and Constructiveness in one line, I add a dummy space to keep that in the loop
-                var jsonValues = [d.name, d.toxicity_level, d.depth,
-                    d.argumentation, d.constructiveness, -1,
-                    d.sarcasm, d.mockery, d.intolerance,
-                    d.improper_language, d.insult, d.aggressiveness,
-                    d.target_group, d.target_person, d.stereotype];
-                var jsonNames = ["Comment ID", "Toxicity level", "Comment depth",
-                    "Argument", "Constructiveness", " ",
-                    "Sarcasm", "Mockery", "Intolerance",
-                    "Improper language", "Insult", "Aggressiveness",
-                    "Target group", "Target person", "Stereotype"];
-                var i = 0;
-                tooltipTextPopup = "<table>";
-
-                for (i = 0; i < jsonValues.length; i++) {
-                    if (i === 3 || i === 12) tooltipTextPopup += "<tr><td></td></tr>"; // I want a break between the first line and the features and the targets
-                    if (i % 3 === 0) tooltipTextPopup += "<tr>"; //Start table line
-                    if (i < 3) tooltipTextPopup += "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>"; //First ones without bold
-                    else if (jsonValues[i] !== -1) jsonValues[i] ? tooltipTextPopup += "<td><b>" + jsonNames[i] + ": " + jsonValues[i] + "</b></td>" : tooltipTextPopup += "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>";
-                    if ((i + 1) % 3 === 0) tooltipTextPopup += "</tr>"; //End table line
-                }
-
-                tooltipTextPopup += "</table>";
-
-                tooltipTextPopup += "<br> <table>";
-                //If node is collapsed, we also want to add some information about its sons
-                if (d._children) {
-                    var sonTitles = ["Direct comments", "Total number of generated comments", "Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
-                    var sonValues = [d._children.length, d.numberOfDescendants, d.descendantsWithToxicity0, d.descendantsWithToxicity1, d.descendantsWithToxicity2, d.descendantsWithToxicity3];
-
-                    for (i = 0; i < sonValues.length; i++) {
-                        if (i % 2 === 0) tooltipTextPopup += "<tr>"; //Start table line
-                        tooltipTextPopup += "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
-                        if ((i + 1) % 2 === 0) tooltipTextPopup += "</tr>"; //End table line
-                    }
-
-                }
-                tooltipTextPopup += "</table>";
-                tooltipTextPopup += "<br>" + d.coment;
-            }
-
-            function writeTooltipRoot(d) {
-
-                var sonTitles = [
-                    "Direct comments",
-                    "Total number of generated comments",
-                    "Not toxic",
-                    "Mildly toxic",
-                    "Toxic",
-                    "Very toxic",
-                ];
-                var sonValues = [
-                    d.children ? d.children.length : null,
-                    totalNumberOfNodes,
-                    totalNotToxic,
-                    totalMildlyToxic,
-                    totalToxic,
-                    totalVeryToxic,
-                ];
-                tooltipTextPopup = "<table>";
-                tooltipTextPopup += "<br> <table>";
-
-                for (i = 0; i < sonValues.length; i++) {
-                    if (i % 2 === 0) tooltipTextPopup += "<tr>"; //Start table line
-                    tooltipTextPopup +=
-                        "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
-                    if ((i + 1) % 2 === 0) tooltipTextPopup += "</tr>"; //End table line
-                }
-
-                tooltipTextPopup += "</table>";
-
-
-            }
-
-
             function update(source, first_call) {
 
                 // Compute the new tree layout.
@@ -9284,11 +9072,11 @@ $(popup_container).on("open", function () {
                             return n.highlighted;
                         })[0].map(i => i.__data__.name); // don't ask..
                         if (d !== rootPopup && highlighted_nodes.includes(d.name)) {
-                            writeTooltipText(d);
+                            tooltipTextPopup = writeTooltipText(d);
                             tooltip.style("visibility", "visible")
                                 .html(tooltipTextPopup);
                         } else if (d == rootPopup) {
-                            writeTooltipRoot(d);
+                            tooltipTextPopup = writeTooltipRoot(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
                             tooltip.style("visibility", "visible").html(tooltipTextPopup);
                         }
                     })
@@ -10118,10 +9906,10 @@ $(popup_container).on("open", function () {
                 }).style("stroke", "black")
                 .on("mouseover", function (d) {
                     if (d !== rootPopup) {
-                        writeTooltipText(d.data, d.depth);
+                        tooltipTextPopup = writeTooltipTextCircle(d);
                         tooltip.style("visibility", "visible").html(tooltipTextPopup);
                     } else {
-                        writeTooltipRoot(d.data, d.depth);
+                        tooltipTextPopup = writeTooltipRootCircle(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
                         tooltip.style("visibility", "visible").html(tooltipTextPopup);
                     }
                 })
@@ -10133,142 +9921,6 @@ $(popup_container).on("open", function () {
                 .on("mouseout", function () {
                     return tooltip.style("visibility", "hidden");
                 });
-            //    .on("mouseover", function(d){  console.log(d)
-            //        return tooltip.text(d.data.name).style("visibility", "visible").html("tooltip");})
-            //    .on("mousemove", function(){return tooltip.style("top", d3v4.event.pageY -30 +"px").style("left",d3v4.event.pageX + 480 +"px");})
-            //    .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
-
-            //I compute the values for the statistic data showing in the background
-            var listStatistics = getStatisticValues(rootPopup);
-            var totalNumberOfNodes = listStatistics.children;
-
-            var totalNotToxic = listStatistics.toxicity0,
-                totalMildlyToxic = listStatistics.toxicity1,
-                totalToxic = listStatistics.toxicity2,
-                totalVeryToxic = listStatistics.toxicity3;
-
-            function writeTooltipRoot(d) {
-
-                var sonTitles = [
-                    "Direct comments",
-                    "Total number of generated comments",
-                    "Not toxic",
-                    "Mildly toxic",
-                    "Toxic",
-                    "Very toxic",
-                ];
-                var sonValues = [
-                    d.children ? d.children.length : null,
-                    totalNumberOfNodes,
-                    totalNotToxic,
-                    totalMildlyToxic,
-                    totalToxic,
-                    totalVeryToxic,
-                ];
-                tooltipTextPopup = "<table>";
-                tooltipTextPopup += "<table>";
-
-                for (i = 0; i < sonValues.length; i++) {
-                    if (i % 2 === 0) tooltipTextPopup += "<tr>"; //Start table line
-                    tooltipTextPopup +=
-                        "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
-                    if ((i + 1) % 2 === 0) tooltipTextPopup += "</tr>"; //End table line
-                }
-
-                tooltipTextPopup += "<br> <table>";
-            }
-
-            function writeTooltipText(d, depth) {
-                //I want to show Argument and Constructiveness in one line, I add a dummy space to keep that in the loop
-                var jsonValues = [
-                    d.name,
-                    d.toxicity_level,
-                    depth,
-                    d.argumentation,
-                    d.constructiveness,
-                    -1,
-                    d.sarcasm,
-                    d.mockery,
-                    d.intolerance,
-                    d.improper_language,
-                    d.insult,
-                    d.aggressiveness,
-                    d.target_group,
-                    d.target_person,
-                    d.stereotype,
-                ];
-                var jsonNames = [
-                    "Comment ID",
-                    "Toxicity level",
-                    "Comment depth",
-                    "Argument",
-                    "Constructiveness",
-                    " ",
-                    "Sarcasm",
-                    "Mockery",
-                    "Intolerance",
-                    "Improper language",
-                    "Insult",
-                    "Aggressiveness",
-                    "Target group",
-                    "Target person",
-                    "Stereotype",
-                ];
-                var i = 0;
-                tooltipTextPopup = "<table>";
-
-                for (i = 0; i < jsonValues.length; i++) {
-                    if (i === 3 || i === 12) tooltipTextPopup += "<tr><td></td></tr>"; // I want a break between the first line and the features and the targets
-                    if (i % 3 === 0) tooltipTextPopup += "<tr>"; //Start table line
-                    if (i < 3)
-                        tooltipTextPopup +=
-                            "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>";
-                    //First ones without bold
-                    else if (jsonValues[i] !== -1)
-                        jsonValues[i] ?
-                            (tooltipTextPopup +=
-                                "<td><b>" +
-                                jsonNames[i] +
-                                ": " +
-                                jsonValues[i] +
-                                "</b></td>") :
-                            (tooltipTextPopup +=
-                                "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>");
-                    if ((i + 1) % 3 === 0) tooltipTextPopup += "</tr>"; //End table line
-                }
-
-                tooltipTextPopup += "</table>";
-
-                tooltipTextPopup += "<br> <table>";
-                //If node is collapsed, we also want to add some information about its sons
-                if (d._children) {
-                    var sonTitles = [
-                        "Direct comments",
-                        "Total number of generated comments",
-                        "Not toxic",
-                        "Mildly toxic",
-                        "Toxic",
-                        "Very toxic",
-                    ];
-                    var sonValues = [
-                        d._children.length,
-                        d.numberOfDescendants,
-                        d.descendantsWithToxicity0,
-                        d.descendantsWithToxicity1,
-                        d.descendantsWithToxicity2,
-                        d.descendantsWithToxicity3,
-                    ];
-
-                    for (i = 0; i < sonValues.length; i++) {
-                        if (i % 2 === 0) tooltipTextPopup += "<tr>"; //Start table line
-                        tooltipTextPopup +=
-                            "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
-                        if ((i + 1) % 2 === 0) tooltipTextPopup += "</tr>"; //End table line
-                    }
-                }
-                tooltipTextPopup += "</table>";
-                tooltipTextPopup += "<br>" + d.coment;
-            }
 
             function hovered(hover) {
                 return function (d) {
@@ -10446,6 +10098,15 @@ $(popup_container).on("open", function () {
             }
             highlightNodesByPropertyOR(node, enabledHighlight);
             highlightNodesByPropertyAND(node, enabledHighlight);
+
+            //I compute the values for the statistic data showing in the background
+            var listStatistics = getStatisticValuesCircle(rootPopup);
+            var totalNumberOfNodes = listStatistics.children;
+
+            var totalNotToxic = listStatistics.toxicity0,
+                totalMildlyToxic = listStatistics.toxicity1,
+                totalToxic = listStatistics.toxicity2,
+                totalVeryToxic = listStatistics.toxicity3;
 
             //Listeners
 

@@ -686,26 +686,344 @@ function highlightLongestThread(nodes, root, opacityValue, deepestNodesPath, nod
     });
 }
 
-/*!
- * Check if an element is out of the viewport
- * (c) 2018 Chris Ferdinandi, MIT License, https://gomakethings.com
- * @param  {Node} elem The element to check
- * @return {Object} A set of booleans for each side of the element
- */
-function isOutOfViewport (elem) {
+function writeTooltipText(d) {
+    var featuresValues = [
+        d.constructiveness,
+        d.argumentation,
+        d.sarcasm,
+        d.mockery,
+        d.intolerance,
+        d.improper_language,
+        d.insult,
+        d.aggressiveness,
+    ];
+    var featuresNames = [
+        "Constructiveness",
+        "Argument",
+        "Sarcasm",
+        "Mockery",
+        "Intolerance",
+        "Improper",
+        "Insult",
+        "Aggressiveness",
+    ];
 
-    // Get element's bounding
-    var bounding = elem.getBoundingClientRect();
+    let tooltipText = "<div style='margin: 0 10px;'>";
 
-    // Check if it's out of the viewport on each side
-    var out = {};
-    out.top = bounding.top < 0;
-    out.left = bounding.left < 0;
-    out.bottom = bounding.bottom > (window.innerHeight || document.documentElement.clientHeight);
-    out.right = bounding.right > (window.innerWidth || document.documentElement.clientWidth);
-    out.any = out.top || out.left || out.bottom || out.right;
-    out.all = out.top && out.left && out.bottom && out.right;
+    tooltipText += "<div><b>Comment ID:</b> " + d.name + "<br>"
+                + "<b>Comment Level:</b> " + d.comment_level + "<br>"
+                + "<b>Comment Depth:</b> " + d.depth + "<br>"
+                + "<b>Toxicity level:</b> " + d.toxicity_level + "</div><br>";
 
-    return out;
+    let i;
+    tooltipText += "<ul class='tooltip-features'>";
 
-};
+    for (i = 0; i < featuresValues.length ; i++) {
+        if (featuresValues[i]) {
+            tooltipText += '<li><span style="color:' + colorFeature[i] + '; font-weight:bold; font-size: larger;">' + featuresNames[i] + '</span></li>'
+        } else {
+            tooltipText += '<li><span style="color:#cccccc; font-weight:bold; font-size: larger;">' + featuresNames[i] + '</span></li>'
+        }
+
+    }
+
+    tooltipText += "</ul>";
+
+    tooltipText += "<br><span style='font-size: medium; margin-right: 20px;'><b>Stance:</b></span>";
+    tooltipText += '<svg height=" 20" width="80" style="display: inline-block; margin-bottom: 5px;';
+    if (d.positive_stance) {
+        tooltipText += ' opacity: 1;';
+    } else {
+        tooltipText += ' opacity: 0.3;';
+    }
+    tooltipText += '"> <rect width="60" height="20" fill=' + colourPositiveStance + '></rect> </svg>';
+    tooltipText += '<svg height=" 20" width="60" style="display: inline-block; margin-bottom: 5px;';
+    if (d.negative_stance) {
+        tooltipText += ' opacity: 1;';
+    } else {
+        tooltipText += ' opacity: 0.3;';
+    }
+    tooltipText += '"> <rect width="60" height="20" fill=' + colourNegativeStance + '></rect> </svg>';
+
+    tooltipText += "<br><br><span style='font-size: medium; margin-right: 20px;'><b>Target:</b></span>";
+    tooltipText += '<img src=' + pt + targetImagesPath[1] + ' style="width: 55px; margin-right: 20px;';
+    if (d.target_person) {
+        tooltipText += ' opacity: 1;';
+    } else {
+        tooltipText += ' opacity: 0.3;';
+    }
+    tooltipText += '"><img src=' + pt + targetImagesPath[0] + ' style="width: 55px; margin-right: 20px;';
+    if (d.target_group) {
+        tooltipText += ' opacity: 1;';
+    } else {
+        tooltipText += ' opacity: 0.3;';
+    }
+    tooltipText += '"><img src=' + pt + targetImagesPath[2] + ' style="width: 55px; margin-right: 20px;';
+    if (d.stereotype) {
+        tooltipText += ' opacity: 1;';
+    } else {
+        tooltipText += ' opacity: 0.3;';
+    }
+    tooltipText += '"><br>';
+
+    //If node is collapsed, we also want to add some information about its sons
+    if (d._children) {
+        tooltipText += "<br> <table>";
+
+        var sonTitles = [
+            "Direct comments",
+            "Total number of generated comments",
+            "Not toxic",
+            "Mildly toxic",
+            "Toxic",
+            "Very toxic",
+        ];
+        var sonValues = [
+            d._children.length,
+            d.numberOfDescendants,
+            d.descendantsWithToxicity0,
+            d.descendantsWithToxicity1,
+            d.descendantsWithToxicity2,
+            d.descendantsWithToxicity3,
+        ];
+
+        for (i = 0; i < sonValues.length; i++) {
+            if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
+            tooltipText +=
+                "<td><b>" + sonTitles[i] + ":</b> " + sonValues[i] + "</td>";
+            if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
+        }
+        tooltipText += "</table>";
+    }
+    tooltipText += "<br>" + d.coment;
+
+    //Write growingFactor of node
+    //Calculate tendencies and hierarchy of nodes
+    var s = L;
+    tooltipText += "<br><br><b>Growing Factor:</b> " + getGrowFactor(d,s)
+                + "<br><b>ET:</b> " + elongatedTendency(d, s)
+                + "&nbsp;&nbsp;&nbsp;&nbsp;<b>CT:</b> " + compactTendency(d, s, GFcomp) + "</div>";
+
+    return tooltipText;
+}
+
+function writeTooltipRoot(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic) {
+
+    var sonTitles = [
+        "Direct comments",
+        "Total number of generated comments",
+        "Not toxic",
+        "Mildly toxic",
+        "Toxic",
+        "Very toxic",
+    ];
+    var sonValues = [
+        d.children ? d.children.length : 0,
+        totalNumberOfNodes,
+        totalNotToxic,
+        totalMildlyToxic,
+        totalToxic,
+        totalVeryToxic,
+    ];
+    let tooltipText = "<br> <table>";
+
+    for (i = 0; i < sonValues.length; i++) {
+        if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
+        tooltipText +=
+            "<td><b>" + sonTitles[i] + ":</b> " + sonValues[i] + "</td>";
+        if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
+    }
+
+    //Write growingFactor of root
+    tooltipText += "</table>";
+    var s = L;
+    //Calculate hierarchy
+    var t = d_lvl;
+    //Calculate tendencies and hierarchy of nodes
+    tooltipText += "<br><br><b>Growing Factor:</b> " + getGrowFactor(d,s)
+                + "<br><b>ET:</b> " + elongatedTendency(d, s)
+                + "&nbsp;&nbsp;&nbsp;&nbsp;<b>CT:</b> " + compactTendency(d, s, GFcomp)
+                + "<br><b>Hierarchy:</b> " + getHierarchyName(d, s, GFcomp, t) + "<br>";
+
+    // Add news information
+    tooltipText += "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Title:</b> " + d.title + "</td></tr></table>" +
+        "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Text URL:</b> <a href=" + d.text_URL + ">" + d.text_URL + "</a></td>" +
+        "</tr>" +
+        "<tr>" +
+            "<td> <b>Comments URL:</b> <a href=" + d.comments_URL + ">" + d.comments_URL + "</a></td>" +
+        "</tr></table>"
+    tooltipText += "<br>";
+
+    return tooltipText;
+}
+
+function writeTooltipTextCircle(d) {
+    var featuresValues = [
+        d.data.constructiveness,
+        d.data.argumentation,
+        d.data.sarcasm,
+        d.data.mockery,
+        d.data.intolerance,
+        d.data.improper_language,
+        d.data.insult,
+        d.data.aggressiveness,
+    ];
+    var featuresNames = [
+        "Constructiveness",
+        "Argument",
+        "Sarcasm",
+        "Mockery",
+        "Intolerance",
+        "Improper",
+        "Insult",
+        "Aggressiveness",
+    ];
+
+    let tooltipText = "<div style='margin: 0 10px;'>";
+
+    tooltipText += "<div><b>Comment ID:</b> " + d.data.name + "<br>"
+                + "<b>Comment Level:</b> " + d.data.comment_level + "<br>"
+                + "<b>Comment Depth:</b> " + d.depth + "<br>"
+                + "<b>Toxicity level:</b> " + d.data.toxicity_level + "</div><br>";
+
+    let i;
+    tooltipText += "<ul class='tooltip-features'>";
+
+    for (i = 0; i < featuresValues.length ; i++) {
+        if (featuresValues[i]) {
+            tooltipText += '<li><span style="color:' + colorFeature[i] + '; font-weight:bold; font-size: larger;">' + featuresNames[i] + '</span></li>'
+        } else {
+            tooltipText += '<li><span style="color:#cccccc; font-weight:bold; font-size: larger;">' + featuresNames[i] + '</span></li>'
+        }
+
+    }
+
+    tooltipText += "</ul>";
+
+    tooltipText += "<br><span style='font-size: medium; margin-right: 20px;'><b>Stance:</b></span>";
+    tooltipText += '<svg height=" 20" width="80" style="display: inline-block; margin-bottom: 5px;';
+    if (d.data.positive_stance) {
+        tooltipText += ' opacity: 1;';
+    } else {
+        tooltipText += ' opacity: 0.3;';
+    }
+    tooltipText += '"> <rect width="60" height="20" fill=' + colourPositiveStance + '></rect> </svg>';
+    tooltipText += '<svg height=" 20" width="60" style="display: inline-block; margin-bottom: 5px;';
+    if (d.data.negative_stance) {
+        tooltipText += ' opacity: 1;';
+    } else {
+        tooltipText += ' opacity: 0.3;';
+    }
+    tooltipText += '"> <rect width="60" height="20" fill=' + colourNegativeStance + '></rect> </svg>';
+
+    tooltipText += "<br><br><span style='font-size: medium; margin-right: 20px;'><b>Target:</b></span>";
+    tooltipText += '<img src=' + pt + targetImagesPath[1] + ' style="width: 55px; margin-right: 20px;';
+    if (d.data.target_person) {
+        tooltipText += ' opacity: 1;';
+    } else {
+        tooltipText += ' opacity: 0.3;';
+    }
+    tooltipText += '"><img src=' + pt + targetImagesPath[0] + ' style="width: 55px; margin-right: 20px;';
+    if (d.data.target_group) {
+        tooltipText += ' opacity: 1;';
+    } else {
+        tooltipText += ' opacity: 0.3;';
+    }
+    tooltipText += '"><img src=' + pt + targetImagesPath[2] + ' style="width: 55px; margin-right: 20px;';
+    if (d.data.stereotype) {
+        tooltipText += ' opacity: 1;';
+    } else {
+        tooltipText += ' opacity: 0.3;';
+    }
+    tooltipText += '"><br>';
+
+    //If node is collapsed, we also want to add some information about its sons
+    if (d._children) {
+        tooltipText += "<br> <table>";
+
+        var sonTitles = [
+            "Direct comments",
+            "Total number of generated comments",
+            "Not toxic",
+            "Mildly toxic",
+            "Toxic",
+            "Very toxic",
+        ];
+        var sonValues = [
+            d._children.length,
+            d.numberOfDescendants,
+            d.descendantsWithToxicity0,
+            d.descendantsWithToxicity1,
+            d.descendantsWithToxicity2,
+            d.descendantsWithToxicity3,
+        ];
+
+        for (i = 0; i < sonValues.length; i++) {
+            if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
+            tooltipText +=
+                "<td><b>" + sonTitles[i] + ":</b> " + sonValues[i] + "</td>";
+            if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
+        }
+        tooltipText += "</table>";
+    }
+    tooltipText += "<br>" + d.data.coment;
+
+    //Write growingFactor of node
+    //Calculate tendencies and hierarchy of nodes
+    var s = L;
+    tooltipText += "<br><br><b>Growing Factor:</b> " + getGrowFactor(d,s)
+                + "<br><b>ET:</b> " + elongatedTendency(d, s)
+                + "&nbsp;&nbsp;&nbsp;&nbsp;<b>CT:</b> " + compactTendency(d, s, GFcomp) + "</div>";
+
+    return tooltipText;
+}
+
+function writeTooltipRootCircle(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic) {
+
+    var sonTitles = [
+        "Direct comments",
+        "Total number of generated comments",
+        "Not toxic",
+        "Mildly toxic",
+        "Toxic",
+        "Very toxic",
+    ];
+    var sonValues = [
+        d.children ? d.children.length : 0,
+        totalNumberOfNodes,
+        totalNotToxic,
+        totalMildlyToxic,
+        totalToxic,
+        totalVeryToxic,
+    ];
+    let tooltipText = "<br> <table>";
+
+    for (i = 0; i < sonValues.length; i++) {
+        if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
+        tooltipText +=
+            "<td><b>" + sonTitles[i] + ":</b> " + sonValues[i] + "</td>";
+        if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
+    }
+
+    //Write growingFactor of root
+    tooltipText += "</table>";
+    var s = L;
+    //Calculate hierarchy
+    var t = d_lvl;
+    //Calculate tendencies and hierarchy of nodes
+    tooltipText += "<br><br><b>Growing Factor:</b> " + getGrowFactor(d,s)
+                + "<br><b>ET:</b> " + elongatedTendency(d, s)
+                + "&nbsp;&nbsp;&nbsp;&nbsp;<b>CT:</b> " + compactTendency(d, s, GFcomp)
+                + "<br><b>Hierarchy:</b> " + getHierarchyName(d, s, GFcomp, t) + "<br>";
+
+    // Add news information
+    tooltipText += "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Title:</b> " + d.data.title + "</td></tr></table>" +
+        "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Text URL:</b> <a href=" + d.data.text_URL + ">" + d.data.text_URL + "</a></td>" +
+        "</tr>" +
+        "<tr>" +
+            "<td> <b>Comments URL:</b> <a href=" + d.data.comments_URL + ">" + d.data.comments_URL + "</a></td>" +
+        "</tr></table>"
+    tooltipText += "<br>";
+
+    return tooltipText;
+}

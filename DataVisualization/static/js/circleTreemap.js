@@ -24,20 +24,15 @@ let pack = d3v4.pack()
     .size([diameter - 2, diameter - 2])
     .padding(3);
 
-var tooltipText;
-
- // Hover rectangle in which the information of a node is displayed
-var tooltip = d3v4.select(container)
-    .append("div")
-    .attr("class", "my-tooltip") //add the tooltip class
-    .style("position", "absolute")
-    .style("z-index", "60")
-    .style("visibility", "hidden");
-
 var node;
 
 var root;
 
+var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
+var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
+
+/* Colours
+ * */
 const colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
     colourToxicity3 = "#000000", colourNewsArticle = "#C8EAFC";
 
@@ -48,9 +43,6 @@ var colorFeature = ["#90F6B2", "#1B8055",
     "#97CFFF", "#1795FF", "#0B5696",
     "#E3B7E8", "#A313B3", "#5E1566"
 ];
-
-var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
-var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
 const minOpacityValue = 0.2, maxOpacityValue = 1;
 
@@ -98,6 +90,7 @@ function flatten(root) {
 }
 
 treeJSON = d3v4.json(dataset, function (error, root) {
+    if (error) throw error;
 
     // Used to obtain the nodes belonging to the deepest thread
     var deepestNodesPath;
@@ -127,8 +120,15 @@ treeJSON = d3v4.json(dataset, function (error, root) {
 
     let enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
 
-    if (error) throw error;
+    var tooltipText;
 
+     // Hover rectangle in which the information of a node is displayed
+    var tooltip = d3v4.select(container)
+        .append("div")
+        .attr("class", "my-tooltip") //add the tooltip class
+        .style("position", "absolute")
+        .style("z-index", "60")
+        .style("visibility", "hidden");
 
     root = d3v4.hierarchy(root)
         .sum(function (d) {
@@ -200,10 +200,10 @@ treeJSON = d3v4.json(dataset, function (error, root) {
         }).style("stroke", "black")
           .on("mouseover", function (d) {
                 if (d !== root) {
-                    writeTooltipText(d);
+                    tooltipText = writeTooltipTextCircle(d);
                     tooltip.style("visibility", "visible").html(tooltipText);
                 } else {
-                    writeTooltipRoot(d);
+                    tooltipText = writeTooltipRootCircle(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
                     tooltip.style("visibility", "visible").html(tooltipText);
                 }
             })
@@ -224,7 +224,7 @@ treeJSON = d3v4.json(dataset, function (error, root) {
      * Recursive function to compute the global statistics
      * counts nodes by toxicity and by targets
      * */
-    function getStatisticValues(node) {
+    function getStatisticValuesCircle(node) {
         if (!node.children) {
             return {
                 children: 0,
@@ -249,7 +249,7 @@ treeJSON = d3v4.json(dataset, function (error, root) {
 
         if (node.children) {
             node.children.forEach(function (d) {
-                childrenList = getStatisticValues(d);
+                childrenList = getStatisticValuesCircle(d);
                 total += childrenList.children + 1;
 
                 totalToxic0 += childrenList.toxicity0;
@@ -298,172 +298,6 @@ treeJSON = d3v4.json(dataset, function (error, root) {
             targNone: 0
         };
     }
-
-//I compute the values for the statistic data showing in the background
-var listStatistics = getStatisticValues(root);
-var totalNumberOfNodes = listStatistics.children;
-
-var totalNotToxic = listStatistics.toxicity0,
-    totalMildlyToxic = listStatistics.toxicity1,
-    totalToxic = listStatistics.toxicity2,
-    totalVeryToxic = listStatistics.toxicity3;
-
-function writeTooltipRoot(d) {
-
-    var sonTitles = [
-        "Direct comments",
-        "Total number of generated comments",
-        "Not toxic",
-        "Mildly toxic",
-        "Toxic",
-        "Very toxic",
-    ];
-    var sonValues = [
-        d.children ? d.children.length : null,
-        totalNumberOfNodes,
-        totalNotToxic,
-        totalMildlyToxic,
-        totalToxic,
-        totalVeryToxic,
-    ];
-    tooltipText = "<br> <table>";
-
-    for (i = 0; i < sonValues.length; i++) {
-        if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
-        tooltipText +=
-            "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
-        if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
-    }
-
-    //Write growingFactor of root
-    tooltipText += "</table>";
-    var s = L;
-    tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr>";
-    //Calculate tendencies and hierarchy of nodes
-    tooltipText +=
-        "<tr>" +
-            "<td> ET: " + elongatedTendency(d, s) +
-            " CT: " + compactTendency(d, s, GFcomp) + "</td>" +
-        "</tr>"
-    //Calculate hierarchy
-    var t = d_lvl;
-    tooltipText +=
-        "<tr>" +
-            "<td> Hierarchy: " + getHierarchyName(d, s, GFcomp, t) + "</td>" +
-        "</tr></table>"
-
-    // Add news information
-    tooltipText += "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Title:</b> " + d.data.title + "</td></tr></table>" +
-        "<br> <table style=\" table-layout: fixed; width: 100%; word-wrap: break-word;\"><tr><td> <b>Text URL:</b> <a href=" + d.data.text_URL + ">" + d.data.text_URL + "</a></td>" +
-        "</tr>" +
-        "<tr>" +
-            "<td> <b>Comments URL:</b> <a href=" + d.data.comments_URL + ">" + d.data.comments_URL + "</a></td>" +
-        "</tr></table>"
-    tooltipText += "<br>";
-}
-
-function writeTooltipText(d) {
-    //I want to show Argument and Constructiveness in one line, I add a dummy space to keep that in the loop
-    var jsonValues = [
-        d.data.name,
-        d.data.toxicity_level,
-        d.depth,
-        d.data.argumentation,
-        d.data.constructiveness,
-        -1,
-        d.data.sarcasm,
-        d.data.mockery,
-        d.data.intolerance,
-        d.data.improper_language,
-        d.data.insult,
-        d.data.aggressiveness,
-        d.data.target_group,
-        d.data.target_person,
-        d.data.stereotype,
-    ];
-    var jsonNames = [
-        "Comment ID",
-        "Toxicity level",
-        "Comment depth",
-        "Argument",
-        "Constructiveness",
-        " ",
-        "Sarcasm",
-        "Mockery",
-        "Intolerance",
-        "Improper language",
-        "Insult",
-        "Aggressiveness",
-        "Target group",
-        "Target person",
-        "Stereotype",
-    ];
-    var i = 0;
-    tooltipText = "<table>";
-
-    for (i = 0; i < jsonValues.length; i++) {
-        if (i === 3 || i === 12) tooltipText += "<tr><td></td></tr>"; // I want a break between the first line and the features and the targets
-        if (i % 3 === 0) tooltipText += "<tr>"; //Start table line
-        if (i < 3)
-            tooltipText +=
-                "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>";
-        //First ones without bold
-        else if (jsonValues[i] !== -1)
-            jsonValues[i] ?
-                (tooltipText +=
-                    "<td><b>" +
-                    jsonNames[i] +
-                    ": " +
-                    jsonValues[i] +
-                    "</b></td>") :
-                (tooltipText +=
-                    "<td>" + jsonNames[i] + ": " + jsonValues[i] + "</td>");
-        if ((i + 1) % 3 === 0) tooltipText += "</tr>"; //End table line
-    }
-
-    //Write growingFactor of node
-    tooltipText += "</table>";
-    //var s = getLevelRange(d);
-    var s = L;
-    tooltipText += "<br> <table><tr><td> Growing Factor: " + getGrowFactor(d,s) + "</td></tr>";
-    //Calculate tendencies and hierarchy of nodes
-    tooltipText +=
-        "<tr>" +
-            "<td> ET: " + elongatedTendency(d, s) +
-            " CT: " + compactTendency(d, s, GFcomp) + "</td>" +
-        "</tr></table>"
-
-    //If node is collapsed, we also want to add some information about its sons
-    if (d._children) {
-        tooltipText += "<br> <table>";
-
-        var sonTitles = [
-           "Direct comments",
-           "Total number of generated comments",
-           "Not toxic",
-            "Mildly toxic",
-            "Toxic",
-            "Very toxic",
-        ];
-        var sonValues = [
-            d._children.length,
-            d.numberOfDescendants,
-            d.descendantsWithToxicity0,
-            d.descendantsWithToxicity1,
-            d.descendantsWithToxicity2,
-            d.descendantsWithToxicity3,
-        ];
-
-        for (i = 0; i < sonValues.length; i++) {
-            if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
-            tooltipText +=
-                "<td>" + sonTitles[i] + ": " + sonValues[i] + "</td>";
-            if ((i + 1) % 2 === 0) tooltipText += "</tr>"; //End table line
-        }
-        tooltipText += "</table>";
-    }
-    tooltipText += "<br>" + d.data.coment;
- }
 
 function hovered(hover) {
     return function(d) {
@@ -711,26 +545,18 @@ function highlightWidestLevelsCircle(node, levelsIndexes) {
         (TypeError) {
         console.error("Error attaching buttons... trying again...");
     }
+
     highlightNodesByPropertyOR(node, enabledHighlight);
     highlightNodesByPropertyAND(node, enabledHighlight);
 
-    function injectIntentConversation(textMsg){
-        // Get the existing localStorage data
-        var existingStorage = localStorage.getItem("chat_session");
-        // If no existing data, create an array
-        // Otherwise, convert the localStorage string to an array
-        existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
+    //I compute the values for the statistic data showing in the background
+    var listStatistics = getStatisticValuesCircle(root);
+    var totalNumberOfNodes = listStatistics.children;
 
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:5005/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify({
-        "name": "generate_response_message",
-        "entities": {
-            "response_message": textMsg
-        }
-        }));
-    }
+    var totalNotToxic = listStatistics.toxicity0,
+        totalMildlyToxic = listStatistics.toxicity1,
+        totalToxic = listStatistics.toxicity2,
+        totalVeryToxic = listStatistics.toxicity3;
 
    /**
      * Gets the array of nodes belonging to the deepest threads, highlights them,
@@ -965,7 +791,7 @@ function highlightWidestLevelsCircle(node, levelsIndexes) {
         // var statisticText = "<span style='font-size: 22px;'> Summary of " + sel_item.split('/')[2] + "</span>";
         var statisticText = "<table style='width: 530px; margin-top: 50px; z-index: 100;'>";
 
-        var listStatisticsUpdate = getStatisticValues(root);
+        var listStatisticsUpdate = getStatisticValuesCircle(root);
 
         var totalNotToxicUpdate = listStatisticsUpdate.toxicity0,
             totalMildlyToxicUpdate = listStatisticsUpdate.toxicity1,
