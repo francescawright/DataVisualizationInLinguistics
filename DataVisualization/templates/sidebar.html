@@ -87,7 +87,7 @@
 
     <!-- To select the best display layout -->
     <script src="https://d3js.org/d3.v3.min.js"></script>
-    <script src="{% static 'js/categorization_functions.js' %}"></script>
+    <script src="{% static 'js/shared_functions.js' %}"></script>
 </head>
 
 <body>
@@ -193,7 +193,8 @@
                         </form>
                         <span style="margin-right: 1px;">&#9998;</span>
                     </button>
-                    {% if not forloop.last %}{% endif %}{% endfor %}
+                    {% if not forloop.last %}{% endif %}
+                {% endfor %}
                 <div style="margin-top: 15px; margin-bottom: 15px;">
                     <a style="width: 250px;" type="button" href="/upload_file" class="btn btn-primary"
                        value="Upload Document"

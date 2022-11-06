@@ -607,42 +607,7 @@ function highlightWidestLevelsCircle(node, levelsIndexes) {
         }
     });
 
-    //Listeners
-
-//Listener related to highlighting nodes and edges
-// checkboxHighlightMenu.addEventListener('change', function () {
-//     if (this.checked) {
-//         checkboxesProperty.forEach(function (checkboxItem) {
-//             checkboxItem.removeAttribute('disabled');
-//         });
-//         checkboxesHighlightGroup.forEach(function (checkboxItem) {
-//             checkboxItem.removeAttribute('disabled');
-//         });
-//
-//         if (!document.querySelector("input[value=and-group]").checked && !document.querySelector("input[value=or-group]").checked) {
-//             document.querySelector("input[value=and-group]").checked = true;
-//             highlightNodesByPropertyAND(node);
-//         } else {
-//             checkboxAND.checked ? highlightNodesByPropertyAND(node, enabledHighlight) : highlightNodesByPropertyOR(node, enabledHighlight);
-//             console.log(enabledHighlight);
-//         }
-//
-//     } else {
-//         console.log("We disable all checkboxes ...");
-//         checkboxesProperty.forEach(function (checkboxItem) {
-//             checkboxItem.setAttribute('disabled', 'disabled');
-//         });
-//         checkboxesHighlightGroup.forEach(function (checkboxItem) {
-//             checkboxItem.setAttribute('disabled', 'disabled');
-//         });
-//
-//         //We make all nodes and links visible again
-//         node.style("opacity", 1);
-//         //link.style("opacity", 1);
-//     }
-// });
-
-// If AND is selected, uncheck the OR and highlight by property AND
+    // If AND is selected, uncheck the OR and highlight by property AND
 
     function getLengthFilterByName(array, stringToMatch, matchPositive = true) {
         return Array.from(array).filter(function (val) {

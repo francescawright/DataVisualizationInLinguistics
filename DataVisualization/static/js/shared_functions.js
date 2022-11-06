@@ -623,10 +623,17 @@ function highlightLongestThread(nodes, root, opacityValue, deepestNodesPath, nod
       return comment['name'];
     });
 
+    document.getElementById("from_popup_main_input").name = 'from_main';
+    document.getElementById("from_popup_main_input").value = 'interchange';
+
+    document.getElementById("popupModal").subtree_node_ids = comment_ids;
+    document.getElementById("popupModal").subtree_document_description = document.getElementById("dataset_dropdown").value;
+
     const formData = new FormData();
     formData.append('csrfmiddlewaretoken', document.getElementsByName('csrfmiddlewaretoken')[0].value);
     formData.append('selected_data', document.getElementById("dataset_dropdown").value);
-    formData.append('nodes', comment_ids);
+    formData.append('subtree_nodes_ids', comment_ids);
+    formData.append('subtree_document_description', document.getElementById("dataset_dropdown").value);
 
     $.ajax({
         type: "POST",
@@ -652,6 +659,13 @@ function highlightLongestThread(nodes, root, opacityValue, deepestNodesPath, nod
                 if (!document.getElementById("graph-container")) {
                     $("#popup-btn").click();
                 } else {
+                    document.getElementById("subtree-name").value = "";
+                    document.querySelector(".modal .modal-footer").style.padding = "0.75rem";
+                    document.getElementById("subtree-save-sucess").style.display = "none";
+                    document.getElementById("subtree-save-error").style.display = "none";
+                    document.getElementById("modal-info-alert").style.display = "none";
+                    document.getElementById("send-popup-content").style.display = "block";
+                    document.getElementById("add-subtree-form").style.display = "flex";
                     removeLayout();
                 }
                 $(popup_container).trigger("open");
@@ -661,6 +675,14 @@ function highlightLongestThread(nodes, root, opacityValue, deepestNodesPath, nod
         error: function(jqXHR, textStatus, errorThrown) { // on error..
             if (jqXHR.status === 0) {
                 alert('Not connect: Verify Network.');
+            } else if (jqXHR.status === 400) {
+                if (jqXHR.responseText === "document_not_exist") {
+                    injectIntentConversation("Document could not be found");
+                } else if (jqXHR.responseText === "open_document_no_active_session") {
+                    injectIntentConversation("Please log in to perform this action");
+                } else {
+                    errorText = 'Bad Request [400]';
+                }
             } else if (jqXHR.status === 404) {
                 alert('Requested page not found [404]');
             } else if (jqXHR.status === 500) {
@@ -1026,4 +1048,48 @@ function writeTooltipRootCircle(d, totalNumberOfNodes, totalNotToxic, totalMildl
     tooltipText += "<br>";
 
     return tooltipText;
+}
+
+function deactivateFiltersCircle () {
+    document.getElementById("dots_label").classList.add('disabled');
+    document.getElementById("glyphs_label").classList.add('disabled');
+
+    document.getElementById("check_button_targets").setAttribute('disabled', '');
+    document.getElementById("uncheck_button_targets").setAttribute('disabled', '');
+    document.getElementById("target-group").setAttribute('disabled', '');
+    document.getElementById("target-person").setAttribute('disabled', '');
+    document.getElementById("target-stereotype").setAttribute('disabled', '');
+
+    document.getElementById("check_button_features").setAttribute('disabled', '');
+    document.getElementById("uncheck_button_features").setAttribute('disabled', '');
+    document.getElementById("constructiveness").setAttribute('disabled', '');
+    document.getElementById("argumentation").setAttribute('disabled', '');
+    document.getElementById("sarcasm").setAttribute('disabled', '');
+    document.getElementById("mockery").setAttribute('disabled', '');
+    document.getElementById("intolerance").setAttribute('disabled', '');
+    document.getElementById("improper_language").setAttribute('disabled', '');
+    document.getElementById("insult").setAttribute('disabled', '');
+    document.getElementById("aggressiveness").setAttribute('disabled', '');
+}
+
+function activateFiltersCircle () {
+    document.getElementById("dots_label").classList.remove('disabled');
+    document.getElementById("glyphs_label").classList.remove('disabled');
+
+    document.getElementById("check_button_targets").removeAttribute('disabled');
+    document.getElementById("uncheck_button_targets").removeAttribute('disabled');
+    document.getElementById("target-group").removeAttribute('disabled');
+    document.getElementById("target-person").removeAttribute('disabled');
+    document.getElementById("target-stereotype").removeAttribute('disabled');
+
+    document.getElementById("check_button_features").removeAttribute('disabled');
+    document.getElementById("uncheck_button_features").removeAttribute('disabled');
+    document.getElementById("constructiveness").removeAttribute('disabled');
+    document.getElementById("argumentation").removeAttribute('disabled');
+    document.getElementById("sarcasm").removeAttribute('disabled');
+    document.getElementById("mockery").removeAttribute('disabled');
+    document.getElementById("intolerance").removeAttribute('disabled');
+    document.getElementById("improper_language").removeAttribute('disabled');
+    document.getElementById("insult").removeAttribute('disabled');
+    document.getElementById("aggressiveness").removeAttribute('disabled');
 }

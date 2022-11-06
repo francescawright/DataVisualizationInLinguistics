@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from DataVisualization.views import index, manage_data, upload_file, main_form_handler, edit_data, \
     handle_delete_data, signup_view, login_view, logout_view, save_nickname, save_first_login, generate_dataset,\
-    generate_dataset_popup, create_subtree, delete_subtree
+    generate_dataset_popup, create_subtree, delete_subtree, update_subtrees_menu
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,6 +35,7 @@ urlpatterns = [
     path('edit_data/<int:document_id>', edit_data, name='edit_data'),
     path('create_subtree/', create_subtree, name='create_subtree'),
     path('delete_subtree/<int:subtree_id>', delete_subtree, name='delete_subtree'),
+    path('update_subtrees_menu/', update_subtrees_menu, name='update_subtrees_menu'),
 
     # Visualisation paths
     path('view_data/', main_form_handler),

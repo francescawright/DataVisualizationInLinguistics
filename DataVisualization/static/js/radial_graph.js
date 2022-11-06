@@ -215,63 +215,6 @@ const objFeatArgumentation = {
         fileName: "Gray.png"
     };
 
-
-/**
- * Center graph and zoom to fit the whole graph visualization in our canvas
- * */
-function zoomToFitGraph(minX, minY, maxX, maxY,
-                        root,
-                        canvasHeight = 1000 * canvasFactor, canvasWidth = 2200 * canvasFactor,
-                        duration = 750) {
-    /* Note our coordinate system:
-    *
-    *
-    *                     | Y negative
-    *                     |
-    * X negative <--------|-------> X positive
-    *                     |
-    *                     | Y positive
-    * Due to the D3 algorithm we are expecting: minX = - maxX
-    * and due to the assignment of the root positions: minY = 0
-    * */
-    var boxWidth = maxY - minY,
-        boxHeight = maxX - minX;
-
-    var midY = boxWidth / 2.0,
-        midX = boxHeight / 2.0;
-
-    scale = Math.min(canvasWidth / boxWidth, canvasHeight / boxHeight);
-
-
-    var newX = canvasWidth / 2.0,
-        newY = canvasHeight / 2.0;
-
-    /*
-    if(canvasWidth/boxWidth < canvasHeight/boxHeight) {
-        newY -= midX * scale;
-        //newX -= midY * scale;
-    }
-    else newX -= midY * scale;
-    */
-
-
-    //For nodes wider than tall, we need to displace them to the middle of the graph
-    //if(newY < boxHeight*scale && boxHeight*scale < canvasHeight) newY =  canvasHeight / 2.0;
-
-    d3.select('g').transition()
-        .duration(duration)
-        .attr("transform", "translate(" + (newX + root.radius * scale) + "," + newY + ")scale(" + scale + ")");
-
-
-    return {
-        initialZoom: scale,
-        initialY: newX + root.radius * scale,
-        initialX: newY
-    }
-
-}
-
-
 /**
  * Return the value of a property (set from the JSON) of the given node
  *
@@ -3316,126 +3259,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             });
         }
 
-        checkboxesPropertyFeature.forEach(function (checkboxItem) {
-            checkboxItem.removeAttribute('disabled');
-        });
-        checkboxesPositioningFeature.forEach(function (checkboxItem) {
-            checkboxItem.removeAttribute('disabled');
-        });
-        checkboxes.forEach(function (checkboxItem) {
-            checkboxItem.removeAttribute('disabled');
-        });
-        // dropdownFeatures.removeAttribute('disabled');
-
-        checkButtons.forEach(function (button) {
-                button.removeAttribute('disabled');
-            }
-        );
-
         if (!document.querySelector("input[value=dot-feat]").checked && !document.querySelector("input[value=cheese-feat]").checked) {
             document.querySelector("input[value=dot-feat]").checked = true;
         }
-
-        // if (!document.querySelector("input[value=on-node]").checked && !document.querySelector("input[value=node-outside]").checked) {
-        //     document.querySelector("input[value=on-node]").checked = true;
-        // }
-        // selectFeatureVisualization(nodeEnter);
-
-        //Listener related to the visualization of features
-        // checkboxFeatureMenu.addEventListener('change', function () {
-        //     if (this.checked) { //Enable checkboxes and dropdown menu + show features if they are selected
-        //         checkboxesPropertyFeature.forEach(function (checkboxItem) {
-        //             checkboxItem.removeAttribute('disabled');
-        //         });
-        //         checkboxesPositioningFeature.forEach(function (checkboxItem) {
-        //             checkboxItem.removeAttribute('disabled');
-        //         });
-        //         checkboxes.forEach(function (checkboxItem) {
-        //             checkboxItem.removeAttribute('disabled');
-        //         });
-        //         // dropdownFeatures.removeAttribute('disabled');
-        //
-        //         checkButtons.forEach(function (button) {
-        //                 button.removeAttribute('disabled');
-        //             }
-        //         );
-        //
-        //         if (!document.querySelector("input[value=dot-feat]").checked && !document.querySelector("input[value=cheese-feat]").checked) {
-        //             document.querySelector("input[value=dot-feat]").checked = true;
-        //         }
-        //
-        //         // if (!document.querySelector("input[value=on-node]").checked && !document.querySelector("input[value=node-outside]").checked) {
-        //         //     document.querySelector("input[value=on-node]").checked = true;
-        //         // }
-        //         selectFeatureVisualization(nodeEnter);
-        //
-        //     } else { //Disable checkboxes and dropdown menu + remove all the features
-        //         checkboxesPropertyFeature.forEach(function (checkboxItem) {
-        //             checkboxItem.setAttribute('disabled', 'disabled');
-        //         });
-        //         checkboxesPositioningFeature.forEach(function (checkboxItem) {
-        //             checkboxItem.setAttribute('disabled', 'disabled');
-        //         });
-        //         // document.getElementById("feature-over-node-or-outside").style.display = "none";
-        //         // dropdownFeatures.setAttribute('disabled', 'disabled');
-        //
-        //         checkboxes.forEach(function (checkboxItem) {
-        //             checkboxItem.setAttribute('disabled', 'disabled');
-        //         });
-        //
-        //         checkButtons.forEach(function (button) {
-        //                 button.setAttribute('disabled', 'disabled');
-        //             }
-        //         );
-        //
-        //         removeAllFeatures(); //Hide all features when the cb is unchecked
-        //     }
-        // });
-
-        // if DOT is checked, uncheck OR
-        // cbFeatureInside.addEventListener('change', function () {
-        //     this.checked ? cbFeatureOutside.checked = false : cbFeatureOutside.checked = true;
-        //     selectFeatureVisualization(nodeEnter);
-        // });
-        // // if CHEESE is checked, uncheck AND
-        // cbFeatureOutside.addEventListener('change', function () {
-        //     this.checked ? cbFeatureInside.checked = false : cbFeatureInside.checked = true;
-        //     selectFeatureVisualization(nodeEnter);
-        // });
-
-        // Use Array.forEach to add an event listener to each checkbox.
-        // Draw feature circles
-
-
-        //Listener related to highlighting nodes and edges
-        // checkboxHighlightMenu.addEventListener('change', function () {
-        //     if (this.checked) {
-        //         checkboxesProperty.forEach(function (checkboxItem) {
-        //             checkboxItem.removeAttribute('disabled');
-        //         });
-        //         checkboxesHighlightGroup.forEach(function (checkboxItem) {
-        //             checkboxItem.removeAttribute('disabled');
-        //         });
-        //
-        //         if (!document.querySelector("input[value=and-group]").checked && !document.querySelector("input[value=or-group]").checked) {
-        //             document.querySelector("input[value=and-group]").checked = true;
-        //             highlightNodesByPropertyAND(node, link);
-        //         } else {
-        //             checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
-        //             console.log(enabledHighlight);
-        //         }
-        //
-        //     } else { //We make all nodes and links visible again
-        //         checkboxesProperty.forEach(function (checkboxItem) {
-        //             checkboxItem.setAttribute('disabled', 'disabled');
-        //         });
-        //         checkboxesHighlightGroup.forEach(function (checkboxItem) {
-        //             checkboxItem.setAttribute('disabled', 'disabled');
-        //         });
-        //         node.style("opacity", 1);
-        //         link.style("opacity", 1);
-        //     }
-        // });
 
         // If AND is selected, uncheck the OR and highlight by property AND
         function checkboxANDListener () {
@@ -3476,7 +3302,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             checkboxAND.addEventListener("change",checkboxANDListener);
         }
 
-        function checkboxORListener () {console.log("testor")
+        function checkboxORListener () {
             if (nodeEnter[0].length) {
                 Object.keys(nodeEnter[0]).forEach(key => {
                     if (!nodeEnter[0][key].viewportElement) nodeEnter[0][key] = null;
@@ -3650,22 +3476,26 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         });
     }
 
-// Append a group which holds all nodes and which the zoom Listener can act upon.
+    // Append a group which holds all nodes and which the zoom Listener can act upon.
     var svgGroup = baseSvg.append("g");
 
-// Define the root
+    // Define the root
     root = treeData;
 
     root.x0 = 0;
     root.y0 = 0;
 
-// Layout the tree initially and center on the root node.
+    // Layout the tree initially and center on the root node.
     document.querySelector("#tree-container div.my-statistic").style.visibility = "visible";
     update(root, true,true);
 
+    // Positioning and scaling the graph
+    zoomListener.scale(initialZoomScale);
+    zoomListener.translate([canvasWidth / 2, canvasHeight / 2]);
+    zoomListener.event(baseSvg);
+
+    // Display the border thickness of nodes (stroke-width)
     $(document).ready(function () {
-        zoomListener.scale(initialZoomScale);
-        zoomListener.translate([canvasWidth / 2, canvasHeight / 2]);
         zoomListener.event(baseSvg);
     });
 

@@ -61,6 +61,9 @@ class Subtree(models.Model):
     def __str__(self):
         return f"Document id: {self.document} | User ids: {self.user} | Node ids: {self.node_ids}"
 
+    class Meta:
+        unique_together = [["document", "user", "node_ids"],["user","name"]]
+
 
 class tbl_Authentication(models.Model):
     Empcode = models.IntegerField()

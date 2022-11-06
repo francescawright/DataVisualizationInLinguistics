@@ -276,69 +276,75 @@
                         data: formData,
                         // handle a successful response
                         success: function (data) {
-                            if (data === "document_not_exist") {
-                                if ('{{ selected_item }}') {
-                                    document.getElementById("dataset_dropdown").value = dataset_dropdown_value;
-                                }
-                                injectIntentConversation("I cannot find any document with the name you have given me");
-                            } else if (data === "open_document_no_active_session") {
-                                if ('{{ selected_item }}') {
-                                    document.getElementById("dataset_dropdown").value = dataset_dropdown_value;
-                                }
-                                injectIntentConversation("You need to be logged in to access the documents");
+                            if ('{{ selected_item }}') {
+                                createOpenDocumentInputs(mainForm, documentName, existingStorage);
                             } else {
-                                if ('{{ selected_item }}') {
-                                    createOpenDocumentInputs(mainForm, documentName, existingStorage);
-                                } else {
-                                    document.getElementById("data_selection_chat_session_id").value = existingStorage["session_id"];
+                                document.getElementById("data_selection_chat_session_id").value = existingStorage["session_id"];
+                            }
+
+                            d3.json(data, function (error, treeData) {
+                                let root = treeData;
+                                var i = 0;
+
+                                function recurse(node, parent) {
+                                    node.parent = parent; //We assign a parent to the node
+                                    if (parent) node.depth = node.parent.depth + 1; //If parent is not null
+                                    if (node.children) node.children.forEach(element => recurse(element, node));
+                                    if (!node.id) node.id = ++i;
                                 }
 
-                                d3.json(data, function (error, treeData) {
-                                    let root = treeData;
-                                    var i = 0;
+                                root.depth = 0;
+                                recurse(root, null);
 
-                                    function recurse(node, parent) {
-                                        node.parent = parent; //We assign a parent to the node
-                                        if (parent) node.depth = node.parent.depth + 1; //If parent is not null
-                                        if (node.children) node.children.forEach(element => recurse(element, node));
-                                        if (!node.id) node.id = ++i;
-                                    }
-
-                                    root.depth = 0;
-                                    recurse(root, null);
-
-                                    let hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
-                                    let layout;
-                                    switch (hierarchyName) {
-                                        case "Unspecified":
-                                            layout = "force";
-                                            break;
-                                        case "Elongated":
-                                            layout = "tree";
-                                            break;
-                                        case "Compact":
-                                            layout = "radial";
-                                            break;
-                                        case "nCompact":
-                                            layout = "force";
-                                            break;
-                                        case "Hybrid":
-                                            layout = "force";
-                                            break;
-                                    }
-                                    if ('{{ selected_item }}') {
-                                        document.getElementById("layout_name_item").value = layout;
-                                    } else {
-                                        document.getElementById("layout_name_chat").value = layout;
-                                    }
-                                    mainForm.submit()
-                                });
-                            }
+                                let hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
+                                let layout;
+                                switch (hierarchyName) {
+                                    case "Unspecified":
+                                        layout = "force";
+                                        break;
+                                    case "Elongated":
+                                        layout = "tree";
+                                        break;
+                                    case "Compact":
+                                        layout = "radial";
+                                        break;
+                                    case "nCompact":
+                                        layout = "force";
+                                        break;
+                                    case "Hybrid":
+                                        layout = "force";
+                                        break;
+                                }
+                                if ('{{ selected_item }}') {
+                                    document.getElementById("layout_name_item").value = layout;
+                                } else {
+                                    document.getElementById("layout_name_chat").value = layout;
+                                }
+                                mainForm.submit()
+                            });
                         },
                         // handle a non-successful response
                         error: function(jqXHR, textStatus, errorThrown) { // on error..
                             if (jqXHR.status === 0) {
                                 alert('Not connect: Verify Network.');
+                            } else if (jqXHR.status === 400) {
+                                if (jqXHR.responseText === "document_not_exist") {
+                                    if ('{{ selected_item }}') {
+                                        document.getElementById("dataset_dropdown").value = dataset_dropdown_value;
+                                    }
+                                    injectIntentConversation("I cannot find any document with the name you have given me");
+                                } else if (jqXHR.responseText === "open_document_no_active_session") {
+                                    if ('{{ selected_item }}') {
+                                        document.getElementById("dataset_dropdown").value = dataset_dropdown_value;
+                                    }
+                                    injectIntentConversation("You need to be logged in to access the documents");
+                                } else {
+                                    errorText = 'Bad Request [400]';
+                                }
+                            } else if (jqXHR.status === 404) {
+                                console.log(jqXHR)
+                                console.log(textStatus)
+                                console.log(errorThrown)
                             } else if (jqXHR.status === 404) {
                                 alert('Requested page not found [404]');
                             } else if (jqXHR.status === 500) {
@@ -658,7 +664,6 @@
 {##}
 {#    socket.on('bot_uttered', (args) => {#}
 {#        // Write any connection errors to the console#}
-{#        console.log("test");#}
 {#    });#}
 {#</script>#}
 

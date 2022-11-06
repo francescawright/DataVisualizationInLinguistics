@@ -5,18 +5,21 @@ from urllib.parse import urlparse
 from django.conf import settings as django_settings
 from django.db.models import Count, Q
 from django.utils.datastructures import MultiValueDictKeyError
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_http_methods, require_GET, require_POST
 from django.core.exceptions import ObjectDoesNotExist, EmptyResultSet
 
 from .models import tbl_Authentication, Subtree
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
+
+from psycopg2.errorcodes import UNIQUE_VIOLATION
+from psycopg2 import errors
 
 from DataVisualization.forms import FileForm, UpdateFileForm
 from DataVisualization.models import Document, Commentary
@@ -44,6 +47,9 @@ FORCE_LAYOUT = "force_layout_button"
 RADIAL_LAYOUT = "radial_layout_button"
 TREEMAP_LAYOUT = "treeMap_layout_button"
 
+MAIN_OUTPUT = 'output.json'
+POPUP_OUTPUT = 'output_popup.json'
+
 
 def index(request):
     storageClear = request.GET.get('storageClear', '')
@@ -63,7 +69,7 @@ def get_all_documents():
     return Document.objects.all()
 
 
-@require_http_methods(["POST"])
+@require_POST
 def save_nickname(request):
     user = getattr(request, 'user', None)
     user.chatprofile.nickname = request.POST['nickname']
@@ -71,7 +77,7 @@ def save_nickname(request):
     return HttpResponse(status=204)
 
 
-@require_http_methods(["POST"])
+@require_POST
 def save_first_login(request):
     user = getattr(request, 'user', None)
     user.chatprofile.first_login = request.POST['first_login']
@@ -83,7 +89,7 @@ def generate_dataset(request):
     # Check if there is an active session
     user = getattr(request, 'user', None)
     if not user or not getattr(user, 'is_authenticated', True):
-        return HttpResponse("open_document_no_active_session")
+        return HttpResponseBadRequest("open_document_no_active_session")
 
     # CURRENT ITEM
     # ---------------------------------------------------------------------------------
@@ -92,32 +98,80 @@ def generate_dataset(request):
         selected_item = request.POST['from_button']
     if "selected_data" in request.POST.keys():
         selected_item = request.POST["selected_data"]
+
+    popup = False
+    if 'subtree_id' in request.POST.keys():
+        popup = True
+        subtree = Subtree.objects.get(pk=request.POST["subtree_id"])
+        nodes = subtree.node_ids
+        selected_item_popup = subtree.document.description
+    elif 'subtree_nodes_ids' in request.POST.keys():
+        popup = True
+        nodes = list(map(int, request.POST['subtree_nodes_ids'].split(",")))
+        selected_item_popup = request.POST['subtree_document_description']
+
+    # Request wants to work on the Popup graph
+    if popup:
+        if "from_popup" in request.POST.keys():
+            try:
+                # Filter first level childs
+                dataset_first_level, doc = get_current_dataset_popup(request, nodes, selected_item_popup)
+            except ObjectDoesNotExist:
+                return HttpResponseBadRequest("document_not_exist")
+            save_data_to_JSON_popup(dataset_first_level, nodes, doc, MAIN_OUTPUT)
+
+            fromPopup = request.POST['from_popup']
+            if fromPopup == 'interchange':
+                try:
+                    dataset, doc = get_current_dataset(request, selected_item)
+                except ObjectDoesNotExist:
+                    return HttpResponseBadRequest("document_not_exist")
+                # Filter first level childs
+                first_level = dataset.filter(comment_level=1)
+                save_data_to_JSON(first_level, doc, POPUP_OUTPUT)
+
+            return HttpResponse("/static/" + MAIN_OUTPUT)
+
+        elif "from_main" in request.POST.keys():
+            try:
+                # Filter first level childs
+                dataset_first_level, doc = get_current_dataset_popup(request, nodes, selected_item_popup)
+            except ObjectDoesNotExist:
+                return HttpResponseBadRequest("document_not_exist")
+            save_data_to_JSON_popup(dataset_first_level, nodes, doc)
     # ---------------------------------------------------------------------------------
     # JSON PARSING & CURRENT DATASET
     # ---------------------------------------------------------------------------------
     try:
         dataset, doc = get_current_dataset(request, selected_item)
     except ObjectDoesNotExist:
-        return HttpResponse("document_not_exist")
+        return HttpResponseBadRequest("document_not_exist")
     # Filter first level childs
     first_level = dataset.filter(comment_level=1)
     save_data_to_JSON(first_level, doc)
     # ---------------------------------------------------------------------------------
-    return HttpResponse("/static/output.json")
+    return HttpResponse("/static/" + MAIN_OUTPUT)
 
 
 def generate_dataset_popup(request):
     # Check if there is an active session
     user = getattr(request, 'user', None)
     if not user or not getattr(user, 'is_authenticated', True):
-        return HttpResponse("open_document_no_active_session")
+        return HttpResponseBadRequest("open_document_no_active_session")
 
     # CURRENT ITEM
     # ---------------------------------------------------------------------------------
     selected_item = None
     if "selected_data" in request.POST.keys():
         selected_item = request.POST["selected_data"]
-    nodes = list(map(int,request.POST["nodes"].split(",")))
+
+    if 'subtree_id' in request.POST.keys():
+        subtree = Subtree.objects.get(pk=request.POST["subtree_id"])
+        nodes = subtree.node_ids
+        selected_item = subtree.document.description
+    elif 'subtree_nodes_ids' in request.POST.keys():
+        nodes = list(map(int, request.POST['subtree_nodes_ids'].split(",")))
+        selected_item = request.POST['subtree_document_description']
     # ---------------------------------------------------------------------------------
     # JSON PARSING & CURRENT DATASET
     # ---------------------------------------------------------------------------------
@@ -125,10 +179,28 @@ def generate_dataset_popup(request):
         # Filter first level childs
         dataset_first_level, doc = get_current_dataset_popup(request, nodes, selected_item)
     except ObjectDoesNotExist:
-        return HttpResponse("document_not_exist")
+        return HttpResponseBadRequest("document_not_exist")
     save_data_to_JSON_popup(dataset_first_level, nodes, doc)
     # ---------------------------------------------------------------------------------
     return HttpResponse("/static/output_popup.json")
+
+
+@require_GET
+def update_subtrees_menu(request):
+    # Check if there is an active session
+    user = getattr(request, 'user', None)
+    selected_item = request.GET["selected_item"]
+    from_documents = request.GET["from_documents"]
+    doc = Document.objects.filter(description=selected_item).first()
+
+    if from_documents == 'all':
+        user_subtrees = Subtree.objects.filter(user=user)
+    elif from_documents == 'current':
+        user_subtrees = Subtree.objects.filter(document=doc, user=user)
+    else:
+        user_subtrees = Subtree.objects.filter(user=user)
+
+    return render(request, 'subtrees_menu.html', {'user_subtrees': user_subtrees})
 
 
 def main_form_handler(request):
@@ -156,17 +228,32 @@ def main_form_handler(request):
     if best_layout_selected:
         messages.success(request, "The best visualization according to the graph characteristics has been selected")
 
-    return render(request, template,
-                  {'dataset': 'output.json', 'options': get_all_documents(), 'layouts': LAYOUTS,
-                   'selected_layout': selected_layout,
-                   'checked_layout': checked_layout,
-                   'selected_item': selected_item,
-                   'selected_icons': selected_icons,
-                   # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
-                   # "d1": d1, "d2": d2,
-                   'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
-                   'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons, 'storage_clear': storageClear,
-                   'chatbot_error': errorMessage, 'chatbot_success': successMessage})
+    context = {'dataset': MAIN_OUTPUT, 'options': get_all_documents(), 'layouts': LAYOUTS,
+                       'selected_layout': selected_layout,
+                       'checked_layout': checked_layout,
+                       'selected_item': selected_item,
+                       'selected_icons': selected_icons,
+                       # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
+                       # "d1": d1, "d2": d2,
+                       'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
+                       'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons, 'storage_clear': storageClear,
+                       'chatbot_error': errorMessage, 'chatbot_success': successMessage }
+
+    # The request comes from the Popup graph
+    if "from_popup" in request.POST.keys():
+        context['from_popup'] = request.POST['from_popup']
+        context['popup_dataset'] = POPUP_OUTPUT
+        context['subtree_nodes_ids'] = request.POST['subtree_nodes_ids']
+        context['subtree_document_description'] = request.POST['subtree_document_description']
+
+    # The request comes from the Popup graph
+    if "from_main" in request.POST.keys():
+        context['from_main'] = request.POST['from_main']
+        context['popup_dataset'] = POPUP_OUTPUT
+        context['subtree_nodes_ids'] = request.POST['subtree_nodes_ids']
+        context['subtree_document_description'] = request.POST['subtree_document_description']
+
+    return render(request, template, context=context)
 
 
 def main_form_context(request):
@@ -200,7 +287,8 @@ def main_form_context(request):
     # Indicates whether the request is to work on the previous file,
     # for which the best display layout has already been selected.
     best_layout_selected = request.POST.get('best_layout_selected')
-    if not best_layout_selected:
+    changed_main_layout = request.POST.get('changed_main_layout')
+    if not best_layout_selected and not changed_main_layout:
         dataset, doc = get_current_dataset(request, selected_item)
         # Filter first level childs
         first_level = dataset.filter(comment_level=1)
@@ -243,7 +331,7 @@ def open_document_exception(request, error):
                     request)
 
                 return render(request, template,
-                              {'dataset': 'output.json', 'options': get_all_documents(), 'layouts': LAYOUTS,
+                              {'dataset': MAIN_OUTPUT, 'options': get_all_documents(), 'layouts': LAYOUTS,
                                'selected_layout': selected_layout,
                                'checked_layout': checked_layout,
                                'selected_item': selected_item,
@@ -292,7 +380,7 @@ def get_current_dataset_popup(request, nodes, selected_data):
     doc = Document.objects.filter(description=selected_data).first()
     if not (doc):
         raise ObjectDoesNotExist('document_not_exist')
-    dataset = Commentary.objects.filter(document_id=doc,comment_level=1, comment_id__in=nodes).all()
+    dataset = Commentary.objects.filter(document_id=doc, comment_level=1, comment_id__in=nodes).all()
     return dataset, doc
 
 
@@ -304,7 +392,7 @@ def handle_icons(request):
     return "dots"
 
 
-def get_result_node (node):
+def get_result_node(node):
     return {
         "name": node.comment_id,
         "user_id": node.user_id,
@@ -348,23 +436,24 @@ def recursive_add_node_popup(node, nodes, doc):
         result["children"] = children
     return result
 
-def save_data_to_JSON(first_level, doc):
+
+def save_data_to_JSON(first_level, doc, output_file = MAIN_OUTPUT):
     # Recursivamente añadimos sus hijos.
     data_list = [recursive_add_node(node, doc) for node in first_level]
 
     data = {"name": doc, "title": doc.title, "text_URL": doc.text_URL, "comments_URL": doc.comments_URL,
             "children": data_list}
-    with open(os.path.join('DataVisualization/' + django_settings.STATIC_URL, 'output.json'), 'w') as outfile:
+    with open(os.path.join('DataVisualization/' + django_settings.STATIC_URL, output_file), 'w') as outfile:
         json.dump(data, outfile, default=str)
 
 
-def save_data_to_JSON_popup(first_level, nodes, doc):
+def save_data_to_JSON_popup(first_level, nodes, doc, output_file = POPUP_OUTPUT):
     # Recursivamente añadimos sus hijos.
     data_list = [recursive_add_node_popup(node, nodes, doc) for node in first_level]
 
     data = {"name": doc, "title": doc.title, "text_URL": doc.text_URL, "comments_URL": doc.comments_URL,
             "children": data_list}
-    with open(os.path.join('DataVisualization/' + django_settings.STATIC_URL, 'output_popup.json'), 'w') as outfile:
+    with open(os.path.join('DataVisualization/' + django_settings.STATIC_URL, output_file), 'w') as outfile:
         json.dump(data, outfile, default=str)
 
 
@@ -473,19 +562,31 @@ def create_subtree(request):
     # Check if there is an active session
     user = getattr(request, 'user', None)
     if not user or not getattr(user, 'is_authenticated', True):
-        return open_document_exception(request, "create_subtree_no_active_session")
+        return HttpResponseBadRequest("create_subtree_no_active_session")
 
     selected_item = request.POST["selected_item"]
     doc = Document.objects.filter(description=selected_item).first()
     if not (doc):
         raise ObjectDoesNotExist('create_subtree_document_not_exist')
 
-    node_ids = request.POST["node_ids"]
-    Subtree.objects.create(name="x",document=doc, user=user, node_ids=node_ids)
+    node_ids = list(map(int, request.POST["node_ids"].split(",")))
+    subtree_name = request.POST["subtree_name"]
+
+    # Check if the user already has this subtree associated with it
+    if Subtree.objects.filter(document=doc, user=user, node_ids=node_ids).exists():
+        return HttpResponseBadRequest("subtree_already_exists")
+    # Checks if there is already a subtree with that name for that user
+    if Subtree.objects.filter(user=user, name=subtree_name).exists():
+        return HttpResponseBadRequest("name_already_exists")
+
+    Subtree.objects.create(name=subtree_name, document=doc, user=user, node_ids=node_ids)
+
     return HttpResponse(status=204)
 
+
 def delete_subtree(request, subtree_id):
-    pass
+    Subtree.objects.filter(subtree_id=subtree_id).delete()
+    return HttpResponse(status=204)
 
 
 def edit_data(request, document_id):
@@ -730,7 +831,7 @@ def getTemplateByPath(request, errorMessage):
                 request)
 
             return render(request, template,
-                          {'dataset': 'output.json', 'options': get_all_documents(), 'layouts': LAYOUTS,
+                          {'dataset': MAIN_OUTPUT, 'options': get_all_documents(), 'layouts': LAYOUTS,
                            'selected_layout': selected_layout,
                            'checked_layout': checked_layout,
                            'selected_item': selected_item,

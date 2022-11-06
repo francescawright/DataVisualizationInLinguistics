@@ -3840,22 +3840,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             });
         }
 
-        //Enable checkboxes and dropdown menu + show features if they are selected
-        checkboxesPropertyFeature.forEach(function (checkboxItem) {
-            checkboxItem.removeAttribute("disabled");
-        });
-        checkboxesPositioningFeature.forEach(function (checkboxItem) {
-            checkboxItem.removeAttribute("disabled");
-        });
-        checkboxes.forEach(function (checkboxItem) {
-            checkboxItem.removeAttribute("disabled");
-        });
-        // dropdownFeatures.removeAttribute("disabled");
-
-        checkButtons.forEach(function (button) {
-            button.removeAttribute("disabled");
-        });
-
+        // Show features if they are selected
         if (
             !document.querySelector("input[value=dot-feat]").checked &&
             !document.querySelector("input[value=cheese-feat]").checked
@@ -3866,7 +3851,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             //checkboxFeatureCheese.checked ? drawFeaturesCheese(nodeEnter) : drawFeatures(nodeEnter);
             //console.log(enabledFeatures);
         }
-
 
         d3.select("#zoom_in_icon").on("click", function () {
             currentScale = Math.min(3.0, zoomListener.scale() + 0.1);
@@ -4075,21 +4059,23 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     update(root, true, true);
     centerNode(root);
 
+    let element = document.querySelector(container);
+    let computedStyle = getComputedStyle(element);
+    let elementWidth = element.clientWidth;   // width with padding
+    elementWidth -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
+    canvasWidth = elementWidth;
+
+    var box = computeDimensions(nodes);
+    var initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root, canvasHeight, canvasWidth);
+    initialZoom = initialSight.initialZoom;
+    initialX = initialSight.initialX;
+    initialY = initialSight.initialY;
+
+    zoomListener.scale(initialZoom);
+    zoomListener.translate([initialY, initialX]);
+    zoomListener.event(baseSvg);
+
     $(document).ready(function () {
-        let element = document.querySelector(container);
-        let computedStyle = getComputedStyle(element);
-        let elementWidth = element.clientWidth;   // width with padding
-        elementWidth -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
-        canvasWidth = elementWidth;
-
-        var box = computeDimensions(nodes);
-        var initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, root, canvasHeight, canvasWidth);
-        initialZoom = initialSight.initialZoom;
-        initialX = initialSight.initialX;
-        initialY = initialSight.initialY;
-
-        zoomListener.scale(initialZoom);
-        zoomListener.translate([initialY, initialX]);
         zoomListener.event(baseSvg);
     });
 
