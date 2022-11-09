@@ -25,52 +25,6 @@ rules:
   - action: utter_offers_help
   - action: action_listen
 
-- rule: User gives his nickname at the first chat connection
-  condition:
-  - slot_was_set:
-    - first_login: true
-    - user_is_logged_in: true
-  steps:
-  - action: nickname_form
-  - active_loop: nickname_form
-
-- rule: User wants to change his nickname
-  condition:
-  - slot_was_set:
-    - first_login: false
-    - user_is_logged_in: true
-  steps:
-  - intent: say_name
-  - action: action_empty_slot_name
-  - action: nickname_form
-  - active_loop: nickname_form
-
-- rule: User tries to say his name without being logged in
-  condition:
-  - slot_was_set:
-    - user_is_logged_in: false
-  steps:
-  - intent: say_name
-  - action: utter_nickname_no_session
-
-- rule: Submit form nickname
-  condition:
-  # Condition that form is active.
-  - active_loop: nickname_form
-  steps:
-  # Form is deactivated
-  - action: nickname_form
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  # The actions we want to run when the form is submitted.
-  - action: action_remember_nickname
-
-- rule: Remove the user's nickname from the database on request
-  steps:
-  - intent: forget_name
-  - action: action_forget_name
-
 - rule: Ask user for confirmation to logout
   steps:
   - intent: logout
@@ -275,7 +229,87 @@ rules:
     - intent: longest_thread
     - action: utter_longest_thread
 
-- rule: User wants to see the widest level
+- rule: User wants to see the widest level/depth
   steps:
     - intent: widest_level
     - action: utter_widest_level
+
+- rule: User wants to see the largest thread
+  steps:
+    - intent: largest_thread
+    - action: utter_largest_thread
+
+#highlight most toxic thread
+- rule: User wants to see the most toxic thread
+  steps:
+    - intent: most_toxic_thread
+    - action: utter_most_toxic_thread
+
+# comment level and level of toxicity
+- rule: User wants to see which comment level have the most toxic nodes
+  steps:
+    - intent: comment_level_vs_very_toxic
+    - action: utter_comment_level_vs_very_toxic
+
+# combination of features and level of toxicity
+- rule: User wants to see the most occurred combination of features in very toxic nodes
+  steps:
+    - intent: combination_features_very_toxic
+    - action: utter_combination_features_very_toxic
+
+- rule: User wants to see the most occurred combination of features in toxic nodes
+  steps:
+    - intent: combination_features_toxic
+    - action: utter_combination_features_toxic
+
+- rule: User wants to see the most occurred combination of features in mildly toxic nodes
+  steps:
+    - intent: combination_features_mildly_toxic
+    - action: utter_combination_features_mildly_toxic
+
+- rule: User wants to see the most occurred combination of features in non toxic nodes
+  steps:
+    - intent: combination_features_non_toxic
+    - action: utter_combination_features_non_toxic
+
+# comment level
+- rule: User wants to see the most occurred combination of features in comment level 1
+  steps:
+    - intent: combination_features_CL1
+    - action: utter_combination_features_CL1
+
+- rule: User wants to see the most occurred combination of features in comment level 2
+  steps:
+    - intent: combination_features_CL2
+    - action: utter_combination_features_CL2
+
+- rule: User wants to see nodes only in comment level 1
+  steps:
+    - intent: comment_level_1
+    - action: utter_comment_level_1
+
+- rule: User wants to see nodes only in comment level 2
+  steps:
+    - intent: comment_level_2
+    - action: utter_comment_level_2
+
+- rule: User wants to see argument and constructive nodes in comment level 1
+  steps:
+    - intent: CL1_argument_constructive
+    - action: utter_CL1_argument_constructive
+
+- rule: User wants to see argument and constructive nodes in comment level 2
+  steps:
+    - intent: CL2_argument_constructive
+    - action: utter_CL2_argument_constructive
+
+# features vs features or level of toxicity
+- rule: User wants to see which features are tagged with constructive nodes
+  steps:
+    - intent: constructive_feature
+    - action: utter_constructiveness_feature
+
+- rule: User wants to see which in which level of toxicity there are more target person nodes
+  steps:
+    - intent: target_person_loT
+    - action: utter_target_person_loT

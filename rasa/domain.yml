@@ -1,4 +1,4 @@
-version: "2.0"
+version: '2.0'
 
 intents:
   - greet
@@ -7,52 +7,48 @@ intents:
       use_entities: [] # ignore all entities
   - deny:
       use_entities: [] # ignore all entities
+  - cancel_form
   - mood_great
   - mood_unhappy
   - bot_challenge
   - start_intent
   - generate_response_message:
       use_entities:
-        - response_message
+      - response_message
   - set_slots
   - logout:
       use_entities:
-        - action_requested
+      - action_requested
   - login:
       use_entities:
-        - action_requested
+      - action_requested
   - signup:
       use_entities:
-        - action_requested
+      - action_requested
   - change_layout:
       use_entities:
-        - object_requested
-        - layout_requested
+      - layout_requested
+      - object_requested
   - change_layout_tree:
       use_entities:
-        - object_requested
-        - layout_requested
+      - layout_requested
+      - object_requested
   - change_layout_force:
       use_entities:
-        - object_requested
-        - layout_requested
+      - layout_requested
+      - object_requested
   - change_layout_radial:
       use_entities:
-        - object_requested
-        - layout_requested
+      - layout_requested
+      - object_requested
   - change_layout_treeMap:
       use_entities:
-        - object_requested
-        - layout_requested
+      - layout_requested
+      - object_requested
   - select_document:
       use_entities:
-        - object_requested
-        - document_requested
-  - say_name:
-      use_entities:
-        - object_requested
-        - nickname
-  - forget_name
+      - document_requested
+      - object_requested
   # Filters
   - switch_or
   - switch_and
@@ -79,109 +75,107 @@ intents:
   # Complex intents
   - longest_thread
   - widest_level
+  - largest_thread
+  - most_toxic_thread
+  - comment_level_vs_very_toxic
+  - combination_features_very_toxic
+  - combination_features_toxic
+  - combination_features_mildly_toxic
+  - combination_features_non_toxic
+  - combination_features_CL1
+  - combination_features_CL2
+  - comment_level_1
+  - comment_level_2
+  - CL1_argument_constructive
+  - CL2_argument_constructive
+  - constructive_feature
+  - target_person_loT
 
 actions:
-  - action_greet
-  - action_logout
   - action_check_session_login
   - action_check_session_signup
+  - action_generate_response_message
+  - action_greet
+  - action_login
+  - action_logout
   - action_logout_to_login_cancellation
   - action_logout_to_signup_cancellation
-  - action_login
+  - action_open_document
+  - action_set_slots
   - action_signup
   - action_store_session_slots
-  - action_open_document
+  - utter_goodbye
+  - utter_offers_help
   - validate_signup_form
-  - validate_nickname_form
-  - action_remember_nickname
-  - action_refused_nickname
-  - action_generate_response_message
-  - action_set_slots
-  - action_forget_name
-  - action_empty_slot_name
+  - validate_login_form
+  - validate_document_selection_form
 
 forms:
-  nickname_form:
-    nickname:
-      - type: from_text
   login_form:
     username:
-      - type: from_text
+    - type: from_text
     password:
-      - type: from_text
+    - type: from_text
   signup_form:
     username:
-      - type: from_text
+    - type: from_text
     password:
-      - type: from_text
+    - type: from_text
     password_confirmation:
-      - type: from_text
+    - type: from_text
   document_selection_form:
     document_requested:
-      - type: from_text
+    - type: from_text
 
 entities:
-  - sessionid
-  - csrftoken
+  - action_requested
   - csrfmiddlewaretoken
-  - username
+  - csrftoken
+  - document_requested
+  - greet_again
+  - layout_requested
+  - nickname
+  - object_requested
   - password
   - password_confirmation
-  - action_requested
-  - object_requested
-  - layout_requested
-  - document_requested
-  - first_login
-  - nickname
   - response_message
-  - greet_again
+  - sessionid
+  - username
 
 slots:
-  requested_slot:
+  csrfmiddlewaretoken:
+    type: text
+    influence_conversation: false
+  csrftoken:
+    type: text
+    influence_conversation: false
+  document_requested:
+    type: text
+    influence_conversation: false
+  layout_requested:
+    type: text
+    influence_conversation: false
+  nickname:
+    type: text
+    influence_conversation: false
+  object_requested:
+    type: text
+    influence_conversation: false
+  password:
+    type: text
+    influence_conversation: false
+  password_confirmation:
     type: text
     influence_conversation: false
   sessionid:
     type: text
     influence_conversation: false
-    auto_fill: true
-  csrftoken:
-    type: text
-    influence_conversation: false
-    auto_fill: true
-  csrfmiddlewaretoken:
-    type: text
-    influence_conversation: false
-    auto_fill: true
+  user_is_logged_in:
+    type: bool
+    influence_conversation: true
   username:
     type: text
     influence_conversation: false
-    auto_fill: true
-  password:
-    type: text
-    influence_conversation: false
-    auto_fill: true
-  password_confirmation:
-    type: text
-    influence_conversation: false
-    auto_fill: true
-  object_requested:
-    type: text
-    influence_conversation: false
-    auto_fill: true
-  document_requested:
-    type: text
-    influence_conversation: false
-    auto_fill: true
-  layout_requested:
-    type: text
-    influence_conversation: false
-    auto_fill: true
-  first_login:
-    type: bool
-  nickname:
-    type: text
-  user_is_logged_in:
-    type: bool
 
 responses:
 
@@ -206,16 +200,6 @@ responses:
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
-
-  utter_ask_nickname_form_nickname:
-    - text: "Please enter your name, so I know what to call you:"
-    - text: "Please tell me what I should call you:"
-    - text: "What do you want me to call you?"
-    - text: "How do you want me to refer to you?"
-    - text: "What is your name?"
-
-  utter_nickname_no_session:
-  - text: "Please log in so I can remember your name"
 
   utter_logout_confirmation:
   - text: "Sure you want to log out?"
@@ -279,8 +263,7 @@ responses:
   utter_switch_and:
   - text: "intent_switch_or_and,and_button,Highlighting options changed to AND"
 
-
-# toxicity responses
+  # toxicity responses
   utter_non_toxic:
   - text: "intent_filter,highlight-toxicity-0,Here are the all non toxic nodes"
   - text: "intent_filter,highlight-toxicity-0,Here you have it"
@@ -305,7 +288,7 @@ responses:
   - text: "intent_filter,highlight-toxicity-3,All very toxic nodes are now displayed"
   - text: "intent_filter,highlight-toxicity-3,Here you have all very toxic nodes. Would you like to see something else?"
 
-# stance responses
+  # stance responses
   utter_positive_stance:
   - text: "intent_filter,highlight-stance-positive,Here are the nodes with positive stance"
   - text: "intent_filter,highlight-stance-positive,Here you have it"
@@ -324,7 +307,7 @@ responses:
   - text: "intent_filter,highlight-stance-neutral,All nodes with neutral stance are now displayed"
   - text: "intent_filter,highlight-stance-neutral,Here you have nodes with neutral stance. Would you like to see something else?"
 
-# target responses
+  # target responses
   utter_target_person:
   - text: "intent_filter,highlight-target-person,Here are the nodes with target person"
   - text: "intent_filter,highlight-target-person,Here you have it"
@@ -349,7 +332,7 @@ responses:
   - text: "intent_filter_all,selectAll-target,All nodes with all targets are now displayed"
   - text: "intent_filter_all,selectAll-target,Here you have nodes with all targets. Would you like to see something else?"
 
-# features - constructiveness, argumentation
+  # features - constructiveness, argumentation
   utter_constructiveness:
   - text: "intent_filter,highlight-features-constructiveness,Here are the nodes with constructiveness"
   - text: "intent_filter,highlight-features-constructiveness,Here you have constructive nodes"
@@ -363,7 +346,7 @@ responses:
   - text: "intent_filter,highlight-features-argumentation,All nodes with argumentation are now displayed"
   - text: "intent_filter,highlight-features-argumentation,Here you have nodes with argumentation. Would you like to see something else?"
 
-# features - sarcasm, mockery, intolerance
+  # features - sarcasm, mockery, intolerance
   utter_sarcasm:
   - text: "intent_filter,highlight-features-sarcasm,Here are the nodes with sarcasm"
   - text: "intent_filter,highlight-features-sarcasm,Here are sarcastic nodes"
@@ -383,7 +366,7 @@ responses:
   - text: "intent_filter,highlight-features-intolerance,All nodes with intolerance are now displayed"
   - text: "intent_filter,highlight-features-intolerance,Here you have nodes with intolerance. Would you like to see something else?"
 
-# features - improper language, insult, aggressiveness
+  # features - improper language, insult, aggressiveness
   utter_improper_language:
   - text: "intent_filter,highlight-features-improper-language,Here are the nodes with improper language"
   - text: "intent_filter,highlight-features-improper-language,Here you have it"
@@ -408,9 +391,9 @@ responses:
   - text: "intent_filter_all,selectAll-features,All nodes with all features are now displayed"
   - text: "intent_filter_all,selectAll-features,Here you have nodes with all features. Would you like to see something else?"
 
-# complex intent responses
+  # complex intent responses
 
-# longest, largest, widest, most toxic
+  # longest, largest, widest, most toxic
   utter_longest_thread:
   - text: "intent_highlight_graph,longest_thread,Here you have it"
   - text: "intent_highlight_graph,longest_thread,I've highlighted it in your graph"
@@ -418,6 +401,71 @@ responses:
   utter_widest_level:
   - text: "intent_highlight_graph,widest_level,Here you have it"
   - text: "intent_highlight_graph,widest_level,I've highlighted it in your graph"
+
+  utter_largest_thread:
+  - text: "Here is the largest thread"
+  - text: "Here you have it"
+
+  utter_most_toxic_thread:
+    - text: "Here is the most toxic thread"
+    - text: "Here you have it"
+
+  # comment level and very toxic
+  utter_comment_level_vs_very_toxic:
+    - text: "I displayed the comment level with the most very toxic nodes which is comment level: "
+    - text: "Here you have it"
+
+
+  # combination of features in levels of toxicity
+  utter_combination_features_very_toxic:
+    - text: "Most occurred combination of features are [] and []"
+    - text: "Here you have it"
+
+  utter_combination_features_toxic:
+    - text: "Most occurred combination of features are [] and []"
+    - text: "Here you have it"
+
+  utter_combination_features_mildly_toxic:
+    - text: "Most occurred combination of features are [] and []"
+    - text: "Here you have it"
+
+  utter_combination_features_non_toxic:
+    - text: "Most occurred combination of features are [] and []"
+    - text: "Here you have it"
+
+  # comment level related
+  utter_combination_features_CL1:
+    - text: "Most occurred combination of features are [] and []"
+    - text: "Here you have it"
+
+  utter_combination_features_CL2:
+    - text: "Most occurred combination of features are [] and []"
+    - text: "Here you have it"
+
+  # these two should be more easier to do
+  utter_comment_level_1:
+    - text: "Here you have comment level 1 displayed"
+    - text: "Here you have it"
+
+  utter_comment_level_2:
+    - text: "Here you have comment level 2 displayed"
+    - text: "Here you have it"
+
+  # comment level and argument - constructive
+  utter_CL1_argument_constructive:
+    - text: "Here you have nodes that have constructiveness and argumentation in comment level 1"
+    - text: "Here you have it"
+
+  utter_CL2_argument_constructive:
+    - text: "Here you have nodes that have constructiveness and argumentation in comment level 2"
+    - text: "Here you have it"
+
+  # features vs features or level of toxicity
+  utter_constructiveness_feature:
+    - text: "[] features appear more with constructiveness"
+
+  utter_target_person_loT:
+    - text: "In [] level of toxicity target person appears more"
 
 session_config:
   session_expiration_time: 60

@@ -49,7 +49,7 @@ stories:
     - intent: deny
     - action: utter_logout_cancellation
 
-- story: User logs in
+- story: User logs in without an active session already open
   steps:
     - slot_was_set:
         - sessionid: null
@@ -69,6 +69,7 @@ stories:
         - requested_slot: null
     - active_loop: null
     - action: action_login
+
 
 - story: User attempts to log in with an active session, but regrets and remains in current session
   steps:
@@ -169,10 +170,6 @@ stories:
   steps:
     - intent: start_intent
     - action: action_greet
-    - slot_was_set:
-        - first_login: false
-        - nickname: "Anna"
-        - user_is_logged_in: true
     - intent: greet
     - action: utter_offers_help
     - action: action_listen
@@ -186,10 +183,6 @@ stories:
   steps:
     - intent: start_intent
     - action: action_greet
-    - slot_was_set:
-        - first_login: false
-        - nickname: "Eloi"
-        - user_is_logged_in: true
     - intent: greet
     - action: utter_offers_help
     - action: action_listen
@@ -203,9 +196,6 @@ stories:
   steps:
     - intent: start_intent
     - action: action_greet
-    - slot_was_set:
-        - first_login: false
-        - nickname: "Raúl"
     - intent: greet
     - action: utter_offers_help
     - action: action_listen

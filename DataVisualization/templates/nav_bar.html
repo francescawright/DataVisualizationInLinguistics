@@ -349,23 +349,33 @@
     });
 
     function addChangedLayoutInputs() {
+        let form = document.getElementById('main_form');
         let inputLayoutChange = document.createElement("input");
         inputLayoutChange.setAttribute("type", "hidden");
         inputLayoutChange.setAttribute("name", "changed_main_layout");
         inputLayoutChange.setAttribute("value", "true");
-        document.getElementById('main_form').appendChild(inputLayoutChange);
+        form.appendChild(inputLayoutChange);
 
         let inputNodesIDs = document.createElement("input");
         inputNodesIDs.setAttribute("type", "hidden");
         inputNodesIDs.setAttribute("name", "subtree_nodes_ids");
         inputNodesIDs.setAttribute("value", document.getElementById("popupModal").subtree_node_ids);
-        document.getElementById('main_form').appendChild(inputNodesIDs);
+        form.appendChild(inputNodesIDs);
+
+        currentSubtreeName = document.getElementById("popupModal").subtree_name;
+        if (currentSubtreeName) {
+            let inputSubtreeName = document.createElement("input");
+            inputSubtreeName.setAttribute("type", "hidden");
+            inputSubtreeName.setAttribute("name", "subtree_name");
+            inputSubtreeName.setAttribute("value", currentSubtreeName);
+            form.appendChild(inputSubtreeName);
+        }
 
         let inputDocumentDesc = document.createElement("input");
         inputDocumentDesc.setAttribute("type", "hidden");
         inputDocumentDesc.setAttribute("name", "subtree_document_description");
         inputDocumentDesc.setAttribute("value", document.getElementById("popupModal").subtree_document_description);
-        document.getElementById('main_form').appendChild(inputDocumentDesc);
+        form.appendChild(inputDocumentDesc);
     }
 
     jQuery("#tree_layout_button").click(function () {

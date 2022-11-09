@@ -604,110 +604,6 @@ function getTreeData(root, node, filename) {
     hiddenElement.click();
 }
 
-function highlightLongestThread(nodes, root, opacityValue, deepestNodesPath, node, link) {
-    nodes.forEach(function (d) {
-        d.highlighted = 0;
-    });
-    node.style("opacity", opacityValue);
-
-    node.filter(function (d) {
-        if (deepestNodesPath.includes(d)) d.highlighted = 1;
-        return (deepestNodesPath.includes(d));
-    }).style("opacity", 1);
-
-    let deepest_nodes_path = deepestNodesPath.filter(function (d) {
-        return (d !== root);
-    });
-
-    var comment_ids = deepest_nodes_path.map(function(comment) {
-      return comment['name'];
-    });
-
-    document.getElementById("from_popup_main_input").name = 'from_main';
-    document.getElementById("from_popup_main_input").value = 'interchange';
-
-    document.getElementById("popupModal").subtree_node_ids = comment_ids;
-    document.getElementById("popupModal").subtree_document_description = document.getElementById("dataset_dropdown").value;
-
-    const formData = new FormData();
-    formData.append('csrfmiddlewaretoken', document.getElementsByName('csrfmiddlewaretoken')[0].value);
-    formData.append('selected_data', document.getElementById("dataset_dropdown").value);
-    formData.append('subtree_nodes_ids', comment_ids);
-    formData.append('subtree_document_description', document.getElementById("dataset_dropdown").value);
-
-    $.ajax({
-        type: "POST",
-        url: "/generate_dataset_popup/",
-        data: formData,
-        // handle a successful response
-        success: function (data) {
-            d3.json(data, function (error, treeData) {
-                let root = treeData;
-                var i = 0;
-
-                function recurse(node, parent) {
-                    node.parent = parent; //We assign a parent to the node
-                    if (parent) node.depth = node.parent.depth + 1; //If parent is not null
-                    if (node.children) node.children.forEach(element => recurse(element, node));
-                    if (!node.id) node.id = ++i;
-                }
-                root.depth = 0;
-                recurse(root, null);
-
-                hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
-                datasetPopup = data;
-                if (!document.getElementById("graph-container")) {
-                    $("#popup-btn").click();
-                } else {
-                    document.getElementById("subtree-name").value = "";
-                    document.querySelector(".modal .modal-footer").style.padding = "0.75rem";
-                    document.getElementById("subtree-save-sucess").style.display = "none";
-                    document.getElementById("subtree-save-error").style.display = "none";
-                    document.getElementById("modal-info-alert").style.display = "none";
-                    document.getElementById("send-popup-content").style.display = "block";
-                    document.getElementById("add-subtree-form").style.display = "flex";
-                    removeLayout();
-                }
-                $(popup_container).trigger("open");
-            });
-        },
-        // handle a non-successful response
-        error: function(jqXHR, textStatus, errorThrown) { // on error..
-            if (jqXHR.status === 0) {
-                alert('Not connect: Verify Network.');
-            } else if (jqXHR.status === 400) {
-                if (jqXHR.responseText === "document_not_exist") {
-                    injectIntentConversation("Document could not be found");
-                } else if (jqXHR.responseText === "open_document_no_active_session") {
-                    injectIntentConversation("Please log in to perform this action");
-                } else {
-                    errorText = 'Bad Request [400]';
-                }
-            } else if (jqXHR.status === 404) {
-                alert('Requested page not found [404]');
-            } else if (jqXHR.status === 500) {
-                alert('Internal Server Error [500].');
-            } else if (textStatus === 'parsererror') {
-                alert('Requested JSON parse failed.');
-            } else if (textStatus === 'timeout') {
-                alert('Time out error.');
-            } else if (textStatus === 'abort') {
-                alert('Ajax request aborted.');
-            } else {
-                alert('Uncaught Error: ' + jqXHR.responseText);
-            }
-        },
-        cache: false,
-        contentType: false,
-        processData: false,
-    })
-
-    //Highlight only the edges whose both endpoints are highlighted
-    link.style("opacity", function (d) {
-        return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
-    });
-}
-
 function writeTooltipText(d) {
     var featuresValues = [
         d.constructiveness,
@@ -1092,4 +988,218 @@ function activateFiltersCircle () {
     document.getElementById("improper_language").removeAttribute('disabled');
     document.getElementById("insult").removeAttribute('disabled');
     document.getElementById("aggressiveness").removeAttribute('disabled');
+}
+
+function handleSimpleAjaxError(jqXHR, textStatus, errorThrown){
+    if (jqXHR.status === 0) {
+        alert('Not connect: Verify Network.');
+    } else if (jqXHR.status === 404) {
+        alert('Requested page not found [404]');
+    } else if (jqXHR.status === 500) {
+        alert('Internal Server Error [500].');
+    } else if (textStatus === 'parsererror') {
+        alert('Requested JSON parse failed.');
+    } else if (textStatus === 'timeout') {
+        alert('Time out error.');
+    } else if (textStatus === 'abort') {
+        alert('Ajax request aborted.');
+    } else {
+        alert('Uncaught Error: ' + jqXHR.responseText);
+    }
+}
+
+/******************************
+*       Complex Intents       *
+*******************************/
+
+function highlightLongestThread(nodes, root, opacityValue, deepestNodesPath, node, link) {
+
+    nodes.forEach(function (d) {
+        d.highlighted = 0;
+    });
+    node.style("opacity", opacityValue);
+
+    node.filter(function (d) {
+        if (deepestNodesPath.includes(d)) d.highlighted = 1;
+        return (deepestNodesPath.includes(d));
+    }).style("opacity", 1);
+
+    //Highlight only the edges whose both endpoints are highlighted
+    link.style("opacity", function (d) {
+        return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+    });
+
+    highlightLongestThreadPopup(root, deepestNodesPath);
+}
+
+function highlightLongestThreadCircle(nodes, root, maxOpacityValue, minOpacityValue ,deepestNodesPath, node) {
+
+    nodes.forEach(function (d) {
+        d.data.highlighted = 1;
+    });
+
+    node.style("opacity", maxOpacityValue);
+
+    node.filter(function (d) {
+        let result = !deepestNodesPath.includes(d);
+        if (result){
+            d.data.highlighted = 0;
+        }
+        return result;
+    }).style("stroke", "black").style("color", "black").style("opacity", minOpacityValue);
+
+    node.filter(function (d) {
+        let result = d.depth === 0;
+        if (result){
+            d.data.highlighted = 1;
+        }
+        return result;
+    }).style("opacity", maxOpacityValue);
+
+    highlightLongestThreadPopup(root, deepestNodesPath, true);
+}
+
+function highlightLongestThreadPopup(root, deepestNodesPath, fromCircle = false){
+    if (document.getElementById("from_popup_main_input").name === 'from_popup') {
+        injectIntentConversation("The subtree is only displayed in a popup if the action is performed from the main graph");
+        return;
+    }
+    let deepest_nodes_path = deepestNodesPath.filter(function (d) {
+        return (d !== root);
+    });
+
+    var comment_ids;
+    if (!fromCircle) {
+        comment_ids = deepest_nodes_path.map(function(comment) {
+          return comment['name'];
+        });
+    } else {
+        comment_ids = deepest_nodes_path.map(function(comment) {
+          return comment['data']['name'];
+        });
+    }
+
+
+    document.getElementById("from_popup_main_input").name = 'from_main';
+    document.getElementById("from_popup_main_input").value = 'interchange';
+
+    document.getElementById("popupModal").subtree_node_ids = comment_ids;
+    document.getElementById("popupModal").subtree_document_description = document.getElementById("dataset_dropdown").value;
+    document.getElementById("popupModal").subtree_name = "";
+
+    const formData = new FormData();
+    formData.append('csrfmiddlewaretoken', document.getElementsByName('csrfmiddlewaretoken')[0].value);
+    formData.append('selected_data', document.getElementById("dataset_dropdown").value);
+    formData.append('subtree_nodes_ids', comment_ids);
+    formData.append('subtree_document_description', document.getElementById("dataset_dropdown").value);
+
+    $.ajax({
+        type: "POST",
+        url: "/generate_dataset_popup/",
+        data: formData,
+        // handle a successful response
+        success: function (data) {
+            d3.json(data, function (error, treeData) {
+                let root = treeData;
+                var i = 0;
+
+                function recurse(node, parent) {
+                    node.parent = parent; //We assign a parent to the node
+                    if (parent) node.depth = node.parent.depth + 1; //If parent is not null
+                    if (node.children) node.children.forEach(element => recurse(element, node));
+                    if (!node.id) node.id = ++i;
+                }
+                root.depth = 0;
+                recurse(root, null);
+
+                hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
+                datasetPopup = data;
+                if (!document.getElementById("graph-container")) {
+                    $("#popup-btn").click();
+                } else {
+                    document.getElementById("subtree-name").value = "";
+                    document.querySelector(".modal .modal-footer").style.padding = "0.75rem";
+                    document.getElementById("subtree-save-success").style.display = "none";
+                    document.getElementById("subtree-save-error").style.display = "none";
+                    document.getElementById("modal-info-alert").style.display = "none";
+                    document.getElementById("modal-subtree-name").style.display = "none";
+                    document.getElementById("send-popup-content").style.display = "block";
+                    document.getElementById("add-subtree-form").style.display = "flex";
+                    removeLayout();
+                }
+                $(popup_container).trigger("open");
+            });
+        },
+        // handle a non-successful response
+        error: function(jqXHR, textStatus, errorThrown) { // on error..
+            if (jqXHR.status === 0) {
+                alert('Not connect: Verify Network.');
+            } else if (jqXHR.status === 400) {
+                if (jqXHR.responseText === "document_not_exist") {
+                    injectIntentConversation("Document could not be found");
+                } else if (jqXHR.responseText === "open_document_no_active_session") {
+                    injectIntentConversation("Please log in to perform this action");
+                } else {
+                    errorText = 'Bad Request [400]';
+                }
+            } else if (jqXHR.status === 404) {
+                alert('Requested page not found [404]');
+            } else if (jqXHR.status === 500) {
+                alert('Internal Server Error [500].');
+            } else if (textStatus === 'parsererror') {
+                alert('Requested JSON parse failed.');
+            } else if (textStatus === 'timeout') {
+                alert('Time out error.');
+            } else if (textStatus === 'abort') {
+                alert('Ajax request aborted.');
+            } else {
+                alert('Uncaught Error: ' + jqXHR.responseText);
+            }
+        },
+        cache: false,
+        contentType: false,
+        processData: false,
+    })
+}
+
+function highlightWidestLevels(nodes, opacityValue, node, link, levelsIndexes) {
+    nodes.forEach(function (d) {
+        d.highlighted = 0;
+    });
+    node.style("opacity", opacityValue);
+
+    node.filter(function (d) {
+        if (levelsIndexes.includes(d.depth)) d.highlighted = 1;
+        return (levelsIndexes.includes(d.depth));
+    }).style("opacity", 1);
+
+    //Highlight only the edges whose both endpoints are highlighted
+    link.style("opacity", function (d) {
+        return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
+    });
+}
+
+function highlightWidestLevelsCircle(nodes, maxOpacityValue, minOpacityValue, node, levelsIndexes) {
+
+    nodes.forEach(function (d) {
+        d.data.highlighted = 1;
+    });
+
+    node.style("opacity", maxOpacityValue);
+
+    node.filter(function (d) {
+        let result = !levelsIndexes.includes(d.depth);
+        if (result){
+            d.data.highlighted = 0;
+        }
+        return result;
+    }).style("stroke", "black").style("color", "black").style("opacity", minOpacityValue);
+
+    node.filter(function (d) {
+        let result = d.depth === 0;
+        if (result){
+            d.data.highlighted = 1;
+        }
+        return result;
+    }).style("opacity", maxOpacityValue);
 }

@@ -69,22 +69,6 @@ def get_all_documents():
     return Document.objects.all()
 
 
-@require_POST
-def save_nickname(request):
-    user = getattr(request, 'user', None)
-    user.chatprofile.nickname = request.POST['nickname']
-    user.save()
-    return HttpResponse(status=204)
-
-
-@require_POST
-def save_first_login(request):
-    user = getattr(request, 'user', None)
-    user.chatprofile.first_login = request.POST['first_login']
-    user.save()
-    return HttpResponse(status=204)
-
-
 def generate_dataset(request):
     # Check if there is an active session
     user = getattr(request, 'user', None)
@@ -252,6 +236,9 @@ def main_form_handler(request):
         context['popup_dataset'] = POPUP_OUTPUT
         context['subtree_nodes_ids'] = request.POST['subtree_nodes_ids']
         context['subtree_document_description'] = request.POST['subtree_document_description']
+
+    if 'subtree_name' in request.POST.keys():
+        context['subtree_name'] = request.POST["subtree_name"]
 
     return render(request, template, context=context)
 

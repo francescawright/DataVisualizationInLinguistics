@@ -2232,41 +2232,6 @@ treeJSON = d3.json(dataset, function (error, json) {
         }
     }
 
-    function highlightLongestThread(node, link) {
-        nodes.forEach(function (d) {
-            d.highlighted = 0;
-        });
-        node.style("opacity", opacityValue);
-
-        node.filter(function (d) {
-            if (deepestNodesPath.includes(d)) d.highlighted = 1;
-            return (deepestNodesPath.includes(d));
-        }).style("opacity", 1);
-
-        //Highlight only the edges whose both endpoints are highlighted
-        link.style("opacity", function (d) {
-            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
-        });
-    }
-
-    function highlightWidestLevels(node, link, levelsIndexes) {
-        nodes.forEach(function (d) {
-            d.highlighted = 0;
-        });
-        node.style("opacity", opacityValue);
-
-        node.filter(function (d) {
-            if (levelsIndexes.includes(d.depth)) d.highlighted = 1;
-            //console.log(d);
-            return (levelsIndexes.includes(d.depth));
-        }).style("opacity", 1);
-
-        //Highlight only the edges whose both endpoints are highlighted
-        link.style("opacity", function (d) {
-            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
-        });
-    }
-
     /*END section */
 
     /**
@@ -2816,7 +2781,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
             deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
             // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
-            highlightLongestThread(node, link);
+            highlightLongestThread(nodes, root, opacityValue, deepestNodesPath, node, link);
 
             if (static_values_checked) {
                 statisticBackground.html(writeStatisticText());
@@ -2839,7 +2804,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
             injectIntentConversation(textMsg);
 
-            highlightWidestLevels(node, link, widestLevels[0]);
+            highlightWidestLevels(nodes, opacityValue, node, link, widestLevels[0]);
 
             if (static_values_checked) {
                 statisticBackground.html(writeStatisticText());

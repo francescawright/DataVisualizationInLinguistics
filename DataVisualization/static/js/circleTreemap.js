@@ -11,9 +11,9 @@ document.querySelector(container).appendChild(div);
 
 let svg = d3v4.select("#div-circle-container")
         .append("svg")
-        .attr("width", 960)
-        .attr("height", 960)
-        .attr("style", "overflow: visible; margin-top: 100px; margin-left: 130px;")
+        .attr("width", 720)
+        .attr("height", 720)
+        .attr("style", "overflow: visible; margin-top: 130px; margin-left: 130px;")
 
 
 let diameter = svg.attr("width"),
@@ -358,56 +358,6 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
 
 }
 
-function highlightLongestThreadCircle(node) {
-
-    nodes.forEach(function (d) {
-        d.data.highlighted = 1;
-    });
-
-    node.style("opacity", maxOpacityValue);
-
-    node.filter(function (d) {
-        let result = !deepestNodesPath.includes(d);
-        if (result){
-            d.data.highlighted = 0;
-        }
-        return result;
-    }).style("stroke", "black").style("color", "black").style("opacity", minOpacityValue);
-
-    node.filter(function (d) {
-        let result = d.depth === 0;
-        if (result){
-            d.data.highlighted = 1;
-        }
-        return result;
-    }).style("opacity", maxOpacityValue);
-}
-
-function highlightWidestLevelsCircle(node, levelsIndexes) {
-
-    nodes.forEach(function (d) {
-        d.data.highlighted = 1;
-    });
-
-    node.style("opacity", maxOpacityValue);
-
-    node.filter(function (d) {
-        let result = !levelsIndexes.includes(d.depth);
-        if (result){
-            d.data.highlighted = 0;
-        }
-        return result;
-    }).style("stroke", "black").style("color", "black").style("opacity", minOpacityValue);
-
-    node.filter(function (d) {
-        let result = d.depth === 0;
-        if (result){
-            d.data.highlighted = 1;
-        }
-        return result;
-    }).style("opacity", maxOpacityValue);
-}
-
     try {
         $(document).ready(function () {
             checkboxAND.addEventListener("change", function () {
@@ -577,7 +527,7 @@ function highlightWidestLevelsCircle(node, levelsIndexes) {
 
         deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
         // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
-        highlightLongestThreadCircle(node);
+        highlightLongestThreadCircle(nodes, root, maxOpacityValue, minOpacityValue ,deepestNodesPath, node);
 
         if (static_values_checked) {
             statisticBackground.html(writeStatisticText());
@@ -600,7 +550,7 @@ function highlightWidestLevelsCircle(node, levelsIndexes) {
 
         injectIntentConversation(textMsg);
 
-        highlightWidestLevelsCircle(node, widestLevels[0]);
+        highlightWidestLevelsCircle(nodes, maxOpacityValue, minOpacityValue, node, widestLevels[0]);
 
         if (static_values_checked) {
             statisticBackground.html(writeStatisticText());

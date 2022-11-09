@@ -9,7 +9,7 @@
 
 from typing import Any, Text, Dict, List
 
-from rasa_sdk.events import SlotSet, FollowupAction
+from rasa_sdk.events import SlotSet, FollowupAction, ActiveLoop
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
@@ -233,6 +233,10 @@ class ActionLogoutToSignupCancellation(Action):
 #             dispatcher.utter_message(text="An error has occurred")
 #             return [SlotSet("sessionid", None)]
 
+def user_wants_to_exit_form(tracker):
+    return tracker.latest_message['intent'].get('name') == 'cancel_form' or tracker.latest_message['intent'].get('name') == 'deny'
+
+
 class ActionLogin(Action):
 
     def name(self) -> Text:
@@ -241,11 +245,43 @@ class ActionLogin(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        key = b'ZeuY3kEaYn2XkyPQPQKgDmDeDRJfKYM3-tTx_5NmMm4='
-        dispatcher.utter_message(
-            text='intent_login,' + encrypt(tracker.get_slot("username").encode(), key).decode() + ',' + encrypt(
-                tracker.get_slot("password").encode(), key).decode())
-        return [SlotSet("username", None), SlotSet("password", None)]
+
+        if tracker.get_slot("username") == None:
+            dispatcher.utter_message(text="I have cancelled the form")
+            return []
+        else:
+            key = b'ZeuY3kEaYn2XkyPQPQKgDmDeDRJfKYM3-tTx_5NmMm4='
+            dispatcher.utter_message(
+                text='intent_login,' + encrypt(tracker.get_slot("username").encode(), key).decode() + ',' + encrypt(
+                    tracker.get_slot("password").encode(), key).decode())
+            return [SlotSet("username", None), SlotSet("password", None)]
+
+
+class ValidateLoginForm(FormValidationAction):
+
+    def name(self) -> Text:
+        return "validate_login_form"
+
+    def validate_username(self,
+                          slot_value: Any,
+                          dispatcher: CollectingDispatcher,
+                          tracker: Tracker,
+                          domain: DomainDict,
+                          ) -> Dict[Text, Any]:
+
+        if user_wants_to_exit_form(tracker):
+            return {"requested_slot": None, "username": None}
+
+
+    def validate_password(self,
+                          slot_value: Any,
+                          dispatcher: CollectingDispatcher,
+                          tracker: Tracker,
+                          domain: DomainDict,
+                          ) -> Dict[Text, Any]:
+
+        if user_wants_to_exit_form(tracker):
+            return {"requested_slot": None, "username": None, "password": None}
 
 
 class ActionSignup(Action):
@@ -256,11 +292,16 @@ class ActionSignup(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        key = b'JlgbJKpxVhwF3NXJf_n-lt4c4AvdCATnuXYDK4xivPY='
-        dispatcher.utter_message(text='intent_signup,' + encrypt(tracker.get_slot("username").encode(), key).decode()
-                                      + ',' + encrypt(tracker.get_slot("password").encode(), key).decode()
-                                      + ',' + encrypt(tracker.get_slot("password_confirmation").encode(), key).decode())
-        return [SlotSet("username", None), SlotSet("password", None), SlotSet("password_confirmation", None)]
+
+        if tracker.get_slot("username") == None:
+            dispatcher.utter_message(text="I have cancelled the form")
+            return []
+        else:
+            key = b'JlgbJKpxVhwF3NXJf_n-lt4c4AvdCATnuXYDK4xivPY='
+            dispatcher.utter_message(text='intent_signup,' + encrypt(tracker.get_slot("username").encode(), key).decode()
+                                          + ',' + encrypt(tracker.get_slot("password").encode(), key).decode()
+                                          + ',' + encrypt(tracker.get_slot("password_confirmation").encode(), key).decode())
+            return [SlotSet("username", None), SlotSet("password", None), SlotSet("password_confirmation", None)]
 
 
 class ValidateSignupForm(FormValidationAction):
@@ -274,8 +315,11 @@ class ValidateSignupForm(FormValidationAction):
                           tracker: Tracker,
                           domain: DomainDict,
                           ) -> Dict[Text, Any]:
-        """Validate username value."""
 
+        if user_wants_to_exit_form(tracker):
+            return {"requested_slot": None, "username": None}
+
+        # Validate username value.
         # make a pattern
         pattern = "^[A-Za-z0-9@.+-_]*$"
 
@@ -295,8 +339,7 @@ class ValidateSignupForm(FormValidationAction):
 
     @staticmethod
     def common_passwords_db() -> List[Text]:
-        """Database of common passwords"""
-
+        # Database of common passwords
         return ["12345", "123456", "1234567", "12345678", "123456789", "qwerty", "password", "123123", "123123123",
                 "1234567890", "qwerty123", "password1", "football", "monkey", "baseball", "dragon"]
 
@@ -306,8 +349,11 @@ class ValidateSignupForm(FormValidationAction):
                           tracker: Tracker,
                           domain: DomainDict,
                           ) -> Dict[Text, Any]:
-        """Validate password value."""
 
+        if user_wants_to_exit_form(tracker):
+            return {"requested_slot": None, "username": None, "password": None}
+
+        # Validate password value.
         succeed = True
 
         if slot_value == tracker.get_slot("username"):
@@ -333,29 +379,15 @@ class ValidateSignupForm(FormValidationAction):
             # user will be asked for the slot again
             return {"password": None}
 
-
-def clean_name(name):
-    return ''.join([c for c in name.split(' ', 1)[0] if c.isalpha()])
-
-
-class ValidateNicknameForm(FormValidationAction):
-
-    def name(self) -> Text:
-        return "validate_nickname_form"
-
-    def validate_nickname(self,
+    def validate_password_confirmation(self,
                           slot_value: Any,
                           dispatcher: CollectingDispatcher,
                           tracker: Tracker,
                           domain: DomainDict,
                           ) -> Dict[Text, Any]:
-        """Validate username value."""
 
-        name = clean_name(slot_value)
-        if len(name) == 0:
-            dispatcher.utter_message(text="That must've been a typo")
-            return {"nickname": None}
-        return {"nickname": name}
+        if user_wants_to_exit_form(tracker):
+            return {"requested_slot": None, "username": None, "password": None, "password_confirmation": None}
 
 
 class ActionOpenDocument(Action):
@@ -367,14 +399,34 @@ class ActionOpenDocument(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        document_requested_value = tracker.get_slot("document_requested")
+        if tracker.get_slot("document_requested") == None:
+            dispatcher.utter_message(text="I have cancelled the form")
+            return []
+        else:
+            document_requested_value = tracker.get_slot("document_requested")
 
-        for e in tracker.latest_message['entities']:
-            if e['entity'] == 'document_requested':
-                document_requested_value = e['value']
+            for e in tracker.latest_message['entities']:
+                if e['entity'] == 'document_requested':
+                    document_requested_value = e['value']
 
-        dispatcher.utter_message(text='intent_open_document,' + document_requested_value)
-        return [SlotSet("document_requested", None)]
+            dispatcher.utter_message(text='intent_open_document,' + document_requested_value)
+            return [SlotSet("document_requested", None)]
+
+
+class ValidateDocumentSelectionForm(FormValidationAction):
+
+    def name(self) -> Text:
+        return "validate_document_selection_form"
+
+    def validate_document_requested(self,
+                          slot_value: Any,
+                          dispatcher: CollectingDispatcher,
+                          tracker: Tracker,
+                          domain: DomainDict,
+                          ) -> Dict[Text, Any]:
+
+        if user_wants_to_exit_form(tracker):
+            return {"requested_slot": None, "document_requested": None}
 
 
 class ActionGreet(Action):
@@ -386,16 +438,14 @@ class ActionGreet(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        nickname_value = None
-        first_login_value = None
+        nickname_value = tracker.get_slot("nickname")
         greet_again_value = None
         for e in tracker.latest_message['entities']:
-            if e['entity'] == 'nickname':
-                nickname_value = e['value']
-            elif e['entity'] == 'first_login':
-                first_login_value = e['value'] == "True"
-            elif e['entity'] == 'greet_again':
+            if e['entity'] == 'greet_again':
                 greet_again_value = e['value'] == "True"
+
+        messages_not_logged = ["Hey! Nice to see you here 😄", "Hello! I'm here if you need me 😄", "Hi, how are you? 😄",
+                            "Hello there 😄"] if not greet_again_value else ["How else can I help you? 😉", "What else can I do for you? 😉"]
 
         if tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None":
             if nickname_value:
@@ -405,140 +455,15 @@ class ActionGreet(Action):
                         ["Hey, " + nickname_value + ". How else can I help you? 😉",
                          "Hi, " + nickname_value + ". What else can I do for you? 😉"]
                 dispatcher.utter_message(text=random.choice(messages))
-                return [SlotSet("nickname", nickname_value), SlotSet("first_login", first_login_value),
-                        SlotSet("user_is_logged_in", True)]
             else:
-                messages = ["Hey! Nice to see you here 😄", "Hello! I'm here if you need me 😄", "Hi, how are you? 😄",
-                            "Hello there 😄"] if not greet_again_value else ["How else can I help you? 😉", "What else can I do for you? 😉"]
-                dispatcher.utter_message(text=random.choice(messages))
+                dispatcher.utter_message(text=random.choice(messages_not_logged))
 
-            if first_login_value:
-                return [FollowupAction("nickname_form"), SlotSet("nickname", nickname_value),
-                        SlotSet("first_login", True), SlotSet("user_is_logged_in", True)]
-            else:
-                return [SlotSet("nickname", nickname_value), SlotSet("first_login", False),
-                        SlotSet("user_is_logged_in", True)]
+            return [SlotSet("nickname", nickname_value), SlotSet("user_is_logged_in", True)]
+
 
         # If the user is not logged in or does not have a nickname
-        messages = ["Hey! Nice to see you here 😄", "Hello! I'm here if you need me 😄", "Hi, how are you? 😄",
-                    "Hello there 😄"] if not greet_again_value else \
-            ["How else can I help you? 😉", "What else can I do for you? 😉"]
-
-        dispatcher.utter_message(text=random.choice(messages))
-        return [SlotSet("nickname", nickname_value), SlotSet("first_login", first_login_value),
-                SlotSet("user_is_logged_in", False)]
-
-
-class ActionRememberNickname(Action):
-
-    def name(self) -> Text:
-        return "action_remember_nickname"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        nickname_value = tracker.get_slot("nickname")
-
-        for e in tracker.latest_message['entities']:
-            if e['entity'] == 'nickname':
-                nickname_value = e['value']
-
-        if tracker.get_slot("user_is_logged_in"):
-            response_nickname = requests.post(domainUrl + "save_nickname/",
-                                              data={"csrfmiddlewaretoken": tracker.get_slot("csrfmiddlewaretoken"),
-                                                    "nickname": nickname_value},
-                                              cookies={"sessionid": tracker.get_slot("sessionid"),
-                                                       "csrftoken": tracker.get_slot("csrftoken")})
-
-            if (tracker.get_slot("first_login") == True):
-                # Save in the database that the user has made his first chat connection
-                response_firstchat = requests.post(domainUrl + "save_first_login/",
-                                                   data={"csrfmiddlewaretoken": tracker.get_slot("csrfmiddlewaretoken"),
-                                                         "first_login": False},
-                                                   cookies={"sessionid": tracker.get_slot("sessionid"),
-                                                            "csrftoken": tracker.get_slot("csrftoken")})
-            else:
-                response_firstchat = True
-
-        else:
-            dispatcher.utter_message(text="I have lost your session, please log in again.")
-            return []
-
-        if response_nickname and response_firstchat:  # successful response
-            dispatcher.utter_message(text="Okay " + nickname_value + ", I'll remember it!")
-            return [SlotSet("nickname", nickname_value), SlotSet("first_login", False)]
-        else:
-            dispatcher.utter_message(text="An error has occurred")
-            return []
-
-
-class ActionRefusedNickname(Action):
-
-    def name(self) -> Text:
-        return "action_refused_nickname"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        # Save in the database that the user has made his first chat connection
-
-        if tracker.get_slot("user_is_logged_in"):
-            # Save in the database that the user has made his first chat connection
-            response_firstchat = requests.post(domainUrl + "save_first_login/",
-                                               data={"csrfmiddlewaretoken": tracker.get_slot("csrfmiddlewaretoken"),
-                                                     "first_login": False},
-                                               cookies={"sessionid": tracker.get_slot("sessionid"),
-                                                        "csrftoken": tracker.get_slot("csrftoken")})
-        else:
-            dispatcher.utter_message(text="I have lost your session, please log in again.")
-            return []
-
-        if response_firstchat:  # successful response
-            dispatcher.utter_message(text="All right, anyway, remember you can tell me at any time")
-            return [SlotSet("first_login", False)]
-        else:
-            dispatcher.utter_message(text="An error has occurred")
-            return []
-
-class ActionForgetName(Action):
-
-    def name(self) -> Text:
-        return "action_forget_name"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        if tracker.get_slot("user_is_logged_in"):
-            response_nickname = requests.post(domainUrl + "save_nickname/",
-                                              data={"csrfmiddlewaretoken": tracker.get_slot("csrfmiddlewaretoken"),
-                                                    "nickname": ""},
-                                              cookies={"sessionid": tracker.get_slot("sessionid"),
-                                                       "csrftoken": tracker.get_slot("csrftoken")})
-
-        else:
-            dispatcher.utter_message(text="Log in before if you want me to forget your name")
-            return []
-
-        if response_nickname:  # successful response
-            dispatcher.utter_message(text="What name?")
-            return [SlotSet("nickname", None)]
-        else:
-            dispatcher.utter_message(text="An error has occurred")
-            return []
-
-
-class ActionEmptySlotName(Action):
-
-    def name(self) -> Text:
-        return "action_empty_slot_name"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        return [SlotSet("nickname", None)]
+        dispatcher.utter_message(text=random.choice(messages_not_logged))
+        return [SlotSet("nickname", nickname_value), SlotSet("user_is_logged_in", False)]
 
 
 class ActionGenerateResponseMessage(Action):

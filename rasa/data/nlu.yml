@@ -34,6 +34,7 @@ nlu:
 - intent: affirm
   examples: |
     - yes
+    - yesss
     - y
     - indeed
     - of course
@@ -68,6 +69,7 @@ nlu:
 - intent: deny
   examples: |
     - no
+    - nooo
     - n
     - never
     - not
@@ -84,6 +86,21 @@ nlu:
     - not by any means
     - not now
     - cancel
+
+- intent: cancel_form
+  examples: |
+    - I don't want to have a user name
+    - I dont want
+    - cancel form
+    - exit the form
+    - skip form
+    - I do not want to open a document
+    - cancel document opening
+    - cancel the opening of the document
+    - do not open a document
+    - I do not want to create a user
+    - I do not want to log in
+    - I've changed my mind
 
 - intent: mood_great
   examples: |
@@ -328,45 +345,6 @@ nlu:
     - I want to open [wide]{"entity": "document_requested"}
     - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
     - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
-
-- synonym: nickname
-  examples: |
-    - name
-
-#- regex: nickname
-#  examples: |
-#    - [a-zA-Z]{1,100}
-
-- intent: say_name
-  examples: |
-    - I want to tell you my [name]{"entity": "object_requested", "value": "nickname"}
-    - I want to give you my [nickname]{"entity": "object_requested", "value": "nickname"}
-    - I want to give you [name]{"entity": "object_requested", "value": "nickname"}
-    - Say [name]{"entity": "object_requested", "value": "nickname"}
-    - Give [nickname]{"entity": "object_requested", "value": "nickname"}
-    - Change my [name]{"entity": "object_requested", "value": "nickname"}
-
-#    - My [name]{"entity": "object_requested", "value": "nickname"} is [Eloi]{"entity": "nickname"}
-#    - You can call me [Ecem]{"entity": "nickname"}
-#    - You can refer to me as [edu]{"entity": "nickname"}
-#    - Call me [Anna]{"entity": "nickname"}
-#    - My name is [Inma]{"entity": "nickname"}
-#    - Change my [name]{"entity": "object_requested", "value": "nickname"} to [edu]{"entity": "nickname"}
-#    - [Alex]{"entity": "nickname"}
-#    - [felix]{"entity": "nickname"}
-#    - [raul22]{"entity": "nickname"}
-
-
-- intent: forget_name
-  examples: |
-    - Forget my name
-    - Forget name
-    - Do not keep my name
-    - Don't keep my name
-    - Do not save my name
-    - Don't save my name
-    - Remove my name
-    - Delete my name
 
 # Ask bot to change to OR / AND
 - intent: switch_or
@@ -713,3 +691,156 @@ nlu:
     - Show the widest depth
     - widest level
     - widest depth
+
+# related to the size
+- intent: largest_thread
+  examples: |
+    - Show me the largest thread
+    - I want to see the largest thread
+    - Which thread is the largest
+    - Can you show me the largest thread
+    - I would like to see the largest thread
+    - Display the largest thread
+    - Show the largest thread
+    - Which thread is the most crowded?
+    - Which thread has the most nodes?
+    - Can you show me the most crowded thread?
+    - Can you show me the thread with most nodes?
+    - Show me the most crowded thread
+    - I want to see the most crowded thread
+    - I would like to see the most crowded thread
+    - Show the most crowded thread
+    - Display the most crowded thread
+    - largest thread
+    - crowded thread
+
+# most toxic thread
+- intent: most_toxic_thread
+  examples: |
+    - Show me the most toxic thread
+    - I want to see the most toxic thread
+    - Which thread is the most toxic?
+    - Can you show me the most toxic thread?
+    - I would like to see the most toxic thread
+    - Display the most toxic thread
+    - Show the most toxic thread
+    - Which thread has the most toxic nodes?
+    - Can you show me the thread with most toxic nodes?
+    - Show me the thread with most toxic nodes
+    - I want to see the thread with most toxic nodes
+    - I would like to see the thread with most toxic nodes
+    - Show the thread with most toxic nodes
+    - Display the thread with most toxic nodes
+    - most toxic thread
+    - thread with most toxic nodes
+
+# Which comment level has the most very toxic nodes?
+- intent: comment_level_vs_very_toxic
+  examples: |
+    - Which comment level has the most very toxic nodes?
+    - Which comment level has more very toxic nodes?
+    - In which comment level there are more very toxic nodes?
+    - In which comment level there are the most very toxic nodes?
+    - Show me the comment level with the most very toxic nodes?
+    - Show me the comment level that has the most very toxic nodes?
+    - I want to see the comment level with the most very toxic nodes
+    - I want to see the comment level that has the most very toxic nodes
+    - Can you show me the comment level with the most very toxic nodes
+    - Can you show me the comment level that has the most very toxic nodes?
+    - Display the comment level with the most very toxic nodes
+    - Display the comment level that has the most very toxic nodes
+    - comment level with the most very toxic nodes
+
+# What are the most occurred combination of features in most/very toxic nodes?
+- intent: combination_features_very_toxic
+  examples: |
+    - Which combination of features occurred the most in very toxic nodes?
+    - Which combination of features ocurred the most in most toxic nodes?
+    - What are the most occurred combination of features in most toxic nodes?
+    - What are the most occured combination of features in very toxic nodes?
+
+# What are the most occurred combination of features in toxic nodes?
+- intent: combination_features_toxic
+  examples: |
+    - Which combination of features occurred the most in toxic nodes?
+    - What are the most occurred combination of features in toxic nodes?
+
+# What are the most occurred combination of features in mildly toxic nodes?
+- intent: combination_features_mildly_toxic
+  examples: |
+    - Which combination of features occurred the most in mildy toxic nodes?
+    - Which combination of features ocurred the most in slighyly toxic nodes?
+    - What are the most occurred combination of features in slightly toxic nodes?
+    - What are the most occured combination of features in slightly toxic nodes?
+
+# What are the most occurred combination of features in non toxic nodes?
+- intent: combination_features_non_toxic
+  examples: |
+    - Which combination of features occurred the most in non toxic nodes?
+    - Which combination of features ocurred the most in least toxic nodes?
+    - What are the most occurred combination of features in non toxic nodes?
+    - What are the most occured combination of features in least toxic nodes?
+
+#What are the most occurred combination of features in Comment level 1 = CL1?
+- intent: combination_features_CL1
+  examples: |
+    - Which combination of features ocurred the most in comment level 1?
+    - What are the most occurred combination of features in comment level 1?
+
+#What are the most occurred combination of features in Comment level 2 = CL2?
+- intent: combination_features_CL2
+  examples: |
+    - Which combination of features ocurred the most in comment level 2?
+    - What are the most occurred combination of features in comment level 2?
+
+# comment level_1
+- intent: comment_level_1
+  examples: |
+    - Show me comment level 1
+    - Diplay the comment level 1
+    - Show the comment level 1
+    - Only show me comment level 1
+    - I want to see comment level 1
+    - I would like to see comment level 1
+
+# comment level_2
+- intent: comment_level_2
+  examples: |
+    - Show me comment level 2
+    - Diplay the comment level 2
+    - Show the comment level 2
+    - Only show me comment level 2
+    - I want to see comment level 2
+    - I would like to see comment level 2
+
+#In comment level 1 show me argument and constructive comments
+- intent: CL1_argument_constructive
+  examples: |
+    - Can you show me nodes with argumenation and constructiveness in comment level 1?
+    - Show me nodes in comment level 1 that have argumentation and constructiveness
+    - I want to see argumentation and constructive nodes in comment level 1
+    - Only show me argumentation and constructiveness nodes in comment level 1
+    - Display argumenation and constructive nodes in comment level 1
+
+#In comment level 2 show me argument and constructive comments
+- intent: CL2_argument_constructive
+  examples: |
+    - Can you show me nodes with argumenation and constructiveness in comment level 2?
+    - Show me nodes in comment level 2 that have argumentation and constructiveness
+    - I want to see argumentation and constructive nodes in comment level 2
+    - Only show me argumentation and constructiveness nodes in comment level 2
+    - Display argumenation and constructive nodes in comment level 2
+
+#- Which features are tagged the most along with constructiveness?
+- intent: constructive_feature
+  examples: |
+    - Which features are tagged the most along with constructiveness?
+    - Which features appear the most with constructiveness?
+    - Which features constructive nodes have the most?
+
+#- In which level of toxicity (loT) target person appear more?
+- intent: target_person_loT
+  examples: |
+    - In which level of toxicity target person appear more?
+    - Which level of toxicity have more target person nodes?
+    - Which level of toxicity there are more target person nodes?

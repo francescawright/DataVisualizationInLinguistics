@@ -3041,23 +3041,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
     }
 
-    function highlightWidestLevels(node, link, levelsIndexes) {
-        nodes.forEach(function (d) {
-            d.highlighted = 0;
-        });
-        node.style("opacity", opacityValue);
-
-        node.filter(function (d) {
-            if (levelsIndexes.includes(d.depth)) d.highlighted = 1;
-            return (levelsIndexes.includes(d.depth));
-        }).style("opacity", 1);
-
-        //Highlight only the edges whose both endpoints are highlighted
-        link.style("opacity", function (d) {
-            return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
-        });
-    }
-
     /*END section */
 
     function writeIdLabel(nodeEnter) {
@@ -3727,7 +3710,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
             injectIntentConversation(textMsg);
 
-            highlightWidestLevels(node, link, widestLevels[0]);
+            highlightWidestLevels(nodes, opacityValue, node, link, widestLevels[0]);
 
             if (static_values_checked) {
                 statisticBackground.html(writeStatisticText());

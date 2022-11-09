@@ -188,6 +188,12 @@
     .modal-footer form>:not(:first-child) {
         margin-left: 0.25rem;
     }
+    #modal-subtree-name, #subtree-save-success {
+        width: calc(100% - 130px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 </style>
 
 {% load static %}
@@ -238,8 +244,8 @@
               <input type="hidden" id="popup-node-ids-input" name="node_ids" value=''>
               <button id="subtree-save-btn" type="submit" class="btn btn-secondary">Save</button>
           </form>
-          <div id="subtree-save-sucess" class="alert alert-success alert-dismissible modal-alert">
-             <button type="button" class="close" onclick="hideModalMessage()">
+          <div id="subtree-save-success" class="alert alert-success alert-dismissible modal-alert">
+             <button type="button" class="close" onclick="hideModalSuccessMessage()">
                  <span aria-hidden="True">×</span>
              </button>
             Subtree has been saved!
@@ -252,6 +258,8 @@
           </div>
          <div id="modal-info-alert" class="alert alert-primary modal-alert">
              A complete graph is being displayed
+          </div>
+          <div id="modal-subtree-name" class="alert alert-primary modal-alert">
           </div>
       </div>
     </div>
@@ -288,6 +296,15 @@
                 inputNodesIDs.setAttribute("name", "subtree_nodes_ids");
                 inputNodesIDs.setAttribute("value", document.getElementById("popupModal").subtree_node_ids);
                 form.appendChild(inputNodesIDs);
+
+                currentSubtreeName = document.getElementById("popupModal").subtree_name;
+                if (currentSubtreeName) {
+                    let inputSubtreeName = document.createElement("input");
+                    inputSubtreeName.setAttribute("type", "hidden");
+                    inputSubtreeName.setAttribute("name", "subtree_name");
+                    inputSubtreeName.setAttribute("value", currentSubtreeName);
+                    form.appendChild(inputSubtreeName);
+                }
 
                 let inputDocumentDesc = document.createElement("input");
                 inputDocumentDesc.setAttribute("type", "hidden");
@@ -333,21 +350,7 @@
             },
             // handle a non-successful response
             error: function(jqXHR, textStatus, errorThrown) { // on error..
-                if (jqXHR.status === 0) {
-                    alert('Not connect: Verify Network.');
-                } else if (jqXHR.status === 404) {
-                    alert('Requested page not found [404]');
-                } else if (jqXHR.status === 500) {
-                    alert('Internal Server Error [500].');
-                } else if (textStatus === 'parsererror') {
-                    alert('Requested JSON parse failed.');
-                } else if (textStatus === 'timeout') {
-                    alert('Time out error.');
-                } else if (textStatus === 'abort') {
-                    alert('Ajax request aborted.');
-                } else {
-                    alert('Uncaught Error: ' + jqXHR.responseText);
-                }
+                handleSimpleAjaxError(jqXHR, textStatus, errorThrown)
             },
             cache: false,
             contentType: false,
@@ -381,12 +384,18 @@
         hideModalMessage();
     });
 
+    function hideModalSuccessMessage() {
+        document.getElementById("subtree-save-success").style.display = "none";
+        document.getElementById("send-popup-content").style.display = "block";
+        document.getElementById("modal-subtree-name").style.display = "block";
+    }
     function hideModalMessage() {
         document.getElementById("subtree-name").value = "";
         document.querySelector(".modal .modal-footer").style.padding = "0.75rem";
-        document.getElementById("subtree-save-sucess").style.display = "none";
+        document.getElementById("subtree-save-success").style.display = "none";
         document.getElementById("subtree-save-error").style.display = "none";
         document.getElementById("modal-info-alert").style.display = "none";
+        document.getElementById("modal-subtree-name").style.display = "none";
         document.getElementById("send-popup-content").style.display = "block";
         document.getElementById("add-subtree-form").style.display = "flex";
     }
@@ -403,13 +412,17 @@
             data: formData,
             // handle a successful response
             success: function (data) {
+                let subtreeName = document.getElementById("subtree-name").value;
+                document.getElementById("popupModal").subtree_name = subtreeName;
                 update_subtrees_menu();
                 document.querySelector(".modal .modal-footer").style.padding = "0.375rem";
                 document.getElementById("add-subtree-form").style.display = "none";
-                document.getElementById("send-popup-content").style.display = "none";
                 document.getElementById("subtree-save-error").style.display = "none";
                 document.getElementById("modal-info-alert").style.display = "none";
-                document.getElementById("subtree-save-sucess").style.display = "block";
+                document.getElementById("modal-subtree-name").style.display = "none";
+                document.getElementById("send-popup-content").style.display = "block";
+                document.getElementById("modal-subtree-name").innerText = "Subtree " + subtreeName;
+                document.getElementById("subtree-save-success").style.display = "block";
             },
             // handle a non-successful response
             error: function(jqXHR, textStatus, errorThrown) { // on error..
@@ -440,8 +453,9 @@
                 document.querySelector(".modal .modal-footer").style.padding = "0.375rem";
                 document.getElementById("add-subtree-form").style.display = "none";
                 document.getElementById("send-popup-content").style.display = "none";
-                document.getElementById("subtree-save-sucess").style.display = "none";
+                document.getElementById("subtree-save-success").style.display = "none";
                 document.getElementById("modal-info-alert").style.display = "none";
+                document.getElementById("modal-subtree-name").style.display = "none";
                 document.getElementById("error-subtree-modal-msg").innerHTML = errorText;
                 document.getElementById("subtree-save-error").style.display = "block";
             },

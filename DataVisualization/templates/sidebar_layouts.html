@@ -218,6 +218,25 @@
     #main-popup-options-interchange-img {
         width: 28px;
     }
+    #info-popup-msg-container {
+        display: none;
+        position: absolute;
+        width: 45%;
+        right: 36px;
+        top: 36px;
+        z-index: 55;
+    }
+    #my-statistic-name {
+        font-size: 23px;
+        top: 115px;
+        vertical-align: middle;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        max-width: 450px;
+        margin: 0;
+    }
 </style>
 
 <head>
@@ -1462,14 +1481,26 @@
     {% include 'popup.html' %}
 
     <div id="tree-container" class="column2" style="width: calc(calc(100vw - (100vw - 100%)) - 290px); position: sticky; position: -webkit-sticky; top: 19px; z-index: 10;">
+
+        <div id="info-popup-msg-container" class="container-fluid p-0">
+          <div class="django-message alert m-0 text-center alert-danger alert-dismissible">
+            <button type="button" class="close" onclick="hideInfoPopupMsg()">
+              <span aria-hidden="True">&times;</span>
+            </button>
+            <span id="info-popup-msg"></span>
+          </div>
+        </div>
+
         <div style="z-index: 50; text-align:center; position: absolute; top: 20px; left: 20px;">
             <button id="subtrees-btn" type="button" class="btn" onclick="showSubtreesMenu()">Subtrees</button>
             {% if from_popup %}
                 <div id="main-popup-options">
-                <button type="button" class="main-popup-options-btn main-reset-btn" onclick="resetMainContentGraph()">
+                <button type="button" class="main-popup-options-btn main-reset-btn" onclick="resetMainContentGraph()"
+                title="Returns to the main graph">
                     <img src='{% static 'images/popup/reset-white.png' %}' id='main-popup-options-reset-img' class='main-popup-options-img'>
                 </button>
-                <button type="button" class="main-popup-options-btn main-interchange-btn" onclick="interchangeMain()">
+                <button type="button" class="main-popup-options-btn main-interchange-btn" onclick="interchangeMain()"
+                title="Open as a Popup">
                     <img src='{% static 'images/popup/interchange-white.png' %}' id='main-popup-options-interchange-img' class='main-popup-options-img'>
                 </button>
                 </div>
@@ -1486,15 +1517,7 @@
         </div>
 
         <div style="z-index: 50; text-align:center; position: absolute; margin-top: 35px; right: 356px; width: max-content;">
-            {% if from_popup %}
-            <span style='font-size: 23px; top: 115px; vertical-align: middle;'
-                  class="my-statistic"> Summary of Subtree
-            </span>
-            {% else %}
-                <span style='font-size: 23px; top: 115px; vertical-align: middle;'
-                      class="my-statistic"> Summary of {{ selected_item }}
-                </span>
-            {% endif %}
+            <span class="my-statistic" id="my-statistic-name"></span>
             <button id="static_values_button" class="btn btn-primary"
                     style=" top: 150px; z-index: 55; margin-left: 10px; vertical-align: middle; background-color: #eff4fc;">&#8722;
             </button>
@@ -1856,6 +1879,17 @@
         document.querySelector(".subtrees-menu-container").classList.toggle("show-menu");
     }
 
+
+    if ('{{ from_popup }}') {
+        if ('{{ subtree_name }}') {
+            document.getElementById("my-statistic-name").textContent = "Summary of {{ subtree_name }}";
+        } else {
+            document.getElementById("my-statistic-name").textContent="Summary of Subtree";
+        }
+    } else {
+        document.getElementById("my-statistic-name").textContent="Summary of {{ selected_item }}";
+    }
+
     if ("{{ template_selected }}" === "circle") {
         document.getElementById("subtrees-btn").classList.add("blue-background");
 
@@ -1868,6 +1902,9 @@
     } else if ('{{ from_main }}') {
         document.getElementById("from_popup_main_input").name = 'from_main';
         document.getElementById("from_popup_main_input").value = '{{ from_main }}';
+    }
+    if ('{{ subtree_name }}') {
+        document.getElementById("popupModal").subtree_name = '{{ subtree_name }}';
     }
     if ('{{ from_popup }}' || '{{ from_main }}') {
         document.getElementById("popupModal").subtree_node_ids = '{{ subtree_nodes_ids }}';
@@ -1905,20 +1942,18 @@
             datasetPopup = '/static/{{ popup_dataset }}';
 
             if ('{{ from_popup }}' === 'interchange') {
-                document.getElementById("subtree-name").value = "";
                 document.querySelector(".modal .modal-footer").style.padding = "0.375rem";
-                document.getElementById("subtree-save-sucess").style.display = "none";
-                document.getElementById("subtree-save-error").style.display = "none";
                 document.getElementById("send-popup-content").style.display = "none";
                 document.getElementById("add-subtree-form").style.display = "none";
                 document.getElementById("modal-info-alert").style.display = "block";
             } else if ('{{ from_main }}' === 'interchange') {
-                document.querySelector(".modal .modal-footer").style.padding = "0.75rem";
-                document.getElementById("subtree-save-sucess").style.display = "none";
-                document.getElementById("subtree-save-error").style.display = "none";
-                document.getElementById("modal-info-alert").style.display = "none";
-                document.getElementById("send-popup-content").style.display = "block";
-                document.getElementById("add-subtree-form").style.display = "flex";
+                if ('{{ subtree_name }}') {
+                    document.querySelector(".modal .modal-footer").style.padding = "0.375rem";
+                    document.getElementById("add-subtree-form").style.display = "none";
+                    document.getElementById("send-popup-content").style.display = "block";
+                    document.getElementById("modal-subtree-name").innerText = "Subtree {{ subtree_name }}";
+                    document.getElementById("modal-subtree-name").style.display = "block";
+                }
             }
 
             $("#popup-btn").click();
@@ -1958,6 +1993,15 @@
                 inputNodesIDs.setAttribute("name", "subtree_nodes_ids");
                 inputNodesIDs.setAttribute("value", document.getElementById("popupModal").subtree_node_ids);
                 form.appendChild(inputNodesIDs);
+
+                currentSubtreeName = document.getElementById("popupModal").subtree_name;
+                if (currentSubtreeName) {
+                    let inputSubtreeName = document.createElement("input");
+                    inputSubtreeName.setAttribute("type", "hidden");
+                    inputSubtreeName.setAttribute("name", "subtree_name");
+                    inputSubtreeName.setAttribute("value", currentSubtreeName);
+                    form.appendChild(inputSubtreeName);
+                }
 
                 let inputDocumentDesc = document.createElement("input");
                 inputDocumentDesc.setAttribute("type", "hidden");
@@ -2003,25 +2047,14 @@
             },
             // handle a non-successful response
             error: function(jqXHR, textStatus, errorThrown) { // on error..
-                if (jqXHR.status === 0) {
-                    alert('Not connect: Verify Network.');
-                } else if (jqXHR.status === 404) {
-                    alert('Requested page not found [404]');
-                } else if (jqXHR.status === 500) {
-                    alert('Internal Server Error [500].');
-                } else if (textStatus === 'parsererror') {
-                    alert('Requested JSON parse failed.');
-                } else if (textStatus === 'timeout') {
-                    alert('Time out error.');
-                } else if (textStatus === 'abort') {
-                    alert('Ajax request aborted.');
-                } else {
-                    alert('Uncaught Error: ' + jqXHR.responseText);
-                }
+                handleSimpleAjaxError(jqXHR, textStatus, errorThrown)
             },
             cache: false,
             contentType: false,
             processData: false,
         })
+    }
+    function hideInfoPopupMsg() {
+        document.getElementById("info-popup-msg-container").style.display = "none";
     }
 </script>

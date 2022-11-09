@@ -160,8 +160,7 @@
         let csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
         let csrftoken = getCookie("csrftoken");
         return action + '{\"csrfmiddlewaretoken\":\"' + csrfmiddlewaretoken + '\",\"csrftoken\":\"' + csrftoken + '\",\"sessionid\":\"' + sessionid +
-            ('{{ user.chatprofile.nickname }}' ? '\",\"nickname\":\"' + '{{ user.chatprofile.nickname }}': "") +
-            ('{{ user.chatprofile.first_login }}' ? '\",\"first_login\":\"' + '{{ user.chatprofile.first_login }}': "") +
+            ('{{ user.get_username }}' ? '\",\"nickname\":\"' + '{{ user.get_username }}': "") +
             ('{{storage_clear}}' && '{{storage_clear}}' !== "nochat" ? '\",\"greet_again\":\"' + 'True': "") + '\"}';
     }
 
@@ -571,17 +570,10 @@
     function getChatSubtitle() {
         let text;
         if ("{{ user.is_authenticated }}" === "True") {
-            if ("{{ user.chatprofile.first_login }}" === "True") {
-                text = "Welcome to chat section";
-            } else if ("{{ user.chatprofile.first_login }}" === "False" && "{{ user.chatprofile.nickname }}") {
-                text = "Say hi and get started!";
-            } else {
-                text = "Tell me your nickname at any time";
-            }
+            text = "Welcome to chat section";
         } else {
             text = "Say hi and get started!";
         }
-
         return text;
     }
 
