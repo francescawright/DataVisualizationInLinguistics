@@ -693,6 +693,7 @@ nlu:
     - widest depth
 
 # related to the size
+# It can be referenced as thread or subtree.
 - intent: largest_thread
   examples: |
     - Show me the largest thread
@@ -713,6 +714,24 @@ nlu:
     - Display the most crowded thread
     - largest thread
     - crowded thread
+    - Show me the largest subtree
+    - I want to see the largest subtree
+    - Which subtree is the largest
+    - Can you show me the largest subtree
+    - I would like to see the largest subtree
+    - Display the largest subtree
+    - Show the largest subtree
+    - Which subtree is the most crowded?
+    - Which subtree has the most nodes?
+    - Can you show me the most crowded subtree?
+    - Can you show me the subtree with most nodes?
+    - Show me the most crowded subtree
+    - I want to see the most crowded subtree
+    - I would like to see the most crowded subtree
+    - Show the most crowded subtree
+    - Display the most crowded subtree
+    - largest subtree
+    - crowded subtree
 
 # most toxic thread
 - intent: most_toxic_thread
@@ -733,6 +752,26 @@ nlu:
     - Display the thread with most toxic nodes
     - most toxic thread
     - thread with most toxic nodes
+
+# most toxic subtree
+- intent: most_toxic_subtree
+  examples: |
+    - Show me the most toxic subtree
+    - I want to see the most toxic subtree
+    - Which subtree is the most toxic?
+    - Can you show me the most toxic subtree?
+    - I would like to see the most toxic subtree
+    - Display the most toxic subtree
+    - Show the most toxic subtree
+    - Which subtree has the most toxic nodes?
+    - Can you show me the subtree with most toxic nodes?
+    - Show me the subtree with most toxic nodes
+    - I want to see the subtree with most toxic nodes
+    - I would like to see the subtree with most toxic nodes
+    - Show the subtree with most toxic nodes
+    - Display the subtree with most toxic nodes
+    - most toxic subtree
+    - subtree with most toxic nodes
 
 # Which comment level has the most very toxic nodes?
 - intent: comment_level_vs_very_toxic

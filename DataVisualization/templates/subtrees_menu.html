@@ -11,29 +11,28 @@
             {{ subtree.name }}
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdown_subtree_{{ subtree.pk }}">
-            <button class="dropdown-item"
+            <button disabled
+                    class="dropdown-item"
                     name="swap_popup_main_btn"
                     value="{{ subtree.pk }}"
                     type="button"
-                    onclick="openPopupMainContainer('{{ subtree.pk }}', {{ subtree.node_ids }}, '{{ subtree.name }}', '{{ subtree.document.description }}', true)">
+                    onclick="openPopupInMainWindow('{{ subtree.pk }}', {{ subtree.node_ids }}, '{{ subtree.name }}', '{{ subtree.document.description }}', true)">
                 Swap with main graph
             </button>
             <button class="dropdown-item"
                     name="open_popup_main_btn"
                     value="{{ subtree.pk }}"
                     type="button"
-                    onclick="openPopupMainContainer('{{ subtree.pk }}', {{ subtree.node_ids }}, '{{ subtree.name }}', '{{ subtree.document.description }}')">
+                    onclick="openPopupInMainWindow('{{ subtree.pk }}', {{ subtree.node_ids }}, '{{ subtree.name }}', '{{ subtree.document.description }}')">
                 Open in main container
             </button>
-            <span onclick="showInfoPopupMsg()">
-                <button class="dropdown-item"
-                        name="open_popup_btn"
-                        value="{{ subtree.pk }}"
-                        type="button"
-                        onclick="openPopup('{{ subtree.pk }}', {{ subtree.node_ids }}, '{{ subtree.name }}', '{{ subtree.document.description }}')">
-                    Open as a Popup
-                </button>
-            </span>
+            <button class="dropdown-item"
+                    name="open_popup_btn"
+                    value="{{ subtree.pk }}"
+                    type="button"
+                    onclick="openPopup('{{ subtree.pk }}', {{ subtree.node_ids }}, '{{ subtree.name }}', '{{ subtree.document.description }}')">
+                Open as a Popup
+            </button>
             <button class="dropdown-item"
                     name="delete_subtree_btn"
                     value="{{ subtree.pk }}"
@@ -58,20 +57,24 @@
             update_subtrees_menu();
         }, 100);
     }
-    function openPopupMainContainer(subtreeID, subtreeNodeIDs, subtreeName, subtreeDocumentDescription, swap = false) {
+    function openPopupInMainWindow(subtreeID, subtreeNodeIDs, subtreeName, subtreeDocumentDescription, swap = false) {
 
-        document.getElementById("from_popup_main_input").name = 'from_popup';
         let action;
         if (swap) {
-            action = 'interchange'
+            action = 'swap'
+            // TODO
         } else {
-            action = 'send'
+            action = 'send_to_main'
         }
-        document.getElementById("from_popup_main_input").value = action;
+        document.getElementById("popup_graph_info").value = 'subtree';
+        document.getElementById("popup_subtree_nodes_ids").value = subtreeNodeIDs;
+        document.getElementById("popup_subtree_name").value = subtreeName;
+        document.getElementById("popup_subtree_document_description").value = subtreeDocumentDescription;
+        document.getElementById("popup_subtree_id").value = subtreeID;
+        document.getElementById("action_popup").value = action;
 
         let form = document.getElementById("main_form")
         let formData = new FormData(form);
-        formData.append('subtree_id', subtreeID);
 
         $.ajax({
             type: "POST",
@@ -86,24 +89,6 @@
                 inputLayoutName.setAttribute("name", "best_layout_selected");
                 inputLayoutName.setAttribute("value", "");
                 form.appendChild(inputLayoutName);
-
-                let inputNodesIDs = document.createElement("input");
-                inputNodesIDs.setAttribute("type", "hidden");
-                inputNodesIDs.setAttribute("name", "subtree_nodes_ids");
-                inputNodesIDs.setAttribute("value", subtreeNodeIDs);
-                form.appendChild(inputNodesIDs);
-
-                let inputSubtreeName = document.createElement("input");
-                inputSubtreeName.setAttribute("type", "hidden");
-                inputSubtreeName.setAttribute("name", "subtree_name");
-                inputSubtreeName.setAttribute("value", subtreeName);
-                form.appendChild(inputSubtreeName);
-
-                let inputDocumentDesc = document.createElement("input");
-                inputDocumentDesc.setAttribute("type", "hidden");
-                inputDocumentDesc.setAttribute("name", "subtree_document_description");
-                inputDocumentDesc.setAttribute("value", subtreeDocumentDescription);
-                form.appendChild(inputDocumentDesc);
 
                 d3.json(data, function (error, treeData) {
                     let root = treeData;
@@ -122,7 +107,7 @@
                     let layoutNameElem = document.getElementById("layout_name_item");
 
                     switch(hierarchyName) {
-                      case "Unspecified":
+                      case "Unspecified": case "nCompact": case "Hybrid":
                         layoutNameElem.value = "force";
                         break;
                       case "Elongated":
@@ -130,12 +115,6 @@
                         break;
                       case "Compact":
                         layoutNameElem.value = "radial";
-                        break;
-                      case "nCompact":
-                        layoutNameElem.value = "force";
-                        break;
-                      case "Hybrid":
-                        layoutNameElem.value = "force";
                         break;
                     }
                     form.submit();
@@ -152,16 +131,15 @@
     }
     function openPopup(subtreeID, subtreeNodeIDs, subtreeName, subtreeDocumentDescription){
 
-        document.getElementById("from_popup_main_input").name = 'from_main';
-        document.getElementById("from_popup_main_input").value = 'interchange';
-
-        document.getElementById("popupModal").subtree_node_ids = subtreeNodeIDs;
-        document.getElementById("popupModal").subtree_name = subtreeName;
-        document.getElementById("popupModal").subtree_document_description = subtreeDocumentDescription;
+        document.getElementById("popup_graph_info").value = 'subtree';
+        document.getElementById("popup_subtree_nodes_ids").value = subtreeNodeIDs;
+        document.getElementById("popup_subtree_name").value = subtreeName;
+        document.getElementById("popup_subtree_document_description").value = subtreeDocumentDescription;
+        document.getElementById("popup_subtree_id").value = subtreeID;
 
         const formData = new FormData();
         formData.append('csrfmiddlewaretoken', document.getElementsByName('csrfmiddlewaretoken')[0].value);
-        formData.append('subtree_id', subtreeID);
+        formData.append('popup_subtree_id', subtreeID);
 
         $.ajax({
             type: "POST",
@@ -182,8 +160,20 @@
                     root.depth = 0;
                     recurse(root, null);
 
-                    hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
+                    hierarchyNamePopup = getHierarchyName(root, L, GFcomp, d_lvl);
                     datasetPopup = data;
+
+                    switch(hierarchyNamePopup) {
+                      case "Unspecified": case "nCompact": case "Hybrid":
+                        layoutNamePopup = "force";
+                        break;
+                      case "Elongated":
+                        layoutNamePopup = "tree";
+                        break;
+                      case "Compact":
+                        layoutNamePopup = "radial";
+                        break;
+                    }
 
                     prepareModalFooter(subtreeName);
                     if (!document.getElementById("graph-container")) {
@@ -235,12 +225,5 @@
         document.getElementById("send-popup-content").style.display = "block";
         document.getElementById("modal-subtree-name").innerText = "Subtree " + subtreeName;
         document.getElementById("modal-subtree-name").style.display = "block";
-    }
-    function showInfoPopupMsg() {
-        if (document.getElementById("from_popup_main_input").name === 'from_popup') {
-            document.getElementById("info-popup-msg").textContent="Return to the main graph to work on another subtree";
-            document.querySelector(".subtrees-menu-container").classList.remove("show-menu");
-            document.getElementById("info-popup-msg-container").style.display = "block"
-        }
     }
 </script>

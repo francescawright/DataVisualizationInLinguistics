@@ -1286,22 +1286,27 @@ $(popup_container).on("open", function () {
         circleModalButton.css('opacity', '0.4');
 
         let modalBodyJQuery = $(".modal-body");
-
-        switch (hierarchyName) {
-            case "Elongated":
+        console.log(layoutNamePopup)
+        switch (layoutNamePopup) {
+            case "tree":
                 modalBodyJQuery.removeClass('force radial circle').addClass("tree");
                 treeModalButton.css('opacity', '1');
                 createTreeGraph();
                 break;
-            case "Compact":
+            case "radial":
                 modalBodyJQuery.removeClass('tree force circle').addClass("radial");
                 radialModalButton.css('opacity', '1');
                 createRadialGraph();
                 break;
-            case "nCompact": case "Hybrid": case "Unspecified":
+            case "force":
                 modalBodyJQuery.removeClass('tree radial circle').addClass("force");
                 forceModalButton.css('opacity', '1');
                 createForceGraph();
+                break;
+            case "circle":
+                modalBodyJQuery.removeClass('tree radial force').addClass("circle");
+                circleModalButton.css('opacity', '1');
+                createCircleGraph();
                 break;
         }
 
@@ -3913,7 +3918,7 @@ $(popup_container).on("open", function () {
                             tooltipTextPopup = writeTooltipText(d);
                             tooltip.style("visibility", "visible").html(tooltipTextPopup);
                         } else if (d == rootPopup) {
-                            tooltipTextPopup = writeTooltipRoot(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
+                            tooltipTextPopup = writeTooltipRoot(d, numberOfDirectNodes, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
                             tooltip.style("visibility", "visible").html(tooltipTextPopup);
                         }
                     })
@@ -4634,7 +4639,8 @@ $(popup_container).on("open", function () {
 
             //I compute the values for the statistic data showing in the background
             var listStatistics = getStatisticValues(rootPopup);
-            var totalNumberOfNodes = listStatistics.children;
+            var numberOfDirectNodes = rootPopup.children ? rootPopup.children.length : 0,
+                totalNumberOfNodes = listStatistics.children;
 
             var totalNotToxic = listStatistics.toxicity0,
                 totalMildlyToxic = listStatistics.toxicity1,
@@ -6447,7 +6453,7 @@ $(popup_container).on("open", function () {
                             tooltip.style("visibility", "visible")
                                 .html(tooltipTextPopup);
                         } else if (d == rootPopup) {
-                            tooltipTextPopup = writeTooltipRoot(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
+                            tooltipTextPopup = writeTooltipRoot(d, numberOfDirectNodes, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
                             tooltip.style("visibility", "visible").html(tooltipTextPopup);
                         }
                     })
@@ -6873,7 +6879,8 @@ $(popup_container).on("open", function () {
 
             //I compute the values for the statistic data showing in the background
             var listStatistics = getStatisticValues(rootPopup);
-            var totalNumberOfNodes = listStatistics.children;
+            var numberOfDirectNodes = rootPopup.children ? rootPopup.children.length : 0,
+                totalNumberOfNodes = listStatistics.children;
 
             var totalNotToxic = listStatistics.toxicity0,
                 totalMildlyToxic = listStatistics.toxicity1,
@@ -8907,7 +8914,7 @@ $(popup_container).on("open", function () {
                             tooltip.style("visibility", "visible")
                                 .html(tooltipTextPopup);
                         } else if (d == rootPopup) {
-                            tooltipTextPopup = writeTooltipRoot(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
+                            tooltipTextPopup = writeTooltipRoot(d, numberOfDirectNodes, numberOfDirectNodes, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
                             tooltip.style("visibility", "visible").html(tooltipTextPopup);
                         }
                     })
@@ -9448,7 +9455,8 @@ $(popup_container).on("open", function () {
 
             //I compute the values for the statistic data showing in the background
             var listStatistics = getStatisticValues(rootPopup);
-            var totalNumberOfNodes = listStatistics.children;
+            var numberOfDirectNodes = rootPopup.children ? rootPopup.children.length : 0,
+                totalNumberOfNodes = listStatistics.children;
 
             var totalNotToxic = listStatistics.toxicity0,
                 totalMildlyToxic = listStatistics.toxicity1,
@@ -9630,7 +9638,7 @@ $(popup_container).on("open", function () {
                         tooltipTextPopup = writeTooltipTextCircle(d);
                         tooltip.style("visibility", "visible").html(tooltipTextPopup);
                     } else {
-                        tooltipTextPopup = writeTooltipRootCircle(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
+                        tooltipTextPopup = writeTooltipRootCircle(d, numberOfDirectNodes, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
                         tooltip.style("visibility", "visible").html(tooltipTextPopup);
                     }
                 })
@@ -9822,7 +9830,8 @@ $(popup_container).on("open", function () {
 
             //I compute the values for the statistic data showing in the background
             var listStatistics = getStatisticValuesCircle(rootPopup);
-            var totalNumberOfNodes = listStatistics.children;
+            var numberOfDirectNodes = rootPopup.children ? rootPopup.children.length : 0,
+                totalNumberOfNodes = listStatistics.children;
 
             var totalNotToxic = listStatistics.toxicity0,
                 totalMildlyToxic = listStatistics.toxicity1,

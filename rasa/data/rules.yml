@@ -245,6 +245,12 @@ rules:
     - intent: most_toxic_thread
     - action: utter_most_toxic_thread
 
+#highlight most toxic subtree
+- rule: User wants to see the most toxic subtree
+  steps:
+    - intent: most_toxic_subtree
+    - action: utter_most_toxic_subtree
+
 # comment level and level of toxicity
 - rule: User wants to see which comment level have the most toxic nodes
   steps:

@@ -93,7 +93,7 @@ treeJSON = d3v4.json(dataset, function (error, root) {
     if (error) throw error;
 
     // Used to obtain the nodes belonging to the deepest thread
-    var deepestNodesPath;
+    var deepestNodesPath, largestNodesPath;
 
         /*SECTION checkboxes*/
     //Check the values of the checkboxes and do something
@@ -203,7 +203,7 @@ treeJSON = d3v4.json(dataset, function (error, root) {
                     tooltipText = writeTooltipTextCircle(d);
                     tooltip.style("visibility", "visible").html(tooltipText);
                 } else {
-                    tooltipText = writeTooltipRootCircle(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
+                    tooltipText = writeTooltipRootCircle(d, numberOfDirectNodes, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
                     tooltip.style("visibility", "visible").html(tooltipText);
                 }
             })
@@ -432,7 +432,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
                     }
                     checkboxOR.checked ? highlightNodesByPropertyOR(node, enabledHighlight) : highlightNodesByPropertyAND(node, enabledHighlight);
                     if (static_values_checked) {
-                        statisticBackground.html(writeStatisticText());
+                        statisticBackground.html(writeStatisticText(root, true));
                     }
                 })
             });
@@ -460,7 +460,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
                     }
                     checkboxAND.checked ? highlightNodesByPropertyAND(node, enabledHighlight) : highlightNodesByPropertyOR(node, enabledHighlight);
                     if (static_values_checked) {
-                        statisticBackground.html(writeStatisticText());
+                        statisticBackground.html(writeStatisticText(root, true));
                     }
                 })
             });
@@ -479,13 +479,13 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
                 if (!static_values_checked) {
                     document.getElementById('static_values_button').innerHTML = '&#8722;';
                     static_values_checked = true;
-                    statisticBackground.style("visibility", "visible").html(writeStatisticText());
+                    statisticBackground.style("visibility", "visible").html(writeStatisticText(root, true));
                     console.log('[User]', user.split('/')[2], '| [interaction]', 'show_summary', ' | [Date]', Date.now());
 
                 } else {
                     document.getElementById('static_values_button').innerHTML = '&#43;'
                     static_values_checked = false;
-                    statisticBackground.style("visibility", "hidden").html(writeStatisticText());
+                    statisticBackground.style("visibility", "hidden").html(writeStatisticText(root, true));
                     console.log('[User]', user.split('/')[2], '| [interaction]', 'hide_summary', ' | [Date]', Date.now());
 
                 }
@@ -501,7 +501,8 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
 
     //I compute the values for the statistic data showing in the background
     var listStatistics = getStatisticValuesCircle(root);
-    var totalNumberOfNodes = listStatistics.children;
+    var numberOfDirectNodes = root.children ? root.children.length : 0,
+        totalNumberOfNodes = listStatistics.children;
 
     var totalNotToxic = listStatistics.toxicity0,
         totalMildlyToxic = listStatistics.toxicity1,
@@ -514,10 +515,12 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
      */
     $(container).off("longest_thread");
     $(container).on("longest_thread", function () {
-        let deepestNodes = getDeepestNodes(root);
+        let deepestNodes = getDeepestNodesCircle(root);
 
         var textMsg;
-        if (deepestNodes.length > 1) {
+        if (deepestNodes[0].depth === 0) {
+            textMsg = "There are no threads in this tree";
+        } else if (deepestNodes.length > 1) {
             textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
         } else {
             textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
@@ -525,12 +528,14 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
 
         injectIntentConversation(textMsg);
 
-        deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
-        // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
-        highlightLongestThreadCircle(nodes, root, maxOpacityValue, minOpacityValue ,deepestNodesPath, node);
+        if (deepestNodes[0].depth > 0) {
+            deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
 
-        if (static_values_checked) {
-            statisticBackground.html(writeStatisticText());
+            highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, deepestNodesPath, node);
+
+            if (static_values_checked) {
+                statisticBackground.html(writeStatisticText(root, true));
+            }
         }
     });
 
@@ -542,7 +547,9 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
     $(container).on("widest_level", function () {
         let widestLevels = getWidestLevels(root, getTreeHeight(root));
         var textMsg;
-        if (widestLevels[0].length > 1) {
+        if (widestLevels[0].length === 0) {
+            textMsg = "There are no threads in this tree";
+        } else if (widestLevels[0].length > 1) {
             textMsg = "There are " + widestLevels[0].length + " levels &#91;" + widestLevels[0] + "&#93; with a maximum width of " + widestLevels[1];
         } else {
             textMsg = "The widest level is level " + widestLevels[0][0] + " which has a width of " + widestLevels[1];
@@ -553,7 +560,39 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
         highlightWidestLevelsCircle(nodes, maxOpacityValue, minOpacityValue, node, widestLevels[0]);
 
         if (static_values_checked) {
-            statisticBackground.html(writeStatisticText());
+            statisticBackground.html(writeStatisticText(root, true));
+        }
+    });
+
+    /**
+     * Gets the array of nodes belonging to the largest threads, highlights them,
+     * updating the network statistics, and displays the result in the chat
+     */
+    $(container).off("largest_thread");
+    $(container).on("largest_thread", function () {
+        let result = getLargestNodes(root);
+        let largestThreads = result[0]
+        let numNodes = result[1];
+
+        var textMsg;
+        if (largestThreads.length < 1) {
+            textMsg = "There are no threads in this tree";
+        } else if (largestThreads.length > 1) {
+            textMsg = "There are " + largestThreads.length + " threads with a total of " + numNodes + " nodes each";
+        } else {
+            textMsg = "The largest thread has a total of " + numNodes + " nodes";
+        }
+
+        injectIntentConversation(textMsg);
+
+        if (largestThreads.length > 0) {
+            largestNodesPath = getDescendantsListNodes(root, largestThreads);
+
+            highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, largestNodesPath, node);
+
+            if (static_values_checked) {
+                statisticBackground.html(writeStatisticText(root));
+            }
         }
     });
 
@@ -701,138 +740,6 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
         .style("z-index", "1") //it has no change
         .style("visibility", "visible")
         .style("right", "320px");
-
-    function writeStatisticText() {
-        // var statisticText = "<span style='font-size: 22px;'> Summary of " + sel_item.split('/')[2] + "</span>";
-        var statisticText = "<table style='width: 530px; margin-top: 50px; z-index: 100;'>";
-
-        var listStatisticsUpdate = getStatisticValuesCircle(root);
-
-        var totalNotToxicUpdate = listStatisticsUpdate.toxicity0,
-            totalMildlyToxicUpdate = listStatisticsUpdate.toxicity1,
-            totalToxicUpdate = listStatisticsUpdate.toxicity2,
-            totalVeryToxicUpdate = listStatisticsUpdate.toxicity3;
-
-        var totalGroupUpdate = listStatisticsUpdate.totalTargGroup,
-            totalPersonUpdate = listStatisticsUpdate.totalTargPerson,
-            totalStereotypeUpdate = listStatisticsUpdate.totalTargStereotype,
-            totalNoneUpdate = listStatisticsUpdate.totalTargNone;
-
-        var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
-        var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
-        var statValuesTox = [totalNotToxicUpdate, totalMildlyToxicUpdate, totalToxicUpdate, totalVeryToxicUpdate];
-        var statValuesTarg = [totalGroupUpdate, totalPersonUpdate, totalStereotypeUpdate, totalNoneUpdate];
-
-        for (var i = 0; i < statTitlesToxicity.length; i++) {
-            statisticText += "<tr style='font-size: 20px;'>"; //Start table line
-
-            //Write toxicity and target line
-            statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td style='padding-right: 55px;'>" + statValuesTox[i].toString() + "</td>";
-            statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
-
-            statisticText += "</tr>"; //End table line
-        }
-
-        statisticText += "</table>";
-        return statisticText;
-    }
-
-/*******************************
-*   Categorization Functions   *
-********************************/
-
-    /**
-     * Function that returns the height of a tree given its root node
-     * @param node tree root
-     * @returns {number} number of levels in subtree
-     */
-    function getTreeHeight(node) {
-        if (!node.children) {
-            return 0;
-        }
-        let maxHeight = 0;
-        if (node.children) {
-            node.children.forEach(function (d) {
-                let currentHeight = getTreeHeight(d)+1;
-                if (currentHeight > maxHeight) {
-                    maxHeight = currentHeight;
-                }
-            });
-        }
-        return maxHeight;
-    }
-
-    /**
-     * Finding the deepest nodes in a hierarchy
-     * @param node tree root
-     * @returns {Array} array of nodes with greater depth
-     */
-    function getDeepestNodes(node) {
-        let hierarchy = d3v4.hierarchy(node);
-        let lenght = d3v4.max(hierarchy.descendants(), d => d.depth);
-        return hierarchy.descendants().filter(function (d) {
-            return (d.depth === lenght);
-        });
-    }
-
-    /**
-     * Finds the path between end nodes and the root in a hierarchy
-     * By default, if the parameter endNodes is not provided, the function finds the deepest nodes path in a hierarchy
-     * @param root tree root
-     * @param endNodes End nodes array to find their thread to the root
-     * @returns {Array} array of nodes that belong to the threads between the end nodes and the root.
-     * If the parameter endNodes is not provided, returns array of nodes that belong to the threads with greater depth.
-     */
-    function getDeepestNodesPath(root, endNodes = getDeepestNodes(root)) {
-        let nodesPath = [];
-        let deepestNodes = endNodes;
-        let currentNode;
-        for (let i = 0; i < deepestNodes.length; i++) {
-            currentNode = deepestNodes[i];
-            while(currentNode.data !== root){
-                nodesPath.push(currentNode.data);
-                currentNode = currentNode.parent;
-            }
-        }
-        nodesPath.push(root);
-        return nodesPath;
-    }
-
-    /**
-     * auxiliar function that returns the number of nodes in a given level
-     * @param node tree root
-     * @param current current level in tree
-     * @param level desired level to scan
-     * @param nodeList list of nodes at desired level
-     */
-    function getNodesInLevel(node, current, level, nodeList) {
-        nodeList[current] += 1;
-        if (current < level && node.children) {
-            node.children.forEach(function (d) {
-               getNodesInLevel(d, current+1, level, nodeList);
-            });
-        }
-    }
-
-    /**
-     * function that returns the widest levels of a subtree and its width value, given its root node
-     * @param node tree root
-     * @param height depth of tree
-     * @returns {Array} graph level indexes with the greatest width
-     */
-    function getWidestLevels(node, height) {
-        var nodeList = new Array(height+1).fill(0);
-        if (height === 0) { return [[0],1]; }
-        getNodesInLevel(node, 0, height, nodeList);
-        const max = Math.max(...nodeList);
-        const indexes = [];
-        for (let index = 0; index < nodeList.length; index++) {
-          if (nodeList[index] === max) {
-            indexes.push(index);
-          }
-        }
-        return [indexes,max];
-    }
 });
 
 

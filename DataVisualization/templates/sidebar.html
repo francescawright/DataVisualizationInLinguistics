@@ -345,7 +345,7 @@
                     let layoutNameElem = document.getElementById("layout_doc_" + id);
 
                     switch(hierarchyName) {
-                      case "Unspecified":
+                      case "Unspecified": case "nCompact": case "Hybrid":
                         layoutNameElem.value = "force";
                         break;
                       case "Elongated":
@@ -353,12 +353,6 @@
                         break;
                       case "Compact":
                         layoutNameElem.value = "radial";
-                        break;
-                      case "nCompact":
-                        layoutNameElem.value = "force";
-                        break;
-                      case "Hybrid":
-                        layoutNameElem.value = "force";
                         break;
                     }
                     $('#data_selection_' + id).submit();

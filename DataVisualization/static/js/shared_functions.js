@@ -6,7 +6,10 @@ var d_lvl = 6;
 var tol = 0.15;
 
 var datasetPopup;
-var hierarchyName;
+var hierarchyNamePopup;
+var layoutNamePopup;
+var hierarchyNameMain;
+var layoutNameMain;
 
 /*******************************
 *   Categorization Functions   *
@@ -158,6 +161,19 @@ function getLengthDeepestNode(node) {
 }
 
 /**
+ * Find the length of the longest chain in a hierarchy
+ * @param node tree root
+ * @returns {number} length going to the root to the deepest node in the data structure
+ */
+function getLengthDeepestNodeCircle(node) {
+    var hierarchy = d3v4.hierarchy(node);
+    var longest = d3v4.max(hierarchy.descendants().map(function(d) {
+      return d.depth
+    }));
+    // console.log("The longest chain has " + (longest) + " levels.")
+}
+
+/**
  * Finding the deepest nodes in a hierarchy
  * @param node tree root
  * @returns {Array} array of nodes with greater depth
@@ -165,6 +181,149 @@ function getLengthDeepestNode(node) {
 function getDeepestNodes(node) {
     let hierarchy = d3.hierarchy(node);
     let lenght = d3.max(hierarchy.descendants(), d => d.depth);
+    return hierarchy.descendants().filter(function (d) {
+        return (d.depth === lenght);
+    });
+}
+
+/**
+ * Finding all the end nodes in a hierarchy
+ * @param node tree root
+ * @returns {Array} array of end nodes (which have no children)
+ */
+function getEndNodes(node) {
+    let hierarchy = d3.hierarchy(node);
+    return hierarchy.descendants().filter(function (d) {
+        return (!d.children && d.data !== node);
+    });
+}
+
+/**
+ * Finding the largest nodes in a hierarchy
+ * @param node tree root
+ * @returns {Array} array of nodes with greater depth
+ */
+function getLargestNodes(node) {
+
+    let children = node.children;
+    let childrenTotalDescendantsList = [];
+
+    if (children) {
+        children.forEach(function (d) {
+            childrenTotalDescendantsList.push(getDescendants(d).children);
+        });
+    }
+
+    const max = Math.max(...childrenTotalDescendantsList);
+
+    const largestNodesIndexes = [];
+
+    for (let index = 0; index < childrenTotalDescendantsList.length; index++) {
+      if (childrenTotalDescendantsList[index] === max) {
+        largestNodesIndexes.push(children[index]);
+      }
+    }
+    return [largestNodesIndexes, max + 1];
+}
+
+/**
+ * Find the root nodes of the most toxic subtrees
+ * @param node tree root
+ * @returns {Array} array of root nodes of the most toxic subtrees
+ */
+function getSubtreeMostToxicRootNodes(node) {
+
+    let children = node.children;
+    let childrenToxicityDescendantsList = [];
+
+    if (children) {
+        children.forEach(function (d) {
+            childrenToxicityDescendantsList.push((getDescendants(d).toxicity1 + (getDescendants(d).toxicity2 * 2) + (getDescendants(d).toxicity3 * 3)));
+        });
+    }
+
+    const max = Math.max(...childrenToxicityDescendantsList);
+
+    const mostToxicRootNodes = [];
+
+    for (let index = 0; index < childrenToxicityDescendantsList.length; index++) {
+      if (childrenToxicityDescendantsList[index] === max) {
+        mostToxicRootNodes.push(children[index]);
+      }
+    }
+    return mostToxicRootNodes;
+}
+
+/**
+ * Recursive function to count the total number of descendants and
+ * the total number of nodes by toxicity
+ * */
+function getDescendants(node) {
+
+    if (!node.children) {
+        return {
+            children: 0,
+            toxicityLevel: node.toxicity_level,
+            toxicity0: 0,
+            toxicity1: 0,
+            toxicity2: 0,
+            toxicity3: 0,
+        };
+    }
+    var total = 0,
+        childrenList = [],
+        totalToxic0 = 0,
+        totalToxic1 = 0,
+        totalToxic2 = 0,
+        totalToxic3 = 0;
+
+    var children = node.children;
+
+    if (children) {
+        children.forEach(function (d) {
+            childrenList = getDescendants(d);
+            total += childrenList.children + 1;
+
+            totalToxic0 += childrenList.toxicity0;
+            totalToxic1 += childrenList.toxicity1;
+            totalToxic2 += childrenList.toxicity2;
+            totalToxic3 += childrenList.toxicity3;
+
+            switch (childrenList.toxicityLevel) {
+                case 0:
+                    totalToxic0 += 1;
+                    break;
+                case 1:
+                    totalToxic1 += 1;
+                    break;
+                case 2:
+                    totalToxic2 += 1;
+                    break;
+                case 3:
+                    totalToxic3 += 1;
+                    break;
+            }
+        });
+    }
+
+    return {
+        children: total,
+        toxicityLevel: node.toxicity_level,
+        toxicity0: totalToxic0,
+        toxicity1: totalToxic1,
+        toxicity2: totalToxic2,
+        toxicity3: totalToxic3,
+    };
+}
+
+/**
+ * Finding the deepest nodes in a hierarchy
+ * @param node tree root
+ * @returns {Array} array of nodes with greater depth
+ */
+function getDeepestNodesCircle(node) {
+    let hierarchy = d3v4.hierarchy(node);
+    let lenght = d3v4.max(hierarchy.descendants(), d => d.depth);
     return hierarchy.descendants().filter(function (d) {
         return (d.depth === lenght);
     });
@@ -194,6 +353,69 @@ function getDeepestNodesPath(root, endNodes = getDeepestNodes(root)) {
 }
 
 /**
+ * Find all descendants of all nodes in the list
+ * @param root tree root
+ * @param nodes array of nodes
+ * @returns {Array} array of nodes containing all the descendant nodes, which together form the largest threads
+ */
+function getDescendantsListNodes(root, nodes) {
+    let nodesPath = [];
+
+    for (let i = 0; i < nodes.length; i++) {
+        getNodesDescendants(nodes[i], nodesPath);
+    }
+
+    nodesPath.push(root);
+    return nodesPath;
+}
+
+/**
+ * Find the nodes belonging to the most toxic thread
+ * @param root tree root
+ * @param nodes array containing the end nodes of the graph
+ * @returns {Array} array of nodes containing all the nodes belonging to the most toxic thread
+ */
+function getMostToxicThreadPath(root, nodes) {
+    let nodesPathToxicityNum = Array(nodes.length).fill(0);
+    let nodesPathToxicity = Array.from(Array(nodes.length), () => new Array(0));
+
+    for (let i = 0; i < nodes.length; i++) {
+        while(nodes[i].data !== root){
+            nodesPathToxicityNum[i] += nodes[i].data.toxicity_level
+            nodesPathToxicity[i].push(nodes[i].data);
+            nodes[i] = nodes[i].parent;
+        }
+    }
+
+    const max = Math.max(...nodesPathToxicityNum);
+    let numThreads = 0;
+
+    let finalNodesPath = [];
+
+    for (let index = 0; index < nodesPathToxicityNum.length; index++) {
+      if (nodesPathToxicityNum[index] === max) {
+          finalNodesPath = finalNodesPath.concat(nodesPathToxicity[index]);
+          numThreads++;
+      }
+    }
+    finalNodesPath = finalNodesPath.concat([root]);
+    return [finalNodesPath, max, numThreads];
+}
+
+// Auxiliary function to find all the descendants of a given node
+function getNodesDescendants(node, nodesPath) {
+
+    nodesPath.push(node);
+    let children = node.children;
+
+    if (children) {
+        children.forEach(function (d) {
+            getNodesDescendants(d, nodesPath);
+        });
+    }
+}
+
+/**
  * function that returns the maximum width of a subtree given its root node
  * @param node tree root
  * @param height depth of tree
@@ -205,7 +427,7 @@ function getMaxWidth(node, height) {
     getNodesInLevel(node, 0, height, nodeList);
     //var aux = nodeList.reduce((a, b) => a + b, 0);
     let aux = 0;
-    for (i = 0; i < nodeList.length; i++) {
+    for (let i = 0; i < nodeList.length; i++) {
         aux += nodeList[i];
     }
     let result = Math.max.apply(null, nodeList);
@@ -236,11 +458,11 @@ function getNodesInLevel(node, current, level, nodeList) {
  */
 function getWidestLevels(node, height) {
     var nodeList = new Array(height+1).fill(0);
-    if (height === 0) { return [[0],1]; }
+    if (height === 0) { return [[],0]; }
     getNodesInLevel(node, 0, height, nodeList);
     const max = Math.max(...nodeList);
     const indexes = [];
-    for (let index = 0; index < nodeList.length; index++) {
+    for (let index = 1; index < nodeList.length; index++) {
       if (nodeList[index] === max) {
         indexes.push(index);
       }
@@ -633,10 +855,9 @@ function writeTooltipText(d) {
                 + "<b>Comment Depth:</b> " + d.depth + "<br>"
                 + "<b>Toxicity level:</b> " + d.toxicity_level + "</div><br>";
 
-    let i;
     tooltipText += "<ul class='tooltip-features'>";
 
-    for (i = 0; i < featuresValues.length ; i++) {
+    for (let i = 0; i < featuresValues.length ; i++) {
         if (featuresValues[i]) {
             tooltipText += '<li><span style="color:' + colorFeature[i] + '; font-weight:bold; font-size: larger;">' + featuresNames[i] + '</span></li>'
         } else {
@@ -705,7 +926,7 @@ function writeTooltipText(d) {
             d.descendantsWithToxicity3,
         ];
 
-        for (i = 0; i < sonValues.length; i++) {
+        for (let i = 0; i < sonValues.length; i++) {
             if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
             tooltipText +=
                 "<td><b>" + sonTitles[i] + ":</b> " + sonValues[i] + "</td>";
@@ -725,7 +946,7 @@ function writeTooltipText(d) {
     return tooltipText;
 }
 
-function writeTooltipRoot(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic) {
+function writeTooltipRoot(d, numberOfDirectNodes, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic) {
 
     var sonTitles = [
         "Direct comments",
@@ -736,7 +957,7 @@ function writeTooltipRoot(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic
         "Very toxic",
     ];
     var sonValues = [
-        d.children ? d.children.length : 0,
+        numberOfDirectNodes,
         totalNumberOfNodes,
         totalNotToxic,
         totalMildlyToxic,
@@ -745,7 +966,7 @@ function writeTooltipRoot(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic
     ];
     let tooltipText = "<br> <table>";
 
-    for (i = 0; i < sonValues.length; i++) {
+    for (let i = 0; i < sonValues.length; i++) {
         if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
         tooltipText +=
             "<td><b>" + sonTitles[i] + ":</b> " + sonValues[i] + "</td>";
@@ -804,10 +1025,9 @@ function writeTooltipTextCircle(d) {
                 + "<b>Comment Depth:</b> " + d.depth + "<br>"
                 + "<b>Toxicity level:</b> " + d.data.toxicity_level + "</div><br>";
 
-    let i;
     tooltipText += "<ul class='tooltip-features'>";
 
-    for (i = 0; i < featuresValues.length ; i++) {
+    for (let i = 0; i < featuresValues.length ; i++) {
         if (featuresValues[i]) {
             tooltipText += '<li><span style="color:' + colorFeature[i] + '; font-weight:bold; font-size: larger;">' + featuresNames[i] + '</span></li>'
         } else {
@@ -876,7 +1096,7 @@ function writeTooltipTextCircle(d) {
             d.descendantsWithToxicity3,
         ];
 
-        for (i = 0; i < sonValues.length; i++) {
+        for (let i = 0; i < sonValues.length; i++) {
             if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
             tooltipText +=
                 "<td><b>" + sonTitles[i] + ":</b> " + sonValues[i] + "</td>";
@@ -896,7 +1116,7 @@ function writeTooltipTextCircle(d) {
     return tooltipText;
 }
 
-function writeTooltipRootCircle(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic) {
+function writeTooltipRootCircle(d, numberOfDirectNodes, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic) {
 
     var sonTitles = [
         "Direct comments",
@@ -907,7 +1127,7 @@ function writeTooltipRootCircle(d, totalNumberOfNodes, totalNotToxic, totalMildl
         "Very toxic",
     ];
     var sonValues = [
-        d.children ? d.children.length : 0,
+        numberOfDirectNodes,
         totalNumberOfNodes,
         totalNotToxic,
         totalMildlyToxic,
@@ -916,7 +1136,7 @@ function writeTooltipRootCircle(d, totalNumberOfNodes, totalNotToxic, totalMildl
     ];
     let tooltipText = "<br> <table>";
 
-    for (i = 0; i < sonValues.length; i++) {
+    for (let i = 0; i < sonValues.length; i++) {
         if (i % 2 === 0) tooltipText += "<tr>"; //Start table line
         tooltipText +=
             "<td><b>" + sonTitles[i] + ":</b> " + sonValues[i] + "</td>";
@@ -1008,11 +1228,51 @@ function handleSimpleAjaxError(jqXHR, textStatus, errorThrown){
     }
 }
 
+function writeStatisticText(root, fromCircle = false) {
+    var statisticText = "<table style='width: 530px; margin-top: 50px; z-index: 100;'>";
+
+    let listStatisticsUpdate
+    if (!fromCircle) {
+        listStatisticsUpdate = getStatisticValues(root);
+    } else {
+        listStatisticsUpdate = getStatisticValuesCircle(root);
+    }
+
+
+    var totalNotToxicUpdate = listStatisticsUpdate.toxicity0,
+        totalMildlyToxicUpdate = listStatisticsUpdate.toxicity1,
+        totalToxicUpdate = listStatisticsUpdate.toxicity2,
+        totalVeryToxicUpdate = listStatisticsUpdate.toxicity3;
+
+    var totalGroupUpdate = listStatisticsUpdate.totalTargGroup,
+        totalPersonUpdate = listStatisticsUpdate.totalTargPerson,
+        totalStereotypeUpdate = listStatisticsUpdate.totalTargStereotype,
+        totalNoneUpdate = listStatisticsUpdate.totalTargNone;
+
+    var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
+    var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
+    var statValuesTox = [totalNotToxicUpdate, totalMildlyToxicUpdate, totalToxicUpdate, totalVeryToxicUpdate];
+    var statValuesTarg = [totalGroupUpdate, totalPersonUpdate, totalStereotypeUpdate, totalNoneUpdate];
+
+    for (var i = 0; i < statTitlesToxicity.length; i++) {
+        statisticText += "<tr style='font-size: 20px;'>"; //Start table line
+
+        //Write toxicity and target line
+        statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td style='padding-right: 55px;'>" + statValuesTox[i].toString() + "</td>";
+        statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
+
+        statisticText += "</tr>"; //End table line
+    }
+
+    statisticText += "</table>";
+    return statisticText;
+}
+
 /******************************
 *       Complex Intents       *
 *******************************/
 
-function highlightLongestThread(nodes, root, opacityValue, deepestNodesPath, node, link) {
+function highlightThreadPopup(nodes, root, opacityValue, nodesPath, node, link) {
 
     nodes.forEach(function (d) {
         d.highlighted = 0;
@@ -1020,8 +1280,8 @@ function highlightLongestThread(nodes, root, opacityValue, deepestNodesPath, nod
     node.style("opacity", opacityValue);
 
     node.filter(function (d) {
-        if (deepestNodesPath.includes(d)) d.highlighted = 1;
-        return (deepestNodesPath.includes(d));
+        if (nodesPath.includes(d)) d.highlighted = 1;
+        return (nodesPath.includes(d));
     }).style("opacity", 1);
 
     //Highlight only the edges whose both endpoints are highlighted
@@ -1029,10 +1289,10 @@ function highlightLongestThread(nodes, root, opacityValue, deepestNodesPath, nod
         return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
     });
 
-    highlightLongestThreadPopup(root, deepestNodesPath);
+    subtreeToPopup(root, nodesPath);
 }
 
-function highlightLongestThreadCircle(nodes, root, maxOpacityValue, minOpacityValue ,deepestNodesPath, node) {
+function highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue ,nodesPath, node) {
 
     nodes.forEach(function (d) {
         d.data.highlighted = 1;
@@ -1041,7 +1301,7 @@ function highlightLongestThreadCircle(nodes, root, maxOpacityValue, minOpacityVa
     node.style("opacity", maxOpacityValue);
 
     node.filter(function (d) {
-        let result = !deepestNodesPath.includes(d);
+        let result = !nodesPath.includes(d);
         if (result){
             d.data.highlighted = 0;
         }
@@ -1056,42 +1316,36 @@ function highlightLongestThreadCircle(nodes, root, maxOpacityValue, minOpacityVa
         return result;
     }).style("opacity", maxOpacityValue);
 
-    highlightLongestThreadPopup(root, deepestNodesPath, true);
+    subtreeToPopup(root, nodesPath, true);
 }
 
-function highlightLongestThreadPopup(root, deepestNodesPath, fromCircle = false){
-    if (document.getElementById("from_popup_main_input").name === 'from_popup') {
-        injectIntentConversation("The subtree is only displayed in a popup if the action is performed from the main graph");
-        return;
-    }
-    let deepest_nodes_path = deepestNodesPath.filter(function (d) {
+function subtreeToPopup(root, nodesPath, fromCircle = false){
+
+    let nodes_path = nodesPath.filter(function (d) {
         return (d !== root);
     });
 
     var comment_ids;
     if (!fromCircle) {
-        comment_ids = deepest_nodes_path.map(function(comment) {
+        comment_ids = nodes_path.map(function(comment) {
           return comment['name'];
         });
     } else {
-        comment_ids = deepest_nodes_path.map(function(comment) {
+        comment_ids = nodes_path.map(function(comment) {
           return comment['data']['name'];
         });
     }
 
-
-    document.getElementById("from_popup_main_input").name = 'from_main';
-    document.getElementById("from_popup_main_input").value = 'interchange';
-
-    document.getElementById("popupModal").subtree_node_ids = comment_ids;
-    document.getElementById("popupModal").subtree_document_description = document.getElementById("dataset_dropdown").value;
-    document.getElementById("popupModal").subtree_name = "";
+    document.getElementById("popup_graph_info").value = 'subtree';
+    document.getElementById("popup_subtree_nodes_ids").value = comment_ids;
+    document.getElementById("popup_subtree_name").value = "";
+    document.getElementById("popup_subtree_document_description").value = document.getElementById("main_subtree_document_description").value;
+    document.getElementById("popup_subtree_id").value = "";
 
     const formData = new FormData();
     formData.append('csrfmiddlewaretoken', document.getElementsByName('csrfmiddlewaretoken')[0].value);
-    formData.append('selected_data', document.getElementById("dataset_dropdown").value);
-    formData.append('subtree_nodes_ids', comment_ids);
-    formData.append('subtree_document_description', document.getElementById("dataset_dropdown").value);
+    formData.append('popup_subtree_nodes_ids', comment_ids);
+    formData.append('popup_subtree_document_description', document.getElementById("main_subtree_document_description").value);
 
     $.ajax({
         type: "POST",
@@ -1112,8 +1366,21 @@ function highlightLongestThreadPopup(root, deepestNodesPath, fromCircle = false)
                 root.depth = 0;
                 recurse(root, null);
 
-                hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
+                hierarchyNamePopup = getHierarchyName(root, L, GFcomp, d_lvl);
                 datasetPopup = data;
+
+                switch(hierarchyNamePopup) {
+                  case "Unspecified": case "nCompact": case "Hybrid":
+                    layoutNamePopup = "force";
+                    break;
+                  case "Elongated":
+                    layoutNamePopup = "tree";
+                    break;
+                  case "Compact":
+                    layoutNamePopup = "radial";
+                    break;
+                }
+
                 if (!document.getElementById("graph-container")) {
                     $("#popup-btn").click();
                 } else {
@@ -1169,8 +1436,8 @@ function highlightWidestLevels(nodes, opacityValue, node, link, levelsIndexes) {
     node.style("opacity", opacityValue);
 
     node.filter(function (d) {
-        if (levelsIndexes.includes(d.depth)) d.highlighted = 1;
-        return (levelsIndexes.includes(d.depth));
+        if (levelsIndexes.includes(d.depth) || d.depth === 0) d.highlighted = 1;
+        return (levelsIndexes.includes(d.depth) || d.depth === 0);
     }).style("opacity", 1);
 
     //Highlight only the edges whose both endpoints are highlighted
@@ -1202,4 +1469,128 @@ function highlightWidestLevelsCircle(nodes, maxOpacityValue, minOpacityValue, no
         }
         return result;
     }).style("opacity", maxOpacityValue);
+}
+
+function widestLevelHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link) {
+    let widestLevels = getWidestLevels(root, getTreeHeight(root));
+    var textMsg;
+    if (widestLevels[0].length === 0) {
+        textMsg = "There are no threads in this graph";
+    } else if (widestLevels[0].length > 1) {
+        textMsg = "There are " + widestLevels[0].length + " levels &#91;" + widestLevels[0] + "&#93; with a maximum width of " + widestLevels[1];
+    } else {
+        textMsg = "The widest level is level " + widestLevels[0][0] + " which has a width of " + widestLevels[1];
+    }
+
+    injectIntentConversation(textMsg);
+
+    highlightWidestLevels(nodes, opacityValue, node, link, widestLevels[0]);
+
+    if (static_values_checked) {
+        statisticBackground.html(writeStatisticText(root, false));
+    }
+}
+
+function longestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, deepestNodesPath, node, link) {
+    let deepestNodes = getDeepestNodes(root);
+
+    var textMsg;
+    if (deepestNodes[0].depth === 0) {
+        textMsg = "There are no threads in this graph";
+    } else if (deepestNodes.length > 1) {
+        textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
+    } else {
+        textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
+    }
+
+    injectIntentConversation(textMsg);
+
+    if (deepestNodes[0].depth > 0) {
+        deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
+
+        highlightThreadPopup(nodes, root, opacityValue, deepestNodesPath, node, link);
+
+        if (static_values_checked) {
+            statisticBackground.html(writeStatisticText(root));
+        }
+    }
+}
+
+function largestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, largestNodesPath, node, link) {
+    let result = getLargestNodes(root);
+    let largestThreads = result[0]
+    let numNodes = result[1];
+
+    var textMsg;
+    if (largestThreads.length < 1) {
+        textMsg = "There are no threads in this graph";
+    } else if (largestThreads.length > 1) {
+        textMsg = "There are " + largestThreads.length + " threads with a total of " + numNodes + " nodes each";
+    } else {
+        textMsg = "The largest thread has a total of " + numNodes + " nodes";
+    }
+
+    injectIntentConversation(textMsg);
+
+    if (largestThreads.length > 0) {
+        largestNodesPath = getDescendantsListNodes(root, largestThreads);
+
+        highlightThreadPopup(nodes, root, opacityValue, largestNodesPath, node, link);
+
+        if (static_values_checked) {
+            statisticBackground.html(writeStatisticText(root));
+        }
+    }
+}
+
+function mostToxicThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, mostToxicNodesPath, node, link) {
+    let endNodes = getEndNodes(root);
+    if (endNodes.length < 1) {
+        injectIntentConversation("There are no threads in this graph");
+    } else {
+        mostToxicNodesPath = getMostToxicThreadPath(root, endNodes);
+
+        if (mostToxicNodesPath[1] === 0) {
+            injectIntentConversation("There are no toxic threads in this graph");
+        } else {
+            let textMsg;
+            if (mostToxicNodesPath[2] === 1) {
+                textMsg = "There is only one thread with this level of toxicity";
+            } else {
+                textMsg = "There are " + mostToxicNodesPath[2] + " threads with the same maximum level of toxicity";
+            }
+            injectIntentConversation(textMsg);
+            highlightThreadPopup(nodes, root, opacityValue, mostToxicNodesPath[0], node, link);
+
+            if (static_values_checked) {
+                statisticBackground.html(writeStatisticText(root));
+            }
+        }
+    }
+}
+
+function mostToxicSubtreedHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, mostToxicNodesPath, node, link) {
+    let rootNodes = getSubtreeMostToxicRootNodes(root);
+
+
+    var textMsg;
+    if (rootNodes.length < 1) {
+        textMsg = "There are no threads in this graph";
+    } else if (rootNodes.length > 1) {
+        textMsg = "There are " + rootNodes.length + " subtrees with the same maximum level of toxicity";
+    } else {
+        textMsg = "There is only one subtree with the maximum level of toxicity";
+    }
+
+    injectIntentConversation(textMsg);
+
+    if (rootNodes.length > 0) {
+        mostToxicNodesPath = getDescendantsListNodes(root, rootNodes);
+
+        highlightThreadPopup(nodes, root, opacityValue, mostToxicNodesPath, node, link);
+
+        if (static_values_checked) {
+            statisticBackground.html(writeStatisticText(root));
+        }
+    }
 }

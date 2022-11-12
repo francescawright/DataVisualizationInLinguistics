@@ -174,7 +174,17 @@
               id="main_form"
               method="POST">
             {% csrf_token %}
-            <input type="hidden" id="from_popup_main_input" name="" value="">
+            <input type="hidden" id="main_graph_info" name="main_graph_info" value="complete">
+            <input type="hidden" id="main_subtree_nodes_ids" name="main_subtree_nodes_ids" value="">
+            <input type="hidden" id="main_subtree_document_description" name="main_subtree_document_description" value='{{ selected_item }}'>
+            <input type="hidden" id="main_subtree_name" name="main_subtree_name" value="">
+            <input type="hidden" id="popup_graph_info" name="popup_graph_info" value="">
+            <input type="hidden" id="popup_subtree_nodes_ids" name="popup_subtree_nodes_ids" value="">
+            <input type="hidden" id="popup_subtree_document_description" name="popup_subtree_document_description" value="">
+            <input type="hidden" id="popup_subtree_name" name="popup_subtree_name" value="">
+            <input type="hidden" id="main_subtree_id" name="main_subtree_id" value="">
+            <input type="hidden" id="popup_subtree_id" name="popup_subtree_id" value="">
+            <input type="hidden" id="action_popup" name="action_popup" value="">
 
             <div style="align-items: center; height: fit-content;" class="btn-group btn-group-toggle"
                  data-toggle="buttons">
@@ -268,7 +278,8 @@
     $(document).ready(function () {
         $('#dataset_dropdown').change(function () {
 
-            document.getElementById("from_popup_main_input").name = '';
+            document.getElementById("main_graph_info").value = '';
+            document.getElementById("popup_graph_info").value = '';
 
             let form = document.getElementById("main_form")
             let formData = new FormData(form);
@@ -304,7 +315,7 @@
                         let layoutNameElem = document.getElementById("layout_name_item");
 
                         switch(hierarchyName) {
-                          case "Unspecified":
+                          case "Unspecified": case "nCompact": case "Hybrid":
                             layoutNameElem.value = "force";
                             break;
                           case "Elongated":
@@ -312,12 +323,6 @@
                             break;
                           case "Compact":
                             layoutNameElem.value = "radial";
-                            break;
-                          case "nCompact":
-                            layoutNameElem.value = "force";
-                            break;
-                          case "Hybrid":
-                            layoutNameElem.value = "force";
                             break;
                         }
                         form.submit();
@@ -348,7 +353,10 @@
         });
     });
 
-    function addChangedLayoutInputs() {
+    function addChangedLayoutInputs(elemLayoutID) {
+
+        document.getElementById("action_popup").value = '';
+
         let form = document.getElementById('main_form');
         let inputLayoutChange = document.createElement("input");
         inputLayoutChange.setAttribute("type", "hidden");
@@ -356,26 +364,20 @@
         inputLayoutChange.setAttribute("value", "true");
         form.appendChild(inputLayoutChange);
 
-        let inputNodesIDs = document.createElement("input");
-        inputNodesIDs.setAttribute("type", "hidden");
-        inputNodesIDs.setAttribute("name", "subtree_nodes_ids");
-        inputNodesIDs.setAttribute("value", document.getElementById("popupModal").subtree_node_ids);
-        form.appendChild(inputNodesIDs);
-
-        currentSubtreeName = document.getElementById("popupModal").subtree_name;
-        if (currentSubtreeName) {
-            let inputSubtreeName = document.createElement("input");
-            inputSubtreeName.setAttribute("type", "hidden");
-            inputSubtreeName.setAttribute("name", "subtree_name");
-            inputSubtreeName.setAttribute("value", currentSubtreeName);
-            form.appendChild(inputSubtreeName);
+        let changedFromChat = document.getElementById(elemLayoutID).from_chat;
+        let fromChatMsg = document.getElementById(elemLayoutID).from_chat_msg;
+        if (changedFromChat) {
+            let inputFromChat = document.createElement("input");
+            inputFromChat.setAttribute("type", "hidden");
+            inputFromChat.setAttribute("name", "chatbot");
+            inputFromChat.setAttribute("value", "true");
+            form.appendChild(inputFromChat);
+            let inputFromChatMsg = document.createElement("input");
+            inputFromChatMsg.setAttribute("type", "hidden");
+            inputFromChatMsg.setAttribute("name", "from_chat_msg");
+            inputFromChatMsg.setAttribute("value", fromChatMsg);
+            form.appendChild(inputFromChatMsg);
         }
-
-        let inputDocumentDesc = document.createElement("input");
-        inputDocumentDesc.setAttribute("type", "hidden");
-        inputDocumentDesc.setAttribute("name", "subtree_document_description");
-        inputDocumentDesc.setAttribute("value", document.getElementById("popupModal").subtree_document_description);
-        form.appendChild(inputDocumentDesc);
     }
 
     jQuery("#tree_layout_button").click(function () {
@@ -388,7 +390,7 @@
         $('#treeMap_layout_button').prop("checked", false);
         document.getElementById("treeMap_label").className = "btn btn-primary";
 
-        addChangedLayoutInputs();
+        addChangedLayoutInputs("tree_layout_button");
         $('#main_form').submit();
     });
 
@@ -402,7 +404,7 @@
         $('#treeMap_layout_button').prop("checked", false);
         document.getElementById("treeMap_label").className = "btn btn-primary";
 
-        addChangedLayoutInputs();
+        addChangedLayoutInputs("force_layout_button");
         $('#main_form').submit();
     });
 
@@ -416,7 +418,7 @@
         $('#treeMap_layout_button').prop("checked", false);
         document.getElementById("treeMap_label").className = "btn btn-primary";
 
-        addChangedLayoutInputs();
+        addChangedLayoutInputs("radial_layout_button");
         $('#main_form').submit();
     });
 
@@ -430,7 +432,7 @@
         $(this).prop("checked", true);
         document.getElementById("treeMap_label").className = "btn btn-primary active";
 
-        addChangedLayoutInputs();
+        addChangedLayoutInputs("treeMap_layout_button");
         $('#main_form').submit();
     });
 

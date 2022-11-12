@@ -228,10 +228,10 @@
       <div class="modal-body"></div>
       <div class="modal-footer">
           <div id="send-popup-content">
-              <button type="button" id="send-popup-main-btn" class="send-popup-btn" onclick="sendPopup('send')">
+              <button type="button" id="send-popup-main-btn" class="send-popup-btn" onclick="sendPopup('send_to_main')">
                   <img src='{% static 'images/popup/send.png' %}' id='send-popup-main-img'>
               </button>
-              <button type="button" id="send-popup-interchange-btn" class="send-popup-btn" onclick="sendPopup('interchange')">
+              <button type="button" id="send-popup-interchange-btn" class="send-popup-btn" onclick="sendPopup('swap')">
                   <img src='{% static 'images/popup/interchange.png' %}' id='send-popup-interchange-img'>
               </button>
           </div>
@@ -269,13 +269,10 @@
 <script>
     function sendPopup(dest) {
 
-        document.getElementById("from_popup_main_input").name = 'from_popup';
-        document.getElementById("from_popup_main_input").value = dest;
+        document.getElementById("action_popup").value = dest;
 
         let form = document.getElementById("main_form")
         let formData = new FormData(form);
-        formData.append('subtree_nodes_ids', document.getElementById("popupModal").subtree_node_ids);
-        formData.append('subtree_document_description', document.getElementById("popupModal").subtree_document_description);
 
         $.ajax({
             type: "POST",
@@ -290,27 +287,6 @@
                 inputLayoutName.setAttribute("name", "best_layout_selected");
                 inputLayoutName.setAttribute("value", "");
                 form.appendChild(inputLayoutName);
-
-                let inputNodesIDs = document.createElement("input");
-                inputNodesIDs.setAttribute("type", "hidden");
-                inputNodesIDs.setAttribute("name", "subtree_nodes_ids");
-                inputNodesIDs.setAttribute("value", document.getElementById("popupModal").subtree_node_ids);
-                form.appendChild(inputNodesIDs);
-
-                currentSubtreeName = document.getElementById("popupModal").subtree_name;
-                if (currentSubtreeName) {
-                    let inputSubtreeName = document.createElement("input");
-                    inputSubtreeName.setAttribute("type", "hidden");
-                    inputSubtreeName.setAttribute("name", "subtree_name");
-                    inputSubtreeName.setAttribute("value", currentSubtreeName);
-                    form.appendChild(inputSubtreeName);
-                }
-
-                let inputDocumentDesc = document.createElement("input");
-                inputDocumentDesc.setAttribute("type", "hidden");
-                inputDocumentDesc.setAttribute("name", "subtree_document_description");
-                inputDocumentDesc.setAttribute("value", document.getElementById("popupModal").subtree_document_description);
-                form.appendChild(inputDocumentDesc);
 
                 d3.json(data, function (error, treeData) {
                     let root = treeData;
@@ -329,7 +305,7 @@
                     let layoutNameElem = document.getElementById("layout_name_item");
 
                     switch(hierarchyName) {
-                      case "Unspecified":
+                      case "Unspecified": case "nCompact": case "Hybrid":
                         layoutNameElem.value = "force";
                         break;
                       case "Elongated":
@@ -337,12 +313,6 @@
                         break;
                       case "Compact":
                         layoutNameElem.value = "radial";
-                        break;
-                      case "nCompact":
-                        layoutNameElem.value = "force";
-                        break;
-                      case "Hybrid":
-                        layoutNameElem.value = "force";
                         break;
                     }
                     form.submit();
@@ -366,8 +336,6 @@
             // Activate the functionalities (filters) that do not belong to the Circle Packing layout
             activateFiltersCircle();
         }
-        document.getElementById("from_popup_main_input").name === 'from_main';
-        document.getElementById("from_popup_main_input").value = 'interchange';
     });
 
     $("#popupModal").on("hidden.bs.modal", function () {
@@ -375,11 +343,12 @@
             // We deactivate the functionalities (filters) that do not belong to the Circle Packing layout
             deactivateFiltersCircle();
         }
-        if (document.getElementById("from_popup_main_input").name === 'from_main'){
-            document.getElementById("from_popup_main_input").name = '';
-        } else if (document.getElementById("from_popup_main_input").name === 'from_popup') {
-            document.getElementById("from_popup_main_input").value = 'send';
-        }
+        document.getElementById("popup_graph_info").value = '';
+        document.getElementById("popup_subtree_nodes_ids").value = '';
+        document.getElementById("popup_subtree_name").value = '';
+        document.getElementById("popup_subtree_document_description").value = '';
+        document.getElementById("popup_subtree_id").value = '';
+
         removeLayout();
         hideModalMessage();
     });
@@ -402,7 +371,7 @@
 
     function savePopupSubtree(e){
         e.preventDefault();
-        document.getElementById("popup-node-ids-input").value = document.getElementById("popupModal").subtree_node_ids;
+        document.getElementById("popup-node-ids-input").value = document.getElementById("popup_subtree_nodes_ids").value;
         let form = document.getElementById("add-subtree-form")
         let formData = new FormData(form);
 
@@ -413,7 +382,8 @@
             // handle a successful response
             success: function (data) {
                 let subtreeName = document.getElementById("subtree-name").value;
-                document.getElementById("popupModal").subtree_name = subtreeName;
+                document.getElementById("popup_subtree_name").value = subtreeName;
+                document.getElementById("popup_subtree_id").value = data;
                 update_subtrees_menu();
                 document.querySelector(".modal .modal-footer").style.padding = "0.375rem";
                 document.getElementById("add-subtree-form").style.display = "none";

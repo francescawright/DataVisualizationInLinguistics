@@ -218,14 +218,6 @@
     #main-popup-options-interchange-img {
         width: 28px;
     }
-    #info-popup-msg-container {
-        display: none;
-        position: absolute;
-        width: 45%;
-        right: 36px;
-        top: 36px;
-        z-index: 55;
-    }
     #my-statistic-name {
         font-size: 23px;
         top: 115px;
@@ -1482,24 +1474,15 @@
 
     <div id="tree-container" class="column2" style="width: calc(calc(100vw - (100vw - 100%)) - 290px); position: sticky; position: -webkit-sticky; top: 19px; z-index: 10;">
 
-        <div id="info-popup-msg-container" class="container-fluid p-0">
-          <div class="django-message alert m-0 text-center alert-danger alert-dismissible">
-            <button type="button" class="close" onclick="hideInfoPopupMsg()">
-              <span aria-hidden="True">&times;</span>
-            </button>
-            <span id="info-popup-msg"></span>
-          </div>
-        </div>
-
         <div style="z-index: 50; text-align:center; position: absolute; top: 20px; left: 20px;">
             <button id="subtrees-btn" type="button" class="btn" onclick="showSubtreesMenu()">Subtrees</button>
-            {% if from_popup %}
+            {% if main_graph_info and main_graph_info != 'complete' %}
                 <div id="main-popup-options">
                 <button type="button" class="main-popup-options-btn main-reset-btn" onclick="resetMainContentGraph()"
                 title="Returns to the main graph">
                     <img src='{% static 'images/popup/reset-white.png' %}' id='main-popup-options-reset-img' class='main-popup-options-img'>
                 </button>
-                <button type="button" class="main-popup-options-btn main-interchange-btn" onclick="interchangeMain()"
+                <button type="button" class="main-popup-options-btn main-interchange-btn" onclick="swapMain()"
                 title="Open as a Popup">
                     <img src='{% static 'images/popup/interchange-white.png' %}' id='main-popup-options-interchange-img' class='main-popup-options-img'>
                 </button>
@@ -1867,12 +1850,7 @@
     function update_subtrees_menu() {
         let selectFrom = document.getElementById("subtrees-documents-select").value;
         $('#subtrees-menu').html('').load(
-            "{% url 'update_subtrees_menu' %}?selected_item=" + '{{ selected_item }}' + "&from_documents=" + selectFrom,
-            function () {
-                if ('{{ from_popup }}') {
-                    $('[name="open_popup_btn"]').addClass("disabled");
-                }
-            });
+            "{% url 'update_subtrees_menu' %}?selected_item=" + '{{ selected_item }}' + "&from_documents=" + selectFrom);
     }
 
     function showSubtreesMenu(){
@@ -1880,9 +1858,9 @@
     }
 
 
-    if ('{{ from_popup }}') {
-        if ('{{ subtree_name }}') {
-            document.getElementById("my-statistic-name").textContent = "Summary of {{ subtree_name }}";
+    if ('{{ main_graph_info }}' && '{{ main_graph_info }}' !== 'complete'){
+        if ('{{ main_subtree_name }}') {
+            document.getElementById("my-statistic-name").textContent = "Summary of {{ main_subtree_name }}";
         } else {
             document.getElementById("my-statistic-name").textContent="Summary of Subtree";
         }
@@ -1896,35 +1874,19 @@
         // We deactivate the functionalities (filters) that do not belong to the Circle Packing layout
         deactivateFiltersCircle();
     }
-    if ('{{ from_popup }}') {
-        document.getElementById("from_popup_main_input").name = 'from_popup';
-        document.getElementById("from_popup_main_input").value = '{{ from_popup }}';
-    } else if ('{{ from_main }}') {
-        document.getElementById("from_popup_main_input").name = 'from_main';
-        document.getElementById("from_popup_main_input").value = '{{ from_main }}';
+    if ('{{ main_graph_info }}' && '{{ main_graph_info }}' !== 'complete') {
+        document.getElementById("main_graph_info").value = '{{ main_graph_info }}';
+        document.getElementById("main_subtree_nodes_ids").value = '{{ main_subtree_nodes_ids }}';
+        document.getElementById("main_subtree_document_description").value = '{{ main_subtree_document_description }}';
+        document.getElementById("main_subtree_name").value = '{{ main_subtree_name }}';
     }
-    if ('{{ subtree_name }}') {
-        document.getElementById("popupModal").subtree_name = '{{ subtree_name }}';
+    if ('{{ popup_graph_info }}') {
+        document.getElementById("popup_graph_info").value = '{{ popup_graph_info }}';
+        document.getElementById("popup_subtree_nodes_ids").value = '{{ popup_subtree_nodes_ids }}';
+        document.getElementById("popup_subtree_document_description").value = '{{ popup_subtree_document_description }}';
+        document.getElementById("popup_subtree_name").value = '{{ popup_subtree_name }}';
     }
-    if ('{{ from_popup }}' || '{{ from_main }}') {
-        document.getElementById("popupModal").subtree_node_ids = '{{ subtree_nodes_ids }}';
-        document.getElementById("popupModal").subtree_document_description = '{{ subtree_document_description }}';
-
-        let form = document.getElementById("main_form")
-
-        let inputNodesIDs = document.createElement("input");
-        inputNodesIDs.setAttribute("type", "hidden");
-        inputNodesIDs.setAttribute("name", "subtree_nodes_ids");
-        inputNodesIDs.setAttribute("value", '{{ subtree_nodes_ids }}');
-        form.appendChild(inputNodesIDs);
-
-        let inputDocumentDesc = document.createElement("input");
-        inputDocumentDesc.setAttribute("type", "hidden");
-        inputDocumentDesc.setAttribute("name", "subtree_document_description");
-        inputDocumentDesc.setAttribute("value", '{{ subtree_document_description }}');
-        form.appendChild(inputDocumentDesc);
-    }
-    if ('{{ from_popup }}' === 'interchange' || '{{ from_main }}' === 'interchange') {
+    if ('{{ popup_graph_info }}') {
         d3.json('/static/{{ popup_dataset }}', function (error, treeData) {
             let root = treeData;
             var i = 0;
@@ -1938,20 +1900,32 @@
             root.depth = 0;
             recurse(root, null);
 
-            hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
+            hierarchyNamePopup = getHierarchyName(root, L, GFcomp, d_lvl);
             datasetPopup = '/static/{{ popup_dataset }}';
 
-            if ('{{ from_popup }}' === 'interchange') {
+            switch(hierarchyNamePopup) {
+              case "Unspecified": case "nCompact": case "Hybrid":
+                layoutNamePopup = "force";
+                break;
+              case "Elongated":
+                layoutNamePopup = "tree";
+                break;
+              case "Compact":
+                layoutNamePopup = "radial";
+                break;
+            }
+
+            if ('{{ popup_graph_info }}' === 'complete') {
                 document.querySelector(".modal .modal-footer").style.padding = "0.375rem";
                 document.getElementById("send-popup-content").style.display = "none";
                 document.getElementById("add-subtree-form").style.display = "none";
                 document.getElementById("modal-info-alert").style.display = "block";
-            } else if ('{{ from_main }}' === 'interchange') {
-                if ('{{ subtree_name }}') {
+            } else if ('{{ popup_graph_info }}' === 'subtree') {
+                if ('{{ popup_subtree_name }}') {
                     document.querySelector(".modal .modal-footer").style.padding = "0.375rem";
                     document.getElementById("add-subtree-form").style.display = "none";
                     document.getElementById("send-popup-content").style.display = "block";
-                    document.getElementById("modal-subtree-name").innerText = "Subtree {{ subtree_name }}";
+                    document.getElementById("modal-subtree-name").innerText = "Subtree {{ popup_subtree_name }}";
                     document.getElementById("modal-subtree-name").style.display = "block";
                 }
             }
@@ -1961,18 +1935,16 @@
         });
     }
     function resetMainContentGraph(){
-        document.getElementById("from_popup_main_input").name = '';
+        document.getElementById("main_graph_info").value = '';
+        document.getElementById("popup_graph_info").value = '';
         $('#dataset_dropdown').trigger('change');
     }
-    function interchangeMain(){
+    function swapMain(){
 
-        document.getElementById("from_popup_main_input").name = 'from_main';
-        document.getElementById("from_popup_main_input").value = 'interchange';
+        document.getElementById("action_popup").value = 'swap';
 
         let form = document.getElementById("main_form")
         let formData = new FormData(form);
-        formData.append('subtree_nodes_ids', document.getElementById("popupModal").subtree_node_ids);
-        formData.append('subtree_document_description', document.getElementById("popupModal").subtree_document_description);
 
         $.ajax({
             type: "POST",
@@ -1987,27 +1959,6 @@
                 inputLayoutName.setAttribute("name", "best_layout_selected");
                 inputLayoutName.setAttribute("value", "");
                 form.appendChild(inputLayoutName);
-
-                let inputNodesIDs = document.createElement("input");
-                inputNodesIDs.setAttribute("type", "hidden");
-                inputNodesIDs.setAttribute("name", "subtree_nodes_ids");
-                inputNodesIDs.setAttribute("value", document.getElementById("popupModal").subtree_node_ids);
-                form.appendChild(inputNodesIDs);
-
-                currentSubtreeName = document.getElementById("popupModal").subtree_name;
-                if (currentSubtreeName) {
-                    let inputSubtreeName = document.createElement("input");
-                    inputSubtreeName.setAttribute("type", "hidden");
-                    inputSubtreeName.setAttribute("name", "subtree_name");
-                    inputSubtreeName.setAttribute("value", currentSubtreeName);
-                    form.appendChild(inputSubtreeName);
-                }
-
-                let inputDocumentDesc = document.createElement("input");
-                inputDocumentDesc.setAttribute("type", "hidden");
-                inputDocumentDesc.setAttribute("name", "subtree_document_description");
-                inputDocumentDesc.setAttribute("value", document.getElementById("popupModal").subtree_document_description);
-                form.appendChild(inputDocumentDesc);
 
                 d3.json(data, function (error, treeData) {
                     let root = treeData;
@@ -2026,7 +1977,7 @@
                     let layoutNameElem = document.getElementById("layout_name_item");
 
                     switch(hierarchyName) {
-                      case "Unspecified":
+                      case "Unspecified": case "nCompact": case "Hybrid":
                         layoutNameElem.value = "force";
                         break;
                       case "Elongated":
@@ -2034,12 +1985,6 @@
                         break;
                       case "Compact":
                         layoutNameElem.value = "radial";
-                        break;
-                      case "nCompact":
-                        layoutNameElem.value = "force";
-                        break;
-                      case "Hybrid":
-                        layoutNameElem.value = "force";
                         break;
                     }
                     form.submit();
@@ -2053,8 +1998,5 @@
             contentType: false,
             processData: false,
         })
-    }
-    function hideInfoPopupMsg() {
-        document.getElementById("info-popup-msg-container").style.display = "none";
     }
 </script>

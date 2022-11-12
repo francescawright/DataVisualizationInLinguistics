@@ -558,7 +558,7 @@ treeJSON = d3.json(dataset, function (error, json) {
     };
 
     // Used to obtain the nodes belonging to the deepest thread
-    var deepestNodesPath;
+    var deepestNodesPath, largestNodesPath;
 
     var imgRatio = 20; //Percentage of difference between the radii of a node and its associated image
 
@@ -2235,65 +2235,6 @@ treeJSON = d3.json(dataset, function (error, json) {
     /*END section */
 
     /**
-     * Recursive function to count the total number of descendants and
-     * the total number of nodes by toxicity
-     * */
-    function getDescendants(node) {
-
-        if (!node.children && !node._children) {
-            return {
-                children: 0,
-                toxicityLevel: node.toxicity_level,
-                toxicity0: 0,
-                toxicity1: 0,
-                toxicity2: 0,
-                toxicity3: 0
-            };
-        }
-        var total = 0, childrenList = [], totalToxic0 = 0, totalToxic1 = 0, totalToxic2 = 0, totalToxic3 = 0;
-
-        var children = node.children ?? node._children;
-
-
-        if (children) {
-            children.forEach(function (d) {
-
-                childrenList = getDescendants(d);
-                total += childrenList.children + 1;
-
-                totalToxic0 += childrenList.toxicity0;
-                totalToxic1 += childrenList.toxicity1;
-                totalToxic2 += childrenList.toxicity2;
-                totalToxic3 += childrenList.toxicity3;
-
-                switch (childrenList.toxicityLevel) {
-                    case 0:
-                        totalToxic0 += 1;
-                        break;
-                    case 1:
-                        totalToxic1 += 1;
-                        break;
-                    case 2:
-                        totalToxic2 += 1;
-                        break;
-                    case 3:
-                        totalToxic3 += 1;
-                        break;
-                }
-            })
-        }
-
-        return {
-            children: total,
-            toxicityLevel: node.toxicity_level,
-            toxicity0: totalToxic0,
-            toxicity1: totalToxic1,
-            toxicity2: totalToxic2,
-            toxicity3: totalToxic3
-        };
-    }
-
-    /**
      * Recursive function to compute the global statistics
      * counts nodes by toxicity and by targets
      * */
@@ -2481,7 +2422,7 @@ treeJSON = d3.json(dataset, function (error, json) {
                         .html(tooltipText);
                 }
                 else if(d == root){
-                    tooltipText = writeTooltipRoot(d, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
+                    tooltipText = writeTooltipRoot(d, numberOfDirectNodes, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
                     tooltip.style("visibility", "visible").html(tooltipText);
                 }
             })
@@ -2502,7 +2443,7 @@ treeJSON = d3.json(dataset, function (error, json) {
                         if(!isDblclick) { // A simple click.
                             click(d, eventDefaultPrevented);
                             if (document.querySelector("#tree-container div.my-statistic").style.visibility === "visible") {
-                                statisticBackground.html(writeStatisticText());
+                                statisticBackground.html(writeStatisticText(root));
                             }
                         }
                     }, timeoutTiming);
@@ -2625,13 +2566,13 @@ treeJSON = d3.json(dataset, function (error, json) {
             if (!static_values_checked) {
                 document.getElementById('static_values_button').innerHTML = '&#8722;';
                 static_values_checked = true;
-                statisticBackground.style("visibility", "visible").html(writeStatisticText());
+                statisticBackground.style("visibility", "visible").html(writeStatisticText(root));
                 console.log('[User]', user.split('/')[2], '| [interaction]', 'show_summary', ' | [Date]', Date.now());
 
             } else {
                 document.getElementById('static_values_button').innerHTML = '&#43;'
                 static_values_checked = false;
-                statisticBackground.style("visibility", "hidden").html(writeStatisticText());
+                statisticBackground.style("visibility", "hidden").html(writeStatisticText(root));
                 console.log('[User]', user.split('/')[2], '| [interaction]', 'hide_summary', ' | [Date]', Date.now());
 
             }
@@ -2713,7 +2654,7 @@ treeJSON = d3.json(dataset, function (error, json) {
                         }
                         checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
                         if (static_values_checked) {
-                            statisticBackground.html(writeStatisticText());
+                            statisticBackground.html(writeStatisticText(root));
                         }
                     })
                 });
@@ -2742,7 +2683,7 @@ treeJSON = d3.json(dataset, function (error, json) {
                         }
                         checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
                         if (static_values_checked) {
-                            statisticBackground.html(writeStatisticText());
+                            statisticBackground.html(writeStatisticText(root));
                         }
                     })
                 });
@@ -2768,24 +2709,7 @@ treeJSON = d3.json(dataset, function (error, json) {
          */
         $(container).off("longest_thread");
         $(container).on("longest_thread", function () {
-            let deepestNodes = getDeepestNodes(root);
-
-            var textMsg;
-            if (deepestNodes.length > 1) {
-                textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
-            } else {
-                textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
-            }
-
-            injectIntentConversation(textMsg);
-
-            deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
-            // document.getElementById("jsConnector").innerHTML = ["longest_thread", deepestNodes.length, deepestNodes[0].depth].toString();
-            highlightLongestThread(nodes, root, opacityValue, deepestNodesPath, node, link);
-
-            if (static_values_checked) {
-                statisticBackground.html(writeStatisticText());
-            }
+            longestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, deepestNodesPath, node, link);
         });
 
         /**
@@ -2794,21 +2718,16 @@ treeJSON = d3.json(dataset, function (error, json) {
          */
         $(container).off("widest_level");
         $(container).on("widest_level", function () {
-            let widestLevels = getWidestLevels(root, getTreeHeight(root));
-            var textMsg;
-            if (widestLevels[0].length > 1) {
-                textMsg = "There are " + widestLevels[0].length + " levels &#91;" + widestLevels[0] + "&#93; with a maximum width of " + widestLevels[1];
-            } else {
-                textMsg = "The widest level is level " + widestLevels[0][0] + " which has a width of " + widestLevels[1];
-            }
+            widestLevelHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
+        });
 
-            injectIntentConversation(textMsg);
-
-            highlightWidestLevels(nodes, opacityValue, node, link, widestLevels[0]);
-
-            if (static_values_checked) {
-                statisticBackground.html(writeStatisticText());
-            }
+        /**
+         * Gets the array of nodes belonging to the largest threads, highlights them,
+         * updating the network statistics, and displays the result in the chat
+         */
+        $(container).off("largest_thread");
+        $(container).on("largest_thread", function () {
+            largestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, largestNodesPath, node, link);
         });
 
         checkboxesTargets.forEach(function (checkboxItem) {
@@ -3003,28 +2922,10 @@ treeJSON = d3.json(dataset, function (error, json) {
         zoomListener.event(svg);
     });
 
-    /**
-     * Wrap call to compute statistics and to write them in a hover text
-     * */
-    function computeStatistics() {
-        //I compute the values for the statistic data showing in the background
-        var listStatistics = getStatisticValues(root);
-        var totalNumberOfNodes = listStatistics.children;
-
-        var totalNotToxic = listStatistics.toxicity0,
-            totalMildlyToxic = listStatistics.toxicity1,
-            totalToxic = listStatistics.toxicity2,
-            totalVeryToxic = listStatistics.toxicity3;
-
-        var totalGroup = listStatistics.totalTargGroup,
-            totalPerson = listStatistics.totalTargPerson,
-            totalStereotype = listStatistics.totalTargStereotype,
-            totalNone = listStatistics.totalTargNone;
-    }
-
     //I compute the values for the statistic data showing in the background
     var listStatistics = getStatisticValues(root);
-    var totalNumberOfNodes = listStatistics.children;
+    var numberOfDirectNodes = root.children ? root.children.length : 0,
+        totalNumberOfNodes = listStatistics.children;
 
     var totalNotToxic = listStatistics.toxicity0,
         totalMildlyToxic = listStatistics.toxicity1,
@@ -3036,137 +2937,5 @@ treeJSON = d3.json(dataset, function (error, json) {
         totalStereotype = listStatistics.totalTargStereotype,
         totalNone = listStatistics.totalTargNone;
 
-    function writeStatisticText() {
-        // var statisticText = "<span style='font-size: 22px;'> Summary of " + sel_item.split('/')[2] + "</span>";
-        var statisticText = "<table style='width: 530px; margin-top: 50px; z-index: 100;'>";
-
-        var listStatisticsUpdate = getStatisticValues(root);
-
-        var totalNotToxicUpdate = listStatisticsUpdate.toxicity0,
-            totalMildlyToxicUpdate = listStatisticsUpdate.toxicity1,
-            totalToxicUpdate = listStatisticsUpdate.toxicity2,
-            totalVeryToxicUpdate = listStatisticsUpdate.toxicity3;
-
-        var totalGroupUpdate = listStatisticsUpdate.totalTargGroup,
-            totalPersonUpdate = listStatisticsUpdate.totalTargPerson,
-            totalStereotypeUpdate = listStatisticsUpdate.totalTargStereotype,
-            totalNoneUpdate = listStatisticsUpdate.totalTargNone;
-
-        var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
-        var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
-        var statValuesTox = [totalNotToxicUpdate, totalMildlyToxicUpdate, totalToxicUpdate, totalVeryToxicUpdate];
-        var statValuesTarg = [totalGroupUpdate, totalPersonUpdate, totalStereotypeUpdate, totalNoneUpdate];
-
-        for (var i = 0; i < statTitlesToxicity.length; i++) {
-            statisticText += "<tr style='font-size: 20px;'>"; //Start table line
-
-            //Write toxicity and target line
-            statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td style='padding-right: 55px;'>" + statValuesTox[i].toString() + "</td>";
-            statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
-
-            statisticText += "</tr>"; //End table line
-        }
-
-        statisticText += "</table>";
-        return statisticText;
-    }
-
     console.log('[User]', user.split('/')[2], '| [interaction]', 'Force_layout_loaded', ' | [Date]', Date.now());
-
-/*******************************
-*   Categorization Functions   *
-********************************/
-
-    /**
-     * Function that returns the height of a tree given its root node
-     * @param node tree root
-     * @returns {number} number of levels in subtree
-     */
-    function getTreeHeight(node) {
-        if (!node.children) {
-            return 0;
-        }
-        let maxHeight = 0;
-        if (node.children) {
-            node.children.forEach(function (d) {
-                let currentHeight = getTreeHeight(d)+1;
-                if (currentHeight > maxHeight) {
-                    maxHeight = currentHeight;
-                }
-            });
-        }
-        return maxHeight;
-    }
-
-    /**
-     * Finding the deepest nodes in a hierarchy
-     * @param node tree root
-     * @returns {Array} array of nodes with greater depth
-     */
-    function getDeepestNodes(node) {
-        let hierarchy = d3.hierarchy(node);
-        let lenght = d3.max(hierarchy.descendants(), d => d.depth);
-        return hierarchy.descendants().filter(function (d) {
-            return (d.depth === lenght);
-        });
-    }
-
-    /**
-     * Finds the path between end nodes and the root in a hierarchy
-     * By default, if the parameter endNodes is not provided, the function finds the deepest nodes path in a hierarchy
-     * @param root tree root
-     * @param endNodes End nodes array to find their thread to the root
-     * @returns {Array} array of nodes that belong to the threads between the end nodes and the root.
-     * If the parameter endNodes is not provided, returns array of nodes that belong to the threads with greater depth.
-     */
-    function getDeepestNodesPath(root, endNodes = getDeepestNodes(root)) {
-        let nodesPath = [];
-        let deepestNodes = endNodes;
-        let currentNode;
-        for (let i = 0; i < deepestNodes.length; i++) {
-            currentNode = deepestNodes[i];
-            while(currentNode.data !== root){
-                nodesPath.push(currentNode.data);
-                currentNode = currentNode.parent;
-            }
-        }
-        nodesPath.push(root);
-        return nodesPath;
-    }
-
-    /**
-     * auxiliar function that returns the number of nodes in a given level
-     * @param node tree root
-     * @param current current level in tree
-     * @param level desired level to scan
-     * @param nodeList list of nodes at desired level
-     */
-    function getNodesInLevel(node, current, level, nodeList) {
-        nodeList[current] += 1;
-        if (current < level && node.children) {
-            node.children.forEach(function (d) {
-               getNodesInLevel(d, current+1, level, nodeList);
-            });
-        }
-    }
-
-    /**
-     * function that returns the widest levels of a subtree and its width value, given its root node
-     * @param node tree root
-     * @param height depth of tree
-     * @returns {Array} graph level indexes with the greatest width
-     */
-    function getWidestLevels(node, height) {
-        var nodeList = new Array(height+1).fill(0);
-        if (height === 0) { return [[0],1]; }
-        getNodesInLevel(node, 0, height, nodeList);
-        const max = Math.max(...nodeList);
-        const indexes = [];
-        for (let index = 0; index < nodeList.length; index++) {
-          if (nodeList[index] === max) {
-            indexes.push(index);
-          }
-        }
-        return [indexes,max];
-    }
 });

@@ -37,8 +37,6 @@
     <input id="layout_name_chat" type="hidden" name="best_layout_selected" value="">
 </form>
 
-<!-- <div id="jsConnector" style="display: none;"></div> -->
-
 <!-- Rasa WebChat Style -->
 
 <style>
@@ -168,52 +166,6 @@
         localStorage.clear();
     }
 
-    {% comment %}
-    // Set a listener for when an element is modified
-    var values;
-    var textMsg;
-    // Select the target node.
-    var target = document.getElementById('jsConnector');
-    // Create an observer instance.
-    var observer = new MutationObserver(function(mutations) {
-        values = target.innerHTML.split(",");
-        if (values[0] === "longest_thread") {
-            if (values[1] > 1) {
-                textMsg = "I have found " + parseInt(values[1]) + " threads with a maximum depth of " + parseInt(values[2]);
-            } else {
-                textMsg = "Here is the longest thread and it has a depth of " + values[2];
-            }
-        }
-        addChatBotMessage(textMsg)
-    });
-    // Pass in the target node, as well as the observer options.
-    observer.observe(target, {
-        attributes:    true,
-        childList:     true,
-        characterData: true
-    });
-
-    function addChatBotMessage(textMsg) {
-        let imgsrc = document.querySelector(".rw-header-and-loading img.rw-avatar").src;
-        //let html = '<div class="rw-message rw-typing-indication rw-with-avatar"><img src="' + imgsrc + '" class="rw-avatar" alt="profile"><div class="rw-response"><div id="wave"><span class="rw-dot"></span><span class="rw-dot"></span><span class="rw-dot"></span></div></div></div>';
-        let html = '<div class="rw-group-message rw-from-response"><div class="rw-message rw-with-avatar"><img src="' + imgsrc + '" class="rw-avatar" alt="profile"><div class="rw-response"><div class="rw-message-text"><div class="rw-markdown"><p>' + textMsg + ' </p></div></div></div></div></div>'
-        document.getElementById("rw-messages").appendChild(htmlToElement(html));
-        addToLocalStorageObject("chat_session", "conversation", textMsg);
-    }
-
-    /**
-     * @param {String} html representing a single element
-     * @return {Element}
-     */
-    function htmlToElement(html) {
-        var template = document.createElement('template');
-        html = html.trim(); // Never return a text node of whitespace as the result
-        template.innerHTML = html;
-        return template.content.firstChild;
-    }
-
-    {% endcomment %}
-
     function botMessageEvent(e) {
         console.log('the bot said something: ' + e.text);
         if (e.text) {
@@ -298,7 +250,7 @@
                                 let hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
                                 let layout;
                                 switch (hierarchyName) {
-                                    case "Unspecified":
+                                    case "Unspecified": case "nCompact": case "Hybrid":
                                         layout = "force";
                                         break;
                                     case "Elongated":
@@ -306,12 +258,6 @@
                                         break;
                                     case "Compact":
                                         layout = "radial";
-                                        break;
-                                    case "nCompact":
-                                        layout = "force";
-                                        break;
-                                    case "Hybrid":
-                                        layout = "force";
                                         break;
                                 }
                                 if ('{{ selected_item }}') {
@@ -374,7 +320,9 @@
                         } else if (messageList[1] === "treeMap_layout_button" && document.getElementById("treeMap_label").classList.contains("active")) {
                             e.text = "Already in the layout Circle Packing";
                         } else {
-                            e.text = "Layout changed";
+                            e.hidden = true;
+                            document.getElementById(messageList[1]).from_chat = true;
+                            document.getElementById(messageList[1]).from_chat_msg = messageList[2];
                             document.getElementById(messageList[1]).click();
                         }
                     } else {
