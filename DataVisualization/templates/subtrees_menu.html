@@ -109,6 +109,11 @@
                         layoutNameElem.value = "radial";
                         break;
                     }
+                    let inputBestLayout = document.createElement("input");
+                    inputBestLayout.setAttribute("type", "hidden");
+                    inputBestLayout.setAttribute("name", "best_layout_selected");
+                    inputBestLayout.setAttribute("value", "true");
+                    form.appendChild(inputBestLayout);
                     form.submit();
                 });
             },

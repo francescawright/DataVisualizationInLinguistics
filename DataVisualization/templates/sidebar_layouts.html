@@ -1921,7 +1921,7 @@
     }
     function swapMain(){
 
-        document.getElementById("action_popup").value = 'swap';
+        document.getElementById("action_popup").value = 'send_to_popup';
 
         let form = document.getElementById("main_form")
         let formData = new FormData(form);
@@ -1932,35 +1932,44 @@
             data: formData,
             // handle a successful response
             success: function (data) {
-                d3.json(data, function (error, treeData) {
-                    let root = treeData;
-                    var i = 0;
-                    function recurse(node, parent) {
-                        node.parent = parent; //We assign a parent to the node
-                        if (parent) node.depth = node.parent.depth + 1; //If parent is not null
-                        if (node.children) node.children.forEach(element => recurse(element, node));
-                        if (!node.id) node.id = ++i;
-                    }
-                    root.depth = 0;
-                    recurse(root, null);
-
-                    let hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
-                    document.getElementById("popup_hierarchy_name").value = hierarchyName;
-                    let layoutNameElem = document.getElementById("popup_layout_name");
-
-                    switch(hierarchyName) {
-                      case "Unspecified": case "nCompact": case "Hybrid":
-                        layoutNameElem.value = "force";
-                        break;
-                      case "Elongated":
-                        layoutNameElem.value = "tree";
-                        break;
-                      case "Compact":
-                        layoutNameElem.value = "radial";
-                        break;
-                    }
+                if (document.getElementById("popup_graph_info").value) {
                     form.submit();
-                });
+                } else {
+                    d3.json(data, function (error, treeData) {
+                        let root = treeData;
+                        var i = 0;
+                        function recurse(node, parent) {
+                            node.parent = parent; //We assign a parent to the node
+                            if (parent) node.depth = node.parent.depth + 1; //If parent is not null
+                            if (node.children) node.children.forEach(element => recurse(element, node));
+                            if (!node.id) node.id = ++i;
+                        }
+                        root.depth = 0;
+                        recurse(root, null);
+
+                        let hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
+                        document.getElementById("popup_hierarchy_name").value = hierarchyName;
+                        let layoutNameElem = document.getElementById("popup_layout_name");
+
+                        switch(hierarchyName) {
+                          case "Unspecified": case "nCompact": case "Hybrid":
+                            layoutNameElem.value = "force";
+                            break;
+                          case "Elongated":
+                            layoutNameElem.value = "tree";
+                            break;
+                          case "Compact":
+                            layoutNameElem.value = "radial";
+                            break;
+                        }
+                        let inputBestLayout = document.createElement("input");
+                        inputBestLayout.setAttribute("type", "hidden");
+                        inputBestLayout.setAttribute("name", "best_layout_selected");
+                        inputBestLayout.setAttribute("value", "true");
+                        form.appendChild(inputBestLayout);
+                        form.submit();
+                    });
+                }
             },
             // handle a non-successful response
             error: function(jqXHR, textStatus, errorThrown) { // on error..

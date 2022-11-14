@@ -14,7 +14,11 @@
         let elements = document.getElementsByClassName("django-message");
 
         for (let j = 0; j < elements.length; j++) {
-            setTimeout(function(){ elements[0].parentNode.removeChild(elements[0]); }, 5000);
+            setTimeout(function(){
+                if (elements[0]){
+                    elements[0].parentNode.removeChild(elements[0]);
+                }
+            }, 5000);
         }
     })();
 </script>

@@ -307,7 +307,6 @@
                 data: formData,
                 // handle a successful response
                 success: function (data) {
-
                     d3.json(data, function (error, treeData) {
                         let root = treeData;
                         var i = 0;
@@ -336,6 +335,11 @@
                             layoutNameElem.value = "radial";
                             break;
                         }
+                        let inputBestLayout = document.createElement("input");
+                        inputBestLayout.setAttribute("type", "hidden");
+                        inputBestLayout.setAttribute("name", "best_layout_selected");
+                        inputBestLayout.setAttribute("value", "true");
+                        form.appendChild(inputBestLayout);
                         form.submit();
                     });
                 },

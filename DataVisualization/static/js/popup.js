@@ -1304,6 +1304,7 @@ $(popup_container).on("open", function () {
                 break;
             case "circle":
                 modalBodyJQuery.removeClass('tree radial force').addClass("circle");
+                $(".modal .modal-content").resizable( "option", "aspectRatio", true );
                 circleModalButton.css('opacity', '1');
                 createCircleGraph();
                 break;
@@ -4687,6 +4688,7 @@ $(popup_container).on("open", function () {
             initialZoomScalePopup = 0.1;
             minZoomPopup = 0.05;
             maxZoomPopup = 8;
+            currentZoomScalePopup = initialZoomScalePopup;
 
             //Node radius
             minNodeRadiusPopup = 30;
@@ -6957,6 +6959,7 @@ $(popup_container).on("open", function () {
             initialZoomScalePopup = 0.2; //Initial zoom scale to display almost the whole graph
             minZoomPopup = 0.05;
             maxZoomPopup = 8; //Zoom range
+            currentZoomScalePopup = initialZoomScalePopup;
 
             //Node radius
             minNodeRadiusPopup = 15;

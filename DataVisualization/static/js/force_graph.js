@@ -8,8 +8,8 @@ let link, node;
 
 //Zoom
 const minZoom = 0.05, maxZoom = 8; //Zoom range
-let currentZoomScale; //Current scale
 const initialZoomScale = 0.1; //Initial zoom scale to display almost the whole graph
+let currentZoomScale = initialZoomScale; //Current scale
 
 
 //Node radius
@@ -2509,7 +2509,7 @@ treeJSON = d3.json(dataset, function (error, json) {
                 }
             })
             .style("stroke", "black")
-            .style("stroke-width", getNodeStrokeWidth())
+            .style("stroke-width", getNodeStrokeWidth()) // Display the border thickness of nodes
             .style("z-index", 3);
 
         visualiseRootIcon(node); //Draw an icon for the root node
@@ -2922,9 +2922,6 @@ treeJSON = d3.json(dataset, function (error, json) {
     // Dispatch the event.
     document.querySelector("body").dispatchEvent(event);
     mainLayoutReady = true;
-
-    // Display the border thickness of nodes (stroke-width)
-    // TODO
 
     //I compute the values for the statistic data showing in the background
     var listStatistics = getStatisticValues(root);
