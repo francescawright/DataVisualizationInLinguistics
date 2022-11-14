@@ -178,10 +178,14 @@
             <input type="hidden" id="main_subtree_nodes_ids" name="main_subtree_nodes_ids" value="">
             <input type="hidden" id="main_subtree_document_description" name="main_subtree_document_description" value='{{ selected_item }}'>
             <input type="hidden" id="main_subtree_name" name="main_subtree_name" value="">
+            <input type="hidden" id="main_hierarchy_name" name="main_hierarchy_name" value="">
+            <input type="hidden" id="main_layout_name" name="main_layout_name" value="">
             <input type="hidden" id="popup_graph_info" name="popup_graph_info" value="">
             <input type="hidden" id="popup_subtree_nodes_ids" name="popup_subtree_nodes_ids" value="">
             <input type="hidden" id="popup_subtree_document_description" name="popup_subtree_document_description" value="">
             <input type="hidden" id="popup_subtree_name" name="popup_subtree_name" value="">
+            <input type="hidden" id="popup_hierarchy_name" name="popup_hierarchy_name" value="">
+            <input type="hidden" id="popup_layout_name" name="popup_layout_name" value="">
             <input type="hidden" id="main_subtree_id" name="main_subtree_id" value="">
             <input type="hidden" id="popup_subtree_id" name="popup_subtree_id" value="">
             <input type="hidden" id="action_popup" name="action_popup" value="">
@@ -239,12 +243,12 @@
             <img
                     src="{% static 'images/nav_bar/radialLayout.svg' %}" style="width: 60px;">
         </label>
-        <label id="treeMap_label" style="min-width: 210px; height:fit-content;"
-               {% if checked_layout == "treeMap" %}class="btn btn-outline-primary active"
+        <label id="circle_label" style="min-width: 210px; height:fit-content;"
+               {% if checked_layout == "circle" %}class="btn btn-outline-primary active"
                {% else %}class="btn btn-outline-primary"{% endif %}>
-            <input type="radio" id="treeMap_layout_button" form="main_form"
-                   name="treeMap_layout_button" value="checked" autocomplete="off"
-                   {% if checked_layout == "treeMap" %}checked{% endif %}>Circle Packing&#8195;
+            <input type="radio" id="circle_layout_button" form="main_form"
+                   name="circle_layout_button" value="checked" autocomplete="off"
+                   {% if checked_layout == "circle" %}checked{% endif %}>Circle Packing&#8195;
             <img
                     src="{% static 'images/nav_bar/circlePacking.svg' %}" style="width: 60px;">
         </label>
@@ -278,8 +282,21 @@
     $(document).ready(function () {
         $('#dataset_dropdown').change(function () {
 
-            document.getElementById("main_graph_info").value = '';
+            document.getElementById("main_graph_info").value = 'complete';
+            document.getElementById("main_subtree_nodes_ids").value = '';
+            document.getElementById("main_subtree_document_description").value = '';
+            document.getElementById("main_subtree_name").value = '';
+            document.getElementById("main_hierarchy_name").value = '';
+            document.getElementById("main_layout_name").value = '';
+            document.getElementById("main_subtree_id").value = '';
+
             document.getElementById("popup_graph_info").value = '';
+            document.getElementById("popup_subtree_nodes_ids").value = '';
+            document.getElementById("popup_subtree_document_description").value = '';
+            document.getElementById("popup_subtree_name").value = '';
+            document.getElementById("popup_hierarchy_name").value = '';
+            document.getElementById("popup_layout_name").value = '';
+            document.getElementById("popup_subtree_id").value = '';
 
             let form = document.getElementById("main_form")
             let formData = new FormData(form);
@@ -290,13 +307,6 @@
                 data: formData,
                 // handle a successful response
                 success: function (data) {
-
-                    let inputLayoutName = document.createElement("input");
-                    inputLayoutName.setAttribute("id", "layout_name_item");
-                    inputLayoutName.setAttribute("type", "hidden");
-                    inputLayoutName.setAttribute("name", "best_layout_selected");
-                    inputLayoutName.setAttribute("value", "");
-                    form.appendChild(inputLayoutName);
 
                     d3.json(data, function (error, treeData) {
                         let root = treeData;
@@ -312,7 +322,8 @@
                         recurse(root, null);
 
                         let hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
-                        let layoutNameElem = document.getElementById("layout_name_item");
+                        document.getElementById("main_hierarchy_name").value = hierarchyName;
+                        let layoutNameElem = document.getElementById("main_layout_name");
 
                         switch(hierarchyName) {
                           case "Unspecified": case "nCompact": case "Hybrid":
@@ -387,9 +398,10 @@
         document.getElementById("force_label").className = "btn btn-primary";
         $('#radial_layout_button').prop("checked", false);
         document.getElementById("radial_label").className = "btn btn-primary";
-        $('#treeMap_layout_button').prop("checked", false);
-        document.getElementById("treeMap_label").className = "btn btn-primary";
+        $('#circle_layout_button').prop("checked", false);
+        document.getElementById("circle_label").className = "btn btn-primary";
 
+        document.getElementById("main_layout_name").value = 'tree';
         addChangedLayoutInputs("tree_layout_button");
         $('#main_form').submit();
     });
@@ -401,9 +413,10 @@
         document.getElementById("force_label").className = "btn btn-primary active";
         $('#radial_layout_button').prop("checked", false);
         document.getElementById("radial_label").className = "btn btn-primary";
-        $('#treeMap_layout_button').prop("checked", false);
-        document.getElementById("treeMap_label").className = "btn btn-primary";
+        $('#circle_layout_button').prop("checked", false);
+        document.getElementById("circle_label").className = "btn btn-primary";
 
+        document.getElementById("main_layout_name").value = 'force';
         addChangedLayoutInputs("force_layout_button");
         $('#main_form').submit();
     });
@@ -415,14 +428,15 @@
         document.getElementById("force_label").className = "btn btn-primary";
         $(this).prop("checked", true);
         document.getElementById("radial_label").className = "btn btn-primary active";
-        $('#treeMap_layout_button').prop("checked", false);
-        document.getElementById("treeMap_label").className = "btn btn-primary";
+        $('#circle_layout_button').prop("checked", false);
+        document.getElementById("circle_label").className = "btn btn-primary";
 
+        document.getElementById("main_layout_name").value = 'radial';
         addChangedLayoutInputs("radial_layout_button");
         $('#main_form').submit();
     });
 
-    jQuery("#treeMap_layout_button").click(function () {
+    jQuery("#circle_layout_button").click(function () {
         $('#tree_layout_button').prop("checked", false);
         document.getElementById("tree_label").className = "btn btn-primary";
         $('#force_layout_button').prop("checked", false);
@@ -430,9 +444,10 @@
         document.getElementById("radial_label").className = "btn btn-primary";
         $('#radial_layout_button').prop("checked", false);
         $(this).prop("checked", true);
-        document.getElementById("treeMap_label").className = "btn btn-primary active";
+        document.getElementById("circle_label").className = "btn btn-primary active";
 
-        addChangedLayoutInputs("treeMap_layout_button");
+        document.getElementById("main_layout_name").value = 'circle';
+        addChangedLayoutInputs("circle_layout_button");
         $('#main_form').submit();
     });
 

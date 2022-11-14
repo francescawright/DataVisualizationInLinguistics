@@ -11,6 +11,9 @@ var layoutNamePopup;
 var hierarchyNameMain;
 var layoutNameMain;
 
+// Variable to ensure that the zoom events of the main window and the popup do not coincide
+var mainLayoutReady = false;
+
 /*******************************
 *   Categorization Functions   *
 ********************************/
@@ -1380,6 +1383,9 @@ function subtreeToPopup(root, nodesPath, fromCircle = false){
                     layoutNamePopup = "radial";
                     break;
                 }
+
+                document.getElementById("popup_hierarchy_name").value = hierarchyNamePopup;
+                document.getElementById("popup_layout_name").value = layoutNamePopup;
 
                 if (!document.getElementById("graph-container")) {
                     $("#popup-btn").click();

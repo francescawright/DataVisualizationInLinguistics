@@ -2917,10 +2917,14 @@ treeJSON = d3.json(dataset, function (error, json) {
     zoomListener.translate([canvasWidth / 2, canvasHeight / 2]);
     zoomListener.event(svg);
 
+    // To notify the DOM that the initial zoom of the main window layout has finished executing
+    const event = new Event('mainLayoutReady');
+    // Dispatch the event.
+    document.querySelector("body").dispatchEvent(event);
+    mainLayoutReady = true;
+
     // Display the border thickness of nodes (stroke-width)
-    $(document).ready(function () {
-        zoomListener.event(svg);
-    });
+    // TODO
 
     //I compute the values for the statistic data showing in the background
     var listStatistics = getStatisticValues(root);

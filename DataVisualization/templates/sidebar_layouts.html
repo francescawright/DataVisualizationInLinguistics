@@ -216,7 +216,7 @@
         width: 24px;
     }
     #main-popup-options-interchange-img {
-        width: 28px;
+        width: 22px;
     }
     #my-statistic-name {
         font-size: 23px;
@@ -1480,11 +1480,11 @@
                 <div id="main-popup-options">
                 <button type="button" class="main-popup-options-btn main-reset-btn" onclick="resetMainContentGraph()"
                 title="Returns to the main graph">
-                    <img src='{% static 'images/popup/reset-white.png' %}' id='main-popup-options-reset-img' class='main-popup-options-img'>
+                    <img src='{% static 'images/popup/home.png' %}' id='main-popup-options-reset-img' class='main-popup-options-img'>
                 </button>
                 <button type="button" class="main-popup-options-btn main-interchange-btn" onclick="swapMain()"
-                title="Open as a Popup">
-                    <img src='{% static 'images/popup/interchange-white.png' %}' id='main-popup-options-interchange-img' class='main-popup-options-img'>
+                title="Show as Popup">
+                    <img src='{% static 'images/popup/send-to-popup.png' %}' id='main-popup-options-interchange-img' class='main-popup-options-img'>
                 </button>
                 </div>
             {% endif %}
@@ -1874,6 +1874,10 @@
         // We deactivate the functionalities (filters) that do not belong to the Circle Packing layout
         deactivateFiltersCircle();
     }
+
+    document.getElementById("main_hierarchy_name").value = '{{ main_hierarchy_name }}';
+    document.getElementById("main_layout_name").value = '{{ main_layout_name }}';
+
     if ('{{ main_graph_info }}' && '{{ main_graph_info }}' !== 'complete') {
         document.getElementById("main_graph_info").value = '{{ main_graph_info }}';
         document.getElementById("main_subtree_nodes_ids").value = '{{ main_subtree_nodes_ids }}';
@@ -1887,56 +1891,32 @@
         document.getElementById("popup_subtree_name").value = '{{ popup_subtree_name }}';
     }
     if ('{{ popup_graph_info }}') {
-        d3.json('/static/{{ popup_dataset }}', function (error, treeData) {
-            let root = treeData;
-            var i = 0;
+        hierarchyNamePopup = '{{ popup_hierarchy_name }}';
+        layoutNamePopup = '{{ popup_layout_name }}';
+        datasetPopup = '/static/{{ popup_dataset }}';
 
-            function recurse(node, parent) {
-                node.parent = parent; //We assign a parent to the node
-                if (parent) node.depth = node.parent.depth + 1; //If parent is not null
-                if (node.children) node.children.forEach(element => recurse(element, node));
-                if (!node.id) node.id = ++i;
-            }
-            root.depth = 0;
-            recurse(root, null);
+        document.getElementById("popup_hierarchy_name").value = hierarchyNamePopup;
+        document.getElementById("popup_layout_name").value = layoutNamePopup;
 
-            hierarchyNamePopup = getHierarchyName(root, L, GFcomp, d_lvl);
-            datasetPopup = '/static/{{ popup_dataset }}';
-
-            switch(hierarchyNamePopup) {
-              case "Unspecified": case "nCompact": case "Hybrid":
-                layoutNamePopup = "force";
-                break;
-              case "Elongated":
-                layoutNamePopup = "tree";
-                break;
-              case "Compact":
-                layoutNamePopup = "radial";
-                break;
-            }
-
-            if ('{{ popup_graph_info }}' === 'complete') {
+        if ('{{ popup_graph_info }}' === 'complete') {
+            document.querySelector(".modal .modal-footer").style.padding = "0.375rem";
+            document.getElementById("send-popup-content").style.display = "none";
+            document.getElementById("add-subtree-form").style.display = "none";
+            document.getElementById("modal-info-alert").style.display = "block";
+        } else if ('{{ popup_graph_info }}' === 'subtree') {
+            if ('{{ popup_subtree_name }}') {
                 document.querySelector(".modal .modal-footer").style.padding = "0.375rem";
-                document.getElementById("send-popup-content").style.display = "none";
                 document.getElementById("add-subtree-form").style.display = "none";
-                document.getElementById("modal-info-alert").style.display = "block";
-            } else if ('{{ popup_graph_info }}' === 'subtree') {
-                if ('{{ popup_subtree_name }}') {
-                    document.querySelector(".modal .modal-footer").style.padding = "0.375rem";
-                    document.getElementById("add-subtree-form").style.display = "none";
-                    document.getElementById("send-popup-content").style.display = "block";
-                    document.getElementById("modal-subtree-name").innerText = "Subtree {{ popup_subtree_name }}";
-                    document.getElementById("modal-subtree-name").style.display = "block";
-                }
+                document.getElementById("send-popup-content").style.display = "block";
+                document.getElementById("modal-subtree-name").innerText = "Subtree {{ popup_subtree_name }}";
+                document.getElementById("modal-subtree-name").style.display = "block";
             }
+        }
 
-            $("#popup-btn").click();
-            $(popup_container).trigger("open");
-        });
+        $("#popup-btn").click();
+        $(popup_container).trigger("open");
     }
     function resetMainContentGraph(){
-        document.getElementById("main_graph_info").value = '';
-        document.getElementById("popup_graph_info").value = '';
         $('#dataset_dropdown').trigger('change');
     }
     function swapMain(){
@@ -1952,18 +1932,9 @@
             data: formData,
             // handle a successful response
             success: function (data) {
-
-                let inputLayoutName = document.createElement("input");
-                inputLayoutName.setAttribute("id", "layout_name_item");
-                inputLayoutName.setAttribute("type", "hidden");
-                inputLayoutName.setAttribute("name", "best_layout_selected");
-                inputLayoutName.setAttribute("value", "");
-                form.appendChild(inputLayoutName);
-
                 d3.json(data, function (error, treeData) {
                     let root = treeData;
                     var i = 0;
-
                     function recurse(node, parent) {
                         node.parent = parent; //We assign a parent to the node
                         if (parent) node.depth = node.parent.depth + 1; //If parent is not null
@@ -1974,7 +1945,8 @@
                     recurse(root, null);
 
                     let hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
-                    let layoutNameElem = document.getElementById("layout_name_item");
+                    document.getElementById("popup_hierarchy_name").value = hierarchyName;
+                    let layoutNameElem = document.getElementById("popup_layout_name");
 
                     switch(hierarchyName) {
                       case "Unspecified": case "nCompact": case "Hybrid":

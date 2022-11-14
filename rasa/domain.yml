@@ -41,7 +41,7 @@ intents:
       use_entities:
       - layout_requested
       - object_requested
-  - change_layout_treeMap:
+  - change_layout_circle:
       use_entities:
       - layout_requested
       - object_requested
@@ -239,7 +239,7 @@ responses:
       - title: "Radial"
         payload: '/change_layout_radial{{"object_requested":"layout","layout_requested":"radial"}}'
       - title: "Circle"
-        payload: '/change_layout_treeMap{{"object_requested":"layout","layout_requested":"treeMap"}}'
+        payload: '/change_layout_circle{{"object_requested":"layout","layout_requested":"circle"}}'
 
   utter_change_layout_tree:
   - text: "intent_change_layout,tree_layout_button,Layout changed to Tree"
@@ -250,8 +250,8 @@ responses:
   utter_change_layout_radial:
   - text: "intent_change_layout,radial_layout_button,Layout changed to Radial"
 
-  utter_change_layout_treeMap:
-  - text: "intent_change_layout,treeMap_layout_button,Layout changed to Circle Packing"
+  utter_change_layout_circle:
+  - text: "intent_change_layout,circle_layout_button,Layout changed to Circle Packing"
 
   utter_ask_document_selection_form_document_requested:
   - text: "Which document do you want to open?"

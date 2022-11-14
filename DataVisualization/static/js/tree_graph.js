@@ -1049,8 +1049,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         });
 
     // define the baseSvg, attaching a class for styling and the zoomListener
-    var baseSvg = d3
-        .select(container)
+    var baseSvg = d3.select(container)
         .append("svg")
         .attr("width", canvasWidth)
         .attr("height", canvasHeight)
@@ -3993,9 +3992,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     zoomListener.translate([initialY, initialX]);
     zoomListener.event(baseSvg);
 
-    $(document).ready(function () {
-        zoomListener.event(baseSvg);
-    });
+    // To notify the DOM that the initial zoom of the main window layout has finished executing
+    const event = new Event('mainLayoutReady');
+    // Dispatch the event.
+    document.querySelector("body").dispatchEvent(event);
+    mainLayoutReady = true;
 
     // Calculation of statistic data values of the tooltip of the root node
     var listStatistics = getStatisticValues(root);

@@ -45,7 +45,7 @@ LAYOUTS = ["Tree", "Force", "Radial"]
 TREE_LAYOUT = "tree_layout_button"
 FORCE_LAYOUT = "force_layout_button"
 RADIAL_LAYOUT = "radial_layout_button"
-TREEMAP_LAYOUT = "treeMap_layout_button"
+CIRCLE_LAYOUT = "circle_layout_button"
 
 MAIN_OUTPUT = 'output.json'
 POPUP_OUTPUT = 'output_popup.json'
@@ -86,21 +86,13 @@ def generate_dataset(request):
     # ---------------------------------------------------------------------------------
     # JSON PARSING & CURRENT DATASET
     # ---------------------------------------------------------------------------------
-    action_popup = request.POST.get('action_popup')  # Action to be performed in the Popup or Main window (swap, send_to_popup, send_to_main)
-    if action_popup:
-        auxiliar_generate_dataset(request, action_popup, selected_item)
-    else:
-        try:
-            dataset, doc = get_current_dataset(request, selected_item)
-        except ObjectDoesNotExist:
-            return HttpResponseBadRequest("document_not_exist")
-        # Filter first level childs
-        first_level = dataset.filter(comment_level=1)
-        save_data_to_JSON(first_level, doc)
+    auxiliar_generate_dataset(request, selected_item)
     # ---------------------------------------------------------------------------------
     return HttpResponse("/static/" + MAIN_OUTPUT)
 
-def auxiliar_generate_dataset (request, action_popup, selected_item):
+def auxiliar_generate_dataset (request, selected_item):
+
+    action_popup = request.POST.get('action_popup')  # Action to be performed in the Popup or Main window (swap, send_to_popup, send_to_main)
 
     is_popup_subtree = False # The popup is closed, or there is a complete graph in the popup
     is_main_subtree = False # There is a complete graph in the main window
@@ -174,7 +166,7 @@ def auxiliar_generate_dataset (request, action_popup, selected_item):
             return HttpResponseBadRequest("document_not_exist")
         # The use of the 'save_data_to_JSON_popup' function indicates that a subtree is being generated.
         # The 'MAIN_OUTPUT' parameter indicates that the subtree is sent to the main window.
-        save_data_to_JSON_popup(dataset_first_level, popup_nodes, doc, MAIN_OUTPUT)  # The subtree is sent to the Main window
+        save_data_to_JSON_popup(dataset_first_level, popup_nodes, doc, MAIN_OUTPUT) # The subtree is sent to the Main window
 
     elif action_popup == "send_to_popup":
         try:
@@ -183,7 +175,52 @@ def auxiliar_generate_dataset (request, action_popup, selected_item):
             return HttpResponseBadRequest("document_not_exist")
         # The use of the 'save_data_to_JSON_popup' function indicates that a subtree is being generated.
         # By default, if the last parameter is not passed, the subtree is sent to the Popup.
-        save_data_to_JSON_popup(dataset_first_level, main_nodes, doc)  # The subtree is sent to the Popup
+        save_data_to_JSON_popup(dataset_first_level, main_nodes, doc) # The subtree is sent to the Popup
+
+    elif not action_popup:
+        popup_graph_info = request.POST.get('popup_graph_info', None)
+
+        # The popup is open and displays a graph
+        if (popup_graph_info):
+            # There is a subtree in the Popup
+            if is_popup_subtree:
+                try:
+                    dataset_first_level, doc = get_current_dataset_popup(request, popup_nodes, popup_selected_item_popup)
+                except ObjectDoesNotExist:
+                    return HttpResponseBadRequest("document_not_exist")
+                # The use of the 'save_data_to_JSON_popup' function indicates that a subtree is being generated.
+                # The 'MAIN_OUTPUT' parameter indicates that the subtree is sent to the main window.
+                save_data_to_JSON_popup(dataset_first_level, popup_nodes, doc) # The subtree is sent to the Main window
+
+            # There is no subtree in the Popup
+            else:
+                try:
+                    dataset, doc = get_current_dataset(request, selected_item)
+                except ObjectDoesNotExist:
+                    return HttpResponseBadRequest("document_not_exist")
+                # Filter first level childs
+                first_level = dataset.filter(comment_level=1)
+                save_data_to_JSON(first_level, doc, POPUP_OUTPUT) # The complete graph is sent to the Main window
+
+        # There is a subtree in the Main window
+        if is_main_subtree:
+            try:
+                dataset_first_level, doc = get_current_dataset_popup(request, main_nodes, main_selected_item_popup)
+            except ObjectDoesNotExist:
+                return HttpResponseBadRequest("document_not_exist")
+            # The use of the 'save_data_to_JSON_popup' function indicates that a subtree is being generated.
+            # The 'MAIN_OUTPUT' parameter indicates that the subtree is sent to the main window.
+            save_data_to_JSON_popup(dataset_first_level, main_nodes, doc, MAIN_OUTPUT) # The subtree is sent to the Main window
+
+        # There is no subtree in the Main window
+        else:
+            try:
+                dataset, doc = get_current_dataset(request, selected_item)
+            except ObjectDoesNotExist:
+                return HttpResponseBadRequest("document_not_exist")
+            # Filter first level childs
+            first_level = dataset.filter(comment_level=1)
+            save_data_to_JSON(first_level, doc) # The complete graph is sent to the Main window
 
 
 def generate_dataset_popup(request):
@@ -199,7 +236,6 @@ def generate_dataset_popup(request):
         popup_nodes = popup_subtree.node_ids
         popup_selected_item = popup_subtree.document.description
     elif request.POST.get('popup_subtree_nodes_ids'):
-        popup_nodes = list(map(int, request.POST['popup_subtree_nodes_ids'].split(",")))
         popup_nodes = list(map(int, request.POST['popup_subtree_nodes_ids'].split(",")))
         popup_selected_item = request.POST['popup_subtree_document_description']
     # ---------------------------------------------------------------------------------
@@ -260,7 +296,7 @@ def main_form_handler(request):
     # Indicates whether the request is to work on the previous file,
     # for which the best display layout has already been selected.
     best_layout_selected = request.POST.get('best_layout_selected')
-    if best_layout_selected:
+    if best_layout_selected == 'true':
         messages.success(request, "The best visualization according to the graph characteristics has been selected")
 
     context = {'dataset': MAIN_OUTPUT, 'options': get_all_documents(), 'layouts': LAYOUTS,
@@ -274,9 +310,12 @@ def main_form_handler(request):
                        'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons, 'storage_clear': storageClear,
                        'chatbot_error': errorMessage, 'chatbot_success': successMessage }
 
+    # Default values
+    context['main_hierarchy_name'] = request.POST["main_hierarchy_name"]
+    context['main_layout_name'] = checked_layout
+
     main_graph_info = request.POST.get('main_graph_info', None)
     popup_graph_info = request.POST.get('popup_graph_info', None)
-
 
     action_popup = request.POST.get('action_popup')  # Action to be performed in the Popup or Main window (swap, send_to_popup, send_to_main)
     if action_popup == "swap":
@@ -286,6 +325,8 @@ def main_form_handler(request):
         context['main_subtree_document_description'] = request.POST['popup_subtree_document_description']
         context['main_subtree_name'] = request.POST["popup_subtree_name"]
         context['main_subtree_id'] = request.POST["popup_subtree_id"]
+        context['main_hierarchy_name'] = request.POST["popup_hierarchy_name"]
+        context['main_layout_name'] = request.POST["popup_layout_name"]
 
         # Graph information in the popup
         context['popup_graph_info'] = main_graph_info
@@ -294,6 +335,8 @@ def main_form_handler(request):
         context['popup_subtree_document_description'] = request.POST['main_subtree_document_description']
         context['popup_subtree_name'] = request.POST["main_subtree_name"]
         context['popup_subtree_id'] = request.POST["main_subtree_id"]
+        context['popup_hierarchy_name'] = request.POST["main_hierarchy_name"]
+        context['popup_layout_name'] = request.POST["main_layout_name"]
 
     elif action_popup == "send_to_main":
         # Graph information in the main window
@@ -302,6 +345,8 @@ def main_form_handler(request):
         context['main_subtree_document_description'] = request.POST['popup_subtree_document_description']
         context['main_subtree_name'] = request.POST["popup_subtree_name"]
         context['main_subtree_id'] = request.POST["popup_subtree_id"]
+        context['main_hierarchy_name'] = request.POST["popup_hierarchy_name"]
+        context['main_layout_name'] = request.POST["popup_layout_name"]
 
     elif action_popup == "send_to_popup":
         # Graph information in the popup
@@ -311,6 +356,8 @@ def main_form_handler(request):
         context['popup_subtree_document_description'] = request.POST['main_subtree_document_description']
         context['popup_subtree_name'] = request.POST["main_subtree_name"]
         context['popup_subtree_id'] = request.POST["main_subtree_id"]
+        context['popup_hierarchy_name'] = request.POST["main_hierarchy_name"]
+        context['popup_layout_name'] = request.POST["main_layout_name"]
 
     changed_main_layout = request.POST.get('changed_main_layout')
     if changed_main_layout:
@@ -319,6 +366,8 @@ def main_form_handler(request):
         context['main_subtree_document_description'] = request.POST['main_subtree_document_description']
         context['main_subtree_name'] = request.POST["main_subtree_name"]
         context['main_subtree_id'] = request.POST["main_subtree_id"]
+        context['main_hierarchy_name'] = request.POST["main_hierarchy_name"]
+        context['main_layout_name'] = request.POST["main_layout_name"]
 
         # Graph information in the popup
         context['popup_graph_info'] = popup_graph_info
@@ -327,6 +376,8 @@ def main_form_handler(request):
         context['popup_subtree_document_description'] = request.POST['popup_subtree_document_description']
         context['popup_subtree_name'] = request.POST["popup_subtree_name"]
         context['popup_subtree_id'] = request.POST["popup_subtree_id"]
+        context['popup_hierarchy_name'] = request.POST["popup_hierarchy_name"]
+        context['popup_layout_name'] = request.POST["popup_layout_name"]
 
     return render(request, template, context=context)
 
@@ -359,14 +410,7 @@ def main_form_context(request):
 
     # JSON PARSING & CURRENT DATASET
     # ---------------------------------------------------------------------------------
-    action_popup = request.POST.get('action_popup')  # Action to be performed in the Popup or Main window (swap, send_to_popup, send_to_main)
-    if action_popup:
-        auxiliar_generate_dataset(request, action_popup, selected_item)
-    else:
-        dataset, doc = get_current_dataset(request, selected_item)
-        # Filter first level childs
-        first_level = dataset.filter(comment_level=1)
-        save_data_to_JSON(first_level, doc)
+    auxiliar_generate_dataset(request, selected_item)
     # ---------------------------------------------------------------------------------
 
     selected_layout, template, checked_layout = get_selected_layout(request)
@@ -532,11 +576,11 @@ def save_data_to_JSON_popup(first_level, nodes, doc, output_file = POPUP_OUTPUT)
 
 
 def get_selected_layout(request):
-    best_layout_selected = request.POST.get('best_layout_selected')
-    if best_layout_selected:
-        selected_layout = best_layout_selected + "_layout.html"
-        template = best_layout_selected + "_layout.html"
-        button_checked = best_layout_selected
+    action_popup = request.POST.get('action_popup')  # Action to be performed in the Popup or Main window (swap, send_to_popup, send_to_main)
+    if action_popup == "swap" or action_popup == "send_to_main":
+        selected_layout = request.POST["popup_layout_name"] + "_layout.html"
+        template = request.POST["popup_layout_name"] + "_layout.html"
+        button_checked = request.POST["popup_layout_name"]
     elif TREE_LAYOUT in request.POST.keys():
         selected_layout = "tree_layout.html"
         template = "tree_layout.html"
@@ -549,29 +593,14 @@ def get_selected_layout(request):
         selected_layout = "radial_layout.html"
         template = "radial_layout.html"
         button_checked = "radial"
-    elif TREEMAP_LAYOUT in request.POST.keys():
-        selected_layout = "treeMap_layout.html"
-        template = "treeMap_layout.html"
-        button_checked = "treeMap"
+    elif CIRCLE_LAYOUT in request.POST.keys():
+        selected_layout = "circle_layout.html"
+        template = "circle_layout.html"
+        button_checked = "circle"
     else:
-        # selected_layout = "treeMap_layout.html"
-        # template = "treeMap_layout.html"
-        # button_checked = "treeMap"
         selected_layout = "tree_layout.html"
         template = "tree_layout.html"
         button_checked = "tree"
-    # try:
-    #     #     selected_layout = request.POST["dropdown_layout"]
-    #     #     template = "tree_layout.html"
-    #     #     if request.POST["dropdown_layout"] == "Tree":
-    #     #         template = "tree_layout.html"
-    #     #     elif request.POST["dropdown_layout"] == "Force":
-    #     #         template = "force_layout.html"
-    #     #     elif request.POST["dropdown_layout"] == "Radial":
-    #     #         template = "radial_layout.html"
-    # except MultiValueDictKeyError:
-    #     selected_layout = "tree_layout.html"
-    #     template = "tree_layout.html"
 
     return selected_layout, template, button_checked
 

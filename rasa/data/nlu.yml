@@ -239,7 +239,7 @@ nlu:
     - third design
     - third layout
 
-- synonym: treeMap
+- synonym: circle
   examples: |
     - circle
     - circle layout
@@ -309,20 +309,20 @@ nlu:
     - Show me the [radial layout]{"entity": "layout_requested", "value": "radial"}
     - [radial]{"entity": "layout_requested", "value": "radial"}
 
-- intent: change_layout_treeMap
+- intent: change_layout_circle
   examples: |
-    - Change the [layout]{"entity": "object_requested", "value": "layout"} to [circle]{"entity": "layout_requested", "value": "treeMap"}
-    - Change [design]{"entity": "object_requested", "value": "layout"} to [circle visualization]{"entity": "layout_requested", "value": "treeMap"}
-    - Set the [circle design]{"entity": "layout_requested", "value": "treeMap"}
-    - Set [circle layout]{"entity": "layout_requested", "value": "treeMap"}
-    - Set the [design]{"entity": "object_requested", "value": "layout"} to the [circle visualization]{"entity": "layout_requested", "value": "treeMap"}
-    - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [circle packing]{"entity": "layout_requested", "value": "treeMap"}
-    - Displays the [circle layout]{"entity": "layout_requested", "value": "treeMap"}
-    - Displays [circle packing visualization]{"entity": "layout_requested", "value": "treeMap"}
-    - I want to see the [circle packing design]{"entity": "layout_requested", "value": "treeMap"}
-    - I would like to see the [circle]{"entity": "layout_requested", "value": "treeMap"}
-    - Show me the [circle layout]{"entity": "layout_requested", "value": "treeMap"}
-    - [circle packing]{"entity": "layout_requested", "value": "treeMap"}
+    - Change the [layout]{"entity": "object_requested", "value": "layout"} to [circle]{"entity": "layout_requested", "value": "circle"}
+    - Change [design]{"entity": "object_requested", "value": "layout"} to [circle visualization]{"entity": "layout_requested", "value": "circle"}
+    - Set the [circle design]{"entity": "layout_requested", "value": "circle"}
+    - Set [circle layout]{"entity": "layout_requested", "value": "circle"}
+    - Set the [design]{"entity": "object_requested", "value": "layout"} to the [circle visualization]{"entity": "layout_requested", "value": "circle"}
+    - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [circle packing]{"entity": "layout_requested", "value": "circle"}
+    - Displays the [circle layout]{"entity": "layout_requested", "value": "circle"}
+    - Displays [circle packing visualization]{"entity": "layout_requested", "value": "circle"}
+    - I want to see the [circle packing design]{"entity": "layout_requested", "value": "circle"}
+    - I would like to see the [circle]{"entity": "layout_requested", "value": "circle"}
+    - Show me the [circle layout]{"entity": "layout_requested", "value": "circle"}
+    - [circle packing]{"entity": "layout_requested", "value": "circle"}
 
 - synonym: document
   examples: |

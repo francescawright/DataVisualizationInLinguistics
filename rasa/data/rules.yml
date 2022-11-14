@@ -93,8 +93,8 @@ rules:
 
 - rule: User wants to change the layout to Circle Packing
   steps:
-  - intent: change_layout_treeMap
-  - action: utter_change_layout_treeMap
+  - intent: change_layout_circle
+  - action: utter_change_layout_circle
 
 - rule: Displays in the chat the message indicated by the User (client side)
   steps:

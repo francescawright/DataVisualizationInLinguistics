@@ -67,7 +67,7 @@ let checkboxOR = document.querySelector("input[type=radio][name=cbHighlightPrope
 var checkboxesHighlightGroupOR = document.querySelectorAll("input[type=checkbox][name=cbHighlightOR]");
 var checkboxesHighlightGroupAND = document.querySelectorAll("input[type=checkbox][name=cbHighlightAND]");
 
-console.log('[User]', user.split('/')[2], '| [interaction]', 'TreeMap_layout_loaded', '| [Date]', Date.now());
+console.log('[User]', user.split('/')[2], '| [interaction]', 'Circle_layout_loaded', '| [Date]', Date.now());
 var enabledHighlight = []; //Variable which contains the string of the enabled options to highlight
 
 /**
@@ -740,6 +740,12 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
         .style("z-index", "1") //it has no change
         .style("visibility", "visible")
         .style("right", "320px");
+
+    // To notify the DOM that the initial zoom of the main window layout has finished executing
+    const event = new Event('mainLayoutReady');
+    // Dispatch the event.
+    document.querySelector("body").dispatchEvent(event);
+    mainLayoutReady = true;
 });
 
 

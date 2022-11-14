@@ -34,7 +34,8 @@
     <input id="open_document_name" type="hidden" name="from_button" value= "">
     <input type="hidden" name="chatbot" value="true">
     <input id="data_selection_chat_session_id" type="hidden" name="session_id" value= "">
-    <input id="layout_name_chat" type="hidden" name="best_layout_selected" value="">
+    <input type="hidden" id="main_hierarchy_name_chat" name="main_hierarchy_name" value="">
+    <input type="hidden" id="main_layout_name_chat" name="main_layout_name" value="">
 </form>
 
 <!-- Rasa WebChat Style -->
@@ -207,7 +208,6 @@
                     e.text = "I'm opening the document";
                     let documentName = messageList[1];
                     var mainForm = '{{ selected_item }}' ? document.getElementById("main_form") : document.getElementById("chatbotDataSelection");
-                    console.log(dataset_dropdown_value)
                     var dataset_dropdown_value;
 
                     if ('{{ selected_item }}') {
@@ -261,9 +261,11 @@
                                         break;
                                 }
                                 if ('{{ selected_item }}') {
-                                    document.getElementById("layout_name_item").value = layout;
+                                    document.getElementById("main_hierarchy_name").value = hierarchyName;
+                                    document.getElementById("main_layout_name").value = layout;
                                 } else {
-                                    document.getElementById("layout_name_chat").value = layout;
+                                    document.getElementById("main_hierarchy_name_chat").value = hierarchyName;
+                                    document.getElementById("main_layout_name_chat").value = layout;
                                 }
                                 mainForm.submit()
                             });
@@ -286,10 +288,6 @@
                                 } else {
                                     errorText = 'Bad Request [400]';
                                 }
-                            } else if (jqXHR.status === 404) {
-                                console.log(jqXHR)
-                                console.log(textStatus)
-                                console.log(errorThrown)
                             } else if (jqXHR.status === 404) {
                                 alert('Requested page not found [404]');
                             } else if (jqXHR.status === 500) {
@@ -317,7 +315,7 @@
                             e.text = "Already in the layout Force";
                         } else if (messageList[1] === "radial_layout_button" && document.getElementById("radial_label").classList.contains("active")) {
                             e.text = "Already in the layout Radial";
-                        } else if (messageList[1] === "treeMap_layout_button" && document.getElementById("treeMap_label").classList.contains("active")) {
+                        } else if (messageList[1] === "circle_layout_button" && document.getElementById("circle_label").classList.contains("active")) {
                             e.text = "Already in the layout Circle Packing";
                         } else {
                             e.hidden = true;
@@ -428,12 +426,6 @@
         inputChatbot.setAttribute("name", "chatbot");
         inputChatbot.setAttribute("value", "true");
         mainForm.appendChild(inputChatbot);
-        let inputLayoutName = document.createElement("input");
-        inputLayoutName.setAttribute("id", "layout_name_item");
-        inputLayoutName.setAttribute("type", "hidden");
-        inputLayoutName.setAttribute("name", "best_layout_selected");
-        inputLayoutName.setAttribute("value", "");
-        mainForm.appendChild(inputLayoutName);
         let chatSessionId = document.createElement("input");
         chatSessionId.setAttribute("type", "hidden");
         chatSessionId.setAttribute("name", "session_id");

@@ -11,27 +11,26 @@
             {{ subtree.name }}
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdown_subtree_{{ subtree.pk }}">
-            <button disabled
-                    class="dropdown-item"
-                    name="swap_popup_main_btn"
+            <button class="dropdown-item"
+                    name="open_popup_btn"
                     value="{{ subtree.pk }}"
                     type="button"
-                    onclick="openPopupInMainWindow('{{ subtree.pk }}', {{ subtree.node_ids }}, '{{ subtree.name }}', '{{ subtree.document.description }}', true)">
-                Swap with main graph
+                    onclick="openPopup('{{ subtree.pk }}', {{ subtree.node_ids }}, '{{ subtree.name }}', '{{ subtree.document.description }}')">
+                Show as Popup
             </button>
             <button class="dropdown-item"
                     name="open_popup_main_btn"
                     value="{{ subtree.pk }}"
                     type="button"
                     onclick="openPopupInMainWindow('{{ subtree.pk }}', {{ subtree.node_ids }}, '{{ subtree.name }}', '{{ subtree.document.description }}')">
-                Open in main container
+                Show in main window
             </button>
             <button class="dropdown-item"
-                    name="open_popup_btn"
+                    name="swap_popup_main_btn"
                     value="{{ subtree.pk }}"
                     type="button"
-                    onclick="openPopup('{{ subtree.pk }}', {{ subtree.node_ids }}, '{{ subtree.name }}', '{{ subtree.document.description }}')">
-                Open as a Popup
+                    onclick="openPopupInMainWindow('{{ subtree.pk }}', {{ subtree.node_ids }}, '{{ subtree.name }}', '{{ subtree.document.description }}', true)">
+                Show in main window (keep main window graph)
             </button>
             <button class="dropdown-item"
                     name="delete_subtree_btn"
@@ -62,7 +61,6 @@
         let action;
         if (swap) {
             action = 'swap'
-            // TODO
         } else {
             action = 'send_to_main'
         }
@@ -83,13 +81,6 @@
             // handle a successful response
             success: function (data) {
 
-                let inputLayoutName = document.createElement("input");
-                inputLayoutName.setAttribute("id", "layout_name_item");
-                inputLayoutName.setAttribute("type", "hidden");
-                inputLayoutName.setAttribute("name", "best_layout_selected");
-                inputLayoutName.setAttribute("value", "");
-                form.appendChild(inputLayoutName);
-
                 d3.json(data, function (error, treeData) {
                     let root = treeData;
                     var i = 0;
@@ -104,7 +95,8 @@
                     recurse(root, null);
 
                     let hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
-                    let layoutNameElem = document.getElementById("layout_name_item");
+                    document.getElementById("popup_hierarchy_name").value = hierarchyName;
+                    let layoutNameElem = document.getElementById("popup_layout_name");
 
                     switch(hierarchyName) {
                       case "Unspecified": case "nCompact": case "Hybrid":
@@ -174,6 +166,9 @@
                         layoutNamePopup = "radial";
                         break;
                     }
+
+                    document.getElementById("popup_hierarchy_name").value = hierarchyNamePopup;
+                    document.getElementById("popup_layout_name").value = layoutNamePopup;
 
                     prepareModalFooter(subtreeName);
                     if (!document.getElementById("graph-container")) {

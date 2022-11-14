@@ -1286,7 +1286,6 @@ $(popup_container).on("open", function () {
         circleModalButton.css('opacity', '0.4');
 
         let modalBodyJQuery = $(".modal-body");
-        console.log(layoutNamePopup)
         switch (layoutNamePopup) {
             case "tree":
                 modalBodyJQuery.removeClass('force radial circle').addClass("tree");
@@ -1313,6 +1312,7 @@ $(popup_container).on("open", function () {
         $(document).ready(function () {
             jQuery(".tree-modal-button").click(function () {
                 if (!modalBodyJQuery.hasClass("tree")) {
+                    document.getElementById("popup_layout_name").value = 'tree';
                     $(this).css('opacity', '1');
                     $('.force-modal-button').css('opacity', '0.4');
                     $('.radial-modal-button').css('opacity', '0.4');
@@ -1325,6 +1325,7 @@ $(popup_container).on("open", function () {
 
             jQuery(".force-modal-button").click(function () {
                 if (!modalBodyJQuery.hasClass("force")) {
+                    document.getElementById("popup_layout_name").value = 'force';
                     $(this).css('opacity', '1');
                     $('.tree-modal-button').css('opacity', '0.4');
                     $('.radial-modal-button').css('opacity', '0.4');
@@ -1337,6 +1338,7 @@ $(popup_container).on("open", function () {
 
             jQuery(".radial-modal-button").click(function () {
                 if (!modalBodyJQuery.hasClass("radial")) {
+                    document.getElementById("popup_layout_name").value = 'radial';
                     $(this).css('opacity', '1');
                     $('.tree-modal-button').css('opacity', '0.4');
                     $('.force-modal-button').css('opacity', '0.4');
@@ -1349,6 +1351,7 @@ $(popup_container).on("open", function () {
 
             jQuery(".circle-modal-button").click(function () {
                 if (!modalBodyJQuery.hasClass("circle")) {
+                    document.getElementById("popup_layout_name").value = 'circle';
                     $(this).css('opacity', '1');
                     $('.tree-modal-button').css('opacity', '0.4');
                     $('.force-modal-button').css('opacity', '0.4');
@@ -1826,8 +1829,7 @@ $(popup_container).on("open", function () {
                 });
 
             // define the baseSvg, attaching a class for styling and the zoomListener
-            var baseSvg = d3
-                .select(popup_container)
+            var baseSvg = d3.select(popup_container)
                 .append("svg")
                 .attr("id", "graph-container")
                 .attr("class", "overlay-popup")
@@ -4635,7 +4637,13 @@ $(popup_container).on("open", function () {
                 zoomListenerTree.event(baseSvg);
             }
 
-            initPositionTreePopup();
+            if (mainLayoutReady){
+                initPositionTreePopup();
+            } else {
+                // If an attempt is made to call the Popup's zoom event before the main window's zoom event has been called
+                // Listen for the event.
+                document.querySelector("body").addEventListener('mainLayoutReady', initPositionTreePopup);
+            }
 
             //I compute the values for the statistic data showing in the background
             var listStatistics = getStatisticValues(rootPopup);
@@ -6875,7 +6883,13 @@ $(popup_container).on("open", function () {
                 zoomListenerForce.event(svg);
             }
 
-            initPositionForcePopup();
+            if (mainLayoutReady){
+                initPositionForcePopup();
+            } else {
+                // If an attempt is made to call the Popup's zoom event before the main window's zoom event has been called
+                // Listen for the event.
+                document.querySelector("body").addEventListener('mainLayoutReady', initPositionForcePopup);
+            }
 
             //I compute the values for the statistic data showing in the background
             var listStatistics = getStatisticValues(rootPopup);
@@ -9447,7 +9461,13 @@ $(popup_container).on("open", function () {
                 zoomListenerRadial.event(baseSvg);
             }
 
-            initPositionRadialPopup();
+            if (mainLayoutReady){
+                initPositionRadialPopup();
+            } else {
+                // If an attempt is made to call the Popup's zoom event before the main window's zoom event has been called
+                // Listen for the event.
+                document.querySelector("body").addEventListener('mainLayoutReady', initPositionRadialPopup);
+            }
 
             //Set initial stroke widths
             linkPopup.style("stroke-width", 11); //Enlarge stroke-width on zoom out
@@ -9975,6 +9995,6 @@ $(popup_container).on("open", function () {
             }
         }
 
-        console.log('[User]', user.split('/')[2], '| [interaction]', 'TreeMap_layout_loaded', '| [Date]', Date.now());
+        console.log('[User]', user.split('/')[2], '| [interaction]', 'Circle_layout_loaded', '| [Date]', Date.now());
     });
 });

@@ -229,7 +229,7 @@
       <div class="modal-footer">
           <div id="send-popup-content">
               <button type="button" id="send-popup-main-btn" class="send-popup-btn" onclick="sendPopup('send_to_main')">
-                  <img src='{% static 'images/popup/send.png' %}' id='send-popup-main-img'>
+                  <img src='{% static 'images/popup/send-to-main.png' %}' id='send-popup-main-img'>
               </button>
               <button type="button" id="send-popup-interchange-btn" class="send-popup-btn" onclick="sendPopup('swap')">
                   <img src='{% static 'images/popup/interchange.png' %}' id='send-popup-interchange-img'>
@@ -280,43 +280,7 @@
             data: formData,
             // handle a successful response
             success: function (data) {
-
-                let inputLayoutName = document.createElement("input");
-                inputLayoutName.setAttribute("id", "layout_name_item");
-                inputLayoutName.setAttribute("type", "hidden");
-                inputLayoutName.setAttribute("name", "best_layout_selected");
-                inputLayoutName.setAttribute("value", "");
-                form.appendChild(inputLayoutName);
-
-                d3.json(data, function (error, treeData) {
-                    let root = treeData;
-                    var i = 0;
-
-                    function recurse(node, parent) {
-                        node.parent = parent; //We assign a parent to the node
-                        if (parent) node.depth = node.parent.depth + 1; //If parent is not null
-                        if (node.children) node.children.forEach(element => recurse(element, node));
-                        if (!node.id) node.id = ++i;
-                    }
-                    root.depth = 0;
-                    recurse(root, null);
-
-                    let hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
-                    let layoutNameElem = document.getElementById("layout_name_item");
-
-                    switch(hierarchyName) {
-                      case "Unspecified": case "nCompact": case "Hybrid":
-                        layoutNameElem.value = "force";
-                        break;
-                      case "Elongated":
-                        layoutNameElem.value = "tree";
-                        break;
-                      case "Compact":
-                        layoutNameElem.value = "radial";
-                        break;
-                    }
-                    form.submit();
-                });
+                form.submit();
             },
             // handle a non-successful response
             error: function(jqXHR, textStatus, errorThrown) { // on error..
@@ -345,8 +309,10 @@
         }
         document.getElementById("popup_graph_info").value = '';
         document.getElementById("popup_subtree_nodes_ids").value = '';
-        document.getElementById("popup_subtree_name").value = '';
         document.getElementById("popup_subtree_document_description").value = '';
+        document.getElementById("popup_subtree_name").value = '';
+        document.getElementById("popup_hierarchy_name").value = '';
+        document.getElementById("popup_layout_name").value = '';
         document.getElementById("popup_subtree_id").value = '';
 
         removeLayout();

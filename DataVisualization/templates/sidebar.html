@@ -168,7 +168,9 @@
                               method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="from_button" value="{{ document.description }}">
-                            <input id="layout_doc_{{ document.pk }}" type="hidden" name="best_layout_selected" value="">
+                            <input type="hidden" name="best_layout_selected" value="true">
+                            <input id="layout_doc_{{ document.pk }}" type="hidden" name="main_layout_name" value="">
+                            <input id="hierarchy_doc_{{ document.pk }}" type="hidden" name="main_hierarchy_name" value="">
                         </form>
                         {{ document.description }}</button>
                     <button style="width: 14.7%; height: 38px; margin-bottom: 5px;"
@@ -342,6 +344,7 @@
                     recurse(root, null);
 
                     let hierarchyName = getHierarchyName(root, L, GFcomp, d_lvl);
+                    document.getElementById("hierarchy_doc_" + id).value = hierarchyName;
                     let layoutNameElem = document.getElementById("layout_doc_" + id);
 
                     switch(hierarchyName) {

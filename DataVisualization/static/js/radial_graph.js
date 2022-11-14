@@ -3376,10 +3376,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     zoomListener.translate([canvasWidth / 2, canvasHeight / 2]);
     zoomListener.event(baseSvg);
 
-    // Display the border thickness of nodes (stroke-width)
-    $(document).ready(function () {
-        zoomListener.event(baseSvg);
-    });
+    // To notify the DOM that the initial zoom of the main window layout has finished executing
+    const event = new Event('mainLayoutReady');
+    // Dispatch the event.
+    document.querySelector("body").dispatchEvent(event);
+    mainLayoutReady = true;
 
     /**
      * Recursive function to compute the global statistics
