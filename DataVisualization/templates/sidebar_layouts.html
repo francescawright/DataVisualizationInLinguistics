@@ -1872,7 +1872,7 @@
         document.getElementById("subtrees-btn").classList.add("blue-background");
 
         // We deactivate the functionalities (filters) that do not belong to the Circle Packing layout
-        deactivateFiltersCircle();
+        // deactivateFiltersCircle(); // If the filters are deactivated and the layout is changed, they are not passed.
     }
 
     document.getElementById("main_hierarchy_name").value = '{{ main_hierarchy_name }}';

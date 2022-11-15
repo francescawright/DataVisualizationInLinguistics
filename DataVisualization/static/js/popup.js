@@ -285,7 +285,7 @@ function computeNodeRadiusTree(d, edgeLength = 300) {
 /**
  * Computes the borders of a box containing our nodes
  * */
-function computeDimensions(nodes) {
+function computeDimensionsPopup(nodes) {
 
     /* Note our coordinate system:
     *
@@ -355,7 +355,7 @@ function getEdgeStrokeWidth() {
 /**
  * Center graph and zoom to fit the whole graph visualization in our canvas
  * */
-function zoomToFitGraph(minX, minY, maxX, maxY,
+function zoomToFitGraphPopup(minX, minY, maxX, maxY,
                         root,
                         canvasHeight = 1080, canvasWidth = 1920,
                         duration = 750) {
@@ -389,7 +389,7 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
     //For nodes wider than tall, we need to displace them to the middle of the graph
     if (newY < boxHeight * scale && boxHeight * scale < canvasHeight) newY = canvasHeight / 2.0;
 
-    d3.select('g').transition()
+    d3.select(popup_container + ' g').transition()
         .duration(duration)
         .attr("transform", "translate(" + (newX + root.radius * scale) + "," + newY + ")scale(" + scale + ")");
 
@@ -1199,8 +1199,10 @@ function removePopupLayoutListeners() {
     } else if (modalBody.hasClass( "force" )) {
         var dotsFeaturesJQuery = $("#dots_icon_button");
         var glyphsFeaturesJQuery = $("#glyphs_icon_button");
+        var trivialFeaturesJQuery = $("#trivial_icon_button");
         dotsFeaturesJQuery.off("change.update");
         glyphsFeaturesJQuery.off("change.update");
+        trivialFeaturesJQuery.off("change.update");
 
         var checkboxesTargetsJQuery = $("input[type=checkbox][name=cbTargets]");
         var checkboxesJQuery = $("input[type=checkbox][name=cbFeatures]");
@@ -1743,6 +1745,7 @@ $(popup_container).on("open", function () {
 
             var dotsFeatures = document.getElementById("dots_icon_button");
             var glyphsFeatures = document.getElementById("glyphs_icon_button");
+            var trivialFeatures = document.getElementById("trivial_icon_button");
 
             // A recursive helper function for performing some setup by walking through all nodes
             function visit(parent, visitFn, childrenFn) {
@@ -1852,7 +1855,7 @@ $(popup_container).on("open", function () {
                 y = -source.x0;
                 x = x * scale + viewerWidthPopup / 2;
                 y = y * scale + viewerHeightPopup / 2;
-                d3.select("g")
+                d3.select(popup_container + " g")
                     .transition()
                     .duration(duration)
                     .attr(
@@ -1872,7 +1875,7 @@ $(popup_container).on("open", function () {
                 y = -(link.source.x0 + link.target.x0) / 2;
                 x = x * scale + viewerWidthPopup / 2;
                 y = y * scale + viewerHeightPopup / 2;
-                d3.select("g")
+                d3.select(popup_container + " g")
                     .transition()
                     .duration(duration)
                     .attr(
@@ -2783,6 +2786,10 @@ $(popup_container).on("open", function () {
 
                 if (glyphsFeatures.checked) {
                     option = "directory-2";
+                }
+
+                if (trivialFeatures.checked) {
+                    option = "trivial-cheese-on-node";
                 }
 
                 // document.getElementById(
@@ -3966,19 +3973,21 @@ $(popup_container).on("open", function () {
                         dotsFeatures.removeEventListener("change", featureVisualizationListener);
                         glyphsFeatures.removeEventListener("click", featureVisualizationListener);
                         glyphsFeatures.removeEventListener("change", featureVisualizationListener);
+                        trivialFeatures.removeEventListener("click", featureVisualizationListener);
+                        trivialFeatures.removeEventListener("change", featureVisualizationListener);
                     }
                 }
 
                 if (nodeEnter[0].length) {
                     dotsFeatures.addEventListener("click", featureVisualizationListener);
-
                     glyphsFeatures.addEventListener("click", featureVisualizationListener);
+                    trivialFeatures.addEventListener("click", featureVisualizationListener);
 
                     /*SECTION checkboxes listener*/
 
                     dotsFeatures.addEventListener("change", featureVisualizationListener);
-
                     glyphsFeatures.addEventListener("change", featureVisualizationListener);
+                    trivialFeatures.addEventListener("change", featureVisualizationListener);
                 }
 
                 function buttonsDevtoolsClick() {
@@ -4622,13 +4631,11 @@ $(popup_container).on("open", function () {
 
             // Graph statistics information is displayed by default;
             update(rootPopup, true);
-            // Layout the tree initially and center on the root node.
-            centerNode(rootPopup);
 
             function initPositionTreePopup() {
 
-                var box = computeDimensions(nodesPopup);
-                var initialSight = zoomToFitGraph(box.minX, box.minY, box.maxX, box.maxY, rootPopup, initialCanvasHeightPopup, initialCanvasWidthPopup);
+                var box = computeDimensionsPopup(nodesPopup);
+                var initialSight = zoomToFitGraphPopup(box.minX, box.minY, box.maxX, box.maxY, rootPopup, initialCanvasHeightPopup, initialCanvasWidthPopup);
                 initialZoomPopup = initialSight.initialZoom;
                 initialXPopup = initialSight.initialX;
                 initialYPopup = initialSight.initialY;
@@ -4638,13 +4645,7 @@ $(popup_container).on("open", function () {
                 zoomListenerTree.event(baseSvg);
             }
 
-            if (mainLayoutReady){
-                initPositionTreePopup();
-            } else {
-                // If an attempt is made to call the Popup's zoom event before the main window's zoom event has been called
-                // Listen for the event.
-                document.querySelector("body").addEventListener('mainLayoutReady', initPositionTreePopup);
-            }
+            initPositionTreePopup();
 
             //I compute the values for the statistic data showing in the background
             var listStatistics = getStatisticValues(rootPopup);
@@ -4892,6 +4893,7 @@ $(popup_container).on("open", function () {
 
             var dotsFeatures = document.getElementById("dots_icon_button");
             var glyphsFeatures = document.getElementById("glyphs_icon_button");
+            var trivialFeatures = document.getElementById("trivial_icon_button");
 
             //Define objects after the checkbox where we keep if it is selected
             var positionXtargets = -10;
@@ -5771,6 +5773,10 @@ $(popup_container).on("open", function () {
                     option = "directory-2";
                 }
 
+                if (trivialFeatures.checked) {
+                    option = "trivial-cheese-on-node";
+                }
+
                 // document.getElementById("feature-over-node-or-outside").style.display = "none"; //Hide the dropdown menu
                 drawingAllInOne = false;
                 var localPosition = -10;
@@ -6584,6 +6590,12 @@ $(popup_container).on("open", function () {
                     selectFeatureVisualization(node);
                 });
 
+                var trivialFeaturesJQuery = $("#trivial_icon_button");
+                trivialFeaturesJQuery.off("change.update"); // remove duplicate listener
+                trivialFeaturesJQuery.on("change.update", function () {
+                    selectFeatureVisualization(node);
+                });
+
                 /*SECTION  cb*/
 
                 // Listeners related to the visualization of targets
@@ -6885,13 +6897,7 @@ $(popup_container).on("open", function () {
                 zoomListenerForce.event(svg);
             }
 
-            if (mainLayoutReady){
-                initPositionForcePopup();
-            } else {
-                // If an attempt is made to call the Popup's zoom event before the main window's zoom event has been called
-                // Listen for the event.
-                document.querySelector("body").addEventListener('mainLayoutReady', initPositionForcePopup);
-            }
+            initPositionForcePopup();
 
             //I compute the values for the statistic data showing in the background
             var listStatistics = getStatisticValues(rootPopup);
@@ -7136,6 +7142,7 @@ $(popup_container).on("open", function () {
 
             var dotsFeatures = document.getElementById("dots_icon_button");
             var glyphsFeatures = document.getElementById("glyphs_icon_button");
+            var trivialFeatures = document.getElementById("trivial_icon_button");
 
             //Define objects after the checkbox where we keep if it is selected
             var objTargetGroup = {
@@ -7369,7 +7376,7 @@ $(popup_container).on("open", function () {
                      180º
             We have to sum and substract zoomX and zoomY to obtain the zoom in the given node.
             * */
-                d3.select('g').transition()
+                d3.select(popup_container + ' g').transition()
                     .duration(duration)
                     .attr("transform", "translate(" + (500 - zoomY) + "," + (300 + zoomX) + ")");
             }
@@ -7389,7 +7396,7 @@ $(popup_container).on("open", function () {
                 var zoomX = x * Math.cos((y) * Math.PI / 180);
                 var zoomY = x * Math.sin((y) * Math.PI / 180);
 
-                d3.select('g').transition()
+                d3.select(popup_container + ' g').transition()
                     .duration(duration)
                     .attr("transform", "translate(" + ((viewerWidth / 2) - zoomY) + "," + ((viewerHeight / 2) + zoomX) + ")");
 
@@ -8101,6 +8108,11 @@ $(popup_container).on("open", function () {
                 if (glyphsFeatures.checked) {
                     option = "directory-2";
                 }
+
+                if (trivialFeatures.checked) {
+                    option = "trivial-cheese-on-node";
+                }
+
                 // document.getElementById("feature-over-node-or-outside").style.display = "none"; //Hide the dropdown menu
                 drawingAllInOne = false;
                 var localPosition;
@@ -8973,12 +8985,14 @@ $(popup_container).on("open", function () {
                     if (!nodeEnter[0].length) {
                         dotsFeatures.removeEventListener("change", featureVisualizationListener);
                         glyphsFeatures.removeEventListener("change", featureVisualizationListener);
+                        trivialFeatures.removeEventListener("change", featureVisualizationListener);
                     }
                 }
 
                 if (nodeEnter[0].length) {
                     dotsFeatures.addEventListener("change", featureVisualizationListener);
                     glyphsFeatures.addEventListener("change", featureVisualizationListener);
+                    trivialFeatures.addEventListener("change", featureVisualizationListener);
                 }
 
                 function getLengthFilterByName(array, stringToMatch, matchPositive = true) {
@@ -9464,13 +9478,7 @@ $(popup_container).on("open", function () {
                 zoomListenerRadial.event(baseSvg);
             }
 
-            if (mainLayoutReady){
-                initPositionRadialPopup();
-            } else {
-                // If an attempt is made to call the Popup's zoom event before the main window's zoom event has been called
-                // Listen for the event.
-                document.querySelector("body").addEventListener('mainLayoutReady', initPositionRadialPopup);
-            }
+            initPositionRadialPopup();
 
             //Set initial stroke widths
             linkPopup.style("stroke-width", 11); //Enlarge stroke-width on zoom out

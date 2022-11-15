@@ -118,7 +118,7 @@ def auxiliar_generate_dataset (request, selected_item):
         popup_selected_item_popup = request.POST['popup_subtree_document_description']
 
     popup_graph_info = request.POST.get('popup_graph_info', None)
-    print(request.POST)
+
     if action_popup == "swap" or action_popup == "send_to_main" or (action_popup == "send_to_popup" and popup_graph_info):
         # There is a subtree in the Popup
         if is_popup_subtree:
@@ -479,6 +479,8 @@ def handle_icons(request):
         return "dots"
     elif "glyphs_icon_button" in request.POST.keys():
         return "glyphs"
+    elif "trivial_icon_button" in request.POST.keys():
+        return "trivial"
     return "dots"
 
 

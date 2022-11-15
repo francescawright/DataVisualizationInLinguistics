@@ -191,7 +191,7 @@ function zoomToFitGraph(minX, minY, maxX, maxY,
     //For nodes wider than tall, we need to displace them to the middle of the graph
     if (newY < boxHeight * scale && boxHeight * scale < canvasHeight) newY = canvasHeight / 2.0;
 
-    d3.select('g').transition()
+    d3.select(container + ' g').transition()
         .duration(duration)
         .attr("transform", "translate(" + (newX + root.radius * scale) + "," + newY + ")scale(" + scale + ")");
 
@@ -962,6 +962,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     var dotsFeatures = document.getElementById("dots_icon_button");
     var glyphsFeatures = document.getElementById("glyphs_icon_button");
+    var trivialFeatures = document.getElementById("trivial_icon_button");
 
     // A recursive helper function for performing some setup by walking through all nodes
     function visit(parent, visitFn, childrenFn) {
@@ -1072,7 +1073,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         y = -source.x0;
         x = x * scale + viewerWidth / 2;
         y = y * scale + viewerHeight / 2;
-        d3.select("g")
+        d3.select(container + " g")
             .transition()
             .duration(duration)
             .attr(
@@ -1092,7 +1093,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         y = -(link.source.x0 + link.target.x0) / 2;
         x = x * scale + viewerWidth / 2;
         y = y * scale + viewerHeight / 2;
-        d3.select("g")
+        d3.select(container + " g")
             .transition()
             .duration(duration)
             .attr(
@@ -2028,6 +2029,10 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         if (glyphsFeatures.checked) {
             option = "directory-2";
+        }
+
+        if (trivialFeatures.checked) {
+            option = "trivial-cheese-on-node";
         }
 
         // document.getElementById(
@@ -3253,18 +3258,20 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     dotsFeatures.removeEventListener("change", featureVisualizationListener);
                     glyphsFeatures.removeEventListener("click", featureVisualizationListener);
                     glyphsFeatures.removeEventListener("change", featureVisualizationListener);
+                    trivialFeatures.removeEventListener("click", featureVisualizationListener);
+                    trivialFeatures.removeEventListener("change", featureVisualizationListener);
                 }
         }
         if (nodeEnter[0].length) {
             dotsFeatures.addEventListener("click", featureVisualizationListener);
-
             glyphsFeatures.addEventListener("click", featureVisualizationListener);
+            trivialFeatures.addEventListener("click", featureVisualizationListener);
 
             /*SECTION checkboxes listener*/
 
             dotsFeatures.addEventListener("change", featureVisualizationListener);
-
             glyphsFeatures.addEventListener("change", featureVisualizationListener);
+            trivialFeatures.addEventListener("change", featureVisualizationListener);
         }
 
         var static_values_checked = static_values_checked_param;
@@ -3974,7 +3981,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     // Layout the tree initially and center on the root node.
     document.querySelector("#tree-container div.my-statistic").style.visibility = "visible";
     update(root, true, true);
-    centerNode(root);
 
     let element = document.querySelector(container);
     let computedStyle = getComputedStyle(element);
@@ -3991,12 +3997,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     zoomListener.scale(initialZoom);
     zoomListener.translate([initialY, initialX]);
     zoomListener.event(baseSvg);
-
-    // To notify the DOM that the initial zoom of the main window layout has finished executing
-    const event = new Event('mainLayoutReady');
-    // Dispatch the event.
-    document.querySelector("body").dispatchEvent(event);
-    mainLayoutReady = true;
 
     // Calculation of statistic data values of the tooltip of the root node
     var listStatistics = getStatisticValues(root);

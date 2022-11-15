@@ -740,12 +740,6 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
         .style("z-index", "1") //it has no change
         .style("visibility", "visible")
         .style("right", "320px");
-
-    // To notify the DOM that the initial zoom of the main window layout has finished executing
-    const event = new Event('mainLayoutReady');
-    // Dispatch the event.
-    document.querySelector("body").dispatchEvent(event);
-    mainLayoutReady = true;
 });
 
 

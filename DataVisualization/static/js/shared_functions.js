@@ -11,9 +11,6 @@ var layoutNamePopup;
 var hierarchyNameMain;
 var layoutNameMain;
 
-// Variable to ensure that the zoom events of the main window and the popup do not coincide
-var mainLayoutReady = false;
-
 /*******************************
 *   Categorization Functions   *
 ********************************/
@@ -1172,6 +1169,7 @@ function writeTooltipRootCircle(d, numberOfDirectNodes, totalNumberOfNodes, tota
 function deactivateFiltersCircle () {
     document.getElementById("dots_label").classList.add('disabled');
     document.getElementById("glyphs_label").classList.add('disabled');
+    document.getElementById("trivial_label").classList.add('disabled');
 
     document.getElementById("check_button_targets").setAttribute('disabled', '');
     document.getElementById("uncheck_button_targets").setAttribute('disabled', '');
@@ -1194,6 +1192,7 @@ function deactivateFiltersCircle () {
 function activateFiltersCircle () {
     document.getElementById("dots_label").classList.remove('disabled');
     document.getElementById("glyphs_label").classList.remove('disabled');
+    document.getElementById("trivial_label").classList.remove('disabled');
 
     document.getElementById("check_button_targets").removeAttribute('disabled');
     document.getElementById("uncheck_button_targets").removeAttribute('disabled');

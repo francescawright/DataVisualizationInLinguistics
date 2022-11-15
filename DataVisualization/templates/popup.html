@@ -297,6 +297,7 @@
         if ("{{ template_selected }}" === "circle") {
             document.getElementById("dots_label").classList.remove('disabled');
             document.getElementById("glyphs_label").classList.remove('disabled');
+            document.getElementById("trivial_label").classList.remove('disabled');
             // Activate the functionalities (filters) that do not belong to the Circle Packing layout
             activateFiltersCircle();
         }
@@ -305,7 +306,7 @@
     $("#popupModal").on("hidden.bs.modal", function () {
         if ("{{ template_selected }}" === "circle") {
             // We deactivate the functionalities (filters) that do not belong to the Circle Packing layout
-            deactivateFiltersCircle();
+            // deactivateFiltersCircle(); // If the filters are deactivated and the layout is changed, they are not passed.
         }
         document.getElementById("popup_graph_info").value = '';
         document.getElementById("popup_subtree_nodes_ids").value = '';

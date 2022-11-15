@@ -150,6 +150,10 @@
         height: fit-content;
         width: auto;
     }
+
+    .navbar-glyphs-radio-img {
+        border-radius: 10px;
+    }
 </style>
 
 <body>
@@ -262,16 +266,21 @@
                {% else %}class="btn btn-outline-primary"{% endif %}>
             <input type="radio" name="dots_icon_button" id="dots_icon_button" form="main_form"
                    autocomplete="off" {% if selected_icons == "dots" %}checked{% endif %}> Dots &#8195;
-            <img
-                    src="{% static 'images/nav_bar/dots_1.svg' %}" style="width: 60px;">
+            <img class="navbar-glyphs-radio-img" src="{% static 'images/nav_bar/dots_1.svg' %}" style="width: 60px;">
         </label>
         <label id="glyphs_label" style="min-width: 220px; height:fit-content;"
                {% if selected_icons == "glyphs" %}class="btn btn-outline-primary active"
                {% else %}class="btn btn-outline-primary"{% endif %}>
             <input type="radio" name="glyphs_icon_button" id="glyphs_icon_button" form="main_form"
                    autocomplete="off" {% if selected_icons == "glyphs" %}checked{% endif %}> Circular Glyphs &#8195;
-            <img
-                    src="{% static 'images/nav_bar/glyph.svg' %}" style="width: 60px;">
+            <img class="navbar-glyphs-radio-img" src="{% static 'images/nav_bar/glyph.svg' %}" style="width: 60px;">
+        </label>
+        <label id="trivial_label" style="min-width: 220px; height:fit-content;"
+               {% if selected_icons == "trivial" %}class="btn btn-outline-primary active"
+               {% else %}class="btn btn-outline-primary"{% endif %}>
+            <input type="radio" name="trivial_icon_button" id="trivial_icon_button" form="main_form"
+                   autocomplete="off" {% if selected_icons == "trivial" %}checked{% endif %}> Trivial Cheese &#8195;
+            <img class="navbar-glyphs-radio-img" src="{% static 'images/nav_bar/trivial.svg' %}" style="width: 60px;">
         </label>
     </div>
 
@@ -461,15 +470,29 @@
         document.getElementById("dots_label").className = "btn btn-primary active";
         $('#glyphs_icon_button').prop("checked", false);
         document.getElementById("glyphs_label").className = "btn btn-primary";
+        $('#trivial_icon_button').prop("checked", false);
+        document.getElementById("trivial_label").className = "btn btn-primary";
         console.log('[User]', user.split('/')[2], '| [interaction]', 'dots_icons', '| [Date]', Date.now());
     });
 
     jQuery("#glyphs_icon_button").click(function () {
         $('#dots_icon_button').prop("checked", false);
         document.getElementById("dots_label").className = "btn btn-primary";
+        $('#trivial_icon_button').prop("checked", false);
+        document.getElementById("trivial_label").className = "btn btn-primary";
         $(this).prop("checked", true);
         document.getElementById("glyphs_label").className = "btn btn-primary active";
         console.log('[User]', user.split('/')[2], '| [interaction]', 'glyph_icons', '| [Date]', Date.now());
+    });
+
+    jQuery("#trivial_icon_button").click(function () {
+        $('#dots_icon_button').prop("checked", false);
+        document.getElementById("dots_label").className = "btn btn-primary";
+        $('#glyphs_icon_button').prop("checked", false);
+        document.getElementById("glyphs_label").className = "btn btn-primary";
+        $(this).prop("checked", true);
+        document.getElementById("trivial_label").className = "btn btn-primary active";
+        console.log('[User]', user.split('/')[2], '| [interaction]', 'trivial_icons', '| [Date]', Date.now());
     });
 
     document.getElementById("navbar-home").onclick = function () {

@@ -1,0 +1,16 @@
+<svg width="982.62" height="982.62" xmlns="http://www.w3.org/2000/svg">
+ <title>circular glyph_final</title>
+
+ <g>
+  <title>Layer 1</title>
+  <rect class="cls-1" width="982.62" height="982.62" fill="#fff" id="svg_1"/>
+  <path class="cls-2" d="m491.31,491.31l-265.1,-265.1q109.79,-109.8 265.1,-109.8l0,374.9z" fill="#5e1566" id="svg_2"/>
+  <path class="cls-3" d="m491.31,491.31l-374.9,0q0,-155.29 109.81,-265.1l265.09,265.1z" fill="#a313b3" id="svg_3"/>
+  <path class="cls-4" d="m491.31,491.31l-265.1,265.1q-109.8,-109.81 -109.8,-265.1l374.9,0z" fill="#e3b7e8" id="svg_4"/>
+  <path class="cls-5" d="m491.31,491.31l0,374.9q-155.29,0 -265.1,-109.81l265.1,-265.09z" fill="#0b5696" id="svg_5"/>
+  <path class="cls-6" d="m491.31,491.31l265.1,265.1q-109.81,109.8 -265.1,109.8l0,-374.9z" fill="#1795ff" id="svg_6"/>
+  <path class="cls-7" d="m491.31,491.31l374.9,0q0,155.29 -109.81,265.1l-265.09,-265.1z" fill="#97cfff" id="svg_7"/>
+  <path class="cls-8" d="m491.31,491.31l265.1,-265.1q109.8,109.79 109.8,265.1l-374.9,0z" fill="#1b8055" id="svg_8"/>
+  <path class="cls-9" d="m491.31,491.31l0,-374.9q155.29,0 265.1,109.81l-265.1,265.09z" fill="#90f6b2" id="svg_9"/>
+ </g>
+</svg>

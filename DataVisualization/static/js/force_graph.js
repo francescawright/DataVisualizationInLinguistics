@@ -774,6 +774,7 @@ treeJSON = d3.json(dataset, function (error, json) {
 
     var dotsFeatures = document.getElementById("dots_icon_button");
     var glyphsFeatures = document.getElementById("glyphs_icon_button");
+    var trivialFeatures = document.getElementById("trivial_icon_button");
 
     //Define objects after the checkbox where we keep if it is selected
     var positionXtargets = -10;
@@ -1687,6 +1688,10 @@ treeJSON = d3.json(dataset, function (error, json) {
             option = "directory-2";
         }
 
+        if (trivialFeatures.checked) {
+            option = "trivial-cheese-on-node";
+        }
+
         // document.getElementById("feature-over-node-or-outside").style.display = "none"; //Hide the dropdown menu
         drawingAllInOne = false;
         var localPosition = -10;
@@ -2548,6 +2553,12 @@ treeJSON = d3.json(dataset, function (error, json) {
             selectFeatureVisualization(node);
         });
 
+        var trivialFeaturesJQuery = $("#trivial_icon_button");
+        trivialFeaturesJQuery.off("change.update"); // remove duplicate listener
+        trivialFeaturesJQuery.on("change.update", function () {
+            selectFeatureVisualization(node);
+        });
+
         /*SECTION  cb*/
 
         // Listeners related to the visualization of targets
@@ -2916,12 +2927,6 @@ treeJSON = d3.json(dataset, function (error, json) {
     zoomListener.scale(initialZoomScale);
     zoomListener.translate([canvasWidth / 2, canvasHeight / 2]);
     zoomListener.event(svg);
-
-    // To notify the DOM that the initial zoom of the main window layout has finished executing
-    const event = new Event('mainLayoutReady');
-    // Dispatch the event.
-    document.querySelector("body").dispatchEvent(event);
-    mainLayoutReady = true;
 
     //I compute the values for the statistic data showing in the background
     var listStatistics = getStatisticValues(root);

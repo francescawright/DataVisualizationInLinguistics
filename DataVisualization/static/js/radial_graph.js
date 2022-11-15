@@ -69,9 +69,9 @@ const colourConstructiveness = "#90F6B2", colourArgumentation = "#1B8055", colou
     colourIntolerance = "#0B5696", colourImproper = "#E3B7E8", colourInsult = "#A313B3",
     colourAggressiveness = "#5E1566";
 
-var colorFeature = ["#a1d99b", "#31a354",
-    "#fee5d9", "#fcbba1", "#fc9272",
-    "#fb6a4a", "#de2d26", "#a50f15"];
+var colorFeature = ["#90F6B2", "#1B8055",
+    "#97CFFF", "#1795FF", "#0B5696",
+    "#E3B7E8", "#A313B3", "#5E1566"];
 
 var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
 var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
@@ -1154,6 +1154,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     var dotsFeatures = document.getElementById("dots_icon_button");
     var glyphsFeatures = document.getElementById("glyphs_icon_button");
+    var trivialFeatures = document.getElementById("trivial_icon_button");
 
     //Define objects after the checkbox where we keep if it is selected
     var objTargetGroup = {
@@ -2021,6 +2022,11 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         if (glyphsFeatures.checked) {
             option = "directory-2";
         }
+
+        if (trivialFeatures.checked) {
+            option = "trivial-cheese-on-node";
+        }
+
         // document.getElementById("feature-over-node-or-outside").style.display = "none"; //Hide the dropdown menu
         drawingAllInOne = false;
         var localPosition;
@@ -2839,11 +2845,13 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 if (!nodeEnter[0].length) {
                     dotsFeatures.removeEventListener("change", featureVisualizationListener);
                     glyphsFeatures.removeEventListener("change", featureVisualizationListener);
+                    trivialFeatures.removeEventListener("change", featureVisualizationListener);
                 }
         }
         if (nodeEnter[0].length) {
             dotsFeatures.addEventListener("change", featureVisualizationListener);
             glyphsFeatures.addEventListener("change", featureVisualizationListener);
+            trivialFeatures.addEventListener("change", featureVisualizationListener);
         }
 
         var static_values_checked = static_values_checked_param;
@@ -3375,12 +3383,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     zoomListener.scale(initialZoomScale);
     zoomListener.translate([canvasWidth / 2, canvasHeight / 2]);
     zoomListener.event(baseSvg);
-
-    // To notify the DOM that the initial zoom of the main window layout has finished executing
-    const event = new Event('mainLayoutReady');
-    // Dispatch the event.
-    document.querySelector("body").dispatchEvent(event);
-    mainLayoutReady = true;
 
     /**
      * Recursive function to compute the global statistics
