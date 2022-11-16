@@ -61,21 +61,21 @@ var colourToxicity0 = "#f7f7f7",
 function computeNodeRadius(d, edgeLength = 300) {
     /*
         If node has children,
-        more than 2: new radius = 16 + 3 * (#children - 2)
-        2 children: new radius = 16
-        1 child: new radius = 13
-        0 children: new radius = 10
+        more than 2: new radius = 32 + 6 * (#children - 2)
+        2 children: new radius = 32
+        1 child: new radius = 26
+        0 children: new radius = 20
     * */
-    d.radius = 10;
+    d.radius = 20;
     if ((d.children === undefined || d.children === null) && (d._children === undefined || d._children === null)) return d.radius; //If no children, radius = 10
 
     var children = d.children ?? d._children; //Assign children collapsed or not
 
-    children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
+    children.length > 2 ? d.radius = 32 + 6 * (children.length - 2) // more than 2 children
         :
-        children.length === 2 ? d.radius = 16 //2 children
+        children.length === 2 ? d.radius = 32 //2 children
             :
-            d.radius = 13; //One child
+            d.radius = 26; //One child
     //Avoid the root node from being so large that overlaps/hides its children
     if ((d.parent === null || d.parent === undefined) && d.radius < 90) d.radius = 90;
     if ((d.parent === null || d.parent === undefined) && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
@@ -713,9 +713,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
     //var eps = document.getElementById("input-eps-field").value;
 
     root = treeData; //Define the root
-
-    // Used to obtain the nodes belonging to the deepest and largest thread
-    var deepestNodesPath, largestNodesPath, mostToxicNodesPath, mostToxicSubtreeNodesPath;
 
     /* Creation of the tree with nodeSize
      * We indicate the reserved area for each node as [height, width] since our tree grows horizontally
@@ -1728,7 +1725,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         //Add the gray cheese
         nodeEnter.filter(function (d) {
-                    return d.parent !== null;
+                    return (d.parent !== null && d.parent !== undefined);
                 }).append("image")
             .attr("class", objFeatGray.class)
             .attr("id", objFeatGray.id)
@@ -3619,7 +3616,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          */
         $(container).off("longest_thread");
         $(container).on("longest_thread", function () {
-            longestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, deepestNodesPath, node, link);
+            longestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
         });
 
         /**
@@ -3637,7 +3634,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          */
         $(container).off("largest_thread");
         $(container).on("largest_thread", function () {
-            largestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, largestNodesPath, node, link);
+            largestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
         });
 
         /**
@@ -3646,7 +3643,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          */
         $(container).off("most_toxic_thread");
         $(container).on("most_toxic_thread", function () {
-            mostToxicThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, mostToxicNodesPath, node, link);
+            mostToxicThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
         });
 
         /**
@@ -3655,7 +3652,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          */
         $(container).off("most_toxic_subtree");
         $(container).on("most_toxic_subtree", function () {
-            mostToxicSubtreedHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, mostToxicSubtreeNodesPath, node, link);
+            mostToxicSubtreeHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
         });
 
         function checkboxANDListener () {

@@ -261,21 +261,21 @@ const objFeatArgumentationPopup = {
 function computeNodeRadiusTree(d, edgeLength = 300) {
     /*
         If node has children,
-        more than 2: new radius = 16 + 3 * (#children - 2)
-        2 children: new radius = 16
-        1 child: new radius = 13
-        0 children: new radius = 10
+        more than 2: new radius = 32 + 6 * (#children - 2)
+        2 children: new radius = 32
+        1 child: new radius = 26
+        0 children: new radius = 20
     * */
-    d.radius = 10;
+    d.radius = 20;
     if ((d.children === undefined || d.children === null) && (d._children === undefined || d._children === null)) return d.radius; //If no children, radius = 10
 
     var children = d.children ?? d._children; //Assign children collapsed or not
 
-    children.length > 2 ? d.radius = 16 + 3 * (children.length - 2) // more than 2 children
+    children.length > 2 ? d.radius = 32 + 6 * (children.length - 2) // more than 2 children
         :
-        children.length === 2 ? d.radius = 16 //2 children
+        children.length === 2 ? d.radius = 32 //2 children
             :
-            d.radius = 13; //One child
+            d.radius = 26; //One child
     //Avoid the root node from being so large that overlaps/hides its children
     if ((d.parent === null || d.parent === undefined) && d.radius < 90) d.radius = 90;
     if ((d.parent === null || d.parent === undefined) && d.radius > edgeLength / 2) d.radius = edgeLength / 2.0;
@@ -2492,7 +2492,7 @@ $(popup_container).on("open", function () {
 
                 //Add the gray cheese
                 nodeEnter.filter(function (d) {
-                    return d.parent !== null;
+                    return (d.parent !== null && d.parent !== undefined);
                 }).append("image")
                     .attr("class", objFeatGray.class)
                     .attr("id", objFeatGray.id)
@@ -7861,7 +7861,7 @@ $(popup_container).on("open", function () {
 
                 //Add the gray cheese
                 nodeEnter.filter(function (d) {
-                    return d.parent !== undefined;
+                    return (d.parent !== null && d.parent !== undefined);
                 }).append("image")
                     .attr('class', objFeatGray.class)
                     .attr('id', objFeatGray.id)
@@ -9665,10 +9665,13 @@ $(popup_container).on("open", function () {
                     }
                 }).style("stroke", "black")
                 .on("mouseover", function (d) {
-                    if (d !== rootPopup) {
+                    var highlighted_nodes = node.filter(function (n) {
+                        return n.data.highlighted;
+                    })._groups[0].map(i => i.__data__.data.name); // don't ask..
+                    if (d !== rootPopup && highlighted_nodes.includes(d.data.name)) {
                         tooltipTextPopup = writeTooltipTextCircle(d);
                         tooltip.style("visibility", "visible").html(tooltipTextPopup);
-                    } else {
+                    } else if (d === rootPopup){
                         tooltipTextPopup = writeTooltipRootCircle(d, numberOfDirectNodes, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
                         tooltip.style("visibility", "visible").html(tooltipTextPopup);
                     }

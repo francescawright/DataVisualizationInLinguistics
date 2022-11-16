@@ -229,15 +229,19 @@ function getLargestNodes(node) {
 /**
  * Find the root nodes of the most toxic subtrees
  * @param node tree root
+ * @param fromCircle indicates if the action is performed on the Circle Packing layout
  * @returns {Array} array of root nodes of the most toxic subtrees
  */
-function getSubtreeMostToxicRootNodes(node) {
+function getSubtreeMostToxicRootNodes(node, fromCircle = false) {
 
     let children = node.children;
     let childrenToxicityDescendantsList = [];
 
     if (children) {
         children.forEach(function (d) {
+            if (fromCircle) {
+                d = d.data;
+            }
             childrenToxicityDescendantsList.push((getDescendants(d).toxicity1 + (getDescendants(d).toxicity2 * 2) + (getDescendants(d).toxicity3 * 3)));
         });
     }
@@ -373,17 +377,26 @@ function getDescendantsListNodes(root, nodes) {
  * Find the nodes belonging to the most toxic thread
  * @param root tree root
  * @param nodes array containing the end nodes of the graph
+ * @param fromCircle indicates if the action is performed on the Circle Packing layout
  * @returns {Array} array of nodes containing all the nodes belonging to the most toxic thread
  */
-function getMostToxicThreadPath(root, nodes) {
+function getMostToxicThreadPath(root, nodes, fromCircle = false) {
     let nodesPathToxicityNum = Array(nodes.length).fill(0);
     let nodesPathToxicity = Array.from(Array(nodes.length), () => new Array(0));
 
     for (let i = 0; i < nodes.length; i++) {
-        while(nodes[i].data !== root){
-            nodesPathToxicityNum[i] += nodes[i].data.toxicity_level
-            nodesPathToxicity[i].push(nodes[i].data);
-            nodes[i] = nodes[i].parent;
+        if (!fromCircle) {
+            while(nodes[i].data !== root){
+                nodesPathToxicityNum[i] += nodes[i].data.toxicity_level
+                nodesPathToxicity[i].push(nodes[i].data);
+                nodes[i] = nodes[i].parent;
+            }
+        } else {
+            while(nodes[i].data.data !== root.data){
+                nodesPathToxicityNum[i] += nodes[i].data.data.toxicity_level
+                nodesPathToxicity[i].push(nodes[i].data);
+                nodes[i] = nodes[i].parent;
+            }
         }
     }
 
@@ -1496,8 +1509,9 @@ function widestLevelHandler(static_values_checked, statisticBackground, root, no
     }
 }
 
-function longestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, deepestNodesPath, node, link) {
+function longestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link) {
     let deepestNodes = getDeepestNodes(root);
+    let deepestNodesPath;
 
     var textMsg;
     if (deepestNodes[0].depth === 0) {
@@ -1521,10 +1535,11 @@ function longestThreadHandler(static_values_checked, statisticBackground, root, 
     }
 }
 
-function largestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, largestNodesPath, node, link) {
+function largestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link) {
     let result = getLargestNodes(root);
     let largestThreads = result[0]
     let numNodes = result[1];
+    let largestNodesPath;
 
     var textMsg;
     if (largestThreads.length < 1) {
@@ -1548,8 +1563,10 @@ function largestThreadHandler(static_values_checked, statisticBackground, root, 
     }
 }
 
-function mostToxicThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, mostToxicNodesPath, node, link) {
+function mostToxicThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link) {
     let endNodes = getEndNodes(root);
+    let mostToxicNodesPath;
+
     if (endNodes.length < 1) {
         injectIntentConversation("There are no threads in this graph");
     } else {
@@ -1574,9 +1591,9 @@ function mostToxicThreadHandler(static_values_checked, statisticBackground, root
     }
 }
 
-function mostToxicSubtreedHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, mostToxicNodesPath, node, link) {
+function mostToxicSubtreeHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link) {
     let rootNodes = getSubtreeMostToxicRootNodes(root);
-
+    let mostToxicNodesPath;
 
     var textMsg;
     if (rootNodes.length < 1) {

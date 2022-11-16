@@ -92,9 +92,6 @@ function flatten(root) {
 treeJSON = d3v4.json(dataset, function (error, root) {
     if (error) throw error;
 
-    // Used to obtain the nodes belonging to the deepest thread
-    var deepestNodesPath, largestNodesPath;
-
         /*SECTION checkboxes*/
     //Check the values of the checkboxes and do something
     var checkbox = document.querySelector("input[name=cbTargets]");
@@ -199,10 +196,14 @@ treeJSON = d3v4.json(dataset, function (error, root) {
             }
         }).style("stroke", "black")
           .on("mouseover", function (d) {
-                if (d !== root) {
+                var highlighted_nodes = node.filter(function (n) {
+                    return n.data.highlighted;
+                })._groups[0].map(i => i.__data__.data.name); // don't ask..
+                if (d !== root && highlighted_nodes.includes(d.data.name)) {
                     tooltipText = writeTooltipTextCircle(d);
                     tooltip.style("visibility", "visible").html(tooltipText);
-                } else {
+                }
+                else if(d === root){
                     tooltipText = writeTooltipRootCircle(d, numberOfDirectNodes, totalNumberOfNodes, totalNotToxic, totalMildlyToxic, totalToxic, totalVeryToxic);
                     tooltip.style("visibility", "visible").html(tooltipText);
                 }
@@ -516,10 +517,11 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
     $(container).off("longest_thread");
     $(container).on("longest_thread", function () {
         let deepestNodes = getDeepestNodesCircle(root);
+        let deepestNodesPath;
 
         var textMsg;
         if (deepestNodes[0].depth === 0) {
-            textMsg = "There are no threads in this tree";
+            textMsg = "There are no threads in this graph";
         } else if (deepestNodes.length > 1) {
             textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
         } else {
@@ -548,7 +550,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
         let widestLevels = getWidestLevels(root, getTreeHeight(root));
         var textMsg;
         if (widestLevels[0].length === 0) {
-            textMsg = "There are no threads in this tree";
+            textMsg = "There are no threads in this graph";
         } else if (widestLevels[0].length > 1) {
             textMsg = "There are " + widestLevels[0].length + " levels &#91;" + widestLevels[0] + "&#93; with a maximum width of " + widestLevels[1];
         } else {
@@ -573,10 +575,11 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
         let result = getLargestNodes(root);
         let largestThreads = result[0]
         let numNodes = result[1];
+        let largestNodesPath;
 
         var textMsg;
         if (largestThreads.length < 1) {
-            textMsg = "There are no threads in this tree";
+            textMsg = "There are no threads in this graph";
         } else if (largestThreads.length > 1) {
             textMsg = "There are " + largestThreads.length + " threads with a total of " + numNodes + " nodes each";
         } else {
@@ -589,6 +592,70 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
             largestNodesPath = getDescendantsListNodes(root, largestThreads);
 
             highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, largestNodesPath, node);
+
+            if (static_values_checked) {
+                statisticBackground.html(writeStatisticText(root));
+            }
+        }
+    });
+
+    /**
+     * Gets the array of nodes belonging to the largest threads, highlights them,
+     * updating the network statistics, and displays the result in the chat
+     */
+    $(container).off("most_toxic_thread");
+    $(container).on("most_toxic_thread", function () {
+        let endNodes = getEndNodes(root);
+        let mostToxicNodesPath;
+
+        if (endNodes.length < 1) {
+            injectIntentConversation("There are no threads in this graph");
+        } else {
+            mostToxicNodesPath = getMostToxicThreadPath(root, endNodes, true);
+
+            if (mostToxicNodesPath[1] === 0) {
+                injectIntentConversation("There are no toxic threads in this graph");
+            } else {
+                let textMsg;
+                if (mostToxicNodesPath[2] === 1) {
+                    textMsg = "There is only one thread with this level of toxicity";
+                } else {
+                    textMsg = "There are " + mostToxicNodesPath[2] + " threads with the same maximum level of toxicity";
+                }
+                injectIntentConversation(textMsg);
+                highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, mostToxicNodesPath[0], node);
+
+                if (static_values_checked) {
+                    statisticBackground.html(writeStatisticText(root));
+                }
+            }
+        }
+    });
+
+    /**
+     * Gets the array of nodes belonging to the largest subtree, highlights them,
+     * updating the network statistics, and displays the result in the chat
+     */
+    $(container).off("most_toxic_subtree");
+    $(container).on("most_toxic_subtree", function () {
+        let rootNodes = getSubtreeMostToxicRootNodes(root, true);
+        let mostToxicNodesPath;
+
+        var textMsg;
+        if (rootNodes.length < 1) {
+            textMsg = "There are no threads in this graph";
+        } else if (rootNodes.length > 1) {
+            textMsg = "There are " + rootNodes.length + " subtrees with the same maximum level of toxicity";
+        } else {
+            textMsg = "There is only one subtree with the maximum level of toxicity";
+        }
+
+        injectIntentConversation(textMsg);
+
+        if (rootNodes.length > 0) {
+            mostToxicNodesPath = getDescendantsListNodes(root, rootNodes);
+
+            highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, mostToxicNodesPath, node);
 
             if (static_values_checked) {
                 statisticBackground.html(writeStatisticText(root));

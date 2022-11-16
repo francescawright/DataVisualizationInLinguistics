@@ -973,9 +973,6 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         fileName: "root.png"
     };
 
-    // Used to obtain the nodes belonging to the deepest thread
-    var deepestNodesPath, largestNodesPath;
-
     var imgRatio = 10; //Percentage of difference between the radii of a node and its associated image
 
     /* Targets: size, position, local path, objects to draw the target as ring
@@ -1775,7 +1772,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
         //Add the gray cheese
         nodeEnter.filter(function (d) {
-                    return d.parent !== undefined;
+                    return (d.parent !== null && d.parent !== undefined);
                 }).append("image")
             .attr('class', objFeatGray.class)
             .attr('id', objFeatGray.id)
@@ -3108,7 +3105,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          */
         $(container).off("longest_thread");
         $(container).on("longest_thread", function () {
-            longestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, deepestNodesPath, node, link);
+            longestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
         });
 
         /**
@@ -3126,7 +3123,25 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          */
         $(container).off("largest_thread");
         $(container).on("largest_thread", function () {
-            largestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, largestNodesPath, node, link);
+            largestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
+        });
+
+        /**
+         * Gets the array of nodes belonging to the largest threads, highlights them,
+         * updating the network statistics, and displays the result in the chat
+         */
+        $(container).off("most_toxic_thread");
+        $(container).on("most_toxic_thread", function () {
+            mostToxicThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
+        });
+
+        /**
+         * Gets the array of nodes belonging to the largest subtree, highlights them,
+         * updating the network statistics, and displays the result in the chat
+         */
+        $(container).off("most_toxic_subtree");
+        $(container).on("most_toxic_subtree", function () {
+            mostToxicSubtreeHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
         });
 
         if (!first_call) {

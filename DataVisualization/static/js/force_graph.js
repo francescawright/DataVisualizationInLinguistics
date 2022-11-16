@@ -557,9 +557,6 @@ treeJSON = d3.json(dataset, function (error, json) {
         fileName: "root.png"
     };
 
-    // Used to obtain the nodes belonging to the deepest thread
-    var deepestNodesPath, largestNodesPath;
-
     var imgRatio = 20; //Percentage of difference between the radii of a node and its associated image
 
     var optimalK; //Computed optimal distance between nodes
@@ -2720,7 +2717,7 @@ treeJSON = d3.json(dataset, function (error, json) {
          */
         $(container).off("longest_thread");
         $(container).on("longest_thread", function () {
-            longestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, deepestNodesPath, node, link);
+            longestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
         });
 
         /**
@@ -2738,7 +2735,25 @@ treeJSON = d3.json(dataset, function (error, json) {
          */
         $(container).off("largest_thread");
         $(container).on("largest_thread", function () {
-            largestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, largestNodesPath, node, link);
+            largestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
+        });
+
+        /**
+         * Gets the array of nodes belonging to the largest threads, highlights them,
+         * updating the network statistics, and displays the result in the chat
+         */
+        $(container).off("most_toxic_thread");
+        $(container).on("most_toxic_thread", function () {
+            mostToxicThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
+        });
+
+        /**
+         * Gets the array of nodes belonging to the largest subtree, highlights them,
+         * updating the network statistics, and displays the result in the chat
+         */
+        $(container).off("most_toxic_subtree");
+        $(container).on("most_toxic_subtree", function () {
+            mostToxicSubtreeHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
         });
 
         checkboxesTargets.forEach(function (checkboxItem) {
