@@ -41,6 +41,12 @@
 <!-- Rasa WebChat Style -->
 
 <style>
+.rw-widget-container {
+    pointer-events: none;
+}
+.rw-conversation-container, .rw-launcher {
+    pointer-events: auto;
+}
 .rw-conversation-container .rw-header {
     background-color: #fa7070;
 }
@@ -57,6 +63,7 @@
     right: 170px;
 }
 .chat-feature-btn {
+    pointer-events: auto;
     position: fixed;
     background-color: #6c757d;
 
@@ -386,6 +393,15 @@
                     }
                     break;
                 case "intent_highlight_graph":
+                    if ('{{ selected_item }}') {
+                        e.text = messageList[2];
+                        $("#tree-container").trigger(messageList[1]);
+                    } else {
+                        e.text =  "Open a document first, in order to perform this action";
+                        // selectedDataError(existingStorage);
+                    }
+                    break;
+                case "intent_statistics_features":
                     if ('{{ selected_item }}') {
                         e.text = messageList[2];
                         $("#tree-container").trigger(messageList[1]);

@@ -731,7 +731,25 @@ nlu:
     - Show the most crowded subtree
     - Display the most crowded subtree
     - largest subtree
-    - crowded subtree
+    - crowded subgraph
+    - Show me the largest subgraph
+    - I want to see the largest subgraph
+    - Which subgraph is the largest
+    - Can you show me the largest subgraph
+    - I would like to see the largest subgraph
+    - Display the largest subgraph
+    - Show the largest subgraph
+    - Which subgraph is the most crowded?
+    - Which subgraph has the most nodes?
+    - Can you show me the most crowded subgraph?
+    - Can you show me the subgraph with most nodes?
+    - Show me the most crowded subgraph
+    - I want to see the most crowded subgraph
+    - I would like to see the most crowded subgraph
+    - Show the most crowded subgraph
+    - Display the most crowded subgraph
+    - largest subgraph
+    - crowded subgraph
 
 # most toxic thread
 - intent: most_toxic_thread
@@ -772,6 +790,22 @@ nlu:
     - Display the subtree with most toxic nodes
     - most toxic subtree
     - subtree with most toxic nodes
+    - Show me the most toxic subgraph
+    - I want to see the most toxic subgraph
+    - Which subgraph is the most toxic?
+    - Can you show me the most toxic subgraph?
+    - I would like to see the most toxic subgraph
+    - Display the most toxic subgraph
+    - Show the most toxic subgraph
+    - Which subgraph has the most toxic nodes?
+    - Can you show me the subgraph with most toxic nodes?
+    - Show me the subgraph with most toxic nodes
+    - I want to see the subgraph with most toxic nodes
+    - I would like to see the subgraph with most toxic nodes
+    - Show the subgraph with most toxic nodes
+    - Display the subgraph with most toxic nodes
+    - most toxic subgraph
+    - subgraph with most toxic nodes
 
 # Which comment level has the most very toxic nodes?
 - intent: comment_level_vs_very_toxic
@@ -883,3 +917,19 @@ nlu:
     - In which level of toxicity target person appear more?
     - Which level of toxicity have more target person nodes?
     - Which level of toxicity there are more target person nodes?
+
+- intent: statistics_features_tree
+  examples: |
+    - Show me the statistics of the graph features
+    - Show me the statistics of the main graph features
+    - Show me the statistics of the main view graph features
+    - Compare the graph features
+    - Compare the main graph features
+    - Compare the main view graph features
+
+- intent: statistics_features_subtrees
+  examples: |
+    - Compare the features of subtrees
+    - Compare the features of subgraphs
+    - Show me the statistics of the subtrees features
+    - Show me the statistics of the subgraphs features

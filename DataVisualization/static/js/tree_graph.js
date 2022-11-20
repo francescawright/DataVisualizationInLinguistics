@@ -3219,7 +3219,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                     return tooltip.style("top", (d3.mouse(document.querySelector(".overlay"))[1] - 130) + "px").style("left", (d3.mouse(document.querySelector(".overlay"))[0] - 490) + "px");
                 // }
             })
-            .on("mouseout", function () {
+            .on("mouseout", function (d) {
                 tooltip.style("visibility", "hidden");
             });
 
@@ -3653,6 +3653,16 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         $(container).off("most_toxic_subtree");
         $(container).on("most_toxic_subtree", function () {
             mostToxicSubtreeHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
+        });
+
+        $(container).off("statistics_all_features_tree");
+        $(container).on("statistics_all_features_tree", function () {
+            statisticsAllFeaturesTree(root);
+        });
+
+        $(container).off("statistics_all_features_subtrees");
+        $(container).on("statistics_all_features_subtrees", function () {
+            statisticsAllFeaturesSubtrees(root);
         });
 
         function checkboxANDListener () {

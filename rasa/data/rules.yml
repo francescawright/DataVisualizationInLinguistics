@@ -319,3 +319,13 @@ rules:
   steps:
     - intent: target_person_loT
     - action: utter_target_person_loT
+
+- rule: The user wants to see the statistics of all the features of the tree
+  steps:
+    - intent: statistics_features_tree
+    - action: utter_statistics_features_tree
+
+- rule: The user wants to compare the statistics of all the features of the subtrees
+  steps:
+    - intent: statistics_features_subtrees
+    - action: utter_statistics_features_subtrees

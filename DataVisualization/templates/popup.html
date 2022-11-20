@@ -9,7 +9,7 @@
         max-width: none;
         margin: 0;
     }
-    .modal .modal-content {
+    #popupModal.modal .modal-content {
         width: 500px;
         height: 350px;
     }
@@ -159,14 +159,14 @@
     .modal-alert {
         width: 100%;
     }
-    .modal .modal-body {
+    #popupModal.modal .modal-body {
         padding: 0;
         background-color: #eff4fc;
         border-radius: 13px 13px 0 0;
         overflow: visible;
         display: flex;
     }
-    .modal .modal-footer {
+    #popupModal.modal .modal-footer {
         display: flex;
         justify-content: space-between;
     }
@@ -174,18 +174,18 @@
         text-align: center;
         display: none;
     }
-    .modal .modal-footer form {
+    #popupModal.modal .modal-footer form {
         display: flex;
         align-items: center;
         justify-content: flex-end;
     }
-    .modal .modal-footer form input {
+    #popupModal.modal .modal-footer form input {
         max-width: 450px;
     }
-    .modal-footer form>:not(:last-child) {
+    #popupModal.modal-footer form>:not(:last-child) {
         margin-right: 0.25rem;
     }
-    .modal-footer form>:not(:first-child) {
+    #popupModal.modal-footer form>:not(:first-child) {
         margin-left: 0.25rem;
     }
     #modal-subtree-name, #subtree-save-success {
@@ -198,7 +198,7 @@
 
 {% load static %}
 
-<!-- Modal -->
+<!-- Subtrees Modal -->
 <div class="modal fade" id="popupModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="popupModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -327,7 +327,7 @@
     }
     function hideModalMessage() {
         document.getElementById("subtree-name").value = "";
-        document.querySelector(".modal .modal-footer").style.padding = "0.75rem";
+        document.querySelector("#popupModal.modal .modal-footer").style.padding = "0.75rem";
         document.getElementById("subtree-save-success").style.display = "none";
         document.getElementById("subtree-save-error").style.display = "none";
         document.getElementById("modal-info-alert").style.display = "none";
@@ -352,7 +352,7 @@
                 document.getElementById("popup_subtree_name").value = subtreeName;
                 document.getElementById("popup_subtree_id").value = data;
                 update_subtrees_menu();
-                document.querySelector(".modal .modal-footer").style.padding = "0.375rem";
+                document.querySelector("#popupModal.modal .modal-footer").style.padding = "0.375rem";
                 document.getElementById("add-subtree-form").style.display = "none";
                 document.getElementById("subtree-save-error").style.display = "none";
                 document.getElementById("modal-info-alert").style.display = "none";
@@ -387,7 +387,7 @@
                 } else {
                     errorText = 'Uncaught Error: ' + jqXHR.responseText;
                 }
-                document.querySelector(".modal .modal-footer").style.padding = "0.375rem";
+                document.querySelector("#popupModal.modal .modal-footer").style.padding = "0.375rem";
                 document.getElementById("add-subtree-form").style.display = "none";
                 document.getElementById("send-popup-content").style.display = "none";
                 document.getElementById("subtree-save-success").style.display = "none";
@@ -408,10 +408,11 @@
         cursor: "move",
         containment: "window"
     });
-    $(".modal .modal-content").resizable({
+    $("#popupModal.modal .modal-content").resizable({
         containment: "document",
         minHeight: 300,
         minWidth: 450,
         autoHide: true
     });
+
 </script>

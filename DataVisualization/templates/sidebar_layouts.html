@@ -1470,6 +1470,7 @@
     </div>
 
     <!-- Modal -->
+    {% include 'popup_chart.html' %}
     {% include 'popup.html' %}
 
     <div id="tree-container" class="column2" style="width: calc(calc(100vw - (100vw - 100%)) - 290px); position: sticky; position: -webkit-sticky; top: 19px; z-index: 10;">
@@ -1488,6 +1489,7 @@
                 </button>
                 </div>
             {% endif %}
+            <button id="popup-chart-btn" type="button" class="btn" data-toggle="modal" data-target="#chartModal" style="display: none"></button>
             <button id="popup-btn" type="button" class="btn" data-toggle="modal" data-target="#popupModal" style="display: none"></button>
         </div>
 
@@ -1899,13 +1901,13 @@
         document.getElementById("popup_layout_name").value = layoutNamePopup;
 
         if ('{{ popup_graph_info }}' === 'complete') {
-            document.querySelector(".modal .modal-footer").style.padding = "0.375rem";
+            document.querySelector("#popupModal.modal .modal-footer").style.padding = "0.375rem";
             document.getElementById("send-popup-content").style.display = "none";
             document.getElementById("add-subtree-form").style.display = "none";
             document.getElementById("modal-info-alert").style.display = "block";
         } else if ('{{ popup_graph_info }}' === 'subtree') {
             if ('{{ popup_subtree_name }}') {
-                document.querySelector(".modal .modal-footer").style.padding = "0.375rem";
+                document.querySelector("#popupModal.modal .modal-footer").style.padding = "0.375rem";
                 document.getElementById("add-subtree-form").style.display = "none";
                 document.getElementById("send-popup-content").style.display = "block";
                 document.getElementById("modal-subtree-name").innerText = "Subtree {{ popup_subtree_name }}";

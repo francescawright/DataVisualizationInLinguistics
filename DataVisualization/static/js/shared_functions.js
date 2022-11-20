@@ -5,11 +5,12 @@ var GFelon = 2;
 var d_lvl = 6;
 var tol = 0.15;
 
-var datasetPopup;
-var hierarchyNamePopup;
-var layoutNamePopup;
-var hierarchyNameMain;
-var layoutNameMain;
+var datasetPopup, hierarchyNamePopup, layoutNamePopup, hierarchyNameMain, layoutNameMain;
+
+var chartModalConfig, chartModalData, chartModalDataPie, chartModalTitle, configBar, configHorizontalBar, subtreesInfoChart;
+
+var featuresChartDict = {"Constructiveness":"constructiveness", "Argument":"argumentation", "Sarcasm":"sarcasm", "Mockery":"mockery",
+            "Intolerance":"intolerance", "Improper":"improper_language", "Insult":"insult", "Aggressiveness":"aggressiveness"};
 
 /*******************************
 *   Categorization Functions   *
@@ -317,6 +318,70 @@ function getDescendants(node) {
         toxicity1: totalToxic1,
         toxicity2: totalToxic2,
         toxicity3: totalToxic3,
+    };
+}
+
+/**
+ * Recursive function to obtain the total number of each characteristic of a tree
+ * */
+function getFeaturesSubtreeValues(node) {
+    if (!node.children) {
+        return {
+            totalConstructiveness: 0,
+            totalArgumentation: 0,
+            totalSarcasm: 0,
+            totalMockery: 0,
+            totalIntolerance: 0,
+            totalImproper_language: 0,
+            totalInsult: 0,
+            totalAggressiveness: 0,
+            constructiveness: node.constructiveness,
+            argumentation: node.argumentation,
+            sarcasm: node.sarcasm,
+            mockery: node.mockery,
+            intolerance: node.intolerance,
+            improper_language: node.improper_language,
+            insult: node.insult,
+            aggressiveness: node.aggressiveness,
+        };
+    }
+    var childrenList = [],
+        totalConstructiveness = 0, totalArgumentation = 0, totalSarcasm = 0, totalMockery = 0,
+        totalIntolerance = 0, totalImproper_language = 0, totalInsult = 0, totalAggressiveness = 0;
+
+    if (node.children) {
+        node.children.forEach(function (d) {
+            childrenList = getFeaturesSubtreeValues(d);
+
+            //Targets are not exclusive
+            childrenList.constructiveness && d.highlighted ? totalConstructiveness += childrenList.totalConstructiveness + 1 : totalConstructiveness += childrenList.totalConstructiveness;
+            childrenList.argumentation && d.highlighted ? totalArgumentation += childrenList.totalArgumentation + 1 : totalArgumentation += childrenList.totalArgumentation;
+            childrenList.sarcasm && d.highlighted ? totalSarcasm += childrenList.totalSarcasm + 1 : totalSarcasm += childrenList.totalSarcasm;
+            childrenList.mockery && d.highlighted ? totalMockery += childrenList.totalMockery + 1 : totalMockery += childrenList.totalMockery;
+            childrenList.intolerance && d.highlighted ? totalIntolerance += childrenList.totalIntolerance + 1 : totalIntolerance += childrenList.totalIntolerance;
+            childrenList.improper_language && d.highlighted ? totalImproper_language += childrenList.totalImproper_language + 1 : totalImproper_language += childrenList.totalImproper_language;
+            childrenList.insult && d.highlighted ? totalInsult += childrenList.totalInsult + 1 : totalInsult += childrenList.totalInsult;
+            childrenList.aggressiveness && d.highlighted ? totalAggressiveness += childrenList.totalAggressiveness + 1 : totalAggressiveness += childrenList.totalAggressiveness;
+        })
+    }
+
+    return {
+        totalConstructiveness: totalConstructiveness,
+        totalArgumentation: totalArgumentation,
+        totalSarcasm: totalSarcasm,
+        totalMockery: totalMockery,
+        totalIntolerance: totalIntolerance,
+        totalImproper_language: totalImproper_language,
+        totalInsult: totalInsult,
+        totalAggressiveness: totalAggressiveness,
+        constructiveness: node.constructiveness,
+        argumentation: node.argumentation,
+        sarcasm: node.sarcasm,
+        mockery: node.mockery,
+        intolerance: node.intolerance,
+        improper_language: node.improper_language,
+        insult: node.insult,
+        aggressiveness: node.aggressiveness,
     };
 }
 
@@ -1403,7 +1468,7 @@ function subtreeToPopup(root, nodesPath, fromCircle = false){
                     $("#popup-btn").click();
                 } else {
                     document.getElementById("subtree-name").value = "";
-                    document.querySelector(".modal .modal-footer").style.padding = "0.75rem";
+                    document.querySelector("#popupModal.modal .modal-footer").style.padding = "0.75rem";
                     document.getElementById("subtree-save-success").style.display = "none";
                     document.getElementById("subtree-save-error").style.display = "none";
                     document.getElementById("modal-info-alert").style.display = "none";
@@ -1615,4 +1680,272 @@ function mostToxicSubtreeHandler(static_values_checked, statisticBackground, roo
             statisticBackground.html(writeStatisticText(root));
         }
     }
+}
+
+function createChartModal() {
+    let chart = document.getElementById('chart-modal-body').getContext('2d');
+    let chartTitleText;
+    if (chartModalTitle === 'complete_graph') {
+        chartTitleText = "Comparison of graph features";
+    } else if (chartModalTitle === 'subgraphs') {
+        chartTitleText = "Comparison of features in Subtrees";
+    }
+
+    configPie = {
+        type: 'pie',
+        data: chartModalDataPie,
+        options: {
+          plugins: {
+              legend: {
+                  position: 'right',
+              },
+              title: {
+                  display: true,
+                  text: chartTitleText,
+                  font: {
+                      size: 25
+                  }
+              }
+          },
+        }
+    }
+
+    configBar = {
+        type: 'bar',
+        data: chartModalData,
+        options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          },
+          plugins: {
+              legend: {
+                  position: 'right',
+              },
+              title: {
+                  display: true,
+                  text: chartTitleText,
+                  font: {
+                      size: 25
+                  }
+              }
+          },
+        }
+    }
+
+    configHorizontalBar = {
+        type: 'bar',
+        data: chartModalData,
+        options: {
+            indexAxis: 'y',
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          },
+          plugins: {
+              legend: {
+                  position: 'right',
+              },
+              title: {
+                  display: true,
+                  text: chartTitleText,
+                  font: {
+                      size: 25
+                  }
+              }
+          },
+        }
+    }
+
+    document.getElementById('chart-modal-body').classList.remove("square-chart");
+    document.getElementById('select-chart-type-modal').value = 'bar';
+    if (Chart.getChart('chart-modal-body')) {
+        Chart.getChart('chart-modal-body').destroy();
+    }
+    subtreesInfoChart = new Chart(chart, configBar);
+
+    function clickHandler(evt) {
+        const points = subtreesInfoChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+        if (points.length) {
+            const firstPoint = points[0];
+            var label = subtreesInfoChart.data.labels[firstPoint.index];
+            if (!Object.keys(featuresChartDict).includes(label)) {
+                label = subtreesInfoChart.data.datasets[firstPoint.datasetIndex].label;
+            }
+            // var value = subtreesInfoChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+            document.getElementById(featuresChartDict[label]).click();
+        }
+    }
+
+    document.getElementById('chart-modal-body').onclick = clickHandler;
+
+    if (!document.getElementById('chartModal').classList.contains('show')) {
+        document.getElementById("chartModal").style.top = "calc(35% - 229px)";
+        document.getElementById("chartModal").style.left = "calc(50% - 378px)";
+        $("#popup-chart-btn").click();
+    }
+}
+
+function renderChart(type){
+    let chart = document.getElementById('chart-modal-body').getContext('2d');
+    subtreesInfoChart.destroy();
+    document.getElementById('chart-modal-body').classList.remove("square-chart");
+    if(type.value === 'pie') {
+        subtreesInfoChart = new Chart(chart, configPie);
+        document.getElementById('chart-modal-body').classList.add("square-chart");
+    } else if(type.value === 'bar') {
+        subtreesInfoChart = new Chart(chart, configBar);
+    } else if (type.value === 'horizontal_bar') {
+        subtreesInfoChart = new Chart(chart, configHorizontalBar);
+    }
+}
+
+function statisticsAllFeaturesTree(root) {
+    document.getElementById('pie-option-modal').removeAttribute("hidden");
+    document.getElementById('pie-option-modal').removeAttribute("disabled");
+
+    var listStatistics = getFeaturesSubtreeValues(root);
+
+    chartModalData = {
+      labels: [''],
+      datasets: [{
+        label: 'Constructiveness',
+        data: [listStatistics.totalConstructiveness],
+        backgroundColor: "#90F6B2",
+      },
+      {
+        label: 'Argument',
+        data: [listStatistics.totalArgumentation],
+        backgroundColor: "#1B8055",
+      },
+      {
+        label: 'Sarcasm',
+        data: [listStatistics.totalSarcasm],
+        backgroundColor: "#97CFFF",
+      },
+      {
+        label: 'Mockery',
+        data: [listStatistics.totalMockery],
+        backgroundColor: "#1795FF",
+      },
+      {
+        label: 'Intolerance',
+        data: [listStatistics.totalIntolerance],
+        backgroundColor: "#0B5696",
+      },
+      {
+        label: 'Improper',
+        data: [listStatistics.totalImproper_language],
+        backgroundColor: "#E3B7E8",
+      },
+      {
+        label: 'Insult',
+        data: [listStatistics.totalInsult],
+        backgroundColor: "#A313B3",
+      },
+      {
+        label: 'Aggressiveness',
+        data: [listStatistics.totalAggressiveness],
+        backgroundColor: "#5E1566",
+      }]
+    }
+
+    chartModalDataPie = {
+      labels: ['Constructiveness', 'Argument', 'Sarcasm', 'Mockery', 'Intolerance', 'Improper', 'Insult', 'Aggressiveness'],
+      datasets: [{
+        label: 'total',
+        data: [listStatistics.totalConstructiveness, listStatistics.totalArgumentation, listStatistics.totalSarcasm,
+                listStatistics.totalMockery, listStatistics.totalIntolerance, listStatistics.totalImproper_language,
+                listStatistics.totalInsult, listStatistics.totalAggressiveness],
+        backgroundColor: ["#90F6B2", "#1B8055", "#97CFFF", "#1795FF", "#0B5696", "#E3B7E8", "#A313B3", "#5E1566"],
+      }]
+    }
+    chartModalTitle = 'complete_graph';
+
+    createChartModal();
+}
+
+function statisticsAllFeaturesSubtrees(root, fromCircle = false) {
+    document.getElementById('pie-option-modal').setAttribute("hidden", true);
+    document.getElementById('pie-option-modal').setAttribute("disabled", true);
+
+    let children = root.children;
+    let listStatistics;
+    let labelsSubtrees = [];
+    let constructivenessSubtrees = [];
+    let argumentationSubtrees = [];
+    let sarcasmSubtrees = [];
+    let mockerySubtrees = [];
+    let intoleranceSubtrees = [];
+    let improperLanguageSubtrees = [];
+    let insultSubtrees = [];
+    let aggressivenessSubtrees = [];
+
+    if (children) {
+        children.forEach(function (d, index) {
+            if (fromCircle) {
+                d = d.data;
+            }
+            labelsSubtrees.push('Subgraph ' + (index+1));
+            listStatistics = getFeaturesSubtreeValues(d);
+            constructivenessSubtrees.push(d.highlighted ? listStatistics.totalConstructiveness + d.constructiveness : listStatistics.totalConstructiveness);
+            argumentationSubtrees.push(d.highlighted ? listStatistics.totalArgumentation + d.argumentation : listStatistics.totalArgumentation);
+            sarcasmSubtrees.push(d.highlighted ? listStatistics.totalSarcasm + d.sarcasm : listStatistics.totalSarcasm);
+            mockerySubtrees.push(d.highlighted ? listStatistics.totalMockery + d.mockery : listStatistics.totalMockery);
+            intoleranceSubtrees.push(d.highlighted ? listStatistics.totalIntolerance + d.intolerance : listStatistics.totalIntolerance);
+            improperLanguageSubtrees.push(d.highlighted ? listStatistics.totalImproper_language + d.improper_language : listStatistics.totalImproper_language);
+            insultSubtrees.push(d.highlighted ? listStatistics.totalInsult + d.insult : listStatistics.totalInsult);
+            aggressivenessSubtrees.push(d.highlighted ? listStatistics.totalAggressiveness + d.aggressiveness : listStatistics.totalAggressiveness);
+        });
+    }
+
+    chartModalData = {
+      labels: labelsSubtrees,
+      datasets: [{
+        label: 'Constructiveness',
+        data: constructivenessSubtrees,
+        backgroundColor: "#90F6B2",
+      },
+      {
+        label: 'Argument',
+        data: argumentationSubtrees,
+        backgroundColor: "#1B8055",
+      },
+      {
+        label: 'Sarcasm',
+        data: sarcasmSubtrees,
+        backgroundColor: "#97CFFF",
+      },
+      {
+        label: 'Mockery',
+        data: mockerySubtrees,
+        backgroundColor: "#1795FF",
+      },
+      {
+        label: 'Intolerance',
+        data: intoleranceSubtrees,
+        backgroundColor: "#0B5696",
+      },
+      {
+        label: 'Improper',
+        data: improperLanguageSubtrees,
+        backgroundColor: "#E3B7E8",
+      },
+      {
+        label: 'Insult',
+        data: insultSubtrees,
+        backgroundColor: "#A313B3",
+      },
+      {
+        label: 'Aggressiveness',
+        data: aggressivenessSubtrees,
+        backgroundColor: "#5E1566",
+      }]
+    }
+
+    chartModalTitle = 'subgraphs';
+
+    createChartModal();
 }

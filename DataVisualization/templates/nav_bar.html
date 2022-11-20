@@ -21,6 +21,8 @@
     </script>
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3-hierarchy@3"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.min.js" integrity="sha512-tQYZBKe34uzoeOjY9jr3MX7R/mo7n25vnqbnrkskGr4D6YOoPYSpyafUAzQVjV6xAozAqUFIEFsCO4z8mnVBXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.umd.js" integrity="sha512-gQhCDsnnnUfaRzD8k1L5llCCV6O9HN09zClIzzeJ8OJ9MpGmIlCxm+pdCkqTwqJ4JcjbojFr79rl2F1mzcoLMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{% static 'js/shared_functions.js' %}"></script>
 </head>
 
@@ -113,25 +115,21 @@
         background-color: #C9DAF8;
     }
 
-
     .btn-primary:hover {
         color: #000000;
         background-color: #C9DAF8;
         border-color: #C9DAF8;
     }
-
     .btn-primary:focus,
     .btn-primary.focus {
         box-shadow: none, 0 0 0 0.2rem rgba(201, 218, 248, 0.5);
     }
-
     .btn-primary.disabled,
     .btn-primary:disabled {
         color: #000000;
         background-color: #C9DAF8;
         border-color: #C9DAF8;
     }
-
     .btn-primary:not(:disabled):not(.disabled):active,
     .btn-primary:not(:disabled):not(.disabled).active,
     .show > .btn-primary.dropdown-toggle {
@@ -139,20 +137,25 @@
         background-color: #C9DAF8;
         border-color: #C9DAF8;
     }
-
     .btn-primary:not(:disabled):not(.disabled):active:focus,
     .btn-primary:not(:disabled):not(.disabled).active:focus,
     .show > .btn-primary.dropdown-toggle:focus {
         box-shadow: none, 0 0 0 0.2rem rgba(201, 218, 248, 0.5);
     }
-
     body {
         height: fit-content;
         width: auto;
     }
-
     .navbar-glyphs-radio-img {
         border-radius: 10px;
+    }
+    .span-navbar-options {
+        text-align: left;
+    }
+    .label-navbar-options {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 </style>
 
@@ -165,8 +168,8 @@
     {#        <button style="margin-top: 4px;" class="btn btn-primary" formaction="{% url 'manage_data' %}">Manage Data#}
     {#        </button>#}
     {#    </form>#}
-    <div style="align-items: center; margin-right: 50px; min-height: 100px;" class="btn-group btn-group-toggle" data-toggle="buttons">
-        <div style="text-align: center; width: 250px; padding: 15px;">
+    <div style="align-items: center; min-height: 100px;" class="btn-group btn-group-toggle" data-toggle="buttons">
+        <div style="text-align: center; padding: 15px;">
             <a id="navbar-home" style="float: unset;" href="/">
                 <img src="{% static 'images/app_icon.svg' %}"
                      style="width: 70px;">
@@ -217,42 +220,40 @@
     </div>
     <!-- Layouts Radio Buttons -->
 
-    <div style="align-items: center; margin-right: 50px; min-height: 100px;" class="col btn-group btn-group-toggle" id="layouts-radio-buttons" data-toggle="buttons">
-        <label id="tree_label" style="min-width: 210px; height:fit-content;"
-               {% if checked_layout == "tree" %}class="btn btn-outline-primary active"
-               {% else %}class="btn btn-outline-primary"{% endif %}>
+    <div style="align-items: center;padding-right: 30px; padding-left: 30px; min-height: 100px;" class="col btn-group btn-group-toggle" id="layouts-radio-buttons" data-toggle="buttons">
+        <label id="tree_label" style="min-width: 170px; height:fit-content;"
+               {% if checked_layout == "tree" %}class="btn btn-outline-primary active label-navbar-options"
+               {% else %}class="btn btn-outline-primary label-navbar-options"{% endif %}>
             <input type="radio" id="tree_layout_button" name="tree_layout_button" value="checked"
                    autocomplete="off" form="main_form"
-                   {% if checked_layout == "tree" %}checked{% endif %}>
-
-            Tree Layout&#8195;
+                   {% if checked_layout == "tree" %}checked{% endif %}><span class="span-navbar-options">Tree <br>Layout&#8195;</span>
             <img
                     src="{% static 'images/nav_bar/treeLayout.svg' %}" style="width: 60px;">
         </label>
-        <label id="force_label" style="min-width: 210px; height:fit-content;"
-               {% if checked_layout == "force" %}class="btn btn-outline-primary active"
-               {% else %}class="btn btn-outline-primary"{% endif %}>
+        <label id="force_label" style="min-width: 170px; height:fit-content;"
+               {% if checked_layout == "force" %}class="btn btn-outline-primary active label-navbar-options"
+               {% else %}class="btn btn-outline-primary label-navbar-options"{% endif %}>
             <input type="radio" id="force_layout_button" form="main_form"
                    name="force_layout_button" value="checked" autocomplete="off"
-                   {% if checked_layout == "force" %}checked{% endif %}>Force Layout&#8195;
+                   {% if checked_layout == "force" %}checked{% endif %}><span class="span-navbar-options">Force <br>Layout&#8195;</span>
             <img
                     src="{% static 'images/nav_bar/forceLayout.svg' %}" style="width: 60px;">
         </label>
-        <label id="radial_label" style="min-width: 210px; height:fit-content;"
-               {% if checked_layout == "radial" %}class="btn btn-outline-primary active"
-               {% else %}class="btn btn-outline-primary"{% endif %}>
+        <label id="radial_label" style="min-width: 170px; height:fit-content;"
+               {% if checked_layout == "radial" %}class="btn btn-outline-primary active label-navbar-options"
+               {% else %}class="btn btn-outline-primary label-navbar-options"{% endif %}>
             <input type="radio" id="radial_layout_button" form="main_form"
                    name="radial_layout_button" value="checked" autocomplete="off"
-                   {% if checked_layout == "radial" %}checked{% endif %}>Radial Layout&#8195;
+                   {% if checked_layout == "radial" %}checked{% endif %}><span class="span-navbar-options">Radial <br>Layout&#8195;</span>
             <img
                     src="{% static 'images/nav_bar/radialLayout.svg' %}" style="width: 60px;">
         </label>
-        <label id="circle_label" style="min-width: 210px; height:fit-content;"
-               {% if checked_layout == "circle" %}class="btn btn-outline-primary active"
-               {% else %}class="btn btn-outline-primary"{% endif %}>
+        <label id="circle_label" style="min-width: 170px; height:fit-content;"
+               {% if checked_layout == "circle" %}class="btn btn-outline-primary active label-navbar-options"
+               {% else %}class="btn btn-outline-primary label-navbar-options"{% endif %}>
             <input type="radio" id="circle_layout_button" form="main_form"
                    name="circle_layout_button" value="checked" autocomplete="off"
-                   {% if checked_layout == "circle" %}checked{% endif %}>Circle Packing&#8195;
+                   {% if checked_layout == "circle" %}checked{% endif %}><span class="span-navbar-options">Circle <br>Packing&#8195;</span>
             <img
                     src="{% static 'images/nav_bar/circlePacking.svg' %}" style="width: 60px;">
         </label>
@@ -260,26 +261,26 @@
 
     <!-- Glyphs Radio Buttons -->
 
-    <div style="align-items: center; margin-right: 50px; min-height: 100px;" id="glyphs-radio-buttons" class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label id="dots_label" style="min-width: 220px; height:fit-content;"
-               {% if selected_icons == "dots" %}class="btn btn-outline-primary active"
-               {% else %}class="btn btn-outline-primary"{% endif %}>
+    <div style="align-items: center; margin-right: 20px; min-height: 100px;" id="glyphs-radio-buttons" class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label id="dots_label" style="min-width: 160px; height:fit-content;"
+               {% if selected_icons == "dots" %}class="btn btn-outline-primary active label-navbar-options"
+               {% else %}class="btn btn-outline-primary label-navbar-options"{% endif %}>
             <input type="radio" name="dots_icon_button" id="dots_icon_button" form="main_form"
-                   autocomplete="off" {% if selected_icons == "dots" %}checked{% endif %}> Dots &#8195;
+                   autocomplete="off" {% if selected_icons == "dots" %}checked{% endif %}><span class="span-navbar-options">Dots &#8195;</span>
             <img class="navbar-glyphs-radio-img" src="{% static 'images/nav_bar/dots_1.svg' %}" style="width: 60px;">
         </label>
-        <label id="glyphs_label" style="min-width: 220px; height:fit-content;"
-               {% if selected_icons == "glyphs" %}class="btn btn-outline-primary active"
-               {% else %}class="btn btn-outline-primary"{% endif %}>
+        <label id="glyphs_label" style="min-width: 160px; height:fit-content;"
+               {% if selected_icons == "glyphs" %}class="btn btn-outline-primary active label-navbar-options"
+               {% else %}class="btn btn-outline-primary label-navbar-options"{% endif %}>
             <input type="radio" name="glyphs_icon_button" id="glyphs_icon_button" form="main_form"
-                   autocomplete="off" {% if selected_icons == "glyphs" %}checked{% endif %}> Circular Glyphs &#8195;
+                   autocomplete="off" {% if selected_icons == "glyphs" %}checked{% endif %}><span class="span-navbar-options">Circular <br>Glyphs &#8195;</span>
             <img class="navbar-glyphs-radio-img" src="{% static 'images/nav_bar/glyph.svg' %}" style="width: 60px;">
         </label>
-        <label id="trivial_label" style="min-width: 220px; height:fit-content;"
-               {% if selected_icons == "trivial" %}class="btn btn-outline-primary active"
-               {% else %}class="btn btn-outline-primary"{% endif %}>
+        <label id="trivial_label" style="min-width: 160px; height:fit-content;"
+               {% if selected_icons == "trivial" %}class="btn btn-outline-primary active label-navbar-options"
+               {% else %}class="btn btn-outline-primary label-navbar-options"{% endif %}>
             <input type="radio" name="trivial_icon_button" id="trivial_icon_button" form="main_form"
-                   autocomplete="off" {% if selected_icons == "trivial" %}checked{% endif %}> Trivial Cheese &#8195;
+                   autocomplete="off" {% if selected_icons == "trivial" %}checked{% endif %}><span class="span-navbar-options">Trivial <br>Cheese &#8195;</span>
             <img class="navbar-glyphs-radio-img" src="{% static 'images/nav_bar/trivial.svg' %}" style="width: 60px;">
         </label>
     </div>
@@ -406,13 +407,13 @@
 
     jQuery("#tree_layout_button").click(function () {
         $(this).prop("checked", true);
-        document.getElementById("tree_label").className = "btn btn-primary active";
+        document.getElementById("tree_label").className = "btn btn-primary active label-navbar-options";
         $('#force_layout_button').prop("checked", false);
-        document.getElementById("force_label").className = "btn btn-primary";
+        document.getElementById("force_label").className = "btn btn-primary label-navbar-options";
         $('#radial_layout_button').prop("checked", false);
-        document.getElementById("radial_label").className = "btn btn-primary";
+        document.getElementById("radial_label").className = "btn btn-primary label-navbar-options";
         $('#circle_layout_button').prop("checked", false);
-        document.getElementById("circle_label").className = "btn btn-primary";
+        document.getElementById("circle_label").className = "btn btn-primary label-navbar-options";
 
         document.getElementById("main_layout_name").value = 'tree';
         addChangedLayoutInputs("tree_layout_button");
@@ -421,13 +422,13 @@
 
     jQuery("#force_layout_button").click(function () {
         $('#tree_layout_button').prop("checked", false);
-        document.getElementById("tree_label").className = "btn btn-primary";
+        document.getElementById("tree_label").className = "btn btn-primary label-navbar-options";
         $(this).prop("checked", true);
-        document.getElementById("force_label").className = "btn btn-primary active";
+        document.getElementById("force_label").className = "btn btn-primary active label-navbar-options";
         $('#radial_layout_button').prop("checked", false);
-        document.getElementById("radial_label").className = "btn btn-primary";
+        document.getElementById("radial_label").className = "btn btn-primary label-navbar-options";
         $('#circle_layout_button').prop("checked", false);
-        document.getElementById("circle_label").className = "btn btn-primary";
+        document.getElementById("circle_label").className = "btn btn-primary label-navbar-options";
 
         document.getElementById("main_layout_name").value = 'force';
         addChangedLayoutInputs("force_layout_button");
@@ -436,13 +437,13 @@
 
     jQuery("#radial_layout_button").click(function () {
         $('#tree_layout_button').prop("checked", false);
-        document.getElementById("tree_label").className = "btn btn-primary";
+        document.getElementById("tree_label").className = "btn btn-primary label-navbar-options";
         $('#force_layout_button').prop("checked", false);
-        document.getElementById("force_label").className = "btn btn-primary";
+        document.getElementById("force_label").className = "btn btn-primary label-navbar-options";
         $(this).prop("checked", true);
-        document.getElementById("radial_label").className = "btn btn-primary active";
+        document.getElementById("radial_label").className = "btn btn-primary active label-navbar-options";
         $('#circle_layout_button').prop("checked", false);
-        document.getElementById("circle_label").className = "btn btn-primary";
+        document.getElementById("circle_label").className = "btn btn-primary label-navbar-options";
 
         document.getElementById("main_layout_name").value = 'radial';
         addChangedLayoutInputs("radial_layout_button");
@@ -451,13 +452,13 @@
 
     jQuery("#circle_layout_button").click(function () {
         $('#tree_layout_button').prop("checked", false);
-        document.getElementById("tree_label").className = "btn btn-primary";
+        document.getElementById("tree_label").className = "btn btn-primary label-navbar-options";
         $('#force_layout_button').prop("checked", false);
-        document.getElementById("force_label").className = "btn btn-primary";
-        document.getElementById("radial_label").className = "btn btn-primary";
+        document.getElementById("force_label").className = "btn btn-primary label-navbar-options";
         $('#radial_layout_button').prop("checked", false);
+        document.getElementById("radial_label").className = "btn btn-primary label-navbar-options";
         $(this).prop("checked", true);
-        document.getElementById("circle_label").className = "btn btn-primary active";
+        document.getElementById("circle_label").className = "btn btn-primary active label-navbar-options";
 
         document.getElementById("main_layout_name").value = 'circle';
         addChangedLayoutInputs("circle_layout_button");
@@ -467,31 +468,31 @@
 
     jQuery("#dots_icon_button").click(function () {
         $(this).prop("checked", true);
-        document.getElementById("dots_label").className = "btn btn-primary active";
+        document.getElementById("dots_label").className = "btn btn-primary active label-navbar-options";
         $('#glyphs_icon_button').prop("checked", false);
-        document.getElementById("glyphs_label").className = "btn btn-primary";
+        document.getElementById("glyphs_label").className = "btn btn-primary label-navbar-options";
         $('#trivial_icon_button').prop("checked", false);
-        document.getElementById("trivial_label").className = "btn btn-primary";
+        document.getElementById("trivial_label").className = "btn btn-primary label-navbar-options";
         console.log('[User]', user.split('/')[2], '| [interaction]', 'dots_icons', '| [Date]', Date.now());
     });
 
     jQuery("#glyphs_icon_button").click(function () {
         $('#dots_icon_button').prop("checked", false);
-        document.getElementById("dots_label").className = "btn btn-primary";
+        document.getElementById("dots_label").className = "btn btn-primary label-navbar-options";
         $('#trivial_icon_button').prop("checked", false);
-        document.getElementById("trivial_label").className = "btn btn-primary";
+        document.getElementById("trivial_label").className = "btn btn-primary label-navbar-options";
         $(this).prop("checked", true);
-        document.getElementById("glyphs_label").className = "btn btn-primary active";
+        document.getElementById("glyphs_label").className = "btn btn-primary active label-navbar-options";
         console.log('[User]', user.split('/')[2], '| [interaction]', 'glyph_icons', '| [Date]', Date.now());
     });
 
     jQuery("#trivial_icon_button").click(function () {
         $('#dots_icon_button').prop("checked", false);
-        document.getElementById("dots_label").className = "btn btn-primary";
+        document.getElementById("dots_label").className = "btn btn-primary label-navbar-options";
         $('#glyphs_icon_button').prop("checked", false);
-        document.getElementById("glyphs_label").className = "btn btn-primary";
+        document.getElementById("glyphs_label").className = "btn btn-primary label-navbar-options";
         $(this).prop("checked", true);
-        document.getElementById("trivial_label").className = "btn btn-primary active";
+        document.getElementById("trivial_label").className = "btn btn-primary active label-navbar-options";
         console.log('[User]', user.split('/')[2], '| [interaction]', 'trivial_icons', '| [Date]', Date.now());
     });
 

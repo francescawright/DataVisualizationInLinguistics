@@ -91,6 +91,8 @@ intents:
   - CL2_argument_constructive
   - constructive_feature
   - target_person_loT
+  - statistics_features_tree
+  - statistics_features_subtrees
 
 actions:
   - action_check_session_login
@@ -473,6 +475,12 @@ responses:
 
   utter_target_person_loT:
     - text: "In [] level of toxicity target person appears more"
+
+  utter_statistics_features_tree:
+    - text: "intent_statistics_features,statistics_all_features_tree,Pfff..."
+
+  utter_statistics_features_subtrees:
+    - text: "intent_statistics_features,statistics_all_features_subtrees,Pfff..."
 
 session_config:
   session_expiration_time: 60

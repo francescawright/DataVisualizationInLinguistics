@@ -1175,19 +1175,19 @@ function removeLayout() {
     //document.body.classList.remove('radial')
     //document.body.classList.remove('circle')
     removePopupLayoutListeners();
-    $(".modal .modal-content").resizable( "option", "aspectRatio", false );
-    document.querySelector(".modal-body .my-tooltip").remove();
-    let circleContainer = document.querySelector(".modal-body #circle-container-popup");
+    $("#popupModal.modal .modal-content").resizable( "option", "aspectRatio", false );
+    document.querySelector("#popupModal .modal-body .my-tooltip").remove();
+    let circleContainer = document.querySelector("#popupModal .modal-body #circle-container-popup");
     if (circleContainer) {
         circleContainer.remove();
     } else {
-        document.querySelector(".modal-body #graph-container").remove();
+        document.querySelector("#popupModal .modal-body #graph-container").remove();
     }
 }
 
 function removePopupLayoutListeners() {
 
-    let modalBody = $(".modal-body");
+    let modalBody = $("#popupModal .modal-body");
 
     if (modalBody.hasClass( "tree" )) {
         jQuery("#input-n-btn").off("click.popup");
@@ -1231,36 +1231,36 @@ function removePopupLayoutListeners() {
 }
 
 function minPopupSize() {
-    let circleContainer = document.querySelector(".modal-body #circle-container-popup");
+    let circleContainer = document.querySelector("#popupModal .modal-body #circle-container-popup");
     // We maintain the aspect ratio if the Circle Packing layout is being displayed
     if (circleContainer) {
-        document.querySelector(".modal .modal-content").style.width = "450px";
-        document.querySelector(".modal .modal-content").style.height = "388px";
+        document.querySelector("#popupModal.modal .modal-content").style.width = "450px";
+        document.querySelector("#popupModal.modal .modal-content").style.height = "388px";
     } else {
-        document.querySelector(".modal .modal-content").style.width = "450px";
-        document.querySelector(".modal .modal-content").style.height = "300px";
+        document.querySelector("#popupModal.modal .modal-content").style.width = "450px";
+        document.querySelector("#popupModal.modal .modal-content").style.height = "300px";
     }
 }
 function maxPopupSize() {
-    let circleContainer = document.querySelector(".modal-body #circle-container-popup");
+    let circleContainer = document.querySelector("#popupModal .modal-body #circle-container-popup");
     let w = window.innerWidth * 0.8;
     let h = window.innerHeight * 0.8;
     // We maintain the aspect ratio if the Circle Packing layout is being displayed
     if (circleContainer) {
         if (w > h) {
-            document.querySelector(".modal .modal-content").style.width = h * 1.16 + 'px';
-            document.querySelector(".modal .modal-content").style.height = h + 'px';
+            document.querySelector("#popupModal.modal .modal-content").style.width = h * 1.16 + 'px';
+            document.querySelector("#popupModal.modal .modal-content").style.height = h + 'px';
             document.getElementById("popupModal").style.top = "calc(50% - " + h/2 + "px)";
             document.getElementById("popupModal").style.left = "calc(50% - " + (h * 1.16)/2 + "px)";
         } else {
-            document.querySelector(".modal .modal-content").style.width = w + 'px';
-            document.querySelector(".modal .modal-content").style.height = w * 0.862 + 'px';
+            document.querySelector("#popupModal.modal .modal-content").style.width = w + 'px';
+            document.querySelector("#popupModal.modal .modal-content").style.height = w * 0.862 + 'px';
             document.getElementById("popupModal").style.top = "calc(50% - " + ( w * 0.862)/2 + "px)";
             document.getElementById("popupModal").style.left = "calc(50% - " + w/2 + "px)";
         }
     } else {
-        document.querySelector(".modal .modal-content").style.width = w + 'px';
-        document.querySelector(".modal .modal-content").style.height = h + 'px';
+        document.querySelector("#popupModal.modal .modal-content").style.width = w + 'px';
+        document.querySelector("#popupModal.modal .modal-content").style.height = h + 'px';
         document.getElementById("popupModal").style.top = "calc(50% - " + h/2 + "px)";
         document.getElementById("popupModal").style.left = "calc(50% - " + w/2 + "px)";
     }
@@ -1287,7 +1287,7 @@ $(popup_container).on("open", function () {
         radialModalButton.css('opacity', '0.4');
         circleModalButton.css('opacity', '0.4');
 
-        let modalBodyJQuery = $(".modal-body");
+        let modalBodyJQuery = $("#popupModal .modal-body");
         switch (layoutNamePopup) {
             case "tree":
                 modalBodyJQuery.removeClass('force radial circle').addClass("tree");
@@ -1306,7 +1306,7 @@ $(popup_container).on("open", function () {
                 break;
             case "circle":
                 modalBodyJQuery.removeClass('tree radial force').addClass("circle");
-                $(".modal .modal-content").resizable( "option", "aspectRatio", true );
+                $("#popupModal.modal .modal-content").resizable( "option", "aspectRatio", true );
                 circleModalButton.css('opacity', '1');
                 createCircleGraph();
                 break;
@@ -1361,7 +1361,7 @@ $(popup_container).on("open", function () {
                     $('.radial-modal-button').css('opacity', '0.4');
                     removeLayout();
                     modalBodyJQuery.removeClass('tree force radial').addClass("circle");
-                    $(".modal .modal-content").resizable( "option", "aspectRatio", true );
+                    $("#popupModal.modal .modal-content").resizable( "option", "aspectRatio", true );
                     createCircleGraph();
                 }
             });
@@ -1374,8 +1374,8 @@ $(popup_container).on("open", function () {
         function createTreeGraph() {
 
             // The initial size and position of the modal is set, according to the selected layout
-            document.querySelector(".modal .modal-content").style.width = window.innerWidth * 0.8 + "px";
-            document.querySelector(".modal .modal-content").style.height = "522px";
+            document.querySelector("#popupModal.modal .modal-content").style.width = window.innerWidth * 0.8 + "px";
+            document.querySelector("#popupModal.modal .modal-content").style.height = "522px";
             document.getElementById("popupModal").style.top = "calc(30% - 261px)";
             document.getElementById("popupModal").style.left = "calc(50% - " + (window.innerWidth * 0.8)/2 + "px)";
             initialCanvasHeightPopup = 440; // 10px are subtracted for the border of the modal
@@ -4003,7 +4003,6 @@ $(popup_container).on("open", function () {
 
                 //Input values for vars
                 jQuery("#input-n-btn").on("click.popup", function () {
-                    console.log("test")
                     N = document.getElementById('input-n-field').value;
                     console.log('[User]', user.split('/')[2], '| [interaction]', 'change_N_value_to: ' + N, '| [Date]', Date.now());
                     buttonsDevtoolsClick();
@@ -4672,8 +4671,8 @@ $(popup_container).on("open", function () {
         function createForceGraph() {
 
             // The size and initial position of the modal is set, according to the selected layout
-            document.querySelector(".modal .modal-content").style.width = "722px";
-            document.querySelector(".modal .modal-content").style.height = "622px";
+            document.querySelector("#popupModal.modal .modal-content").style.width = "722px";
+            document.querySelector("#popupModal.modal .modal-content").style.height = "622px";
             document.getElementById("popupModal").style.top = "calc(35% - 311px)";
             document.getElementById("popupModal").style.left = "calc(50% - 361px)";
             initialCanvasHeightPopup = 540; // 10px are subtracted for the border of the modal
@@ -6924,8 +6923,8 @@ $(popup_container).on("open", function () {
         function createRadialGraph() {
 
             // The size and initial position of the modal is set, according to the selected layout
-            document.querySelector(".modal .modal-content").style.width = "722px";
-            document.querySelector(".modal .modal-content").style.height = "622px";
+            document.querySelector("#popupModal.modal .modal-content").style.width = "722px";
+            document.querySelector("#popupModal.modal .modal-content").style.height = "622px";
             document.getElementById("popupModal").style.top = "calc(35% - 311px)";
             document.getElementById("popupModal").style.left = "calc(50% - 361px)";
             initialCanvasHeightPopup = 540; // 10px are subtracted for the border of the modal
@@ -9509,8 +9508,8 @@ $(popup_container).on("open", function () {
         function createCircleGraph() {
 
             // The size and initial position of the modal is set, according to the selected layout
-            document.querySelector(".modal .modal-content").style.width = "722px";
-            document.querySelector(".modal .modal-content").style.height = "622px";
+            document.querySelector("#popupModal.modal .modal-content").style.width = "722px";
+            document.querySelector("#popupModal.modal .modal-content").style.height = "622px";
             document.getElementById("popupModal").style.top = "calc(35% - 311px)";
             document.getElementById("popupModal").style.left = "calc(50% - 361px)";
             initialCanvasHeightPopup = 540; // 10px are subtracted for the border of the modal
