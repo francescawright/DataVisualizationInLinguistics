@@ -38,8 +38,8 @@ const initialZoomScale = 0.2; //Initial zoom scale to display almost the whole g
 var initialZoom, initialX, initialY; //Initial zoom and central coordinates of the first visualization of the graph
 
 //Node radius
-const minNodeRadius = 15, minRadius = 15;
-const incrementRadiusFactorPerChild = 5;
+const minNodeRadius = 30, minRadius = 30;
+const incrementRadiusFactorPerChild = 10;
 
 //Features
 const dotRadius = 15;
@@ -3103,8 +3103,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          * Gets the array of nodes belonging to the deepest threads, highlights them,
          * updating the network statistics, and displays the result in the chat
          */
-        $(container).off("longest_thread");
-        $(container).on("longest_thread", function () {
+        $(window).off("longest_thread");
+        $(window).on("longest_thread", function () {
             longestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
         });
 
@@ -3112,8 +3112,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          * Obtains the indices of the widest levels of the graph, highlights the nodes that belong to those levels,
          * updates the network statistics, and displays the result in the chat
          */
-        $(container).off("widest_level");
-        $(container).on("widest_level", function () {
+        $(window).off("widest_level");
+        $(window).on("widest_level", function () {
             widestLevelHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
         });
 
@@ -3121,8 +3121,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          * Gets the array of nodes belonging to the largest threads, highlights them,
          * updating the network statistics, and displays the result in the chat
          */
-        $(container).off("largest_thread");
-        $(container).on("largest_thread", function () {
+        $(window).off("largest_thread");
+        $(window).on("largest_thread", function () {
             largestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
         });
 
@@ -3130,8 +3130,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          * Gets the array of nodes belonging to the largest threads, highlights them,
          * updating the network statistics, and displays the result in the chat
          */
-        $(container).off("most_toxic_thread");
-        $(container).on("most_toxic_thread", function () {
+        $(window).off("most_toxic_thread");
+        $(window).on("most_toxic_thread", function () {
             mostToxicThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
         });
 
@@ -3139,8 +3139,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          * Gets the array of nodes belonging to the largest subtree, highlights them,
          * updating the network statistics, and displays the result in the chat
          */
-        $(container).off("most_toxic_subtree");
-        $(container).on("most_toxic_subtree", function () {
+        $(window).off("most_toxic_subtree");
+        $(window).on("most_toxic_subtree", function () {
             mostToxicSubtreeHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
         });
 

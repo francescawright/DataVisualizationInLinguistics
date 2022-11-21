@@ -514,8 +514,8 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
      * Gets the array of nodes belonging to the deepest threads, highlights them,
      * updating the network statistics, and displays the result in the chat
      */
-    $(container).off("longest_thread");
-    $(container).on("longest_thread", function () {
+    $(window).off("longest_thread");
+    $(window).on("longest_thread", function () {
         let deepestNodes = getDeepestNodesCircle(root);
         let deepestNodesPath;
 
@@ -545,8 +545,8 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
      * Obtains the indices of the widest levels of the graph, highlights the nodes that belong to those levels,
      * updates the network statistics, and displays the result in the chat
      */
-    $(container).off("widest_level");
-    $(container).on("widest_level", function () {
+    $(window).off("widest_level");
+    $(window).on("widest_level", function () {
         let widestLevels = getWidestLevels(root, getTreeHeight(root));
         var textMsg;
         if (widestLevels[0].length === 0) {
@@ -570,8 +570,8 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
      * Gets the array of nodes belonging to the largest threads, highlights them,
      * updating the network statistics, and displays the result in the chat
      */
-    $(container).off("largest_thread");
-    $(container).on("largest_thread", function () {
+    $(window).off("largest_thread");
+    $(window).on("largest_thread", function () {
         let result = getLargestNodes(root);
         let largestThreads = result[0]
         let numNodes = result[1];
@@ -603,8 +603,8 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
      * Gets the array of nodes belonging to the largest threads, highlights them,
      * updating the network statistics, and displays the result in the chat
      */
-    $(container).off("most_toxic_thread");
-    $(container).on("most_toxic_thread", function () {
+    $(window).off("most_toxic_thread");
+    $(window).on("most_toxic_thread", function () {
         let endNodes = getEndNodes(root);
         let mostToxicNodesPath;
 
@@ -636,8 +636,8 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
      * Gets the array of nodes belonging to the largest subtree, highlights them,
      * updating the network statistics, and displays the result in the chat
      */
-    $(container).off("most_toxic_subtree");
-    $(container).on("most_toxic_subtree", function () {
+    $(window).off("most_toxic_subtree");
+    $(window).on("most_toxic_subtree", function () {
         let rootNodes = getSubtreeMostToxicRootNodes(root, true);
         let mostToxicNodesPath;
 

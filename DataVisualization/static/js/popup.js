@@ -6967,8 +6967,8 @@ $(popup_container).on("open", function () {
             currentZoomScalePopup = initialZoomScalePopup;
 
             //Node radius
-            minNodeRadiusPopup = 15;
-            incrementRadiusFactorPerChildPopup = 5;
+            minNodeRadiusPopup = 30;
+            incrementRadiusFactorPerChildPopup = 10;
 
             /* Root icon */
             var rootPath = pr;

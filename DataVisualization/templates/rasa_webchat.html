@@ -142,11 +142,11 @@
             } else if ('{{storage_clear}}' === "signup") {
                 text = "I have created your user and now you are logged in";
             } else if ('{{storage_clear}}' === "nochat"){
-                localStorage.clear();
+                sessionStorage.clear();
             }
 
             if ('{{storage_clear}}' !== "nochat") {
-                localStorage.setItem("chat_session", '{"metadata":{"tooltipSent":{},"linkTarget":"","userInput":"","domHighlight":{},"hintText":"","showTooltip":true},"conversation":[{"type":"text","component":{"compare":null,"displayName":"Connect(s)","defaultTypes":{"displayTypingIndication":false}},"text":"' + text + '","sender":"response","showAvatar":true}],"params":{"unreadCount":0,"connectingText":"Waiting for server...","oldUrl":"","connected":true,"docViewer":false,"isChatOpen":false,"disabledInput":false,"pageChangeCallbacks":{},"isChatVisible":true,"initialized":false,"messageDelayed":false},"version":"1.0.0"}');
+                sessionStorage.setItem("chat_session", '{"metadata":{"tooltipSent":{},"linkTarget":"","userInput":"","domHighlight":{},"hintText":"","showTooltip":true},"conversation":[{"type":"text","component":{"compare":null,"displayName":"Connect(s)","defaultTypes":{"displayTypingIndication":false}},"text":"' + text + '","sender":"response","showAvatar":true}],"params":{"unreadCount":0,"connectingText":"Waiting for server...","oldUrl":"","connected":true,"docViewer":false,"isChatOpen":false,"disabledInput":false,"pageChangeCallbacks":{},"isChatVisible":true,"initialized":false,"messageDelayed":false},"version":"1.0.0"}');
             }
         }
     })();
@@ -171,17 +171,17 @@
     }
 
     function doSomeCleanup() {
-        localStorage.clear();
+        sessionStorage.clear();
     }
 
     function botMessageEvent(e) {
         console.log('the bot said something: ' + e.text);
         if (e.text) {
 
-            // Get the existing localStorage data
-            var existingStorage = localStorage.getItem("chat_session");
+            // Get the existing sessionStorage data
+            var existingStorage = sessionStorage.getItem("chat_session");
             // If no existing data, create an array
-            // Otherwise, convert the localStorage string to an array
+            // Otherwise, convert the sessionStorage string to an array
             existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
 
             let messageList = e.text.split(",");
@@ -191,7 +191,6 @@
                     e.text = "I'm working on it";
                     document.getElementById("logout_chat_session_id").value = existingStorage["session_id"];
                     document.getElementById("logout_form_submit").click();
-
                     break;
                 case "intent_login":
                     e.hidden = true;
@@ -331,7 +330,7 @@
                             document.getElementById(messageList[1]).click();
                         }
                     } else {
-                        e.text =  "Open a document first, in order to perform this action";
+                        e.text = "Open a document first, in order to perform this action";
                         // selectedDataError(existingStorage);
                     }
                     break;
@@ -346,7 +345,7 @@
                             document.getElementById(messageList[1]).click();
                         }
                     } else {
-                        e.text =  "Open a document first, in order to perform this action";
+                        e.text = "Open a document first, in order to perform this action";
                         // selectedDataError(existingStorage);
                     }
                     break;
@@ -367,7 +366,7 @@
                             e.text =  messageList[2];
                         }
                     } else {
-                        e.text =  "Open a document first, in order to perform this action";
+                        e.text = "Open a document first, in order to perform this action";
                         // selectedDataError(existingStorage);
                     }
                     break;
@@ -388,25 +387,25 @@
                             e.text =  messageList[2];
                         }
                     } else {
-                        e.text =  "Open a document first, in order to perform this action";
+                        e.text = "Open a document first, in order to perform this action";
                         // selectedDataError(existingStorage);
                     }
                     break;
                 case "intent_highlight_graph":
                     if ('{{ selected_item }}') {
                         e.text = messageList[2];
-                        $("#tree-container").trigger(messageList[1]);
+                        $(window).trigger(messageList[1]);
                     } else {
-                        e.text =  "Open a document first, in order to perform this action";
+                        e.text = "Open a document first, in order to perform this action";
                         // selectedDataError(existingStorage);
                     }
                     break;
                 case "intent_statistics_features":
                     if ('{{ selected_item }}') {
                         e.text = messageList[2];
-                        $("#tree-container").trigger(messageList[1]);
+                        $(window).trigger(messageList[1]);
                     } else {
-                        e.text =  "Open a document first, in order to perform this action";
+                        e.text = "Open a document first, in order to perform this action";
                         // selectedDataError(existingStorage);
                     }
             }
@@ -414,10 +413,10 @@
     }
 
     function injectIntentConversation(textMsg){
-        // Get the existing localStorage data
-        var existingStorage = localStorage.getItem("chat_session");
+        // Get the existing sessionStorage data
+        var existingStorage = sessionStorage.getItem("chat_session");
         // If no existing data, create an array
-        // Otherwise, convert the localStorage string to an array
+        // Otherwise, convert the sessionStorage string to an array
         existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
 
         var xhr = new XMLHttpRequest();
@@ -432,7 +431,7 @@
     }
 
     function selectedDataError(existingStorage, errorMsg = "Open a document first, in order to perform this action"){
-        addToLocalStorageObject("chat_session", "conversation", errorMsg);
+        addToSessionStorageObject("chat_session", "conversation", errorMsg);
         window.location = window.location.href.split("?")[0];
     }
 
@@ -488,33 +487,33 @@
 
     (function chatbotMessage(e) {
         if ('{{chatbot_error}}') {
-            addToLocalStorageObject("chat_session", "conversation", '{{chatbot_error}}');
+            addToSessionStorageObject("chat_session", "conversation", '{{chatbot_error}}');
         }
         if ('{{chatbot_success}}') {
-            addToLocalStorageObject("chat_session", "conversation", '{{chatbot_success}}');
+            addToSessionStorageObject("chat_session", "conversation", '{{chatbot_success}}');
         }
     })();
 
     /**
-     * Add an item to a localStorage() object
-     * @param {String} name  The localStorage() key
-     * @param {String} key   The localStorage() value object key
-     * @param {String} value The localStorage() value object value
+     * Add an item to a sessionStorage() object
+     * @param {String} name  The sessionStorage() key
+     * @param {String} key   The sessionStorage() value object key
+     * @param {String} value The sessionStorage() value object value
      */
-    function addToLocalStorageObject(name, key, value) {
+    function addToSessionStorageObject(name, key, value) {
 
         // Get the existing data
-        let existing = localStorage.getItem(name);
+        let existing = sessionStorage.getItem(name);
 
         // If no existing data, create an array
-        // Otherwise, convert the localStorage string to an array
+        // Otherwise, convert the sessionStorage string to an array
         existing = existing ? JSON.parse(existing) : {};
 
-        // Add new data to localStorage Array
+        // Add new data to sessionStorage Array
         existing[key].push({"type":"text","component":{"compare":null,"displayName":"Connect(s)","defaultTypes":{"displayTypingIndication":false}},"text": value,"sender":"response","showAvatar":true,"timestamp":Date.now()});
 
-        // Save back to localStorage
-        localStorage.setItem(name, JSON.stringify(existing));
+        // Save back to sessionStorage
+        sessionStorage.setItem(name, JSON.stringify(existing));
 
     };
 
@@ -586,7 +585,7 @@
                     },
                 },
                 // showMessageDate: true,
-                // params: {storage: "session"},
+                params: {storage: "session"},
                 // add other props here
             },
             null
@@ -598,7 +597,7 @@
 
 {#<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.js"></script>#}
 {#<script>#}
-{#    let socketId = JSON.parse(localStorage.getItem('chat_session'))['session_id'];#}
+{#    let socketId = JSON.parse(sessionStorage.getItem('chat_session'))['session_id'];#}
 {#    // Connect to RASA server#}
 {#    const socket = io.sockets.sockets.get(socketId);#}
 {#    socket.on('connect', function () {#}

@@ -27,6 +27,8 @@ from DataVisualization.utilities.ExcelParser import ExcelParser
 
 from cryptography.fernet import Fernet
 
+import requests
+
 TARGETS = ["target_group", "target_person", "target_stereotype"]
 FEATURES = ["argumentation", "constructiveness", "sarcasm", "mockery", "intolerance",
             "improper_language", "insult",
@@ -52,13 +54,13 @@ POPUP_OUTPUT = 'output_popup.json'
 
 
 def index(request):
-    storageClear = request.GET.get('storageClear', '')
-    errorMessage = request.GET.get('chatbotError', '')
-    if (errorMessage):
-        errorMessage = getChatErrorMessage(request, errorMessage)
+    storage_clear = request.GET.get('storageClear', '')
+    error_message = request.GET.get('chatbotError', '')
+    if (error_message):
+        error_message = get_chat_error_message(error_message)
 
     return render(request, 'index.html', context={'documents_uploaded': get_all_documents(), 'user': request.user,
-                                                  'storage_clear': storageClear, 'chatbot_error': errorMessage})
+                                                  'storage_clear': storage_clear, 'chatbot_error': error_message})
 
 
 def storage_clear_index(request, clear_type):
@@ -90,36 +92,38 @@ def generate_dataset(request):
     # ---------------------------------------------------------------------------------
     return HttpResponse("/static/" + MAIN_OUTPUT)
 
-def auxiliar_generate_dataset (request, selected_item):
 
-    action_popup = request.POST.get('action_popup')  # Action to be performed in the Popup or Main window (swap, send_to_popup, send_to_main)
+def auxiliar_generate_dataset(request, selected_item):
+    action_popup = request.POST.get(
+        'action_popup')  # Action to be performed in the Popup or Main window (swap, send_to_popup, send_to_main)
 
-    is_popup_subtree = False # The popup is closed, or there is a complete graph in the popup
-    is_main_subtree = False # There is a complete graph in the main window
+    is_popup_subtree = False  # The popup is closed, or there is a complete graph in the popup
+    is_main_subtree = False  # There is a complete graph in the main window
 
     if request.POST.get('main_subtree_id'):
-        is_main_subtree = True # There is a subtree in the Main window
+        is_main_subtree = True  # There is a subtree in the Main window
         main_subtree = Subtree.objects.get(pk=request.POST["main_subtree_id"])
         main_nodes = main_subtree.node_ids
         main_selected_item_popup = main_subtree.document.description
     elif request.POST.get('main_subtree_nodes_ids'):
-        is_main_subtree = True # There is a subtree in the Main window
+        is_main_subtree = True  # There is a subtree in the Main window
         main_nodes = list(map(int, request.POST['main_subtree_nodes_ids'].split(",")))
         main_selected_item_popup = request.POST['main_subtree_document_description']
 
     if request.POST.get('popup_subtree_id'):
-        is_popup_subtree = True # There is a subtree in the Popup
+        is_popup_subtree = True  # There is a subtree in the Popup
         popup_subtree = Subtree.objects.get(pk=request.POST["popup_subtree_id"])
         popup_nodes = popup_subtree.node_ids
         popup_selected_item_popup = popup_subtree.document.description
     elif request.POST.get('popup_subtree_nodes_ids'):
-        is_popup_subtree = True # There is a subtree in the Popup
+        is_popup_subtree = True  # There is a subtree in the Popup
         popup_nodes = list(map(int, request.POST['popup_subtree_nodes_ids'].split(",")))
         popup_selected_item_popup = request.POST['popup_subtree_document_description']
 
     popup_graph_info = request.POST.get('popup_graph_info', None)
 
-    if action_popup == "swap" or action_popup == "send_to_main" or (action_popup == "send_to_popup" and popup_graph_info):
+    if action_popup == "swap" or action_popup == "send_to_main" or (
+            action_popup == "send_to_popup" and popup_graph_info):
         # There is a subtree in the Popup
         if is_popup_subtree:
             try:
@@ -128,7 +132,8 @@ def auxiliar_generate_dataset (request, selected_item):
                 return HttpResponseBadRequest("document_not_exist")
             # The use of the 'save_data_to_JSON_popup' function indicates that a subtree is being generated.
             # The 'MAIN_OUTPUT' parameter indicates that the subtree is sent to the main window.
-            save_data_to_JSON_popup(dataset_first_level, popup_nodes, doc, MAIN_OUTPUT) # The subtree is sent to the Main window
+            save_data_to_JSON_popup(dataset_first_level, popup_nodes, doc,
+                                    MAIN_OUTPUT)  # The subtree is sent to the Main window
 
         # There is no subtree in the Popup
         else:
@@ -138,7 +143,7 @@ def auxiliar_generate_dataset (request, selected_item):
                 return HttpResponseBadRequest("document_not_exist")
             # Filter first level childs
             first_level = dataset.filter(comment_level=1)
-            save_data_to_JSON(first_level, doc) # The complete graph is sent to the Main window
+            save_data_to_JSON(first_level, doc)  # The complete graph is sent to the Main window
 
     if action_popup == "send_to_popup" and not popup_graph_info:
         try:
@@ -148,7 +153,7 @@ def auxiliar_generate_dataset (request, selected_item):
         # Filter first level childs
         first_level = dataset.filter(comment_level=1)
         save_data_to_JSON(first_level, doc)  # The complete graph is sent to the Main window
-        
+
     if action_popup == "swap" or action_popup == "send_to_popup":
         # There is a subtree in the Main window
         if is_main_subtree:
@@ -158,7 +163,7 @@ def auxiliar_generate_dataset (request, selected_item):
                 return HttpResponseBadRequest("document_not_exist")
             # The use of the 'save_data_to_JSON_popup' function indicates that a subtree is being generated.
             # By default, if the last parameter is not passed, the subtree is sent to the Popup.
-            save_data_to_JSON_popup(dataset_first_level, main_nodes, doc) # The subtree is sent to the Popup
+            save_data_to_JSON_popup(dataset_first_level, main_nodes, doc)  # The subtree is sent to the Popup
 
         # There is no subtree in the Main window
         else:
@@ -177,12 +182,13 @@ def auxiliar_generate_dataset (request, selected_item):
             # There is a subtree in the Popup
             if is_popup_subtree:
                 try:
-                    dataset_first_level, doc = get_current_dataset_popup(request, popup_nodes, popup_selected_item_popup)
+                    dataset_first_level, doc = get_current_dataset_popup(request, popup_nodes,
+                                                                         popup_selected_item_popup)
                 except ObjectDoesNotExist:
                     return HttpResponseBadRequest("document_not_exist")
                 # The use of the 'save_data_to_JSON_popup' function indicates that a subtree is being generated.
                 # The 'MAIN_OUTPUT' parameter indicates that the subtree is sent to the main window.
-                save_data_to_JSON_popup(dataset_first_level, popup_nodes, doc) # The subtree is sent to the Main window
+                save_data_to_JSON_popup(dataset_first_level, popup_nodes, doc)  # The subtree is sent to the Main window
 
             # There is no subtree in the Popup
             else:
@@ -192,7 +198,7 @@ def auxiliar_generate_dataset (request, selected_item):
                     return HttpResponseBadRequest("document_not_exist")
                 # Filter first level childs
                 first_level = dataset.filter(comment_level=1)
-                save_data_to_JSON(first_level, doc, POPUP_OUTPUT) # The complete graph is sent to the Main window
+                save_data_to_JSON(first_level, doc, POPUP_OUTPUT)  # The complete graph is sent to the Main window
 
         # There is a subtree in the Main window
         if is_main_subtree:
@@ -202,7 +208,8 @@ def auxiliar_generate_dataset (request, selected_item):
                 return HttpResponseBadRequest("document_not_exist")
             # The use of the 'save_data_to_JSON_popup' function indicates that a subtree is being generated.
             # The 'MAIN_OUTPUT' parameter indicates that the subtree is sent to the main window.
-            save_data_to_JSON_popup(dataset_first_level, main_nodes, doc, MAIN_OUTPUT) # The subtree is sent to the Main window
+            save_data_to_JSON_popup(dataset_first_level, main_nodes, doc,
+                                    MAIN_OUTPUT)  # The subtree is sent to the Main window
 
         # There is no subtree in the Main window
         else:
@@ -212,7 +219,7 @@ def auxiliar_generate_dataset (request, selected_item):
                 return HttpResponseBadRequest("document_not_exist")
             # Filter first level childs
             first_level = dataset.filter(comment_level=1)
-            save_data_to_JSON(first_level, doc) # The complete graph is sent to the Main window
+            save_data_to_JSON(first_level, doc)  # The complete graph is sent to the Main window
 
 
 def generate_dataset_popup(request):
@@ -267,17 +274,17 @@ def main_form_handler(request):
     if not user or not getattr(user, 'is_authenticated', True):
         return open_document_exception(request, "open_document_no_active_session")
 
-    storageClear = request.GET.get('storageClear', '')
-    errorMessage = request.GET.get('chatbotError', '')
-    if (errorMessage):
-        errorMessage = getChatErrorMessage(request, errorMessage)
+    storage_clear = request.GET.get('storageClear', '')
+    error_message = request.GET.get('chatbotError', '')
+    if (error_message):
+        error_message = get_chat_error_message(error_message)
 
-    successMessage = ''
-    if (request.POST.get('chatbot') == "true"):
+    success_message = ''
+    if request.POST.get('chatbot') == "true":
         if request.POST.get('changed_main_layout'):
-            successMessage = request.POST.get('from_chat_msg')
+            success_message = request.POST.get('from_chat_msg')
         else:
-            successMessage = "I have selected the best visualization according to the graph characteristics"
+            success_message = "I have selected the best visualization according to the graph characteristics"
 
     try:
         selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout = main_form_context(
@@ -292,15 +299,15 @@ def main_form_handler(request):
         messages.success(request, "The best visualization according to the graph characteristics has been selected")
 
     context = {'dataset': MAIN_OUTPUT, 'options': get_all_documents(), 'layouts': LAYOUTS,
-                       'selected_layout': selected_layout,
-                       'checked_layout': checked_layout,
-                       'selected_item': selected_item,
-                       'selected_icons': selected_icons,
-                       # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
-                       # "d1": d1, "d2": d2,
-                       'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
-                       'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons, 'storage_clear': storageClear,
-                       'chatbot_error': errorMessage, 'chatbot_success': successMessage }
+               'selected_layout': selected_layout,
+               'checked_layout': checked_layout,
+               'selected_item': selected_item,
+               'selected_icons': selected_icons,
+               # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
+               # "d1": d1, "d2": d2,
+               'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
+               'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons, 'storage_clear': storage_clear,
+               'chatbot_error': error_message, 'chatbot_success': success_message}
 
     # Default values
     context['main_hierarchy_name'] = request.POST["main_hierarchy_name"]
@@ -309,8 +316,10 @@ def main_form_handler(request):
     main_graph_info = request.POST.get('main_graph_info', None)
     popup_graph_info = request.POST.get('popup_graph_info', None)
 
-    action_popup = request.POST.get('action_popup')  # Action to be performed in the Popup or Main window (swap, send_to_popup, send_to_main)
-    if action_popup == "swap" or action_popup == "send_to_main" or (action_popup == "send_to_popup" and popup_graph_info):
+    action_popup = request.POST.get(
+        'action_popup')  # Action to be performed in the Popup or Main window (swap, send_to_popup, send_to_main)
+    if action_popup == "swap" or action_popup == "send_to_main" or (
+            action_popup == "send_to_popup" and popup_graph_info):
         # Graph information in the main window
         context['main_graph_info'] = popup_graph_info
         context['main_subtree_nodes_ids'] = request.POST['popup_subtree_nodes_ids']
@@ -396,22 +405,23 @@ def main_form_context(request):
 def open_document_exception(request, error):
     # Django Messages
     if (error == "document_not_exist"):
-        messages.error(request, "The document you want to open does not exist")
+        errorMsg = "The document you want to open does not exist"
 
         request.POST = request.POST.copy()
         if "from_button" in request.POST.keys():
             request.POST['from_button'] = Document.objects.first().description
         if "selected_data" in request.POST.keys():
             request.POST["selected_data"] = Document.objects.first().description
-    elif (error == "open_document_no_active_session"):
-        messages.error(request, "Log in to access the documents")
+    elif error == "open_document_no_active_session":
+        errorMsg = "Log in to access the documents"
     else:
-        messages.error(request, "An error has occurred")
+        errorMsg = "An error has occurred"
 
-    if (request.POST.get('chatbot') == "true"):
-        return getTemplateByPath(request, error)
+    if request.POST.get('chatbot') == "true":
+        return get_template_by_path(request, error)
     else:
-        if (error == "open_document_no_active_session"):
+        messages.error(request, errorMsg)
+        if error == "open_document_no_active_session":
             return redirect("index")
         else:
             if "from_button" in request.POST.keys():
@@ -529,7 +539,7 @@ def recursive_add_node_popup(node, nodes, doc):
     return result
 
 
-def save_data_to_JSON(first_level, doc, output_file = MAIN_OUTPUT):
+def save_data_to_JSON(first_level, doc, output_file=MAIN_OUTPUT):
     # Recursivamente añadimos sus hijos.
     data_list = [recursive_add_node(node, doc) for node in first_level]
 
@@ -539,7 +549,7 @@ def save_data_to_JSON(first_level, doc, output_file = MAIN_OUTPUT):
         json.dump(data, outfile, default=str)
 
 
-def save_data_to_JSON_popup(first_level, nodes, doc, output_file = POPUP_OUTPUT):
+def save_data_to_JSON_popup(first_level, nodes, doc, output_file=POPUP_OUTPUT):
     # Recursivamente añadimos sus hijos.
     data_list = [recursive_add_node_popup(node, nodes, doc) for node in first_level]
 
@@ -550,10 +560,12 @@ def save_data_to_JSON_popup(first_level, nodes, doc, output_file = POPUP_OUTPUT)
 
 
 def get_selected_layout(request):
-    action_popup = request.POST.get('action_popup')  # Action to be performed in the Popup or Main window (swap, send_to_popup, send_to_main)
+    action_popup = request.POST.get(
+        'action_popup')  # Action to be performed in the Popup or Main window (swap, send_to_popup, send_to_main)
     main_layout_name = request.POST.get('main_layout_name')
     popup_graph_info = request.POST.get('popup_graph_info', None)
-    if action_popup == "swap" or action_popup == "send_to_main" or (action_popup == "send_to_popup" and popup_graph_info):
+    if action_popup == "swap" or action_popup == "send_to_main" or (
+            action_popup == "send_to_popup" and popup_graph_info):
         selected_layout = request.POST["popup_layout_name"] + "_layout.html"
         template = request.POST["popup_layout_name"] + "_layout.html"
         button_checked = request.POST["popup_layout_name"]
@@ -630,9 +642,12 @@ def upload_file(request):
             return render(request, "upload_file.html",
                           context={'form': file_form, 'documents_uploaded': get_all_documents()})
     else:
+        error_message = request.GET.get('chatbotError', '')
+        if (error_message):
+            error_message = get_chat_error_message(error_message)
         file_form = FileForm()
         return render(request, "upload_file.html",
-                      context={'form': file_form, 'documents_uploaded': get_all_documents()})
+                      context={'form': file_form, 'documents_uploaded': get_all_documents(), 'chatbot_error': error_message})
 
 
 def handle_uploaded_file(f):
@@ -685,8 +700,11 @@ def edit_data(request, document_id):
             return render(request, "upload_file.html",
                           context={'form': form, 'documents_uploaded': get_all_documents()})
     else:
+        error_message = request.GET.get('chatbotError', '')
+        if (error_message):
+            error_message = get_chat_error_message(error_message)
         return render(request, 'update_file.html',
-                      {'documents_uploaded': get_all_documents(), 'document': document, 'form': form})
+                      {'documents_uploaded': get_all_documents(), 'document': document, 'form': form, 'chatbot_error': error_message})
 
 
 def handle_delete_data(request):
@@ -738,10 +756,10 @@ from django.contrib.auth import authenticate, login, logout
 
 
 def login_view(request):
-    storageClear = request.GET.get('storageClear', '')
-    errorMessage = request.GET.get('chatbotError', '')
-    if (errorMessage):
-        errorMessage = getChatErrorMessage(request, errorMessage)
+    storage_clear = request.GET.get('storageClear', '')
+    error_message = request.GET.get('chatbotError', '')
+    if (error_message):
+        error_message = get_chat_error_message(error_message)
 
     if request.POST.get('username') and request.POST.get('password') and request.POST.get('chatbot') == "true":
         request = decrypt_login_params(request)
@@ -757,7 +775,7 @@ def login_view(request):
 
         return login_process(request, form, uservalue, passwordvalue)
     else:
-        context = {'form': form, 'storage_clear': storageClear, 'chatbot_error': errorMessage}
+        context = {'form': form, 'storage_clear': storage_clear, 'chatbot_error': error_message}
         return render(request, 'login.html', context)
 
 
@@ -784,25 +802,25 @@ def login_process(request, form, uservalue, passwordvalue):
 
 
 def login_exception(request, error, form):
-    # Django Messages
-    if (error == "same_username"):
-        messages.error(request, "Attempting to log in as the current user")
-    elif (error == "bad_credentials"):
-        messages.error(request, "The username and password combination is incorrect")
-    else:
-        messages.error(request, 'An error has occurred')
 
-    if (request.POST.get('chatbot') == "true"):
-        return getTemplateByPath(request, error)
+    if request.POST.get('chatbot') == "true":
+        return get_template_by_path(request, error)
     else:
+        # Django Messages
+        if error == "same_username":
+            messages.error(request, "Attempting to log in as the current user")
+        elif error == "bad_credentials":
+            messages.error(request, "The username and password combination is incorrect")
+        else:
+            messages.error(request, 'An error has occurred')
         return render(request, 'login.html', context={'form': form})
 
 
 def signup_view(request):
-    storageClear = request.GET.get('storageClear', '')
-    errorMessage = request.GET.get('chatbotError', '')
-    if (errorMessage):
-        errorMessage = getChatErrorMessage(request, errorMessage)
+    storage_clear = request.GET.get('storageClear', '')
+    error_message = request.GET.get('chatbotError', '')
+    if (error_message):
+        error_message = get_chat_error_message(error_message)
 
     if request.method == 'POST':
         if request.POST.get('username') and request.POST.get('password1') and request.POST.get(
@@ -816,22 +834,22 @@ def signup_view(request):
         elif (request.POST.get('password1') != request.POST.get('password2')):
             return signup_exception(request, "passwords_not_match", form)
 
-        messageText = "The user has been created successfully"
+        message_text = "The user has been created successfully"
         if not request.POST.get('chatbot') == "true":
             if form.is_valid():
                 user = form.save()
                 login(request, user)
-                messages.success(request, messageText)
+                messages.success(request, message_text)
                 return storage_clear_index(request, 'nochat')
         else:
             user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
             login(request, user)
-            messages.success(request, messageText)
+            messages.success(request, message_text)
             return storage_clear_index(request, 'signup')
     else:
         form = UserCreationForm()
     return render(request, 'signup.html',
-                  context={'form': form, 'storage_clear': storageClear, 'chatbot_error': errorMessage})
+                  context={'form': form, 'storage_clear': storage_clear, 'chatbot_error': error_message})
 
 
 def decrypt_signup_params(request):
@@ -845,17 +863,17 @@ def decrypt_signup_params(request):
 
 
 def signup_exception(request, error, form):
-    # Django Messages
-    if (error == "passwords_not_match"):
-        messages.error(request, "The two passwords provided do not match")
-    elif (error == "username_already_exists"):
-        messages.error(request, "A user with that username already exists")
-    else:
-        messages.error(request, "An error has occurred")
 
-    if (request.POST.get('chatbot') == "true"):
-        return getTemplateByPath(request, error)
+    if request.POST.get('chatbot') == "true":
+        return get_template_by_path(request, error)
     else:
+        # Django Messages
+        if error == "passwords_not_match":
+            messages.error(request, "The two passwords provided do not match")
+        elif (error == "username_already_exists"):
+            messages.error(request, "A user with that username already exists")
+        else:
+            messages.error(request, "An error has occurred")
         return render(request, 'signup.html', context={'form': form})
 
 
@@ -876,10 +894,10 @@ def logout_view(request):
 
 
 def logout_exception(request, error):
-    messages.error(request, "No active session detected to be closed")
-    if (request.GET.get("chatbot") == "true"):
-        return getTemplateByPath(request, error)
+    if request.GET.get("chatbot") == "true":
+        return get_template_by_path(request, error)
     else:
+        messages.error(request, "No active session detected to be closed")
         return redirect(reverse('index'))
 
 
@@ -891,61 +909,55 @@ def decrypt(token: bytes, key: bytes) -> bytes:
     return Fernet(key).decrypt(token)
 
 
-def getTemplateByPath(request, errorMessage):
-    path = urlparse(request.META['HTTP_REFERER']).path
+def get_template_by_path(request, error_message):
+    path_prev_url = urlparse(request.META['HTTP_REFERER']).path.split('/')
+    viewname = path_prev_url[1]
 
-    # Other tempaltes such as /edit_data/ will have to be added when they are implemented
-    if path == "/" or path == "/logout/":
-        return redirect(reverse('index') + '?chatbotError=' + errorMessage)
-    elif path == "/login/":
-        form = Loginform()
-        return redirect(reverse('login') + '?chatbotError=' + errorMessage)
-    elif path == "/signup/":
-        return redirect(reverse('signup') + '?chatbotError=' + errorMessage)
-    elif path == "/selected_data/":
+    if viewname == "" or viewname == "logout":
+        return redirect(reverse('index') + '?chatbotError=' + error_message)
 
-        if (errorMessage == "open_document_no_active_session"):
-            return redirect(reverse('index') + '?chatbotError=' + errorMessage)
-        elif (errorMessage == "document_not_exist"):
+    elif viewname == "selected_data":
+        if (error_message == "open_document_no_active_session"):
+            return redirect(reverse('index') + '?chatbotError=' + error_message)
+        else:
+            if request.method == 'POST':
+                inject_intent_conversation(request.POST["session_id"], get_chat_error_message(error_message))
+            elif request.method == 'GET':
+                inject_intent_conversation(request.GET["session_id"], get_chat_error_message(error_message))
 
-            errorMessage = getChatErrorMessage(request, errorMessage)
+            return HttpResponse(status=204)
 
-            selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout = main_form_context(
-                request)
-
-            return render(request, template,
-                          {'dataset': MAIN_OUTPUT, 'options': get_all_documents(), 'layouts': LAYOUTS,
-                           'selected_layout': selected_layout,
-                           'checked_layout': checked_layout,
-                           'selected_item': selected_item,
-                           'selected_icons': selected_icons,
-                           # ? Uncomment this line in order to obtain the auxiliary_charts in visualization.
-                           # "d1": d1, "d2": d2,
-                           'cbTargets': cbTargets, 'cbFeatures': cbFeatures, 'cbFilterOR': cbFilterOR,
-                           'cbFilterAND': cbFilterAND, 'cbCommons': cbCommons, 'chatbot_error': errorMessage})
-
-        return redirect(reverse('selected_data') + '?chatbotError=' + errorMessage)
+    elif viewname == "edit_data":
+        return redirect(reverse(viewname, kwargs={'document_id':path_prev_url[2]}) + '?chatbotError=' + error_message)
+    else:
+        return redirect(reverse(viewname) + '?chatbotError=' + error_message)
 
 
-
-    elif path == "/upload_file/":
-        return redirect(reverse('upload_file') + '?chatbotError=' + errorMessage)
-
-
-def getChatErrorMessage(request, errorName):
-    messages = {'same_username': "The username you have given me matches the username of your current session",
+def get_chat_error_message(errorName):
+    messages_dict = {'same_username': "The username you have given me matches the username of your current session",
                 'bad_credentials': "The username and password combination you have given me is not valid",
                 'passwords_not_match': "I have not been able to register the user, the two passwords you have given me do not match",
                 'username_already_exists': "I have not been able to register the user, there is already a user with this name",
                 'logout_no_active_session': "It is not possible to close a session that does not exist, you are not logged in...",
                 'document_not_exist': "I cannot find any document with the name you have given me",
                 'open_document_no_active_session': "You need to be logged in to access the documents", }
-    if errorName in messages:
-        return messages[errorName]
+    if errorName in messages_dict:
+        return messages_dict[errorName]
     else:
         return "An error has occurred"
 
 
-def getChatSuccessMessage(request, successName):
-    messages = {'best_layout': "I have selected the best visualization according to the graph characteristics"}
-    return messages[successName]
+def get_chat_success_message(request, successName):
+    messages_dict = {'best_layout': "I have selected the best visualization according to the graph characteristics"}
+    return messages_dict[successName]
+
+
+def inject_intent_conversation(session_id, textMsg):
+    url = 'http://localhost:5005/conversations/' + session_id + '/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio'
+    json_msg = {
+        "name": "generate_response_message",
+        "entities": {
+            "response_message": textMsg
+        }
+    }
+    requests.post(url, json=json_msg)

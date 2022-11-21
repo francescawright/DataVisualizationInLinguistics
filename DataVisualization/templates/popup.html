@@ -238,7 +238,7 @@
 
           <form id="add-subtree-form" onsubmit="return savePopupSubtree(event)">
               {% csrf_token %}
-              <label for="subtree-name" class="col-form-label">Name:</label>
+              <label for="subtree-name" class="col-form-label">Name:&nbsp;</label>
               <input type="text" name="subtree_name" class="form-control" id="subtree-name" required>
               <input type="hidden" name="selected_item" value='{{ selected_item }}'>
               <input type="hidden" id="popup-node-ids-input" name="node_ids" value=''>
