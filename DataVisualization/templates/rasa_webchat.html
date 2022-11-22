@@ -91,6 +91,45 @@
     box-sizing: border-box;
     transition: all 0.3s;
 }
+.pulse-chat-feature::before,
+.pulse-chat-feature::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: 50%;
+    background-color: rgba(250, 112, 112, 0.8);
+    animation: ripple-1 2s infinite ease-in-out;
+    z-index: -1;
+}
+.pulse-chat-feature::after {
+    background-color: rgba(250, 112, 112, 0.6);
+    animation: ripple-2 2s infinite ease-in-out;
+    animation-delay: 0.5s;
+}
+@keyframes ripple-1{
+    0%{
+        transform: scale(1);
+        opacity: 1;
+    }
+    100%{
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+@keyframes ripple-2{
+    0%{
+        transform: scale(1);
+        opacity: 1;
+    }
+    100%{
+        transform: scale(1.7);
+        opacity: 0;
+    }
+}
 .show-chat-feature {
     display: flex;
 }
@@ -409,6 +448,13 @@
                         // selectedDataError(existingStorage);
                     }
             }
+            if (textToSpeech && (e.hidden !== true)) {
+                let delay = getDelayChatMsg(e.text);
+                setTimeout(function () {
+                    msgTextToSpeech.text = e.text;
+                    window.speechSynthesis.speak(msgTextToSpeech);
+                }, delay);
+            }
         }
     }
 
@@ -455,7 +501,35 @@
     function closeChatFeatures() {
         document.getElementById('stt-feature').classList.remove("show-chat-feature");
         document.getElementById('tts-feature').classList.remove("show-chat-feature");
+        if (speechRecognitionSupported){
+            console.log("testtt55")
+            if (audioRecognizing){
+                $("#stt-feature").removeClass('checked-chat-feature pulse-chat-feature');
+                document.querySelector('textarea.rw-new-message').placeholder = 'Type a message...';
+                recognition.stop();
+            }
+        }
     }
+
+    var audioRecognizing = false;
+    var textToSpeech = false;
+    var msgTextToSpeech;
+    var recognition;
+    var speechRecognitionSupported = isSpeechRecognitionSupported();
+    var textToSpeechSupported = isTextToSpeechSupported();
+
+    function isSpeechRecognitionSupported() {
+        // speech recognition API supported
+        // speech recognition API not supported
+        return ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window);
+    }
+
+    function isTextToSpeechSupported() {
+        // Speech Synthesis supported
+        // Speech Synthesis Not Supported
+        return ('speechSynthesis' in window);
+    }
+
     function addNewFeatures() {
         setTimeout(function () {
             let ttsFeature = document.createElement("button");
@@ -472,17 +546,75 @@
             sttFeature.classList.add('chat-feature-btn');
             document.querySelector(".rw-widget-container").appendChild(sttFeature);
 
-            $("#stt-feature").click(function (){
-                $("#stt-feature").toggleClass('checked-chat-feature');
-            });
-            $("#tts-feature").click(function (){
-                $("#tts-feature").toggleClass('checked-chat-feature');
-            });
+            if (speechRecognitionSupported){
+                var speak = document.getElementById('stt-feature');
+                var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.lang = "en-US";
+                speak.addEventListener('click', function () {
+                    console.log(6)
+                    if (!audioRecognizing){
+                        console.log(5)
+                        $("#stt-feature").addClass('checked-chat-feature pulse-chat-feature');
+                        recognition.start();
+                        document.querySelector('textarea.rw-new-message').placeholder = '...speaking';
+                        document.querySelector('textarea.rw-new-message').value = '';
+                    } else {
+                        $("#stt-feature").removeClass('checked-chat-feature pulse-chat-feature');
+                        document.querySelector('textarea.rw-new-message').placeholder = 'Type a message...';
+                        recognition.stop();
+                    }
+
+                })
+                recognition.onresult = function (e) {
+                    console.log(1)
+                    if (document.querySelector('textarea.rw-new-message')) {
+                        document.querySelector('textarea.rw-new-message').value = e.results[0][0].transcript;
+                    }
+                }
+                recognition.onstart = function () {
+                    console.log(2)
+                    audioRecognizing = true;
+                };
+                recognition.onend = function () {
+                    console.log(3)
+                    $("#stt-feature").removeClass('checked-chat-feature pulse-chat-feature');
+                    if (document.querySelector('textarea.rw-new-message')) {
+                        document.querySelector('textarea.rw-new-message').placeholder = 'Type a message...';
+                    }
+                    audioRecognizing = false;
+                };
+                recognition.onerror = function (event) {
+                    console.log(4)
+                    $("#stt-feature").removeClass('checked-chat-feature pulse-chat-feature');
+                    if (document.querySelector('textarea.rw-new-message')) {
+                        document.querySelector('textarea.rw-new-message').placeholder = 'Type a message...';
+                    }
+                    audioRecognizing = false;
+                };
+            } else {
+                $("#stt-feature").click(function (){
+                    alert("Sorry, your browser doesn't support the speech recognition API !");
+                });
+            }
+
+            if (speechRecognitionSupported){
+                msgTextToSpeech = new SpeechSynthesisUtterance();
+                msgTextToSpeech.lang = "en-US";
+                $("#tts-feature").click(function (){
+                    $("#tts-feature").toggleClass('checked-chat-feature');
+                    textToSpeech = !textToSpeech;
+                });
+            } else {
+                $("#tts-feature").click(function (){
+                    alert("Sorry, your browser doesn't support text to speech!");
+                });
+            }
 
             if(document.querySelector('.rw-widget-container').classList.contains('rw-chat-open')) {
                 showChatFeatures();
             }
-        }, 200);
+        }, 400);
     }
 
     (function chatbotMessage(e) {
@@ -535,6 +667,13 @@
 </script>
 
 <script>
+    function getDelayChatMsg(message) {
+        let delay = message.length * 30;
+        if (delay > 1000) delay = 1000;
+        if (delay < 400) delay = 400;
+        return delay;
+    }
+
     !(function () {
       let e = document.createElement("script"),
         t = document.head || document.getElementsByTagName("head")[0];
@@ -553,10 +692,7 @@
                 profileAvatar:getProfileAvatar(),
                 showFullScreenButton: true,
                 customMessageDelay: (message) => {
-                    let delay = message.length * 30;
-                    if (delay > 2 * 1000) delay = 3 * 1000;
-                    if (delay < 400) delay = 1000;
-                    return delay;
+                    return getDelayChatMsg(message);
                 },
                 onSocketEvent: {
                     'bot_uttered': botMessageEvent,
