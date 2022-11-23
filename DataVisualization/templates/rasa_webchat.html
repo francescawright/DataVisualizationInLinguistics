@@ -164,6 +164,61 @@
     animation-name: rotation-lr;
     animation-fill-mode: forwards;
 }
+@media screen and (min-width: 800px) {
+    .rw-widget-container.rw-full-screen.rw-chat-open #stt-feature {
+        right: 108px;
+        top: 11px;
+    }
+    .rw-widget-container.rw-full-screen.rw-chat-open #tts-feature {
+        right: 170px;
+        top: 11px;
+    }
+    .rw-widget-container.rw-full-screen.rw-chat-open .chat-feature-btn {
+        height: 47px;
+        width: 47px;
+        box-shadow: none;
+    }
+    .rw-widget-container.rw-full-screen.rw-chat-open .pulse-chat-feature::before,
+    .rw-widget-container.rw-full-screen.rw-chat-open .pulse-chat-feature::after {
+        background-color: rgba(84, 91, 98, 0.8);
+    }
+    .rw-widget-container.rw-full-screen.rw-chat-open .pulse-chat-feature::after {
+        background-color: rgba(84, 91, 98, 0.6);
+    }
+    .rw-widget-container.rw-full-screen.rw-chat-open #tts-feature.checked-chat-feature {
+        box-shadow: 0 2px 10px 1px #545b62;
+    }
+    .rw-widget-container.rw-full-screen.rw-chat-open .chat-feature-img {
+        width: 25px;
+    }
+}
+@media screen and (max-width: 800px) {
+    #stt-feature {
+        right: 60px;
+        top: 11px;
+    }
+    #tts-feature {
+        right: 122px;
+        top: 11px;
+    }
+    .chat-feature-btn {
+        height: 47px;
+        width: 47px;
+        box-shadow: none;
+    }
+    .pulse-chat-feature::before, .pulse-chat-feature::after {
+        background-color: rgba(84, 91, 98, 0.8);
+    }
+    .pulse-chat-feature::after {
+        background-color: rgba(84, 91, 98, 0.6);
+    }
+    #tts-feature.checked-chat-feature {
+        box-shadow: 0 2px 10px 1px #545b62;
+    }
+    .chat-feature-img {
+        width: 25px;
+    }
+}
 </style>
 
 <head>
@@ -171,24 +226,174 @@
 </head>
 
 <script>
+    // Initializes the necessary variables for speech-to-text and text-to-speech functions
+    var textToSpeech = getStatusTTS();
+    var msgTextToSpeech;
+    var audioRecognizing = false;
+    var recognition;
+    var speechRecognitionSupported = isSpeechRecognitionSupported();
+    var textToSpeechSupported = isTextToSpeechSupported();
+
+    if (textToSpeechSupported) {
+        msgTextToSpeech = new SpeechSynthesisUtterance();
+        msgTextToSpeech.lang = "en-US";
+    }
+
+    var msgClearStorage;
+    var msgChatbotError;
+    var msgChatbotSuccess;
+
     (function clearStorage() {
         if ('{{storage_clear}}') {
-            let text;
             if ('{{storage_clear}}' === "logout") {
-                text = "I have successfully logged you out";
+                msgClearStorage = "I have successfully logged you out";
             } else if ('{{storage_clear}}' === "login") {
-                text = "I have logged you in without any problem";
+                msgClearStorage = "I have logged you in without any problem";
             } else if ('{{storage_clear}}' === "signup") {
-                text = "I have created your user and now you are logged in";
+                msgClearStorage = "I have created your user and now you are logged in";
             } else if ('{{storage_clear}}' === "nochat"){
-                sessionStorage.clear();
+                sessionStorage.removeItem('chat_session');
             }
 
             if ('{{storage_clear}}' !== "nochat") {
-                sessionStorage.setItem("chat_session", '{"metadata":{"tooltipSent":{},"linkTarget":"","userInput":"","domHighlight":{},"hintText":"","showTooltip":true},"conversation":[{"type":"text","component":{"compare":null,"displayName":"Connect(s)","defaultTypes":{"displayTypingIndication":false}},"text":"' + text + '","sender":"response","showAvatar":true}],"params":{"unreadCount":0,"connectingText":"Waiting for server...","oldUrl":"","connected":true,"docViewer":false,"isChatOpen":false,"disabledInput":false,"pageChangeCallbacks":{},"isChatVisible":true,"initialized":false,"messageDelayed":false},"version":"1.0.0"}');
+                sessionStorage.setItem("chat_session", '{"metadata":{"tooltipSent":{},"linkTarget":"","userInput":"","domHighlight":{},"hintText":"","showTooltip":true},"conversation":[{"type":"text","component":{"compare":null,"displayName":"Connect(s)","defaultTypes":{"displayTypingIndication":false}},"text":"' + msgClearStorage + '","sender":"response","showAvatar":true}],"params":{"unreadCount":0,"connectingText":"Waiting for server...","oldUrl":"","connected":true,"docViewer":false,"isChatOpen":false,"disabledInput":false,"pageChangeCallbacks":{},"isChatVisible":true,"initialized":false,"messageDelayed":false},"version":"1.0.0"}');
             }
         }
     })();
+
+    function isSpeechRecognitionSupported() {
+        // speech recognition API supported
+        // speech recognition API not supported
+        return ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window);
+    }
+
+    function isTextToSpeechSupported() {
+        // Speech Synthesis supported
+        // Speech Synthesis Not Supported
+        return ('speechSynthesis' in window);
+    }
+
+    // Dynamically adds the frontend of the speech-to-text and text-to-speech functions and implements their operation
+    function addNewFeatures() {
+        setTimeout(function () {
+            let ttsFeature = document.createElement("button");
+            ttsFeature.innerHTML = "<img src='{% static 'images/chat/features/speaker-svgrepo-com.svg' %}' class='chat-feature-img'>";
+            ttsFeature.type = "button";
+            ttsFeature.setAttribute('id', 'tts-feature');
+            if (textToSpeech) {
+                ttsFeature.classList.add('chat-feature-btn','checked-chat-feature');
+            } else {
+                ttsFeature.classList.add('chat-feature-btn');
+            }
+            document.querySelector(".rw-widget-container").appendChild(ttsFeature);
+
+            let sttFeature = document.createElement("button");
+            sttFeature.innerHTML = "<img src='{% static 'images/chat/features/microphone-svgrepo-com.svg' %}' class='chat-feature-img'>";
+            sttFeature.type = "button";
+            sttFeature.setAttribute('id', 'stt-feature');
+            sttFeature.classList.add('chat-feature-btn');
+            document.querySelector(".rw-widget-container").appendChild(sttFeature);
+
+            if (speechRecognitionSupported){
+                var speak = document.getElementById('stt-feature');
+                var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.lang = "en-US";
+                speak.addEventListener('click', function () {
+                    if (!audioRecognizing){
+                        $("#stt-feature").addClass('checked-chat-feature pulse-chat-feature');
+                        recognition.start();
+                        document.querySelector('textarea.rw-new-message').placeholder = '...speaking';
+                        document.querySelector('textarea.rw-new-message').value = '';
+                        document.querySelector('.rw-send').disabled = false;
+                        document.querySelector('.rw-send').click();
+                    } else {
+                        $("#stt-feature").removeClass('checked-chat-feature pulse-chat-feature');
+                        document.querySelector('textarea.rw-new-message').placeholder = 'Type a message...';
+                        recognition.stop();
+                    }
+
+                })
+                recognition.onresult = function (e) {
+                    if (document.querySelector('textarea.rw-new-message')) {
+                        document.querySelector('textarea.rw-new-message').value = e.results[0][0].transcript;
+                        document.querySelector('.rw-send').disabled = false;
+                        document.querySelector('.rw-send').click();
+                    }
+                }
+                recognition.onstart = function () {
+                    audioRecognizing = true;
+                    document.querySelector('textarea.rw-new-message').disabled = true;
+                };
+                recognition.onend = function () {
+                    $("#stt-feature").removeClass('checked-chat-feature pulse-chat-feature');
+                    if (document.querySelector('textarea.rw-new-message')) {
+                        document.querySelector('textarea.rw-new-message').placeholder = 'Type a message...';
+                        document.querySelector('textarea.rw-new-message').disabled = false;
+                    }
+                    audioRecognizing = false;
+                };
+                recognition.onerror = function (event) {
+                    $("#stt-feature").removeClass('checked-chat-feature pulse-chat-feature');
+                    if (document.querySelector('textarea.rw-new-message')) {
+                        document.querySelector('textarea.rw-new-message').placeholder = 'Type a message...';
+                        document.querySelector('textarea.rw-new-message').disabled = false;
+                    }
+                    audioRecognizing = false;
+                };
+            } else {
+                $("#stt-feature").click(function (){
+                    alert("Sorry, your browser doesn't support the speech recognition API !");
+                });
+            }
+
+            if (textToSpeechSupported){
+                $("#tts-feature").click(function (){
+                    $("#tts-feature").toggleClass('checked-chat-feature');
+                    textToSpeech = !textToSpeech;
+                    updateStatusTTS();
+                });
+            } else {
+                $("#tts-feature").click(function (){
+                    alert("Sorry, your browser doesn't support text to speech!");
+                });
+            }
+
+            if(document.querySelector('.rw-widget-container').classList.contains('rw-chat-open')) {
+                showChatFeatures();
+            }
+        }, 400);
+    }
+
+    // Returns whether the speech-to-text function is active
+    // Obtain the value from the isTTSActive key from the session storage
+    function getStatusTTS() {
+        // Get the existing data
+        let existing = sessionStorage.getItem('isTTSActive');
+        return !!existing;
+    }
+
+    // Updates the value of the isTTSActive key of the session storage,
+    // creating the key if it does not exist. It stores the status of the speech-to-text function in it.
+    function updateStatusTTS() {
+        sessionStorage.setItem('isTTSActive', textToSpeech);
+    }
+
+    function showChatFeatures() {
+        document.getElementById('stt-feature').classList.add("show-chat-feature");
+        document.getElementById('tts-feature').classList.add("show-chat-feature");
+    }
+    function closeChatFeatures() {
+        document.getElementById('stt-feature').classList.remove("show-chat-feature");
+        document.getElementById('tts-feature').classList.remove("show-chat-feature");
+        if (speechRecognitionSupported){
+            if (audioRecognizing){
+                $("#stt-feature").removeClass('checked-chat-feature pulse-chat-feature');
+                document.querySelector('textarea.rw-new-message').placeholder = 'Type a message...';
+                recognition.stop();
+            }
+        }
+    }
 
     function getCookie(cookieName) {
         let cookie = {};
@@ -476,11 +681,6 @@
         }));
     }
 
-    function selectedDataError(existingStorage, errorMsg = "Open a document first, in order to perform this action"){
-        addToSessionStorageObject("chat_session", "conversation", errorMsg);
-        window.location = window.location.href.split("?")[0];
-    }
-
     function createOpenDocumentInputs(mainForm, documentName, existingStorage) {
         let inputChatbot = document.createElement("input");
         inputChatbot.setAttribute("type", "hidden");
@@ -492,129 +692,6 @@
         chatSessionId.setAttribute("name", "session_id");
         chatSessionId.setAttribute("value", existingStorage["session_id"]);
         mainForm.appendChild(chatSessionId);
-    }
-
-    function showChatFeatures() {
-        document.getElementById('stt-feature').classList.add("show-chat-feature");
-        document.getElementById('tts-feature').classList.add("show-chat-feature");
-    }
-    function closeChatFeatures() {
-        document.getElementById('stt-feature').classList.remove("show-chat-feature");
-        document.getElementById('tts-feature').classList.remove("show-chat-feature");
-        if (speechRecognitionSupported){
-            console.log("testtt55")
-            if (audioRecognizing){
-                $("#stt-feature").removeClass('checked-chat-feature pulse-chat-feature');
-                document.querySelector('textarea.rw-new-message').placeholder = 'Type a message...';
-                recognition.stop();
-            }
-        }
-    }
-
-    var audioRecognizing = false;
-    var textToSpeech = false;
-    var msgTextToSpeech;
-    var recognition;
-    var speechRecognitionSupported = isSpeechRecognitionSupported();
-    var textToSpeechSupported = isTextToSpeechSupported();
-
-    function isSpeechRecognitionSupported() {
-        // speech recognition API supported
-        // speech recognition API not supported
-        return ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window);
-    }
-
-    function isTextToSpeechSupported() {
-        // Speech Synthesis supported
-        // Speech Synthesis Not Supported
-        return ('speechSynthesis' in window);
-    }
-
-    function addNewFeatures() {
-        setTimeout(function () {
-            let ttsFeature = document.createElement("button");
-            ttsFeature.innerHTML = "<img src='{% static 'images/chat/features/speaker-svgrepo-com.svg' %}' class='chat-feature-img'>";
-            ttsFeature.type = "button";
-            ttsFeature.setAttribute('id', 'tts-feature');
-            ttsFeature.classList.add('chat-feature-btn');
-            document.querySelector(".rw-widget-container").appendChild(ttsFeature);
-
-            let sttFeature = document.createElement("button");
-            sttFeature.innerHTML = "<img src='{% static 'images/chat/features/microphone-svgrepo-com.svg' %}' class='chat-feature-img'>";
-            sttFeature.type = "button";
-            sttFeature.setAttribute('id', 'stt-feature');
-            sttFeature.classList.add('chat-feature-btn');
-            document.querySelector(".rw-widget-container").appendChild(sttFeature);
-
-            if (speechRecognitionSupported){
-                var speak = document.getElementById('stt-feature');
-                var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                recognition = new SpeechRecognition();
-                recognition.lang = "en-US";
-                speak.addEventListener('click', function () {
-                    console.log(6)
-                    if (!audioRecognizing){
-                        console.log(5)
-                        $("#stt-feature").addClass('checked-chat-feature pulse-chat-feature');
-                        recognition.start();
-                        document.querySelector('textarea.rw-new-message').placeholder = '...speaking';
-                        document.querySelector('textarea.rw-new-message').value = '';
-                    } else {
-                        $("#stt-feature").removeClass('checked-chat-feature pulse-chat-feature');
-                        document.querySelector('textarea.rw-new-message').placeholder = 'Type a message...';
-                        recognition.stop();
-                    }
-
-                })
-                recognition.onresult = function (e) {
-                    console.log(1)
-                    if (document.querySelector('textarea.rw-new-message')) {
-                        document.querySelector('textarea.rw-new-message').value = e.results[0][0].transcript;
-                    }
-                }
-                recognition.onstart = function () {
-                    console.log(2)
-                    audioRecognizing = true;
-                };
-                recognition.onend = function () {
-                    console.log(3)
-                    $("#stt-feature").removeClass('checked-chat-feature pulse-chat-feature');
-                    if (document.querySelector('textarea.rw-new-message')) {
-                        document.querySelector('textarea.rw-new-message').placeholder = 'Type a message...';
-                    }
-                    audioRecognizing = false;
-                };
-                recognition.onerror = function (event) {
-                    console.log(4)
-                    $("#stt-feature").removeClass('checked-chat-feature pulse-chat-feature');
-                    if (document.querySelector('textarea.rw-new-message')) {
-                        document.querySelector('textarea.rw-new-message').placeholder = 'Type a message...';
-                    }
-                    audioRecognizing = false;
-                };
-            } else {
-                $("#stt-feature").click(function (){
-                    alert("Sorry, your browser doesn't support the speech recognition API !");
-                });
-            }
-
-            if (speechRecognitionSupported){
-                msgTextToSpeech = new SpeechSynthesisUtterance();
-                msgTextToSpeech.lang = "en-US";
-                $("#tts-feature").click(function (){
-                    $("#tts-feature").toggleClass('checked-chat-feature');
-                    textToSpeech = !textToSpeech;
-                });
-            } else {
-                $("#tts-feature").click(function (){
-                    alert("Sorry, your browser doesn't support text to speech!");
-                });
-            }
-
-            if(document.querySelector('.rw-widget-container').classList.contains('rw-chat-open')) {
-                showChatFeatures();
-            }
-        }, 400);
     }
 
     (function chatbotMessage(e) {
@@ -646,8 +723,7 @@
 
         // Save back to sessionStorage
         sessionStorage.setItem(name, JSON.stringify(existing));
-
-    };
+    }
 
     function getProfileAvatar() {
         let num = Math.floor(Math.random() * 6) + 1;
@@ -667,11 +743,25 @@
 </script>
 
 <script>
+    // Returns the value of the delay time according to the message provided
+    // It depends on the length of the message
     function getDelayChatMsg(message) {
         let delay = message.length * 30;
         if (delay > 1000) delay = 1000;
         if (delay < 400) delay = 400;
         return delay;
+    }
+
+    // At the moment of establishing connection with the chat websocket, transforms into voice the messages that
+    // were displayed in the chat prior to establishing the connection.
+    // Used for error, success and session management messages (after clearing session storage).
+    function speakMsgConnect(msg) {
+        if (textToSpeech) {
+            setTimeout(function () {
+                msgTextToSpeech.text = msg;
+                window.speechSynthesis.speak(msgTextToSpeech);
+            }, 400);
+        }
     }
 
     !(function () {
@@ -699,6 +789,15 @@
                     'connect': function() {
                         console.log('connection established');
                         addNewFeatures();
+                        if ('{{storage_clear}}' && '{{storage_clear}}' !== "nochat") {
+                            speakMsgConnect(msgClearStorage);
+                        }
+                        if ('{{chatbot_error}}') {
+                            speakMsgConnect('{{chatbot_error}}');
+                        }
+                        if ('{{chatbot_success}}') {
+                            speakMsgConnect('{{chatbot_success}}');
+                        }
                     },
                     'disconnect': function() {
                         doSomeCleanup();

@@ -928,10 +928,14 @@ nlu:
     - Compare the graph features
     - Compare the main graph features
     - Compare the main view graph features
+    - Display a chart of the statistics of the graph features
+    - Show me the graph features statistics in a chart
 
 - intent: statistics_features_subtrees
   examples: |
     - Compare the features of subtrees
     - Compare the features of subgraphs
+    - Compare the subtrees features on a chart
     - Show me the statistics of the subtrees features
     - Show me the statistics of the subgraphs features
+    - Display the statistics of the subgraphs features in a chart

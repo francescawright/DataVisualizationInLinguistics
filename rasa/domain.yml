@@ -477,10 +477,10 @@ responses:
     - text: "In [] level of toxicity target person appears more"
 
   utter_statistics_features_tree:
-    - text: "intent_statistics_features,statistics_all_features_tree,Pfff..."
+    - text: "intent_statistics_features,statistics_all_features_tree,These are the statistics of the graph features"
 
   utter_statistics_features_subtrees:
-    - text: "intent_statistics_features,statistics_all_features_subtrees,Pfff..."
+    - text: "intent_statistics_features,statistics_all_features_subtrees,These are the statistics of the subgraphs features"
 
 session_config:
   session_expiration_time: 60

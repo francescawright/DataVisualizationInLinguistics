@@ -1802,7 +1802,11 @@ function renderChart(type){
     }
 }
 
-function statisticsAllFeaturesTree(root) {
+function statisticsAllFeaturesTree(root, fromCircle = false) {
+
+    if (fromCircle) {
+        root = root.data;
+    }
     document.getElementById('pie-option-modal').removeAttribute("hidden");
     document.getElementById('pie-option-modal').removeAttribute("disabled");
 

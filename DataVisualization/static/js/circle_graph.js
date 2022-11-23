@@ -512,7 +512,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
 
    /**
      * Gets the array of nodes belonging to the deepest threads, highlights them,
-     * updating the network statistics, and displays the result in the chat
+     * updating the network statistics, and displays the result in a Bootstrap modal
      */
     $(window).off("longest_thread");
     $(window).on("longest_thread", function () {
@@ -543,7 +543,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
 
     /**
      * Obtains the indices of the widest levels of the graph, highlights the nodes that belong to those levels,
-     * updates the network statistics, and displays the result in the chat
+     * and updates the network statistics
      */
     $(window).off("widest_level");
     $(window).on("widest_level", function () {
@@ -568,7 +568,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
 
     /**
      * Gets the array of nodes belonging to the largest threads, highlights them,
-     * updating the network statistics, and displays the result in the chat
+     * updating the network statistics, and displays the result in a Bootstrap modal
      */
     $(window).off("largest_thread");
     $(window).on("largest_thread", function () {
@@ -600,8 +600,8 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
     });
 
     /**
-     * Gets the array of nodes belonging to the largest threads, highlights them,
-     * updating the network statistics, and displays the result in the chat
+     * Gets the array of nodes belonging to the most toxic threads, highlights them,
+     * updating the network statistics, and displays the result in a Bootstrap modal
      */
     $(window).off("most_toxic_thread");
     $(window).on("most_toxic_thread", function () {
@@ -633,8 +633,8 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
     });
 
     /**
-     * Gets the array of nodes belonging to the largest subtree, highlights them,
-     * updating the network statistics, and displays the result in the chat
+     * Gets the array of nodes belonging to the most toxic subtree, highlights them,
+     * updating the network statistics, and displays the result in a Bootstrap modal
      */
     $(window).off("most_toxic_subtree");
     $(window).on("most_toxic_subtree", function () {
@@ -661,6 +661,20 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
                 statisticBackground.html(writeStatisticText(root));
             }
         }
+    });
+
+    // Gets the statistics of the features of the graph shown in the main window,
+    // and displays them in a modal as a chart
+    $(window).off("statistics_all_features_tree");
+    $(window).on("statistics_all_features_tree", function () {
+        statisticsAllFeaturesTree(root, true);
+    });
+
+    // Gets the statistics of the features of all the subgraphs displayed in the main window,
+    // and displays them in a modal as a chart, for comparison purposes
+    $(window).off("statistics_all_features_subtrees");
+    $(window).on("statistics_all_features_subtrees", function () {
+        statisticsAllFeaturesSubtrees(root, true);
     });
 
     // If AND is selected, uncheck the OR and highlight by property AND
