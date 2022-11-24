@@ -8,8 +8,6 @@ intents:
   - deny:
       use_entities: [] # ignore all entities
   - cancel_form
-  - mood_great
-  - mood_unhappy
   - bot_challenge
   - start_intent
   - generate_response_message:
@@ -186,15 +184,11 @@ responses:
   - text: "Need something? 😊"
   - text: "Can I help you with anything? 😊"
 
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
+  utter_user_affirm_help:
+    - text: "What can I do for you?"
 
-  utter_did_that_help:
-  - text: "Did that help you?"
-
-  utter_happy:
-  - text: "Great, carry on!"
+  utter_user_deny_help:
+    - text: "Okay, don't hesitate to ask me for help if you need it"
 
   utter_goodbye:
   - text: "Bye"

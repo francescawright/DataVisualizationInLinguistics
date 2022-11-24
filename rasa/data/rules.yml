@@ -30,13 +30,13 @@ rules:
   - intent: logout
   - action: utter_logout_confirmation
 
-- rule: The user has requested to log in and the data collection form is started
+- rule: User has requested to log in and the data collection form is started
   steps:
   - intent: login
   - action: action_check_session_login
   wait_for_user_input: false
 
-- rule: The user enters his or her data in the form to log in
+- rule: User enters his or her data in the form to log in
   condition:
   - active_loop: login_form
   steps:
@@ -46,13 +46,13 @@ rules:
     - requested_slot: null
   - action: action_login
 
-- rule: The user has requested to register and the data collection form is started
+- rule: User has requested to register and the data collection form is started
   steps:
   - intent: signup
   - action: action_check_session_signup
   wait_for_user_input: false
 
-- rule: The user enters his data in the form to register on the website
+- rule: User enters his data in the form to register on the website
   condition:
   - active_loop: signup_form
   steps:
@@ -62,7 +62,7 @@ rules:
     - requested_slot: null
   - action: action_signup
 
-- rule: The user enters the document to be opened
+- rule: User enters the document to be opened
   steps:
   - active_loop: document_selection_form
   - active_loop: null
@@ -320,12 +320,12 @@ rules:
     - intent: target_person_loT
     - action: utter_target_person_loT
 
-- rule: The user wants to see the statistics of all the features of the tree
+- rule: User wants to see the statistics of all the features of the tree
   steps:
     - intent: statistics_features_tree
     - action: utter_statistics_features_tree
 
-- rule: The user wants to compare the statistics of all the features of the subtrees
+- rule: User wants to compare the statistics of all the features of the subtrees
   steps:
     - intent: statistics_features_subtrees
     - action: utter_statistics_features_subtrees

@@ -1196,6 +1196,9 @@ function removePopupLayoutListeners() {
         jQuery("#input-d-btn").off("click.popup");
         jQuery("#input-gfelon-btn").off("click.popup");
         jQuery("#input-tol-btn").off("click.popup");
+
+        // TODO: Remove remaining listeners from the Tree layout
+
     } else if (modalBody.hasClass( "force" )) {
         var dotsFeaturesJQuery = $("#dots_icon_button");
         var glyphsFeaturesJQuery = $("#glyphs_icon_button");
@@ -1227,7 +1230,7 @@ function removePopupLayoutListeners() {
         checkboxANDJQuery.off("change.update");
         checkboxORJQuery.off("change.update");
     }
-
+    // TODO: Remove listeners from layout Radial
 }
 
 function minPopupSize() {

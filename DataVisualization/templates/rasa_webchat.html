@@ -304,9 +304,10 @@
                         $("#stt-feature").addClass('checked-chat-feature pulse-chat-feature');
                         recognition.start();
                         document.querySelector('textarea.rw-new-message').placeholder = '...speaking';
+                        setUpChatSendButton();
                         document.querySelector('textarea.rw-new-message').value = '';
-                        document.querySelector('.rw-send').disabled = false;
                         document.querySelector('.rw-send').click();
+                        document.querySelector('.rw-send').disabled = true;
                     } else {
                         $("#stt-feature").removeClass('checked-chat-feature pulse-chat-feature');
                         document.querySelector('textarea.rw-new-message').placeholder = 'Type a message...';
@@ -316,9 +317,10 @@
                 })
                 recognition.onresult = function (e) {
                     if (document.querySelector('textarea.rw-new-message')) {
+                        setUpChatSendButton();
                         document.querySelector('textarea.rw-new-message').value = e.results[0][0].transcript;
-                        document.querySelector('.rw-send').disabled = false;
                         document.querySelector('.rw-send').click();
+                        document.querySelector('.rw-send').disabled = true;
                     }
                 }
                 recognition.onstart = function () {
@@ -365,12 +367,19 @@
         }, 400);
     }
 
+    // Enables the chat send button in case it is disabled
+    function setUpChatSendButton() {
+        if (!document.querySelector('textarea.rw-new-message').value){
+            document.querySelector('.rw-send').disabled = false;
+        }
+    }
+
     // Returns whether the speech-to-text function is active
     // Obtain the value from the isTTSActive key from the session storage
     function getStatusTTS() {
         // Get the existing data
         let existing = sessionStorage.getItem('isTTSActive');
-        return !!existing;
+        return existing === "true";
     }
 
     // Updates the value of the isTTSActive key of the session storage,
