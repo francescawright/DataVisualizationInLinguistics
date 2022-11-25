@@ -2767,7 +2767,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         // and displays them in a modal as a chart, for comparison purposes
         $(window).off("statistics_all_features_subtrees");
         $(window).on("statistics_all_features_subtrees", function () {
-            statisticsAllFeaturesSubtrees(root);
+            statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link);
         });
 
         checkboxesTargets.forEach(function (checkboxItem) {

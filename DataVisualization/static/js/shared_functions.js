@@ -7,10 +7,14 @@ var tol = 0.15;
 
 var datasetPopup, hierarchyNamePopup, layoutNamePopup, hierarchyNameMain, layoutNameMain;
 
-var chartModalConfig, chartModalData, chartModalDataPie, chartModalTitle, configBar, configHorizontalBar, subtreesInfoChart;
+var chartModalData, chartSubModalData, chartModalDataPie, chartModalTitle, configBar, configBarSub, configHorizontalBar,
+    configHorizontalBarSub, configPie, treeInfoChart, subtreesInfoChart;
 
 var featuresChartDict = {"Constructiveness":"constructiveness", "Argument":"argumentation", "Sarcasm":"sarcasm", "Mockery":"mockery",
             "Intolerance":"intolerance", "Improper":"improper_language", "Insult":"insult", "Aggressiveness":"aggressiveness"};
+
+// Variable to share the name of the main window graph between multiple files
+var mainWindowGraphName;
 
 /*******************************
 *   Categorization Functions   *
@@ -259,6 +263,28 @@ function getSubtreeMostToxicRootNodes(node, fromCircle = false) {
     return mostToxicRootNodes;
 }
 
+function getClickedSubtreeRootNode(root, nodeName, fromCircle) {
+    var node;
+    let children = root.children;
+    if (children) {
+        children.every(function (d) {
+            if (fromCircle) {
+                if (d.data.name === nodeName) {
+                    node = d;
+                    return false;
+                }
+            } else {
+                if (d.name === nodeName) {
+                    node = d;
+                    return false;
+                }
+            }
+            return true;
+        });
+    }
+    return node;
+}
+
 /**
  * Recursive function to count the total number of descendants and
  * the total number of nodes by toxicity
@@ -324,7 +350,7 @@ function getDescendants(node) {
 /**
  * Recursive function to obtain the total number of each characteristic of a tree
  * */
-function getFeaturesSubtreeValues(node) {
+function getFeaturesSubtreeValues(node, isSubtreeSearch = false) {
     if (!node.children) {
         return {
             totalConstructiveness: 0,
@@ -351,17 +377,30 @@ function getFeaturesSubtreeValues(node) {
 
     if (node.children) {
         node.children.forEach(function (d) {
-            childrenList = getFeaturesSubtreeValues(d);
+            childrenList = getFeaturesSubtreeValues(d, isSubtreeSearch);
 
-            //Targets are not exclusive
-            childrenList.constructiveness && d.highlighted ? totalConstructiveness += childrenList.totalConstructiveness + 1 : totalConstructiveness += childrenList.totalConstructiveness;
-            childrenList.argumentation && d.highlighted ? totalArgumentation += childrenList.totalArgumentation + 1 : totalArgumentation += childrenList.totalArgumentation;
-            childrenList.sarcasm && d.highlighted ? totalSarcasm += childrenList.totalSarcasm + 1 : totalSarcasm += childrenList.totalSarcasm;
-            childrenList.mockery && d.highlighted ? totalMockery += childrenList.totalMockery + 1 : totalMockery += childrenList.totalMockery;
-            childrenList.intolerance && d.highlighted ? totalIntolerance += childrenList.totalIntolerance + 1 : totalIntolerance += childrenList.totalIntolerance;
-            childrenList.improper_language && d.highlighted ? totalImproper_language += childrenList.totalImproper_language + 1 : totalImproper_language += childrenList.totalImproper_language;
-            childrenList.insult && d.highlighted ? totalInsult += childrenList.totalInsult + 1 : totalInsult += childrenList.totalInsult;
-            childrenList.aggressiveness && d.highlighted ? totalAggressiveness += childrenList.totalAggressiveness + 1 : totalAggressiveness += childrenList.totalAggressiveness;
+            // If it is a request about subtrees, we count the features even if the node is not highlighted.
+            if (!isSubtreeSearch) {
+                //Targets are not exclusive
+                childrenList.constructiveness && d.highlighted ? totalConstructiveness += childrenList.totalConstructiveness + 1 : totalConstructiveness += childrenList.totalConstructiveness;
+                childrenList.argumentation && d.highlighted ? totalArgumentation += childrenList.totalArgumentation + 1 : totalArgumentation += childrenList.totalArgumentation;
+                childrenList.sarcasm && d.highlighted ? totalSarcasm += childrenList.totalSarcasm + 1 : totalSarcasm += childrenList.totalSarcasm;
+                childrenList.mockery && d.highlighted ? totalMockery += childrenList.totalMockery + 1 : totalMockery += childrenList.totalMockery;
+                childrenList.intolerance && d.highlighted ? totalIntolerance += childrenList.totalIntolerance + 1 : totalIntolerance += childrenList.totalIntolerance;
+                childrenList.improper_language && d.highlighted ? totalImproper_language += childrenList.totalImproper_language + 1 : totalImproper_language += childrenList.totalImproper_language;
+                childrenList.insult && d.highlighted ? totalInsult += childrenList.totalInsult + 1 : totalInsult += childrenList.totalInsult;
+                childrenList.aggressiveness && d.highlighted ? totalAggressiveness += childrenList.totalAggressiveness + 1 : totalAggressiveness += childrenList.totalAggressiveness;
+            } else {
+                childrenList.constructiveness ? totalConstructiveness += childrenList.totalConstructiveness + 1 : totalConstructiveness += childrenList.totalConstructiveness;
+                childrenList.argumentation ? totalArgumentation += childrenList.totalArgumentation + 1 : totalArgumentation += childrenList.totalArgumentation;
+                childrenList.sarcasm ? totalSarcasm += childrenList.totalSarcasm + 1 : totalSarcasm += childrenList.totalSarcasm;
+                childrenList.mockery ? totalMockery += childrenList.totalMockery + 1 : totalMockery += childrenList.totalMockery;
+                childrenList.intolerance ? totalIntolerance += childrenList.totalIntolerance + 1 : totalIntolerance += childrenList.totalIntolerance;
+                childrenList.improper_language ? totalImproper_language += childrenList.totalImproper_language + 1 : totalImproper_language += childrenList.totalImproper_language;
+                childrenList.insult ? totalInsult += childrenList.totalInsult + 1 : totalInsult += childrenList.totalInsult;
+                childrenList.aggressiveness ? totalAggressiveness += childrenList.totalAggressiveness + 1 : totalAggressiveness += childrenList.totalAggressiveness;
+            }
+
         })
     }
 
@@ -1352,7 +1391,7 @@ function writeStatisticText(root, fromCircle = false) {
 *       Complex Intents       *
 *******************************/
 
-function highlightThreadPopup(nodes, root, opacityValue, nodesPath, node, link) {
+function highlightThreadPopup(nodes, root, opacityValue, nodesPath, node, link, sendToPopup = true) {
 
     nodes.forEach(function (d) {
         d.highlighted = 0;
@@ -1369,10 +1408,12 @@ function highlightThreadPopup(nodes, root, opacityValue, nodesPath, node, link) 
         return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
     });
 
-    subtreeToPopup(root, nodesPath);
+    if (sendToPopup){
+        subtreeToPopup(root, nodesPath);
+    }
 }
 
-function highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue ,nodesPath, node) {
+function highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue ,nodesPath, node, sendToPopup = true) {
 
     nodes.forEach(function (d) {
         d.data.highlighted = 1;
@@ -1396,7 +1437,9 @@ function highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValu
         return result;
     }).style("opacity", maxOpacityValue);
 
-    subtreeToPopup(root, nodesPath, true);
+    if (sendToPopup){
+        subtreeToPopup(root, nodesPath, true);
+    }
 }
 
 function subtreeToPopup(root, nodesPath, fromCircle = false){
@@ -1683,13 +1726,16 @@ function mostToxicSubtreeHandler(static_values_checked, statisticBackground, roo
 }
 
 function createChartModal() {
+
     let chart = document.getElementById('chart-modal-body').getContext('2d');
-    let chartTitleText;
-    if (chartModalTitle === 'complete_graph') {
-        chartTitleText = "Comparison of graph features";
-    } else if (chartModalTitle === 'subgraphs') {
-        chartTitleText = "Comparison of features in Subtrees";
+    document.querySelector("#chartModal .modal-title").innerHTML = "Comparison of " + mainWindowGraphName + " graph features";
+
+    document.getElementById('chart-modal-body').classList.remove("square-chart");
+    document.getElementById('select-chart-type-modal').value = 'bar';
+    if (Chart.getChart('chart-modal-body')) {
+        Chart.getChart('chart-modal-body').destroy();
     }
+    let canvas = document.getElementById('chart-modal-body');
 
     configPie = {
         type: 'pie',
@@ -1700,11 +1746,7 @@ function createChartModal() {
                   position: 'right',
               },
               title: {
-                  display: true,
-                  text: chartTitleText,
-                  font: {
-                      size: 25
-                  }
+                  display: false,
               }
           },
         }
@@ -1724,11 +1766,7 @@ function createChartModal() {
                   position: 'right',
               },
               title: {
-                  display: true,
-                  text: chartTitleText,
-                  font: {
-                      size: 25
-                  }
+                  display: false,
               }
           },
         }
@@ -1749,24 +1787,87 @@ function createChartModal() {
                   position: 'right',
               },
               title: {
-                  display: true,
-                  text: chartTitleText,
-                  font: {
-                      size: 25
-                  }
+                  display: false,
+              }
+          },
+        }
+    }
+    treeInfoChart = new Chart(chart, configBar);
+
+    function clickHandler(evt) {
+        const points = treeInfoChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+        if (points.length) {
+            const firstPoint = points[0];
+            var label = treeInfoChart.data.labels[firstPoint.index];
+            if (!Object.keys(featuresChartDict).includes(label)) {
+                label = treeInfoChart.data.datasets[firstPoint.datasetIndex].label;
+            }
+            // var value = treeInfoChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+            document.getElementById(featuresChartDict[label]).click();
+        }
+    }
+
+    canvas.onclick = clickHandler;
+    if (!document.getElementById('chartModal').classList.contains('show')) {
+        document.getElementById("chartModal").style.top = "calc(35% - 229px)";
+        document.getElementById("chartModal").style.left = "calc(50% - 378px)";
+        $("#popup-chart-btn").click();
+    }
+}
+function createChartSubModal(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue) {
+
+    let chart = document.getElementById('chart-sub-modal-body').getContext('2d');
+    document.querySelector("#chartSubModal .modal-title").innerHTML = "Comparison of " + mainWindowGraphName + " subgraphs features";
+
+    document.getElementById('select-chart-sub-type-modal').value = 'bar';
+    if (Chart.getChart('chart-sub-modal-body')) {
+        Chart.getChart('chart-sub-modal-body').destroy();
+    }
+    let canvas = document.getElementById('chart-sub-modal-body');
+
+    configBarSub = {
+        type: 'bar',
+        data: chartSubModalData,
+        options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          },
+          plugins: {
+              legend: {
+                  position: 'right',
+              },
+              title: {
+                  display: false,
               }
           },
         }
     }
 
-    document.getElementById('chart-modal-body').classList.remove("square-chart");
-    document.getElementById('select-chart-type-modal').value = 'bar';
-    if (Chart.getChart('chart-modal-body')) {
-        Chart.getChart('chart-modal-body').destroy();
+    configHorizontalBarSub = {
+        type: 'bar',
+        data: chartSubModalData,
+        options: {
+            indexAxis: 'y',
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          },
+          plugins: {
+              legend: {
+                  position: 'right',
+              },
+              title: {
+                  display: false,
+              }
+          },
+        }
     }
-    subtreesInfoChart = new Chart(chart, configBar);
+    subtreesInfoChart = new Chart(chart, configBarSub);
 
-    function clickHandler(evt) {
+    function clickHandlerSub(evt) {
         const points = subtreesInfoChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
         if (points.length) {
             const firstPoint = points[0];
@@ -1777,29 +1878,80 @@ function createChartModal() {
             // var value = subtreesInfoChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
             document.getElementById(featuresChartDict[label]).click();
         }
+        let type = document.getElementById('select-chart-sub-type-modal');
+        if(type.value === 'bar') {
+            clickableBarSubtreeLabels(canvas, evt);
+        } else if (type.value === 'horizontal_bar') {
+            clickableHorizontalSubtreeLabels(subtreesInfoChart, evt);
+        }
+    }
+    function clickableHorizontalSubtreeLabels(chart, click) {
+        const { ctx, canvas, scales: {x,y} } = chart
+        const top = y.top;
+        const left = y.left;
+        const right = y.right;
+        const bottom = y.bottom;
+        const height = y.height / y.ticks.length;
+        let rect = canvas.getBoundingClientRect();
+        const xCoor = click.clientX - rect.left;
+        const yCoor = click.clientY - rect.top;
+
+        for(let i = 0; i < y.ticks.length; i++) {
+            if(xCoor >= left && xCoor <= right && yCoor >= top + (height * i) && yCoor <= top + height + (height * i)) {
+                clickSubtreeChartHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link, chart.config.data.labelsIDs[i], fromCircle, minOpacityValue);
+            }
+        }
     }
 
-    document.getElementById('chart-modal-body').onclick = clickHandler;
+    function clickableBarSubtreeLabels(canvas, click) {
+        const height = subtreesInfoChart.scales.x.height;
+        const top = subtreesInfoChart.scales.x.top;
+        const bottom = subtreesInfoChart.scales.x.bottom;
+        const left = subtreesInfoChart.scales.x.left;
+        const right = subtreesInfoChart.scales.x.maxWidth / subtreesInfoChart.scales.x.ticks.length;
+        let resetCoordinates = canvas.getBoundingClientRect();
+        const x = click.clientX - resetCoordinates.left;
+        const y = click.clientY - resetCoordinates.top;
 
-    if (!document.getElementById('chartModal').classList.contains('show')) {
-        document.getElementById("chartModal").style.top = "calc(35% - 229px)";
-        document.getElementById("chartModal").style.left = "calc(50% - 378px)";
-        $("#popup-chart-btn").click();
+        for(let i = 0; i < subtreesInfoChart.scales.x.ticks.length; i++) {
+            if(x >= left + (right * i) && x <= (right+left) + (right * i) && y >= top && y <= bottom) {
+                clickSubtreeChartHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link, subtreesInfoChart.config.data.labelsIDs[i], fromCircle, minOpacityValue);
+            }
+        }
+    }
+
+    canvas.onclick = clickHandlerSub;
+    if (!document.getElementById('chartSubModal').classList.contains('show')) {
+        document.getElementById("chartSubModal").style.top = "calc(40% - 229px)";
+        document.getElementById("chartSubModal").style.left = "calc(50% - 378px)";
+        $("#popup-chart-sub-btn").click();
     }
 }
 
-function renderChart(type){
-    let chart = document.getElementById('chart-modal-body').getContext('2d');
-    subtreesInfoChart.destroy();
-    document.getElementById('chart-modal-body').classList.remove("square-chart");
+function renderChartType(type, id){
+    let chart = document.getElementById(id).getContext('2d');
+    Chart.getChart(id).destroy();
+    document.getElementById(id).classList.remove("square-chart");
     if(type.value === 'pie') {
-        subtreesInfoChart = new Chart(chart, configPie);
-        document.getElementById('chart-modal-body').classList.add("square-chart");
+        treeInfoChart = new Chart(chart, configPie);
+        document.getElementById(id).classList.add("square-chart");
     } else if(type.value === 'bar') {
-        subtreesInfoChart = new Chart(chart, configBar);
+        if (id === "chart-modal-body") {
+            treeInfoChart = new Chart(chart, configBar);
+        } else if (id === "chart-sub-modal-body") {
+            subtreesInfoChart = new Chart(chart, configBarSub);
+        }
     } else if (type.value === 'horizontal_bar') {
-        subtreesInfoChart = new Chart(chart, configHorizontalBar);
+        if (id === "chart-modal-body") {
+            treeInfoChart = new Chart(chart, configHorizontalBar);
+        } else if (id === "chart-sub-modal-body") {
+            subtreesInfoChart = new Chart(chart, configHorizontalBarSub);
+        }
     }
+}
+
+function renderChartData(type, id){
+    // TODO
 }
 
 function statisticsAllFeaturesTree(root, fromCircle = false) {
@@ -1807,8 +1959,6 @@ function statisticsAllFeaturesTree(root, fromCircle = false) {
     if (fromCircle) {
         root = root.data;
     }
-    document.getElementById('pie-option-modal').removeAttribute("hidden");
-    document.getElementById('pie-option-modal').removeAttribute("disabled");
 
     var listStatistics = getFeaturesSubtreeValues(root);
 
@@ -1871,13 +2021,12 @@ function statisticsAllFeaturesTree(root, fromCircle = false) {
     createChartModal();
 }
 
-function statisticsAllFeaturesSubtrees(root, fromCircle = false) {
-    document.getElementById('pie-option-modal').setAttribute("hidden", true);
-    document.getElementById('pie-option-modal').setAttribute("disabled", true);
+function statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle = false, minOpacityValue = null) {
 
     let children = root.children;
     let listStatistics;
     let labelsSubtrees = [];
+    let labelsSubtreesIDs = [];
     let constructivenessSubtrees = [];
     let argumentationSubtrees = [];
     let sarcasmSubtrees = [];
@@ -1888,12 +2037,13 @@ function statisticsAllFeaturesSubtrees(root, fromCircle = false) {
     let aggressivenessSubtrees = [];
 
     if (children) {
-        children.forEach(function (d, index) {
+        children.forEach(function (d) {
             if (fromCircle) {
                 d = d.data;
             }
-            labelsSubtrees.push('Subgraph ' + (index+1));
-            listStatistics = getFeaturesSubtreeValues(d);
+            labelsSubtrees.push('Subgraph ' + d.name);
+            labelsSubtreesIDs.push(d.name);
+            listStatistics = getFeaturesSubtreeValues(d, true);
             constructivenessSubtrees.push(d.highlighted ? listStatistics.totalConstructiveness + d.constructiveness : listStatistics.totalConstructiveness);
             argumentationSubtrees.push(d.highlighted ? listStatistics.totalArgumentation + d.argumentation : listStatistics.totalArgumentation);
             sarcasmSubtrees.push(d.highlighted ? listStatistics.totalSarcasm + d.sarcasm : listStatistics.totalSarcasm);
@@ -1905,8 +2055,9 @@ function statisticsAllFeaturesSubtrees(root, fromCircle = false) {
         });
     }
 
-    chartModalData = {
+    chartSubModalData = {
       labels: labelsSubtrees,
+      labelsIDs: labelsSubtreesIDs,
       datasets: [{
         label: 'Constructiveness',
         data: constructivenessSubtrees,
@@ -1951,5 +2102,22 @@ function statisticsAllFeaturesSubtrees(root, fromCircle = false) {
 
     chartModalTitle = 'subgraphs';
 
-    createChartModal();
+    createChartSubModal(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue);
+}
+
+function clickSubtreeChartHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link, nodeName, fromCircle, minOpacityValue) {
+    let rootNode = getClickedSubtreeRootNode(root, nodeName, fromCircle);
+    let clickedSubtreeNodesPath = [];
+
+    getNodesDescendants(rootNode, clickedSubtreeNodesPath);
+
+    if (!fromCircle) {
+        highlightThreadPopup(nodes, root, opacityValue, clickedSubtreeNodesPath, node, link, false);
+    } else {
+        highlightThreadPopupCircle(nodes, root, opacityValue, minOpacityValue, clickedSubtreeNodesPath, node, false);
+    }
+
+    if (static_values_checked) {
+        statisticBackground.html(writeStatisticText(root));
+    }
 }

@@ -674,7 +674,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
     // and displays them in a modal as a chart, for comparison purposes
     $(window).off("statistics_all_features_subtrees");
     $(window).on("statistics_all_features_subtrees", function () {
-        statisticsAllFeaturesSubtrees(root, true);
+        statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBackground, nodes, maxOpacityValue, node, null, true, minOpacityValue);
     });
 
     // If AND is selected, uncheck the OR and highlight by property AND

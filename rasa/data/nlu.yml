@@ -402,6 +402,13 @@ nlu:
     - Which nodes are the [least toxic]{"entity": "object_requested", "value": "non toxic"}?
     - Which nodes are [non toxic]{"entity": "object_requested", "value": "non toxic"}?
     - Can you show me the [least toxic]{"entity": "object_requested", "value": "non toxic"} nodes?
+    - Activate the [non toxic]{"entity": "object_requested", "value": "non toxic"} filter
+    - Activate the [non toxic]{"entity": "object_requested", "value": "non toxic"} nodes filter
+    - Enables [non toxic]{"entity": "object_requested", "value": "non toxic"} nodes filtering
+    - Enables the [non toxic]{"entity": "object_requested", "value": "non toxic"} filter
+    - Enables the filter [non toxic]{"entity": "object_requested", "value": "non toxic"}
+    - Disable [non toxic]{"entity": "object_requested", "value": "non toxic"} filter
+    - Switch [non toxic]{"entity": "object_requested", "value": "non toxic"} filter
 
 - intent: mildly_toxic
   examples: |
@@ -418,6 +425,13 @@ nlu:
     - show [mildly toxic]{"entity": "object_requested", "value": "mildly toxic"} ones
     - Which nodes are [toxic level 1]{"entity": "object_requested", "value": "mildly toxic"}?
     - Can you show me [mildly toxic]{"entity": "object_requested", "value": "mildly toxic"} nodes?
+    - Activate the [mildly toxic]{"entity": "object_requested", "value": "mildly toxic"} filter
+    - Activate the [mildly toxic]{"entity": "object_requested", "value": "mildly toxic"} nodes filter
+    - Enables [mildly toxic]{"entity": "object_requested", "value": "mildly toxic"} nodes filtering
+    - Enables the [mildly toxic]{"entity": "object_requested", "value": "mildly toxic"} filter
+    - Enables the filter [mildly toxic]{"entity": "object_requested", "value": "mildly toxic"}
+    - Disable [mildly toxic]{"entity": "object_requested", "value": "mildly toxic"} filter
+    - Switch [mildly toxic]{"entity": "object_requested", "value": "mildly toxic"} filter
 
 - intent: toxic
   examples: |
@@ -434,6 +448,13 @@ nlu:
     - show [toxic]{"entity": "object_requested", "value": "toxic"} ones
     - Which nodes are [toxic level 2]{"entity": "object_requested", "value": "toxic"}?
     - Can you show me [toxic]{"entity": "object_requested", "value": "toxic"} nodes?
+    - Activate the [toxic]{"entity": "object_requested", "value": "toxic"} filter
+    - Activate the [toxic]{"entity": "object_requested", "value": "toxic"} nodes filter
+    - Enables [toxic]{"entity": "object_requested", "value": "toxic"} nodes filtering
+    - Enables the [toxic]{"entity": "object_requested", "value": "toxic"} filter
+    - Enables the filter [toxic]{"entity": "object_requested", "value": "toxic"}
+    - Disable [toxic]{"entity": "object_requested", "value": "toxic"} filter
+    - Switch [toxic]{"entity": "object_requested", "value": "toxic"} filter
 
 - intent: very_toxic
   examples: |
@@ -453,6 +474,13 @@ nlu:
     - Which nodes are [toxic level 3]{"entity": "object_requested", "value": "very toxic"}?
     - Which nodes are the [most toxic]{"entity": "object_requested", "value": "very toxic"}?
     - Can you show me [very toxic]{"entity": "object_requested", "value": "very toxic"} nodes?
+    - Activate the [very toxic]{"entity": "object_requested", "value": "very toxic"} filter
+    - Activate the [very toxic]{"entity": "object_requested", "value": "very toxic"} nodes filter
+    - Enables [very toxic]{"entity": "object_requested", "value": "very toxic"} nodes filtering
+    - Enables the [very toxic]{"entity": "object_requested", "value": "very toxic"} filter
+    - Enables the filter [very toxic]{"entity": "object_requested", "value": "very toxic"}
+    - Disable [very toxic]{"entity": "object_requested", "value": "very toxic"} filter
+    - Switch [very toxic]{"entity": "object_requested", "value": "very toxic"} filter
 
 # positive, negative, neutral stance
 
@@ -462,6 +490,13 @@ nlu:
     - Show me nodes with positive stance
     - Highlight nodes with positive stance
     - Show nodes with positive stance
+    - Activate the positive stance filter
+    - Activate the positive stance nodes filter
+    - Enables positive stance nodes filtering
+    - Enables the positive stance filter
+    - Enables the filter positive stance
+    - Disable positive stance filter
+    - Switch positive stance filter
 
 - intent: negative_stance
   examples: |
@@ -469,6 +504,13 @@ nlu:
     - Show me nodes with negative stance
     - Highlight nodes with negative stance
     - Show nodes with negative stance
+    - Activate the negative stance filter
+    - Activate the negative stance nodes filter
+    - Enables negative stance nodes filtering
+    - Enables the negative stance filter
+    - Enables the filter negative stance
+    - Disable negative stance filter
+    - Switch negative stance filter
 
 - intent: neutral_stance
   examples: |
@@ -476,6 +518,13 @@ nlu:
     - Show me nodes with neutral stance
     - Highlight nodes with neutral stance
     - Show nodes with neutral stance
+    - Activate the neutral stance filter
+    - Activate the neutral stance nodes filter
+    - Enables neutral stance nodes filtering
+    - Enables the neutral stance filter
+    - Enables the filter neutral stance
+    - Disable neutral stance filter
+    - Switch neutral stance filter
 
 # targets --> target person, target group, stereotype
 - intent: target_person
@@ -484,6 +533,13 @@ nlu:
     - Show me nodes with target person
     - Highlight nodes with target person
     - Show nodes with target person
+    - Activate the target person filter
+    - Activate the target person nodes filter
+    - Enables target person nodes filtering
+    - Enables the target person filter
+    - Enables the filter target person
+    - Disable target person filter
+    - Switch target person filter
 
 - intent: target_group
   examples: |
@@ -491,6 +547,13 @@ nlu:
     - Show me nodes with target group
     - Highlight nodes with target group
     - Show nodes with target group
+    - Activate the target group filter
+    - Activate the target group nodes filter
+    - Enables target group nodes filtering
+    - Enables the target group filter
+    - Enables the filter target group
+    - Disable target group filter
+    - Switch target group filter
 
 - intent: stereotype
   examples: |
@@ -498,6 +561,13 @@ nlu:
     - Show me nodes with stereotype
     - Highlight nodes with stereotype
     - Show nodes with stereotype
+    - Activate the stereotype filter
+    - Activate the stereotype nodes filter
+    - Enables stereotype nodes filtering
+    - Enables the stereotype filter
+    - Enables the filter stereotype
+    - Disable stereotype filter
+    - Switch stereotype filter
 
 # targets select all
 - intent: target_all
@@ -512,6 +582,13 @@ nlu:
     - Show me nodes with all targets
     - Highlight nodes with all targets
     - Show nodes with all targets
+    - Activate the select all targets filter
+    - Activate the select all targets nodes filter
+    - Enables select all targets nodes filtering
+    - Enables the select all targets filter
+    - Enables the filter select all targets
+    - Disable select all targets filter
+    - Switch select all targets filter
 
 # features--> constructiveness, argumentation
 - intent: constructiveness
@@ -524,6 +601,13 @@ nlu:
     - Show me constructive nodes
     - Highlight constructive nodes
     - Show constructive nodes
+    - Activate the constructiveness filter
+    - Activate the constructive nodes filter
+    - Enables constructive nodes filtering
+    - Enables the constructive filter
+    - Enables the filter constructiveness
+    - Disable constructiveness filter
+    - Switch constructiveness filter
 
 - intent: argumentation
   examples: |
@@ -535,6 +619,13 @@ nlu:
     - Show me argumentation nodes
     - Highlight argumentation nodes
     - Show argumentation nodes
+    - Activate the argumentation filter
+    - Activate the argumentation nodes filter
+    - Enables argumentation nodes filtering
+    - Enables the argumentation filter
+    - Enables the filter argumentation
+    - Disable argumentation filter
+    - Switch argumentation filter
 
 # features--> sarcasm, mockery, intolerance
 - intent: sarcasm
@@ -547,6 +638,13 @@ nlu:
     - Show me sarcastic nodes
     - Highlight sarcastic nodes
     - Show sarcastic nodes
+    - Activate the sarcasm filter
+    - Activate the sarcastic nodes filter
+    - Enables sarcastic nodes filtering
+    - Enables the sarcasm filter
+    - Enables the filter sarcasm
+    - Disable sarcasm filter
+    - Switch sarcasm filter
 
 - intent: mockery
   examples: |
@@ -558,6 +656,13 @@ nlu:
     - Show me mockery nodes
     - Highlight mockery nodes
     - Show mockery nodes
+    - Activate the mockery filter
+    - Activate the mockery nodes filter
+    - Enables mockery nodes filtering
+    - Enables the mockery filter
+    - Enables the filter mockery
+    - Disable mockery filter
+    - Switch mockery filter
 
 - intent: intolerance
   examples: |
@@ -569,6 +674,13 @@ nlu:
     - Show me intolerance nodes
     - Highlight intolerance nodes
     - Show intolerance nodes
+    - Activate the intolerance filter
+    - Activate the intolerance nodes filter
+    - Enables intolerance nodes filtering
+    - Enables the intolerance filter
+    - Enables the filter intolerance
+    - Disable intolerance filter
+    - Switch intolerance filter
 
 # features--> improper language, insult, aggressiveness - ?
 
@@ -582,6 +694,13 @@ nlu:
     - Show me improper language nodes
     - Highlight improper language nodes
     - Show improper language nodes
+    - Activate the improper language filter
+    - Activate the improper language nodes filter
+    - Enables improper language nodes filtering
+    - Enables the improper language filter
+    - Enables the filter improper language
+    - Disable improper language filter
+    - Switch improper language filter
 
 - intent: insult
   examples: |
@@ -593,6 +712,13 @@ nlu:
     - Show me insult nodes
     - Highlight insult nodes
     - Show insult nodes
+    - Activate the insult filter
+    - Activate the insult nodes filter
+    - Enables insult nodes filtering
+    - Enables the insult filter
+    - Enables the filter insult
+    - Disable insult filter
+    - Switch insult filter
 
 - intent: aggressiveness
   examples: |
@@ -604,6 +730,13 @@ nlu:
     - Show me aggressive nodes
     - Highlight aggressive nodes
     - Show aggressive nodes
+    - Activate the aggressiveness filter
+    - Activate the aggressive nodes filter
+    - Enables aggressive nodes filtering
+    - Enables the aggressiveness filter
+    - Enables the filter aggressiveness
+    - Disable aggressiveness filter
+    - Switch aggressiveness filter
 
 # features select all
 - intent: features_all
@@ -618,6 +751,13 @@ nlu:
     - Show me nodes with all features
     - Highlight nodes with all features
     - Show nodes with all features
+    - Activate the select all features filter
+    - Activate the select all features nodes filter
+    - Enables select all features nodes filtering
+    - Enables the select all features filter
+    - Enables the filter select all features
+    - Disable select all features filter
+    - Switch select all features filter
 
 # complex intents -
 # related to depth
@@ -889,6 +1029,7 @@ nlu:
 - intent: statistics_features_tree
   examples: |
     - Show me the statistics of the graph features
+    - Show me the graph features statistics
     - Show me the statistics of the main graph features
     - Show me the statistics of the main view graph features
     - Compare the graph features
@@ -900,8 +1041,12 @@ nlu:
 - intent: statistics_features_subtrees
   examples: |
     - Compare the features of subtrees
+    - Compare the features of all subtrees
+    - Compare all subtrees features
     - Compare the features of subgraphs
+    - Compare all subgraphs features
     - Compare the subtrees features on a chart
     - Show me the statistics of the subtrees features
+    - Show me the subtrees features statistics
     - Show me the statistics of the subgraphs features
     - Display the statistics of the subgraphs features in a chart

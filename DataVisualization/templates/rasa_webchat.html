@@ -277,7 +277,7 @@
     function addNewFeatures() {
         setTimeout(function () {
             let ttsFeature = document.createElement("button");
-            ttsFeature.innerHTML = "<img src='{% static 'images/chat/features/speaker-svgrepo-com.svg' %}' class='chat-feature-img'>";
+            ttsFeature.innerHTML = "<img src='{% static 'images/chat/features/speaker.svg' %}' class='chat-feature-img'>";
             ttsFeature.type = "button";
             ttsFeature.setAttribute('id', 'tts-feature');
             if (textToSpeech) {
@@ -288,7 +288,7 @@
             document.querySelector(".rw-widget-container").appendChild(ttsFeature);
 
             let sttFeature = document.createElement("button");
-            sttFeature.innerHTML = "<img src='{% static 'images/chat/features/microphone-svgrepo-com.svg' %}' class='chat-feature-img'>";
+            sttFeature.innerHTML = "<img src='{% static 'images/chat/features/microphone.svg' %}' class='chat-feature-img'>";
             sttFeature.type = "button";
             sttFeature.setAttribute('id', 'stt-feature');
             sttFeature.classList.add('chat-feature-btn');

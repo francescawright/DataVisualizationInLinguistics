@@ -1,20 +1,39 @@
 <style>
-    #chartModal.modal .modal-content {
+    #chartModal.modal .modal-content, #chartSubModal.modal .modal-content {
         width: 756px;
-        height: 458px;
+        height: 454px;
     }
-    #chart-modal-body {
+    #chart-modal-body, #chart-sub-modal-body {
         position: absolute;
-    }
-    #chartModal.modal .modal-footer {
-        display: flex;
-        justify-content: space-between;
     }
     .chart-modal-select {
         width: auto;
     }
     .square-chart {
         margin-left: 25%;
+    }
+    #chartModal.modal .modal-header, #chartSubModal.modal .modal-header {
+        align-items: baseline;
+        padding: 0.5rem 1rem;
+    }
+    #select-chart-data-modal, #select-chart-sub-data-modal {
+        margin-left: auto;
+    }
+    #select-chart-type-modal, #select-chart-data-modal, #select-chart-sub-type-modal, #select-chart-sub-data-modal {
+        margin-right: 1rem;
+    }
+    #chartModal.modal .modal-header .close, #chartSubModal.modal .modal-header .close {
+        padding: 0.5rem 1rem;
+        margin: -0.5rem -1rem -0.5rem -1rem;
+    }
+    #chartModal .modal-header, #chartSubModal .modal-header {
+        cursor: move;
+    }
+    #chartModal .modal-title, #chartSubModal .modal-title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-right: 1rem;
     }
 </style>
 
@@ -24,16 +43,52 @@
 <div class="modal fade" id="chartModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="chartModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"></h5>
+            <select id="select-chart-data-modal" class="form-control chart-modal-select" onchange="renderChartData(this, 'chart-modal-body')">
+                <option value="toxicity">Toxicity</option>
+                <option value="stance">Stance</option>
+                <option value="target">Target</option>
+                <option selected="selected" value="features">Features</option>
+            </select>
+            <select id="select-chart-type-modal" class="form-control chart-modal-select" onchange="renderChartType(this, 'chart-modal-body')">
+                <option selected="selected" value="bar">Bar Chart</option>
+                <option value="horizontal_bar">Horizontal Bar</option>
+                <option value="pie">Pie</option>
+            </select>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
       <div class="modal-body" style="position: relative;">
             <canvas id="chart-modal-body"></canvas>
       </div>
-      <div class="modal-footer">
-          <select id="select-chart-type-modal" class="form-control chart-modal-select" onchange="renderChart(this)">
-              <option value="bar">Bar Chart</option>
-              <option value="horizontal_bar">Horizontal Bar</option>
-              <option id="pie-option-modal" value="pie">Pie</option>
-          </select>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Chart Modal Subgraphs -->
+<div class="modal fade" id="chartSubModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="chartModalSubLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"></h5>
+            <select id="select-chart-sub-data-modal" class="form-control chart-modal-select" onchange="renderChartData(this, 'chart-sub-modal-body')">
+                <option value="toxicity">Toxicity</option>
+                <option value="stance">Stance</option>
+                <option value="target">Target</option>
+                <option selected="selected" value="features">Features</option>
+            </select>
+            <select id="select-chart-sub-type-modal" class="form-control chart-modal-select" onchange="renderChartType(this, 'chart-sub-modal-body')">
+                <option selected="selected" value="bar">Bar Chart</option>
+                <option value="horizontal_bar">Horizontal Bar</option>
+            </select>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+      <div class="modal-body" style="position: relative;">
+            <canvas id="chart-sub-modal-body"></canvas>
       </div>
     </div>
   </div>
@@ -45,15 +100,43 @@
         $(document).off('focusin.modal');
     });
 
+    $("#chartModal.modal").draggable({
+        handle: ".modal-header",
+        cursor: "move",
+        containment: "window"
+    });
+
     $("#chartModal.modal .modal-content").resizable({
         containment: "document",
-        minHeight: 421,
-        minWidth: 701,
+        minHeight: 346,
+        minWidth: 552,
         autoHide: true,
         aspectRatio: true
     });
 
     $("#chartModal").on("hidden.bs.modal", function () {
         Chart.getChart('chart-modal-body').destroy();
+    });
+
+    $('#chartSubModal').on('shown.bs.modal', function() {
+        $(document).off('focusin.modal');
+    });
+
+    $("#chartSubModal.modal").draggable({
+        handle: ".modal-header",
+        cursor: "move",
+        containment: "window"
+    });
+
+    $("#chartSubModal.modal .modal-content").resizable({
+        containment: "document",
+        minHeight: 346,
+        minWidth: 552,
+        autoHide: true,
+        aspectRatio: true
+    });
+
+    $("#chartSubModal").on("hidden.bs.modal", function () {
+        Chart.getChart('chart-sub-modal-body').destroy();
     });
 </script>
