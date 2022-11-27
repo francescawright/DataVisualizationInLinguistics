@@ -16,6 +16,8 @@ var featuresChartDict = {"Constructiveness":"constructiveness", "Argument":"argu
 // Variable to share the name of the main window graph between multiple files
 var mainWindowGraphName;
 
+var highlightedSubgraph = null;
+
 /*******************************
 *   Categorization Functions   *
 ********************************/
@@ -61,7 +63,7 @@ function isSpine(node, level) {
     return (numNodes == level);
 }
 
-function highlightDevtoolsAND(nodes, root, node, link, enabledTargetsValue, opacityValue = 0.1) {
+function highlightDevtoolsAND(nodes, root, node, link, enabledTargetsValue, N, L, GFcomp, GFelon, d_lvl, tol, opacityValue = 0.1) {
 
     nodes.forEach(function (d) {
         d.highlighted = 1;
@@ -96,6 +98,8 @@ function highlightDevtoolsAND(nodes, root, node, link, enabledTargetsValue, opac
             1 :
             opacityValue;
     });
+
+    statisticsDataChangedTree(root);
 }
 
 function isSignificant(node, tol) {
@@ -348,11 +352,12 @@ function getDescendants(node) {
 }
 
 /**
- * Recursive function to obtain the total number of each characteristic of a tree
+ * Recursive function to obtain the total number of each characteristic of a graph
  * */
-function getFeaturesSubtreeValues(node, isSubtreeSearch = false) {
+function getStatisticsDataSubtree(node, isSubtreeSearch = false) {
     if (!node.children) {
         return {
+            // Features
             totalConstructiveness: 0,
             totalArgumentation: 0,
             totalSarcasm: 0,
@@ -369,42 +374,87 @@ function getFeaturesSubtreeValues(node, isSubtreeSearch = false) {
             improper_language: node.improper_language,
             insult: node.insult,
             aggressiveness: node.aggressiveness,
+            // Toxicity
+            toxicityLevel: node.toxicity_level,
+            toxicity0: 0,
+            toxicity1: 0,
+            toxicity2: 0,
+            toxicity3: 0,
+            // Target
+            totalTargGroup: 0,
+            totalTargPerson: 0,
+            totalTargStereotype: 0,
+            totalTargNone: 0,
+            targGroup: node.target_group,
+            targPerson: node.target_person,
+            targStereotype: node.stereotype,
+            targNone: 0,
+            // Stance
+            totalNeutralStance: 0,
+            totalPositiveStance: 0,
+            totalNegativeStance: 0,
+            totalBothStances: 0,
+            neutral_stance: (!node.positive_stance && !node.negative_stance),
+            positive_stance: node.positive_stance,
+            negative_stance: node.negative_stance,
+            both_stances: (node.negative_stance && node.positive_stance)
         };
     }
     var childrenList = [],
         totalConstructiveness = 0, totalArgumentation = 0, totalSarcasm = 0, totalMockery = 0,
-        totalIntolerance = 0, totalImproper_language = 0, totalInsult = 0, totalAggressiveness = 0;
+        totalIntolerance = 0, totalImproper_language = 0, totalInsult = 0, totalAggressiveness = 0,
+        totalToxic0 = 0, totalToxic1 = 0, totalToxic2 = 0, totalToxic3 = 0,
+        totalTargGroup = 0, totalTargPerson = 0, totalTargStereotype = 0, totalTargNone = 0,
+        totalNeutralStance = 0, totalPositiveStance = 0, totalNegativeStance = 0, totalBothStances = 0;
 
     if (node.children) {
         node.children.forEach(function (d) {
-            childrenList = getFeaturesSubtreeValues(d, isSubtreeSearch);
+            childrenList = getStatisticsDataSubtree(d, isSubtreeSearch);
 
-            // If it is a request about subtrees, we count the features even if the node is not highlighted.
-            if (!isSubtreeSearch) {
-                //Targets are not exclusive
-                childrenList.constructiveness && d.highlighted ? totalConstructiveness += childrenList.totalConstructiveness + 1 : totalConstructiveness += childrenList.totalConstructiveness;
-                childrenList.argumentation && d.highlighted ? totalArgumentation += childrenList.totalArgumentation + 1 : totalArgumentation += childrenList.totalArgumentation;
-                childrenList.sarcasm && d.highlighted ? totalSarcasm += childrenList.totalSarcasm + 1 : totalSarcasm += childrenList.totalSarcasm;
-                childrenList.mockery && d.highlighted ? totalMockery += childrenList.totalMockery + 1 : totalMockery += childrenList.totalMockery;
-                childrenList.intolerance && d.highlighted ? totalIntolerance += childrenList.totalIntolerance + 1 : totalIntolerance += childrenList.totalIntolerance;
-                childrenList.improper_language && d.highlighted ? totalImproper_language += childrenList.totalImproper_language + 1 : totalImproper_language += childrenList.totalImproper_language;
-                childrenList.insult && d.highlighted ? totalInsult += childrenList.totalInsult + 1 : totalInsult += childrenList.totalInsult;
-                childrenList.aggressiveness && d.highlighted ? totalAggressiveness += childrenList.totalAggressiveness + 1 : totalAggressiveness += childrenList.totalAggressiveness;
-            } else {
-                childrenList.constructiveness ? totalConstructiveness += childrenList.totalConstructiveness + 1 : totalConstructiveness += childrenList.totalConstructiveness;
-                childrenList.argumentation ? totalArgumentation += childrenList.totalArgumentation + 1 : totalArgumentation += childrenList.totalArgumentation;
-                childrenList.sarcasm ? totalSarcasm += childrenList.totalSarcasm + 1 : totalSarcasm += childrenList.totalSarcasm;
-                childrenList.mockery ? totalMockery += childrenList.totalMockery + 1 : totalMockery += childrenList.totalMockery;
-                childrenList.intolerance ? totalIntolerance += childrenList.totalIntolerance + 1 : totalIntolerance += childrenList.totalIntolerance;
-                childrenList.improper_language ? totalImproper_language += childrenList.totalImproper_language + 1 : totalImproper_language += childrenList.totalImproper_language;
-                childrenList.insult ? totalInsult += childrenList.totalInsult + 1 : totalInsult += childrenList.totalInsult;
-                childrenList.aggressiveness ? totalAggressiveness += childrenList.totalAggressiveness + 1 : totalAggressiveness += childrenList.totalAggressiveness;
+            totalToxic0 += childrenList.toxicity0;
+            totalToxic1 += childrenList.toxicity1;
+            totalToxic2 += childrenList.toxicity2;
+            totalToxic3 += childrenList.toxicity3;
+
+            if (d.highlighted || isSubtreeSearch) {
+                switch (childrenList.toxicityLevel) {
+                    case 0:
+                        totalToxic0 += 1;
+                        break;
+                    case 1:
+                        totalToxic1 += 1;
+                        break;
+                    case 2:
+                        totalToxic2 += 1;
+                        break;
+                    case 3:
+                        totalToxic3 += 1;
+                        break;
+                }
             }
 
+            // If it is a request about subtrees, we count the features even if the node is not highlighted.
+            childrenList.constructiveness && (d.highlighted || isSubtreeSearch) ? totalConstructiveness += childrenList.totalConstructiveness + 1 : totalConstructiveness += childrenList.totalConstructiveness;
+            childrenList.argumentation && (d.highlighted || isSubtreeSearch) ? totalArgumentation += childrenList.totalArgumentation + 1 : totalArgumentation += childrenList.totalArgumentation;
+            childrenList.sarcasm && (d.highlighted || isSubtreeSearch) ? totalSarcasm += childrenList.totalSarcasm + 1 : totalSarcasm += childrenList.totalSarcasm;
+            childrenList.mockery && (d.highlighted || isSubtreeSearch) ? totalMockery += childrenList.totalMockery + 1 : totalMockery += childrenList.totalMockery;
+            childrenList.intolerance && (d.highlighted || isSubtreeSearch) ? totalIntolerance += childrenList.totalIntolerance + 1 : totalIntolerance += childrenList.totalIntolerance;
+            childrenList.improper_language && (d.highlighted || isSubtreeSearch) ? totalImproper_language += childrenList.totalImproper_language + 1 : totalImproper_language += childrenList.totalImproper_language;
+            childrenList.insult && (d.highlighted || isSubtreeSearch) ? totalInsult += childrenList.totalInsult + 1 : totalInsult += childrenList.totalInsult;
+            childrenList.aggressiveness && (d.highlighted || isSubtreeSearch) ? totalAggressiveness += childrenList.totalAggressiveness + 1 : totalAggressiveness += childrenList.totalAggressiveness;
+            childrenList.neutral_stance && (d.highlighted || isSubtreeSearch) ? totalNeutralStance += childrenList.totalNeutralStance + 1 : totalNeutralStance += childrenList.totalNeutralStance;
+            childrenList.both_stances && (d.highlighted || isSubtreeSearch) ? totalBothStances += childrenList.totalBothStances + 1 : totalBothStances += childrenList.totalBothStances;
+            childrenList.positive_stance && (d.highlighted || isSubtreeSearch) ? totalPositiveStance += childrenList.totalPositiveStance + 1 : totalPositiveStance += childrenList.totalPositiveStance;
+            childrenList.negative_stance && (d.highlighted || isSubtreeSearch) ? totalNegativeStance += childrenList.totalNegativeStance + 1 : totalNegativeStance += childrenList.totalNegativeStance;
+            childrenList.targGroup && (d.highlighted || isSubtreeSearch) ? totalTargGroup += childrenList.totalTargGroup + 1 : totalTargGroup += childrenList.totalTargGroup;
+            childrenList.targPerson && (d.highlighted || isSubtreeSearch) ? totalTargPerson += childrenList.totalTargPerson + 1 : totalTargPerson += childrenList.totalTargPerson;
+            childrenList.targStereotype && (d.highlighted || isSubtreeSearch) ? totalTargStereotype += childrenList.totalTargStereotype + 1 : totalTargStereotype += childrenList.totalTargStereotype;
+            (!childrenList.targGroup && !childrenList.targPerson && !childrenList.targStereotype && (d.highlighted || isSubtreeSearch)) ? totalTargNone += childrenList.totalTargNone + 1 : totalTargNone += childrenList.totalTargNone;
         })
     }
 
     return {
+        // Features
         totalConstructiveness: totalConstructiveness,
         totalArgumentation: totalArgumentation,
         totalSarcasm: totalSarcasm,
@@ -421,6 +471,30 @@ function getFeaturesSubtreeValues(node, isSubtreeSearch = false) {
         improper_language: node.improper_language,
         insult: node.insult,
         aggressiveness: node.aggressiveness,
+        // Toxicity
+        toxicityLevel: node.toxicity_level,
+        toxicity0: totalToxic0,
+        toxicity1: totalToxic1,
+        toxicity2: totalToxic2,
+        toxicity3: totalToxic3,
+        // Target
+        totalTargGroup: totalTargGroup,
+        totalTargPerson: totalTargPerson,
+        totalTargStereotype: totalTargStereotype,
+        totalTargNone: totalTargNone,
+        targGroup: node.target_group,
+        targPerson: node.target_person,
+        targStereotype: node.stereotype,
+        targNone: 0,
+        // Stance
+        totalNeutralStance: totalNeutralStance,
+        totalPositiveStance: totalPositiveStance,
+        totalNegativeStance: totalNegativeStance,
+        totalBothStances: totalBothStances,
+        neutral_stance: (!node.positive_stance && !node.negative_stance),
+        positive_stance: node.positive_stance,
+        negative_stance: node.negative_stance,
+        both_stances: (node.negative_stance && node.positive_stance)
     };
 }
 
@@ -1391,7 +1465,7 @@ function writeStatisticText(root, fromCircle = false) {
 *       Complex Intents       *
 *******************************/
 
-function highlightThreadPopup(nodes, root, opacityValue, nodesPath, node, link, sendToPopup = true) {
+function highlightThreadPopup(nodes, root, opacityValue, nodesPath, node, link, sendToPopup = true, isSubgraphByID = false) {
 
     nodes.forEach(function (d) {
         d.highlighted = 0;
@@ -1408,12 +1482,14 @@ function highlightThreadPopup(nodes, root, opacityValue, nodesPath, node, link, 
         return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
     });
 
+    statisticsDataChangedTree(root, false, isSubgraphByID);
+
     if (sendToPopup){
         subtreeToPopup(root, nodesPath);
     }
 }
 
-function highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue ,nodesPath, node, sendToPopup = true) {
+function highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue ,nodesPath, node, sendToPopup = true, isSubgraphByID = false) {
 
     nodes.forEach(function (d) {
         d.data.highlighted = 1;
@@ -1436,6 +1512,8 @@ function highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValu
         }
         return result;
     }).style("opacity", maxOpacityValue);
+
+    statisticsDataChangedTree(root, true, isSubgraphByID);
 
     if (sendToPopup){
         subtreeToPopup(root, nodesPath, true);
@@ -1555,7 +1633,7 @@ function subtreeToPopup(root, nodesPath, fromCircle = false){
     })
 }
 
-function highlightWidestLevels(nodes, opacityValue, node, link, levelsIndexes) {
+function highlightWidestLevels(nodes, opacityValue, node, link, levelsIndexes, root) {
     nodes.forEach(function (d) {
         d.highlighted = 0;
     });
@@ -1570,9 +1648,11 @@ function highlightWidestLevels(nodes, opacityValue, node, link, levelsIndexes) {
     link.style("opacity", function (d) {
         return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
     });
+
+    statisticsDataChangedTree(root);
 }
 
-function highlightWidestLevelsCircle(nodes, maxOpacityValue, minOpacityValue, node, levelsIndexes) {
+function highlightWidestLevelsCircle(nodes, maxOpacityValue, minOpacityValue, node, levelsIndexes, root) {
 
     nodes.forEach(function (d) {
         d.data.highlighted = 1;
@@ -1595,6 +1675,8 @@ function highlightWidestLevelsCircle(nodes, maxOpacityValue, minOpacityValue, no
         }
         return result;
     }).style("opacity", maxOpacityValue);
+
+    statisticsDataChangedTree(root, true);
 }
 
 function widestLevelHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link) {
@@ -1610,7 +1692,7 @@ function widestLevelHandler(static_values_checked, statisticBackground, root, no
 
     injectIntentConversation(textMsg);
 
-    highlightWidestLevels(nodes, opacityValue, node, link, widestLevels[0]);
+    highlightWidestLevels(nodes, opacityValue, node, link, widestLevels[0], root);
 
     if (static_values_checked) {
         statisticBackground.html(writeStatisticText(root, false));
@@ -1728,10 +1810,10 @@ function mostToxicSubtreeHandler(static_values_checked, statisticBackground, roo
 function createChartModal() {
 
     let chart = document.getElementById('chart-modal-body').getContext('2d');
-    document.querySelector("#chartModal .modal-title").innerHTML = "Comparison of " + mainWindowGraphName + " graph features";
+    document.querySelector("#chartModal .modal-title").innerHTML = "Statistics of " + mainWindowGraphName;
 
     document.getElementById('chart-modal-body').classList.remove("square-chart");
-    document.getElementById('select-chart-type-modal').value = 'bar';
+    let chartType = document.getElementById('select-chart-type-modal').value;
     if (Chart.getChart('chart-modal-body')) {
         Chart.getChart('chart-modal-body').destroy();
     }
@@ -1792,7 +1874,14 @@ function createChartModal() {
           },
         }
     }
-    treeInfoChart = new Chart(chart, configBar);
+
+    if (chartType === 'bar') {
+        treeInfoChart = new Chart(chart, configBar);
+    } else if (chartType === 'horizontal_bar') {
+        treeInfoChart = new Chart(chart, configHorizontalBar);
+    } else if(chartType === 'pie') {
+        treeInfoChart = new Chart(chart, configPie);
+    }
 
     function clickHandler(evt) {
         const points = treeInfoChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
@@ -1809,17 +1898,19 @@ function createChartModal() {
 
     canvas.onclick = clickHandler;
     if (!document.getElementById('chartModal').classList.contains('show')) {
-        document.getElementById("chartModal").style.top = "calc(35% - 229px)";
+        document.getElementById("chartModal").style.top = "calc(40% - 229px)";
         document.getElementById("chartModal").style.left = "calc(50% - 378px)";
+        document.querySelector("#chartModal .modal-content").style.width = "756px";
+        document.querySelector("#chartModal .modal-content").style.height = "454px";
         $("#popup-chart-btn").click();
     }
 }
 function createChartSubModal(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue) {
 
     let chart = document.getElementById('chart-sub-modal-body').getContext('2d');
-    document.querySelector("#chartSubModal .modal-title").innerHTML = "Comparison of " + mainWindowGraphName + " subgraphs features";
+    document.querySelector("#chartSubModal .modal-title").innerHTML = "Statistics of " + mainWindowGraphName + " subgraphs";
 
-    document.getElementById('select-chart-sub-type-modal').value = 'bar';
+    let chartType = document.getElementById('select-chart-sub-type-modal').value;
     if (Chart.getChart('chart-sub-modal-body')) {
         Chart.getChart('chart-sub-modal-body').destroy();
     }
@@ -1865,7 +1956,12 @@ function createChartSubModal(root, static_values_checked, statisticBackground, n
           },
         }
     }
-    subtreesInfoChart = new Chart(chart, configBarSub);
+
+    if (chartType === 'bar') {
+        subtreesInfoChart = new Chart(chart, configBarSub);
+    } else if (chartType === 'horizontal_bar') {
+        subtreesInfoChart = new Chart(chart, configHorizontalBarSub);
+    }
 
     function clickHandlerSub(evt) {
         const points = subtreesInfoChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
@@ -1922,8 +2018,10 @@ function createChartSubModal(root, static_values_checked, statisticBackground, n
 
     canvas.onclick = clickHandlerSub;
     if (!document.getElementById('chartSubModal').classList.contains('show')) {
-        document.getElementById("chartSubModal").style.top = "calc(40% - 229px)";
+        document.getElementById("chartSubModal").style.top = "calc(35% - 229px)";
         document.getElementById("chartSubModal").style.left = "calc(50% - 378px)";
+        document.querySelector("#chartSubModal .modal-content").style.width = "756px";
+        document.querySelector("#chartSubModal .modal-content").style.height = "454px";
         $("#popup-chart-sub-btn").click();
     }
 }
@@ -1950,8 +2048,337 @@ function renderChartType(type, id){
     }
 }
 
-function renderChartData(type, id){
-    // TODO
+function renderChartData(data, id){
+    if (data.value === 'toxicity') {
+        if (id === "chart-modal-body") {
+            $(window).trigger('statistics_toxicity_tree');
+        } else if (id === "chart-sub-modal-body") {
+            $(window).trigger('statistics_toxicity_subtrees');
+        }
+    } else if(data.value === 'stance') {
+        if (id === "chart-modal-body") {
+            $(window).trigger('statistics_stance_tree');
+        } else if (id === "chart-sub-modal-body") {
+            $(window).trigger('statistics_stance_subtrees');
+        }
+    } else if(data.value === 'target') {
+        if (id === "chart-modal-body") {
+            $(window).trigger('statistics_target_tree');
+        } else if (id === "chart-sub-modal-body") {
+            $(window).trigger('statistics_target_subtrees');
+        }
+    } else if(data.value === 'features') {
+        if (id === "chart-modal-body") {
+            $(window).trigger('statistics_all_features_tree');
+        } else if (id === "chart-sub-modal-body") {
+            $(window).trigger('statistics_all_features_subtrees');
+        }
+    }
+}
+
+function statisticsToxicityTree(root, fromCircle = false) {
+
+    if (fromCircle) {
+        root = root.data;
+    }
+
+    var listStatistics = getStatisticsDataSubtree(root);
+
+    chartModalData = {
+      labels: [''],
+      datasets: [{
+        label: 'Not toxic',
+        data: [listStatistics.toxicity0],
+        backgroundColor: "#f7f7f7",
+      },
+      {
+        label: 'Mildly toxic',
+        data: [listStatistics.toxicity1],
+        backgroundColor: "#cccccc",
+      },
+      {
+        label: 'Toxic',
+        data: [listStatistics.toxicity2],
+        backgroundColor: "#737373",
+      },
+      {
+        label: 'Very toxic',
+        data: [listStatistics.toxicity3],
+        backgroundColor: "#000000",
+      }]
+    }
+
+    chartModalDataPie = {
+      labels: ['Not toxic', 'Mildly toxic', 'Toxic', 'Very toxic'],
+      datasets: [{
+        label: 'total',
+        data: [listStatistics.toxicity0, listStatistics.toxicity1, listStatistics.toxicity2, listStatistics.toxicity3],
+        backgroundColor: ["#f7f7f7", "#cccccc", "#737373", "#000000"],
+      }]
+    }
+    chartModalTitle = 'complete_graph';
+
+    createChartModal();
+}
+
+function statisticsStanceTree(root, fromCircle = false) {
+
+    if (fromCircle) {
+        root = root.data;
+    }
+
+    var listStatistics = getStatisticsDataSubtree(root);
+
+    chartModalData = {
+      labels: [''],
+      datasets: [{
+        label: 'Neutral stance',
+        data: [listStatistics.totalNeutralStance],
+        backgroundColor: "#2b2727",
+      },
+      {
+        label: 'Positive stance',
+        data: [listStatistics.totalPositiveStance],
+        backgroundColor: "#77dd77",
+      },
+      {
+        label: 'Negative stance',
+        data: [listStatistics.totalNegativeStance],
+        backgroundColor: "#ff6961",
+      },
+      {
+        label: 'Both Stances',
+        data: [listStatistics.totalBothStances],
+        backgroundColor: "#FFA500",
+      }]
+    }
+
+    chartModalDataPie = {
+      labels: ['Neutral stance', 'Positive stance', 'Negative stance', 'Both Stances'],
+      datasets: [{
+        label: 'total',
+        data: [listStatistics.totalNeutralStance, listStatistics.totalPositiveStance, listStatistics.totalNegativeStance,
+            listStatistics.totalBothStances],
+        backgroundColor: ["#2b2727", "#77dd77", "#ff6961", "#FFA500"],
+      }]
+    }
+    chartModalTitle = 'complete_graph';
+
+    createChartModal();
+}
+
+function statisticsTargetTree(root, fromCircle = false) {
+
+    if (fromCircle) {
+        root = root.data;
+    }
+
+    var listStatistics = getStatisticsDataSubtree(root);
+
+    chartModalData = {
+      labels: [''],
+      datasets: [{
+        label: 'Target group',
+        data: [listStatistics.totalTargGroup],
+        backgroundColor: "#bf7f81",
+      },
+      {
+        label: 'Target person',
+        data: [listStatistics.totalTargPerson],
+        backgroundColor: "#606984",
+      },
+      {
+        label: 'Stereotype',
+        data: [listStatistics.totalTargStereotype],
+        backgroundColor: "#798c8f",
+      },
+      {
+        label: 'None',
+        data: [listStatistics.totalTargNone],
+        backgroundColor: "#303133",
+      }]
+    }
+
+    chartModalDataPie = {
+      labels: ['Target group', 'Target person', 'Stereotype', 'None'],
+      datasets: [{
+        label: 'total',
+        data: [listStatistics.totalTargGroup, listStatistics.totalTargPerson, listStatistics.totalTargStereotype,
+            listStatistics.totalTargNone],
+        backgroundColor: ["#bf7f81", "#606984", "#798c8f", "#303133"],
+      }]
+    }
+    chartModalTitle = 'complete_graph';
+
+    createChartModal();
+}
+
+function statisticsToxicitySubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle = false, minOpacityValue = null) {
+
+    let children = root.children;
+    let listStatistics;
+    let labelsSubtrees = [];
+    let labelsSubtreesIDs = [];
+    let notToxicSubtrees = [];
+    let mildlyToxicSubtrees = [];
+    let toxicSubtrees = [];
+    let veryToxicSubtrees = [];
+
+    if (children) {
+        children.forEach(function (d) {
+            if (fromCircle) {
+                d = d.data;
+            }
+            labelsSubtrees.push('Subgraph ' + d.name);
+            labelsSubtreesIDs.push(d.name);
+            listStatistics = getStatisticsDataSubtree(d, true);
+            notToxicSubtrees.push(listStatistics.toxicity0 + (d.toxicity_level === 0));
+            mildlyToxicSubtrees.push(listStatistics.toxicity1 + (d.toxicity_level === 1));
+            toxicSubtrees.push(listStatistics.toxicity2 + (d.toxicity_level === 2));
+            veryToxicSubtrees.push(listStatistics.toxicity3 + (d.toxicity_level === 3));
+        });
+    }
+
+    chartSubModalData = {
+      labels: labelsSubtrees,
+      labelsIDs: labelsSubtreesIDs,
+      datasets: [{
+        label: 'Not toxic',
+        data: notToxicSubtrees,
+        backgroundColor: "#f7f7f7",
+      },
+      {
+        label: 'Mildly toxic',
+        data: mildlyToxicSubtrees,
+        backgroundColor: "#cccccc",
+      },
+      {
+        label: 'Toxic',
+        data: toxicSubtrees,
+        backgroundColor: "#737373",
+      },
+      {
+        label: 'Very toxic',
+        data: veryToxicSubtrees,
+        backgroundColor: "#000000",
+      }]
+    }
+
+    chartModalTitle = 'subgraphs';
+
+    createChartSubModal(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue);
+}
+
+function statisticsStanceSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle = false, minOpacityValue = null) {
+
+    let children = root.children;
+    let listStatistics;
+    let labelsSubtrees = [];
+    let labelsSubtreesIDs = [];
+    let neutralStanceSubtrees = [];
+    let positiveStanceSubtrees = [];
+    let negativeStanceSubtrees = [];
+    let bothStancesSubtrees = [];
+
+    if (children) {
+        children.forEach(function (d) {
+            if (fromCircle) {
+                d = d.data;
+            }
+            labelsSubtrees.push('Subgraph ' + d.name);
+            labelsSubtreesIDs.push(d.name);
+            listStatistics = getStatisticsDataSubtree(d, true);
+            neutralStanceSubtrees.push(listStatistics.totalNeutralStance + (!d.positive_stance && !d.negative_stance));
+            positiveStanceSubtrees.push(listStatistics.totalPositiveStance + d.positive_stance);
+            negativeStanceSubtrees.push(listStatistics.totalNegativeStance + d.negative_stance);
+            bothStancesSubtrees.push(listStatistics.totalBothStances + (d.negative_stance && d.positive_stance));
+        });
+    }
+
+    chartSubModalData = {
+      labels: labelsSubtrees,
+      labelsIDs: labelsSubtreesIDs,
+      datasets: [{
+        label: 'Neutral stance',
+        data: neutralStanceSubtrees,
+        backgroundColor: "#2b2727",
+      },
+      {
+        label: 'Positive stance',
+        data: positiveStanceSubtrees,
+        backgroundColor: "#77dd77",
+      },
+      {
+        label: 'Negative stance',
+        data: negativeStanceSubtrees,
+        backgroundColor: "#ff6961",
+      },
+      {
+        label: 'Both Stances',
+        data: bothStancesSubtrees,
+        backgroundColor: "#FFA500",
+      }]
+    }
+
+    chartModalTitle = 'subgraphs';
+
+    createChartSubModal(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue);
+}
+
+function statisticsTargetSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle = false, minOpacityValue = null) {
+
+    let children = root.children;
+    let listStatistics;
+    let labelsSubtrees = [];
+    let labelsSubtreesIDs = [];
+    let targGroupSubtrees = [];
+    let targPersonSubtrees = [];
+    let targStereotypeSubtrees = [];
+    let targNoneSubtrees = [];
+
+    if (children) {
+        children.forEach(function (d) {
+            if (fromCircle) {
+                d = d.data;
+            }
+            labelsSubtrees.push('Subgraph ' + d.name);
+            labelsSubtreesIDs.push(d.name);
+            listStatistics = getStatisticsDataSubtree(d, true);
+            targGroupSubtrees.push(listStatistics.totalTargGroup + d.target_group);
+            targPersonSubtrees.push(listStatistics.totalTargPerson + d.target_person);
+            targStereotypeSubtrees.push(listStatistics.totalTargStereotype + d.stereotype);
+            targNoneSubtrees.push(listStatistics.totalTargNone + (!d.target_person && !d.target_group && !d.stereotype));
+        });
+    }
+
+    chartSubModalData = {
+      labels: labelsSubtrees,
+      labelsIDs: labelsSubtreesIDs,
+      datasets: [{
+        label: 'Target group',
+        data: targGroupSubtrees,
+        backgroundColor: "#bf7f81",
+      },
+      {
+        label: 'Target person',
+        data: targPersonSubtrees,
+        backgroundColor: "#606984",
+      },
+      {
+        label: 'Stereotype',
+        data: targStereotypeSubtrees,
+        backgroundColor: "#798c8f",
+      },
+      {
+        label: 'None',
+        data: targNoneSubtrees,
+        backgroundColor: "#303133",
+      }]
+    }
+
+    chartModalTitle = 'subgraphs';
+
+    createChartSubModal(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue);
 }
 
 function statisticsAllFeaturesTree(root, fromCircle = false) {
@@ -1960,7 +2387,7 @@ function statisticsAllFeaturesTree(root, fromCircle = false) {
         root = root.data;
     }
 
-    var listStatistics = getFeaturesSubtreeValues(root);
+    var listStatistics = getStatisticsDataSubtree(root);
 
     chartModalData = {
       labels: [''],
@@ -2043,15 +2470,15 @@ function statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBac
             }
             labelsSubtrees.push('Subgraph ' + d.name);
             labelsSubtreesIDs.push(d.name);
-            listStatistics = getFeaturesSubtreeValues(d, true);
-            constructivenessSubtrees.push(d.highlighted ? listStatistics.totalConstructiveness + d.constructiveness : listStatistics.totalConstructiveness);
-            argumentationSubtrees.push(d.highlighted ? listStatistics.totalArgumentation + d.argumentation : listStatistics.totalArgumentation);
-            sarcasmSubtrees.push(d.highlighted ? listStatistics.totalSarcasm + d.sarcasm : listStatistics.totalSarcasm);
-            mockerySubtrees.push(d.highlighted ? listStatistics.totalMockery + d.mockery : listStatistics.totalMockery);
-            intoleranceSubtrees.push(d.highlighted ? listStatistics.totalIntolerance + d.intolerance : listStatistics.totalIntolerance);
-            improperLanguageSubtrees.push(d.highlighted ? listStatistics.totalImproper_language + d.improper_language : listStatistics.totalImproper_language);
-            insultSubtrees.push(d.highlighted ? listStatistics.totalInsult + d.insult : listStatistics.totalInsult);
-            aggressivenessSubtrees.push(d.highlighted ? listStatistics.totalAggressiveness + d.aggressiveness : listStatistics.totalAggressiveness);
+            listStatistics = getStatisticsDataSubtree(d, true);
+            constructivenessSubtrees.push(listStatistics.totalConstructiveness + d.constructiveness);
+            argumentationSubtrees.push(listStatistics.totalArgumentation + d.argumentation);
+            sarcasmSubtrees.push(listStatistics.totalSarcasm + d.sarcasm );
+            mockerySubtrees.push(listStatistics.totalMockery + d.mockery);
+            intoleranceSubtrees.push(listStatistics.totalIntolerance + d.intolerance);
+            improperLanguageSubtrees.push(listStatistics.totalImproper_language + d.improper_language);
+            insultSubtrees.push(listStatistics.totalInsult + d.insult);
+            aggressivenessSubtrees.push(listStatistics.totalAggressiveness + d.aggressiveness);
         });
     }
 
@@ -2106,18 +2533,45 @@ function statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBac
 }
 
 function clickSubtreeChartHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link, nodeName, fromCircle, minOpacityValue) {
-    let rootNode = getClickedSubtreeRootNode(root, nodeName, fromCircle);
+
+    let rootNode;
+    if (highlightedSubgraph === nodeName) {
+        highlightedSubgraph = null;
+        rootNode = root;
+    } else {
+        highlightedSubgraph = nodeName;
+        rootNode = getClickedSubtreeRootNode(root, nodeName, fromCircle);
+    }
     let clickedSubtreeNodesPath = [];
 
     getNodesDescendants(rootNode, clickedSubtreeNodesPath);
 
     if (!fromCircle) {
-        highlightThreadPopup(nodes, root, opacityValue, clickedSubtreeNodesPath, node, link, false);
+        highlightThreadPopup(nodes, root, opacityValue, clickedSubtreeNodesPath, node, link, false, true);
     } else {
-        highlightThreadPopupCircle(nodes, root, opacityValue, minOpacityValue, clickedSubtreeNodesPath, node, false);
+        highlightThreadPopupCircle(nodes, root, opacityValue, minOpacityValue, clickedSubtreeNodesPath, node, false, true);
     }
 
     if (static_values_checked) {
         statisticBackground.html(writeStatisticText(root));
+    }
+}
+
+function statisticsDataChangedTree (root, fromCircle = false, isSubgraphByID = false) {
+    if (!isSubgraphByID) {
+        highlightedSubgraph = null;
+    }
+
+    if (Chart.getChart('chart-modal-body')) {
+        let selectDataValue = document.getElementById('select-chart-data-modal').value;
+        if (selectDataValue === 'features') {
+            statisticsAllFeaturesTree(root, fromCircle);
+        } else if (selectDataValue === 'toxicity') {
+            statisticsToxicityTree(root, fromCircle);
+        } else if (selectDataValue === 'stance') {
+            statisticsStanceTree(root, fromCircle);
+        } else if (selectDataValue === 'target') {
+            statisticsTargetTree(root, fromCircle);
+        }
     }
 }

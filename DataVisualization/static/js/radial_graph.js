@@ -2717,6 +2717,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
             });
         }
+        statisticsDataChangedTree(root);
     }
 
     function highlightNodesByPropertyAND(node, link) {
@@ -2745,6 +2746,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
             });
         }
+        statisticsDataChangedTree(root);
     }
 
     /*END section */
@@ -2784,6 +2786,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .on('click', function (d) {
                 click(d);
                 if (!d3.event.defaultPrevented){
+                    statisticsDataChangedTree(root);
                     if (document.querySelector("#tree-container div.my-statistic").style.visibility === "visible") {
                         statisticBackground.html(writeStatisticText(root));
                     }
@@ -3156,6 +3159,48 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         $(window).off("statistics_all_features_subtrees");
         $(window).on("statistics_all_features_subtrees", function () {
             statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link);
+        });
+
+        // Gets the statistics of the toxicity of the graph shown in the main window,
+        // and displays them in a modal as a chart
+        $(window).off("statistics_toxicity_tree");
+        $(window).on("statistics_toxicity_tree", function () {
+            statisticsToxicityTree(root);
+        });
+
+        // Gets the statistics of the toxicity of all the subgraphs displayed in the main window,
+        // and displays them in a modal as a chart, for comparison purposes
+        $(window).off("statistics_toxicity_subtrees");
+        $(window).on("statistics_toxicity_subtrees", function () {
+            statisticsToxicitySubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link);
+        });
+
+        // Gets the statistics of the stance of the graph shown in the main window,
+        // and displays them in a modal as a chart
+        $(window).off("statistics_stance_tree");
+        $(window).on("statistics_stance_tree", function () {
+            statisticsStanceTree(root);
+        });
+
+        // Gets the statistics of the stance of all the subgraphs displayed in the main window,
+        // and displays them in a modal as a chart, for comparison purposes
+        $(window).off("statistics_stance_subtrees");
+        $(window).on("statistics_stance_subtrees", function () {
+            statisticsStanceSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link);
+        });
+
+        // Gets the statistics of the target of the graph shown in the main window,
+        // and displays them in a modal as a chart
+        $(window).off("statistics_target_tree");
+        $(window).on("statistics_target_tree", function () {
+            statisticsTargetTree(root);
+        });
+
+        // Gets the statistics of the target of all the subgraphs displayed in the main window,
+        // and displays them in a modal as a chart, for comparison purposes
+        $(window).off("statistics_target_subtrees");
+        $(window).on("statistics_target_subtrees", function () {
+            statisticsTargetSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link);
         });
 
         if (!first_call) {

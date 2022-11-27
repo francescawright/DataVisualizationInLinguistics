@@ -39,6 +39,33 @@
 
 {% load static %}
 
+<!-- Chart Modal Subgraphs -->
+<div class="modal fade" id="chartSubModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="chartModalSubLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"></h5>
+            <select id="select-chart-sub-data-modal" class="form-control chart-modal-select" onchange="renderChartData(this, 'chart-sub-modal-body')">
+                <option value="toxicity">Toxicity</option>
+                <option value="stance">Stance</option>
+                <option value="target">Target</option>
+                <option selected="selected" value="features">Features</option>
+            </select>
+            <select id="select-chart-sub-type-modal" class="form-control chart-modal-select" onchange="renderChartType(this, 'chart-sub-modal-body')">
+                <option selected="selected" value="bar">Bar Chart</option>
+                <option value="horizontal_bar">Horizontal Bar</option>
+            </select>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+      <div class="modal-body" style="position: relative;">
+            <canvas id="chart-sub-modal-body"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Chart Modal -->
 <div class="modal fade" id="chartModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="chartModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -62,33 +89,6 @@
         </div>
       <div class="modal-body" style="position: relative;">
             <canvas id="chart-modal-body"></canvas>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Chart Modal Subgraphs -->
-<div class="modal fade" id="chartSubModal" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="chartModalSubLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title"></h5>
-            <select id="select-chart-sub-data-modal" class="form-control chart-modal-select" onchange="renderChartData(this, 'chart-sub-modal-body')">
-                <option value="toxicity">Toxicity</option>
-                <option value="stance">Stance</option>
-                <option value="target">Target</option>
-                <option selected="selected" value="features">Features</option>
-            </select>
-            <select id="select-chart-sub-type-modal" class="form-control chart-modal-select" onchange="renderChartType(this, 'chart-sub-modal-body')">
-                <option selected="selected" value="bar">Bar Chart</option>
-                <option value="horizontal_bar">Horizontal Bar</option>
-            </select>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-      <div class="modal-body" style="position: relative;">
-            <canvas id="chart-sub-modal-body"></canvas>
       </div>
     </div>
   </div>

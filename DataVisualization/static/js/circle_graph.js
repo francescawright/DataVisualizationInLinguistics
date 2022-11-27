@@ -335,6 +335,7 @@ function highlightNodesByPropertyOR(node, enabledHighlight) {
         return result;
     }).style("opacity", maxOpacityValue);
 
+    statisticsDataChangedTree(root, true);
 }
 
 function highlightNodesByPropertyAND(node, enabledHighlight) {
@@ -357,6 +358,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
         return result;
     }).style("opacity", maxOpacityValue);
 
+    statisticsDataChangedTree(root, true);
 }
 
     try {
@@ -559,7 +561,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
 
         injectIntentConversation(textMsg);
 
-        highlightWidestLevelsCircle(nodes, maxOpacityValue, minOpacityValue, node, widestLevels[0]);
+        highlightWidestLevelsCircle(nodes, maxOpacityValue, minOpacityValue, node, widestLevels[0], root);
 
         if (static_values_checked) {
             statisticBackground.html(writeStatisticText(root, true));
@@ -594,7 +596,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
             highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, largestNodesPath, node);
 
             if (static_values_checked) {
-                statisticBackground.html(writeStatisticText(root));
+                statisticBackground.html(writeStatisticText(root, true));
             }
         }
     });
@@ -626,7 +628,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
                 highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, mostToxicNodesPath[0], node);
 
                 if (static_values_checked) {
-                    statisticBackground.html(writeStatisticText(root));
+                    statisticBackground.html(writeStatisticText(root, true));
                 }
             }
         }
@@ -658,7 +660,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
             highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, mostToxicNodesPath, node);
 
             if (static_values_checked) {
-                statisticBackground.html(writeStatisticText(root));
+                statisticBackground.html(writeStatisticText(root, true));
             }
         }
     });
@@ -675,6 +677,48 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
     $(window).off("statistics_all_features_subtrees");
     $(window).on("statistics_all_features_subtrees", function () {
         statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBackground, nodes, maxOpacityValue, node, null, true, minOpacityValue);
+    });
+
+    // Gets the statistics of the toxicity of the graph shown in the main window,
+    // and displays them in a modal as a chart
+    $(window).off("statistics_toxicity_tree");
+    $(window).on("statistics_toxicity_tree", function () {
+        statisticsToxicityTree(root, true);
+    });
+
+    // Gets the statistics of the toxicity of all the subgraphs displayed in the main window,
+    // and displays them in a modal as a chart, for comparison purposes
+    $(window).off("statistics_toxicity_subtrees");
+    $(window).on("statistics_toxicity_subtrees", function () {
+        statisticsToxicitySubtrees(root, static_values_checked, statisticBackground, nodes, maxOpacityValue, node, null, true, minOpacityValue);
+    });
+
+    // Gets the statistics of the stance of the graph shown in the main window,
+    // and displays them in a modal as a chart
+    $(window).off("statistics_stance_tree");
+    $(window).on("statistics_stance_tree", function () {
+        statisticsStanceTree(root, true);
+    });
+
+    // Gets the statistics of the stance of all the subgraphs displayed in the main window,
+    // and displays them in a modal as a chart, for comparison purposes
+    $(window).off("statistics_stance_subtrees");
+    $(window).on("statistics_stance_subtrees", function () {
+        statisticsStanceSubtrees(root, static_values_checked, statisticBackground, nodes, maxOpacityValue, node, null, true, minOpacityValue);
+    });
+
+    // Gets the statistics of the target of the graph shown in the main window,
+    // and displays them in a modal as a chart
+    $(window).off("statistics_target_tree");
+    $(window).on("statistics_target_tree", function () {
+        statisticsTargetTree(root, true);
+    });
+
+    // Gets the statistics of the target of all the subgraphs displayed in the main window,
+    // and displays them in a modal as a chart, for comparison purposes
+    $(window).off("statistics_target_subtrees");
+    $(window).on("statistics_target_subtrees", function () {
+        statisticsTargetSubtrees(root, static_values_checked, statisticBackground, nodes, maxOpacityValue, node, null, true, minOpacityValue);
     });
 
     // If AND is selected, uncheck the OR and highlight by property AND
