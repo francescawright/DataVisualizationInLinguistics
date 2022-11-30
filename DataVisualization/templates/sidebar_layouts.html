@@ -54,8 +54,6 @@
 
     .devtools-span-input {
         width: 100%;
-        width: -moz-available;
-        width: -webkit-fill-available;
         width: fill-available;
         margin: auto;
     }
@@ -140,12 +138,8 @@
     .overlay-popup {
         background-color: #eff4fc;
         height: 100%;
-        height: -moz-available;          /* WebKit-based browsers will ignore this. */
-        height: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
         height: fill-available;
         width: 100%;
-        width: -moz-available;          /* WebKit-based browsers will ignore this. */
-        width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
         width: fill-available;
         border-radius: 0.5rem 0.5rem 0 0;
     }
@@ -1348,7 +1342,8 @@
                             <form name="input-N"
                                   autocomplete="off"
                                   style="display: flex;"
-                                  class="btn-form">
+                                  class="btn-form"
+                                  onsubmit="return preventSubmit(event)">
                                 <b style="float: left; margin: auto;">N:</b>
                                 <span class="form-span devtools-span-input">
                                     <input type="number"
@@ -1370,7 +1365,8 @@
                             <form name="input-L"
                                   class="btn-form"
                                   style="display: flex;"
-                                  autocomplete="off">
+                                  autocomplete="off"
+                                  onsubmit="return preventSubmit(event)">
                                 <b style="float: left; margin: auto;">L:</b>
                                 <span class="form-span devtools-span-input">
                                     <input type="number"
@@ -1392,7 +1388,8 @@
                             <form name="input-GFcomp"
                                   class="btn-form"
                                   style="display: flex;"
-                                  autocomplete="off">
+                                  autocomplete="off"
+                                  onsubmit="return preventSubmit(event)">
                                 <b style="float: left; margin: auto;">GFc:</b>
                                 <span class="form-span devtools-span-input">
                                     <input type="number"
@@ -1415,7 +1412,8 @@
                             <form name="input-GFelon"
                                   class="btn-form"
                                   style="display: flex;"
-                                  autocomplete="off">
+                                  autocomplete="off"
+                                  onsubmit="return preventSubmit(event)">
                                 <b style="float: left; margin: auto;">GFe:</b>
                                 <span class="form-span devtools-span-input">
                                     <input type="number"
@@ -1438,7 +1436,8 @@
                                 <form name="input-d"
                                       class="btn-form"
                                       style="display: flex;"
-                                      autocomplete="off">
+                                      autocomplete="off"
+                                      onsubmit="return preventSubmit(event)">
                                     <b style="float: left; margin: auto;">d:</b>
                                     <span class="form-span devtools-span-input">
                                         <input type="number"
@@ -1460,7 +1459,8 @@
                                 <form name="input-tol"
                                       class="btn-form"
                                       style="display: flex;"
-                                      autocomplete="off">
+                                      autocomplete="off"
+                                      onsubmit="return preventSubmit(event)">
                                     <b style="float: left; margin: auto;">tol:</b>
                                     <span class="form-span devtools-span-input">
                                         <input type="number"
@@ -1580,6 +1580,10 @@
 <script src="{% static 'js/popup.js' %}"></script>
 
 <script>
+    function preventSubmit(e){
+        e.preventDefault();
+        return false;
+    }
     function featuresChart() {
         if (!document.getElementById('chartModal').classList.contains('show')) {
             document.getElementById('select-chart-type-modal').value = 'bar';

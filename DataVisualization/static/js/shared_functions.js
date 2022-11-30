@@ -10,8 +10,18 @@ var datasetPopup, hierarchyNamePopup, layoutNamePopup, hierarchyNameMain, layout
 var chartModalData, chartSubModalData, chartModalDataPie, chartModalTitle, configBar, configBarSub, configHorizontalBar,
     configHorizontalBarSub, configPie, treeInfoChart, subtreesInfoChart;
 
-var featuresChartDict = {"Constructiveness":"constructiveness", "Argument":"argumentation", "Sarcasm":"sarcasm", "Mockery":"mockery",
-            "Intolerance":"intolerance", "Improper":"improper_language", "Insult":"insult", "Aggressiveness":"aggressiveness"};
+var featuresChartDict = {"Constructive":"constructiveness", "Argument":"argumentation", "Sarcasm":"sarcasm", "Mockery":"mockery",
+            "Intolerance":"intolerance", "Improper":"improper_language", "Insult":"insult", "Aggressive":"aggressiveness",
+            "Group":"target-group","Person":"target-person","Stereotype":"target-stereotype"};
+
+var featuresChartSubDict = {"Constructive":"highlight-features-constructiveness", "Argument":"highlight-features-argumentation",
+            "Sarcasm":"highlight-features-sarcasm", "Mockery":"highlight-features-mockery",
+            "Intolerance":"highlight-features-intolerance", "Improper":"highlight-features-improper-language",
+            "Insult":"highlight-features-insult", "Aggressive":"highlight-features-aggressiveness",
+            "Group":"highlight-target-group","Person":"highlight-target-person","Stereotype":"highlight-target-stereotype",
+            "Neutral":"highlight-stance-neutral","Positive":"highlight-stance-positive","Negative":"highlight-stance-negative",
+            "Not toxic":"highlight-toxicity-0","Mildly toxic":"highlight-toxicity-1","Toxic":"highlight-toxicity-2",
+            "Very toxic":"highlight-toxicity-3",};
 
 // Variable to share the name of the main window graph between multiple files
 var mainWindowGraphName;
@@ -1823,6 +1833,7 @@ function createChartModal() {
         type: 'pie',
         data: chartModalDataPie,
         options: {
+          maintainAspectRatio: false,
           plugins: {
               legend: {
                   position: 'right',
@@ -1838,6 +1849,7 @@ function createChartModal() {
         type: 'bar',
         data: chartModalData,
         options: {
+          maintainAspectRatio: false,
           scales: {
               y: {
                   beginAtZero: true
@@ -1858,7 +1870,8 @@ function createChartModal() {
         type: 'bar',
         data: chartModalData,
         options: {
-            indexAxis: 'y',
+          maintainAspectRatio: false,
+          indexAxis: 'y',
           scales: {
               y: {
                   beginAtZero: true
@@ -1890,18 +1903,20 @@ function createChartModal() {
             var label = treeInfoChart.data.labels[firstPoint.index];
             if (!Object.keys(featuresChartDict).includes(label)) {
                 label = treeInfoChart.data.datasets[firstPoint.datasetIndex].label;
+                if (!Object.keys(featuresChartDict).includes(label)) {
+                    return;
+                }
             }
-            // var value = treeInfoChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
             document.getElementById(featuresChartDict[label]).click();
         }
     }
 
     canvas.onclick = clickHandler;
     if (!document.getElementById('chartModal').classList.contains('show')) {
-        document.getElementById("chartModal").style.top = "calc(40% - 229px)";
-        document.getElementById("chartModal").style.left = "calc(50% - 378px)";
-        document.querySelector("#chartModal .modal-content").style.width = "756px";
-        document.querySelector("#chartModal .modal-content").style.height = "454px";
+        document.getElementById("chartModal").style.top = "calc(40% - 152px)";
+        document.getElementById("chartModal").style.left = "calc(50% - 262px)";
+        document.querySelector("#chartModal .modal-content").style.width = "525px";
+        document.querySelector("#chartModal .modal-content").style.height = "305px";
         $("#popup-chart-btn").click();
     }
 }
@@ -1910,7 +1925,7 @@ function createChartSubModal(root, static_values_checked, statisticBackground, n
     let chart = document.getElementById('chart-sub-modal-body').getContext('2d');
     document.querySelector("#chartSubModal .modal-title").innerHTML = "Statistics of " + mainWindowGraphName + " subgraphs";
 
-    let chartType = document.getElementById('select-chart-sub-type-modal').value;
+    let chartType = document.getElementById('select-chart-sub-type-modal');
     if (Chart.getChart('chart-sub-modal-body')) {
         Chart.getChart('chart-sub-modal-body').destroy();
     }
@@ -1920,6 +1935,7 @@ function createChartSubModal(root, static_values_checked, statisticBackground, n
         type: 'bar',
         data: chartSubModalData,
         options: {
+          maintainAspectRatio: false,
           scales: {
               y: {
                   beginAtZero: true
@@ -1927,7 +1943,8 @@ function createChartSubModal(root, static_values_checked, statisticBackground, n
           },
           plugins: {
               legend: {
-                  position: 'right',
+                  position: 'left',
+                  align: 'center',
               },
               title: {
                   display: false,
@@ -1940,15 +1957,20 @@ function createChartSubModal(root, static_values_checked, statisticBackground, n
         type: 'bar',
         data: chartSubModalData,
         options: {
-            indexAxis: 'y',
+          maintainAspectRatio: false,
+          indexAxis: 'y',
           scales: {
               y: {
-                  beginAtZero: true
+                  beginAtZero: true,
+              },
+              x: {
+                  position: 'top',
               }
           },
           plugins: {
               legend: {
-                  position: 'right',
+                  position: 'top',
+                  align: 'center',
               },
               title: {
                   display: false,
@@ -1957,10 +1979,34 @@ function createChartSubModal(root, static_values_checked, statisticBackground, n
         }
     }
 
-    if (chartType === 'bar') {
+    if (chartType.value === 'bar') {
         subtreesInfoChart = new Chart(chart, configBarSub);
-    } else if (chartType === 'horizontal_bar') {
+        let chartBody = document.querySelector("#chartSubModal .chart-sub-body");
+        let modalBody = document.querySelector("#chartSubModal .modal-body");
+        let totalLabels = subtreesInfoChart.data.labels.length;
+        if (totalLabels > 4) {
+            let newWidth = 509 + ((totalLabels - 4) * 75);
+            chartBody.style.width = `${newWidth}px`;
+        }
+        chartBody.style.height = '100%';
+        modalBody.style.overflowY = "visible";
+        modalBody.style.overflowX = "scroll";
+        modalBody.style.marginRight = "1rem";
+        modalBody.style.marginBottom = "0";
+    } else if (chartType.value === 'horizontal_bar') {
         subtreesInfoChart = new Chart(chart, configHorizontalBarSub);
+        let chartBody = document.querySelector("#chartSubModal .chart-sub-body");
+        let modalBody = document.querySelector("#chartSubModal .modal-body");
+        let totalLabels = subtreesInfoChart.data.labels.length;
+        if (totalLabels > 4) {
+            let newHeight = 218 + ((totalLabels - 4) * 42);
+            chartBody.style.height = `${newHeight}px`;
+        }
+        chartBody.style.width = '100%';
+        modalBody.style.overflowX = "visible";
+        modalBody.style.overflowY = "scroll";
+        modalBody.style.marginBottom = "1rem";
+        modalBody.style.marginRight = "0";
     }
 
     function clickHandlerSub(evt) {
@@ -1968,11 +2014,13 @@ function createChartSubModal(root, static_values_checked, statisticBackground, n
         if (points.length) {
             const firstPoint = points[0];
             var label = subtreesInfoChart.data.labels[firstPoint.index];
-            if (!Object.keys(featuresChartDict).includes(label)) {
+            if (!Object.keys(featuresChartSubDict).includes(label)) {
                 label = subtreesInfoChart.data.datasets[firstPoint.datasetIndex].label;
+                if (!Object.keys(featuresChartSubDict).includes(label)) {
+                    return;
+                }
             }
-            // var value = subtreesInfoChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
-            document.getElementById(featuresChartDict[label]).click();
+            document.getElementById(featuresChartSubDict[label]).click();
         }
         let type = document.getElementById('select-chart-sub-type-modal');
         if(type.value === 'bar') {
@@ -2018,10 +2066,10 @@ function createChartSubModal(root, static_values_checked, statisticBackground, n
 
     canvas.onclick = clickHandlerSub;
     if (!document.getElementById('chartSubModal').classList.contains('show')) {
-        document.getElementById("chartSubModal").style.top = "calc(35% - 229px)";
-        document.getElementById("chartSubModal").style.left = "calc(50% - 378px)";
-        document.querySelector("#chartSubModal .modal-content").style.width = "756px";
-        document.querySelector("#chartSubModal .modal-content").style.height = "454px";
+        document.getElementById("chartSubModal").style.top = "calc(35% - 152px)";
+        document.getElementById("chartSubModal").style.left = "calc(50% - 262px)";
+        document.querySelector("#chartSubModal .modal-content").style.width = "525px";
+        document.querySelector("#chartSubModal .modal-content").style.height = "305px";
         $("#popup-chart-sub-btn").click();
     }
 }
@@ -2038,12 +2086,36 @@ function renderChartType(type, id){
             treeInfoChart = new Chart(chart, configBar);
         } else if (id === "chart-sub-modal-body") {
             subtreesInfoChart = new Chart(chart, configBarSub);
+            let chartBody = document.querySelector("#chartSubModal .chart-sub-body");
+            let modalBody = document.querySelector("#chartSubModal .modal-body");
+            let totalLabels = subtreesInfoChart.data.labels.length;
+            if (totalLabels > 4) {
+                let newWidth = 509 + ((totalLabels - 4) * 75);
+                chartBody.style.width = `${newWidth}px`;
+            }
+            chartBody.style.height = '100%';
+            modalBody.style.overflowY = "visible";
+            modalBody.style.overflowX = "scroll";
+            modalBody.style.marginRight = "1rem";
+            modalBody.style.marginBottom = "0";
         }
     } else if (type.value === 'horizontal_bar') {
         if (id === "chart-modal-body") {
             treeInfoChart = new Chart(chart, configHorizontalBar);
         } else if (id === "chart-sub-modal-body") {
             subtreesInfoChart = new Chart(chart, configHorizontalBarSub);
+            let chartBody = document.querySelector("#chartSubModal .chart-sub-body");
+            let modalBody = document.querySelector("#chartSubModal .modal-body");
+            let totalLabels = subtreesInfoChart.data.labels.length;
+            if (totalLabels > 4) {
+                let newHeight = 218 + ((totalLabels - 4) * 42);
+                chartBody.style.height = `${newHeight}px`;
+            }
+            chartBody.style.width = '100%';
+            modalBody.style.overflowX = "visible";
+            modalBody.style.overflowY = "scroll";
+            modalBody.style.marginBottom = "1rem";
+            modalBody.style.marginRight = "0";
         }
     }
 }
@@ -2089,7 +2161,7 @@ function statisticsToxicityTree(root, fromCircle = false) {
       datasets: [{
         label: 'Not toxic',
         data: [listStatistics.toxicity0],
-        backgroundColor: "#f7f7f7",
+        backgroundColor: "#F0F0F0",
       },
       {
         label: 'Mildly toxic',
@@ -2113,7 +2185,7 @@ function statisticsToxicityTree(root, fromCircle = false) {
       datasets: [{
         label: 'total',
         data: [listStatistics.toxicity0, listStatistics.toxicity1, listStatistics.toxicity2, listStatistics.toxicity3],
-        backgroundColor: ["#f7f7f7", "#cccccc", "#737373", "#000000"],
+        backgroundColor: ["#F0F0F0", "#cccccc", "#737373", "#000000"],
       }]
     }
     chartModalTitle = 'complete_graph';
@@ -2132,29 +2204,29 @@ function statisticsStanceTree(root, fromCircle = false) {
     chartModalData = {
       labels: [''],
       datasets: [{
-        label: 'Neutral stance',
+        label: 'Neutral',
         data: [listStatistics.totalNeutralStance],
         backgroundColor: "#2b2727",
       },
       {
-        label: 'Positive stance',
+        label: 'Positive',
         data: [listStatistics.totalPositiveStance],
         backgroundColor: "#77dd77",
       },
       {
-        label: 'Negative stance',
+        label: 'Negative',
         data: [listStatistics.totalNegativeStance],
         backgroundColor: "#ff6961",
       },
       {
-        label: 'Both Stances',
+        label: 'Both',
         data: [listStatistics.totalBothStances],
         backgroundColor: "#FFA500",
       }]
     }
 
     chartModalDataPie = {
-      labels: ['Neutral stance', 'Positive stance', 'Negative stance', 'Both Stances'],
+      labels: ['Neutral', 'Positive', 'Negative', 'Both'],
       datasets: [{
         label: 'total',
         data: [listStatistics.totalNeutralStance, listStatistics.totalPositiveStance, listStatistics.totalNegativeStance,
@@ -2178,12 +2250,12 @@ function statisticsTargetTree(root, fromCircle = false) {
     chartModalData = {
       labels: [''],
       datasets: [{
-        label: 'Target group',
+        label: 'Group',
         data: [listStatistics.totalTargGroup],
         backgroundColor: "#bf7f81",
       },
       {
-        label: 'Target person',
+        label: 'Person',
         data: [listStatistics.totalTargPerson],
         backgroundColor: "#606984",
       },
@@ -2200,7 +2272,7 @@ function statisticsTargetTree(root, fromCircle = false) {
     }
 
     chartModalDataPie = {
-      labels: ['Target group', 'Target person', 'Stereotype', 'None'],
+      labels: ['Group', 'Person', 'Stereotype', 'None'],
       datasets: [{
         label: 'total',
         data: [listStatistics.totalTargGroup, listStatistics.totalTargPerson, listStatistics.totalTargStereotype,
@@ -2245,7 +2317,7 @@ function statisticsToxicitySubtrees(root, static_values_checked, statisticBackgr
       datasets: [{
         label: 'Not toxic',
         data: notToxicSubtrees,
-        backgroundColor: "#f7f7f7",
+        backgroundColor: "#F0F0F0",
       },
       {
         label: 'Mildly toxic',
@@ -2299,22 +2371,22 @@ function statisticsStanceSubtrees(root, static_values_checked, statisticBackgrou
       labels: labelsSubtrees,
       labelsIDs: labelsSubtreesIDs,
       datasets: [{
-        label: 'Neutral stance',
+        label: 'Neutral',
         data: neutralStanceSubtrees,
         backgroundColor: "#2b2727",
       },
       {
-        label: 'Positive stance',
+        label: 'Positive',
         data: positiveStanceSubtrees,
         backgroundColor: "#77dd77",
       },
       {
-        label: 'Negative stance',
+        label: 'Negative',
         data: negativeStanceSubtrees,
         backgroundColor: "#ff6961",
       },
       {
-        label: 'Both Stances',
+        label: 'Both',
         data: bothStancesSubtrees,
         backgroundColor: "#FFA500",
       }]
@@ -2355,12 +2427,12 @@ function statisticsTargetSubtrees(root, static_values_checked, statisticBackgrou
       labels: labelsSubtrees,
       labelsIDs: labelsSubtreesIDs,
       datasets: [{
-        label: 'Target group',
+        label: 'Group',
         data: targGroupSubtrees,
         backgroundColor: "#bf7f81",
       },
       {
-        label: 'Target person',
+        label: 'Person',
         data: targPersonSubtrees,
         backgroundColor: "#606984",
       },
@@ -2392,7 +2464,7 @@ function statisticsAllFeaturesTree(root, fromCircle = false) {
     chartModalData = {
       labels: [''],
       datasets: [{
-        label: 'Constructiveness',
+        label: 'Constructive',
         data: [listStatistics.totalConstructiveness],
         backgroundColor: "#90F6B2",
       },
@@ -2427,14 +2499,14 @@ function statisticsAllFeaturesTree(root, fromCircle = false) {
         backgroundColor: "#A313B3",
       },
       {
-        label: 'Aggressiveness',
+        label: 'Aggressive',
         data: [listStatistics.totalAggressiveness],
         backgroundColor: "#5E1566",
       }]
     }
 
     chartModalDataPie = {
-      labels: ['Constructiveness', 'Argument', 'Sarcasm', 'Mockery', 'Intolerance', 'Improper', 'Insult', 'Aggressiveness'],
+      labels: ['Constructive', 'Argument', 'Sarcasm', 'Mockery', 'Intolerance', 'Improper', 'Insult', 'Aggressive'],
       datasets: [{
         label: 'total',
         data: [listStatistics.totalConstructiveness, listStatistics.totalArgumentation, listStatistics.totalSarcasm,
@@ -2486,7 +2558,7 @@ function statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBac
       labels: labelsSubtrees,
       labelsIDs: labelsSubtreesIDs,
       datasets: [{
-        label: 'Constructiveness',
+        label: 'Constructive',
         data: constructivenessSubtrees,
         backgroundColor: "#90F6B2",
       },
@@ -2521,7 +2593,7 @@ function statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBac
         backgroundColor: "#A313B3",
       },
       {
-        label: 'Aggressiveness',
+        label: 'Aggressive',
         data: aggressivenessSubtrees,
         backgroundColor: "#5E1566",
       }]
