@@ -91,6 +91,14 @@ intents:
   - target_person_loT
   - statistics_features_tree
   - statistics_features_subtrees
+  - most_tagged_features
+  - help_glyphs
+  - help_layouts
+  - help_highlight
+  - help_summary
+  - help_main_graph_barchart
+  - functions
+  - help_subtree_barchart
 
 actions:
   - action_check_session_login
@@ -186,6 +194,7 @@ responses:
 
   utter_user_affirm_help:
     - text: "What can I do for you?"
+
 
   utter_user_deny_help:
     - text: "Okay, don't hesitate to ask me for help if you need it"
@@ -475,6 +484,59 @@ responses:
 
   utter_statistics_features_subtrees:
     - text: "intent_statistics_features,statistics_all_features_subtrees,These are the statistics of the subgraphs features"
+
+  utter_most_tagged_features:
+    - text: "here are most tagged features"
+    - text: "these are the most tagged features"
+
+  utter_asking_about_barchart:
+    - text: "Do you want to see a bar chart comparing values of features?"
+
+  utter_help_glyphs:
+    - text: "Also, you can directly see which features are tagged with which nodes by using glyphs.
+  Check-all the features on the right column under Features to see the glyphs"
+
+  utter_help_bar_chart_pop_up:
+    - text: "Here you have it, you can change features to targets, stances, or level of toxicity analyse them. Also, you can change the visualisation to horizontal bar chart or pie."
+
+
+# help
+  utter_explain_glyphs:
+    - text: "Glyphs helps you see which nodes are tagged with which features.
+    I have three available glyphs: Dots, Circular Glyph, and Trivial Cheese.
+    You can use left bar to activate the features you want to see one by one or
+    select 'check all' button to see all of them. You can change glyphs
+    by switching buttons above that have pictures of each glyph."
+
+  utter_help_layouts:
+    - text: "There are four available layouts: Tree, Force, Radial,
+    and Circle Packing. I automatically select the best fitted layout according
+    to your data but you can explore other layouts by selecting them above."
+
+  utter_help_highlight:
+    - text: "Highlight function will show the nodes that include the selected feature.
+    You can ask me to show you or select features from the left bar."
+
+  utter_help_summary:
+    - text: "Summary shows how many nodes are in each level of toxicity and distribution
+    of the targets. Summary gets updated when nodes are highlighted."
+
+  utter_help_main_bar:
+    - text: "If you select Main Graph button, bar chart will appear displaying the
+    number of each feature that main graph have. Also, you can select from the list
+     to see Targets, Stances and Level of toxicity. There are available three graphs
+     that you can choose from the second list, Bar Chart, Horizontal Bar Chart and Pie
+     Chart."
+
+  utter_help_subtree_bar:
+    - text: "If you select Sub Graphs button, bar chart will appear displaying the
+    available features in every sub graph. Also, you can select from the list
+    to see Targets, Stances and Level of toxicity. There are available two graphs
+    that you can choose from the second list, Bar Chart and Horizontal Bar Chart."
+
+  utter_general_help:
+    - text: "You can ask me about Layouts, Glyphs, Highlight, Features and Targets on
+      the left bar, Summary, Two button saying Main Graph and Sub Graphs"
 
 session_config:
   session_expiration_time: 60

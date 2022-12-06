@@ -224,3 +224,62 @@ stories:
         - requested_slot: null
     - active_loop: null
     - action: action_open_document
+
+
+- story: Analysis scenario 1
+  steps:
+    - intent: greet
+    - action: utter_offers_help
+    - intent: most_toxic_thread
+    - action: utter_most_toxic_thread
+    - intent: most_tagged_features
+    - action: utter_most_tagged_features
+    - action: utter_asking_about_barchart
+    - intent: affirm
+    - action: utter_statistics_features_subtrees
+    - action: utter_help_glyphs
+    - intent: statistics_features_tree
+    - action: utter_statistics_features_tree
+    - action: utter_help_bar_chart_pop_up
+
+
+
+- story: Analysis scenario 2
+  steps:
+    - intent: greet
+    - action: utter_offers_help
+    - intent: target_group
+    - action: utter_target_group
+    - intent: most_tagged_features
+    - action: utter_most_tagged_features
+    - action: utter_asking_about_barchart
+    - intent: affirm
+    - action: utter_statistics_features_subtrees
+    - action: utter_help_glyphs
+
+
+
+- story: Analysis scenario 3
+  steps:
+    - intent: greet
+    - action: utter_offers_help
+    - intent: largest_thread
+    - action: utter_largest_thread
+    - intent: most_tagged_features
+    - action: utter_most_tagged_features
+    - action: utter_asking_about_barchart
+    - intent: deny
+    - action: utter_user_deny_help
+
+- story: Help Scenario
+  steps:
+    - intent: greet
+    - action: utter_offers_help
+    - intent: functions
+    - action: utter_general_help
+
+
+
+
+
+

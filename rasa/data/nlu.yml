@@ -1037,6 +1037,7 @@ nlu:
     - Compare the main view graph features
     - Display a chart of the statistics of the graph features
     - Show me the graph features statistics in a chart
+    - Show me the statistics of the whole graph
 
 - intent: statistics_features_subtrees
   examples: |
@@ -1050,3 +1051,48 @@ nlu:
     - Show me the subtrees features statistics
     - Show me the statistics of the subgraphs features
     - Display the statistics of the subgraphs features in a chart
+
+- intent: most_tagged_features
+  examples: |
+    - What are the most tagged features
+    - Which features are tagged the most
+
+#help
+
+- intent: help_glyphs
+  examples: |
+    - What are the glyphs?
+    - How can I use the glyphs?
+    - What are dots, circular glyph and trivial cheese?
+    - What are features on the left bar?
+    - What are targets on the left bar?
+
+- intent: help_layouts
+  examples: |
+    - Why there are many layouts?
+    - What are the layouts?
+
+- intent: help_highlight
+  examples: |
+    - How can use highlight on the left bar?
+    - What is highlight on the left bar?
+
+- intent: help_summary
+  examples: |
+    - What is summary?
+    - What does summary show?
+
+- intent: help_main_graph_barchart
+  examples: |
+    - What is main graph?
+    - What does first button on the right show?
+
+- intent: help_subtree_barchart
+  examples: |
+    - What is sub graphs?
+    - What does second button on the right show?
+
+- intent: functions
+  examples: |
+    - What are the functions of this tool?
+    - How can I use this tool?
