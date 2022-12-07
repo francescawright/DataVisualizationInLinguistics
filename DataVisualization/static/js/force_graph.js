@@ -698,6 +698,7 @@ treeJSON = d3.json(dataset, function (error, json) {
     // Div where the sum up information of "Static Values" is displayed
     var statisticBackground = d3.select(container)
         .append("div")
+        .attr("id", "statistics-text")
         .attr("class", "my-statistic") //add the tooltip class
         .style("position", "absolute")
         .style("z-index", "1") //it has no change
@@ -2720,7 +2721,13 @@ treeJSON = d3.json(dataset, function (error, json) {
          */
         $(window).off("longest_thread");
         $(window).on("longest_thread", function () {
-            longestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
+            let selectedContainer = document.getElementById("selected_container").value;
+            if (selectedContainer === "main" || selectedContainer === "") {
+                longestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
+            } else if (selectedContainer === "popup") {
+                document.getElementById("do_action").value = 'longest_thread';
+                document.getElementById("send-popup-main-btn").click();
+            }
         });
 
         /**
@@ -2729,7 +2736,13 @@ treeJSON = d3.json(dataset, function (error, json) {
          */
         $(window).off("widest_level");
         $(window).on("widest_level", function () {
-            widestLevelHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
+            let selectedContainer = document.getElementById("selected_container").value;
+            if (selectedContainer === "main" || selectedContainer === "") {
+                widestLevelHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
+            } else if (selectedContainer === "popup") {
+                document.getElementById("do_action").value = 'widest_level';
+                document.getElementById("send-popup-main-btn").click();
+            }
         });
 
         /**
@@ -2738,7 +2751,13 @@ treeJSON = d3.json(dataset, function (error, json) {
          */
         $(window).off("largest_thread");
         $(window).on("largest_thread", function () {
-            largestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
+            let selectedContainer = document.getElementById("selected_container").value;
+            if (selectedContainer === "main" || selectedContainer === "") {
+                largestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
+            } else if (selectedContainer === "popup") {
+                document.getElementById("do_action").value = 'largest_thread';
+                document.getElementById("send-popup-main-btn").click();
+            }
         });
 
         /**
@@ -2747,7 +2766,13 @@ treeJSON = d3.json(dataset, function (error, json) {
          */
         $(window).off("most_toxic_thread");
         $(window).on("most_toxic_thread", function () {
-            mostToxicThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
+            let selectedContainer = document.getElementById("selected_container").value;
+            if (selectedContainer === "main" || selectedContainer === "") {
+                mostToxicThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
+            } else if (selectedContainer === "popup") {
+                document.getElementById("do_action").value = 'most_toxic_thread';
+                document.getElementById("send-popup-main-btn").click();
+            }
         });
 
         /**
@@ -2756,7 +2781,13 @@ treeJSON = d3.json(dataset, function (error, json) {
          */
         $(window).off("most_toxic_subtree");
         $(window).on("most_toxic_subtree", function () {
-            mostToxicSubtreeHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
+            let selectedContainer = document.getElementById("selected_container").value;
+            if (selectedContainer === "main" || selectedContainer === "") {
+                mostToxicSubtreeHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
+            } else if (selectedContainer === "popup") {
+                document.getElementById("do_action").value = 'most_toxic_subtree';
+                document.getElementById("send-popup-main-btn").click();
+            }
         });
 
         // Gets the statistics of the features of the graph shown in the main window,
@@ -2813,6 +2844,16 @@ treeJSON = d3.json(dataset, function (error, json) {
         $(window).off("statistics_target_subtrees");
         $(window).on("statistics_target_subtrees", function () {
             statisticsTargetSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link);
+        });
+
+        $(window).off("main-container-click");
+        $(window).on("main-container-click", function () {
+            if (document.getElementById("selected_container").value !== "main" && document.getElementById("selected_container").value !== "") {
+                document.getElementById("selected_container").value = "main";
+                document.querySelector("#popupModal .modal-dialog").classList.remove("selected-container");
+                document.querySelector("#tree-container .overlay").classList.add("selected-container");
+                checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
+            }
         });
 
         checkboxesTargets.forEach(function (checkboxItem) {

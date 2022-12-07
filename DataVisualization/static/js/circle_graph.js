@@ -6,14 +6,14 @@ var static_values_checked = true;
 let div = document.createElement("div");
 div.setAttribute("id", "div-circle-container");
 div.style.textAlign = "center";
-div.style.marginRight = "520px";
+div.style.paddingRight = "520px";
 document.querySelector(container).appendChild(div);
 
 let svg = d3v4.select("#div-circle-container")
         .append("svg")
         .attr("width", 720)
         .attr("height", 720)
-        .attr("style", "overflow: visible; margin-top: 130px; margin-left: 130px;")
+        .attr("style", "overflow: visible; margin-top: 130px; margin-left: 130px; ;margin-bottom: 130px;")
 
 
 let diameter = svg.attr("width"),
@@ -518,28 +518,34 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
      */
     $(window).off("longest_thread");
     $(window).on("longest_thread", function () {
-        let deepestNodes = getDeepestNodesCircle(root);
-        let deepestNodesPath;
+        let selectedContainer = document.getElementById("selected_container").value;
+        if (selectedContainer === "main" || selectedContainer === "") {
+            let deepestNodes = getDeepestNodesCircle(root);
+            let deepestNodesPath;
 
-        var textMsg;
-        if (deepestNodes[0].depth === 0) {
-            textMsg = "There are no threads in this graph";
-        } else if (deepestNodes.length > 1) {
-            textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
-        } else {
-            textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
-        }
-
-        injectIntentConversation(textMsg);
-
-        if (deepestNodes[0].depth > 0) {
-            deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
-
-            highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, deepestNodesPath, node);
-
-            if (static_values_checked) {
-                statisticBackground.html(writeStatisticText(root, true));
+            var textMsg;
+            if (deepestNodes[0].depth === 0) {
+                textMsg = "There are no threads in this graph";
+            } else if (deepestNodes.length > 1) {
+                textMsg = "There are " + deepestNodes.length + " threads with a maximum depth of " + deepestNodes[0].depth;
+            } else {
+                textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
             }
+
+            injectIntentConversation(textMsg);
+
+            if (deepestNodes[0].depth > 0) {
+                deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
+
+                highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, deepestNodesPath, node);
+
+                if (static_values_checked) {
+                    statisticBackground.html(writeStatisticText(root, true));
+                }
+            }
+        } else if (selectedContainer === "popup") {
+            document.getElementById("do_action").value = 'longest_thread';
+            document.getElementById("send-popup-main-btn").click();
         }
     });
 
@@ -549,22 +555,28 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
      */
     $(window).off("widest_level");
     $(window).on("widest_level", function () {
-        let widestLevels = getWidestLevels(root, getTreeHeight(root));
-        var textMsg;
-        if (widestLevels[0].length === 0) {
-            textMsg = "There are no threads in this graph";
-        } else if (widestLevels[0].length > 1) {
-            textMsg = "There are " + widestLevels[0].length + " levels &#91;" + widestLevels[0] + "&#93; with a maximum width of " + widestLevels[1];
-        } else {
-            textMsg = "The widest level is level " + widestLevels[0][0] + " which has a width of " + widestLevels[1];
-        }
+        let selectedContainer = document.getElementById("selected_container").value;
+        if (selectedContainer === "main" || selectedContainer === "") {
+            let widestLevels = getWidestLevels(root, getTreeHeight(root));
+            var textMsg;
+            if (widestLevels[0].length === 0) {
+                textMsg = "There are no threads in this graph";
+            } else if (widestLevels[0].length > 1) {
+                textMsg = "There are " + widestLevels[0].length + " levels &#91;" + widestLevels[0] + "&#93; with a maximum width of " + widestLevels[1];
+            } else {
+                textMsg = "The widest level is level " + widestLevels[0][0] + " which has a width of " + widestLevels[1];
+            }
 
-        injectIntentConversation(textMsg);
+            injectIntentConversation(textMsg);
 
-        highlightWidestLevelsCircle(nodes, maxOpacityValue, minOpacityValue, node, widestLevels[0], root);
+            highlightWidestLevelsCircle(nodes, maxOpacityValue, minOpacityValue, node, widestLevels[0], root);
 
-        if (static_values_checked) {
-            statisticBackground.html(writeStatisticText(root, true));
+            if (static_values_checked) {
+                statisticBackground.html(writeStatisticText(root, true));
+            }
+        } else if (selectedContainer === "popup") {
+            document.getElementById("do_action").value = 'widest_level';
+            document.getElementById("send-popup-main-btn").click();
         }
     });
 
@@ -574,30 +586,36 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
      */
     $(window).off("largest_thread");
     $(window).on("largest_thread", function () {
-        let result = getLargestNodes(root);
-        let largestThreads = result[0]
-        let numNodes = result[1];
-        let largestNodesPath;
+        let selectedContainer = document.getElementById("selected_container").value;
+        if (selectedContainer === "main" || selectedContainer === "") {
+            let result = getLargestNodes(root);
+            let largestThreads = result[0]
+            let numNodes = result[1];
+            let largestNodesPath;
 
-        var textMsg;
-        if (largestThreads.length < 1) {
-            textMsg = "There are no threads in this graph";
-        } else if (largestThreads.length > 1) {
-            textMsg = "There are " + largestThreads.length + " threads with a total of " + numNodes + " nodes each";
-        } else {
-            textMsg = "The largest thread has a total of " + numNodes + " nodes";
-        }
-
-        injectIntentConversation(textMsg);
-
-        if (largestThreads.length > 0) {
-            largestNodesPath = getDescendantsListNodes(root, largestThreads);
-
-            highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, largestNodesPath, node);
-
-            if (static_values_checked) {
-                statisticBackground.html(writeStatisticText(root, true));
+            var textMsg;
+            if (largestThreads.length < 1) {
+                textMsg = "There are no threads in this graph";
+            } else if (largestThreads.length > 1) {
+                textMsg = "There are " + largestThreads.length + " threads with a total of " + numNodes + " nodes each";
+            } else {
+                textMsg = "The largest thread has a total of " + numNodes + " nodes";
             }
+
+            injectIntentConversation(textMsg);
+
+            if (largestThreads.length > 0) {
+                largestNodesPath = getDescendantsListNodes(root, largestThreads);
+
+                highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, largestNodesPath, node);
+
+                if (static_values_checked) {
+                    statisticBackground.html(writeStatisticText(root, true));
+                }
+            }
+        } else if (selectedContainer === "popup") {
+            document.getElementById("do_action").value = 'largest_thread';
+            document.getElementById("send-popup-main-btn").click();
         }
     });
 
@@ -607,30 +625,36 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
      */
     $(window).off("most_toxic_thread");
     $(window).on("most_toxic_thread", function () {
-        let endNodes = getEndNodes(root);
-        let mostToxicNodesPath;
+        let selectedContainer = document.getElementById("selected_container").value;
+        if (selectedContainer === "main" || selectedContainer === "") {
+            let endNodes = getEndNodes(root);
+            let mostToxicNodesPath;
 
-        if (endNodes.length < 1) {
-            injectIntentConversation("There are no threads in this graph");
-        } else {
-            mostToxicNodesPath = getMostToxicThreadPath(root, endNodes, true);
-
-            if (mostToxicNodesPath[1] === 0) {
-                injectIntentConversation("There are no toxic threads in this graph");
+            if (endNodes.length < 1) {
+                injectIntentConversation("There are no threads in this graph");
             } else {
-                let textMsg;
-                if (mostToxicNodesPath[2] === 1) {
-                    textMsg = "There is only one thread with this level of toxicity";
-                } else {
-                    textMsg = "There are " + mostToxicNodesPath[2] + " threads with the same maximum level of toxicity";
-                }
-                injectIntentConversation(textMsg);
-                highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, mostToxicNodesPath[0], node);
+                mostToxicNodesPath = getMostToxicThreadPath(root, endNodes, true);
 
-                if (static_values_checked) {
-                    statisticBackground.html(writeStatisticText(root, true));
+                if (mostToxicNodesPath[1] === 0) {
+                    injectIntentConversation("There are no toxic threads in this graph");
+                } else {
+                    let textMsg;
+                    if (mostToxicNodesPath[2] === 1) {
+                        textMsg = "There is only one thread with this level of toxicity";
+                    } else {
+                        textMsg = "There are " + mostToxicNodesPath[2] + " threads with the same maximum level of toxicity";
+                    }
+                    injectIntentConversation(textMsg);
+                    highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, mostToxicNodesPath[0], node);
+
+                    if (static_values_checked) {
+                        statisticBackground.html(writeStatisticText(root, true));
+                    }
                 }
             }
+        } else if (selectedContainer === "popup") {
+            document.getElementById("do_action").value = 'most_toxic_thread';
+            document.getElementById("send-popup-main-btn").click();
         }
     });
 
@@ -640,28 +664,34 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
      */
     $(window).off("most_toxic_subtree");
     $(window).on("most_toxic_subtree", function () {
-        let rootNodes = getSubtreeMostToxicRootNodes(root, true);
-        let mostToxicNodesPath;
+        let selectedContainer = document.getElementById("selected_container").value;
+        if (selectedContainer === "main" || selectedContainer === "") {
+            let rootNodes = getSubtreeMostToxicRootNodes(root, true);
+            let mostToxicNodesPath;
 
-        var textMsg;
-        if (rootNodes.length < 1) {
-            textMsg = "There are no threads in this graph";
-        } else if (rootNodes.length > 1) {
-            textMsg = "There are " + rootNodes.length + " subtrees with the same maximum level of toxicity";
-        } else {
-            textMsg = "There is only one subtree with the maximum level of toxicity";
-        }
-
-        injectIntentConversation(textMsg);
-
-        if (rootNodes.length > 0) {
-            mostToxicNodesPath = getDescendantsListNodes(root, rootNodes);
-
-            highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, mostToxicNodesPath, node);
-
-            if (static_values_checked) {
-                statisticBackground.html(writeStatisticText(root, true));
+            var textMsg;
+            if (rootNodes.length < 1) {
+                textMsg = "There are no threads in this graph";
+            } else if (rootNodes.length > 1) {
+                textMsg = "There are " + rootNodes.length + " subtrees with the same maximum level of toxicity";
+            } else {
+                textMsg = "There is only one subtree with the maximum level of toxicity";
             }
+
+            injectIntentConversation(textMsg);
+
+            if (rootNodes.length > 0) {
+                mostToxicNodesPath = getDescendantsListNodes(root, rootNodes);
+
+                highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, mostToxicNodesPath, node);
+
+                if (static_values_checked) {
+                    statisticBackground.html(writeStatisticText(root, true));
+                }
+            }
+        } else if (selectedContainer === "popup") {
+            document.getElementById("do_action").value = 'most_toxic_subtree';
+            document.getElementById("send-popup-main-btn").click();
         }
     });
 
@@ -719,6 +749,16 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
     $(window).off("statistics_target_subtrees");
     $(window).on("statistics_target_subtrees", function () {
         statisticsTargetSubtrees(root, static_values_checked, statisticBackground, nodes, maxOpacityValue, node, null, true, minOpacityValue);
+    });
+
+    $(window).off("main-container-click");
+    $(window).on("main-container-click", function () {
+        if (document.getElementById("selected_container").value !== "main" && document.getElementById("selected_container").value !== "") {
+            document.getElementById("selected_container").value = "main";
+            document.querySelector("#popupModal .modal-dialog").classList.remove("selected-container");
+            document.querySelector("#div-circle-container").classList.add("selected-container");
+            checkboxAND.checked ? highlightNodesByPropertyAND(node, enabledHighlight) : highlightNodesByPropertyOR(node, enabledHighlight);
+        }
     });
 
     // If AND is selected, uncheck the OR and highlight by property AND
@@ -860,6 +900,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
     // Div where the title of the "Static Values" is displayed
     var statisticBackground = d3v4.select(container)
         .append("div")
+        .attr("id", "statistics-text")
         .attr("class", "my-statistic") //add the tooltip class
         .style("position", "absolute")
         .style("z-index", "1") //it has no change

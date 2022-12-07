@@ -759,6 +759,17 @@ nlu:
     - Disable select all features filter
     - Switch select all features filter
 
+# highlight uncheck all
+- intent: highlight_uncheck_all
+  examples: |
+    - I want to deselect all highlighting filters
+    - Desselect all filters
+    - Uncheck all filters
+    - Reset the filters
+    - Undo all highlighting
+    - Undo highlighting
+    - Disable all highlight filters
+
 # complex intents -
 # related to depth
 - intent: longest_thread

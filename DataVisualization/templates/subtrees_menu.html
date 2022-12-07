@@ -61,6 +61,7 @@
         let action;
         if (swap) {
             action = 'swap'
+            document.getElementById("selected_container").value = "main";
         } else {
             action = 'send_to_main'
         }
@@ -182,6 +183,7 @@
                         removeLayout();
                     }
                     $(popup_container).trigger("open");
+
                 });
             },
             // handle a non-successful response

@@ -70,6 +70,7 @@ intents:
   - aggressiveness
   - target_all
   - features_all
+  - highlight_uncheck_all
   # Complex intents
   - longest_thread
   - widest_level
@@ -387,6 +388,9 @@ responses:
   - text: "intent_filter_all,selectAll-features,Here you have it"
   - text: "intent_filter_all,selectAll-features,All nodes with all features are now displayed"
   - text: "intent_filter_all,selectAll-features,Here you have nodes with all features. Would you like to see something else?"
+
+  utter_highlight_uncheck_all:
+  - text: "intent_highlight_uncheck_all,Here you have it"
 
   # complex intent responses
 

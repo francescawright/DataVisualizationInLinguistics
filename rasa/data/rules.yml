@@ -222,6 +222,11 @@ rules:
   - intent: features_all
   - action: utter_features_all
 
+- rule: User wants to uncheck all highlighting filters
+  steps:
+  - intent: highlight_uncheck_all
+  - action: utter_highlight_uncheck_all
+
 # complex intent stories
 # highlight (for now) longest thread, largest thread, widest thread
 - rule: User wants to see the longest thread
