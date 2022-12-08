@@ -329,11 +329,13 @@ rules:
   steps:
     - intent: statistics_features_tree
     - action: utter_statistics_features_tree
+  wait_for_user_input: false
 
 - rule: User wants to compare the statistics of all the features of the subtrees
   steps:
     - intent: statistics_features_subtrees
     - action: utter_statistics_features_subtrees
+  wait_for_user_input: false
 
 #- rule: User wants to compare the statistics of all the features of the subtrees after bot asking
 #  steps:
