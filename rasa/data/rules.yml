@@ -330,10 +330,10 @@ rules:
     - intent: statistics_features_subtrees
     - action: utter_statistics_features_subtrees
 
-- rule: User wants to compare the statistics of all the features of the subtrees after bot asking
-  steps:
-    - intent: affirm
-    - action: utter_statistics_features_subtrees
+#- rule: User wants to compare the statistics of all the features of the subtrees after bot asking
+#  steps:
+#    - intent: affirm
+#    - action: utter_statistics_features_subtrees
 
 - rule: User wants to know about glyphs
   steps:
