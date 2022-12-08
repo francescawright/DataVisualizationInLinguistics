@@ -245,7 +245,7 @@
         color: #000;
     }
     .statistics-chart-button {
-        width: 88px;
+        width: 110px;
     }
     .chart-button-div {
         display: flex;
@@ -255,8 +255,8 @@
     .chart-button-div img {
         vertical-align: top;
         border-radius: 0.25rem;
-        width: 36px;
-        height: 36px;
+        width: 35px;
+        height: 35px;
         margin-left: 2px;
     }
     .chart-button-div span {
@@ -882,6 +882,11 @@
                                     </div>
                                 </div>
 
+                                <div class="text-center" style="padding-top: 10px;">
+                                    <input class="btn btn-secondary" type="button" id="uncheck_button_highlight_OR"
+                                           name="check_button_highlight" value="Uncheck All"
+                                           onClick="UnCheckAll(document.querySelectorAll('input[type=checkbox][name=cbHighlightOR]'))">
+                                </div>
                             </div>
 
                             <div id="highlight_checks_AND" style="display: block;">
@@ -1197,9 +1202,12 @@
                                         </svg>
                                     </div>
                                 </div>
+                                <div class="text-center" style="padding-top: 10px;">
+                                    <input class="btn btn-secondary" type="button" id="uncheck_button_highlight_AND"
+                                           name="check_button_highlight" value="Uncheck All"
+                                           onClick="UnCheckAll(document.querySelectorAll('input[type=checkbox][name=cbHighlightAND]'))">
+                                </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -1229,9 +1237,9 @@
                             <option value="ring-on-node">Rings on the node</option>
                         </select> -->
                         <div class="text-center">
-                            <input class="btn btn-secondary" type="button" name="Check_All" value="Check All"
+                            <input class="btn btn-secondary" type="button" name="check_button_devtools" value="Check All"
                                    onClick="CheckAll(document.querySelectorAll('input[type=checkbox][name=cbDevtools]'))">
-                            <input id="uncheck_button_devtools" class="btn btn-secondary" type="button" name="Un_CheckAll" value="Uncheck All"
+                            <input id="uncheck_button_devtools" class="btn btn-secondary" type="button" name="uncheck_button_devtools" value="Uncheck All"
                                    onClick="UnCheckAll(document.querySelectorAll('input[type=checkbox][name=cbDevtools]'))">
                         </div>
 
@@ -1526,6 +1534,10 @@
     {% include 'popup_chart.html' %}
     {% include 'popup.html' %}
 
+    <button id="popup-chart-btn" type="button" class="btn" data-toggle="modal" data-target="#chartModal" style="display: none"></button>
+    <button id="popup-chart-sub-btn" type="button" class="btn" data-toggle="modal" data-target="#chartSubModal" style="display: none"></button>
+    <button id="popup-btn" type="button" class="btn" data-toggle="modal" data-target="#popupModal" style="display: none"></button>
+
     <div id="tree-container" class="column2" style="width: calc(calc(100vw - (100vw - 100%)) - 290px); position: sticky; position: -webkit-sticky; top: 19px; z-index: 10;">
 
         <div style="z-index: 50; text-align:center; position: absolute; top: 20px; left: 20px;">
@@ -1533,7 +1545,7 @@
             {% if main_graph_info and main_graph_info != 'complete' %}
                 <div id="main-popup-options">
                 <button type="button" class="main-popup-options-btn main-reset-btn" onclick="resetMainContentGraph()"
-                title="Returns to the main graph">
+                title="Return to initial state">
                     <img src='{% static 'images/popup/home.png' %}' id='main-popup-options-reset-img' class='main-popup-options-img'>
                 </button>
                 <button type="button" class="main-popup-options-btn main-interchange-btn" onclick="swapMain()"
@@ -1542,9 +1554,6 @@
                 </button>
                 </div>
             {% endif %}
-            <button id="popup-chart-btn" type="button" class="btn" data-toggle="modal" data-target="#chartModal" style="display: none"></button>
-            <button id="popup-chart-sub-btn" type="button" class="btn" data-toggle="modal" data-target="#chartSubModal" style="display: none"></button>
-            <button id="popup-btn" type="button" class="btn" data-toggle="modal" data-target="#popupModal" style="display: none"></button>
         </div>
 
         <div id="subtrees-menu-container" class="subtrees-menu-container left-arrow">
@@ -1555,20 +1564,20 @@
             <div id="subtrees-menu"></div>
         </div>
 
-        <div style="z-index: 50; text-align:center; position: absolute; margin-top: 35px; right: 150px; width: max-content;">
+        <div id="statistics-bar" style="z-index: 50; text-align:center; position: absolute; margin-top: 35px; right: 106px; width: max-content;">
             <span class="my-statistic" id="my-statistic-name"></span>
             <button id="static_values_button" class="btn btn-primary statistics-button">&#8722;
             </button>
             <button id="chart_main_button" class="btn btn-primary statistics-button statistics-chart-button" onclick="featuresChart()">
                 <div class="chart-button-div">
                     <img src="{% static 'images/statistics/chart-icon.png' %}"/>
-                    <span>Main<br>Graph</span>
+                    <span>Selected<br>comments</span>
                 </div>
             </button>
             <button id="chart_sub_button" class="btn btn-primary statistics-button statistics-chart-button" onclick="featuresChartSub()">
                 <div class="chart-button-div">
                     <img src="{% static 'images/statistics/chart-icon.png' %}"/>
-                    <span>Sub<br>Graphs</span>
+                    <span>Level one<br>comments</span>
                 </div>
             </button>
         </div>
@@ -1678,6 +1687,37 @@
                 evt.initEvent("change", false, true);
                 checks[i].dispatchEvent(evt);
             }
+        }
+        if ('{{ do_action }}') {
+            document.getElementById("selected_container").value = "";
+            $(window).trigger('{{ do_action }}');
+        }
+        if ('{{ selected_container }}') {
+            if ('{{ selected_container }}' === 'popup' || '{{ do_action }}') {
+                document.getElementById("selected_container").value = "popup";
+                document.querySelector("#popupModal .modal-dialog").classList.add("selected-container");
+            } else if ('{{ selected_container }}' === 'main') {
+                document.getElementById("selected_container").value = "main";
+                document.querySelector("#popupModal .modal-dialog").classList.remove("selected-container");
+                if (document.getElementById("main_layout_name").value === 'circle') {
+                    document.querySelector("#div-circle-container").classList.add("selected-container");
+                } else {
+                    document.querySelector("#tree-container .overlay").classList.add("selected-container");
+                }
+            }
+        }
+        selectedContainerReady = true;
+
+        document.querySelector("#tree-container #statistics-bar").onclick = changeSelectedContainer;
+        document.querySelector("#tree-container #statistics-text").onclick = changeSelectedContainer;
+        if (document.getElementById("main_layout_name").value === 'circle') {
+            document.querySelector("#div-circle-container").onclick = changeSelectedContainer;
+        } else {
+            document.querySelector("#tree-container .overlay").onclick = changeSelectedContainer;
+        }
+
+        function changeSelectedContainer() {
+            $(window).trigger("main-container-click");
         }
     }
 

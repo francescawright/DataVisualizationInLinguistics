@@ -32,6 +32,8 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 // Variable to check if the ready function code has been completely executed
 var codeReadyPopup = false;
 
+var selectedContainerReady = false;
+
 //Graph
 var viewerWidthPopup = 100;  // size of the diagram
 var viewerHeightPopup = 400;
@@ -1271,6 +1273,29 @@ function maxPopupSize() {
 
 $(popup_container).on("open", function () {
 
+    if (document.getElementById("selected_container").value !== 'popup' && selectedContainerReady) {
+        document.getElementById("selected_container").value = 'popup';
+        document.querySelector("#popupModal .modal-dialog").classList.add("selected-container");
+        if (document.getElementById("main_layout_name").value === 'circle' && document.querySelector("#div-circle-container")) {
+            document.querySelector("#div-circle-container").classList.remove("selected-container");
+        } else if (document.querySelector("#tree-container .overlay")) {
+            document.querySelector("#tree-container .overlay").classList.remove("selected-container");
+        }
+    }
+
+    jQuery("#popupModal .modal-dialog").off('click');
+    jQuery("#popupModal .modal-dialog").click(function () {
+        if (document.getElementById("selected_container").value !== "popup") {
+            document.getElementById("selected_container").value = "popup";
+            document.querySelector("#popupModal .modal-dialog").classList.add("selected-container");
+            if (document.getElementById("main_layout_name").value === 'circle') {
+                document.querySelector("#div-circle-container").classList.remove("selected-container");
+            } else {
+                document.querySelector("#tree-container .overlay").classList.remove("selected-container");
+            }
+        }
+    });
+
     jQuery(".tree-modal-button").off('click');
     jQuery(".force-modal-button").off('click');
     jQuery(".radial-modal-button").off('click');
@@ -1377,12 +1402,12 @@ $(popup_container).on("open", function () {
         function createTreeGraph() {
 
             // The initial size and position of the modal is set, according to the selected layout
-            document.querySelector("#popupModal.modal .modal-content").style.width = window.innerWidth * 0.8 + "px";
+            document.querySelector("#popupModal.modal .modal-content").style.width = window.innerWidth * 0.65 + "px";
             document.querySelector("#popupModal.modal .modal-content").style.height = "522px";
             document.getElementById("popupModal").style.top = "calc(30% - 261px)";
-            document.getElementById("popupModal").style.left = "calc(50% - " + (window.innerWidth * 0.8)/2 + "px)";
+            document.getElementById("popupModal").style.left = "calc(45% - " + (window.innerWidth * 0.65)/2 + "px)";
             initialCanvasHeightPopup = 440; // 10px are subtracted for the border of the modal
-            initialCanvasWidthPopup = (window.innerWidth * 0.8) - 10;
+            initialCanvasWidthPopup = (window.innerWidth * 0.65) - 10;
 
             rootPopup = treeData; //Define the root
 
@@ -1427,13 +1452,13 @@ $(popup_container).on("open", function () {
             imgRatioPopup = 10; //Percentage of difference between the radii of a node and its associated image
 
             /* Targets: size, position, local path, objects to draw the target as ring
-     * */
-            var targetIconHeight = 15,
-                targetIconWidth = 15,
-                targetIconGroupX = -30,
-                targetIconPersonX = -50,
-                targetIconStereotypeX = -70,
-                targetIconY = -10; //Size and relative position of targets drawn as icons
+             * */
+            var targetIconHeight = 30,
+                targetIconWidth = 30,
+                targetIconGroupX = -60,
+                targetIconPersonX = -100,
+                targetIconStereotypeX = -140,
+                targetIconY = -15; //Size and relative position of targets drawn as icons
 
             var objTargetGroupRing = {
                     class: "targetGroup",
@@ -1590,8 +1615,8 @@ $(popup_container).on("open", function () {
                     class: "targetGroup",
                     id: "targetGroup",
                     selected: enabledTargets.indexOf("target-group"),
-                    x: -30,
-                    y: -10,
+                    x: targetIconGroupX,
+                    y: targetIconY,
                     height: targetIconHeight,
                     width: targetIconWidth,
                     fileName: "Group.svg"
@@ -1600,8 +1625,8 @@ $(popup_container).on("open", function () {
                     class: "targetPerson",
                     id: "targetPerson",
                     selected: enabledTargets.indexOf("target-person"),
-                    x: -50,
-                    y: -10,
+                    x: targetIconPersonX,
+                    y: targetIconY,
                     height: targetIconHeight,
                     width: targetIconWidth,
                     fileName: "Person.svg"
@@ -1610,8 +1635,8 @@ $(popup_container).on("open", function () {
                     class: "targetStereotype",
                     id: "targetStereotype",
                     selected: enabledTargets.indexOf("target-stereotype"),
-                    x: -70,
-                    y: -10,
+                    x: targetIconStereotypeX,
+                    y: targetIconY,
                     height: targetIconHeight,
                     width: targetIconWidth,
                     fileName: "Stereotype.svg"

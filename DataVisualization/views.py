@@ -312,6 +312,8 @@ def main_form_handler(request):
     # Default values
     context['main_hierarchy_name'] = request.POST["main_hierarchy_name"]
     context['main_layout_name'] = checked_layout
+    context['selected_container'] = request.POST.get("selected_container", '')
+    context['do_action'] = request.POST.get("do_action", '')
 
     main_graph_info = request.POST.get('main_graph_info', None)
     popup_graph_info = request.POST.get('popup_graph_info', None)
