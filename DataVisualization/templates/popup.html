@@ -317,6 +317,7 @@
             // We deactivate the functionalities (filters) that do not belong to the Circle Packing layout
             // deactivateFiltersCircle(); // If the filters are deactivated and the layout is changed, they are not passed.
         }
+        $(window).trigger("main-container-click");
         document.getElementById("popup_graph_info").value = '';
         document.getElementById("popup_subtree_nodes_ids").value = '';
         document.getElementById("popup_subtree_document_description").value = '';

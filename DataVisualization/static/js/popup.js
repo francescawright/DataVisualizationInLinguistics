@@ -1205,9 +1205,9 @@ function removePopupLayoutListeners() {
         var dotsFeaturesJQuery = $("#dots_icon_button");
         var glyphsFeaturesJQuery = $("#glyphs_icon_button");
         var trivialFeaturesJQuery = $("#trivial_icon_button");
-        dotsFeaturesJQuery.off("change.update");
-        glyphsFeaturesJQuery.off("change.update");
-        trivialFeaturesJQuery.off("change.update");
+        dotsFeaturesJQuery.off("change.updatePopup");
+        glyphsFeaturesJQuery.off("change.updatePopup");
+        trivialFeaturesJQuery.off("change.updatePopup");
 
         var checkboxesTargetsJQuery = $("input[type=checkbox][name=cbTargets]");
         var checkboxesJQuery = $("input[type=checkbox][name=cbFeatures]");
@@ -1215,22 +1215,22 @@ function removePopupLayoutListeners() {
         var checkboxesHighlightGroupANDJQuery = $("input[name=cbHighlightAND]");
 
         checkboxesTargetsJQuery.each(function () {
-            $(this).off("change.update");
+            $(this).off("change.updatePopup");
         });
         checkboxesJQuery.each(function () {
-            $(this).off("change.update");
+            $(this).off("change.updatePopup");
         });
         checkboxesHighlightGroupORJQuery.each(function () {
-            $(this).off("change.update");
+            $(this).off("change.updatePopup");
         });
         checkboxesHighlightGroupANDJQuery.each(function () {
-            $(this).off("change.update");
+            $(this).off("change.updatePopup");
         });
 
         var checkboxANDJQuery = $("input[type=radio][name=cbHighlightProperty][value=and-group]");
         var checkboxORJQuery = $("input[type=radio][name=cbHighlightProperty][value=or-group]");
-        checkboxANDJQuery.off("change.update");
-        checkboxORJQuery.off("change.update");
+        checkboxANDJQuery.off("change.updatePopup");
+        checkboxORJQuery.off("change.updatePopup");
     }
     // TODO: Remove listeners from layout Radial
 }
@@ -1274,7 +1274,8 @@ function maxPopupSize() {
 $(popup_container).on("open", function () {
 
     if (document.getElementById("selected_container").value !== 'popup' && selectedContainerReady) {
-        document.getElementById("selected_container").value = 'popup';
+        $(window).trigger("popup-container-click");
+        document.getElementById("selected_container").value = "popup";
         document.querySelector("#popupModal .modal-dialog").classList.add("selected-container");
         if (document.getElementById("main_layout_name").value === 'circle' && document.querySelector("#div-circle-container")) {
             document.querySelector("#div-circle-container").classList.remove("selected-container");
@@ -1286,6 +1287,7 @@ $(popup_container).on("open", function () {
     jQuery("#popupModal .modal-dialog").off('click');
     jQuery("#popupModal .modal-dialog").click(function () {
         if (document.getElementById("selected_container").value !== "popup") {
+            $(window).trigger("popup-container-click");
             document.getElementById("selected_container").value = "popup";
             document.querySelector("#popupModal .modal-dialog").classList.add("selected-container");
             if (document.getElementById("main_layout_name").value === 'circle') {
@@ -4321,7 +4323,7 @@ $(popup_container).on("open", function () {
 
                         // To notify the DOM that the ready function has finished executing.
                         // This to be able to manage the filters if it is given the case that the code of the onLoad function finishes before.
-                        const event = new Event('codeReady');
+                        const event = new Event('codeReadyPopup');
 
                         // Dispatch the event.
                         document.querySelector("body").dispatchEvent(event);
@@ -6604,22 +6606,22 @@ $(popup_container).on("open", function () {
                 // });
 
                 var dotsFeaturesJQuery = $("#dots_icon_button");
-                dotsFeaturesJQuery.off("change.update"); // remove duplicate listener
+                dotsFeaturesJQuery.off("change.updatePopup"); // remove duplicate listener
                 // NOTE: In this layout, unlike the Tree layout, we can do it this way, since all nodes are updated each time,
                 // and not only the new nodes added to the graph (variable nodeEnter in Tree layout).
-                dotsFeaturesJQuery.on("change.update", function () {
+                dotsFeaturesJQuery.on("change.updatePopup", function () {
                     selectFeatureVisualization(node);
                 });
 
                 var glyphsFeaturesJQuery = $("#glyphs_icon_button");
-                glyphsFeaturesJQuery.off("change.update"); // remove duplicate listener
-                glyphsFeaturesJQuery.on("change.update", function () {
+                glyphsFeaturesJQuery.off("change.updatePopup"); // remove duplicate listener
+                glyphsFeaturesJQuery.on("change.updatePopup", function () {
                     selectFeatureVisualization(node);
                 });
 
                 var trivialFeaturesJQuery = $("#trivial_icon_button");
-                trivialFeaturesJQuery.off("change.update"); // remove duplicate listener
-                trivialFeaturesJQuery.on("change.update", function () {
+                trivialFeaturesJQuery.off("change.updatePopup"); // remove duplicate listener
+                trivialFeaturesJQuery.on("change.updatePopup", function () {
                     selectFeatureVisualization(node);
                 });
 
@@ -6645,17 +6647,17 @@ $(popup_container).on("open", function () {
                         var checkboxesHighlightGroupANDJQuery = $("input[name=cbHighlightAND]");
 
                         checkboxesTargetsJQuery.each(function () {
-                            $(this).off("change.update"); // remove duplicate listener
-                            $(this).on('change.update', function () {
+                            $(this).off("change.updatePopup"); // remove duplicate listener
+                            $(this).on('change.updatePopup', function () {
                                 enabledTargets =
                                     Array.from(checkboxesTargets) // Convert checkboxes to an array to use filter and map.
                                         .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
                                 if ($(this).checked) {
-                                    console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $(this).name + '_' + $(this).value, " | [Date]", Date.now());
+                                    console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $( this ).attr("name") + '_' + $( this ).attr("value"), " | [Date]", Date.now());
                                 } else {
-                                    console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $(this).name + '_' + $(this).value, " | [Date]", Date.now());
+                                    console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $( this ).attr("name") + '_' + $( this ).attr("value"), " | [Date]", Date.now());
                                 }
                                 selectTargetVisualization(node);
                             })
@@ -6664,16 +6666,16 @@ $(popup_container).on("open", function () {
                         // Use Array.forEach to add an event listener to each checkbox.
                         // Draw feature circles
                         checkboxesJQuery.each(function () {
-                            $(this).off("change.update"); // remove duplicate listener
-                            $(this).on('change.update', function () {
+                            $(this).off("change.updatePopup"); // remove duplicate listener
+                            $(this).on('change.updatePopup', function () {
                                 enabledFeatures =
                                     Array.from(checkboxes) // Convert checkboxes to an array to use filter and map.
                                         .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                                         .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
                                 if ($(this).checked) {
-                                    console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $(this).name + '_' + $(this).value, " | [Date]", Date.now());
+                                    console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $( this ).attr("name") + '_' + $( this ).attr("value"), " | [Date]", Date.now());
                                 } else {
-                                    console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $(this).name + '_' + $(this).value, " | [Date]", Date.now());
+                                    console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $( this ).attr("name") + '_' + $( this ).attr("value"), " | [Date]", Date.now());
                                 }
                                 selectFeatureVisualization(node);
 
@@ -6683,8 +6685,8 @@ $(popup_container).on("open", function () {
 
                         // Use Array.forEach to add an event listener to each checkbox.
                         checkboxesHighlightGroupORJQuery.each(function () {
-                            $(this).off("change.update"); // remove duplicate listener
-                            $(this).on('change.update', function () {
+                            $(this).off("change.updatePopup"); // remove duplicate listener
+                            $(this).on('change.updatePopup', function () {
                                 enabledHighlight =
                                     Array.from(checkboxesHighlightGroupOR) // Convert checkboxes to an array to use filter and map.
                                         .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
@@ -6706,9 +6708,9 @@ $(popup_container).on("open", function () {
                                 var filteredCompareFeatures = getLengthFilterByName(Array.from(enabledHighlight), "highlight-features-");
                                 document.getElementById('highlight-OR-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
                                 if ($(this).checked) {
-                                    console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $(this).name + '_' + $(this).value, " | [Date]", Date.now());
+                                    console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $( this ).attr("name") + '_' + $( this ).attr("value"), " | [Date]", Date.now());
                                 } else {
-                                    console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $(this).name + '_' + $(this).value, " | [Date]", Date.now());
+                                    console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $( this ).attr("name") + '_' + $( this ).attr("value"), " | [Date]", Date.now());
                                 }
                                 checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
                             })
@@ -6716,8 +6718,8 @@ $(popup_container).on("open", function () {
 
                         // Use Array.forEach to add an event listener to each checkbox.
                         checkboxesHighlightGroupANDJQuery.each(function () {
-                            $(this).off("change.update"); // remove duplicate listener
-                            $(this).on('change.update', function () {
+                            $(this).off("change.updatePopup"); // remove duplicate listener
+                            $(this).on('change.updatePopup', function () {
                                 enabledHighlight =
                                     Array.from(checkboxesHighlightGroupAND) // Convert checkboxes to an array to use filter and map.
                                         .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
@@ -6732,9 +6734,9 @@ $(popup_container).on("open", function () {
                                 document.getElementById('highlight-AND-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
 
                                 if ($(this).checked) {
-                                    console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $(this).name + '_' + $(this).value, " | [Date]", Date.now());
+                                    console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $( this ).attr("name") + '_' + $( this ).attr("value"), " | [Date]", Date.now());
                                 } else {
-                                    console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $(this).name + '_' + $(this).value, " | [Date]", Date.now());
+                                    console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $( this ).attr("name") + '_' + $( this ).attr("value"), " | [Date]", Date.now());
                                 }
                                 checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
                             })
@@ -6742,7 +6744,7 @@ $(popup_container).on("open", function () {
 
                         // To notify the DOM that the ready function has finished executing.
                         // This to be able to manage the filters if it is given the case that the code of the onLoad function finishes before.
-                        const event = new Event('codeReady');
+                        const event = new Event('codeReadyPopup');
 
                         // Dispatch the event.
                         document.querySelector("body").dispatchEvent(event);
@@ -6782,8 +6784,8 @@ $(popup_container).on("open", function () {
                 var checkboxORJQuery = $("input[type=radio][name=cbHighlightProperty][value=or-group]");
 
                 // If AND is selected, uncheck the OR and highlight by property AND
-                checkboxANDJQuery.off("change.update"); // remove duplicate listener
-                checkboxANDJQuery.on("change.update", function () {
+                checkboxANDJQuery.off("change.updatePopup"); // remove duplicate listener
+                checkboxANDJQuery.on("change.updatePopup", function () {
                     if (this.checked) {
                         checkboxOR.checked = false;
 
@@ -6803,8 +6805,8 @@ $(popup_container).on("open", function () {
                     }
                 });
                 // If OR is selected, uncheck the AND and highlight by property OR
-                checkboxORJQuery.off("change.update"); // remove duplicate listener
-                checkboxORJQuery.on("change.update", function () {
+                checkboxORJQuery.off("change.updatePopup"); // remove duplicate listener
+                checkboxORJQuery.on("change.updatePopup", function () {
                     if (this.checked) {
                         checkboxAND.checked = false;
 
@@ -9239,7 +9241,7 @@ $(popup_container).on("open", function () {
 
                         // To notify the DOM that the ready function has finished executing.
                         // This to be able to manage the filters if it is given the case that the code of the onLoad function finishes before.
-                        const event = new Event('codeReady');
+                        const event = new Event('codeReadyPopup');
 
                         // Dispatch the event.
                         document.querySelector("body").dispatchEvent(event);
@@ -9875,7 +9877,7 @@ $(popup_container).on("open", function () {
 
                     // To notify the DOM that the ready function has finished executing.
                     // This to be able to manage the filters if it is given the case that the code of the onLoad function finishes before.
-                    const event = new Event('codeReady');
+                    const event = new Event('codeReadyPopup');
 
                     // Dispatch the event.
                     document.querySelector("body").dispatchEvent(event);
@@ -10034,8 +10036,8 @@ $(popup_container).on("open", function () {
                 if (enabledHighlight.indexOf("highlight-features-insult") > -1) changeNodeOpacity(node, "insult");
                 if (enabledHighlight.indexOf("highlight-features-aggressiveness") > -1) changeNodeOpacity(node, "aggressiveness");
             }
-        }
 
-        console.log('[User]', user.split('/')[2], '| [interaction]', 'Circle_layout_loaded', '| [Date]', Date.now());
+            console.log('[User]', user.split('/')[2], '| [interaction]', 'Circle_layout_loaded', '| [Date]', Date.now());
+        }
     });
 });

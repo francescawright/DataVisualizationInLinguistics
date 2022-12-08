@@ -1696,6 +1696,7 @@
             if ('{{ selected_container }}' === 'popup' || '{{ do_action }}') {
                 document.getElementById("selected_container").value = "popup";
                 document.querySelector("#popupModal .modal-dialog").classList.add("selected-container");
+                $(window).trigger("popup-container-click");
             } else if ('{{ selected_container }}' === 'main') {
                 document.getElementById("selected_container").value = "main";
                 document.querySelector("#popupModal .modal-dialog").classList.remove("selected-container");

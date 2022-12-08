@@ -758,6 +758,19 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
             document.querySelector("#popupModal .modal-dialog").classList.remove("selected-container");
             document.querySelector("#div-circle-container").classList.add("selected-container");
             checkboxAND.checked ? highlightNodesByPropertyAND(node, enabledHighlight) : highlightNodesByPropertyOR(node, enabledHighlight);
+            if (static_values_checked) {
+                statisticBackground.html(writeStatisticText(root, true));
+            }
+        }
+    });
+
+    $(window).off("popup-container-click");
+    $(window).on("popup-container-click", function () {
+        if (document.getElementById("popup_subtree_nodes_ids").value !== "complete" &&
+            document.getElementById("popup_subtree_document_description").value ===
+            document.getElementById("main_subtree_document_description").value) {
+            let nodesIDs = JSON.parse("[" + document.getElementById("popup_subtree_nodes_ids").value + "]");
+            highlightFromPopupNodesIDs (static_values_checked, statisticBackground, root, nodes, nodesIDs, maxOpacityValue, node, null, true, minOpacityValue);
         }
     });
 
