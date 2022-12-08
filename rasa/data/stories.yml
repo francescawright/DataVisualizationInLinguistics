@@ -225,7 +225,6 @@ stories:
     - active_loop: null
     - action: action_open_document
 
-
 - story: Analysis scenario 1
   steps:
     - intent: greet
@@ -242,8 +241,6 @@ stories:
     - action: utter_statistics_features_tree
     - action: utter_help_bar_chart_pop_up
 
-
-
 - story: Analysis scenario 2
   steps:
     - intent: greet
@@ -256,8 +253,6 @@ stories:
     - intent: affirm
     - action: utter_statistics_features_subtrees
     - action: utter_help_glyphs
-
-
 
 - story: Analysis scenario 3
   steps:
@@ -277,9 +272,3 @@ stories:
     - action: utter_offers_help
     - intent: functions
     - action: utter_general_help
-
-
-
-
-
-
