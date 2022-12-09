@@ -3241,6 +3241,19 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 document.querySelector("#popupModal .modal-dialog").classList.remove("selected-container");
                 document.querySelector("#tree-container .overlay").classList.add("selected-container");
                 checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
+                if (static_values_checked) {
+                    statisticBackground.html(writeStatisticText(root));
+                }
+            }
+        });
+
+        $(window).off("popup-container-click");
+        $(window).on("popup-container-click", function () {
+            if (document.getElementById("popup_subtree_nodes_ids").value !== "complete" &&
+                document.getElementById("popup_subtree_document_description").value ===
+                document.getElementById("main_subtree_document_description").value) {
+                let nodesIDs = JSON.parse("[" + document.getElementById("popup_subtree_nodes_ids").value + "]");
+                highlightFromPopupNodesIDs (static_values_checked, statisticBackground, root, nodes, nodesIDs, opacityValue, node, link);
             }
         });
 

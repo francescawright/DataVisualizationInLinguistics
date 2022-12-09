@@ -2607,9 +2607,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                                 .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
 
                         if ($( this ).checked) {
-                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $( this ).name + '_' + $( this ).value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $( this ).attr("name") + '_' + $( this ).attr("value"), " | [Date]", Date.now());
                         } else {
-                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $( this ).name + '_' + $( this ).value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $( this ).attr("name") + '_' + $( this ).attr("value"), " | [Date]", Date.now());
                         }
                         selectTargetVisualization(node);
                     })
@@ -2625,9 +2625,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                                 .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
                                 .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
                         if ($( this ).checked) {
-                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $( this ).name + '_' + $( this ).value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $( this ).attr("name") + '_' + $( this ).attr("value"), " | [Date]", Date.now());
                         } else {
-                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $( this ).name + '_' + $( this ).value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $( this ).attr("name") + '_' + $( this ).attr("value"), " | [Date]", Date.now());
                         }
                         selectFeatureVisualization(node);
 
@@ -2660,9 +2660,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                         var filteredCompareFeatures = getLengthFilterByName(Array.from(enabledHighlight), "highlight-features-");
                         document.getElementById('highlight-OR-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
                         if ($( this ).checked) {
-                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $( this ).name + '_' + $( this ).value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $( this ).attr("name") + '_' + $( this ).attr("value"), " | [Date]", Date.now());
                         } else {
-                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $( this ).name + '_' + $( this ).value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $( this ).attr("name") + '_' + $( this ).attr("value"), " | [Date]", Date.now());
                         }
                         checkboxOR.checked ? highlightNodesByPropertyOR(node, link) : highlightNodesByPropertyAND(node, link);
                         if (static_values_checked) {
@@ -2689,9 +2689,9 @@ treeJSON = d3.json(dataset, function (error, json) {
                         document.getElementById('highlight-AND-selectAll-features').checked = filteredOriginalFeatures === filteredCompareFeatures;
 
                         if ($( this ).checked) {
-                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $( this ).name + '_' + $( this ).value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "checking_" + $( this ).attr("name") + '_' + $( this ).attr("value"), " | [Date]", Date.now());
                         } else {
-                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $( this ).name + '_' + $( this ).value, " | [Date]", Date.now());
+                            console.log("[User]", user.split('/')[2], "| [interaction]", "unchecking_" + $( this ).attr("name") + '_' + $( this ).attr("value"), " | [Date]", Date.now());
                         }
                         checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
                         if (static_values_checked) {
@@ -2853,6 +2853,19 @@ treeJSON = d3.json(dataset, function (error, json) {
                 document.querySelector("#popupModal .modal-dialog").classList.remove("selected-container");
                 document.querySelector("#tree-container .overlay").classList.add("selected-container");
                 checkboxAND.checked ? highlightNodesByPropertyAND(node, link) : highlightNodesByPropertyOR(node, link);
+                if (static_values_checked) {
+                    statisticBackground.html(writeStatisticText(root));
+                }
+            }
+        });
+
+        $(window).off("popup-container-click");
+        $(window).on("popup-container-click", function () {
+            if (document.getElementById("popup_subtree_nodes_ids").value !== "complete" &&
+                document.getElementById("popup_subtree_document_description").value ===
+                document.getElementById("main_subtree_document_description").value) {
+                let nodesIDs = JSON.parse("[" + document.getElementById("popup_subtree_nodes_ids").value + "]");
+                highlightFromPopupNodesIDs(static_values_checked, statisticBackground, root, nodes, nodesIDs, opacityValue, node, link);
             }
         });
 

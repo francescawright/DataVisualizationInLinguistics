@@ -2629,6 +2629,32 @@ function clickSubtreeChartHandler(static_values_checked, statisticBackground, ro
     }
 }
 
+function highlightFromPopupNodesIDs (static_values_checked, statisticBackground, root, nodes, nodesIDs, opacityValue, node, link, fromCircle = false, minOpacityValue = null) {
+
+    let nodesPath = [];
+
+    if (fromCircle) {
+        nodes.forEach(function (d) {
+            if (nodesIDs.includes(d.data.name)) nodesPath.push(d);
+        });
+    } else {
+        nodes.forEach(function (d) {
+            if (nodesIDs.includes(d.name)) nodesPath.push(d);
+        });
+    }
+    nodesPath.push(root);
+
+    if (!fromCircle) {
+        highlightThreadPopup(nodes, root, opacityValue, nodesPath, node, link, false);
+    } else {
+        highlightThreadPopupCircle(nodes, root, opacityValue, minOpacityValue, nodesPath, node, false);
+    }
+
+    if (static_values_checked) {
+        statisticBackground.html(writeStatisticText(root));
+    }
+}
+
 function statisticsDataChangedTree (root, fromCircle = false, isSubgraphByID = false) {
     if (!isSubgraphByID) {
         highlightedSubgraph = null;

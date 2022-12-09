@@ -488,6 +488,7 @@
                         success: function (data) {
                             if ('{{ selected_item }}') {
                                 createOpenDocumentInputs(mainForm, documentName, existingStorage);
+                                document.getElementById("selected_container").value = '';
                             } else {
                                 document.getElementById("data_selection_chat_session_id").value = existingStorage["session_id"];
                             }
