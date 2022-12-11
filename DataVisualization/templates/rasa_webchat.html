@@ -605,40 +605,66 @@
                     break;
                 case "intent_filter":
                     if ('{{ selected_item }}') {
-                        let filterChecked;
-
-                        if (document.getElementById("or_label").classList.contains("active")) {
-                            filterChecked = document.getElementById(messageList[1] + "OR").checked;
-                            document.getElementById(messageList[1] + "OR").click();
-                        } else if (document.getElementById("and_label").classList.contains("active")) {
-                            filterChecked = document.getElementById(messageList[1]).checked;
-                            document.getElementById(messageList[1]).click();
+                        let filters = messageList[1].split(";");
+                        for (let i = 0; i < filters.length; i++) {
+                            let filterName = filters[i].split("-");
+                            if (filterName[0] === "selectAll") {
+                                if (document.getElementById("or_label").classList.contains("active")) {
+                                    if (!document.getElementById("highlight-OR-" + filters[i]).checked) {
+                                        document.getElementById("highlight-OR-" + filters[i]).click();
+                                    }
+                                } else if (document.getElementById("and_label").classList.contains("active")) {
+                                    if (!document.getElementById("highlight-AND-" + filters[i]).checked) {
+                                        document.getElementById("highlight-AND-" + filters[i]).click();
+                                    }
+                                }
+                            } else {
+                                if (document.getElementById("or_label").classList.contains("active")) {
+                                    if (!document.getElementById(filters[i] + "OR").checked) {
+                                        document.getElementById(filters[i] + "OR").click();
+                                    }
+                                } else if (document.getElementById("and_label").classList.contains("active")) {
+                                    if (!document.getElementById(filters[i]).checked) {
+                                        document.getElementById(filters[i]).click();
+                                    }
+                                }
+                            }
                         }
-                        if (filterChecked) {
-                            e.text = "The check box has been switched"
+
+                        if (filters.length === 1) {
+                            e.text = "I checked the filter"
                         } else {
-                            e.text =  messageList[2];
+                            e.text =  "I have checked the filters"
                         }
                     } else {
                         e.text = "Open a document first, in order to perform this action";
                         // selectedDataError(existingStorage);
                     }
                     break;
-                case "intent_filter_all":
+                case "intent_filter_switch":
                     if ('{{ selected_item }}') {
-                        let filterAllChecked;
-
-                        if (document.getElementById("or_label").classList.contains("active")) {
-                            filterAllChecked = document.getElementById("highlight-OR-" + messageList[1]).checked;
-                            document.getElementById("highlight-OR-" + messageList[1]).click();
-                        } else if (document.getElementById("and_label").classList.contains("active")) {
-                            filterAllChecked = document.getElementById("highlight-AND-" + messageList[1]).checked;
-                            document.getElementById("highlight-AND-" + messageList[1]).click();
+                        let filters = messageList[1].split(";");
+                        for (let i = 0; i < filters.length; i++) {
+                            let filterName = filters[i].split("-");
+                            if (filterName[0] === "selectAll") {
+                                if (document.getElementById("or_label").classList.contains("active")) {
+                                    document.getElementById("highlight-OR-" + filters[i]).click();
+                                } else if (document.getElementById("and_label").classList.contains("active")) {
+                                    document.getElementById("highlight-AND-" + filters[i]).click();
+                                }
+                            } else {
+                                if (document.getElementById("or_label").classList.contains("active")) {
+                                    document.getElementById(filters[i] + "OR").click();
+                                } else if (document.getElementById("and_label").classList.contains("active")) {
+                                    document.getElementById(filters[i]).click();
+                                }
+                            }
                         }
-                        if (filterAllChecked) {
-                            e.text = "The check box has been switched"
+
+                        if (filters.length === 1) {
+                            e.text = "I changed the filter"
                         } else {
-                            e.text =  messageList[2];
+                            e.text =  "I have changed the filters"
                         }
                     } else {
                         e.text = "Open a document first, in order to perform this action";
@@ -654,6 +680,44 @@
                             document.getElementById("uncheck_button_highlight_AND").click();
                         }
                         e.text =  messageList[1];
+                    } else {
+                        e.text = "Open a document first, in order to perform this action";
+                        // selectedDataError(existingStorage);
+                    }
+                    break;
+                case "intent_filter_uncheck":
+                    if ('{{ selected_item }}') {
+                        let filters = messageList[1].split(";");
+                        for (let i = 0; i < filters.length; i++) {
+                            let filterName = filters[i].split("-");
+                            if (filterName[0] === "selectAll") {
+                                if (document.getElementById("or_label").classList.contains("active")) {
+                                    if (document.getElementById("highlight-OR-" + filters[i]).checked) {
+                                        document.getElementById("highlight-OR-" + filters[i]).click();
+                                    }
+                                } else if (document.getElementById("and_label").classList.contains("active")) {
+                                    if (document.getElementById("highlight-AND-" + filters[i]).checked) {
+                                        document.getElementById("highlight-AND-" + filters[i]).click();
+                                    }
+                                }
+                            } else {
+                                if (document.getElementById("or_label").classList.contains("active")) {
+                                    if (document.getElementById(filters[i] + "OR").checked) {
+                                        document.getElementById(filters[i] + "OR").click();
+                                    }
+                                } else if (document.getElementById("and_label").classList.contains("active")) {
+                                    if (document.getElementById(filters[i]).checked) {
+                                        document.getElementById(filters[i]).click();
+                                    }
+                                }
+                            }
+                        }
+
+                        if (filters.length === 1) {
+                            e.text = "I unchecked the filter"
+                        } else {
+                            e.text =  "I have unchecked the filters"
+                        }
                     } else {
                         e.text = "Open a document first, in order to perform this action";
                         // selectedDataError(existingStorage);

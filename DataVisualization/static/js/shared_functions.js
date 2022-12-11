@@ -2673,3 +2673,41 @@ function statisticsDataChangedTree (root, fromCircle = false, isSubgraphByID = f
         }
     }
 }
+
+function mostTaggedFeatures(root, fromCircle = false) {
+
+    if (fromCircle) {
+        root = root.data;
+    }
+    var listStatistics = getStatisticsDataSubtree(root);
+
+    let dictFeatures = {'Constructive':listStatistics.totalConstructiveness,'Argument':listStatistics.totalArgumentation,
+        'Sarcasm':listStatistics.totalSarcasm,'Mockery':listStatistics.totalMockery,'Intolerance':listStatistics.totalIntolerance,
+        'Improper language':listStatistics.totalImproper_language,'Insult':listStatistics.totalInsult,'Aggressive':listStatistics.totalAggressiveness}
+
+    // Create items array
+    var items = Object.keys(dictFeatures).map(function(key) {
+      return [key, dictFeatures[key]];
+    });
+
+    // Sort the array based on the second element
+    items.sort(function(first, second) {
+      return second[1] - first[1];
+    });
+
+    items = items.slice(0, 3);
+    console.log(items)
+
+    var textMsg;
+    if (items[0][1] === 0) {
+        textMsg = "There are no tagged features in the selected nodes";
+    } else if (items[1][1] === 0) {
+        textMsg = "The most tagged feature is " + items[0][0] + " &#91;" + items[0][1] + "&#93;. The other features do not appear even once";
+    } else if (items[2][1] === 0){
+        textMsg = "The most tagged features are " + items[0][0] + " &#91;" + items[0][1] + "&#93; and " + items[1][0] + " &#91;" + items[1][1] + "&#93;. The other features do not appear even once";
+    } else {
+        textMsg = "The most tagged features are " + items[0][0] + " &#91;" + items[0][1] + "&#93;, " + items[1][0] + " &#91;" + items[1][1] + "&#93; and " + items[2][0] + " &#91;" + items[2][1] + "&#93;";
+    }
+
+    injectIntentConversation(textMsg);
+}
