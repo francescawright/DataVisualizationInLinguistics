@@ -14,6 +14,9 @@ from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 
+from thefuzz import fuzz
+from thefuzz import process
+
 import re
 import requests
 import random
@@ -475,4 +478,76 @@ class ActionGenerateResponseMessage(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         dispatcher.utter_message(text=tracker.latest_message['entities'][0]['value'])
+        return []
+
+filters_ids = {
+    "not toxic":"highlight-toxicity-0","non toxic":"highlight-toxicity-0","very toxic":"highlight-toxicity-3","mildly toxic":"highlight-toxicity-1",
+    "toxic":"highlight-toxicity-2","positive stance":"highlight-stance-positive",
+    "negative stance":"highlight-stance-negative","neutral stance":"highlight-stance-neutral",
+    "target person":"highlight-target-person","target group":"highlight-target-group",
+    "stereotype":"highlight-target-stereotype","all targets":"selectAll-target",
+    "constructiveness":"highlight-features-constructiveness","argumentation":"highlight-features-argumentation",
+    "sarcasm":"highlight-features-sarcasm","mockery":"highlight-features-mockery",
+    "intolerance":"highlight-features-intolerance","improper language":"highlight-features-improper-language",
+    "insult":"highlight-features-insult","aggressiveness":"highlight-features-aggressiveness",
+    "all features":"selectAll-features"
+}
+choices = ["not toxic","non toxic","very toxic","mildly toxic","toxic","positive stance","negative stance","neutral stance","target person","target group","stereotype","all targets","constructiveness","argumentation","sarcasm","mockery","intolerance","improper language","insult","aggressiveness","all features"]
+threshold = 60
+
+class ActionHighlightCheck(Action):
+
+    def name(self) -> Text:
+        return "action_highlight_check"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        values = []
+        for e in tracker.latest_message['entities']:
+            if e['entity'] == 'filter_name':
+                result, confidence = process.extractOne(e['value'], choices)
+                if confidence >= threshold:
+                    values.append(filters_ids[result])
+        dispatcher.utter_message(text="intent_filter,"+';'.join(values))
+
+        return []
+
+class ActionHighlightSwitch(Action):
+
+    def name(self) -> Text:
+        return "action_highlight_switch"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        values = []
+        for e in tracker.latest_message['entities']:
+            if e['entity'] == 'filter_name':
+                result, confidence = process.extractOne(e['value'], choices)
+                if confidence >= threshold:
+                    values.append(filters_ids[result])
+        dispatcher.utter_message(text="intent_filter_switch,"+';'.join(values))
+
+        return []
+
+class ActionHighlightUncheck(Action):
+
+    def name(self) -> Text:
+        return "action_highlight_uncheck"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        values = []
+        for e in tracker.latest_message['entities']:
+            if e['entity'] == 'filter_name':
+                result, confidence = process.extractOne(e['value'], choices)
+                if confidence >= threshold:
+                    values.append(filters_ids[result])
+        dispatcher.utter_message(text="intent_filter_uncheck,"+';'.join(values))
+
         return []

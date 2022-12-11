@@ -50,27 +50,10 @@ intents:
   # Filters
   - switch_or
   - switch_and
-  - non_toxic
-  - mildly_toxic
-  - toxic
-  - very_toxic
-  - positive_stance
-  - negative_stance
-  - neutral_stance
-  - target_person
-  - target_group
-  - stereotype
-  - constructiveness
-  - argumentation
-  - sarcasm
-  - mockery
-  - intolerance
-  - improper_language
-  - insult
-  - aggressiveness
-  - target_all
-  - features_all
+  - highlight_switch
   - highlight_uncheck_all
+  - highlight_uncheck
+  - highlight_check
   # Complex intents
   - longest_thread
   - widest_level
@@ -111,6 +94,9 @@ actions:
   - validate_signup_form
   - validate_login_form
   - validate_document_selection_form
+  - action_highlight_switch
+  - action_highlight_uncheck
+  - action_highlight_check
 
 forms:
   login_form:
@@ -143,6 +129,7 @@ entities:
   - response_message
   - sessionid
   - username
+  - filter_name
 
 slots:
   csrfmiddlewaretoken:
@@ -260,134 +247,6 @@ responses:
 
   utter_switch_and:
   - text: "intent_switch_or_and,and_button,Highlighting options changed to AND"
-
-  # toxicity responses
-  utter_non_toxic:
-  - text: "intent_filter,highlight-toxicity-0,Here are the all non toxic nodes"
-  - text: "intent_filter,highlight-toxicity-0,Here you have it"
-  - text: "intent_filter,highlight-toxicity-0,All non toxic nodes are now displayed"
-  - text: "intent_filter,highlight-toxicity-0,Here you have all non toxic nodes. Would you like to see something else?"
-
-  utter_mildly_toxic:
-  - text: "intent_filter,highlight-toxicity-1,Here are the all mildly toxic nodes"
-  - text: "intent_filter,highlight-toxicity-1,Here you have it"
-  - text: "intent_filter,highlight-toxicity-1,All mildly toxic nodes are now displayed"
-  - text: "intent_filter,highlight-toxicity-1,Here you have all mildly toxic nodes. Would you like to see something else?"
-
-  utter_toxic:
-  - text: "intent_filter,highlight-toxicity-2,Here are the all toxic nodes"
-  - text: "intent_filter,highlight-toxicity-2,Here you have it"
-  - text: "intent_filter,highlight-toxicity-2,All toxic nodes are now displayed"
-  - text: "intent_filter,highlight-toxicity-2,Here you have all toxic nodes. Would you like to see something else?"
-
-  utter_very_toxic:
-  - text: "intent_filter,highlight-toxicity-3,Here are the all very toxic nodes"
-  - text: "intent_filter,highlight-toxicity-3,Here you have it"
-  - text: "intent_filter,highlight-toxicity-3,All very toxic nodes are now displayed"
-  - text: "intent_filter,highlight-toxicity-3,Here you have all very toxic nodes. Would you like to see something else?"
-
-  # stance responses
-  utter_positive_stance:
-  - text: "intent_filter,highlight-stance-positive,Here are the nodes with positive stance"
-  - text: "intent_filter,highlight-stance-positive,Here you have it"
-  - text: "intent_filter,highlight-stance-positive,All nodes with positive stance are now displayed"
-  - text: "intent_filter,highlight-stance-positive,Here you have nodes with positive stance. Would you like to see something else?"
-
-  utter_negative_stance:
-  - text: "intent_filter,highlight-stance-negative,Here are the nodes with negative stance"
-  - text: "intent_filter,highlight-stance-negative,Here you have it"
-  - text: "intent_filter,highlight-stance-negative,All nodes with negative stance are now displayed"
-  - text: "intent_filter,highlight-stance-negative,Here you have nodes with negative stance. Would you like to see something else?"
-
-  utter_neutral_stance:
-  - text: "intent_filter,highlight-stance-neutral,Here are the nodes with neutral stance"
-  - text: "intent_filter,highlight-stance-neutral,Here you have it"
-  - text: "intent_filter,highlight-stance-neutral,All nodes with neutral stance are now displayed"
-  - text: "intent_filter,highlight-stance-neutral,Here you have nodes with neutral stance. Would you like to see something else?"
-
-  # target responses
-  utter_target_person:
-  - text: "intent_filter,highlight-target-person,Here are the nodes with target person"
-  - text: "intent_filter,highlight-target-person,Here you have it"
-  - text: "intent_filter,highlight-target-person,All nodes with target person are now displayed"
-  - text: "intent_filter,highlight-target-person,Here you have nodes with target person. Would you like to see something else?"
-
-  utter_target_group:
-  - text: "intent_filter,highlight-target-group,Here are the nodes with target group"
-  - text: "intent_filter,highlight-target-group,Here you have it"
-  - text: "intent_filter,highlight-target-group,All nodes with target group are now displayed"
-  - text: "intent_filter,highlight-target-group,Here you have nodes with target group. Would you like to see something else?"
-
-  utter_stereotype:
-  - text: "intent_filter,highlight-target-stereotype,Here are the nodes with stereotype"
-  - text: "intent_filter,highlight-target-stereotype,Here you have it"
-  - text: "intent_filter,highlight-target-stereotype,All nodes with stereotype are now displayed"
-  - text: "intent_filter,highlight-target-stereotype,Here you have nodes with stereotype. Would you like to see something else?"
-
-  utter_target_all:
-  - text: "intent_filter_all,selectAll-target,Here are the nodes with all targets"
-  - text: "intent_filter_all,selectAll-target,Here you have it"
-  - text: "intent_filter_all,selectAll-target,All nodes with all targets are now displayed"
-  - text: "intent_filter_all,selectAll-target,Here you have nodes with all targets. Would you like to see something else?"
-
-  # features - constructiveness, argumentation
-  utter_constructiveness:
-  - text: "intent_filter,highlight-features-constructiveness,Here are the nodes with constructiveness"
-  - text: "intent_filter,highlight-features-constructiveness,Here you have constructive nodes"
-  - text: "intent_filter,highlight-features-constructiveness,Here you have it"
-  - text: "intent_filter,highlight-features-constructiveness,All nodes with constructiveness are now displayed"
-  - text: "intent_filter,highlight-features-constructiveness,Here you have nodes with constructiveness. Would you like to see something else?"
-
-  utter_argumentation:
-  - text: "intent_filter,highlight-features-argumentation,Here are the nodes with argumentation"
-  - text: "intent_filter,highlight-features-argumentation,Here you have it"
-  - text: "intent_filter,highlight-features-argumentation,All nodes with argumentation are now displayed"
-  - text: "intent_filter,highlight-features-argumentation,Here you have nodes with argumentation. Would you like to see something else?"
-
-  # features - sarcasm, mockery, intolerance
-  utter_sarcasm:
-  - text: "intent_filter,highlight-features-sarcasm,Here are the nodes with sarcasm"
-  - text: "intent_filter,highlight-features-sarcasm,Here are sarcastic nodes"
-  - text: "intent_filter,highlight-features-sarcasm,Here you have it"
-  - text: "intent_filter,highlight-features-sarcasm,All nodes with sarcasm are now displayed"
-  - text: "intent_filter,highlight-features-sarcasm,Here you have nodes with sarcasm. Would you like to see something else?"
-
-  utter_mockery:
-  - text: "intent_filter,highlight-features-mockery,Here are the nodes with mockery"
-  - text: "intent_filter,highlight-features-mockery,Here you have it"
-  - text: "intent_filter,highlight-features-mockery,All nodes with mockery are now displayed"
-  - text: "intent_filter,highlight-features-mockery,Here you have nodes with mockery. Would you like to see something else?"
-
-  utter_intolerance:
-  - text: "intent_filter,highlight-features-intolerance,Here are the nodes with intolerance"
-  - text: "intent_filter,highlight-features-intolerance,Here you have it"
-  - text: "intent_filter,highlight-features-intolerance,All nodes with intolerance are now displayed"
-  - text: "intent_filter,highlight-features-intolerance,Here you have nodes with intolerance. Would you like to see something else?"
-
-  # features - improper language, insult, aggressiveness
-  utter_improper_language:
-  - text: "intent_filter,highlight-features-improper-language,Here are the nodes with improper language"
-  - text: "intent_filter,highlight-features-improper-language,Here you have it"
-  - text: "intent_filter,highlight-features-improper-language,All nodes with improper language are now displayed"
-  - text: "intent_filter,highlight-features-improper-language,Here you have nodes with improper language. Would you like to see something else?"
-
-  utter_insult:
-  - text: "intent_filter,highlight-features-insult,Here are the nodes with insult"
-  - text: "intent_filter,highlight-features-insult,Here you have it"
-  - text: "intent_filter,highlight-features-insult,All nodes with insult are now displayed"
-  - text: "intent_filter,highlight-features-insult,Here you have nodes with insult. Would you like to see something else?"
-
-  utter_aggressiveness:
-  - text: "intent_filter,highlight-features-aggressiveness,Here are the nodes with aggressiveness"
-  - text: "intent_filter,highlight-features-aggressiveness,Here you have it"
-  - text: "intent_filter,highlight-features-aggressiveness,All nodes with aggressiveness are now displayed"
-  - text: "intent_filter,highlight-features-aggressiveness,Here you have nodes with aggressiveness. Would you like to see something else?"
-
-  utter_features_all:
-  - text: "intent_filter_all,selectAll-features,Here are the nodes with all features"
-  - text: "intent_filter_all,selectAll-features,Here you have it"
-  - text: "intent_filter_all,selectAll-features,All nodes with all features are now displayed"
-  - text: "intent_filter_all,selectAll-features,Here you have nodes with all features. Would you like to see something else?"
 
   utter_highlight_uncheck_all:
   - text: "intent_highlight_uncheck_all,Here you have it"

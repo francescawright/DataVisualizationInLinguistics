@@ -117,115 +117,25 @@ rules:
   - intent: switch_or
   - action: utter_switch_or
 
-# highlight toxicity
-- rule: User wants to see non toxic nodes
-  steps:
-  - intent: non_toxic
-  - action: utter_non_toxic
-
-- rule: User wants to see mildly toxic nodes
-  steps:
-  - intent: mildly_toxic
-  - action: utter_mildly_toxic
-
-- rule: User wants to see toxic nodes
-  steps:
-  - intent: toxic
-  - action: utter_toxic
-
-- rule: User wants to see very toxic nodes
-  steps:
-  - intent: very_toxic
-  - action: utter_very_toxic
-
-# highlight positive negative neutral stance
-- rule: User wants to see positive stance nodes
-  steps:
-  - intent: positive_stance
-  - action: utter_positive_stance
-
-- rule: User wants to see negative stance nodes
-  steps:
-  - intent: negative_stance
-  - action: utter_negative_stance
-
-- rule: User wants to see neutral stance nodes
-  steps:
-  - intent: neutral_stance
-  - action: utter_neutral_stance
-
-# highlight targets
-- rule: User wants to see target person nodes
-  steps:
-  - intent: target_person
-  - action: utter_target_person
-
-- rule: User wants to see target group nodes
-  steps:
-  - intent: target_group
-  - action: utter_target_group
-
-- rule: User wants to see stereotype nodes
-  steps:
-  - intent: stereotype
-  - action: utter_stereotype
-
-- rule: User wants to select all targets
-  steps:
-  - intent: target_all
-  - action: utter_target_all
-
-# highlight features
-- rule: User wants to see constructiveness nodes
-  steps:
-  - intent: constructiveness
-  - action: utter_constructiveness
-
-
-- rule: User wants to see argumentation nodes
-  steps:
-  - intent: argumentation
-  - action: utter_argumentation
-
-- rule: User wants to see sarcasm nodes
-  steps:
-  - intent: sarcasm
-  - action: utter_sarcasm
-
-- rule: User wants to see mockery nodes
-  steps:
-  - intent: mockery
-  - action: utter_mockery
-
-- rule: User wants to see intolerance nodes
-  steps:
-  - intent: intolerance
-  - action: utter_intolerance
-
-- rule: User wants to see improper language nodes
-  steps:
-  - intent: improper_language
-  - action: utter_improper_language
-
-- rule: User wants to see insult nodes
-  steps:
-  - intent: insult
-  - action: utter_insult
-
-- rule: User wants to see aggressiveness nodes
-  steps:
-  - intent: aggressiveness
-  - action: utter_aggressiveness
-
-- rule: User wants to select all features
-  steps:
-  - intent: features_all
-  - action: utter_features_all
-
 - rule: User wants to uncheck all highlighting filters
   steps:
   - intent: highlight_uncheck_all
   - action: utter_highlight_uncheck_all
+
+- rule: User wants to uncheck one or more filters
+  steps:
+  - intent: highlight_uncheck
+  - action: action_highlight_uncheck
+
+- rule: User wants to uncheck one or more filters
+  steps:
+  - intent: highlight_check
+  - action: action_highlight_check
+
+- rule: User wants to switch one or more filters
+  steps:
+  - intent: highlight_switch
+  - action: action_highlight_switch
 
 # complex intent stories
 # highlight (for now) longest thread, largest thread, widest thread
