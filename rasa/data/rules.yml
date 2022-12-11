@@ -282,3 +282,26 @@ rules:
   steps:
     - intent: help_subtree_barchart
     - action: utter_help_subtree_bar
+
+
+- rule: User wants to know about AND
+  steps:
+    - intent: help_AND
+    - action: utter_help_AND
+
+- rule: User wants to know about OR
+  steps:
+    - intent: help_OR
+    - action: utter_help_OR
+
+- rule: User wants to know about the difference of AND/OR
+  steps:
+    - intent: help_AND_OR
+    - action: utter_help_AND_OR
+
+- rule: user wants to know what bot can do
+  steps:
+    - intent: help_what_can_you_do
+    - action: utter_help_what_can_you_do
+
+
