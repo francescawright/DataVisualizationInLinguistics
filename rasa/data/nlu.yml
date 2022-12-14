@@ -702,6 +702,8 @@ nlu:
     - Undo all highlighting
     - Undo highlighting
     - Disable all highlight filters
+    - Remove all filters
+    - Reset filters
 
 - intent: highlight_uncheck
   examples: |
@@ -1140,6 +1142,7 @@ nlu:
     - Compare the main view graph features
     - Display a chart of the statistics of the graph features
     - Show me the graph features statistics in a chart
+    - Show me the statistics of the whole graph
 
 - intent: statistics_features_subtrees
   examples: |
@@ -1153,3 +1156,75 @@ nlu:
     - Show me the subtrees features statistics
     - Show me the statistics of the subgraphs features
     - Display the statistics of the subgraphs features in a chart
+
+- intent: most_tagged_features
+  examples: |
+    - What are the most tagged features
+    - Which features are tagged the most
+
+#help
+
+- intent: help_glyphs
+  examples: |
+    - What are the glyphs?
+    - How can I use the glyphs?
+    - What are dots, circular glyph and trivial cheese?
+    - What are features on the left bar?
+    - What are targets on the left bar?
+    - Give me more information about glyphs
+
+
+- intent: help_layouts
+  examples: |
+    - Why there are many layouts?
+    - What are the layouts?
+    - Give me more information about layouts
+
+- intent: help_highlight
+  examples: |
+    - How can use highlight on the left bar?
+    - What is highlight on the left bar?
+    - What is highlight?
+    - Give me more information about highlight
+
+- intent: help_summary
+  examples: |
+    - What is summary?
+    - What does summary show?
+    - Give me information about summary
+
+- intent: help_main_graph_barchart
+  examples: |
+    - What is main graph?
+    - What does first button on the right show?
+
+- intent: help_subtree_barchart
+  examples: |
+    - What is sub graphs?
+    - What does second button on the right show?
+
+- intent: functions
+  examples: |
+    - What are the functions of this tool?
+    - How can I use this tool?
+
+- intent: help_AND
+  examples: |
+    - What is AND on the left bar
+    - What is AND
+
+- intent: help_OR
+  examples: |
+    - What is OR on the left bar
+    - What is OR
+
+- intent: help_AND_OR
+  examples: |
+    - What is the difference between AND and OR
+    - Why there are two options AND and OR
+
+- intent: help_what_can_you_do
+  examples: |
+    - What can you do?
+    - What can I ask you?
+    - How can you help me?
