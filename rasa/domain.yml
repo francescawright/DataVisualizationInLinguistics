@@ -270,27 +270,27 @@ responses:
 
   # longest, largest, widest, most toxic
   utter_longest_thread:
-  - text: "intent_highlight_graph,longest_thread,Here you have it"
-  - text: "intent_highlight_graph,longest_thread,I've highlighted it in your graph"
-  - text: "intent_highlight_graph,longest_thread,Here is the longest thread"
+  - text: "intent_event,longest_thread,Here you have it"
+  - text: "intent_event,longest_thread,I've highlighted it in your graph"
+  - text: "intent_event,longest_thread,Here is the longest thread"
 
   utter_widest_level:
-  - text: "intent_highlight_graph,widest_level,Here you have it"
-  - text: "intent_highlight_graph,widest_level,I've highlighted it in your graph"
-  - text: "intent_highlight_graph,widest_level,Here is the widest level"
+  - text: "intent_event,widest_level,Here you have it"
+  - text: "intent_event,widest_level,I've highlighted it in your graph"
+  - text: "intent_event,widest_level,Here is the widest level"
 
   utter_largest_thread:
-  - text: "intent_highlight_graph,largest_thread,Here you have it"
-  - text: "intent_highlight_graph,largest_thread,I've highlighted it in your graph"
-  - text: "intent_highlight_graph,largest_thread,Here is the largest subtree"
+  - text: "intent_event,largest_thread,Here you have it"
+  - text: "intent_event,largest_thread,I've highlighted it in your graph"
+  - text: "intent_event,largest_thread,Here is the largest subtree"
 
   utter_most_toxic_thread:
-    - text: "intent_highlight_graph,most_toxic_thread,Here is the most toxic thread"
-    - text: "intent_highlight_graph,most_toxic_thread,Here you have it"
+    - text: "intent_event,most_toxic_thread,Here is the most toxic thread"
+    - text: "intent_event,most_toxic_thread,Here you have it"
 
   utter_most_toxic_subtree:
-    - text: "intent_highlight_graph,most_toxic_subtree,Here is the most toxic subtree"
-    - text: "intent_highlight_graph,most_toxic_subtree,Here you have it"
+    - text: "intent_event,most_toxic_subtree,Here is the most toxic subtree"
+    - text: "intent_event,most_toxic_subtree,Here you have it"
 
   # comment level and very toxic
   utter_comment_level_vs_very_toxic:
@@ -349,14 +349,14 @@ responses:
     - text: "In [] level of toxicity target person appears more"
 
   utter_statistics_features_tree:
-    - text: "intent_statistics_features,statistics_all_features_tree,These are the statistics of the graph features"
+    - text: "intent_event,statistics_all_features_tree,These are the statistics of the graph features"
 
   utter_statistics_features_subtrees:
-    - text: "intent_statistics_features,statistics_all_features_subtrees,These are the statistics of the subgraphs features"
+    - text: "intent_event,statistics_all_features_subtrees,These are the statistics of the subgraphs features"
 
   utter_most_tagged_features:
-    - text: "here are most tagged features"
-    - text: "these are the most tagged features"
+    - text: "intent_event,most_tagged_features,Here are most tagged features"
+    - text: "intent_event,most_tagged_features,These are the most tagged features"
 
   utter_asking_about_barchart:
     - text: "Do you want to see a bar chart comparing values of features?"

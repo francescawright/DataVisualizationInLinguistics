@@ -277,6 +277,7 @@ rules:
   steps:
     - intent: help_main_graph_barchart
     - action: utter_help_main_bar
+  wait_for_user_input: false
 
 - rule: User wants to know about sub graphs button
   steps:
