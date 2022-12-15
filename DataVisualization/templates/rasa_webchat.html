@@ -539,12 +539,12 @@
                                     if ('{{ selected_item }}') {
                                         document.getElementById("dataset_dropdown").value = dataset_dropdown_value;
                                     }
-                                    injectIntentConversation("I cannot find any document with the name you have given me");
+                                    injectTextConversation("I cannot find any document with the name you have given me");
                                 } else if (jqXHR.responseText === "open_document_no_active_session") {
                                     if ('{{ selected_item }}') {
                                         document.getElementById("dataset_dropdown").value = dataset_dropdown_value;
                                     }
-                                    injectIntentConversation("You need to be logged in to access the documents");
+                                    injectTextConversation("You need to be logged in to access the documents");
                                 } else {
                                     errorText = 'Bad Request [400]';
                                 }
@@ -585,7 +585,6 @@
                         }
                     } else {
                         e.text = "Open a document first, in order to perform this action";
-                        // selectedDataError(existingStorage);
                     }
                     break;
                 case "intent_switch_or_and":
@@ -600,7 +599,6 @@
                         }
                     } else {
                         e.text = "Open a document first, in order to perform this action";
-                        // selectedDataError(existingStorage);
                     }
                     break;
                 case "intent_filter":
@@ -638,7 +636,6 @@
                         }
                     } else {
                         e.text = "Open a document first, in order to perform this action";
-                        // selectedDataError(existingStorage);
                     }
                     break;
                 case "intent_filter_switch":
@@ -668,7 +665,6 @@
                         }
                     } else {
                         e.text = "Open a document first, in order to perform this action";
-                        // selectedDataError(existingStorage);
                     }
                     break;
                 case "intent_highlight_uncheck_all":
@@ -682,7 +678,6 @@
                         e.text =  messageList[1];
                     } else {
                         e.text = "Open a document first, in order to perform this action";
-                        // selectedDataError(existingStorage);
                     }
                     break;
                 case "intent_filter_uncheck":
@@ -720,25 +715,15 @@
                         }
                     } else {
                         e.text = "Open a document first, in order to perform this action";
-                        // selectedDataError(existingStorage);
                     }
                     break;
-                case "intent_highlight_graph":
+                //
+                case "intent_event":
                     if ('{{ selected_item }}') {
                         e.text = messageList[2];
                         $(window).trigger(messageList[1]);
                     } else {
                         e.text = "Open a document first, in order to perform this action";
-                        // selectedDataError(existingStorage);
-                    }
-                    break;
-                case "intent_statistics_features":
-                    if ('{{ selected_item }}') {
-                        e.text = messageList[2];
-                        $(window).trigger(messageList[1]);
-                    } else {
-                        e.text = "Open a document first, in order to perform this action";
-                        // selectedDataError(existingStorage);
                     }
             }
             if (textToSpeech && (e.hidden !== true)) {
@@ -751,7 +736,7 @@
         }
     }
 
-    function injectIntentConversation(textMsg){
+    function injectTextConversation(textMsg, next_action = 'None'){
         // Get the existing sessionStorage data
         var existingStorage = sessionStorage.getItem("chat_session");
         // If no existing data, create an array
@@ -764,8 +749,25 @@
         xhr.send(JSON.stringify({
         "name": "generate_response_message",
         "entities": {
-            "response_message": textMsg
+            "response_message": textMsg,
+            "next_action" : next_action
         }
+        }));
+    }
+
+    function injectIntentConversation(intent){
+        // Get the existing sessionStorage data
+        var existingStorage = sessionStorage.getItem("chat_session");
+        // If no existing data, create an array
+        // Otherwise, convert the sessionStorage string to an array
+        existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:5005/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+        "name": intent,
+        "entities": {}
         }));
     }
 

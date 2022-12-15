@@ -3625,7 +3625,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 longestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
             } else if (selectedContainer === "popup") {
                 document.getElementById("do_action").value = 'longest_thread';
-                document.getElementById("send-popup-main-btn").click();
+                sendPopup('send_to_main');
             }
         });
 
@@ -3639,8 +3639,9 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             if (selectedContainer === "main" || selectedContainer === "") {
                 widestLevelHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
             } else if (selectedContainer === "popup") {
+                document.getElementById("selected_container").value = "";
                 document.getElementById("do_action").value = 'widest_level';
-                document.getElementById("send-popup-main-btn").click();
+                sendPopup('send_to_main');
             }
         });
 
@@ -3655,7 +3656,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 largestThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
             } else if (selectedContainer === "popup") {
                 document.getElementById("do_action").value = 'largest_thread';
-                document.getElementById("send-popup-main-btn").click();
+                sendPopup('send_to_main');
             }
         });
 
@@ -3670,7 +3671,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 mostToxicThreadHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
             } else if (selectedContainer === "popup") {
                 document.getElementById("do_action").value = 'most_toxic_thread';
-                document.getElementById("send-popup-main-btn").click();
+                sendPopup('send_to_main');
             }
         });
 
@@ -3685,8 +3686,16 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 mostToxicSubtreeHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link);
             } else if (selectedContainer === "popup") {
                 document.getElementById("do_action").value = 'most_toxic_subtree';
-                document.getElementById("send-popup-main-btn").click();
+                sendPopup('send_to_main');
             }
+        });
+
+        /**
+         * Displays in the chat the three features that appear the most in the main window graph
+         */
+        $(window).off("most_tagged_features");
+        $(window).on("most_tagged_features", function () {
+            mostTaggedFeatures(root);
         });
 
         // Gets the statistics of the features of the graph shown in the main window,

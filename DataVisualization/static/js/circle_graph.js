@@ -532,7 +532,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
                 textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
             }
 
-            injectIntentConversation(textMsg);
+            injectTextConversation(textMsg);
 
             if (deepestNodes[0].depth > 0) {
                 deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
@@ -545,7 +545,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
             }
         } else if (selectedContainer === "popup") {
             document.getElementById("do_action").value = 'longest_thread';
-            document.getElementById("send-popup-main-btn").click();
+            sendPopup('send_to_main');
         }
     });
 
@@ -567,7 +567,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
                 textMsg = "The widest level is level " + widestLevels[0][0] + " which has a width of " + widestLevels[1];
             }
 
-            injectIntentConversation(textMsg);
+            injectTextConversation(textMsg);
 
             highlightWidestLevelsCircle(nodes, maxOpacityValue, minOpacityValue, node, widestLevels[0], root);
 
@@ -575,8 +575,9 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
                 statisticBackground.html(writeStatisticText(root, true));
             }
         } else if (selectedContainer === "popup") {
+            document.getElementById("selected_container").value = "";
             document.getElementById("do_action").value = 'widest_level';
-            document.getElementById("send-popup-main-btn").click();
+            sendPopup('send_to_main');
         }
     });
 
@@ -602,7 +603,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
                 textMsg = "The largest thread has a total of " + numNodes + " nodes";
             }
 
-            injectIntentConversation(textMsg);
+            injectTextConversation(textMsg);
 
             if (largestThreads.length > 0) {
                 largestNodesPath = getDescendantsListNodes(root, largestThreads);
@@ -615,7 +616,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
             }
         } else if (selectedContainer === "popup") {
             document.getElementById("do_action").value = 'largest_thread';
-            document.getElementById("send-popup-main-btn").click();
+            sendPopup('send_to_main');
         }
     });
 
@@ -631,12 +632,12 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
             let mostToxicNodesPath;
 
             if (endNodes.length < 1) {
-                injectIntentConversation("There are no threads in this graph");
+                injectTextConversation("There are no threads in this graph");
             } else {
                 mostToxicNodesPath = getMostToxicThreadPath(root, endNodes, true);
 
                 if (mostToxicNodesPath[1] === 0) {
-                    injectIntentConversation("There are no toxic threads in this graph");
+                    injectTextConversation("There are no toxic threads in this graph");
                 } else {
                     let textMsg;
                     if (mostToxicNodesPath[2] === 1) {
@@ -644,7 +645,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
                     } else {
                         textMsg = "There are " + mostToxicNodesPath[2] + " threads with the same maximum level of toxicity";
                     }
-                    injectIntentConversation(textMsg);
+                    injectTextConversation(textMsg);
                     highlightThreadPopupCircle(nodes, root, maxOpacityValue, minOpacityValue, mostToxicNodesPath[0], node);
 
                     if (static_values_checked) {
@@ -654,7 +655,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
             }
         } else if (selectedContainer === "popup") {
             document.getElementById("do_action").value = 'most_toxic_thread';
-            document.getElementById("send-popup-main-btn").click();
+            sendPopup('send_to_main');
         }
     });
 
@@ -678,7 +679,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
                 textMsg = "There is only one subtree with the maximum level of toxicity";
             }
 
-            injectIntentConversation(textMsg);
+            injectTextConversation(textMsg);
 
             if (rootNodes.length > 0) {
                 mostToxicNodesPath = getDescendantsListNodes(root, rootNodes);
@@ -691,8 +692,16 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
             }
         } else if (selectedContainer === "popup") {
             document.getElementById("do_action").value = 'most_toxic_subtree';
-            document.getElementById("send-popup-main-btn").click();
+            sendPopup('send_to_main');
         }
+    });
+
+    /**
+     * Displays in the chat the three features that appear the most in the main window graph
+     */
+    $(window).off("most_tagged_features");
+    $(window).on("most_tagged_features", function () {
+        mostTaggedFeatures(root, true);
     });
 
     // Gets the statistics of the features of the graph shown in the main window,

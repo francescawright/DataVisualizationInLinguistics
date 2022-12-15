@@ -193,9 +193,9 @@
                     alert('Not connect: Verify Network.');
                 } else if (jqXHR.status === 400) {
                     if (jqXHR.responseText === "document_not_exist") {
-                        injectIntentConversation("Document could not be found");
+                        injectTextConversation("Document could not be found");
                     } else if (jqXHR.responseText === "open_document_no_active_session") {
-                        injectIntentConversation("Please log in to perform this action");
+                        injectTextConversation("Please log in to perform this action");
                     } else {
                         errorText = 'Bad Request [400]';
                     }

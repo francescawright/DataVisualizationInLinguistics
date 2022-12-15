@@ -923,9 +923,9 @@ def get_template_by_path(request, error_message):
             return redirect(reverse('index') + '?chatbotError=' + error_message)
         else:
             if request.method == 'POST':
-                inject_intent_conversation(request.POST["session_id"], get_chat_error_message(error_message))
+                inject_text_conversation(request.POST["session_id"], get_chat_error_message(error_message))
             elif request.method == 'GET':
-                inject_intent_conversation(request.GET["session_id"], get_chat_error_message(error_message))
+                inject_text_conversation(request.GET["session_id"], get_chat_error_message(error_message))
 
             return HttpResponse(status=204)
 
@@ -954,7 +954,7 @@ def get_chat_success_message(request, successName):
     return messages_dict[successName]
 
 
-def inject_intent_conversation(session_id, textMsg):
+def inject_text_conversation(session_id, textMsg):
     url = 'http://localhost:5005/conversations/' + session_id + '/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio'
     json_msg = {
         "name": "generate_response_message",

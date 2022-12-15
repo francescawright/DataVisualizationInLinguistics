@@ -1617,9 +1617,9 @@ function subtreeToPopup(root, nodesPath, fromCircle = false){
                 alert('Not connect: Verify Network.');
             } else if (jqXHR.status === 400) {
                 if (jqXHR.responseText === "document_not_exist") {
-                    injectIntentConversation("Document could not be found");
+                    injectTextConversation("Document could not be found");
                 } else if (jqXHR.responseText === "open_document_no_active_session") {
-                    injectIntentConversation("Please log in to perform this action");
+                    injectTextConversation("Please log in to perform this action");
                 } else {
                     errorText = 'Bad Request [400]';
                 }
@@ -1700,7 +1700,7 @@ function widestLevelHandler(static_values_checked, statisticBackground, root, no
         textMsg = "The widest level is level " + widestLevels[0][0] + " which has a width of " + widestLevels[1];
     }
 
-    injectIntentConversation(textMsg);
+    injectTextConversation(textMsg);
 
     highlightWidestLevels(nodes, opacityValue, node, link, widestLevels[0], root);
 
@@ -1722,7 +1722,7 @@ function longestThreadHandler(static_values_checked, statisticBackground, root, 
         textMsg = "The longest thread has a depth of " + deepestNodes[0].depth;
     }
 
-    injectIntentConversation(textMsg);
+    injectTextConversation(textMsg);
 
     if (deepestNodes[0].depth > 0) {
         deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
@@ -1750,7 +1750,7 @@ function largestThreadHandler(static_values_checked, statisticBackground, root, 
         textMsg = "The largest thread has a total of " + numNodes + " nodes";
     }
 
-    injectIntentConversation(textMsg);
+    injectTextConversation(textMsg);
 
     if (largestThreads.length > 0) {
         largestNodesPath = getDescendantsListNodes(root, largestThreads);
@@ -1768,12 +1768,12 @@ function mostToxicThreadHandler(static_values_checked, statisticBackground, root
     let mostToxicNodesPath;
 
     if (endNodes.length < 1) {
-        injectIntentConversation("There are no threads in this graph");
+        injectTextConversation("There are no threads in this graph");
     } else {
         mostToxicNodesPath = getMostToxicThreadPath(root, endNodes);
 
         if (mostToxicNodesPath[1] === 0) {
-            injectIntentConversation("There are no toxic threads in this graph");
+            injectTextConversation("There are no toxic threads in this graph");
         } else {
             let textMsg;
             if (mostToxicNodesPath[2] === 1) {
@@ -1781,7 +1781,7 @@ function mostToxicThreadHandler(static_values_checked, statisticBackground, root
             } else {
                 textMsg = "There are " + mostToxicNodesPath[2] + " threads with the same maximum level of toxicity";
             }
-            injectIntentConversation(textMsg);
+            injectTextConversation(textMsg);
             highlightThreadPopup(nodes, root, opacityValue, mostToxicNodesPath[0], node, link);
 
             if (static_values_checked) {
@@ -1804,7 +1804,7 @@ function mostToxicSubtreeHandler(static_values_checked, statisticBackground, roo
         textMsg = "There is only one subtree with the maximum level of toxicity";
     }
 
-    injectIntentConversation(textMsg);
+    injectTextConversation(textMsg);
 
     if (rootNodes.length > 0) {
         mostToxicNodesPath = getDescendantsListNodes(root, rootNodes);
@@ -2696,7 +2696,6 @@ function mostTaggedFeatures(root, fromCircle = false) {
     });
 
     items = items.slice(0, 3);
-    console.log(items)
 
     var textMsg;
     if (items[0][1] === 0) {
@@ -2709,5 +2708,5 @@ function mostTaggedFeatures(root, fromCircle = false) {
         textMsg = "The most tagged features are " + items[0][0] + " &#91;" + items[0][1] + "&#93;, " + items[1][0] + " &#91;" + items[1][1] + "&#93; and " + items[2][0] + " &#91;" + items[2][1] + "&#93;";
     }
 
-    injectIntentConversation(textMsg);
+    injectTextConversation(textMsg, 'utter_asking_about_barchart');
 }

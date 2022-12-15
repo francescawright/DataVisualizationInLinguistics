@@ -233,7 +233,6 @@ stories:
     - action: utter_most_toxic_thread
     - intent: most_tagged_features
     - action: utter_most_tagged_features
-    - action: utter_asking_about_barchart
     - intent: affirm
     - action: utter_statistics_features_subtrees
     - action: utter_help_glyphs
@@ -249,7 +248,6 @@ stories:
     - action: utter_most_toxic_thread
     - intent: most_tagged_features
     - action: utter_most_tagged_features
-    - action: utter_asking_about_barchart
     - intent: deny
     - action: utter_user_deny_help
 
@@ -262,7 +260,6 @@ stories:
     - action: action_highlight_check
     - intent: most_tagged_features
     - action: utter_most_tagged_features
-    - action: utter_asking_about_barchart
     - intent: affirm
     - action: utter_statistics_features_subtrees
     - action: utter_help_glyphs
@@ -275,7 +272,6 @@ stories:
     - action: utter_largest_thread
     - intent: most_tagged_features
     - action: utter_most_tagged_features
-    - action: utter_asking_about_barchart
     - intent: deny
     - action: utter_user_deny_help
 

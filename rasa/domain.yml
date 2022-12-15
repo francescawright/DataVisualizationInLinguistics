@@ -355,8 +355,7 @@ responses:
     - text: "intent_event,statistics_all_features_subtrees,These are the statistics of the subgraphs features"
 
   utter_most_tagged_features:
-    - text: "intent_event,most_tagged_features,Here are most tagged features"
-    - text: "intent_event,most_tagged_features,These are the most tagged features"
+    - text: "intent_event,most_tagged_features,Here you have it"
 
   utter_asking_about_barchart:
     - text: "Do you want to see a bar chart comparing values of features?"

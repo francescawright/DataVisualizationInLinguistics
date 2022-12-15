@@ -477,7 +477,19 @@ class ActionGenerateResponseMessage(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        dispatcher.utter_message(text=tracker.latest_message['entities'][0]['value'])
+
+        text_msg = None
+        next_action = None
+        for e in tracker.latest_message['entities']:
+            if e['entity'] == 'response_message':
+                text_msg = e['value']
+            elif e['entity'] == 'next_action':
+                next_action = e['value']
+
+
+        dispatcher.utter_message(text=text_msg)
+        if next_action and next_action != 'None':
+            return [FollowupAction(next_action)]
         return []
 
 filters_ids = {
