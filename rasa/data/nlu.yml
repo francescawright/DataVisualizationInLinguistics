@@ -1172,6 +1172,7 @@ nlu:
     - What are features on the left bar?
     - What are targets on the left bar?
     - Give me more information about glyphs
+    - Can you give me more information about glyphs?
 
 
 - intent: help_layouts
@@ -1228,3 +1229,9 @@ nlu:
     - What can you do?
     - What can I ask you?
     - How can you help me?
+
+
+- intent: what_can_do_after_glyphs
+  examples: |
+    - What can I do now after viewing glyphs?
+    - What more I can do now?

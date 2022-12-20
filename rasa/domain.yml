@@ -87,6 +87,7 @@ intents:
   - help_OR
   - help_AND_OR
   - help_what_can_you_do
+  - what_can_do_after_glyphs
 
 actions:
   - action_check_session_login
@@ -365,14 +366,14 @@ responses:
   Check-all the features on the left column under Features to see the glyphs"
 
   utter_help_bar_chart_pop_up:
-    - text: "You can change features to targets, stances, or level of toxicity analyse them. Also, you can change the visualisation to horizontal bar chart or pie."
+    - text: "You can change features to targets, stances, or level of toxicity to analyse them. Also, you can change the visualisation to a horizontal bar chart or a pie."
 
 
 # help
   utter_explain_glyphs:
     - text: "Glyphs helps you see which comments are annotated with which features.
     I have three available glyphs: Dots, Circular Glyph, and Trivial Cheese.
-    You can ask me or use the left bar to activate the features you want to see. You can select them one-by-one or
+    You can use the left bar to activate the features you want to see. You can select them one-by-one or
     select 'check all' button to see all of them. You can select glyphs by clicking on
    the buttons above that have pictures of each glyph."
 
@@ -403,9 +404,9 @@ responses:
     are there in different target features. Summary gets updated when comments are highlighted."
 
   utter_help_main_bar:
-    - text: "If you select Main Graph button, bar chart will appear displaying the
-    number of each feature that main graph have. Also, you can select from the list
-     to see Targets, Stances and Level of toxicity. There are available three graphs
+    - text: "If you select 'Selected Comments' button on the top, a bar chart will appear displaying the
+    number of each feature the selected comments have. Also, from the first list you can select
+     to see statistics of Targets, Stances and Level of toxicity. There are available three graphs
      that you can choose from the second list, Bar Chart, Horizontal Bar Chart and Pie
      Chart."
 
@@ -417,12 +418,41 @@ responses:
 
   utter_general_help:
     - text: "You can ask me about Layouts, Glyphs, Highlight, Features and Targets on
-      the left bar, Summary, and Two button saying Main Graph and Sub Graphs"
+      the left bar, Summary, and Two buttons on the top saying Selected Comments and Level one comments"
 
   utter_help_what_can_you_do:
-    - text: "I can show you Largest, Longest, and Most toxic thread.
-    I can show you Widest level. I can highlight comments for you. You can ask me questions about different
-    features of the tool and I can explain them to you."
+    - text: "I am here to guide you through analysis. I can show you the Largest, the Longest, and the Most toxic thread.
+    Also, I can show you Widest level. I can highlight comments for you if you ask me. You can ask me questions about different
+    features of the tool and I can explain how to use them to you."
+
+  utter_explain_pop_up_toxic:
+    - text: "I highlighted the most toxic thread on the main view. Also, I displayed it separately on
+    a pop-up window. Now the active window is the pop-up that is highlighted with a blue frame. You can switch
+    the active window by selecting the main window. Don't forget I will give answers to your questions considering
+    the active window!"
+
+  utter_explain_pop_up_largest:
+    - text: "I highlighted the largest thread on the main view. Also, I displayed it separately on
+    a pop-up window. Now the active window is the pop-up that is highlighted with a blue frame. You can switch
+    the active window by selecting the main window. Don't forget I will give answers to your questions considering
+    the active window!"
+
+  utter_explain_pop_up_longest:
+    - text: "I highlighted the longest thread on the main view. Also, I displayed it separately on
+    a pop-up window. Now the active window is the pop-up that is highlighted with a blue frame. You can switch
+    the active window by selecting the main window. Don't forget I will give answers to your questions considering
+    the active window!"
+
+  utter_explain_pop_up_widest:
+    - text: "I highlighted the widest level on the main view. Also, I displayed it separately on
+    a pop-up window. Now the active window is the pop-up that is highlighted with a blue frame. You can switch
+    the active window by selecting the main window. Don't forget I will give answers to your questions considering
+    the active window!"
+
+  utter_guide_bar_charts:
+    - text: "Now you can compare the features with additional charts. Also, don't forget you can switch
+    active window and compare whole graph's features with additional charts. Just ask me or select the
+    button at the top that says 'Selected Comments'."
 
 session_config:
   session_expiration_time: 60
