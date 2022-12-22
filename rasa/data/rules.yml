@@ -127,7 +127,7 @@ rules:
   - intent: highlight_uncheck
   - action: action_highlight_uncheck
 
-- rule: User wants to uncheck one or more filters
+- rule: User wants to check one or more filters
   steps:
   - intent: highlight_check
   - action: action_highlight_check
@@ -137,6 +137,20 @@ rules:
   - intent: highlight_switch
   - action: action_highlight_switch
 
+- rule: User wants to uncheck the last filters used
+  steps:
+  - intent: highlight_uncheck_last
+  - action: action_highlight_uncheck_last
+
+- rule: User wants to check the last filters used
+  steps:
+  - intent: highlight_check_last
+  - action: action_highlight_check_last
+
+- rule: User wants to switch the last filters used
+  steps:
+  - intent: highlight_switch_last
+  - action: action_highlight_switch_last
 # complex intent stories
 # highlight (for now) longest thread, largest thread, widest thread
 - rule: User wants to see the longest thread

@@ -390,153 +390,171 @@ nlu:
     - Switch [non toxic]{"entity": "filter_name"} filter
     - Switch [argumentation]{"entity": "filter_name"} filter
     - Switch [all features]{"entity": "filter_name"} filter
+    - Switch [aggressiveness]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
+    - Switch [all features]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} comments
+    - Switch [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} filter
+    - Switch [argumentation]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
+    - Switch [stereotype]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} options
+    - Switch [neutral stance]{"entity": "filter_name"} and [targets all]{"entity": "filter_name"} options
+    - Switch [toxic level 1]{"entity": "filter_name"}, [least toxic]{"entity": "filter_name"} and [toxic]{"entity": "filter_name"} filters
+    - Switch [most toxic]{"entity": "filter_name"} and [least toxic]{"entity": "filter_name"} filters
 
 - intent: highlight_check
   examples: |
-    - I want to see [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes
+    - I want to see [non toxic]{"entity": "filter_name", "value": "non toxic"} comments
     - I want to see [not toxic]{"entity": "filter_name", "value": "non toxic"}
     - I want to see [not toxic]{"entity": "filter_name", "value": "non toxic"} nodes
     - highlight [level 0 toxicity]{"entity": "filter_name", "value": "non toxic"} nodes
     - highlight [not toxic]{"entity": "filter_name", "value": "non toxic"}
-    - highlight [toxic level 0]{"entity": "filter_name", "value": "non toxic"} nodes
+    - highlight [toxic level 0]{"entity": "filter_name", "value": "non toxic"} comments
     - show me [not toxic]{"entity": "filter_name", "value": "non toxic"} nodes
     - show me [not toxic]{"entity": "filter_name", "value": "non toxic"}
     - show me [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes
     - show [least toxic]{"entity": "filter_name", "value": "non toxic"} nodes
     - show [least toxicity]{"entity": "filter_name", "value": "non toxic"} nodes
     - Which nodes have the [least toxicity]{"entity": "filter_name", "value": "non toxic"}?
-    - Which nodes are the [least toxic]{"entity": "filter_name", "value": "non toxic"}?
+    - Which comments are the [least toxic]{"entity": "filter_name", "value": "non toxic"}?
     - Which nodes are [non toxic]{"entity": "filter_name", "value": "non toxic"}?
-    - Can you show me the [least toxic]{"entity": "filter_name", "value": "non toxic"} nodes?
+    - Can you show me the [least toxic]{"entity": "filter_name", "value": "non toxic"} comments?
     - Activate the [non toxic]{"entity": "filter_name", "value": "non toxic"} filter
+    - Check the [non toxic]{"entity": "filter_name", "value": "non toxic"} filter
     - Activate the [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes filter
-    - Enables [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes filtering
-    - Enables the [non toxic]{"entity": "filter_name", "value": "non toxic"} filter
-    - Enables the filter [non toxic]{"entity": "filter_name", "value": "non toxic"}
+    - Enable [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes filtering
+    - Enable the [non toxic]{"entity": "filter_name", "value": "non toxic"} and [very toxic]{"entity": "filter_name"} filters
+    - Enable the filter [non toxic]{"entity": "filter_name", "value": "non toxic"}
 
-    - I want to see [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
+    - I want to see [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
     - I want to see [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"}
-    - I want to see [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
+    - I want to see [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} and [least toxic]{"entity": "filter_name"} nodes
     - highlight [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
     - highlight [midly toxic]{"entity": "filter_name", "value": "mildly toxic"}
-    - highlight [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
-    - show me [level 1 toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
+    - highlight [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
+    - show me [level 1 toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
     - show me [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"}
-    - show me [level 1 toxicity]{"entity": "filter_name", "value": "mildly toxic"} nodes
+    - show me [level 1 toxicity]{"entity": "filter_name", "value": "mildly toxic"} , [least toxic]{"entity": "filter_name"} and [toxic]{"entity": "filter_name"} comments
     - show [toxicity level 1]{"entity": "filter_name", "value": "mildly toxic"} nodes
     - show [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
     - Which nodes are [toxic level 1]{"entity": "filter_name", "value": "mildly toxic"}?
     - Can you show me [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes?
     - Activate the [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} filter
-    - Activate the [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes filter
-    - Enables [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes filtering
-    - Enables the [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} filter
-    - Enables the filter [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"}
+    - Check the [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} filter
+    - Activate the [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments filter
+    - Enable [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes filtering
+    - Enable the [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} filter
+    - Enable the filter [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"}
 
-    - I want to see [toxic]{"entity": "filter_name", "value": "toxic"} nodes
+    - I want to see [toxic]{"entity": "filter_name", "value": "toxic"} comments
     - I want to see [toxic]{"entity": "filter_name", "value": "toxic"}
     - I want to see [toxic]{"entity": "filter_name", "value": "toxic"} nodes
-    - highlight [level 2 toxic]{"entity": "filter_name", "value": "toxic"} nodes
+    - highlight [level 2 toxic]{"entity": "filter_name", "value": "toxic"} comments
     - highlight [toxic]{"entity": "filter_name", "value": "toxic"}
     - highlight [toxic]{"entity": "filter_name", "value": "toxic"} nodes
-    - show me [toxic]{"entity": "filter_name", "value": "toxic"} nodes
+    - show me [toxic]{"entity": "filter_name", "value": "toxic"} comments
     - show me [toxic]{"entity": "filter_name", "value": "toxic"}
-    - show me [level 2 toxicity]{"entity": "filter_name", "value": "toxic"} nodes
+    - show me [level 2 toxicity]{"entity": "filter_name", "value": "toxic"} comments
     - show [toxicity level 2]{"entity": "filter_name", "value": "toxic"} nodes
     - show [toxic]{"entity": "filter_name", "value": "toxic"} nodes
-    - Which nodes are [toxic level 2]{"entity": "filter_name", "value": "toxic"}?
-    - Can you show me [toxic]{"entity": "filter_name", "value": "toxic"} nodes?
+    - Which comments are [toxic level 2]{"entity": "filter_name", "value": "toxic"}?
+    - Can you show me [toxic]{"entity": "filter_name", "value": "toxic"} comments?
     - Activate the [toxic]{"entity": "filter_name", "value": "toxic"} filter
+    - Check the [toxic]{"entity": "filter_name", "value": "toxic"} filter
     - Activate the [toxic]{"entity": "filter_name", "value": "toxic"} nodes filter
-    - Enables [toxic]{"entity": "filter_name", "value": "toxic"} nodes filtering
-    - Enables the [toxic]{"entity": "filter_name", "value": "toxic"} filter
-    - Enables the filter [toxic]{"entity": "filter_name", "value": "toxic"}
+    - Enable [toxic]{"entity": "filter_name", "value": "toxic"} comments filtering
+    - Enable the [toxic]{"entity": "filter_name", "value": "toxic"} filter
+    - Enable the filter [toxic]{"entity": "filter_name", "value": "toxic"}
 
-    - I want to see [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes
+    - I want to see [very toxic]{"entity": "filter_name", "value": "very toxic"} comments
     - I want to see [level 3 toxic]{"entity": "filter_name", "value": "very toxic"}
     - I want to see [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes
     - highlight [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes
     - highlight [very toxic]{"entity": "filter_name", "value": "very toxic"}
     - highlight [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes
-    - show me [level 3 toxicity]{"entity": "filter_name", "value": "very toxic"} nodes
+    - show me [level 3 toxicity]{"entity": "filter_name", "value": "very toxic"} comments
     - show me [very toxic]{"entity": "filter_name", "value": "very toxic"}
     - show me [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes
-    - show [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes
+    - show [very toxic]{"entity": "filter_name", "value": "very toxic"} comments
     - show [very toxic]{"entity": "filter_name", "value": "very toxic"}
     - show [toxicity level 3]{"entity": "filter_name", "value": "very toxic"} nodes
     - Which nodes have the [highest toxicity]{"entity": "filter_name", "value": "very toxic"}?
-    - Which nodes are [toxic level 3]{"entity": "filter_name", "value": "very toxic"}?
+    - Which comments are [toxic level 3]{"entity": "filter_name", "value": "very toxic"}?
     - Which nodes are the [most toxic]{"entity": "filter_name", "value": "very toxic"}?
-    - Can you show me [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes?
+    - Can you show me [very toxic]{"entity": "filter_name", "value": "very toxic"} comments?
     - Activate the [very toxic]{"entity": "filter_name", "value": "very toxic"} filter
+    - Check the [very toxic]{"entity": "filter_name", "value": "very toxic"} filter
     - Activate the [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes filter
-    - Enables [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes filtering
-    - Enables the [very toxic]{"entity": "filter_name", "value": "very toxic"} filter
-    - Enables the filter [very toxic]{"entity": "filter_name", "value": "very toxic"}
+    - Enable [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes filtering
+    - Enable the [very toxic]{"entity": "filter_name", "value": "very toxic"} filter
+    - Enable the filter [very toxic]{"entity": "filter_name", "value": "very toxic"}
 
     # positive, negative, neutral stance
 
-    - I want to see [positive]{"entity": "filter_name"} nodes
+    - I want to see [positive]{"entity": "filter_name"} comments
     - Show me nodes with [positive stance]{"entity": "filter_name"}
     - Highlight nodes with [positive stance]{"entity": "filter_name"}
-    - Show nodes with [positive stance]{"entity": "filter_name"}
+    - Show comments with [positive stance]{"entity": "filter_name"}
     - Activate the [positive stance]{"entity": "filter_name"} filter
-    - Activate the [positive stance]{"entity": "filter_name"} nodes filter
-    - Enables [positive stance]{"entity": "filter_name"} nodes filtering
-    - Enables the [positive stance]{"entity": "filter_name"} filter
-    - Enables the filter [positive stance]{"entity": "filter_name"}
+    - Check the [positive stance]{"entity": "filter_name"} filter
+    - Activate the [positive stance]{"entity": "filter_name"} comments filter
+    - Enable [positive stance]{"entity": "filter_name"} nodes filtering
+    - Enable the [positive stance]{"entity": "filter_name"} filter
+    - Enable the filter [positive stance]{"entity": "filter_name"}
 
     - I want to see nodes with [negative stance]{"entity": "filter_name"}
     - Show me [negative]{"entity": "filter_name"} nodes
-    - Highlight nodes with [negative stance]{"entity": "filter_name"}
+    - Highlight comments with [negative stance]{"entity": "filter_name"}
     - Show nodes with [negative stance]{"entity": "filter_name"}
-    - Activate the [negative stance]{"entity": "filter_name"} filter
-    - Activate the [negative stance]{"entity": "filter_name"} nodes filter
-    - Enables [negative stance]{"entity": "filter_name"} nodes filtering
-    - Enables the [negative stance]{"entity": "filter_name"} filter
-    - Enables the filter [negative stance]{"entity": "filter_name"}
+    - Activate the [negative stance]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
+    - Check the [negative stance]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
+    - Activate the [negative stance]{"entity": "filter_name"} comments filter
+    - Enable [negative stance]{"entity": "filter_name"} nodes filtering
+    - Enable the [negative stance]{"entity": "filter_name"} filter
+    - Enable the filter [negative stance]{"entity": "filter_name"}
 
     - I want to see nodes with [neutral stance]{"entity": "filter_name"}
-    - Show me nodes with [neutral stance]{"entity": "filter_name"}
-    - Highlight [neutral]{"entity": "filter_name"} nodes
+    - Show me comments with [neutral stance]{"entity": "filter_name"}
+    - Highlight [neutral]{"entity": "filter_name"} comments
     - Show nodes with [neutral stance]{"entity": "filter_name"}
     - Activate the [neutral stance]{"entity": "filter_name"} filter
-    - Activate the [neutral stance]{"entity": "filter_name"} nodes filter
-    - Enables [neutral stance]{"entity": "filter_name"} nodes filtering
-    - Enables the [neutral stance]{"entity": "filter_name"} filter
-    - Enables the filter [neutral stance]{"entity": "filter_name"}
+    - Check the [neutral stance]{"entity": "filter_name"} filter
+    - Activate the [neutral stance]{"entity": "filter_name"} comments filter
+    - Enable [neutral stance]{"entity": "filter_name"} nodes filtering
+    - Enable the [neutral stance]{"entity": "filter_name"} and [targets all]{"entity": "filter_name"} filters
+    - Enable the filter [neutral stance]{"entity": "filter_name"}
 
     # targets --> target person, target group, stereotype
 
-    - I want to see nodes with [target person]{"entity": "filter_name"}
+    - I want to see comments with [target person]{"entity": "filter_name"}
     - Show me nodes with [target person]{"entity": "filter_name"}
-    - Highlight nodes with [target person]{"entity": "filter_name"}
+    - Highlight comments with [target person]{"entity": "filter_name"}
     - Show nodes with [target person]{"entity": "filter_name"}
     - Activate the [target person]{"entity": "filter_name"} filter
-    - Activate the [target person]{"entity": "filter_name"} nodes filter
-    - Enables [target person]{"entity": "filter_name"} nodes filtering
-    - Enables the [target person]{"entity": "filter_name"} filter
-    - Enables the filter [target person]{"entity": "filter_name"}
+    - Check the [target person]{"entity": "filter_name"} filter
+    - Activate the [target person]{"entity": "filter_name"} comments filter
+    - Enable [target person]{"entity": "filter_name"} nodes filtering
+    - Enable the [target person]{"entity": "filter_name"} filter
+    - Enable the filter [target person]{"entity": "filter_name"}
 
-    - I want to see nodes with [target group]{"entity": "filter_name"}
+    - I want to see comments with [target group]{"entity": "filter_name"}
     - Show me nodes with [target group]{"entity": "filter_name"}
-    - Highlight nodes with [target group]{"entity": "filter_name"}
+    - Highlight comments with [target group]{"entity": "filter_name"}
     - Show nodes with [target group]{"entity": "filter_name"}
     - Activate the [target group]{"entity": "filter_name"} filter
-    - Activate the [target group]{"entity": "filter_name"} nodes filter
-    - Enables [target group]{"entity": "filter_name"} nodes filtering
-    - Enables the [target group]{"entity": "filter_name"} filter
-    - Enables the filter [target group]{"entity": "filter_name"}
+    - Check the [target group]{"entity": "filter_name"} filter
+    - Activate the [target group]{"entity": "filter_name"} comments filter
+    - Enable [target group]{"entity": "filter_name"} nodes filtering
+    - Enable the [target group]{"entity": "filter_name"} filter
+    - Enable the filter [target group]{"entity": "filter_name"}
 
-    - I want to see nodes with [stereotype]{"entity": "filter_name"}
+    - I want to see comments with [stereotype]{"entity": "filter_name"}
     - Show me nodes with [stereotype]{"entity": "filter_name"}
     - Highlight nodes with [stereotype]{"entity": "filter_name"}
-    - Show nodes with [stereotype]{"entity": "filter_name"}
-    - Activate the [stereotype]{"entity": "filter_name"} filter
-    - Activate the [stereotype]{"entity": "filter_name"} nodes filter
-    - Enables [stereotype]{"entity": "filter_name"} nodes filtering
-    - Enables the [stereotype]{"entity": "filter_name"} filter
-    - Enables the filter [stereotype]{"entity": "filter_name"}
+    - Show comments with [stereotype]{"entity": "filter_name"}
+    - Activate the [stereotype]{"entity": "filter_name"} [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} filters
+    - Check the [stereotype]{"entity": "filter_name"} [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} filters
+    - Activate the [stereotype]{"entity": "filter_name"} comments filter
+    - Enable [stereotype]{"entity": "filter_name"} nodes filtering
+    - Enable the [stereotype]{"entity": "filter_name"} filter
+    - Enable the filter [stereotype]{"entity": "filter_name"}
 
     # targets select all
 
@@ -548,131 +566,140 @@ nlu:
     - Select [all targets]{"entity": "filter_name"} option
     - I want to see nodes with [all targets]{"entity": "filter_name"}
     - Show me nodes with [all targets]{"entity": "filter_name"}
-    - Highlight nodes with [all targets]{"entity": "filter_name"}
-    - Show nodes with [all targets]{"entity": "filter_name"}
+    - Highlight comments with [all targets]{"entity": "filter_name"}
+    - Show comments with [all targets]{"entity": "filter_name"}
     - Activate the select [all targets]{"entity": "filter_name"} filter
-    - Activate the select [all targets]{"entity": "filter_name"} nodes filter
-    - Enables select [all targets]{"entity": "filter_name"} nodes filtering
-    - Enables the select [all targets]{"entity": "filter_name"} filter
-    - Enables the filter select [all targets]{"entity": "filter_name"}
+    - Check the select [all targets]{"entity": "filter_name"} filter
+    - Activate the select [all targets]{"entity": "filter_name"} comments filter
+    - Enable select [all targets]{"entity": "filter_name"} nodes filtering
+    - Enable the select [all targets]{"entity": "filter_name"} filter
+    - Enable the filter select [all targets]{"entity": "filter_name"}
 
     # features--> constructiveness, argumentation
 
     - I want to see nodes with [constructiveness]{"entity": "filter_name"}
-    - Show me nodes with [constructiveness]{"entity": "filter_name"}
+    - Show me comments with [constructiveness]{"entity": "filter_name"}
     - Highlight nodes with [constructiveness]{"entity": "filter_name"}
     - Show nodes with [constructiveness]{"entity": "filter_name"}
     - I want to see [constructive]{"entity": "filter_name"} nodes
     - Show me [constructive]{"entity": "filter_name"} nodes
-    - Highlight [constructive]{"entity": "filter_name"} nodes
+    - Highlight [constructive]{"entity": "filter_name"} comments
     - Show [constructive]{"entity": "filter_name"} nodes
     - Activate the [constructiveness]{"entity": "filter_name"} filter
-    - Activate the [constructive]{"entity": "filter_name"} nodes filter
-    - Enables [constructive]{"entity": "filter_name"} nodes filtering
-    - Enables the [constructive]{"entity": "filter_name"} filter
-    - Enables the filter [constructiveness]{"entity": "filter_name"}
+    - Check the [constructiveness]{"entity": "filter_name"} filter
+    - Activate the [constructive]{"entity": "filter_name"} comments filter
+    - Enable [constructive]{"entity": "filter_name"} nodes filtering
+    - Enable the [constructive]{"entity": "filter_name"} filter
+    - Enable the filter [constructiveness]{"entity": "filter_name"}
 
-    - I want to see nodes with [argumentation]{"entity": "filter_name"}
-    - Show me nodes with [argumentation]{"entity": "filter_name"}
+    - I want to see comments with [argumentation]{"entity": "filter_name"}
+    - Show me comments with [argumentation]{"entity": "filter_name"}
     - Highlight nodes with [argumentation]{"entity": "filter_name"}
-    - Show nodes with [argumentation]{"entity": "filter_name"}
+    - Show comments with [argumentation]{"entity": "filter_name"}
     - I want to see [argumentation]{"entity": "filter_name"} nodes
     - Show me [argumentative]{"entity": "filter_name"} nodes
-    - Highlight [argumentative]{"entity": "filter_name"} nodes
-    - Show [argumentative]{"entity": "filter_name"} nodes
+    - Highlight [argumentative]{"entity": "filter_name"} comments
+    - Show [argumentative]{"entity": "filter_name"} comments
     - Activate the [argumentation]{"entity": "filter_name"} filter
+    - Check the [argumentation]{"entity": "filter_name"} filter
     - Activate the [argumentation]{"entity": "filter_name"} nodes filter
-    - Enables [argumentation]{"entity": "filter_name"} nodes filtering
-    - Enables the [argumentation]{"entity": "filter_name"} filter
-    - Enables the filter [argumentation]{"entity": "filter_name"}
+    - Enable [argumentation]{"entity": "filter_name"} nodes filtering
+    - Enable the [argumentation]{"entity": "filter_name"} , [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
+    - Enable the filter [argumentation]{"entity": "filter_name"}
 
     # features--> sarcasm, mockery, intolerance
 
     - I want to see nodes with [sarcasm]{"entity": "filter_name"}
-    - Show me nodes with [sarcasm]{"entity": "filter_name"}
-    - Highlight nodes with [sarcasm]{"entity": "filter_name"}
+    - Show me comments with [sarcasm]{"entity": "filter_name"}
+    - Highlight comments with [sarcasm]{"entity": "filter_name"}
     - Show nodes with [sarcasm]{"entity": "filter_name"}
     - I want to see [sarcastic]{"entity": "filter_name"} nodes
     - Show me [sarcastic]{"entity": "filter_name"} nodes
-    - Highlight [sarcastic]{"entity": "filter_name"} nodes
+    - Highlight [sarcastic]{"entity": "filter_name"} comments
     - Show [sarcastic]{"entity": "filter_name"} nodes
     - Activate the [sarcasm]{"entity": "filter_name"} filter
+    - Check the [sarcasm]{"entity": "filter_name"} filter
     - Activate the [sarcastic]{"entity": "filter_name"} nodes filter
-    - Enables [sarcastic]{"entity": "filter_name"} nodes filtering
-    - Enables the [sarcasm]{"entity": "filter_name"} filter
-    - Enables the filter [sarcasm]{"entity": "filter_name"}
+    - Enable [sarcastic]{"entity": "filter_name"} nodes filtering
+    - Enable the [sarcasm]{"entity": "filter_name"} filter
+    - Enable the filter [sarcasm]{"entity": "filter_name"}
 
     - I want to see nodes with [mockery]{"entity": "filter_name"}
-    - Show me nodes with [mockery]{"entity": "filter_name"}
+    - Show me comments with [mockery]{"entity": "filter_name"}
     - Highlight nodes with [mockery]{"entity": "filter_name"}
-    - Show nodes with [mockery]{"entity": "filter_name"}
+    - Show comments with [mockery]{"entity": "filter_name"}
     - I want to see [mockery]{"entity": "filter_name"} nodes
-    - Show me [mockery]{"entity": "filter_name"} nodes
+    - Show me [mockery]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} nodes
     - Highlight [mockery]{"entity": "filter_name"} nodes
-    - Show [mockery]{"entity": "filter_name"} nodes
+    - Show [mockery]{"entity": "filter_name"} comments
     - Activate the [mockery]{"entity": "filter_name"} filter
+    - Check the [mockery]{"entity": "filter_name"} filter
     - Activate the [mockery]{"entity": "filter_name"} nodes filter
-    - Enables [mockery]{"entity": "filter_name"} nodes filtering
-    - Enables the [mockery]{"entity": "filter_name"} filter
-    - Enables the filter [mockery]{"entity": "filter_name"}
+    - Enable [mockery]{"entity": "filter_name"} nodes filtering
+    - Enable the [mockery]{"entity": "filter_name"} filter
+    - Enable the filter [mockery]{"entity": "filter_name"}
 
     - I want to see nodes with [intolerance]{"entity": "filter_name"}
-    - Show me nodes with [intolerance]{"entity": "filter_name"}
+    - Show me comments with [intolerance]{"entity": "filter_name"}
     - Highlight nodes with [intolerance]{"entity": "filter_name"}
-    - Show nodes with [intolerance]{"entity": "filter_name"}
+    - Show comments with [intolerance]{"entity": "filter_name"}
     - I want to see [intolerance]{"entity": "filter_name"} nodes
     - Show me [intolerance]{"entity": "filter_name"} nodes
     - Highlight [intolerance]{"entity": "filter_name"} nodes
-    - Show [intolerance]{"entity": "filter_name"} nodes
+    - Show [intolerance]{"entity": "filter_name"} comments
     - Activate the [intolerance]{"entity": "filter_name"} filter
+    - Check the [intolerance]{"entity": "filter_name"} filter
     - Activate the [intolerance]{"entity": "filter_name"} nodes filter
-    - Enables [intolerance]{"entity": "filter_name"} nodes filtering
-    - Enables the [intolerance]{"entity": "filter_name"} filter
-    - Enables the filter [intolerance]{"entity": "filter_name"}
+    - Enable [intolerance]{"entity": "filter_name"} nodes filtering
+    - Enable the [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} filters
+    - Enable the filter [intolerance]{"entity": "filter_name"}
 
     # features--> improper language, insult, aggressiveness - ?
 
     - I want to see nodes with [improper language]{"entity": "filter_name"}
     - Show me nodes with [improper language]{"entity": "filter_name"}
-    - Highlight nodes with [improper language]{"entity": "filter_name"}
+    - Highlight comments with [improper language]{"entity": "filter_name"}
     - Show nodes with [improper language]{"entity": "filter_name"}
-    - I want to see [improper language]{"entity": "filter_name"} nodes
+    - I want to see [improper language]{"entity": "filter_name"} comments
     - Show me [improper language]{"entity": "filter_name"} nodes
-    - Highlight [improper language]{"entity": "filter_name"} nodes
+    - Highlight [improper language]{"entity": "filter_name"} comments
     - Show [improper language]{"entity": "filter_name"} nodes
     - Activate the [improper language]{"entity": "filter_name"} filter
+    - Check the [improper language]{"entity": "filter_name"} filter
     - Activate the [improper language]{"entity": "filter_name"} nodes filter
-    - Enables [improper language]{"entity": "filter_name"} nodes filtering
-    - Enables the [improper language]{"entity": "filter_name"} filter
-    - Enables the filter [improper language]{"entity": "filter_name"}
+    - Enable [improper language]{"entity": "filter_name"} nodes filtering
+    - Enable the [improper language]{"entity": "filter_name"} filter
+    - Enable the filter [improper language]{"entity": "filter_name"}
 
     - I want to see nodes with [insult]{"entity": "filter_name"}
-    - Show me nodes with [insult]{"entity": "filter_name"}
+    - Show me comments with [insult]{"entity": "filter_name"}
     - Highlight nodes with [insult]{"entity": "filter_name"}
     - Show nodes with [insult]{"entity": "filter_name"}
     - I want to see [insult]{"entity": "filter_name"} nodes
     - Show me [insult]{"entity": "filter_name"} nodes
-    - Highlight [insult]{"entity": "filter_name"} nodes
-    - Show [insult]{"entity": "filter_name"} nodes
+    - Highlight [insult]{"entity": "filter_name"} comments
+    - Show [insult]{"entity": "filter_name"} comments
     - Activate the [insult]{"entity": "filter_name"} filter
+    - Check the [insult]{"entity": "filter_name"} filter
     - Activate the [insult]{"entity": "filter_name"} nodes filter
-    - Enables [insult]{"entity": "filter_name"} nodes filtering
-    - Enables the [insult]{"entity": "filter_name"} filter
-    - Enables the filter [insult]{"entity": "filter_name"}
+    - Enable [insult]{"entity": "filter_name"} nodes filtering
+    - Enable the [insult]{"entity": "filter_name"} filter
+    - Enable the filter [insult]{"entity": "filter_name"}
 
-    - I want to see nodes with [aggressiveness]{"entity": "filter_name"}
-    - Show me nodes with [aggressiveness]{"entity": "filter_name"}
+    - I want to see comments with [aggressiveness]{"entity": "filter_name"}
+    - Show me comments with [aggressiveness]{"entity": "filter_name"}
     - Highlight nodes with [aggressiveness]{"entity": "filter_name"}
-    - Show nodes with [aggressiveness]{"entity": "filter_name"}
+    - Show comments with [aggressiveness]{"entity": "filter_name"}
     - I want to see [aggressive]{"entity": "filter_name"} nodes
     - Show me [aggressive]{"entity": "filter_name"} nodes
-    - Highlight [aggressive]{"entity": "filter_name"} nodes
+    - Highlight [aggressive]{"entity": "filter_name"} comments
     - Show [aggressive]{"entity": "filter_name"} nodes
-    - Activate the [aggressiveness]{"entity": "filter_name"} filter
+    - Activate the [aggressiveness]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} filters
+    - Check the [aggressiveness]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} filters
     - Activate the [aggressive]{"entity": "filter_name"} nodes filter
-    - Enables [aggressive]{"entity": "filter_name"} nodes filtering
-    - Enables the [aggressiveness]{"entity": "filter_name"} filter
-    - Enables the filter [aggressiveness]{"entity": "filter_name"}
+    - Enable [aggressive]{"entity": "filter_name"} nodes filtering
+    - Enable the [aggressiveness]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
+    - Enable the filter [aggressiveness]{"entity": "filter_name"}
 
     # features select all
 
@@ -681,16 +708,16 @@ nlu:
     - I want to select [all features]{"entity": "filter_name"} checkbox
     - Select [all features]{"entity": "filter_name"} checkbox
     - I want to select [all features]{"entity": "filter_name"} option
-    - Select [all features]{"entity": "filter_name"} option
-    - I want to see nodes with [all features]{"entity": "filter_name"}
+    - Select [all features]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} options
+    - I want to see comments with [all features]{"entity": "filter_name"}
     - Show me nodes with [all features]{"entity": "filter_name"}
-    - Highlight nodes with [all features]{"entity": "filter_name"}
+    - Highlight comments with [all features]{"entity": "filter_name"}
     - Show nodes with [all features]{"entity": "filter_name"}
     - Activate the select [all features]{"entity": "filter_name"} filter
-    - Activate the select [all features]{"entity": "filter_name"} nodes filter
-    - Enables select [all features]{"entity": "filter_name"} nodes filtering
-    - Enables the select [all features]{"entity": "filter_name"} filter
-    - Enables the filter select [all features]{"entity": "filter_name"}
+    - Activate the select [all features]{"entity": "filter_name"} comments filter
+    - Enable select [all features]{"entity": "filter_name"} nodes filtering
+    - Enable the select [all features]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
+    - Enable the filter select [all features]{"entity": "filter_name"}
 
 # highlight uncheck all
 - intent: highlight_uncheck_all
@@ -708,7 +735,7 @@ nlu:
 - intent: highlight_uncheck
   examples: |
     - Disable [non toxic]{"entity": "filter_name"} option
-    - Hide [least toxic]{"entity": "filter_name"} nodes
+    - Hide [least toxic]{"entity": "filter_name"} comments
     - Uncheck [not toxic]{"entity": "filter_name"} filter
     - Disable [least toxicity]{"entity": "filter_name"} option
     - Hide [toxic level 0]{"entity": "filter_name"} nodes
@@ -716,36 +743,36 @@ nlu:
     - Disable [level 0 toxicity]{"entity": "filter_name"} and [very toxic]{"entity": "filter_name"} options
 
     - Disable [toxicity level 3]{"entity": "filter_name"} option
-    - Hide [most toxic]{"entity": "filter_name"} nodes
+    - Hide [most toxic]{"entity": "filter_name"} and [least toxic]{"entity": "filter_name"} nodes
     - Uncheck [very toxic]{"entity": "filter_name"} filter
     - Disable [highest toxicity]{"entity": "filter_name"} option
-    - Hide [toxic level 3]{"entity": "filter_name"} nodes
+    - Hide [toxic level 3]{"entity": "filter_name"} comments
     - Uncheck [level 3 toxic]{"entity": "filter_name"} filter
     - Disable [level 3 toxicity]{"entity": "filter_name"} option
 
     - Disable [toxicity level 1]{"entity": "filter_name"} option
-    - Hide [slightly toxic]{"entity": "filter_name"} nodes
+    - Hide [slightly toxic]{"entity": "filter_name"} comments
     - Uncheck [mildly toxic]{"entity": "filter_name"} filter
-    - Hide [toxic level 1]{"entity": "filter_name"} nodes
+    - Hide [toxic level 1]{"entity": "filter_name"}, [least toxic]{"entity": "filter_name"} and [toxic]{"entity": "filter_name"} nodes
     - Uncheck [level 1 toxic]{"entity": "filter_name"} filter
     - Disable [level 1 toxicity]{"entity": "filter_name"} option
 
     - Disable [toxic level 2]{"entity": "filter_name"} option
     - Uncheck [toxic]{"entity": "filter_name"} filter
-    - Hide [toxicity level 2]{"entity": "filter_name"} nodes
+    - Hide [toxicity level 2]{"entity": "filter_name"} comments
     - Uncheck [level 2 toxic]{"entity": "filter_name"} filter
     - Disable [level 2 toxicity]{"entity": "filter_name"} option
 
     - Disable [positive stance]{"entity": "filter_name"} option
-    - Hide [positive]{"entity": "filter_name"} nodes
+    - Hide [positive]{"entity": "filter_name"} comments
     - Uncheck [positive stance]{"entity": "filter_name"} filter
 
     - Disable [negative stance]{"entity": "filter_name"} option
     - Hide [negative]{"entity": "filter_name"} nodes
-    - Uncheck [negative stance]{"entity": "filter_name"} filter
+    - Uncheck [negative stance]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
 
     - Disable [neutral stance]{"entity": "filter_name"} and [targets all]{"entity": "filter_name"} option
-    - Hide [neutral]{"entity": "filter_name"} nodes
+    - Hide [neutral]{"entity": "filter_name"} comments
     - Uncheck [neutral stance]{"entity": "filter_name"} filter
 
     - Disable [target person]{"entity": "filter_name"} option
@@ -753,15 +780,15 @@ nlu:
     - Uncheck [target person]{"entity": "filter_name"} filter
 
     - Disable [target group]{"entity": "filter_name"} option
-    - Hide [group]{"entity": "filter_name"} nodes
+    - Hide [group]{"entity": "filter_name"} comments
     - Uncheck [target group]{"entity": "filter_name"} filter
 
-    - Disable [stereotype]{"entity": "filter_name"} option
+    - Disable [stereotype]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} options
     - Hide [stereotype]{"entity": "filter_name"} nodes
     - Uncheck [stereotype]{"entity": "filter_name"} filter
 
     - Disable [targets all]{"entity": "filter_name"} option
-    - Hide [all targets]{"entity": "filter_name"} nodes
+    - Hide [all targets]{"entity": "filter_name"} comments
     - Uncheck [all targets]{"entity": "filter_name"} filter
 
     - Disable [constructiveness]{"entity": "filter_name"} option
@@ -769,15 +796,15 @@ nlu:
     - Uncheck [constructiveness]{"entity": "filter_name"} filter
 
     - Disable [argumentation]{"entity": "filter_name"} option
-    - Hide [argumentation]{"entity": "filter_name"} nodes
-    - Uncheck [argumentation]{"entity": "filter_name"} filter
+    - Hide [argumentation]{"entity": "filter_name"} comments
+    - Uncheck [argumentation]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
 
     - Disable [sarcasm]{"entity": "filter_name"} option
     - Hide [sarcastic]{"entity": "filter_name"} nodes
     - Uncheck [sarcasm]{"entity": "filter_name"} filter
 
     - Disable [mockery]{"entity": "filter_name"} option
-    - Hide [mockery]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} nodes
+    - Hide [mockery]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} comments
     - Uncheck [mockery]{"entity": "filter_name"} filter
 
     - Disable [intolerance]{"entity": "filter_name"} option
@@ -785,7 +812,7 @@ nlu:
     - Uncheck [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} filter
 
     - Disable [improper language]{"entity": "filter_name"} option
-    - Hide [improper language]{"entity": "filter_name"} nodes
+    - Hide [improper language]{"entity": "filter_name"} comments
     - Uncheck [improper language]{"entity": "filter_name"} filter
 
     - Disable [insult]{"entity": "filter_name"} option
@@ -793,12 +820,47 @@ nlu:
     - Uncheck [insult]{"entity": "filter_name"} filter
 
     - Disable [aggressiveness]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} options
-    - Hide [aggressive]{"entity": "filter_name"} nodes
-    - Uncheck [aggressiveness]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
+    - Hide [aggressive]{"entity": "filter_name"} comments
+    - Uncheck [aggressiveness]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
 
     - Disable [features all]{"entity": "filter_name"} option
-    - Hide [all features]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} nodes
+    - Hide [all features]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} comments
     - Uncheck [all features]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
+
+- intent: highlight_switch_last
+  examples: |
+    - Switch the last filters
+    - Switch them
+    - Switch it
+
+- intent: highlight_check_last
+  examples: |
+    - Enable the last filters
+    - Activate the last filters
+    - Check the last filters
+    - Enable them
+    - Enable it
+    - Activate them
+    - Activate it
+    - Check them
+    - Check it
+
+- intent: highlight_uncheck_last
+  examples: |
+    - Uncheck the last filters
+    - Unselect the last filters
+    - Deselect the last filters
+    - Uncheck the last
+    - Unselect the last
+    - Deselect the last
+    - Deselect it
+    - Uncheck them
+    - Uncheck it
+    - Unmark them
+    - Unmark it
+    - Disable them
+    - Disable it
+    - Turn them off
 
 - synonym: positive stance
   examples: |

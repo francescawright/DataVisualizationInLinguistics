@@ -106,9 +106,12 @@ actions:
   - validate_signup_form
   - validate_login_form
   - validate_document_selection_form
-  - action_highlight_switch
-  - action_highlight_uncheck
   - action_highlight_check
+  - action_highlight_uncheck
+  - action_highlight_switch
+  - action_highlight_check_last
+  - action_highlight_uncheck_last
+  - action_highlight_switch_last
 
 forms:
   login_form:
@@ -177,6 +180,8 @@ slots:
   username:
     type: text
     influence_conversation: false
+  previous_filters:
+    type: list
 
 responses:
 
