@@ -2718,7 +2718,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
             });
         }
-        statisticsDataChangedTree(root);
+        $(window).trigger("statistics-changed");
     }
 
     function highlightNodesByPropertyAND(node, link) {
@@ -2747,7 +2747,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 return d.source.highlighted && d.target.highlighted ? 1 : opacityValue;
             });
         }
-        statisticsDataChangedTree(root);
+        $(window).trigger("statistics-changed");
     }
 
     /*END section */
@@ -2787,7 +2787,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             .on('click', function (d) {
                 click(d);
                 if (!d3.event.defaultPrevented){
-                    statisticsDataChangedTree(root);
+                    $(window).trigger("statistics-changed");
                     if (document.querySelector("#tree-container div.my-statistic").style.visibility === "visible") {
                         statisticBackground.html(writeStatisticText(root));
                     }
@@ -3184,63 +3184,108 @@ treeJSON = d3.json(dataset, function (error, treeData) {
          */
         $(window).off("most_tagged_features");
         $(window).on("most_tagged_features", function () {
-            mostTaggedFeatures(root);
+            let selectedContainer = document.getElementById("selected_container").value;
+            if (selectedContainer === "main" || selectedContainer === "") {
+                mostTaggedFeatures(root);
+            } else if (selectedContainer === "popup") {
+                $(window).trigger("most_tagged_features_popup");
+            }
         });
 
         // Gets the statistics of the features of the graph shown in the main window,
         // and displays them in a modal as a chart
         $(window).off("statistics_all_features_tree");
         $(window).on("statistics_all_features_tree", function () {
-            statisticsAllFeaturesTree(root);
+            let selectedContainer = document.getElementById("selected_container").value;
+            if (selectedContainer === "main" || selectedContainer === "") {
+                statisticsAllFeaturesTree(root);
+            } else if (selectedContainer === "popup") {
+                $(window).trigger("statistics_all_features_tree_popup");
+            }
         });
 
         // Gets the statistics of the features of all the subgraphs displayed in the main window,
         // and displays them in a modal as a chart, for comparison purposes
         $(window).off("statistics_all_features_subtrees");
         $(window).on("statistics_all_features_subtrees", function () {
-            statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link);
+            let selectedContainer = document.getElementById("selected_container").value;
+            if (selectedContainer === "main" || selectedContainer === "") {
+                statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link);
+            } else if (selectedContainer === "popup") {
+                $(window).trigger("statistics_all_features_subtrees_popup");
+            }
         });
 
         // Gets the statistics of the toxicity of the graph shown in the main window,
         // and displays them in a modal as a chart
         $(window).off("statistics_toxicity_tree");
         $(window).on("statistics_toxicity_tree", function () {
-            statisticsToxicityTree(root);
+            let selectedContainer = document.getElementById("selected_container").value;
+            if (selectedContainer === "main" || selectedContainer === "") {
+                statisticsToxicityTree(root);
+            } else if (selectedContainer === "popup") {
+                $(window).trigger("statistics_toxicity_tree_popup");
+            }
         });
 
         // Gets the statistics of the toxicity of all the subgraphs displayed in the main window,
         // and displays them in a modal as a chart, for comparison purposes
         $(window).off("statistics_toxicity_subtrees");
         $(window).on("statistics_toxicity_subtrees", function () {
-            statisticsToxicitySubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link);
+            let selectedContainer = document.getElementById("selected_container").value;
+            if (selectedContainer === "main" || selectedContainer === "") {
+                statisticsToxicitySubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link);
+            } else if (selectedContainer === "popup") {
+                $(window).trigger("statistics_toxicity_subtrees_popup");
+            }
         });
 
         // Gets the statistics of the stance of the graph shown in the main window,
         // and displays them in a modal as a chart
         $(window).off("statistics_stance_tree");
         $(window).on("statistics_stance_tree", function () {
-            statisticsStanceTree(root);
+            let selectedContainer = document.getElementById("selected_container").value;
+            if (selectedContainer === "main" || selectedContainer === "") {
+                statisticsStanceTree(root);
+            } else if (selectedContainer === "popup") {
+                $(window).trigger("statistics_stance_tree_popup");
+            }
         });
 
         // Gets the statistics of the stance of all the subgraphs displayed in the main window,
         // and displays them in a modal as a chart, for comparison purposes
         $(window).off("statistics_stance_subtrees");
         $(window).on("statistics_stance_subtrees", function () {
-            statisticsStanceSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link);
+            let selectedContainer = document.getElementById("selected_container").value;
+            if (selectedContainer === "main" || selectedContainer === "") {
+                statisticsStanceSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link);
+            } else if (selectedContainer === "popup") {
+                $(window).trigger("statistics_stance_subtrees_popup");
+            }
         });
 
         // Gets the statistics of the target of the graph shown in the main window,
         // and displays them in a modal as a chart
         $(window).off("statistics_target_tree");
         $(window).on("statistics_target_tree", function () {
-            statisticsTargetTree(root);
+            let selectedContainer = document.getElementById("selected_container").value;
+            if (selectedContainer === "main" || selectedContainer === "") {
+                statisticsTargetTree(root);
+            } else if (selectedContainer === "popup") {
+                $(window).trigger("statistics_target_tree_popup");
+            }
         });
 
         // Gets the statistics of the target of all the subgraphs displayed in the main window,
         // and displays them in a modal as a chart, for comparison purposes
         $(window).off("statistics_target_subtrees");
         $(window).on("statistics_target_subtrees", function () {
-            statisticsTargetSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link);
+            let selectedContainer = document.getElementById("selected_container").value;
+            if (selectedContainer === "main" || selectedContainer === "") {
+                statisticsTargetSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link);
+            } else if (selectedContainer === "popup") {
+                $(window).trigger("statistics_target_subtrees_popup");
+            }
         });
 
         $(window).off("main-container-click");
@@ -3253,16 +3298,32 @@ treeJSON = d3.json(dataset, function (error, treeData) {
                 if (static_values_checked) {
                     statisticBackground.html(writeStatisticText(root));
                 }
+                statisticsDataChangedSubtree(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, null, null, false)
             }
         });
 
         $(window).off("popup-container-click");
         $(window).on("popup-container-click", function () {
-            if (document.getElementById("popup_subtree_nodes_ids").value !== "complete" &&
+            if (document.getElementById("popup_graph_info").value !== "complete" &&
                 document.getElementById("popup_subtree_document_description").value ===
                 document.getElementById("main_subtree_document_description").value) {
                 let nodesIDs = JSON.parse("[" + document.getElementById("popup_subtree_nodes_ids").value + "]");
                 highlightFromPopupNodesIDs (static_values_checked, statisticBackground, root, nodes, nodesIDs, opacityValue, node, link);
+            }
+            $(window).trigger("popup-container-click-bubble");
+        });
+
+        $(window).off("statistics-changed");
+        $(window).on("statistics-changed", function () {
+            let selectedContainer = document.getElementById("selected_container").value;
+            if (selectedContainer === "main" || selectedContainer === "") {
+                if (document.getElementById('circle_layout_button').checked) {
+                    statisticsDataChangedTree(root, true);
+                } else {
+                    statisticsDataChangedTree(root);
+                }
+            } else if (selectedContainer === "popup") {
+                $(window).trigger("statistics-changed-popup");
             }
         });
 

@@ -4335,6 +4335,85 @@ $(popup_container).on("open", function () {
                     console.error("Error attaching buttons... trying again...");
                 }
 
+                /**
+                 * Displays in the chat the three features that appear the most in the main window graph
+                 */
+                $(window).off("most_tagged_features_popup");
+                $(window).on("most_tagged_features_popup", function () {
+                    mostTaggedFeatures(rootPopup);
+                });
+
+                // Gets the statistics of the features of the graph shown in the main window,
+                // and displays them in a modal as a chart
+                $(window).off("statistics_all_features_tree_popup");
+                $(window).on("statistics_all_features_tree_popup", function () {
+                    statisticsAllFeaturesTree(rootPopup);
+                });
+
+                // Gets the statistics of the features of all the subgraphs displayed in the main window,
+                // and displays them in a modal as a chart, for comparison purposes
+                $(window).off("statistics_all_features_subtrees_popup");
+                $(window).on("statistics_all_features_subtrees_popup", function () {
+                    statisticsAllFeaturesSubtrees(rootPopup);
+                });
+
+                // Gets the statistics of the toxicity of the graph shown in the main window,
+                // and displays them in a modal as a chart
+                $(window).off("statistics_toxicity_tree_popup");
+                $(window).on("statistics_toxicity_tree_popup", function () {
+                    statisticsToxicityTree(rootPopup);
+                });
+
+                // Gets the statistics of the toxicity of all the subgraphs displayed in the main window,
+                // and displays them in a modal as a chart, for comparison purposes
+                $(window).off("statistics_toxicity_subtrees_popup");
+                $(window).on("statistics_toxicity_subtrees_popup", function () {
+                    statisticsToxicitySubtrees(rootPopup);
+                });
+
+                // Gets the statistics of the stance of the graph shown in the main window,
+                // and displays them in a modal as a chart
+                $(window).off("statistics_stance_tree_popup");
+                $(window).on("statistics_stance_tree_popup", function () {
+                    statisticsStanceTree(rootPopup);
+                });
+
+                // Gets the statistics of the stance of all the subgraphs displayed in the main window,
+                // and displays them in a modal as a chart, for comparison purposes
+                $(window).off("statistics_stance_subtrees_popup");
+                $(window).on("statistics_stance_subtrees_popup", function () {
+                    statisticsStanceSubtrees(rootPopup);
+                });
+
+                // Gets the statistics of the target of the graph shown in the main window,
+                // and displays them in a modal as a chart
+                $(window).off("statistics_target_tree_popup");
+                $(window).on("statistics_target_tree_popup", function () {
+                    statisticsTargetTree(rootPopup);
+                });
+
+                // Gets the statistics of the target of all the subgraphs displayed in the main window,
+                // and displays them in a modal as a chart, for comparison purposes
+                $(window).off("statistics_target_subtrees_popup");
+                $(window).on("statistics_target_subtrees_popup", function () {
+                    statisticsTargetSubtrees(rootPopup);
+                });
+
+                $(window).off("popup-container-click-bubble");
+                $(window).on("popup-container-click-bubble", function () {
+                    statisticsDataChangedTree(rootPopup, false, false, true);
+                    statisticsDataChangedSubtree(rootPopup, null, null, null, null, null, null, null, null, true)
+                });
+
+                $(window).off("statistics-changed-popup");
+                $(window).on("statistics-changed-popup", function () {
+                    if ($("#popupModal .modal-body").hasClass("circle")) {
+                        statisticsDataChangedTree(rootPopup, true);
+                    } else {
+                        statisticsDataChangedTree(rootPopup);
+                    }
+                });
+
                 function checkboxANDListener() {
                     if (nodeEnter[0].length) {
                         Object.keys(nodeEnter[0]).forEach(key => {
@@ -6756,6 +6835,85 @@ $(popup_container).on("open", function () {
                 } catch (TypeError) {
                     console.error("Error attaching buttons... trying again...");
                 }
+
+                /**
+                 * Displays in the chat the three features that appear the most in the main window graph
+                 */
+                $(window).off("most_tagged_features_popup");
+                $(window).on("most_tagged_features_popup", function () {
+                    mostTaggedFeatures(rootPopup);
+                });
+
+                // Gets the statistics of the features of the graph shown in the main window,
+                // and displays them in a modal as a chart
+                $(window).off("statistics_all_features_tree_popup");
+                $(window).on("statistics_all_features_tree_popup", function () {
+                    statisticsAllFeaturesTree(rootPopup);
+                });
+
+                // Gets the statistics of the features of all the subgraphs displayed in the main window,
+                // and displays them in a modal as a chart, for comparison purposes
+                $(window).off("statistics_all_features_subtrees_popup");
+                $(window).on("statistics_all_features_subtrees_popup", function () {
+                    statisticsAllFeaturesSubtrees(rootPopup);
+                });
+
+                // Gets the statistics of the toxicity of the graph shown in the main window,
+                // and displays them in a modal as a chart
+                $(window).off("statistics_toxicity_tree_popup");
+                $(window).on("statistics_toxicity_tree_popup", function () {
+                    statisticsToxicityTree(rootPopup);
+                });
+
+                // Gets the statistics of the toxicity of all the subgraphs displayed in the main window,
+                // and displays them in a modal as a chart, for comparison purposes
+                $(window).off("statistics_toxicity_subtrees_popup");
+                $(window).on("statistics_toxicity_subtrees_popup", function () {
+                    statisticsToxicitySubtrees(rootPopup);
+                });
+
+                // Gets the statistics of the stance of the graph shown in the main window,
+                // and displays them in a modal as a chart
+                $(window).off("statistics_stance_tree_popup");
+                $(window).on("statistics_stance_tree_popup", function () {
+                    statisticsStanceTree(rootPopup);
+                });
+
+                // Gets the statistics of the stance of all the subgraphs displayed in the main window,
+                // and displays them in a modal as a chart, for comparison purposes
+                $(window).off("statistics_stance_subtrees_popup");
+                $(window).on("statistics_stance_subtrees_popup", function () {
+                    statisticsStanceSubtrees(rootPopup);
+                });
+
+                // Gets the statistics of the target of the graph shown in the main window,
+                // and displays them in a modal as a chart
+                $(window).off("statistics_target_tree_popup");
+                $(window).on("statistics_target_tree_popup", function () {
+                    statisticsTargetTree(rootPopup);
+                });
+
+                // Gets the statistics of the target of all the subgraphs displayed in the main window,
+                // and displays them in a modal as a chart, for comparison purposes
+                $(window).off("statistics_target_subtrees_popup");
+                $(window).on("statistics_target_subtrees_popup", function () {
+                    statisticsTargetSubtrees(rootPopup);
+                });
+
+                $(window).off("popup-container-click-bubble");
+                $(window).on("popup-container-click-bubble", function () {
+                    statisticsDataChangedTree(rootPopup, false, false, true);
+                    statisticsDataChangedSubtree(rootPopup, null, null, null, null, null, null, null, null, true)
+                });
+
+                $(window).off("statistics-changed-popup");
+                $(window).on("statistics-changed-popup", function () {
+                    if ($("#popupModal .modal-body").hasClass("circle")) {
+                        statisticsDataChangedTree(rootPopup, true);
+                    } else {
+                        statisticsDataChangedTree(rootPopup);
+                    }
+                });
 
                 checkboxesTargets.forEach(function (checkboxItem) {
                     enabledTargets =
@@ -9252,6 +9410,85 @@ $(popup_container).on("open", function () {
                     console.error("Error attaching buttons... trying again...");
                 }
 
+                /**
+                 * Displays in the chat the three features that appear the most in the main window graph
+                 */
+                $(window).off("most_tagged_features_popup");
+                $(window).on("most_tagged_features_popup", function () {
+                    mostTaggedFeatures(rootPopup);
+                });
+
+                // Gets the statistics of the features of the graph shown in the main window,
+                // and displays them in a modal as a chart
+                $(window).off("statistics_all_features_tree_popup");
+                $(window).on("statistics_all_features_tree_popup", function () {
+                    statisticsAllFeaturesTree(rootPopup);
+                });
+
+                // Gets the statistics of the features of all the subgraphs displayed in the main window,
+                // and displays them in a modal as a chart, for comparison purposes
+                $(window).off("statistics_all_features_subtrees_popup");
+                $(window).on("statistics_all_features_subtrees_popup", function () {
+                    statisticsAllFeaturesSubtrees(rootPopup);
+                });
+
+                // Gets the statistics of the toxicity of the graph shown in the main window,
+                // and displays them in a modal as a chart
+                $(window).off("statistics_toxicity_tree_popup");
+                $(window).on("statistics_toxicity_tree_popup", function () {
+                    statisticsToxicityTree(rootPopup);
+                });
+
+                // Gets the statistics of the toxicity of all the subgraphs displayed in the main window,
+                // and displays them in a modal as a chart, for comparison purposes
+                $(window).off("statistics_toxicity_subtrees_popup");
+                $(window).on("statistics_toxicity_subtrees_popup", function () {
+                    statisticsToxicitySubtrees(rootPopup);
+                });
+
+                // Gets the statistics of the stance of the graph shown in the main window,
+                // and displays them in a modal as a chart
+                $(window).off("statistics_stance_tree_popup");
+                $(window).on("statistics_stance_tree_popup", function () {
+                    statisticsStanceTree(rootPopup);
+                });
+
+                // Gets the statistics of the stance of all the subgraphs displayed in the main window,
+                // and displays them in a modal as a chart, for comparison purposes
+                $(window).off("statistics_stance_subtrees_popup");
+                $(window).on("statistics_stance_subtrees_popup", function () {
+                    statisticsStanceSubtrees(rootPopup);
+                });
+
+                // Gets the statistics of the target of the graph shown in the main window,
+                // and displays them in a modal as a chart
+                $(window).off("statistics_target_tree_popup");
+                $(window).on("statistics_target_tree_popup", function () {
+                    statisticsTargetTree(rootPopup);
+                });
+
+                // Gets the statistics of the target of all the subgraphs displayed in the main window,
+                // and displays them in a modal as a chart, for comparison purposes
+                $(window).off("statistics_target_subtrees_popup");
+                $(window).on("statistics_target_subtrees_popup", function () {
+                    statisticsTargetSubtrees(rootPopup);
+                });
+
+                $(window).off("popup-container-click-bubble");
+                $(window).on("popup-container-click-bubble", function () {
+                    statisticsDataChangedTree(rootPopup, false, false, true);
+                    statisticsDataChangedSubtree(rootPopup, null, null, null, null, null, null, null, null, true)
+                });
+
+                $(window).off("statistics-changed-popup");
+                $(window).on("statistics-changed-popup", function () {
+                    if ($("#popupModal .modal-body").hasClass("circle")) {
+                        statisticsDataChangedTree(rootPopup, true);
+                    } else {
+                        statisticsDataChangedTree(rootPopup);
+                    }
+                });
+
                 if (!first_call) {
                     checkboxesTargets.forEach(function (checkboxItem) {
                         enabledTargets =
@@ -9888,6 +10125,7 @@ $(popup_container).on("open", function () {
                 (TypeError) {
                 console.error("Error attaching buttons... trying again...");
             }
+
             highlightNodesByPropertyOR(node, enabledHighlight);
             highlightNodesByPropertyAND(node, enabledHighlight);
 
@@ -9900,6 +10138,85 @@ $(popup_container).on("open", function () {
                 totalMildlyToxic = listStatistics.toxicity1,
                 totalToxic = listStatistics.toxicity2,
                 totalVeryToxic = listStatistics.toxicity3;
+
+            /**
+             * Displays in the chat the three features that appear the most in the main window graph
+             */
+            $(window).off("most_tagged_features_popup");
+            $(window).on("most_tagged_features_popup", function () {
+                mostTaggedFeatures(rootPopup, true);
+            });
+
+            // Gets the statistics of the features of the graph shown in the main window,
+            // and displays them in a modal as a chart
+            $(window).off("statistics_all_features_tree_popup");
+            $(window).on("statistics_all_features_tree_popup", function () {
+                statisticsAllFeaturesTree(rootPopup, true);
+            });
+
+            // Gets the statistics of the features of all the subgraphs displayed in the main window,
+            // and displays them in a modal as a chart, for comparison purposes
+            $(window).off("statistics_all_features_subtrees_popup");
+            $(window).on("statistics_all_features_subtrees_popup", function () {
+                statisticsAllFeaturesSubtrees(rootPopup, null, null, null, null, null, null, true, null, true);
+            });
+
+            // Gets the statistics of the toxicity of the graph shown in the main window,
+            // and displays them in a modal as a chart
+            $(window).off("statistics_toxicity_tree_popup");
+            $(window).on("statistics_toxicity_tree_popup", function () {
+                statisticsToxicityTree(rootPopup, true);
+            });
+
+            // Gets the statistics of the toxicity of all the subgraphs displayed in the main window,
+            // and displays them in a modal as a chart, for comparison purposes
+            $(window).off("statistics_toxicity_subtrees_popup");
+            $(window).on("statistics_toxicity_subtrees_popup", function () {
+                statisticsToxicitySubtrees(rootPopup, null, null, null, null, null, null, true, null, true);
+            });
+
+            // Gets the statistics of the stance of the graph shown in the main window,
+            // and displays them in a modal as a chart
+            $(window).off("statistics_stance_tree_popup");
+            $(window).on("statistics_stance_tree_popup", function () {
+                statisticsStanceTree(rootPopup, true);
+            });
+
+            // Gets the statistics of the stance of all the subgraphs displayed in the main window,
+            // and displays them in a modal as a chart, for comparison purposes
+            $(window).off("statistics_stance_subtrees_popup");
+            $(window).on("statistics_stance_subtrees_popup", function () {
+                statisticsStanceSubtrees(rootPopup, null, null, null, null, null, null, true, null, true);
+            });
+
+            // Gets the statistics of the target of the graph shown in the main window,
+            // and displays them in a modal as a chart
+            $(window).off("statistics_target_tree_popup");
+            $(window).on("statistics_target_tree_popup", function () {
+                statisticsTargetTree(rootPopup, true);
+            });
+
+            // Gets the statistics of the target of all the subgraphs displayed in the main window,
+            // and displays them in a modal as a chart, for comparison purposes
+            $(window).off("statistics_target_subtrees_popup");
+            $(window).on("statistics_target_subtrees_popup", function () {
+                statisticsTargetSubtrees(rootPopup, null, null, null, null, null, null, true, null, true);
+            });
+
+            $(window).off("popup-container-click-bubble");
+            $(window).on("popup-container-click-bubble", function () {
+                statisticsDataChangedTree(rootPopup, true, false, true);
+                statisticsDataChangedSubtree(rootPopup, null, null, null, null, null, null, true, null, true)
+            });
+
+            $(window).off("statistics-changed-popup");
+            $(window).on("statistics-changed-popup", function () {
+                if ($("#popupModal .modal-body").hasClass("circle")) {
+                    statisticsDataChangedTree(rootPopup, true);
+                } else {
+                    statisticsDataChangedTree(rootPopup);
+                }
+            });
 
             // If AND is selected, uncheck the OR and highlight by property AND
 

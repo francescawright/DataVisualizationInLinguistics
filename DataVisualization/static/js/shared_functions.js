@@ -1817,10 +1817,35 @@ function mostToxicSubtreeHandler(static_values_checked, statisticBackground, roo
     }
 }
 
-function createChartModal() {
+function createChartModal(isPopupSelected) {
+
+    if (isPopupSelected === null) {
+        let selectedContainer = document.getElementById("selected_container").value;
+        if (selectedContainer === "main" || selectedContainer === "") {
+            isPopupSelected = false;
+        } else if (selectedContainer === "popup") {
+            isPopupSelected = true;
+        }
+    }
 
     let chart = document.getElementById('chart-modal-body').getContext('2d');
-    document.querySelector("#chartModal .modal-title").innerHTML = "Statistics of " + mainWindowGraphName;
+
+    if (!isPopupSelected) {
+        document.querySelector("#chartModal .modal-title").innerHTML = "Statistics of " + mainWindowGraphName;
+    } else {
+        let popupGraphName;
+        if (document.getElementById("popup_graph_info").value && document.getElementById("popup_graph_info").value !== 'complete') {
+            if (document.getElementById("popup_subtree_name").value) {
+                popupGraphName = document.getElementById("popup_subtree_name").value;
+            } else {
+                popupGraphName = "Subtree";
+            }
+        } else {
+            popupGraphName = document.getElementById("dataset_dropdown").value;
+        }
+
+        document.querySelector("#chartModal .modal-title").innerHTML = "Statistics of " + popupGraphName;
+    }
 
     document.getElementById('chart-modal-body').classList.remove("square-chart");
     let chartType = document.getElementById('select-chart-type-modal').value;
@@ -1913,17 +1938,42 @@ function createChartModal() {
 
     canvas.onclick = clickHandler;
     if (!document.getElementById('chartModal').classList.contains('show')) {
-        document.getElementById("chartModal").style.top = "calc(40% - 152px)";
+        document.getElementById("chartModal").style.top = "calc(100% - 330px)";
         document.getElementById("chartModal").style.left = "calc(50% - 262px)";
         document.querySelector("#chartModal .modal-content").style.width = "525px";
         document.querySelector("#chartModal .modal-content").style.height = "305px";
         $("#popup-chart-btn").click();
     }
 }
-function createChartSubModal(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue) {
+function createChartSubModal(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue, isPopupSelected) {
+
+    if (isPopupSelected === null) {
+        let selectedContainer = document.getElementById("selected_container").value;
+        if (selectedContainer === "main" || selectedContainer === "") {
+            isPopupSelected = false;
+        } else if (selectedContainer === "popup") {
+            isPopupSelected = true;
+        }
+    }
 
     let chart = document.getElementById('chart-sub-modal-body').getContext('2d');
-    document.querySelector("#chartSubModal .modal-title").innerHTML = "Statistics of " + mainWindowGraphName + " subgraphs";
+
+    if (!isPopupSelected) {
+        document.querySelector("#chartSubModal .modal-title").innerHTML = "Statistics of " + mainWindowGraphName + " subgraphs";
+    } else {
+        let popupGraphName;
+        if (document.getElementById("popup_graph_info").value && document.getElementById("popup_graph_info").value !== 'complete') {
+            if (document.getElementById("popup_subtree_name").value) {
+                popupGraphName = document.getElementById("popup_subtree_name").value;
+            } else {
+                popupGraphName = "Subtree";
+            }
+        } else {
+            popupGraphName = document.getElementById("dataset_dropdown").value;
+        }
+
+        document.querySelector("#chartSubModal .modal-title").innerHTML = "Statistics of " + popupGraphName + " subgraphs";
+    }
 
     let chartType = document.getElementById('select-chart-sub-type-modal');
     if (Chart.getChart('chart-sub-modal-body')) {
@@ -1984,6 +2034,7 @@ function createChartSubModal(root, static_values_checked, statisticBackground, n
         let chartBody = document.querySelector("#chartSubModal .chart-sub-body");
         let modalBody = document.querySelector("#chartSubModal .modal-body");
         let totalLabels = subtreesInfoChart.data.labels.length;
+        chartBody.style.width = "";
         if (totalLabels > 4) {
             let newWidth = 509 + ((totalLabels - 4) * 75);
             chartBody.style.width = `${newWidth}px`;
@@ -2064,9 +2115,13 @@ function createChartSubModal(root, static_values_checked, statisticBackground, n
         }
     }
 
-    canvas.onclick = clickHandlerSub;
+    if (!isPopupSelected) {
+        $("#chart-sub-modal-body").click(clickHandlerSub);
+    } else {
+        $("#chart-sub-modal-body").off('click');
+    }
     if (!document.getElementById('chartSubModal').classList.contains('show')) {
-        document.getElementById("chartSubModal").style.top = "calc(35% - 152px)";
+        document.getElementById("chartSubModal").style.top = "calc(100% - 377px)";
         document.getElementById("chartSubModal").style.left = "calc(50% - 262px)";
         document.querySelector("#chartSubModal .modal-content").style.width = "525px";
         document.querySelector("#chartSubModal .modal-content").style.height = "305px";
@@ -2148,7 +2203,7 @@ function renderChartData(data, id){
     }
 }
 
-function statisticsToxicityTree(root, fromCircle = false) {
+function statisticsToxicityTree(root, fromCircle = false, isPopupSelected = null) {
 
     if (fromCircle) {
         root = root.data;
@@ -2190,10 +2245,10 @@ function statisticsToxicityTree(root, fromCircle = false) {
     }
     chartModalTitle = 'complete_graph';
 
-    createChartModal();
+    createChartModal(isPopupSelected);
 }
 
-function statisticsStanceTree(root, fromCircle = false) {
+function statisticsStanceTree(root, fromCircle = false, isPopupSelected = null) {
 
     if (fromCircle) {
         root = root.data;
@@ -2236,10 +2291,10 @@ function statisticsStanceTree(root, fromCircle = false) {
     }
     chartModalTitle = 'complete_graph';
 
-    createChartModal();
+    createChartModal(isPopupSelected);
 }
 
-function statisticsTargetTree(root, fromCircle = false) {
+function statisticsTargetTree(root, fromCircle = false, isPopupSelected = null) {
 
     if (fromCircle) {
         root = root.data;
@@ -2282,10 +2337,10 @@ function statisticsTargetTree(root, fromCircle = false) {
     }
     chartModalTitle = 'complete_graph';
 
-    createChartModal();
+    createChartModal(isPopupSelected);
 }
 
-function statisticsToxicitySubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle = false, minOpacityValue = null) {
+function statisticsToxicitySubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle = false, minOpacityValue = null, isPopupSelected = null) {
 
     let children = root.children;
     let listStatistics;
@@ -2338,10 +2393,10 @@ function statisticsToxicitySubtrees(root, static_values_checked, statisticBackgr
 
     chartModalTitle = 'subgraphs';
 
-    createChartSubModal(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue);
+    createChartSubModal(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue, isPopupSelected);
 }
 
-function statisticsStanceSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle = false, minOpacityValue = null) {
+function statisticsStanceSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle = false, minOpacityValue = null, isPopupSelected = null) {
 
     let children = root.children;
     let listStatistics;
@@ -2394,10 +2449,10 @@ function statisticsStanceSubtrees(root, static_values_checked, statisticBackgrou
 
     chartModalTitle = 'subgraphs';
 
-    createChartSubModal(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue);
+    createChartSubModal(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue, isPopupSelected);
 }
 
-function statisticsTargetSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle = false, minOpacityValue = null) {
+function statisticsTargetSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle = false, minOpacityValue = null, isPopupSelected = null) {
 
     let children = root.children;
     let listStatistics;
@@ -2450,10 +2505,10 @@ function statisticsTargetSubtrees(root, static_values_checked, statisticBackgrou
 
     chartModalTitle = 'subgraphs';
 
-    createChartSubModal(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue);
+    createChartSubModal(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue, isPopupSelected);
 }
 
-function statisticsAllFeaturesTree(root, fromCircle = false) {
+function statisticsAllFeaturesTree(root, fromCircle = false, isPopupSelected = null) {
 
     if (fromCircle) {
         root = root.data;
@@ -2517,10 +2572,10 @@ function statisticsAllFeaturesTree(root, fromCircle = false) {
     }
     chartModalTitle = 'complete_graph';
 
-    createChartModal();
+    createChartModal(isPopupSelected);
 }
 
-function statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle = false, minOpacityValue = null) {
+function statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle = false, minOpacityValue = null, isPopupSelected = null) {
 
     let children = root.children;
     let listStatistics;
@@ -2601,7 +2656,7 @@ function statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBac
 
     chartModalTitle = 'subgraphs';
 
-    createChartSubModal(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue);
+    createChartSubModal(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue, isPopupSelected);
 }
 
 function clickSubtreeChartHandler(static_values_checked, statisticBackground, root, nodes, opacityValue, node, link, nodeName, fromCircle, minOpacityValue) {
@@ -2655,7 +2710,7 @@ function highlightFromPopupNodesIDs (static_values_checked, statisticBackground,
     }
 }
 
-function statisticsDataChangedTree (root, fromCircle = false, isSubgraphByID = false) {
+function statisticsDataChangedTree (root, fromCircle = false, isSubgraphByID = false, isPopupSelected = null) {
     if (!isSubgraphByID) {
         highlightedSubgraph = null;
     }
@@ -2663,13 +2718,29 @@ function statisticsDataChangedTree (root, fromCircle = false, isSubgraphByID = f
     if (Chart.getChart('chart-modal-body')) {
         let selectDataValue = document.getElementById('select-chart-data-modal').value;
         if (selectDataValue === 'features') {
-            statisticsAllFeaturesTree(root, fromCircle);
+            statisticsAllFeaturesTree(root, fromCircle, isPopupSelected);
         } else if (selectDataValue === 'toxicity') {
-            statisticsToxicityTree(root, fromCircle);
+            statisticsToxicityTree(root, fromCircle, isPopupSelected);
         } else if (selectDataValue === 'stance') {
-            statisticsStanceTree(root, fromCircle);
+            statisticsStanceTree(root, fromCircle, isPopupSelected);
         } else if (selectDataValue === 'target') {
-            statisticsTargetTree(root, fromCircle);
+            statisticsTargetTree(root, fromCircle, isPopupSelected);
+        }
+    }
+}
+
+function statisticsDataChangedSubtree (root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle = false, minOpacityValue = null, isPopupSelected = null) {
+
+    if (Chart.getChart('chart-sub-modal-body')) {
+        let selectDataValue = document.getElementById('select-chart-sub-data-modal').value;
+        if (selectDataValue === 'features') {
+            statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue, isPopupSelected);
+        } else if (selectDataValue === 'toxicity') {
+            statisticsToxicitySubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue, isPopupSelected);
+        } else if (selectDataValue === 'stance') {
+            statisticsStanceSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue, isPopupSelected);
+        } else if (selectDataValue === 'target') {
+            statisticsTargetSubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle, minOpacityValue, isPopupSelected);
         }
     }
 }
