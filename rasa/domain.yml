@@ -145,6 +145,7 @@ entities:
   - sessionid
   - username
   - filter_name
+  - first_login
 
 slots:
   csrfmiddlewaretoken:
@@ -182,6 +183,8 @@ slots:
     influence_conversation: false
   previous_filters:
     type: list
+  first_login:
+    type: bool
 
 responses:
 
