@@ -225,55 +225,105 @@ stories:
     - active_loop: null
     - action: action_open_document
 
-- story: Analysis scenario 1 positive
+
+- story: New scenario with guidance without affirm/deny 1
   steps:
     - intent: greet
     - action: utter_offers_help
+    - intent: help_what_can_you_do
+    - action: utter_help_what_can_you_do
     - intent: most_toxic_thread
     - action: utter_most_toxic_thread
+    - action: utter_explain_pop_up_toxic
     - intent: most_tagged_features
     - action: utter_most_tagged_features
-    - intent: affirm
-    - action: utter_statistics_features_subtrees
     - action: utter_help_glyphs
+    - intent: help_glyphs
+    - action: utter_explain_glyphs
+    - intent: what_can_do_after_glyphs
+    - action: utter_guide_bar_charts
+    - intent: statistics_features_subtrees
+    - action: utter_statistics_features_subtrees
+    - action: utter_help_bar_chart_pop_up
+
+
+- story: New scenario with guidance without affirm/deny 2
+  steps:
+    - intent: greet
+    - action: utter_offers_help
+    - intent: help_what_can_you_do
+    - action: utter_help_what_can_you_do
+    - intent: largest_thread
+    - action: utter_largest_thread
+    - action: utter_explain_pop_up_largest
+    - intent: longest_thread
+    - action: utter_longest_thread
+    - action: utter_explain_pop_up_longest
     - intent: statistics_features_tree
     - action: utter_statistics_features_tree
     - action: utter_help_bar_chart_pop_up
-
-- story: Analysis scenario 1 negative
-  steps:
-    - intent: greet
-    - action: utter_offers_help
-    - intent: most_toxic_thread
-    - action: utter_most_toxic_thread
     - intent: most_tagged_features
     - action: utter_most_tagged_features
-    - intent: deny
-    - action: utter_user_deny_help
-
-
-- story: Analysis scenario 2 positive
-  steps:
-    - intent: greet
-    - action: utter_offers_help
-    - intent: highlight_check
-    - action: action_highlight_check
-    - intent: most_tagged_features
-    - action: utter_most_tagged_features
-    - intent: affirm
-    - action: utter_statistics_features_subtrees
     - action: utter_help_glyphs
+    - intent: help_glyphs
+    - action: utter_explain_glyphs
 
-- story: Analysis scenario 3 negative
+
+
+
+
+
+#- story: Analysis scenario 1 positive
+#  steps:
+#    - intent: greet
+#    - action: utter_offers_help
+#    - intent: most_toxic_thread
+#    - action: utter_most_toxic_thread
+#    - intent: most_tagged_features
+#    - action: utter_most_tagged_features
+#    - intent: affirm
+#    - action: utter_statistics_features_subtrees
+#    - action: utter_help_glyphs
+#    - intent: statistics_features_tree
+#    - action: utter_statistics_features_tree
+#    - action: utter_help_bar_chart_pop_up
+
+
+#- story: Analysis scenario 1 negative
+#  steps:
+#    - intent: greet
+#    - action: utter_offers_help
+#    - intent: most_toxic_thread
+#    - action: utter_most_toxic_thread
+#    - intent: most_tagged_features
+#    - action: utter_most_tagged_features
+#    - intent: deny
+#    - action: utter_user_deny_help
+
+
+#- story: Analysis scenario 2 positive
+#  steps:
+#    - intent: greet
+#    - action: utter_offers_help
+#    - intent: highlight_check
+#    - action: action_highlight_check
+#    - intent: most_tagged_features
+#    - action: utter_most_tagged_features
+#    - intent: affirm
+#    - action: utter_statistics_features_subtrees
+#    - action: utter_help_glyphs
+
+- story: Analysis scenario 3
   steps:
     - intent: greet
     - action: utter_offers_help
     - intent: largest_thread
     - action: utter_largest_thread
-    - intent: most_tagged_features
-    - action: utter_most_tagged_features
-    - intent: deny
-    - action: utter_user_deny_help
+    - acrion: utter_explain_pop_up_largest
+    - intent: longest_thread
+    - action: utter_longest_thread
+    - action: utter_explain_pop_up_longest
+
 
 - story: Help Scenario
   steps:
@@ -282,20 +332,20 @@ stories:
     - intent: functions
     - action: utter_general_help
 
-- story: showing the features of our system 1
-  steps:
-    - intent: greet
-    - action: utter_offers_help
-    - intent: help_what_can_you_do
-    - action: utter_help_what_can_you_do
-    - intent: largest_thread
-    - action: utter_largest_thread
-    - intent: statistics_features_subtrees
-    - action: utter_statistics_features_subtrees
-    - intent: help_glyphs
-    - action: utter_explain_glyphs
-    - intent: change_layout_tree
-    - action: utter_change_layout_tree
+#- story: showing the features of our system 1
+#  steps:
+#    - intent: greet
+#    - action: utter_offers_help
+#    - intent: help_what_can_you_do
+#    - action: utter_help_what_can_you_do
+#    - intent: largest_thread
+#    - action: utter_largest_thread
+#    - intent: statistics_features_subtrees
+#    - action: utter_statistics_features_subtrees
+#    - intent: help_glyphs
+#    - action: utter_explain_glyphs
+#    - intent: change_layout_tree
+#    - action: utter_change_layout_tree
 
 
 - story: showing the features of our system 2
@@ -306,23 +356,26 @@ stories:
     - action: utter_help_what_can_you_do
     - intent: widest_level
     - action: utter_widest_level
+    - action: utter_explain_pop_up_widest
     - intent: highlight_check
     - action: action_highlight_check
     - intent: statistics_features_subtrees
     - action: utter_statistics_features_subtrees
+    - action: utter_help_bar_chart_pop_up
 
-
-- story: showing the features of our system 3
-  steps:
-    - intent: greet
-    - action: utter_offers_help
-    - intent: help_what_can_you_do
-    - action: utter_help_what_can_you_do
-    - intent: longest_thread
-    - action: utter_longest_thread
-    - intent: help_main_graph_barchart
-    - action: utter_help_main_bar
-    - action: utter_asking_about_barchart
-    - intent: affirm
-    - action: utter_statistics_features_tree
+#
+#- story: showing the features of our system 3
+#  steps:
+#    - intent: greet
+#    - action: utter_offers_help
+#    - intent: help_what_can_you_do
+#    - action: utter_help_what_can_you_do
+#    - intent: longest_thread
+#    - action: utter_longest_thread
+#    - intent: help_main_graph_barchart
+#    - action: utter_help_main_bar
+#    - action: utter_asking_about_barchart
+#    - intent: affirm
+#    - action: utter_statistics_features_tree
+#    - action: utter_help_bar_chart_pop_up
 

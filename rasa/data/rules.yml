@@ -157,22 +157,26 @@ rules:
   steps:
     - intent: longest_thread
     - action: utter_longest_thread
+  wait_for_user_input: false
 
 - rule: User wants to see the widest level/depth
   steps:
     - intent: widest_level
     - action: utter_widest_level
+  wait_for_user_input: false
 
 - rule: User wants to see the largest thread
   steps:
     - intent: largest_thread
     - action: utter_largest_thread
+  wait_for_user_input: false
 
 #highlight most toxic thread
 - rule: User wants to see the most toxic thread
   steps:
     - intent: most_toxic_thread
     - action: utter_most_toxic_thread
+  wait_for_user_input: false
 
 #highlight most toxic subtree
 - rule: User wants to see the most toxic subtree
