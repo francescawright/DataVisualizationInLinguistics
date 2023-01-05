@@ -197,7 +197,6 @@ responses:
     - text: "What can I do for you?"
     - text: "How can I help you?"
 
-
   utter_user_deny_help:
     - text: "Okay, don't hesitate to ask me for help if you need it"
     - text: "Okay, I am here if you need any help"
@@ -206,6 +205,10 @@ responses:
   - text: "Bye"
   - text: "Goodbye!"
   - text: "See you later"
+
+  utter_you_are_welcome:
+  - text: "you are welcome"
+  - text: "you're welcome"
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."

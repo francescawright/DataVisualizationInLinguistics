@@ -12,6 +12,11 @@ rules:
   - intent: bot_challenge
   - action: utter_iamabot
 
+- rule: The user thanks
+  steps:
+  - intent: thanks
+  - action: utter_you_are_welcome
+
 # Check if it is the user's first connection. Ask for his name if it is.
 - rule: First bot interaction with the user
   steps:

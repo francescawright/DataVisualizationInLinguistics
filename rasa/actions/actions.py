@@ -442,10 +442,13 @@ class ActionGreet(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         nickname_value = tracker.get_slot("nickname")
+        first_login_value = None
         greet_again_value = None
         for e in tracker.latest_message['entities']:
             if e['entity'] == 'greet_again':
                 greet_again_value = e['value'] == "True"
+            elif e['entity'] == 'first_login':
+                first_login_value = e['value'] == "True"
 
         messages_not_logged = ["Hey! Nice to see you here 😄", "Hello! I'm here if you need me 😄",
                                "Hi, how are you? 😄",
@@ -454,16 +457,36 @@ class ActionGreet(Action):
 
         if tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None":
             if nickname_value:
-                messages = ["Hey, " + nickname_value + ". Nice to see you again! 😄",
+                messages = ["Hey, " + nickname_value + ". Nice to see you! 😄",
                             "Hi, " + nickname_value + ". How are you? 😄",
                             "Hello, " + nickname_value + ". I'm here if you need me 😄"] if not greet_again_value else \
                     ["Hey, " + nickname_value + ". How else can I help you? 😉",
                      "Hi, " + nickname_value + ". What else can I do for you? 😉"]
                 dispatcher.utter_message(text=random.choice(messages))
+
+                if first_login_value:
+                    # Save in the database that the user has made his first chat connection
+                    response_firstchat = requests.post(domainUrl + "save_first_login/",
+                                                       data={"csrfmiddlewaretoken": tracker.get_slot(
+                                                           "csrfmiddlewaretoken"),
+                                                             "first_login": False},
+                                                       cookies={"sessionid": tracker.get_slot("sessionid"),
+                                                                "csrftoken": tracker.get_slot("csrftoken")})
+
+                    if response_firstchat:  # successful response
+                        return [FollowupAction("utter_help_what_can_you_do"), SlotSet("nickname", nickname_value),
+                                SlotSet("first_login", first_login_value), SlotSet("user_is_logged_in", True)]
+                    else:
+                        dispatcher.utter_message(text="An error has occurred")
+                        return []
+                else:
+                    return [SlotSet("nickname", nickname_value), SlotSet("first_login", first_login_value),
+                            SlotSet("user_is_logged_in", True)]
             else:
                 dispatcher.utter_message(text=random.choice(messages_not_logged))
 
-            return [SlotSet("nickname", nickname_value), SlotSet("user_is_logged_in", True)]
+                return [SlotSet("nickname", nickname_value), SlotSet("first_login", first_login_value),
+                        SlotSet("user_is_logged_in", False)]
 
         # If the user is not logged in or does not have a nickname
         dispatcher.utter_message(text=random.choice(messages_not_logged))

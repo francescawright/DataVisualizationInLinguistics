@@ -319,7 +319,7 @@ stories:
     - action: utter_offers_help
     - intent: largest_thread
     - action: utter_largest_thread
-    - acrion: utter_explain_pop_up_largest
+    - action: utter_explain_pop_up_largest
     - intent: longest_thread
     - action: utter_longest_thread
     - action: utter_explain_pop_up_longest

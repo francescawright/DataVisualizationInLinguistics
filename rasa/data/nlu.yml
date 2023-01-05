@@ -17,6 +17,11 @@ nlu:
     - goodevening
     - good afternoon
 
+- intent: thanks
+  examples: |
+    - thank you
+    - thanks
+
 - intent: goodbye
   examples: |
     - good afternoon

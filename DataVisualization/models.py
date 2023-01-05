@@ -1,6 +1,8 @@
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.contrib.auth.admin import User
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 # Create your models here.
 
@@ -73,3 +75,20 @@ class tbl_Authentication(models.Model):
         return self.username
 
     empAuth_objects = models.Manager()
+
+
+class ChatProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_login = models.BooleanField()
+
+    def __str__(self):
+        return self.user.username
+
+    @receiver(post_save, sender=User)
+    def create_chat_profile(sender, instance, created, **kwargs):
+        if created:
+            ChatProfile.objects.create(user=instance,first_login=True)
+
+    @receiver(post_save, sender=User)
+    def save_chat_profile(sender, instance, **kwargs):
+        instance.chatprofile.save()
