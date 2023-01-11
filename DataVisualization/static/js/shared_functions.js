@@ -2116,7 +2116,7 @@ function createChartSubModal(root, static_values_checked, statisticBackground, n
     }
 
     if (!isPopupSelected) {
-        $("#chart-sub-modal-body").click(clickHandlerSub);
+        $("#chart-sub-modal-body").off('click').click(clickHandlerSub);
     } else {
         $("#chart-sub-modal-body").off('click');
     }
