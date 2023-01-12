@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from DataVisualization.views import index, manage_data, upload_file, main_form_handler, edit_data, \
-    handle_delete_data, signup_view, login_view, logout_view, generate_dataset,\
+    handle_delete_data, signup_view, login_view, logout_view, save_first_login, generate_dataset,\
     generate_dataset_popup, create_subtree, delete_subtree, update_subtrees_menu
 
 urlpatterns = [
@@ -43,4 +43,7 @@ urlpatterns = [
     path('generate_dataset_popup/', generate_dataset_popup, name='generate_dataset_popup'),
     path('selected_data/', main_form_handler, name='selected_data'),
     path('selected_layout/', main_form_handler, name='dropdown_layout'),
+
+    # User chat attributes
+    path('save_first_login/', save_first_login, name='save_first_login'),
 ]

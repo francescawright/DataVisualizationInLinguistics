@@ -71,6 +71,14 @@ def get_all_documents():
     return Document.objects.all()
 
 
+@require_POST
+def save_first_login(request):
+    user = getattr(request, 'user', None)
+    user.chatprofile.first_login = request.POST['first_login']
+    user.save()
+    return HttpResponse(status=204)
+
+
 def generate_dataset(request):
     # Check if there is an active session
     user = getattr(request, 'user', None)

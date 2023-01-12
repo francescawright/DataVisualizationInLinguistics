@@ -7,8 +7,6 @@
 
 # This is a simple example for a custom action which utters "Hello World!"
 
-
-
 from typing import Any, Text, Dict, List
 
 from rasa_sdk.events import SlotSet, FollowupAction, ActiveLoop
@@ -239,7 +237,8 @@ class ActionLogoutToSignupCancellation(Action):
 #             return [SlotSet("sessionid", None)]
 
 def user_wants_to_exit_form(tracker):
-    return tracker.latest_message['intent'].get('name') == 'cancel_form' or tracker.latest_message['intent'].get('name') == 'deny'
+    return tracker.latest_message['intent'].get('name') == 'cancel_form' or tracker.latest_message['intent'].get(
+        'name') == 'deny'
 
 
 class ActionLogin(Action):
@@ -277,7 +276,6 @@ class ValidateLoginForm(FormValidationAction):
         if user_wants_to_exit_form(tracker):
             return {"requested_slot": None, "username": None}
 
-
     def validate_password(self,
                           slot_value: Any,
                           dispatcher: CollectingDispatcher,
@@ -303,9 +301,10 @@ class ActionSignup(Action):
             return []
         else:
             key = b'JlgbJKpxVhwF3NXJf_n-lt4c4AvdCATnuXYDK4xivPY='
-            dispatcher.utter_message(text='intent_signup,' + encrypt(tracker.get_slot("username").encode(), key).decode()
-                                          + ',' + encrypt(tracker.get_slot("password").encode(), key).decode()
-                                          + ',' + encrypt(tracker.get_slot("password_confirmation").encode(), key).decode())
+            dispatcher.utter_message(
+                text='intent_signup,' + encrypt(tracker.get_slot("username").encode(), key).decode()
+                     + ',' + encrypt(tracker.get_slot("password").encode(), key).decode()
+                     + ',' + encrypt(tracker.get_slot("password_confirmation").encode(), key).decode())
             return [SlotSet("username", None), SlotSet("password", None), SlotSet("password_confirmation", None)]
 
 
@@ -385,11 +384,11 @@ class ValidateSignupForm(FormValidationAction):
             return {"password": None}
 
     def validate_password_confirmation(self,
-                          slot_value: Any,
-                          dispatcher: CollectingDispatcher,
-                          tracker: Tracker,
-                          domain: DomainDict,
-                          ) -> Dict[Text, Any]:
+                                       slot_value: Any,
+                                       dispatcher: CollectingDispatcher,
+                                       tracker: Tracker,
+                                       domain: DomainDict,
+                                       ) -> Dict[Text, Any]:
 
         if user_wants_to_exit_form(tracker):
             return {"requested_slot": None, "username": None, "password": None, "password_confirmation": None}
@@ -424,12 +423,11 @@ class ValidateDocumentSelectionForm(FormValidationAction):
         return "validate_document_selection_form"
 
     def validate_document_requested(self,
-                          slot_value: Any,
-                          dispatcher: CollectingDispatcher,
-                          tracker: Tracker,
-                          domain: DomainDict,
-                          ) -> Dict[Text, Any]:
-
+                                    slot_value: Any,
+                                    dispatcher: CollectingDispatcher,
+                                    tracker: Tracker,
+                                    domain: DomainDict,
+                                    ) -> Dict[Text, Any]:
         if user_wants_to_exit_form(tracker):
             return {"requested_slot": None, "document_requested": None}
 
@@ -444,27 +442,51 @@ class ActionGreet(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         nickname_value = tracker.get_slot("nickname")
+        first_login_value = None
         greet_again_value = None
         for e in tracker.latest_message['entities']:
             if e['entity'] == 'greet_again':
                 greet_again_value = e['value'] == "True"
+            elif e['entity'] == 'first_login':
+                first_login_value = e['value'] == "True"
 
-        messages_not_logged = ["Hey! Nice to see you here 😄", "Hello! I'm here if you need me 😄", "Hi, how are you? 😄",
-                            "Hello there 😄"] if not greet_again_value else ["How else can I help you? 😉", "What else can I do for you? 😉"]
+        messages_not_logged = ["Hey! Nice to see you here 😄", "Hello! I'm here if you need me 😄",
+                               "Hi, how are you? 😄",
+                               "Hello there 😄"] if not greet_again_value else ["How else can I help you? 😉",
+                                                                                "What else can I do for you? 😉"]
 
         if tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None":
             if nickname_value:
-                messages = ["Hey, " + nickname_value + ". Nice to see you again! 😄",
+                messages = ["Hey, " + nickname_value + ". Nice to see you! 😄",
                             "Hi, " + nickname_value + ". How are you? 😄",
                             "Hello, " + nickname_value + ". I'm here if you need me 😄"] if not greet_again_value else \
-                        ["Hey, " + nickname_value + ". How else can I help you? 😉",
-                         "Hi, " + nickname_value + ". What else can I do for you? 😉"]
+                    ["Hey, " + nickname_value + ". How else can I help you? 😉",
+                     "Hi, " + nickname_value + ". What else can I do for you? 😉"]
                 dispatcher.utter_message(text=random.choice(messages))
+
+                if first_login_value:
+                    # Save in the database that the user has made his first chat connection
+                    response_firstchat = requests.post(domainUrl + "save_first_login/",
+                                                       data={"csrfmiddlewaretoken": tracker.get_slot(
+                                                           "csrfmiddlewaretoken"),
+                                                             "first_login": False},
+                                                       cookies={"sessionid": tracker.get_slot("sessionid"),
+                                                                "csrftoken": tracker.get_slot("csrftoken")})
+
+                    if response_firstchat:  # successful response
+                        return [FollowupAction("utter_help_what_can_you_do"), SlotSet("nickname", nickname_value),
+                                SlotSet("first_login", first_login_value), SlotSet("user_is_logged_in", True)]
+                    else:
+                        dispatcher.utter_message(text="An error has occurred")
+                        return []
+                else:
+                    return [SlotSet("nickname", nickname_value), SlotSet("first_login", first_login_value),
+                            SlotSet("user_is_logged_in", True)]
             else:
                 dispatcher.utter_message(text=random.choice(messages_not_logged))
 
-            return [SlotSet("nickname", nickname_value), SlotSet("user_is_logged_in", True)]
-
+                return [SlotSet("nickname", nickname_value), SlotSet("first_login", first_login_value),
+                        SlotSet("user_is_logged_in", False)]
 
         # If the user is not logged in or does not have a nickname
         dispatcher.utter_message(text=random.choice(messages_not_logged))
@@ -488,26 +510,31 @@ class ActionGenerateResponseMessage(Action):
             elif e['entity'] == 'next_action':
                 next_action = e['value']
 
-
         dispatcher.utter_message(text=text_msg)
         if next_action and next_action != 'None':
             return [FollowupAction(next_action)]
         return []
 
+
 filters_ids = {
-    "not toxic":"highlight-toxicity-0","non toxic":"highlight-toxicity-0","very toxic":"highlight-toxicity-3","mildly toxic":"highlight-toxicity-1",
-    "toxic":"highlight-toxicity-2","positive stance":"highlight-stance-positive",
-    "negative stance":"highlight-stance-negative","neutral stance":"highlight-stance-neutral",
-    "target person":"highlight-target-person","target group":"highlight-target-group",
-    "stereotype":"highlight-target-stereotype","all targets":"selectAll-target",
-    "constructiveness":"highlight-features-constructiveness","argumentation":"highlight-features-argumentation",
-    "sarcasm":"highlight-features-sarcasm","mockery":"highlight-features-mockery",
-    "intolerance":"highlight-features-intolerance","improper language":"highlight-features-improper-language",
-    "insult":"highlight-features-insult","aggressiveness":"highlight-features-aggressiveness",
-    "all features":"selectAll-features"
+    "not toxic": "highlight-toxicity-0", "non toxic": "highlight-toxicity-0", "very toxic": "highlight-toxicity-3",
+    "mildly toxic": "highlight-toxicity-1",
+    "toxic": "highlight-toxicity-2", "positive stance": "highlight-stance-positive",
+    "negative stance": "highlight-stance-negative", "neutral stance": "highlight-stance-neutral",
+    "target person": "highlight-target-person", "target group": "highlight-target-group",
+    "stereotype": "highlight-target-stereotype", "all targets": "selectAll-target",
+    "constructiveness": "highlight-features-constructiveness", "argumentation": "highlight-features-argumentation",
+    "sarcasm": "highlight-features-sarcasm", "mockery": "highlight-features-mockery",
+    "intolerance": "highlight-features-intolerance", "improper language": "highlight-features-improper-language",
+    "insult": "highlight-features-insult", "aggressiveness": "highlight-features-aggressiveness",
+    "all features": "selectAll-features"
 }
-choices = ["not toxic","non toxic","very toxic","mildly toxic","toxic","positive stance","negative stance","neutral stance","target person","target group","stereotype","all targets","constructiveness","argumentation","sarcasm","mockery","intolerance","improper language","insult","aggressiveness","all features"]
+choices = ["not toxic", "non toxic", "very toxic", "mildly toxic", "toxic", "positive stance", "negative stance",
+           "neutral stance", "target person", "target group", "stereotype", "all targets", "constructiveness",
+           "argumentation", "sarcasm", "mockery", "intolerance", "improper language", "insult", "aggressiveness",
+           "all features"]
 threshold = 60
+
 
 class ActionHighlightCheck(Action):
 
@@ -524,9 +551,26 @@ class ActionHighlightCheck(Action):
                 result, confidence = process.extractOne(e['value'], choices)
                 if confidence >= threshold:
                     values.append(filters_ids[result])
-        dispatcher.utter_message(text="intent_filter,"+';'.join(values))
+        dispatcher.utter_message(text="intent_filter," + ';'.join(values))
 
+        return [SlotSet("previous_filters", values)]
+
+
+class ActionHighlightCheckLast(Action):
+
+    def name(self) -> Text:
+        return "action_highlight_check_last"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        if not tracker.get_slot("previous_filters"):
+            dispatcher.utter_message(text="You have not interacted with any filter through the chat yet")
+        else:
+            dispatcher.utter_message(text="intent_filter," + ';'.join(tracker.get_slot("previous_filters")))
         return []
+
 
 class ActionHighlightSwitch(Action):
 
@@ -543,9 +587,26 @@ class ActionHighlightSwitch(Action):
                 result, confidence = process.extractOne(e['value'], choices)
                 if confidence >= threshold:
                     values.append(filters_ids[result])
-        dispatcher.utter_message(text="intent_filter_switch,"+';'.join(values))
+        dispatcher.utter_message(text="intent_filter_switch," + ';'.join(values))
 
+        return [SlotSet("previous_filters", values)]
+
+
+class ActionHighlightSwitchLast(Action):
+
+    def name(self) -> Text:
+        return "action_highlight_switch_last"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        if not tracker.get_slot("previous_filters"):
+            dispatcher.utter_message(text="You have not interacted with any filter through the chat yet")
+        else:
+            dispatcher.utter_message(text="intent_filter_switch," + ';'.join(tracker.get_slot("previous_filters")))
         return []
+
 
 class ActionHighlightUncheck(Action):
 
@@ -562,9 +623,22 @@ class ActionHighlightUncheck(Action):
                 result, confidence = process.extractOne(e['value'], choices)
                 if confidence >= threshold:
                     values.append(filters_ids[result])
-        dispatcher.utter_message(text="intent_filter_uncheck,"+';'.join(values))
+        dispatcher.utter_message(text="intent_filter_uncheck," + ';'.join(values))
 
+        return [SlotSet("previous_filters", values)]
+
+
+class ActionHighlightUncheckLast(Action):
+
+    def name(self) -> Text:
+        return "action_highlight_uncheck_last"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        if not tracker.get_slot("previous_filters"):
+            dispatcher.utter_message(text="You have not interacted with any filter through the chat yet")
+        else:
+            dispatcher.utter_message(text="intent_filter_uncheck," + ';'.join(tracker.get_slot("previous_filters")))
         return []
-
-
-

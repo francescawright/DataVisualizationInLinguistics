@@ -438,6 +438,7 @@
         let csrftoken = getCookie("csrftoken");
         return action + '{\"csrfmiddlewaretoken\":\"' + csrfmiddlewaretoken + '\",\"csrftoken\":\"' + csrftoken + '\",\"sessionid\":\"' + sessionid +
             ('{{ user.get_username }}' ? '\",\"nickname\":\"' + '{{ user.get_username }}': "") +
+            ('{{ user.chatprofile.first_login }}' ? '\",\"first_login\":\"' + '{{ user.chatprofile.first_login }}': "") +
             ('{{storage_clear}}' && '{{storage_clear}}' !== "nochat" ? '\",\"greet_again\":\"' + 'True': "") + '\"}';
     }
 
