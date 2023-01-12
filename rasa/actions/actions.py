@@ -7,6 +7,8 @@
 
 # This is a simple example for a custom action which utters "Hello World!"
 
+
+
 from typing import Any, Text, Dict, List
 
 from rasa_sdk.events import SlotSet, FollowupAction, ActiveLoop
@@ -563,3 +565,6 @@ class ActionHighlightUncheck(Action):
         dispatcher.utter_message(text="intent_filter_uncheck,"+';'.join(values))
 
         return []
+
+
+

@@ -111,6 +111,7 @@ actions:
   - action_highlight_uncheck
   - action_highlight_check
 
+
 forms:
   login_form:
     username:

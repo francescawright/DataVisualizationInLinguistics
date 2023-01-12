@@ -41,6 +41,7 @@
 <!-- Rasa WebChat Style -->
 
 <style>
+
 .rw-widget-container {
     pointer-events: none;
 }
@@ -49,9 +50,21 @@
 }
 .rw-conversation-container .rw-header {
     background-color: #fa7070;
+    font-size: 18px;
 }
 .rw-conversation-container .rw-messages-container .rw-message .rw-client {
     background-color: #fa7070;
+    font-size: 20px;
+}
+
+.rw-conversation-container .rw-messages-container .rw-response{
+    font-size: 20px;
+}
+.rw-conversation-container .rw-title{
+    font-size: 25px;
+}
+.rw-conversation-container .rw-new-message{
+    font-size: 20px;
 }
 .rw-launcher {
     background-color: #fa7070;
@@ -61,6 +74,9 @@
 }
 #tts-feature {
     right: 170px;
+}
+.rw-message-text {
+    font-size: 20px;
 }
 .chat-feature-btn {
     pointer-events: auto;
@@ -190,6 +206,7 @@
     }
     .rw-widget-container.rw-full-screen.rw-chat-open .chat-feature-img {
         width: 25px;
+
     }
 }
 @media screen and (max-width: 800px) {
@@ -226,6 +243,7 @@
 </head>
 
 <script>
+
     // Initializes the necessary variables for speech-to-text and text-to-speech functions
     var textToSpeech = getStatusTTS();
     var msgTextToSpeech;
@@ -918,7 +936,10 @@
         }),
         t.insertBefore(e, t.firstChild);
     })();
+
 </script>
+
+
 
 {#<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.js"></script>#}
 {#<script>#}
