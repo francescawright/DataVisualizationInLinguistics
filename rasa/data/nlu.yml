@@ -866,6 +866,8 @@ nlu:
     - Disable them
     - Disable it
     - Turn them off
+    - Deactivate them
+    - Deactivate it
 
 - synonym: positive stance
   examples: |
