@@ -66,6 +66,11 @@
 .rw-conversation-container .rw-new-message{
     font-size: 20px;
 }
+@media screen and (min-width: 800px) {
+    .rw-messages-container {
+        max-height: 37vh;
+    }
+}
 .rw-launcher {
     background-color: #fa7070;
 }
@@ -883,7 +888,7 @@
         (e.onload = () => {
           window.WebChat.default(
             {
-                title: 'Rasa bot',
+                title: 'DViL bot',
                 subtitle: getChatSubtitle(),
                 initPayload: generateInitPayload(),
                 customData: { language: "en" },
