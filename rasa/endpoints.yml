@@ -13,6 +13,11 @@
 action_endpoint:
   url: "http://localhost:5055/webhook"
 
+
+#  fallback_action_name: "action_print_letter_by_letter"
+#actions:
+#  - action_print_letter_by_letter
+
 # Tracker store which is used to store the conversations.
 # By default the conversations are stored in memory.
 # https://rasa.com/docs/rasa/tracker-stores

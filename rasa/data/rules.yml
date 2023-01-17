@@ -328,4 +328,9 @@ rules:
     - intent: help_what_can_you_do
     - action: utter_help_what_can_you_do
 
+- rule: test buttons
+  steps:
+    - intent: test
+    - action: utter_test
+
 

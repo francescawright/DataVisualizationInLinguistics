@@ -88,6 +88,7 @@ intents:
   - help_AND_OR
   - help_what_can_you_do
   - what_can_do_after_glyphs
+  - test
 
 actions:
   - action_check_session_login
@@ -113,6 +114,7 @@ actions:
   - action_highlight_check_last
   - action_highlight_uncheck_last
   - action_highlight_switch_last
+  - action_print_letter_by_letter
 
 
 forms:
@@ -374,24 +376,48 @@ responses:
     - text: "Do you want to see a bar chart comparing values of features?"
 
   utter_help_glyphs:
-    - text: "You can directly see which features are tagged to which comments by using glyphs.
+    - text: "You can directly see which features are tagged to which comments by using glyphs.  \ \n
+
   Check-all the features on the left column under Features to see the glyphs"
 
   utter_help_bar_chart_pop_up:
-    - text: "You can change features to targets, stances, or level of toxicity to analyse them. Also, you can change the visualisation to a horizontal bar chart or a pie."
+    - text: "You can change features to:  \ \n
+            - targets  \ \n
+            - stances or  \ \n
+            - level of toxicity  \ \n
+
+             Also, you can change the visualisation to:  \ \n
+              - horizontal bar chart  \ \n
+              - pie "
 
 
 # help
   utter_explain_glyphs:
-    - text: "Glyphs helps you see which comments are annotated with which features.
-    I have three available glyphs: Dots, Circular Glyph, and Trivial Cheese.
-    You can use the left bar to activate the features you want to see. You can select them one-by-one or
-    select 'check all' button to see all of them. You can select glyphs by clicking on
+    - text: "Glyphs helps you see which comments are annotated with which features. \ \n
+
+    I have three available glyphs: \ \n
+    - Dots \ \n
+     - Circular Glyph \ \n
+     - Trivial Cheese \ \n
+
+    You can use the left bar to activate the features you want to see \ \n
+    You can select them: \ \n
+     - one-by-one \ \n
+     or \ \n
+     - select 'check all' button \ \n
+
+     You can select glyphs by clicking on
    the buttons above that have pictures of each glyph."
 
   utter_help_layouts:
-    - text: "There are four available layouts: Tree, Force, Radial,
-    and Circle Packing. I automatically select the best fitted layout according
+    - text: "There are four available layouts: \ \n
+             - Tree \ \n
+             - Force \ \n
+             - Radial \ \n
+              and \ \n
+             - Circle Packing. \ \n
+
+             I automatically select the best fitted layout according
     to your data but you can explore other layouts by selecting them above."
 
   utter_help_highlight:
@@ -429,42 +455,65 @@ responses:
     that you can choose from the second list, Bar Chart and Horizontal Bar Chart."
 
   utter_general_help:
-    - text: "You can ask me about Layouts, Glyphs, Highlight, Features and Targets on
-      the left bar, Summary, and Two buttons on the top saying Selected Comments and Level one comments"
+    - text: "You can ask me about: \ \n
+            - Layouts \ \n
+            - Glyphs \ \n
+            - Highlight \ \n
+            - Features \ \n
+            - Targets \ \n
+            - Summary \ \n
+            - Selected Comments button  \ \n
+            - Level one comments button"
 
   utter_help_what_can_you_do:
-    - text: "I am here to guide you through analysis. I can show you the Largest, the Longest, and the Most toxic thread.
-    Also, I can show you Widest level. I can highlight comments for you if you ask me. You can ask me questions about different
-    features of the tool and I can explain how to use them to you."
+    - text:
+        "I am here to guide you through analysis. \ \n
+         I can show you sub structures: \ \n
+           - the largest thread \ \n
+          - the longest thread \ \n
+          - the most toxic thread \ \n
+           - the widest level \ \n
+
+        Also, I can: \ \n
+
+           - highlight comments \ \n
+           - answer questions about the tool"
+
 
   utter_explain_pop_up_toxic:
     - text: "I highlighted the most toxic thread on the main view. Also, I displayed it separately on
-    a pop-up window. Now the active window is the pop-up that is highlighted with a blue frame. You can switch
-    the active window by selecting the main window. Don't forget I will give answers to your questions considering
-    the active window!"
+    a pop-up window."
 
   utter_explain_pop_up_largest:
     - text: "I highlighted the largest thread on the main view. Also, I displayed it separately on
-    a pop-up window. Now the active window is the pop-up that is highlighted with a blue frame. You can switch
-    the active window by selecting the main window. Don't forget I will give answers to your questions considering
-    the active window!"
+    a pop-up window."
 
   utter_explain_pop_up_longest:
     - text: "I highlighted the longest thread on the main view. Also, I displayed it separately on
-    a pop-up window. Now the active window is the pop-up that is highlighted with a blue frame. You can switch
-    the active window by selecting the main window. Don't forget I will give answers to your questions considering
-    the active window!"
+    a pop-up window."
 
   utter_explain_pop_up_widest:
     - text: "I highlighted the widest level on the main view. Also, I displayed it separately on
-    a pop-up window. Now the active window is the pop-up that is highlighted with a blue frame. You can switch
-    the active window by selecting the main window. Don't forget I will give answers to your questions considering
-    the active window!"
+    a pop-up window."
 
   utter_guide_bar_charts:
     - text: "Now you can compare the features with additional charts. Also, don't forget you can switch
     active window and compare whole graph's features with additional charts. Just ask me or select the
     button at the top that says 'Selected Comments'."
+
+  utter_active_window_explain:
+    - text: "Now the active window is the pop-up that is highlighted with a blue frame. You can switch
+                the active window by selecting the main window. Don't forget I will give answers to your questions considering
+                the active window!"
+
+
+  utter_test:
+    - text: "do you want to know more?"
+      buttons:
+        - title: "yes"
+          payload: "/affirm"
+        - title: "no"
+          payload: "/deny"
 
 session_config:
   session_expiration_time: 60

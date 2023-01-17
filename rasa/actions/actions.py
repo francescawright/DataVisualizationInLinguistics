@@ -6,8 +6,13 @@
 
 
 # This is a simple example for a custom action which utters "Hello World!"
+import time
 
 from typing import Any, Text, Dict, List
+
+from rasa.core.agent import Agent
+from rasa.core.policies.fallback import FallbackPolicy
+from rasa.core.policies.policy import Policy
 
 from rasa_sdk.events import SlotSet, FollowupAction, ActiveLoop
 from rasa_sdk import Action, Tracker, FormValidationAction
@@ -469,7 +474,7 @@ class ActionGreet(Action):
                     response_firstchat = requests.post(domainUrl + "save_first_login/",
                                                        data={"csrfmiddlewaretoken": tracker.get_slot(
                                                            "csrfmiddlewaretoken"),
-                                                             "first_login": False},
+                                                           "first_login": False},
                                                        cookies={"sessionid": tracker.get_slot("sessionid"),
                                                                 "csrftoken": tracker.get_slot("csrftoken")})
 
@@ -642,3 +647,16 @@ class ActionHighlightUncheckLast(Action):
         else:
             dispatcher.utter_message(text="intent_filter_uncheck," + ';'.join(tracker.get_slot("previous_filters")))
         return []
+
+    # class PrintLetterByLetter(Action):
+    #     def name(self) -> Text:
+    #         return "action_print_letter_by_letter"
+    #
+    #     def run(self, dispatcher: CollectingDispatcher,
+    #             tracker: Tracker,
+    #             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+    #         message = tracker.latest_message.get("text")
+    #         for letter in message:
+    #             dispatcher.utter_message(letter)
+    #             time.sleep(0.1)
+    #

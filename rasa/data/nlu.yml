@@ -1302,3 +1302,8 @@ nlu:
   examples: |
     - What can I do now after viewing glyphs?
     - What more I can do now?
+
+- intent: test
+  examples: |
+    - test
+    - test please
