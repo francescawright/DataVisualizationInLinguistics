@@ -3,12 +3,11 @@ version: "3.9"
 services:
   rasa:
     image: rasa-server-okteto:latest
-    build: './'
+    build: .
     volumes:
     - ./rasa/data:/code/data
     - ./rasa/actions:/code/actions
     command: bash -c "rm -rf .rasa/* && rasa train && rasa run -m models --enable-api --auth-token DataVisualizationInLinguisticsSecretToken --cors \"*\" -p 8080"
-    working_dir: /code
     ports:
       - "5006:5005"
     public: true
@@ -16,11 +15,10 @@ services:
       - all
   rasa-actions:
     image: rasa-server-okteto:latest
-    build: './'
+    build: .
     volumes:
       - ./rasa/actions:/code/actions
     command: bash -c "rasa run actions"
-    working_dir: /code
     ports:
       - "5055:5055"
     public: true
