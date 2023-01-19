@@ -1,6 +1,31 @@
 version: "3.9"
 
 services:
+  rasa:
+    image: rasa-server-okteto:latest
+    build: './'
+    volumes:
+    - ./rasa/data:/app/data
+    - ./rasa/actions:/app/actions
+    command: bash -c "rm -rf .rasa/* && rasa train && rasa run -m models --enable-api --auth-token DataVisualizationInLinguisticsSecretToken --cors \"*\" -p 8080"
+    working_dir: "/app"
+    ports:
+      - "5006:5005"
+    public: true
+    networks:
+      - all
+  rasa-actions:
+    image: rasa-server-okteto:latest
+    build: './'
+    volumes:
+      - ./rasa/actions:/app/actions
+    command: bash -c "rasa run actions"
+    working_dir: "/app"
+    ports:
+      - "5055:5055"
+    public: true
+    networks:
+      - all
   db:
     image: postgres
     environment:
@@ -11,10 +36,15 @@ services:
       - ./DataVisualization/postgres-data:/var/lib/postgresql/data
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8080
     volumes:
       - .:/code
     ports:
-      - "8000:8000"
+      - "8080:8080"
     depends_on:
       - db
+networks:
+  all:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable.ipv6: "true"
