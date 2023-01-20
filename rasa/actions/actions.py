@@ -21,7 +21,7 @@ import re
 import requests
 import random
 
-domainUrl = "http://datavisualizationinlinguistics.herokuapp.com:8000/"
+domainUrl = "http://localhost:8000/"
 from cryptography.fernet import Fernet
 
 
