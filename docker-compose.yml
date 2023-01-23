@@ -8,10 +8,9 @@ services:
     - ./rasa/data:/code/data
     - ./rasa/actions:/code/actions
     command: bash -c "rm -rf .rasa/* && rasa train && rasa run -m models --enable-api --auth-token DataVisualizationInLinguisticsSecretToken --cors \"*\" -p 8080"
-    working_dir: "/code"
+    working_dir: /code
     ports:
       - "5005:8080"
-    public: true
     networks:
       - all
   rasa-actions:
@@ -20,10 +19,9 @@ services:
     volumes:
       - ./rasa/actions:/code/actions
     command: bash -c "rasa run actions"
-    working_dir: "/code"
+    working_dir: /code
     ports:
       - "5055:5055"
-    public: true
     networks:
       - all
   db:

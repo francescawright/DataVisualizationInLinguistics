@@ -21,7 +21,7 @@ import re
 import requests
 import random
 
-domainUrl = "https://web-eduvives.cloud.okteto.net:8080/"
+domainUrl = "https://web-eduvives.cloud.okteto.net/"
 from cryptography.fernet import Fernet
 
 
