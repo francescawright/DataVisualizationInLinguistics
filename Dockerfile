@@ -8,3 +8,4 @@ ADD rasa/credentials.yml credentials.yml
 ADD rasa/endpoints.yml endpoints.yml
 ADD rasa/config.yml config.yml
 ADD rasa/domain.yml domain.yml
+CMD ["run_web.sh"]
