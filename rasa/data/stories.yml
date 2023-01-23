@@ -239,7 +239,11 @@ stories:
     - action: utter_most_tagged_features
     - action: utter_help_glyphs
     - intent: help_glyphs
-    - action: utter_explain_glyphs
+    - action: utter_explain_glyphs_one
+    - action: utter_explain_glyphs_two
+    - action: utter_explain_glyphs_three
+    - action: utter_explain_glyphs_four
+    - action: utter_explain_glyphs_five
     - intent: what_can_do_after_glyphs
     - action: utter_guide_bar_charts
     - intent: statistics_features_subtrees
@@ -266,9 +270,44 @@ stories:
     - action: utter_most_tagged_features
     - action: utter_help_glyphs
     - intent: help_glyphs
-    - action: utter_explain_glyphs
+    - action: utter_explain_glyphs_one
+    - action: utter_explain_glyphs_two
+    - action: utter_explain_glyphs_three
+    - action: utter_explain_glyphs_four
+    - action: utter_explain_glyphs_five
 
 
+- story: explaining glyphs with multiple steps
+  steps:
+    - intent: help_glyphs
+    - action: utter_explain_glyphs_one
+    - action: utter_explain_glyphs_two
+    - action: utter_explain_glyphs_three
+    - action: utter_explain_glyphs_four
+    - action: utter_explain_glyphs_five
+
+
+- story: left bar help
+  steps:
+    - intent: features_on_the_left
+    - action: utter_explain_features_tab
+    - intent: targets_help
+    - action: utter_explain_targets_one
+    - action: utter_explain_targets_two
+    - action: utter_explain_targets_three
+    - action: utter_explain_targets_four
+    - action: utter_explain_targets_five
+    - intent: thanks
+    - action: utter_you_are_welcome
+
+- story: target
+  steps:
+    - intent: targets_help
+    - action: utter_explain_targets_one
+    - action: utter_explain_targets_two
+    - action: utter_explain_targets_three
+    - action: utter_explain_targets_four
+    - action: utter_explain_targets_five
 
 
 
@@ -329,8 +368,34 @@ stories:
   steps:
     - intent: greet
     - action: utter_offers_help
-    - intent: functions
+    - intent: tool_help
     - action: utter_general_help
+    - intent: help_sub_structure
+    - action: utter_help_sub_structure
+    - intent: thanks
+    - action: utter_you_are_welcome
+    - intent: help_main_graph_barchart
+    - action: utter_help_main_bar
+    - action: utter_help_main_bar_two
+    - intent: statistics_help
+    - action: utter_help_main_bar_three
+
+
+- story: User wants to know about statistics
+  steps:
+    - intent: help_main_graph_barchart
+    - action: utter_help_main_bar
+    - action: utter_help_main_bar_two
+    - intent: statistics_help
+    - action: utter_help_main_bar_three
+
+- story: User wants to know about sub graphs button
+  steps:
+    - intent: help_subtree_barchart
+    - action: utter_help_subtree_bar
+
+
+
 
 #- story: showing the features of our system 1
 #  steps:

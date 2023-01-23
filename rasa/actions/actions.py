@@ -11,9 +11,12 @@ import time
 from typing import Any, Text, Dict, List
 
 from rasa.core.agent import Agent
+from rasa.core.channels import OutputChannel
+from rasa.core.nlg import NaturalLanguageGenerator
 from rasa.core.policies.fallback import FallbackPolicy
 from rasa.core.policies.policy import Policy
-
+from rasa.shared.core.trackers import DialogueStateTracker
+from rasa.shared.core.events import Event
 from rasa_sdk.events import SlotSet, FollowupAction, ActiveLoop
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
@@ -455,9 +458,9 @@ class ActionGreet(Action):
             elif e['entity'] == 'first_login':
                 first_login_value = e['value'] == "True"
 
-        messages_not_logged = ["Hey! Nice to see you here 😄", "Hello! I'm here if you need me 😄",
-                               "Hi, how are you? 😄",
-                               "Hello there 😄"] if not greet_again_value else ["How else can I help you? 😉",
+        messages_not_logged = ["Hey! Nice to see you here, I am a Chatbot here to help you 😄", "Hello! I'm a Chatbot here to help if you need me 😄",
+                               "Hi, I am a Chatbot here to guide you 😄",
+                               "Hello there, I am a Chatbot here to help you 😄"] if not greet_again_value else ["How else can I help you? 😉",
                                                                                 "What else can I do for you? 😉"]
 
         if tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None":
@@ -660,3 +663,64 @@ class ActionHighlightUncheckLast(Action):
     #             dispatcher.utter_message(letter)
     #             time.sleep(0.1)
     #
+
+    # class ActionSendPopupShownMessage(Action):
+    #
+    #     def name(self) -> Text:
+    #         return "action_send_popup_shown_message"
+    #
+    #     def run(self, dispatcher: CollectingDispatcher,
+    #             tracker: Tracker,
+    #             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+    #         print("Popup shown action called")
+    #         message = "Hello! The pop-up window you requested has been opened for the first time."
+    #         dispatcher.utter_message(text=message)
+    #         return []
+
+
+class ActionSendPopupShownMessage(Action):
+    def name(self) -> Text:
+        return "action_send_popup_shown_message"
+
+    def run(self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        popup_shown = tracker.get_slot("popup_shown")
+        if not popup_shown:
+            message = "Hello! The pop-up window you requested has been opened for the first time."
+            dispatcher.utter_message(text=message)
+            return [SlotSet("popup_shown", True)]
+        print(f"popup_shown: {tracker.get_slot('popup_shown')}")
+        return []
+
+
+
+class Options(Action):
+
+  def name(self) -> Text:
+    return "action_options"
+
+  def run(
+    self,
+    dispatcher: CollectingDispatcher,
+    tracker: Tracker,
+    domain: DomainDict
+  ) -> List:
+
+    if tracker.slots.get("is_new_user", False):
+      if tracker.slots.get("account_type", None) == "primary":
+        dispatcher.utter_message(
+          response="utter_options_new_user_primary"
+        )
+      elif tracker.slots.get("account_type", None) == "secondary":
+        dispatcher.utter_message(
+          response="utter_options_new_user_secondary"
+        )
+    else:
+      dispatcher.utter_message(
+        response="utter_options_return_user"
+      )
+
+    return []

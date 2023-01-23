@@ -114,7 +114,7 @@ actions:
   - action_highlight_check_last
   - action_highlight_uncheck_last
   - action_highlight_switch_last
-  - action_print_letter_by_letter
+  - action_send_popup_shown_message
 
 
 forms:
@@ -150,6 +150,7 @@ entities:
   - username
   - filter_name
   - first_login
+  - popup_shown
 
 slots:
   csrfmiddlewaretoken:
@@ -189,6 +190,10 @@ slots:
     type: list
   first_login:
     type: bool
+  popup_shown:
+    type: bool
+
+
 
 responses:
 
@@ -212,6 +217,7 @@ responses:
   utter_you_are_welcome:
   - text: "you are welcome"
   - text: "you're welcome"
+  - text: "no problem"
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
@@ -379,50 +385,89 @@ responses:
     - text: "You can directly see which features are tagged to which comments by using glyphs.  \ \n
 
   Check-all the features on the left column under Features to see the glyphs"
+      image: "https://ecemkavaz.github.io/imagesRasa/features.png"
 
   utter_help_bar_chart_pop_up:
     - text: "You can change features to:  \ \n
-            - targets  \ \n
-            - stances or  \ \n
-            - level of toxicity  \ \n
+            - Targets  \ \n
+            - Stances   \ \n
+            - Level of Toxicity  \ \n
 
              Also, you can change the visualisation to:  \ \n
-              - horizontal bar chart  \ \n
-              - pie "
+              - Horizontal Bar   \ \n
+              - Pie  "
 
 
-# help
-  utter_explain_glyphs:
+
+
+  utter_explain_glyphs_one:
     - text: "Glyphs helps you see which comments are annotated with which features. \ \n
+    I have three available glyphs:
+    "
+  utter_explain_glyphs_two:
+    - text: "Dots"
+      image: "https://ecemkavaz.github.io/imagesRasa/dots_1.svg"
 
-    I have three available glyphs: \ \n
-    - Dots \ \n
-     - Circular Glyph \ \n
-     - Trivial Cheese \ \n
+  utter_explain_glyphs_three:
+    - text: "Circular Glyph"
+      image: "https://ecemkavaz.github.io/imagesRasa/glyph.svg"
 
-    You can use the left bar to activate the features you want to see \ \n
-    You can select them: \ \n
-     - one-by-one \ \n
-     or \ \n
-     - select 'check all' button \ \n
+  utter_explain_glyphs_four:
+    - text: "Trivial Cheese"
+      image: "https://ecemkavaz.github.io/imagesRasa/trivial.svg"
 
-     You can select glyphs by clicking on
-   the buttons above that have pictures of each glyph."
+  utter_explain_glyphs_five:
+    - text: "You can use the left bar to activate the features you want to see. \ \n
+                  You can select them: \ \n
+
+                 - one-by-one \ \n
+                     or \ \n
+                  - select 'check all' button \ \n"
+
+  utter_explain_targets_one:
+    - text: "Targets are annotated on comments that have these attributes. There are three available targets:
+    "
+  utter_explain_targets_two:
+    - text: "Target Group"
+      image: "https://ecemkavaz.github.io/imagesRasa/Group.svg"
+
+  utter_explain_targets_three:
+    - text: "Target Person"
+      image: "https://ecemkavaz.github.io/imagesRasa/Person.svg"
+
+  utter_explain_targets_four:
+    - text: "Stereotype"
+      image: "https://ecemkavaz.github.io/imagesRasa/Stereotype.svg"
+
+  utter_explain_targets_five:
+    - text: "Use Targets tab on the lef bar to activate and deactivate them"
+      image: "https://ecemkavaz.github.io/imagesRasa/targets.png"
+
+
+  utter_explain_features_tab:
+    - text: "All the comments are tagged with features that they have. You can activate and deactivate features to see with Glyphs which comments have which, using Features tab. Select features one-by-one or check-all. "
+      image: "https://ecemkavaz.github.io/imagesRasa/features.png"
 
   utter_help_layouts:
-    - text: "There are four available layouts: \ \n
-             - Tree \ \n
-             - Force \ \n
-             - Radial \ \n
-              and \ \n
-             - Circle Packing. \ \n
+    - text: "There are four available layouts. I automatically select the best fitted layout according
+         to your data but you can explore other layouts by selecting them above. Try a different layout:"
+      buttons:
+       - title: "Tree"
+         payload: '/change_layout_tree{{"object_requested":"layout","layout_requested":"tree"}}'
+       - title: "Force"
+         payload: '/change_layout_force{{"object_requested":"layout","layout_requested":"force"}}'
+       - title: "Radial"
+         payload: '/change_layout_radial{{"object_requested":"layout","layout_requested":"radial"}}'
+       - title: "Circle"
+         payload: '/change_layout_circle{{"object_requested":"layout","layout_requested":"circle"}}'
 
-             I automatically select the best fitted layout according
-    to your data but you can explore other layouts by selecting them above."
+
+
 
   utter_help_highlight:
     - text: "Highlight function will show only the comments that include the selected feature.
     You can ask me to show you or select features from the left bar."
+      image: "https://ecemkavaz.github.io/imagesRasa/highlight.png"
 
   utter_help_AND:
     - text: "If you use AND option to select more than one feature,
@@ -440,44 +485,97 @@ responses:
   utter_help_summary:
     - text: "Summary shows how many comments are there in different levels of toxicity and how many comments
     are there in different target features. Summary gets updated when comments are highlighted."
+      image: "https://ecemkavaz.github.io/imagesRasa/summary.png"
 
   utter_help_main_bar:
     - text: "If you select 'Selected Comments' button on the top, a bar chart will appear displaying the
-    number of each feature the selected comments have. Also, from the first list you can select
-     to see statistics of Targets, Stances and Level of toxicity. There are available three graphs
-     that you can choose from the second list, Bar Chart, Horizontal Bar Chart and Pie
+    number of each feature the selected comments have. \ \n
+     From the first list you can select to see statistics of: \ \n
+      - Targets \ \n
+      - Stances \ \n
+       - Level of toxicity \ \n
+
+       There are available three graph options on the second list: \ \n
+       - Bar Chart \ \n
+       - Horizontal Bar Chart  \ \n
+       - Pie
      Chart."
+      image: "https://ecemkavaz.github.io/imagesRasa/selectedcomments.png"
+
+  utter_help_main_bar_two:
+    - text: "If you want to have more information about this:"
+      buttons:
+        - title: "Click here"
+          payload: '/statistics_help'
+
+  utter_help_main_bar_three:
+    - text: "If you click on each bar, you can highlight the features on the graph. Also, you can
+    remove features by clicking on their name to compare the only features you want."
 
   utter_help_subtree_bar:
-    - text: "If you select Sub Graphs button, bar chart will appear displaying the
-    available features in every sub graph. Also, you can select from the list
-    to see Targets, Stances and Level of toxicity. There are available two graphs
-    that you can choose from the second list, Bar Chart and Horizontal Bar Chart."
+    - text: "If you select 'Level One Comments' button, a bar chart will appear displaying the
+    available features of each comment in level one and their children. \ \n
+    From the first list you can select to see statistics of: \ \n
+          - Targets \ \n
+          - Stances \ \n
+           - Level of toxicity \ \n
+
+           There are available three graph options on the second list: \ \n
+           - Bar Chart \ \n
+           - Horizontal Bar Chart  \ \n
+          "
+      image: "https://ecemkavaz.github.io/imagesRasa/levelonecomments.png"
 
   utter_general_help:
-    - text: "You can ask me about: \ \n
-            - Layouts \ \n
-            - Glyphs \ \n
-            - Highlight \ \n
-            - Features \ \n
-            - Targets \ \n
-            - Summary \ \n
-            - Selected Comments button  \ \n
-            - Level one comments button"
+    - text: "I can help you with: "
+      buttons:
+        - title: "Highlight"
+          payload: '/help_highlight'
+        - title: "Layouts"
+          payload: '/help_layouts'
+        - title: "Glyphs"
+          payload: '/help_glyphs'
+        - title: "Features"
+          payload: '/features_on_the_left'
+        - title: "Targets"
+          payload: '/targets_help'
+        - title: "Summary"
+          payload: '/help_summary'
+        - title: "Selected Comments"
+          payload: '/help_main_graph_barchart'
+        - title: "Level One Comments"
+          payload: 'help_subtree_barchart'
+        - title: "Sub Structures"
+          payload: '/help_sub_structure'
+
+  utter_help_sub_structure:
+    - text: "There are sub structures that I can display, select one to see."
+      buttons:
+        - title: "the largest thread"
+          payload: '/largest_thread'
+        - title: "the longest thread"
+          payload: '/longest_thread'
+        - title: "the most toxic thread"
+          payload: '/most_toxic_thread'
+        - title: "the widest level"
+          payload: '/widest_level'
+
+
 
   utter_help_what_can_you_do:
-    - text:
-        "I am here to guide you through analysis. \ \n
-         I can show you sub structures: \ \n
-           - the largest thread \ \n
-          - the longest thread \ \n
-          - the most toxic thread \ \n
-           - the widest level \ \n
-
-        Also, I can: \ \n
-
-           - highlight comments \ \n
-           - answer questions about the tool"
+    - text: "I am here to guide you through analysis.
+             I can show you sub structures, highlight features, or answer questions about the features of the tool."
+      buttons:
+        - title: "the largest thread"
+          payload: '/largest_thread'
+        - title: "the longest thread"
+          payload: '/longest_thread'
+        - title: "the most toxic thread"
+          payload: '/most_toxic_thread'
+        - title: "the widest level"
+          payload: '/widest_level'
+        - title: "learn more"
+          payload: '/tool_help'
 
 
   utter_explain_pop_up_toxic:
@@ -514,6 +612,9 @@ responses:
           payload: "/affirm"
         - title: "no"
           payload: "/deny"
+
+
+
 
 session_config:
   session_expiration_time: 60

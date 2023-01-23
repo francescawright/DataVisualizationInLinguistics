@@ -21,6 +21,8 @@ nlu:
   examples: |
     - thank you
     - thanks
+    - thank you very much
+    - thanks a lot
 
 - intent: goodbye
   examples: |
@@ -1238,8 +1240,6 @@ nlu:
     - What are the glyphs?
     - How can I use the glyphs?
     - What are dots, circular glyph and trivial cheese?
-    - What are features on the left bar?
-    - What are targets on the left bar?
     - Give me more information about glyphs
     - Can you give me more information about glyphs?
 
@@ -1265,18 +1265,23 @@ nlu:
 
 - intent: help_main_graph_barchart
   examples: |
-    - What is main graph?
+    - What is selected comments?
     - What does first button on the right show?
+    - What is selected comments button?
+    - What does selected comments button do?
+    - What does selected comments do?
+
 
 - intent: help_subtree_barchart
   examples: |
     - What is sub graphs?
     - What does second button on the right show?
 
-- intent: functions
+- intent: tool_help
   examples: |
     - What are the functions of this tool?
     - How can I use this tool?
+    - Tell me about how to use this tool?
 
 - intent: help_AND
   examples: |
@@ -1304,6 +1309,32 @@ nlu:
   examples: |
     - What can I do now after viewing glyphs?
     - What more I can do now?
+
+
+- intent: features_on_the_left
+  examples: |
+    - What are features on the left bar?
+    - How can use features?
+    - What are features?
+
+- intent: targets_help
+  examples: |
+    - What are targets?
+    - What are targets on the left bar?
+    - How can I use targets?
+
+
+- intent: help_sub_structure
+  examples: |
+    - what are sub structures?
+    - help me with sub structures?
+
+
+- intent: statistics_help
+  examples: |
+    - can you tell me more about statistics?
+    - can give more information about statistics?
+
 
 - intent: test
   examples: |
