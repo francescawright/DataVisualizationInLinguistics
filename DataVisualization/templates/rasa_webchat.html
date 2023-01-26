@@ -43,8 +43,8 @@
 <style>
 
 .rw-conversation-container .rw-image-details .rw-image-frame{
-    height: 120px;
-    width: 120px;
+    height: 110px;
+    width: auto;
 }
 .rw-conversation-container .rw-replies{
    display:block;
@@ -629,6 +629,25 @@
                         e.text = "Open a document first, in order to perform this action";
                     }
                     break;
+                case "intent_change_glyphs":
+                    if ('{{ selected_item }}') {
+                        if (messageList[1] === "dots_icon_button" && document.getElementById("dots_label").classList.contains("active")) {
+                            e.text = "Already in the Dots";
+                        } else if (messageList[1] === "glyphs_icon_button" && document.getElementById("glyphs_label").classList.contains("active")) {
+                            e.text = "Already in the Circular Glyph";
+                        } else if (messageList[1] === "trivial_icon_button" && document.getElementById("trivial_label").classList.contains("active")) {
+                            e.text = "Already in the Trivial Cheese";
+                        }
+                        else {
+                            e.hidden = true;
+                            document.getElementById(messageList[1]).from_chat = true;
+                            document.getElementById(messageList[1]).from_chat_msg = messageList[2];
+                            document.getElementById(messageList[1]).click();
+                        }
+                    } else {
+                        e.text = "Open a document first, in order to perform this action";
+                    }
+                    break;
                 case "intent_switch_or_and":
                     if ('{{ selected_item }}') {
                         if (messageList[1] === "or_button" && document.getElementById("or_label").classList.contains("active")) {
@@ -786,7 +805,7 @@
         existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
 
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://datavisualizationinlinguistics.herokuapp.com:5005/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
+        xhr.open("POST", "http://localhost:5005/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify({
         "name": "generate_response_message",
@@ -805,7 +824,7 @@
         existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
 
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://datavisualizationinlinguistics.herokuapp.com:5005/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
+        xhr.open("POST", "http://localhost:5005/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify({
         "name": intent,
@@ -910,7 +929,7 @@
                 subtitle: getChatSubtitle(),
                 initPayload: generateInitPayload(),
                 customData: { language: "en" },
-                socketUrl: "http://datavisualizationinlinguistics.herokuapp.com:5005",
+                socketUrl: "http://localhost:5005",
                 profileAvatar:getProfileAvatar(),
                 showFullScreenButton: true,
                 customMessageDelay: (message) => {
@@ -963,6 +982,33 @@
 
 </script>
 
+
+
+
+{#<script>#}
+{#    let messageSent = false;#}
+{#$(document).ready(function(){#}
+{#    $('#popupModal').on('shown.bs.modal', function () {#}
+{#        if (!messageSent) {#}
+{#            messageSent = true;#}
+{#            const event = {#}
+{#                event: "popup_shown",#}
+{#                sender: "javascript"#}
+{#            }#}
+{#            $.ajax({#}
+{#                url: "http://localhost:5055/webhooks/rest/webhook",#}
+{#                type: "POST",#}
+{#                data: JSON.stringify(event),#}
+{#                contentType: "application/json",#}
+{#                success: function() {#}
+{#                    console.log("Event sent");#}
+{##}
+{#                }#}
+{#            });#}
+{#        }#}
+{#    });#}
+{# });#}
+{#</script>#}
 
 
 {#<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.js"></script>#}

@@ -237,6 +237,7 @@ stories:
     - intent: most_toxic_thread
     - action: utter_most_toxic_thread
     - action: utter_explain_pop_up_toxic
+    - action: action_send_response
     - intent: most_tagged_features
     - action: utter_most_tagged_features
     - action: utter_help_glyphs
@@ -245,7 +246,6 @@ stories:
     - action: utter_explain_glyphs_two
     - action: utter_explain_glyphs_three
     - action: utter_explain_glyphs_four
-    - action: utter_explain_glyphs_five
     - intent: what_can_do_after_glyphs
     - action: utter_guide_bar_charts
     - intent: statistics_features_subtrees
@@ -264,6 +264,7 @@ stories:
     - intent: largest_thread
     - action: utter_largest_thread
     - action: utter_explain_pop_up_largest
+    - action: action_send_response
     - intent: longest_thread
     - action: utter_longest_thread
     - action: utter_explain_pop_up_longest
@@ -278,7 +279,7 @@ stories:
     - action: utter_explain_glyphs_two
     - action: utter_explain_glyphs_three
     - action: utter_explain_glyphs_four
-    - action: utter_explain_glyphs_five
+
 
 
 - story: explaining glyphs with multiple steps
@@ -288,7 +289,7 @@ stories:
     - action: utter_explain_glyphs_two
     - action: utter_explain_glyphs_three
     - action: utter_explain_glyphs_four
-    - action: utter_explain_glyphs_five
+
 
 
 - story: left bar help
@@ -368,6 +369,7 @@ stories:
     - action: utter_explain_pop_up_longest
 
 
+
 - story: Help Scenario
   steps:
     - intent: greet
@@ -383,6 +385,20 @@ stories:
     - action: utter_help_main_bar_two
     - intent: statistics_help
     - action: utter_help_main_bar_three
+    - intent: help_layouts
+    - action: utter_help_layouts_one
+    - action: utter_help_layouts_two
+    - action: utter_help_layouts_three
+    - intent: help_subtree_barchart
+    - action: utter_help_subtree_bar
+
+
+- story: help layout
+  steps:
+    - intent: help_layouts
+    - action: utter_help_layouts_one
+    - action: utter_help_layouts_two
+    - action: utter_help_layouts_three
 
 
 - story: User wants to know about statistics
@@ -440,7 +456,7 @@ stories:
 #    - intent: greet
 #    - action: utter_offers_help
 #    - intent: help_what_can_you_do
-#    - action: utter_help_what_can_you_do
+#
 #    - intent: longest_thread
 #    - action: utter_longest_thread
 #    - intent: help_main_graph_barchart
@@ -449,4 +465,13 @@ stories:
 #    - intent: affirm
 #    - action: utter_statistics_features_tree
 #    - action: utter_help_bar_chart_pop_up
+
+
+- story: popup shown
+  steps:
+    - intent: popup_shown
+    - action: action_send_popup_shown_message
+
+
+
 

@@ -29,7 +29,7 @@ import re
 import requests
 import random
 
-domainUrl = "http://datavisualizationinlinguistics.herokuapp.com:8000/"
+domainUrl = "http://localhost:8000/"
 from cryptography.fernet import Fernet
 
 
@@ -458,10 +458,12 @@ class ActionGreet(Action):
             elif e['entity'] == 'first_login':
                 first_login_value = e['value'] == "True"
 
-        messages_not_logged = ["Hey! Nice to see you here, I am a Chatbot here to help you 😄", "Hello! I'm a Chatbot here to help if you need me 😄",
+        messages_not_logged = ["Hey! Nice to see you here, I am a Chatbot here to help you 😄",
+                               "Hello! I'm a Chatbot here to help if you need me 😄",
                                "Hi, I am a Chatbot here to guide you 😄",
-                               "Hello there, I am a Chatbot here to help you 😄"] if not greet_again_value else ["How else can I help you? 😉",
-                                                                                "What else can I do for you? 😉"]
+                               "Hello there, I am a Chatbot here to help you 😄"] if not greet_again_value else [
+            "How else can I help you? 😉",
+            "What else can I do for you? 😉"]
 
         if tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None":
             if nickname_value:
@@ -678,49 +680,75 @@ class ActionHighlightUncheckLast(Action):
     #         return []
 
 
-class ActionSendPopupShownMessage(Action):
-    def name(self) -> Text:
-        return "action_send_popup_shown_message"
+# class ActionSendPopupShownMessage(Action):
+#     def name(self) -> Text:
+#         return "action_send_popup_shown_message"
+#
+#     def run(self,
+#             dispatcher: CollectingDispatcher,
+#             tracker: Tracker,
+#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#         # popup_shown = tracker.get_slot("popup_shown")
+#         if not tracker.get_slot("popup_shown"):
+#             # message = "Hello! The pop-up window you requested has been opened for the first time."
+#             dispatcher.utter_message(text="Hello! The pop-up window you requested has")
+#             return [SlotSet("popup_shown", True)]
+#         print(f"popup_shown: {tracker.get_slot('popup_shown')}")
+#         return []
+
+
+class MyAction(Action):
+    def name(self):
+        return "action_send_response"
 
     def run(self,
             dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        # popup_shown = tracker.get_slot("popup_shown")
+        if not tracker.get_slot("response_sent"):
+            # message = "Hello! The pop-up window you requested has been opened for the first time."
+            dispatcher.utter_message(text="Now the active window is the pop-up that is highlighted with a blue frame. "
+                                          "You can switch the active window by selecting the main window. Don't "
+                                          "forget I will give answers to your questions considering the active "
+                                          "window!")
 
-        popup_shown = tracker.get_slot("popup_shown")
-        if not popup_shown:
-            message = "Hello! The pop-up window you requested has been opened for the first time."
-            dispatcher.utter_message(text=message)
-            return [SlotSet("popup_shown", True)]
+            return [SlotSet("response_sent", True)]
         print(f"popup_shown: {tracker.get_slot('popup_shown')}")
         return []
 
+    # def run(self, dispatcher, tracker, domain):
+    #     if tracker.get_slot('response_sent') == False:
+    #         # send the response
+    #         dispatcher.utter_message("Hello")
+    #         return [SlotSet('response_sent', True)]
+    #     else:
+    #         return []
 
-
-class Options(Action):
-
-  def name(self) -> Text:
-    return "action_options"
-
-  def run(
-    self,
-    dispatcher: CollectingDispatcher,
-    tracker: Tracker,
-    domain: DomainDict
-  ) -> List:
-
-    if tracker.slots.get("is_new_user", False):
-      if tracker.slots.get("account_type", None) == "primary":
-        dispatcher.utter_message(
-          response="utter_options_new_user_primary"
-        )
-      elif tracker.slots.get("account_type", None) == "secondary":
-        dispatcher.utter_message(
-          response="utter_options_new_user_secondary"
-        )
-    else:
-      dispatcher.utter_message(
-        response="utter_options_return_user"
-      )
-
-    return []
+# class Options(Action):
+#
+#   def name(self) -> Text:
+#     return "action_options"
+#
+#   def run(
+#     self,
+#     dispatcher: CollectingDispatcher,
+#     tracker: Tracker,
+#     domain: DomainDict
+#   ) -> List:
+#
+#     if tracker.slots.get("is_new_user", False):
+#       if tracker.slots.get("account_type", None) == "primary":
+#         dispatcher.utter_message(
+#           response="utter_options_new_user_primary"
+#         )
+#       elif tracker.slots.get("account_type", None) == "secondary":
+#         dispatcher.utter_message(
+#           response="utter_options_new_user_secondary"
+#         )
+#     else:
+#       dispatcher.utter_message(
+#         response="utter_options_return_user"
+#       )
+#
+#     return []

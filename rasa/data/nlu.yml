@@ -303,6 +303,55 @@ nlu:
   examples: |
     - file
 
+# glyph change
+
+- intent: change_glyph_dots
+  examples: |
+    - Change the [glyph]{"entity": "object_requested", "value": "glyph"} to [dots]{"entity": "glyph_requested", "value": "dots"}
+    - Set the [dots]{"entity": "glyph_requested", "value": "dots"}
+    - Display the [dots]{"entity": "glyph_requested", "value": "dots"}
+    - I want to see the [dots]{"entity": "glyph_requested", "value": "dots"} as glyph
+    - I would like to see the [dots]{"entity": "glyph_requested", "value": "dots"} as glyph
+    - Show me the [dots]{"entity": "glyph_requested", "value": "dots"}
+    - [dots]{"entity": "glyph_requested", "value": "dots"}
+    - Show [dots]{"entity": "glyph_requested", "value": "dots"}
+    - Chnage to [dots]{"entity": "glyph_requested", "value": "dots"}
+
+
+
+- intent: change_glyph_circular
+  examples: |
+    - Change the [glyph]{"entity": "object_requested", "value": "glyph"} to [circular]{"entity": "glyph_requested", "value": "circular"}
+    - Set the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - Display the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - I want to see the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - I would like to see the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - Show me the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - Show [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - Chnage to [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+
+
+- intent: change_glyph_trivial
+  examples: |
+    - Change the [glyph]{"entity": "object_requested", "value": "glyph"} to [trivial]{"entity": "glyph_requested", "value": "trivial"}
+    - Set the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+    - Display the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+    - I want to see the [trivial]{"entity": "glyph_requested", "value": "trivial"}
+    - I would like to see the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+    - Show me the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+    - [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+    - Show [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+    - Chnage to [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+
+- intent: change_glyphs
+  examples: |
+    - I want to change the [glyph]{"entity": "object_requested", "value": "glyph"}
+    - Change [glyph]{"entity": "object_requested", "value": "glyph"}
+    - I want to see another [glyph]{"entity": "object_requested", "value": "glyph"}
+    - I would like to see another [glyph]{"entity": "object_requested", "value": "glyph"}
+    - Other [glyph]{"entity": "object_requested", "value": "glyph"}
+
 #- regex: document_requested
 #  examples: |
 #    - [a-zA-Z0-9_-]{1,255}
@@ -1276,6 +1325,8 @@ nlu:
   examples: |
     - What is sub graphs?
     - What does second button on the right show?
+    - What is that button saying level one comments?
+    - What is level one comments button?
 
 - intent: tool_help
   examples: |
@@ -1328,6 +1379,8 @@ nlu:
   examples: |
     - what are sub structures?
     - help me with sub structures?
+    - what are regions?
+    - can you visualise regions of the graph?
 
 
 - intent: statistics_help
