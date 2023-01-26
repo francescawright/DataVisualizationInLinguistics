@@ -417,6 +417,7 @@ nlu:
     - toxicity level 0
     - not toxic
 
+
 - synonym: very toxic
   examples: |
     - most toxic
