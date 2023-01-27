@@ -1141,116 +1141,116 @@ nlu:
     - most toxic subgraph
     - subgraph with most toxic nodes
 
-# Which comment level has the most very toxic nodes?
-- intent: comment_level_vs_very_toxic
-  examples: |
-    - Which comment level has the most very toxic nodes?
-    - Which comment level has more very toxic nodes?
-    - In which comment level there are more very toxic nodes?
-    - In which comment level there are the most very toxic nodes?
-    - Show me the comment level with the most very toxic nodes?
-    - Show me the comment level that has the most very toxic nodes?
-    - I want to see the comment level with the most very toxic nodes
-    - I want to see the comment level that has the most very toxic nodes
-    - Can you show me the comment level with the most very toxic nodes
-    - Can you show me the comment level that has the most very toxic nodes?
-    - Display the comment level with the most very toxic nodes
-    - Display the comment level that has the most very toxic nodes
-    - comment level with the most very toxic nodes
-
-# What are the most occurred combination of features in most/very toxic nodes?
-- intent: combination_features_very_toxic
-  examples: |
-    - Which combination of features occurred the most in very toxic nodes?
-    - Which combination of features ocurred the most in most toxic nodes?
-    - What are the most occurred combination of features in most toxic nodes?
-    - What are the most occured combination of features in very toxic nodes?
-
-# What are the most occurred combination of features in toxic nodes?
-- intent: combination_features_toxic
-  examples: |
-    - Which combination of features occurred the most in toxic nodes?
-    - What are the most occurred combination of features in toxic nodes?
-
-# What are the most occurred combination of features in mildly toxic nodes?
-- intent: combination_features_mildly_toxic
-  examples: |
-    - Which combination of features occurred the most in mildy toxic nodes?
-    - Which combination of features ocurred the most in slighyly toxic nodes?
-    - What are the most occurred combination of features in slightly toxic nodes?
-    - What are the most occured combination of features in slightly toxic nodes?
-
-# What are the most occurred combination of features in non toxic nodes?
-- intent: combination_features_non_toxic
-  examples: |
-    - Which combination of features occurred the most in non toxic nodes?
-    - Which combination of features ocurred the most in least toxic nodes?
-    - What are the most occurred combination of features in non toxic nodes?
-    - What are the most occured combination of features in least toxic nodes?
-
-#What are the most occurred combination of features in Comment level 1 = CL1?
-- intent: combination_features_CL1
-  examples: |
-    - Which combination of features ocurred the most in comment level 1?
-    - What are the most occurred combination of features in comment level 1?
-
-#What are the most occurred combination of features in Comment level 2 = CL2?
-- intent: combination_features_CL2
-  examples: |
-    - Which combination of features ocurred the most in comment level 2?
-    - What are the most occurred combination of features in comment level 2?
-
-# comment level_1
-- intent: comment_level_1
-  examples: |
-    - Show me comment level 1
-    - Diplay the comment level 1
-    - Show the comment level 1
-    - Only show me comment level 1
-    - I want to see comment level 1
-    - I would like to see comment level 1
-
-# comment level_2
-- intent: comment_level_2
-  examples: |
-    - Show me comment level 2
-    - Diplay the comment level 2
-    - Show the comment level 2
-    - Only show me comment level 2
-    - I want to see comment level 2
-    - I would like to see comment level 2
-
-#In comment level 1 show me argument and constructive comments
-- intent: CL1_argument_constructive
-  examples: |
-    - Can you show me nodes with argumenation and constructiveness in comment level 1?
-    - Show me nodes in comment level 1 that have argumentation and constructiveness
-    - I want to see argumentation and constructive nodes in comment level 1
-    - Only show me argumentation and constructiveness nodes in comment level 1
-    - Display argumenation and constructive nodes in comment level 1
-
-#In comment level 2 show me argument and constructive comments
-- intent: CL2_argument_constructive
-  examples: |
-    - Can you show me nodes with argumenation and constructiveness in comment level 2?
-    - Show me nodes in comment level 2 that have argumentation and constructiveness
-    - I want to see argumentation and constructive nodes in comment level 2
-    - Only show me argumentation and constructiveness nodes in comment level 2
-    - Display argumenation and constructive nodes in comment level 2
-
-#- Which features are tagged the most along with constructiveness?
-- intent: constructive_feature
-  examples: |
-    - Which features are tagged the most along with constructiveness?
-    - Which features appear the most with constructiveness?
-    - Which features constructive nodes have the most?
-
-#- In which level of toxicity (loT) target person appear more?
-- intent: target_person_loT
-  examples: |
-    - In which level of toxicity target person appear more?
-    - Which level of toxicity have more target person nodes?
-    - Which level of toxicity there are more target person nodes?
+## Which comment level has the most very toxic nodes?
+#- intent: comment_level_vs_very_toxic
+#  examples: |
+#    - Which comment level has the most very toxic nodes?
+#    - Which comment level has more very toxic nodes?
+#    - In which comment level there are more very toxic nodes?
+#    - In which comment level there are the most very toxic nodes?
+#    - Show me the comment level with the most very toxic nodes?
+#    - Show me the comment level that has the most very toxic nodes?
+#    - I want to see the comment level with the most very toxic nodes
+#    - I want to see the comment level that has the most very toxic nodes
+#    - Can you show me the comment level with the most very toxic nodes
+#    - Can you show me the comment level that has the most very toxic nodes?
+#    - Display the comment level with the most very toxic nodes
+#    - Display the comment level that has the most very toxic nodes
+#    - comment level with the most very toxic nodes
+#
+## What are the most occurred combination of features in most/very toxic nodes?
+#- intent: combination_features_very_toxic
+#  examples: |
+#    - Which combination of features occurred the most in very toxic nodes?
+#    - Which combination of features ocurred the most in most toxic nodes?
+#    - What are the most occurred combination of features in most toxic nodes?
+#    - What are the most occured combination of features in very toxic nodes?
+#
+## What are the most occurred combination of features in toxic nodes?
+#- intent: combination_features_toxic
+#  examples: |
+#    - Which combination of features occurred the most in toxic nodes?
+#    - What are the most occurred combination of features in toxic nodes?
+#
+## What are the most occurred combination of features in mildly toxic nodes?
+#- intent: combination_features_mildly_toxic
+#  examples: |
+#    - Which combination of features occurred the most in mildy toxic nodes?
+#    - Which combination of features ocurred the most in slighyly toxic nodes?
+#    - What are the most occurred combination of features in slightly toxic nodes?
+#    - What are the most occured combination of features in slightly toxic nodes?
+#
+## What are the most occurred combination of features in non toxic nodes?
+#- intent: combination_features_non_toxic
+#  examples: |
+#    - Which combination of features occurred the most in non toxic nodes?
+#    - Which combination of features ocurred the most in least toxic nodes?
+#    - What are the most occurred combination of features in non toxic nodes?
+#    - What are the most occured combination of features in least toxic nodes?
+#
+##What are the most occurred combination of features in Comment level 1 = CL1?
+#- intent: combination_features_CL1
+#  examples: |
+#    - Which combination of features ocurred the most in comment level 1?
+#    - What are the most occurred combination of features in comment level 1?
+#
+##What are the most occurred combination of features in Comment level 2 = CL2?
+#- intent: combination_features_CL2
+#  examples: |
+#    - Which combination of features ocurred the most in comment level 2?
+#    - What are the most occurred combination of features in comment level 2?
+#
+## comment level_1
+#- intent: comment_level_1
+#  examples: |
+#    - Show me comment level 1
+#    - Diplay the comment level 1
+#    - Show the comment level 1
+#    - Only show me comment level 1
+#    - I want to see comment level 1
+#    - I would like to see comment level 1
+#
+## comment level_2
+#- intent: comment_level_2
+#  examples: |
+#    - Show me comment level 2
+#    - Diplay the comment level 2
+#    - Show the comment level 2
+#    - Only show me comment level 2
+#    - I want to see comment level 2
+#    - I would like to see comment level 2
+#
+##In comment level 1 show me argument and constructive comments
+#- intent: CL1_argument_constructive
+#  examples: |
+#    - Can you show me nodes with argumenation and constructiveness in comment level 1?
+#    - Show me nodes in comment level 1 that have argumentation and constructiveness
+#    - I want to see argumentation and constructive nodes in comment level 1
+#    - Only show me argumentation and constructiveness nodes in comment level 1
+#    - Display argumenation and constructive nodes in comment level 1
+#
+##In comment level 2 show me argument and constructive comments
+#- intent: CL2_argument_constructive
+#  examples: |
+#    - Can you show me nodes with argumenation and constructiveness in comment level 2?
+#    - Show me nodes in comment level 2 that have argumentation and constructiveness
+#    - I want to see argumentation and constructive nodes in comment level 2
+#    - Only show me argumentation and constructiveness nodes in comment level 2
+#    - Display argumenation and constructive nodes in comment level 2
+#
+##- Which features are tagged the most along with constructiveness?
+#- intent: constructive_feature
+#  examples: |
+#    - Which features are tagged the most along with constructiveness?
+#    - Which features appear the most with constructiveness?
+#    - Which features constructive nodes have the most?
+#
+##- In which level of toxicity (loT) target person appear more?
+#- intent: target_person_loT
+#  examples: |
+#    - In which level of toxicity target person appear more?
+#    - Which level of toxicity have more target person nodes?
+#    - Which level of toxicity there are more target person nodes?
 
 - intent: statistics_features_tree
   examples: |

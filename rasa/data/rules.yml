@@ -193,74 +193,74 @@ rules:
     - action: utter_most_toxic_subtree
   wait_for_user_input: false
 
-# comment level and level of toxicity
-- rule: User wants to see which comment level have the most toxic nodes
-  steps:
-    - intent: comment_level_vs_very_toxic
-    - action: utter_comment_level_vs_very_toxic
-
-# combination of features and level of toxicity
-- rule: User wants to see the most occurred combination of features in very toxic nodes
-  steps:
-    - intent: combination_features_very_toxic
-    - action: utter_combination_features_very_toxic
-
-- rule: User wants to see the most occurred combination of features in toxic nodes
-  steps:
-    - intent: combination_features_toxic
-    - action: utter_combination_features_toxic
-
-- rule: User wants to see the most occurred combination of features in mildly toxic nodes
-  steps:
-    - intent: combination_features_mildly_toxic
-    - action: utter_combination_features_mildly_toxic
-
-- rule: User wants to see the most occurred combination of features in non toxic nodes
-  steps:
-    - intent: combination_features_non_toxic
-    - action: utter_combination_features_non_toxic
-
-# comment level
-- rule: User wants to see the most occurred combination of features in comment level 1
-  steps:
-    - intent: combination_features_CL1
-    - action: utter_combination_features_CL1
-
-- rule: User wants to see the most occurred combination of features in comment level 2
-  steps:
-    - intent: combination_features_CL2
-    - action: utter_combination_features_CL2
-
-- rule: User wants to see nodes only in comment level 1
-  steps:
-    - intent: comment_level_1
-    - action: utter_comment_level_1
-
-- rule: User wants to see nodes only in comment level 2
-  steps:
-    - intent: comment_level_2
-    - action: utter_comment_level_2
-
-- rule: User wants to see argument and constructive nodes in comment level 1
-  steps:
-    - intent: CL1_argument_constructive
-    - action: utter_CL1_argument_constructive
-
-- rule: User wants to see argument and constructive nodes in comment level 2
-  steps:
-    - intent: CL2_argument_constructive
-    - action: utter_CL2_argument_constructive
-
-# features vs features or level of toxicity
-- rule: User wants to see which features are tagged with constructive nodes
-  steps:
-    - intent: constructive_feature
-    - action: utter_constructiveness_feature
-
-- rule: User wants to see which in which level of toxicity there are more target person nodes
-  steps:
-    - intent: target_person_loT
-    - action: utter_target_person_loT
+## comment level and level of toxicity
+#- rule: User wants to see which comment level have the most toxic nodes
+#  steps:
+#    - intent: comment_level_vs_very_toxic
+#    - action: utter_comment_level_vs_very_toxic
+##
+## combination of features and level of toxicity
+#- rule: User wants to see the most occurred combination of features in very toxic nodes
+#  steps:
+#    - intent: combination_features_very_toxic
+#    - action: utter_combination_features_very_toxic
+#
+#- rule: User wants to see the most occurred combination of features in toxic nodes
+#  steps:
+#    - intent: combination_features_toxic
+#    - action: utter_combination_features_toxic
+#
+#- rule: User wants to see the most occurred combination of features in mildly toxic nodes
+#  steps:
+#    - intent: combination_features_mildly_toxic
+#    - action: utter_combination_features_mildly_toxic
+#
+#- rule: User wants to see the most occurred combination of features in non toxic nodes
+#  steps:
+#    - intent: combination_features_non_toxic
+#    - action: utter_combination_features_non_toxic
+#
+## comment level
+#- rule: User wants to see the most occurred combination of features in comment level 1
+#  steps:
+#    - intent: combination_features_CL1
+#    - action: utter_combination_features_CL1
+#
+#- rule: User wants to see the most occurred combination of features in comment level 2
+#  steps:
+#    - intent: combination_features_CL2
+#    - action: utter_combination_features_CL2
+#
+#- rule: User wants to see nodes only in comment level 1
+#  steps:
+#    - intent: comment_level_1
+#    - action: utter_comment_level_1
+#
+#- rule: User wants to see nodes only in comment level 2
+#  steps:
+#    - intent: comment_level_2
+#    - action: utter_comment_level_2
+#
+#- rule: User wants to see argument and constructive nodes in comment level 1
+#  steps:
+#    - intent: CL1_argument_constructive
+#    - action: utter_CL1_argument_constructive
+#
+#- rule: User wants to see argument and constructive nodes in comment level 2
+#  steps:
+#    - intent: CL2_argument_constructive
+#    - action: utter_CL2_argument_constructive
+#
+## features vs features or level of toxicity
+#- rule: User wants to see which features are tagged with constructive nodes
+#  steps:
+#    - intent: constructive_feature
+#    - action: utter_constructiveness_feature
+#
+#- rule: User wants to see which in which level of toxicity there are more target person nodes
+#  steps:
+#    - intent: target_person_loT
+#    - action: utter_target_person_loT
 
 - rule: User wants to see the statistics of all the features of the tree
   steps:
@@ -353,9 +353,9 @@ rules:
 #    - intent: help_what_can_you_do
 #    - action: utter_help_what_can_you_do
 
-- rule: test buttons
-  steps:
-    - intent: test
-    - action: utter_test
+#- rule: test buttons
+#  steps:
+#    - intent: test
+#    - action: utter_test
 
 

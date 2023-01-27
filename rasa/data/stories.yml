@@ -237,7 +237,6 @@ stories:
     - intent: most_toxic_thread
     - action: utter_most_toxic_thread
     - action: utter_explain_pop_up_toxic
-    - action: action_send_response
     - intent: most_tagged_features
     - action: utter_most_tagged_features
     - action: utter_help_glyphs
@@ -245,7 +244,6 @@ stories:
     - action: utter_explain_glyphs_one
     - action: utter_explain_glyphs_two
     - action: utter_explain_glyphs_three
-    - action: utter_explain_glyphs_four
     - intent: what_can_do_after_glyphs
     - action: utter_guide_bar_charts
     - intent: statistics_features_subtrees
@@ -264,7 +262,6 @@ stories:
     - intent: largest_thread
     - action: utter_largest_thread
     - action: utter_explain_pop_up_largest
-    - action: action_send_response
     - intent: longest_thread
     - action: utter_longest_thread
     - action: utter_explain_pop_up_longest
@@ -278,7 +275,7 @@ stories:
     - action: utter_explain_glyphs_one
     - action: utter_explain_glyphs_two
     - action: utter_explain_glyphs_three
-    - action: utter_explain_glyphs_four
+
 
 
 
@@ -288,7 +285,6 @@ stories:
     - action: utter_explain_glyphs_one
     - action: utter_explain_glyphs_two
     - action: utter_explain_glyphs_three
-    - action: utter_explain_glyphs_four
 
 
 
@@ -382,13 +378,11 @@ stories:
     - action: utter_you_are_welcome
     - intent: help_main_graph_barchart
     - action: utter_help_main_bar
-    - action: utter_help_main_bar_two
     - intent: statistics_help
     - action: utter_help_main_bar_three
     - intent: help_layouts
     - action: utter_help_layouts_one
     - action: utter_help_layouts_two
-    - action: utter_help_layouts_three
     - intent: help_subtree_barchart
     - action: utter_help_subtree_bar
 
@@ -398,14 +392,13 @@ stories:
     - intent: help_layouts
     - action: utter_help_layouts_one
     - action: utter_help_layouts_two
-    - action: utter_help_layouts_three
+
 
 
 - story: User wants to know about statistics
   steps:
     - intent: help_main_graph_barchart
     - action: utter_help_main_bar
-    - action: utter_help_main_bar_two
     - intent: statistics_help
     - action: utter_help_main_bar_three
 
@@ -443,7 +436,6 @@ stories:
     - action: utter_help_what_can_you_do_three
     - intent: widest_level
     - action: utter_widest_level
-    - action: utter_explain_pop_up_widest
     - intent: highlight_check
     - action: action_highlight_check
     - intent: statistics_features_subtrees

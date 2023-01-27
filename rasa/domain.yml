@@ -348,61 +348,61 @@ responses:
     - text: "intent_event,most_toxic_subtree,Here is the most toxic subtree"
     - text: "intent_event,most_toxic_subtree,Here you have it"
 
-  # comment level and very toxic
-  utter_comment_level_vs_very_toxic:
-    - text: "I displayed the comment level with the most very toxic nodes which is comment level: "
-    - text: "Here you have it"
-
-  # combination of features in levels of toxicity
-  utter_combination_features_very_toxic:
-    - text: "Most occurred combination of features are [] and []"
-    - text: "Here you have it"
-
-  utter_combination_features_toxic:
-    - text: "Most occurred combination of features are [] and []"
-    - text: "Here you have it"
-
-  utter_combination_features_mildly_toxic:
-    - text: "Most occurred combination of features are [] and []"
-    - text: "Here you have it"
-
-  utter_combination_features_non_toxic:
-    - text: "Most occurred combination of features are [] and []"
-    - text: "Here you have it"
-
-  # comment level related
-  utter_combination_features_CL1:
-    - text: "Most occurred combination of features are [] and []"
-    - text: "Here you have it"
-
-  utter_combination_features_CL2:
-    - text: "Most occurred combination of features are [] and []"
-    - text: "Here you have it"
-
-  # these two should be more easier to do
-  utter_comment_level_1:
-    - text: "Here you have comment level 1 displayed"
-    - text: "Here you have it"
-
-  utter_comment_level_2:
-    - text: "Here you have comment level 2 displayed"
-    - text: "Here you have it"
-
-  # comment level and argument - constructive
-  utter_CL1_argument_constructive:
-    - text: "Here you have nodes that have constructiveness and argumentation in comment level 1"
-    - text: "Here you have it"
-
-  utter_CL2_argument_constructive:
-    - text: "Here you have nodes that have constructiveness and argumentation in comment level 2"
-    - text: "Here you have it"
-
-  # features vs features or level of toxicity
-  utter_constructiveness_feature:
-    - text: "[] features appear more with constructiveness"
-
-  utter_target_person_loT:
-    - text: "In [] level of toxicity target person appears more"
+#  # comment level and very toxic
+#  utter_comment_level_vs_very_toxic:
+#    - text: "I displayed the comment level with the most very toxic nodes which is comment level: "
+#    - text: "Here you have it"
+#
+#  # combination of features in levels of toxicity
+#  utter_combination_features_very_toxic:
+#    - text: "Most occurred combination of features are [] and []"
+#    - text: "Here you have it"
+#
+#  utter_combination_features_toxic:
+#    - text: "Most occurred combination of features are [] and []"
+#    - text: "Here you have it"
+#
+#  utter_combination_features_mildly_toxic:
+#    - text: "Most occurred combination of features are [] and []"
+#    - text: "Here you have it"
+#
+#  utter_combination_features_non_toxic:
+#    - text: "Most occurred combination of features are [] and []"
+#    - text: "Here you have it"
+#
+#  # comment level related
+#  utter_combination_features_CL1:
+#    - text: "Most occurred combination of features are [] and []"
+#    - text: "Here you have it"
+#
+#  utter_combination_features_CL2:
+#    - text: "Most occurred combination of features are [] and []"
+#    - text: "Here you have it"
+#
+#  # these two should be more easier to do
+#  utter_comment_level_1:
+#    - text: "Here you have comment level 1 displayed"
+#    - text: "Here you have it"
+#
+#  utter_comment_level_2:
+#    - text: "Here you have comment level 2 displayed"
+#    - text: "Here you have it"
+#
+#  # comment level and argument - constructive
+#  utter_CL1_argument_constructive:
+#    - text: "Here you have nodes that have constructiveness and argumentation in comment level 1"
+#    - text: "Here you have it"
+#
+#  utter_CL2_argument_constructive:
+#    - text: "Here you have nodes that have constructiveness and argumentation in comment level 2"
+#    - text: "Here you have it"
+#
+#  # features vs features or level of toxicity
+#  utter_constructiveness_feature:
+#    - text: "[] features appear more with constructiveness"
+#
+#  utter_target_person_loT:
+#    - text: "In [] level of toxicity target person appears more"
 
   utter_statistics_features_tree:
     - text: "intent_event,statistics_all_features_tree,These are the statistics of the graph features"
@@ -422,26 +422,26 @@ responses:
   Check-all the features on the left column under Features to see the glyphs"
       image: "https://ecemkavaz.github.io/imagesRasa/features2.png"
 
-  utter_help_bar_chart_pop_up:
-    - text: "You can change features to:  \ \n
-            - Targets  \ \n
-            - Stances   \ \n
-            - Level of Toxicity  \ \n
+#  utter_help_bar_chart_pop_up:
+#    - text: "You can change features to:  \ \n
+#            - Targets  \ \n
+#            - Stances   \ \n
+#            - Level of Toxicity  \ \n
+#
+#             Also, you can change the visualisation to:  \ \n
+#              - Horizontal Bar   \ \n
+#              - Pie  "
+#
 
-             Also, you can change the visualisation to:  \ \n
-              - Horizontal Bar   \ \n
-              - Pie  "
 
 
-
-
+#  utter_explain_glyphs_one:
+#    - text: "Glyphs show the features of each comment. \ \n
+#
+#
+#    "
   utter_explain_glyphs_one:
-    - text: "Glyphs show the features of each comment. \ \n
-
-
-    "
-  utter_explain_glyphs_two:
-    - text: "I have three available glyphs:"
+    - text: "Glyphs show the features of each comment."
       image: "https://ecemkavaz.github.io/imagesRasa/glyphsAll2.png"
 
 #  utter_explain_glyphs_three:
@@ -452,29 +452,26 @@ responses:
 #    - text: "Trivial Cheese"
 #      image: "https://ecemkavaz.github.io/imagesRasa/trivial.svg"
 
-  utter_explain_glyphs_three:
-    - text: "You can use the left bar to activate the features you want to see. \ \n
-                  You can select them: \ \n
-
+  utter_explain_glyphs_two:
+    - text: "Use left bar to activate/deactivate the features. \ \n
+                 Select them: \ \n
                  - one-by-one \ \n
-                     or \ \n
-                  - select 'check all' button \ \n"
+                  - check all \ \n"
 
-  utter_explain_glyphs_four:
-    - text: "Try a different glyph:"
+  utter_explain_glyphs_three:
+    - text: ""
       buttons:
           - title: "Dots"
-            payload: '/change_glyph_dots{{"object_requested":"glyph","layout_requested":"dots"}}'
+            payload: '/change_glyph_dots{{"object_requested":"glyph","glyph_requested":"dots"}}'
           - title: "Circular"
-            payload: '/change_glyph_circular{{"object_requested":"glyph","layout_requested":"circular"}}'
+            payload: '/change_glyph_circular{{"object_requested":"glyph","glyph_requested":"circular"}}'
           - title: "Trivial Cheese"
-            payload: '/change_glyph_trivial{{"object_requested":"glyph","layout_requested":"trivial"}}'
+            payload: '/change_glyph_trivial{{"object_requested":"glyph","glyph_requested":"trivial"}}'
 
   utter_explain_targets_one:
     - text: "All comments are annotated with the targets they direct to.
 
-    \ \n
-    There are three available targets:
+
     "
   utter_explain_targets_two:
     - text: "Target Group"
@@ -489,31 +486,38 @@ responses:
       image: "https://ecemkavaz.github.io/imagesRasa/Stereotype.svg"
 
   utter_explain_targets_five:
-    - text: "Use Targets tab on the lef bar to activate and deactivate them"
+    - text: "Activate/deactivate targets: \ \n
+                   - From the left bar \ \n
+                   - Asking me"
       image: "https://ecemkavaz.github.io/imagesRasa/targets.png"
 
 
   utter_explain_features_tab:
     - text: "All the comments are tagged with features that they have. \ \n
 
-      You can activate/deactivate features: \ \n
+      Activate/deactivate features: \ \n
       - From the left bar \ \n
       - Asking me"
       image: "https://ecemkavaz.github.io/imagesRasa/features2.png"
 
-  utter_help_layouts_one:
-    - text: "There are four available layouts."
-      image: "https://ecemkavaz.github.io/imagesRasa/layoutsAll2.png"
+#  utter_help_layouts_one:
+#    - text: "There are four available layouts."
+#      image: "https://ecemkavaz.github.io/imagesRasa/layoutsAll2.png"
 
-  utter_help_layouts_two:
+  utter_help_layouts_one:
     - text: "I automatically select the best fitted layout according
                       to your data.
                       \ \n
 
-                      You can select other layouts with the icons menu or asking to me."
+                     Select layouts:
+                      \ \n
+                     - From the icons menu
+                      \ \n
+                    - Asking to me."
+      image: "https://ecemkavaz.github.io/imagesRasa/layoutsAll2.png"
 
-  utter_help_layouts_three:
-    - text: "Try a different layout:"
+  utter_help_layouts_two:
+    - text: ""
       buttons:
        - title: "Tree"
          payload: '/change_layout_tree{{"object_requested":"layout","layout_requested":"tree"}}'
@@ -526,74 +530,54 @@ responses:
 
 
 
-
   utter_help_highlight:
     - text: "Highlight function will show only the comments that include the selected features. \ \n
 
-    You can select features: \ \n
-
+    Select features: \ \n
     - From the left bar \ \n
     - Asking me"
       image: "https://ecemkavaz.github.io/imagesRasa/highlight.png"
 
   utter_help_AND:
-    - text: "If you use AND option to select more than one feature,
+    - text: "With AND option,
     you will see the comments that are tagged with all the selected features"
 
   utter_help_OR:
-    - text: "If you use OR option to select more than one feature,
+    - text: "With OR option,
     you will see the comments that are tagged with at least one of the selected features"
 
   utter_help_AND_OR:
-    - text: "If you use AND option to select more than one feature,
-      you will see the comments that are tagged with all the selected features. If you use OR option to select more than one feature,
+    - text: "With AND option,
+      you will see the comments that are tagged with all the selected features. With OR option,
       you will see the comments that are tagged with at least one of the selected features"
 
   utter_help_summary:
     - text: "Summary shows how many comments are labelled with different levels of toxicity, and targets.  \ \n
 
-    Summary reflects data contained in the current visualization."
+    It reflects data contained in the current visualization."
       image: "https://ecemkavaz.github.io/imagesRasa/summary.png"
 
   utter_help_main_bar:
-    - text: "'Selected Comments' button displays a bar chart with the
-    statistics of the current visualisation. \ \n
-     From the first list you can select to see statistics of: \ \n
-      - Targets \ \n
-      - Stances \ \n
-       - Level of toxicity \ \n
+    - text: "Selected Comments button displays a bar chart with the
+    statistics of the current visualisation. "
 
-       There are available three graph options on the second list: \ \n
-       - Bar Chart \ \n
-       - Horizontal Bar Chart  \ \n
-       - Pie
-     Chart."
       image: "https://ecemkavaz.github.io/imagesRasa/selectedcomments.png"
 
-  utter_help_main_bar_two:
+  utter_help_bar_chart_pop_up:
     - text: "If you want to have more information about this:"
       buttons:
         - title: "Click here"
           payload: '/statistics_help'
 
   utter_help_main_bar_three:
-    - text: "If you click on each bar, you can highlight the features on the graph. \ \n
+    - text: "Click on each bar to highlight the features on the graph. \ \n
 
-     Also, you can
+     You can
     remove features by clicking on their name to compare the only features you want."
 
   utter_help_subtree_bar:
-    - text: "'Level One Comments' button displays a bar chart with the
-    statistics of  features of each comment in level one and their children. \ \n
-
-    From the first list you can select to see statistics of: \ \n
-          - Targets \ \n
-          - Stances \ \n
-           - Level of toxicity \ \n
-
-           There are available three graph options on the second list: \ \n
-           - Bar Chart \ \n
-           - Horizontal Bar Chart  \ \n
+    - text: "Level One Comments button displays a bar chart with the
+    statistics of features of each comment individually in level one and their children. \ \n
           "
       image: "https://ecemkavaz.github.io/imagesRasa/levelonecomments.png"
 
@@ -654,20 +638,16 @@ responses:
 
 
   utter_explain_pop_up_toxic:
-    - text: "I highlighted the most toxic thread on the main view. Also, I displayed it separately on
-    a pop-up window."
+    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
 
   utter_explain_pop_up_largest:
-    - text: "I highlighted the largest thread on the main view. Also, I displayed it separately on
-    a pop-up window."
+    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
 
   utter_explain_pop_up_longest:
-    - text: "I highlighted the longest thread on the main view. Also, I displayed it separately on
-    a pop-up window."
+    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
 
-  utter_explain_pop_up_widest:
-    - text: "I highlighted the widest level on the main view. Also, I displayed it separately on
-    a pop-up window."
+#  utter_explain_pop_up_widest:
+#    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
 
   utter_guide_bar_charts:
     - text: "Now you can compare the features with additional charts. Also, don't forget you can switch
