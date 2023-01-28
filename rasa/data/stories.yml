@@ -236,7 +236,6 @@ stories:
     - action: utter_help_what_can_you_do_three
     - intent: most_toxic_thread
     - action: utter_most_toxic_thread
-    - action: utter_explain_pop_up_toxic
     - intent: most_tagged_features
     - action: utter_most_tagged_features
     - action: utter_help_glyphs
@@ -261,10 +260,8 @@ stories:
     - action: utter_help_what_can_you_do_three
     - intent: largest_thread
     - action: utter_largest_thread
-    - action: utter_explain_pop_up_largest
     - intent: longest_thread
     - action: utter_longest_thread
-    - action: utter_explain_pop_up_longest
     - intent: statistics_features_tree
     - action: utter_statistics_features_tree
     - action: utter_help_bar_chart_pop_up
@@ -359,10 +356,9 @@ stories:
     - action: utter_offers_help
     - intent: largest_thread
     - action: utter_largest_thread
-    - action: utter_explain_pop_up_largest
     - intent: longest_thread
     - action: utter_longest_thread
-    - action: utter_explain_pop_up_longest
+
 
 
 
@@ -459,10 +455,10 @@ stories:
 #    - action: utter_help_bar_chart_pop_up
 
 
-- story: popup shown
-  steps:
-    - intent: popup_shown
-    - action: action_send_popup_shown_message
+#- story: popup shown
+#  steps:
+#    - intent: popup_shown
+#    - action: action_send_popup_shown_message
 
 
 

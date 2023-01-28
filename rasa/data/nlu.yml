@@ -1390,7 +1390,7 @@ nlu:
     - can give more information about statistics?
 
 
-- intent: test
-  examples: |
-    - test
-    - test please
+#- intent: test
+#  examples: |
+#    - test
+#    - test please

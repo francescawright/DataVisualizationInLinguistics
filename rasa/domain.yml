@@ -291,13 +291,13 @@ responses:
 #  Glyphs
 
   utter_change_to_dots:
-    - text: "intent_change_glyphs,dots_icon_button,Glyph changed to Dots"
+  - text: "intent_change_glyphs,dots_icon_button,Glyph changed to Dots"
 
   utter_change_to_circular:
-    - text: "intent_change_glyphs,glyphs_icon_button,Glyph changed to Circular"
+  - text: "intent_change_glyphs,glyphs_icon_button,Glyph changed to Circular"
 
   utter_change_to_trivial:
-    - text: "intent_change_glyphs,trivial_icon_button,Glyph changed to Trivial Cheese"
+  - text: "intent_change_glyphs,trivial_icon_button,Glyph changed to Trivial"
 
 
   utter_change_glyphs:
@@ -453,13 +453,13 @@ responses:
 #      image: "https://ecemkavaz.github.io/imagesRasa/trivial.svg"
 
   utter_explain_glyphs_two:
-    - text: "Use left bar to activate/deactivate the features. \ \n
-                 Select them: \ \n
-                 - one-by-one \ \n
-                  - check all \ \n"
+    - text: "Use left bar to activate/deactivate the features. "
+
 
   utter_explain_glyphs_three:
-    - text: ""
+    - text: "Select them: \ \n
+              - one-by-one \ \n
+               - check all "
       buttons:
           - title: "Dots"
             payload: '/change_glyph_dots{{"object_requested":"glyph","glyph_requested":"dots"}}'
@@ -469,10 +469,7 @@ responses:
             payload: '/change_glyph_trivial{{"object_requested":"glyph","glyph_requested":"trivial"}}'
 
   utter_explain_targets_one:
-    - text: "All comments are annotated with the targets they direct to.
-
-
-    "
+    - text: "All comments are annotated with the targets they direct to."
   utter_explain_targets_two:
     - text: "Target Group"
       image: "https://ecemkavaz.github.io/imagesRasa/Group.svg"
@@ -507,17 +504,17 @@ responses:
   utter_help_layouts_one:
     - text: "I automatically select the best fitted layout according
                       to your data.
-                      \ \n
+                      "
 
-                     Select layouts:
-                      \ \n
-                     - From the icons menu
-                      \ \n
-                    - Asking to me."
       image: "https://ecemkavaz.github.io/imagesRasa/layoutsAll2.png"
 
   utter_help_layouts_two:
-    - text: ""
+    - text: "
+              Select layouts:
+               \ \n
+              - From the icons menu
+               \ \n
+             - Asking to me."
       buttons:
        - title: "Tree"
          payload: '/change_layout_tree{{"object_requested":"layout","layout_requested":"tree"}}'
@@ -577,7 +574,7 @@ responses:
 
   utter_help_subtree_bar:
     - text: "Level One Comments button displays a bar chart with the
-    statistics of features of each comment individually in level one and their children. \ \n
+    statistics of features of each comment individually in level one and their children.
           "
       image: "https://ecemkavaz.github.io/imagesRasa/levelonecomments.png"
 
@@ -637,14 +634,14 @@ responses:
           payload: '/tool_help'
 
 
-  utter_explain_pop_up_toxic:
-    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
-
-  utter_explain_pop_up_largest:
-    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
-
-  utter_explain_pop_up_longest:
-    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
+#  utter_explain_pop_up_toxic:
+#    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
+#
+#  utter_explain_pop_up_largest:
+#    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
+#
+#  utter_explain_pop_up_longest:
+#    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
 
 #  utter_explain_pop_up_widest:
 #    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
@@ -660,13 +657,13 @@ responses:
                 the active window!"
 
 
-  utter_test:
-    - text: "do you want to know more?"
-      buttons:
-        - title: "yes"
-          payload: "/affirm"
-        - title: "no"
-          payload: "/deny"
+#  utter_test:
+#    - text: "do you want to know more?"
+#      buttons:
+#        - title: "yes"
+#          payload: "/affirm"
+#        - title: "no"
+#          payload: "/deny"
 
 
 

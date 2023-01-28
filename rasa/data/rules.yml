@@ -274,17 +274,17 @@ rules:
     - action: utter_statistics_features_subtrees
   wait_for_user_input: false
 
-- rule: glyph dots
+- rule: User wants to change to dots
   steps:
     - intent: change_glyph_dots
     - action: utter_change_to_dots
 
-- rule: glyph circular
+- rule: User wants to change to circular
   steps:
     - intent: change_glyph_circular
     - action: utter_change_to_circular
 
-- rule: glyph trivial
+- rule: User wants to change to  trivial
   steps:
     - intent: change_glyph_trivial
     - action: utter_change_to_trivial

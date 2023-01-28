@@ -697,25 +697,25 @@ class ActionHighlightUncheckLast(Action):
 #         return []
 
 
-class MyAction(Action):
-    def name(self):
-        return "action_send_response"
-
-    def run(self,
-            dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        # popup_shown = tracker.get_slot("popup_shown")
-        if not tracker.get_slot("response_sent"):
-            # message = "Hello! The pop-up window you requested has been opened for the first time."
-            dispatcher.utter_message(text="Now the active window is the pop-up that is highlighted with a blue frame. "
-                                          "You can switch the active window by selecting the main window. Don't "
-                                          "forget I will give answers to your questions considering the active "
-                                          "window!")
-
-            return [SlotSet("response_sent", True)]
-        print(f"popup_shown: {tracker.get_slot('popup_shown')}")
-        return []
+# class MyAction(Action):
+#     def name(self):
+#         return "action_send_response"
+#
+#     def run(self,
+#             dispatcher: CollectingDispatcher,
+#             tracker: Tracker,
+#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#         # popup_shown = tracker.get_slot("popup_shown")
+#         if not tracker.get_slot("response_sent"):
+#             # message = "Hello! The pop-up window you requested has been opened for the first time."
+#             dispatcher.utter_message(text="Now the active window is the pop-up that is highlighted with a blue frame. "
+#                                           "You can switch the active window by selecting the main window. Don't "
+#                                           "forget I will give answers to your questions considering the active "
+#                                           "window!")
+#
+#             return [SlotSet("response_sent", True)]
+#         print(f"popup_shown: {tracker.get_slot('popup_shown')}")
+#         return []
 
     # def run(self, dispatcher, tracker, domain):
     #     if tracker.get_slot('response_sent') == False:
