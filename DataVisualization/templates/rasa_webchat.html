@@ -41,6 +41,25 @@
 <!-- Rasa WebChat Style -->
 
 <style>
+
+.rw-conversation-container .rw-image-details .rw-image-frame{
+    height: 110px;
+    width: auto;
+}
+.rw-conversation-container .rw-replies{
+   display:block;
+   text-align: center;
+
+}
+
+.rw-conversation-container .rw-replies .rw-reply{
+    background-color:  #fa7070;
+    font-size: 20px;
+    border-color: #fa7070;
+    text-align: center;
+
+
+}
 .rw-widget-container {
     pointer-events: none;
 }
@@ -49,9 +68,21 @@
 }
 .rw-conversation-container .rw-header {
     background-color: #fa7070;
+    font-size: 18px;
 }
 .rw-conversation-container .rw-messages-container .rw-message .rw-client {
     background-color: #fa7070;
+    font-size: 20px;
+}
+
+.rw-conversation-container .rw-messages-container .rw-response{
+    font-size: 20px;
+}
+.rw-conversation-container .rw-title{
+    font-size: 25px;
+}
+.rw-conversation-container .rw-new-message{
+    font-size: 20px;
 }
 @media screen and (min-width: 800px) {
     .rw-messages-container {
@@ -66,6 +97,9 @@
 }
 #tts-feature {
     right: 170px;
+}
+.rw-message-text {
+    font-size: 20px;
 }
 .chat-feature-btn {
     pointer-events: auto;
@@ -195,6 +229,7 @@
     }
     .rw-widget-container.rw-full-screen.rw-chat-open .chat-feature-img {
         width: 25px;
+
     }
 }
 @media screen and (max-width: 800px) {
@@ -231,6 +266,7 @@
 </head>
 
 <script>
+
     // Initializes the necessary variables for speech-to-text and text-to-speech functions
     var textToSpeech = getStatusTTS();
     var msgTextToSpeech;
@@ -593,6 +629,25 @@
                         e.text = "Open a document first, in order to perform this action";
                     }
                     break;
+                case "intent_change_glyphs":
+                    if ('{{ selected_item }}') {
+                        if (messageList[1] === "dots_icon_button" && document.getElementById("dots_label").classList.contains("active")) {
+                            e.text = "Already in the Dots";
+                        } else if (messageList[1] === "glyphs_icon_button" && document.getElementById("glyphs_label").classList.contains("active")) {
+                            e.text = "Already in the Circular Glyph";
+                        } else if (messageList[1] === "trivial_icon_button" && document.getElementById("trivial_label").classList.contains("active")) {
+                            e.text = "Already in the Trivial Cheese";
+                        }
+                        else {
+                            e.hidden = true;
+                            document.getElementById(messageList[1]).from_chat = true;
+                            document.getElementById(messageList[1]).from_chat_msg = messageList[2];
+                            document.getElementById(messageList[1]).click();
+                        }
+                    } else {
+                        e.text = "Open a document first, in order to perform this action";
+                    }
+                    break;
                 case "intent_switch_or_and":
                     if ('{{ selected_item }}') {
                         if (messageList[1] === "or_button" && document.getElementById("or_label").classList.contains("active")) {
@@ -924,7 +979,37 @@
         }),
         t.insertBefore(e, t.firstChild);
     })();
+
 </script>
+
+
+
+
+{#<script>#}
+{#    let messageSent = false;#}
+{#$(document).ready(function(){#}
+{#    $('#popupModal').on('shown.bs.modal', function () {#}
+{#        if (!messageSent) {#}
+{#            messageSent = true;#}
+{#            const event = {#}
+{#                event: "popup_shown",#}
+{#                sender: "javascript"#}
+{#            }#}
+{#            $.ajax({#}
+{#                url: "http://localhost:5055/webhooks/rest/webhook",#}
+{#                type: "POST",#}
+{#                data: JSON.stringify(event),#}
+{#                contentType: "application/json",#}
+{#                success: function() {#}
+{#                    console.log("Event sent");#}
+{##}
+{#                }#}
+{#            });#}
+{#        }#}
+{#    });#}
+{# });#}
+{#</script>#}
+
 
 {#<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.js"></script>#}
 {#<script>#}

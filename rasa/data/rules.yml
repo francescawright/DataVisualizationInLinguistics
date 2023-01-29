@@ -12,10 +12,13 @@ rules:
   - intent: bot_challenge
   - action: utter_iamabot
 
-- rule: The user thanks
-  steps:
-  - intent: thanks
-  - action: utter_you_are_welcome
+#- rule: The user thanks
+#  steps:
+#  - intent: thanks
+#  - action: utter_you_are_welcome- rule: The user thanks
+#  steps:
+#  - intent: thanks
+#  - action: utter_you_are_welcome
 
 # Check if it is the user's first connection. Ask for his name if it is.
 - rule: First bot interaction with the user
@@ -188,75 +191,76 @@ rules:
   steps:
     - intent: most_toxic_subtree
     - action: utter_most_toxic_subtree
+  wait_for_user_input: false
 
-# comment level and level of toxicity
-- rule: User wants to see which comment level have the most toxic nodes
-  steps:
-    - intent: comment_level_vs_very_toxic
-    - action: utter_comment_level_vs_very_toxic
-
-# combination of features and level of toxicity
-- rule: User wants to see the most occurred combination of features in very toxic nodes
-  steps:
-    - intent: combination_features_very_toxic
-    - action: utter_combination_features_very_toxic
-
-- rule: User wants to see the most occurred combination of features in toxic nodes
-  steps:
-    - intent: combination_features_toxic
-    - action: utter_combination_features_toxic
-
-- rule: User wants to see the most occurred combination of features in mildly toxic nodes
-  steps:
-    - intent: combination_features_mildly_toxic
-    - action: utter_combination_features_mildly_toxic
-
-- rule: User wants to see the most occurred combination of features in non toxic nodes
-  steps:
-    - intent: combination_features_non_toxic
-    - action: utter_combination_features_non_toxic
-
-# comment level
-- rule: User wants to see the most occurred combination of features in comment level 1
-  steps:
-    - intent: combination_features_CL1
-    - action: utter_combination_features_CL1
-
-- rule: User wants to see the most occurred combination of features in comment level 2
-  steps:
-    - intent: combination_features_CL2
-    - action: utter_combination_features_CL2
-
-- rule: User wants to see nodes only in comment level 1
-  steps:
-    - intent: comment_level_1
-    - action: utter_comment_level_1
-
-- rule: User wants to see nodes only in comment level 2
-  steps:
-    - intent: comment_level_2
-    - action: utter_comment_level_2
-
-- rule: User wants to see argument and constructive nodes in comment level 1
-  steps:
-    - intent: CL1_argument_constructive
-    - action: utter_CL1_argument_constructive
-
-- rule: User wants to see argument and constructive nodes in comment level 2
-  steps:
-    - intent: CL2_argument_constructive
-    - action: utter_CL2_argument_constructive
-
-# features vs features or level of toxicity
-- rule: User wants to see which features are tagged with constructive nodes
-  steps:
-    - intent: constructive_feature
-    - action: utter_constructiveness_feature
-
-- rule: User wants to see which in which level of toxicity there are more target person nodes
-  steps:
-    - intent: target_person_loT
-    - action: utter_target_person_loT
+## comment level and level of toxicity
+#- rule: User wants to see which comment level have the most toxic nodes
+#  steps:
+#    - intent: comment_level_vs_very_toxic
+#    - action: utter_comment_level_vs_very_toxic
+##
+## combination of features and level of toxicity
+#- rule: User wants to see the most occurred combination of features in very toxic nodes
+#  steps:
+#    - intent: combination_features_very_toxic
+#    - action: utter_combination_features_very_toxic
+#
+#- rule: User wants to see the most occurred combination of features in toxic nodes
+#  steps:
+#    - intent: combination_features_toxic
+#    - action: utter_combination_features_toxic
+#
+#- rule: User wants to see the most occurred combination of features in mildly toxic nodes
+#  steps:
+#    - intent: combination_features_mildly_toxic
+#    - action: utter_combination_features_mildly_toxic
+#
+#- rule: User wants to see the most occurred combination of features in non toxic nodes
+#  steps:
+#    - intent: combination_features_non_toxic
+#    - action: utter_combination_features_non_toxic
+#
+## comment level
+#- rule: User wants to see the most occurred combination of features in comment level 1
+#  steps:
+#    - intent: combination_features_CL1
+#    - action: utter_combination_features_CL1
+#
+#- rule: User wants to see the most occurred combination of features in comment level 2
+#  steps:
+#    - intent: combination_features_CL2
+#    - action: utter_combination_features_CL2
+#
+#- rule: User wants to see nodes only in comment level 1
+#  steps:
+#    - intent: comment_level_1
+#    - action: utter_comment_level_1
+#
+#- rule: User wants to see nodes only in comment level 2
+#  steps:
+#    - intent: comment_level_2
+#    - action: utter_comment_level_2
+#
+#- rule: User wants to see argument and constructive nodes in comment level 1
+#  steps:
+#    - intent: CL1_argument_constructive
+#    - action: utter_CL1_argument_constructive
+#
+#- rule: User wants to see argument and constructive nodes in comment level 2
+#  steps:
+#    - intent: CL2_argument_constructive
+#    - action: utter_CL2_argument_constructive
+#
+## features vs features or level of toxicity
+#- rule: User wants to see which features are tagged with constructive nodes
+#  steps:
+#    - intent: constructive_feature
+#    - action: utter_constructiveness_feature
+#
+#- rule: User wants to see which in which level of toxicity there are more target person nodes
+#  steps:
+#    - intent: target_person_loT
+#    - action: utter_target_person_loT
 
 - rule: User wants to see the statistics of all the features of the tree
   steps:
@@ -270,20 +274,41 @@ rules:
     - action: utter_statistics_features_subtrees
   wait_for_user_input: false
 
+- rule: User wants to change to dots
+  steps:
+    - intent: change_glyph_dots
+    - action: utter_change_to_dots
+
+- rule: User wants to change to circular
+  steps:
+    - intent: change_glyph_circular
+    - action: utter_change_to_circular
+
+- rule: User wants to change to  trivial
+  steps:
+    - intent: change_glyph_trivial
+    - action: utter_change_to_trivial
+
+- rule: ask to change glyphs
+  steps:
+    - intent: change_glyphs
+    - action: utter_change_glyphs
+
+
 #- rule: User wants to compare the statistics of all the features of the subtrees after bot asking
 #  steps:
 #    - intent: affirm
 #    - action: utter_statistics_features_subtrees
 
-- rule: User wants to know about glyphs
-  steps:
-    - intent: help_glyphs
-    - action: utter_explain_glyphs
+#- rule: User wants to know about glyphs
+#  steps:
+#    - intent: help_glyphs
+#    - action: utter_explain_glyphs
 
-- rule: User wants to know about layouts
-  steps:
-    - intent: help_layouts
-    - action: utter_help_layouts
+#- rule: User wants to know about layouts
+#  steps:
+#    - intent: help_layouts
+#    - action: utter_help_layouts
 
 - rule: User wants to know about highlights
   steps:
@@ -323,9 +348,14 @@ rules:
     - intent: help_AND_OR
     - action: utter_help_AND_OR
 
-- rule: user wants to know what bot can do
-  steps:
-    - intent: help_what_can_you_do
-    - action: utter_help_what_can_you_do
+#- rule: user wants to know what bot can do
+#  steps:
+#    - intent: help_what_can_you_do
+#    - action: utter_help_what_can_you_do
+
+#- rule: test buttons
+#  steps:
+#    - intent: test
+#    - action: utter_test
 
 
