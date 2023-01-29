@@ -1643,6 +1643,29 @@ function subtreeToPopup(root, nodesPath, fromCircle = false){
     })
 }
 
+function check_first_request_popup(){
+    const formData = new FormData();
+    formData.append('csrfmiddlewaretoken', document.getElementsByName('csrfmiddlewaretoken')[0].value);
+
+    $.ajax({
+        type: "POST",
+        url: "/check_first_request_popup/",
+        data: formData,
+        // handle a successful response
+        success: function (data) {
+            if (data === "true") {
+                injectTextConversation("I highlighted it on the main view. " +
+                    "Also, I displayed it separately on a pop-up window.\n\nNow the active window is the pop-up that is " +
+                    "highlighted with a blue frame. You can switch the active window by selecting the main window. " +
+                    "Don't forget I will give answers to your questions considering the active window!");
+            }
+        },
+        cache: false,
+        contentType: false,
+        processData: false,
+    })
+}
+
 function highlightWidestLevels(nodes, opacityValue, node, link, levelsIndexes, root) {
     nodes.forEach(function (d) {
         d.highlighted = 0;
@@ -1695,7 +1718,7 @@ function widestLevelHandler(static_values_checked, statisticBackground, root, no
     if (widestLevels[0].length === 0) {
         textMsg = "There are no threads in this graph";
     } else if (widestLevels[0].length > 1) {
-        textMsg = "There are " + widestLevels[0].length + " levels &#91;" + widestLevels[0] + "&#93; with a maximum width of " + widestLevels[1];
+        textMsg = "There are " + widestLevels[0].length + " levels (" + widestLevels[0] + ") with a maximum width of " + widestLevels[1];
     } else {
         textMsg = "The widest level is level " + widestLevels[0][0] + " which has a width of " + widestLevels[1];
     }
@@ -1725,6 +1748,8 @@ function longestThreadHandler(static_values_checked, statisticBackground, root, 
     injectTextConversation(textMsg);
 
     if (deepestNodes[0].depth > 0) {
+        check_first_request_popup();
+
         deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
 
         highlightThreadPopup(nodes, root, opacityValue, deepestNodesPath, node, link);
@@ -1753,6 +1778,8 @@ function largestThreadHandler(static_values_checked, statisticBackground, root, 
     injectTextConversation(textMsg);
 
     if (largestThreads.length > 0) {
+        check_first_request_popup();
+
         largestNodesPath = getDescendantsListNodes(root, largestThreads);
 
         highlightThreadPopup(nodes, root, opacityValue, largestNodesPath, node, link);
@@ -1782,6 +1809,7 @@ function mostToxicThreadHandler(static_values_checked, statisticBackground, root
                 textMsg = "There are " + mostToxicNodesPath[2] + " threads with the same maximum level of toxicity";
             }
             injectTextConversation(textMsg);
+            check_first_request_popup();
             highlightThreadPopup(nodes, root, opacityValue, mostToxicNodesPath[0], node, link);
 
             if (static_values_checked) {
@@ -1807,6 +1835,8 @@ function mostToxicSubtreeHandler(static_values_checked, statisticBackground, roo
     injectTextConversation(textMsg);
 
     if (rootNodes.length > 0) {
+        check_first_request_popup();
+
         mostToxicNodesPath = getDescendantsListNodes(root, rootNodes);
 
         highlightThreadPopup(nodes, root, opacityValue, mostToxicNodesPath, node, link);
@@ -2772,10 +2802,12 @@ function mostTaggedFeatures(root, fromCircle = false) {
     if (items[0][1] === 0) {
         textMsg = "There are no tagged features in the selected nodes";
     } else if (items[1][1] === 0) {
-        textMsg = "The most tagged feature is " + items[0][0] + " &#91;" + items[0][1] + "&#93;. The other features do not appear even once";
+        textMsg = "The most tagged feature is " + items[0][0] + " (" + items[0][1] + "). The other features do not appear even once";
     } else if (items[2][1] === 0){
-        textMsg = "The most tagged features are " + items[0][0] + " &#91;" + items[0][1] + "&#93; and " + items[1][0] + " &#91;" + items[1][1] + "&#93;. The other features do not appear even once";
+        textMsg = "The most tagged features are " + items[0][0] + " (" + items[0][1] + ") and " + items[1][0] + " (" + items[1][1] + "). The other features do not appear even once";
     } else {
-        textMsg = "The most tagged features are " + items[0][0] + " &#91;" + items[0][1] + "&#93;, " + items[1][0] + " &#91;" + items[1][1] + "&#93; and " + items[2][0] + " &#91;" + items[2][1] + "&#93;";
+        textMsg = "The most tagged features are " + items[0][0] + " (" + items[0][1] + "), " + items[1][0] + " (" + items[1][1] + ") and " + items[2][0] + " (" + items[2][1] + ")";
     }
+    injectTextConversation(textMsg);
+    injectIntentConversation("generate_help_glyphs_message");
 }

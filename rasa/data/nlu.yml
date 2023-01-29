@@ -21,6 +21,8 @@ nlu:
   examples: |
     - thank you
     - thanks
+    - thank you very much
+    - thanks a lot
 
 - intent: goodbye
   examples: |
@@ -301,6 +303,55 @@ nlu:
   examples: |
     - file
 
+# glyph change
+
+- intent: change_glyph_dots
+  examples: |
+    - Change the [glyph]{"entity": "object_requested", "value": "glyph"} to [dots]{"entity": "glyph_requested", "value": "dots"}
+    - Set the [dots]{"entity": "glyph_requested", "value": "dots"}
+    - Display the [dots]{"entity": "glyph_requested", "value": "dots"}
+    - I want to see the [dots]{"entity": "glyph_requested", "value": "dots"} as glyph
+    - I would like to see the [dots]{"entity": "glyph_requested", "value": "dots"} as glyph
+    - Show me the [dots]{"entity": "glyph_requested", "value": "dots"}
+    - [dots]{"entity": "glyph_requested", "value": "dots"}
+    - Show [dots]{"entity": "glyph_requested", "value": "dots"}
+    - Chnage to [dots]{"entity": "glyph_requested", "value": "dots"}
+
+
+
+- intent: change_glyph_circular
+  examples: |
+    - Change the [glyph]{"entity": "object_requested", "value": "glyph"} to [circular]{"entity": "glyph_requested", "value": "circular"}
+    - Set the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - Display the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - I want to see the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - I would like to see the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - Show me the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - Show [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - Chnage to [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+
+
+- intent: change_glyph_trivial
+  examples: |
+    - Change the [glyph]{"entity": "object_requested", "value": "glyph"} to [trivial]{"entity": "glyph_requested", "value": "trivial"}
+    - Set the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+    - Display the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+    - I want to see the [trivial]{"entity": "glyph_requested", "value": "trivial"}
+    - I would like to see the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+    - Show me the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+    - [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+    - Show [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+    - Chnage to [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+
+- intent: change_glyphs
+  examples: |
+    - I want to change the [glyph]{"entity": "object_requested", "value": "glyph"}
+    - Change [glyph]{"entity": "object_requested", "value": "glyph"}
+    - I want to see another [glyph]{"entity": "object_requested", "value": "glyph"}
+    - I would like to see another [glyph]{"entity": "object_requested", "value": "glyph"}
+    - Other [glyph]{"entity": "object_requested", "value": "glyph"}
+
 #- regex: document_requested
 #  examples: |
 #    - [a-zA-Z0-9_-]{1,255}
@@ -365,6 +416,7 @@ nlu:
     - toxic level 0
     - toxicity level 0
     - not toxic
+
 
 - synonym: very toxic
   examples: |
@@ -1089,116 +1141,116 @@ nlu:
     - most toxic subgraph
     - subgraph with most toxic nodes
 
-# Which comment level has the most very toxic nodes?
-- intent: comment_level_vs_very_toxic
-  examples: |
-    - Which comment level has the most very toxic nodes?
-    - Which comment level has more very toxic nodes?
-    - In which comment level there are more very toxic nodes?
-    - In which comment level there are the most very toxic nodes?
-    - Show me the comment level with the most very toxic nodes?
-    - Show me the comment level that has the most very toxic nodes?
-    - I want to see the comment level with the most very toxic nodes
-    - I want to see the comment level that has the most very toxic nodes
-    - Can you show me the comment level with the most very toxic nodes
-    - Can you show me the comment level that has the most very toxic nodes?
-    - Display the comment level with the most very toxic nodes
-    - Display the comment level that has the most very toxic nodes
-    - comment level with the most very toxic nodes
-
-# What are the most occurred combination of features in most/very toxic nodes?
-- intent: combination_features_very_toxic
-  examples: |
-    - Which combination of features occurred the most in very toxic nodes?
-    - Which combination of features ocurred the most in most toxic nodes?
-    - What are the most occurred combination of features in most toxic nodes?
-    - What are the most occured combination of features in very toxic nodes?
-
-# What are the most occurred combination of features in toxic nodes?
-- intent: combination_features_toxic
-  examples: |
-    - Which combination of features occurred the most in toxic nodes?
-    - What are the most occurred combination of features in toxic nodes?
-
-# What are the most occurred combination of features in mildly toxic nodes?
-- intent: combination_features_mildly_toxic
-  examples: |
-    - Which combination of features occurred the most in mildy toxic nodes?
-    - Which combination of features ocurred the most in slighyly toxic nodes?
-    - What are the most occurred combination of features in slightly toxic nodes?
-    - What are the most occured combination of features in slightly toxic nodes?
-
-# What are the most occurred combination of features in non toxic nodes?
-- intent: combination_features_non_toxic
-  examples: |
-    - Which combination of features occurred the most in non toxic nodes?
-    - Which combination of features ocurred the most in least toxic nodes?
-    - What are the most occurred combination of features in non toxic nodes?
-    - What are the most occured combination of features in least toxic nodes?
-
-#What are the most occurred combination of features in Comment level 1 = CL1?
-- intent: combination_features_CL1
-  examples: |
-    - Which combination of features ocurred the most in comment level 1?
-    - What are the most occurred combination of features in comment level 1?
-
-#What are the most occurred combination of features in Comment level 2 = CL2?
-- intent: combination_features_CL2
-  examples: |
-    - Which combination of features ocurred the most in comment level 2?
-    - What are the most occurred combination of features in comment level 2?
-
-# comment level_1
-- intent: comment_level_1
-  examples: |
-    - Show me comment level 1
-    - Diplay the comment level 1
-    - Show the comment level 1
-    - Only show me comment level 1
-    - I want to see comment level 1
-    - I would like to see comment level 1
-
-# comment level_2
-- intent: comment_level_2
-  examples: |
-    - Show me comment level 2
-    - Diplay the comment level 2
-    - Show the comment level 2
-    - Only show me comment level 2
-    - I want to see comment level 2
-    - I would like to see comment level 2
-
-#In comment level 1 show me argument and constructive comments
-- intent: CL1_argument_constructive
-  examples: |
-    - Can you show me nodes with argumenation and constructiveness in comment level 1?
-    - Show me nodes in comment level 1 that have argumentation and constructiveness
-    - I want to see argumentation and constructive nodes in comment level 1
-    - Only show me argumentation and constructiveness nodes in comment level 1
-    - Display argumenation and constructive nodes in comment level 1
-
-#In comment level 2 show me argument and constructive comments
-- intent: CL2_argument_constructive
-  examples: |
-    - Can you show me nodes with argumenation and constructiveness in comment level 2?
-    - Show me nodes in comment level 2 that have argumentation and constructiveness
-    - I want to see argumentation and constructive nodes in comment level 2
-    - Only show me argumentation and constructiveness nodes in comment level 2
-    - Display argumenation and constructive nodes in comment level 2
-
-#- Which features are tagged the most along with constructiveness?
-- intent: constructive_feature
-  examples: |
-    - Which features are tagged the most along with constructiveness?
-    - Which features appear the most with constructiveness?
-    - Which features constructive nodes have the most?
-
-#- In which level of toxicity (loT) target person appear more?
-- intent: target_person_loT
-  examples: |
-    - In which level of toxicity target person appear more?
-    - Which level of toxicity have more target person nodes?
-    - Which level of toxicity there are more target person nodes?
+## Which comment level has the most very toxic nodes?
+#- intent: comment_level_vs_very_toxic
+#  examples: |
+#    - Which comment level has the most very toxic nodes?
+#    - Which comment level has more very toxic nodes?
+#    - In which comment level there are more very toxic nodes?
+#    - In which comment level there are the most very toxic nodes?
+#    - Show me the comment level with the most very toxic nodes?
+#    - Show me the comment level that has the most very toxic nodes?
+#    - I want to see the comment level with the most very toxic nodes
+#    - I want to see the comment level that has the most very toxic nodes
+#    - Can you show me the comment level with the most very toxic nodes
+#    - Can you show me the comment level that has the most very toxic nodes?
+#    - Display the comment level with the most very toxic nodes
+#    - Display the comment level that has the most very toxic nodes
+#    - comment level with the most very toxic nodes
+#
+## What are the most occurred combination of features in most/very toxic nodes?
+#- intent: combination_features_very_toxic
+#  examples: |
+#    - Which combination of features occurred the most in very toxic nodes?
+#    - Which combination of features ocurred the most in most toxic nodes?
+#    - What are the most occurred combination of features in most toxic nodes?
+#    - What are the most occured combination of features in very toxic nodes?
+#
+## What are the most occurred combination of features in toxic nodes?
+#- intent: combination_features_toxic
+#  examples: |
+#    - Which combination of features occurred the most in toxic nodes?
+#    - What are the most occurred combination of features in toxic nodes?
+#
+## What are the most occurred combination of features in mildly toxic nodes?
+#- intent: combination_features_mildly_toxic
+#  examples: |
+#    - Which combination of features occurred the most in mildy toxic nodes?
+#    - Which combination of features ocurred the most in slighyly toxic nodes?
+#    - What are the most occurred combination of features in slightly toxic nodes?
+#    - What are the most occured combination of features in slightly toxic nodes?
+#
+## What are the most occurred combination of features in non toxic nodes?
+#- intent: combination_features_non_toxic
+#  examples: |
+#    - Which combination of features occurred the most in non toxic nodes?
+#    - Which combination of features ocurred the most in least toxic nodes?
+#    - What are the most occurred combination of features in non toxic nodes?
+#    - What are the most occured combination of features in least toxic nodes?
+#
+##What are the most occurred combination of features in Comment level 1 = CL1?
+#- intent: combination_features_CL1
+#  examples: |
+#    - Which combination of features ocurred the most in comment level 1?
+#    - What are the most occurred combination of features in comment level 1?
+#
+##What are the most occurred combination of features in Comment level 2 = CL2?
+#- intent: combination_features_CL2
+#  examples: |
+#    - Which combination of features ocurred the most in comment level 2?
+#    - What are the most occurred combination of features in comment level 2?
+#
+## comment level_1
+#- intent: comment_level_1
+#  examples: |
+#    - Show me comment level 1
+#    - Diplay the comment level 1
+#    - Show the comment level 1
+#    - Only show me comment level 1
+#    - I want to see comment level 1
+#    - I would like to see comment level 1
+#
+## comment level_2
+#- intent: comment_level_2
+#  examples: |
+#    - Show me comment level 2
+#    - Diplay the comment level 2
+#    - Show the comment level 2
+#    - Only show me comment level 2
+#    - I want to see comment level 2
+#    - I would like to see comment level 2
+#
+##In comment level 1 show me argument and constructive comments
+#- intent: CL1_argument_constructive
+#  examples: |
+#    - Can you show me nodes with argumenation and constructiveness in comment level 1?
+#    - Show me nodes in comment level 1 that have argumentation and constructiveness
+#    - I want to see argumentation and constructive nodes in comment level 1
+#    - Only show me argumentation and constructiveness nodes in comment level 1
+#    - Display argumenation and constructive nodes in comment level 1
+#
+##In comment level 2 show me argument and constructive comments
+#- intent: CL2_argument_constructive
+#  examples: |
+#    - Can you show me nodes with argumenation and constructiveness in comment level 2?
+#    - Show me nodes in comment level 2 that have argumentation and constructiveness
+#    - I want to see argumentation and constructive nodes in comment level 2
+#    - Only show me argumentation and constructiveness nodes in comment level 2
+#    - Display argumenation and constructive nodes in comment level 2
+#
+##- Which features are tagged the most along with constructiveness?
+#- intent: constructive_feature
+#  examples: |
+#    - Which features are tagged the most along with constructiveness?
+#    - Which features appear the most with constructiveness?
+#    - Which features constructive nodes have the most?
+#
+##- In which level of toxicity (loT) target person appear more?
+#- intent: target_person_loT
+#  examples: |
+#    - In which level of toxicity target person appear more?
+#    - Which level of toxicity have more target person nodes?
+#    - Which level of toxicity there are more target person nodes?
 
 - intent: statistics_features_tree
   examples: |
@@ -1238,8 +1290,6 @@ nlu:
     - What are the glyphs?
     - How can I use the glyphs?
     - What are dots, circular glyph and trivial cheese?
-    - What are features on the left bar?
-    - What are targets on the left bar?
     - Give me more information about glyphs
     - Can you give me more information about glyphs?
 
@@ -1265,18 +1315,25 @@ nlu:
 
 - intent: help_main_graph_barchart
   examples: |
-    - What is main graph?
+    - What is selected comments?
     - What does first button on the right show?
+    - What is selected comments button?
+    - What does selected comments button do?
+    - What does selected comments do?
+
 
 - intent: help_subtree_barchart
   examples: |
     - What is sub graphs?
     - What does second button on the right show?
+    - What is that button saying level one comments?
+    - What is level one comments button?
 
-- intent: functions
+- intent: tool_help
   examples: |
     - What are the functions of this tool?
     - How can I use this tool?
+    - Tell me about how to use this tool?
 
 - intent: help_AND
   examples: |
@@ -1304,3 +1361,30 @@ nlu:
   examples: |
     - What can I do now after viewing glyphs?
     - What more I can do now?
+
+
+- intent: features_on_the_left
+  examples: |
+    - What are features on the left bar?
+    - How can use features?
+    - What are features?
+
+- intent: targets_help
+  examples: |
+    - What are targets?
+    - What are targets on the left bar?
+    - How can I use targets?
+
+
+- intent: help_sub_structure
+  examples: |
+    - what are sub structures?
+    - help me with sub structures?
+    - what are regions?
+    - can you visualise regions of the graph?
+
+
+- intent: statistics_help
+  examples: |
+    - can you tell me more about statistics?
+    - can give more information about statistics?

@@ -41,6 +41,26 @@
 <!-- Rasa WebChat Style -->
 
 <style>
+
+.rw-conversation-container .rw-image-details .rw-image-frame{
+    height: 110px;
+    width: auto;
+}
+.rw-conversation-container .rw-replies{
+   display:block;
+   text-align: center;
+
+}
+
+.rw-conversation-container .rw-replies .rw-reply{
+    background-color:  #fa7070;
+    font-size: 20px;
+    border-color: #fa7070;
+    justify-content: center;
+    text-align: center;
+
+
+}
 .rw-widget-container {
     pointer-events: none;
 }
@@ -49,9 +69,21 @@
 }
 .rw-conversation-container .rw-header {
     background-color: #fa7070;
+    font-size: 18px;
 }
 .rw-conversation-container .rw-messages-container .rw-message .rw-client {
     background-color: #fa7070;
+    font-size: 20px;
+}
+
+.rw-conversation-container .rw-messages-container .rw-response{
+    font-size: 20px;
+}
+.rw-conversation-container .rw-title{
+    font-size: 25px;
+}
+.rw-conversation-container .rw-new-message{
+    font-size: 20px;
 }
 @media screen and (min-width: 800px) {
     .rw-messages-container {
@@ -66,6 +98,9 @@
 }
 #tts-feature {
     right: 170px;
+}
+.rw-message-text {
+    font-size: 20px;
 }
 .chat-feature-btn {
     pointer-events: auto;
@@ -593,6 +628,23 @@
                         e.text = "Open a document first, in order to perform this action";
                     }
                     break;
+                case "intent_change_glyphs":
+                    if ('{{ selected_item }}') {
+                        if (messageList[1] === "dots_icon_button" && document.getElementById("dots_label").classList.contains("active")) {
+                            e.text = "Already in the Dots";
+                        } else if (messageList[1] === "glyphs_icon_button" && document.getElementById("glyphs_label").classList.contains("active")) {
+                            e.text = "Already in the Circular Glyph";
+                        } else if (messageList[1] === "trivial_icon_button" && document.getElementById("trivial_label").classList.contains("active")) {
+                            e.text = "Already in the Trivial Cheese";
+                        }
+                        else {
+                            e.text =  messageList[2];
+                            document.getElementById(messageList[1]).click();
+                        }
+                    } else {
+                        e.text = "Open a document first, in order to perform this action";
+                    }
+                    break;
                 case "intent_switch_or_and":
                     if ('{{ selected_item }}') {
                         if (messageList[1] === "or_button" && document.getElementById("or_label").classList.contains("active")) {
@@ -735,7 +787,8 @@
             if (textToSpeech && (e.hidden !== true)) {
                 let delay = getDelayChatMsg(e.text);
                 setTimeout(function () {
-                    msgTextToSpeech.text = e.text;
+                    msgTextToSpeech = new SpeechSynthesisUtterance(e.text);
+                    msgTextToSpeech.lang = "en-US";
                     window.speechSynthesis.speak(msgTextToSpeech);
                 }, delay);
             }
@@ -854,7 +907,8 @@
     function speakMsgConnect(msg) {
         if (textToSpeech) {
             setTimeout(function () {
-                msgTextToSpeech.text = msg;
+                msgTextToSpeech = new SpeechSynthesisUtterance(msg);
+                msgTextToSpeech.lang = "en-US";
                 window.speechSynthesis.speak(msgTextToSpeech);
             }, 400);
         }

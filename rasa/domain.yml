@@ -13,6 +13,7 @@ intents:
   - generate_response_message:
       use_entities:
       - response_message
+  - generate_help_glyphs_message
   - set_slots
   - logout:
       use_entities:
@@ -88,6 +89,9 @@ intents:
   - help_AND_OR
   - help_what_can_you_do
   - what_can_do_after_glyphs
+  - change_glyph_dots
+  - change_glyph_circular
+  - change_glyph_trivial
 
 actions:
   - action_check_session_login
@@ -113,6 +117,7 @@ actions:
   - action_highlight_check_last
   - action_highlight_uncheck_last
   - action_highlight_switch_last
+
 
 forms:
   login_form:
@@ -147,6 +152,7 @@ entities:
   - username
   - filter_name
   - first_login
+  - glyph_requested
 
 slots:
   csrfmiddlewaretoken:
@@ -186,6 +192,9 @@ slots:
     type: list
   first_login:
     type: bool
+  glyph_requested:
+    type: text
+    influence_conversation: false
 
 responses:
 
@@ -209,6 +218,7 @@ responses:
   utter_you_are_welcome:
   - text: "you are welcome"
   - text: "you're welcome"
+  - text: "no problem"
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
@@ -267,6 +277,29 @@ responses:
   utter_ask_document_selection_form_document_requested:
   - text: "Which document do you want to open?"
 
+#  Glyphs
+
+  utter_change_to_dots:
+  - text: "intent_change_glyphs,dots_icon_button,Glyph changed to Dots"
+
+  utter_change_to_circular:
+  - text: "intent_change_glyphs,glyphs_icon_button,Glyph changed to Circular"
+
+  utter_change_to_trivial:
+  - text: "intent_change_glyphs,trivial_icon_button,Glyph changed to Trivial"
+
+
+  utter_change_glyphs:
+   - text: "To which glyph do you want to change?"
+     buttons:
+      - title: "Dots"
+        payload: '/change_glyph_dots{{"object_requested":"glyph","layout_requested":"dots"}}'
+      - title: "Circular"
+        payload: '/change_glyph_circular{{"object_requested":"glyph","layout_requested":"circular"}}'
+      - title: "Trivial Cheese"
+        payload: '/change_glyph_trivial{{"object_requested":"glyph","layout_requested":"trivial"}}'
+
+
   # Filters
   # Change to OR / AND
   utter_switch_or:
@@ -282,83 +315,79 @@ responses:
 
   # longest, largest, widest, most toxic
   utter_longest_thread:
-  - text: "intent_event,longest_thread,Here you have it"
-  - text: "intent_event,longest_thread,I've highlighted it in your graph"
+  - text: "intent_event,longest_thread,Here you have the longest thread"
   - text: "intent_event,longest_thread,Here is the longest thread"
 
   utter_widest_level:
-  - text: "intent_event,widest_level,Here you have it"
-  - text: "intent_event,widest_level,I've highlighted it in your graph"
-  - text: "intent_event,widest_level,Here is the widest level"
+  - text: "intent_event,widest_level,I've highlighted the widest level in your graph"
 
   utter_largest_thread:
-  - text: "intent_event,largest_thread,Here you have it"
-  - text: "intent_event,largest_thread,I've highlighted it in your graph"
+  - text: "intent_event,largest_thread,Here you have the largest subtree"
   - text: "intent_event,largest_thread,Here is the largest subtree"
 
   utter_most_toxic_thread:
     - text: "intent_event,most_toxic_thread,Here is the most toxic thread"
-    - text: "intent_event,most_toxic_thread,Here you have it"
+    - text: "intent_event,most_toxic_thread,Here you have the most toxic thread"
 
   utter_most_toxic_subtree:
     - text: "intent_event,most_toxic_subtree,Here is the most toxic subtree"
-    - text: "intent_event,most_toxic_subtree,Here you have it"
+    - text: "intent_event,most_toxic_subtree,Here you have the most toxic subtree"
 
-  # comment level and very toxic
-  utter_comment_level_vs_very_toxic:
-    - text: "I displayed the comment level with the most very toxic nodes which is comment level: "
-    - text: "Here you have it"
-
-  # combination of features in levels of toxicity
-  utter_combination_features_very_toxic:
-    - text: "Most occurred combination of features are [] and []"
-    - text: "Here you have it"
-
-  utter_combination_features_toxic:
-    - text: "Most occurred combination of features are [] and []"
-    - text: "Here you have it"
-
-  utter_combination_features_mildly_toxic:
-    - text: "Most occurred combination of features are [] and []"
-    - text: "Here you have it"
-
-  utter_combination_features_non_toxic:
-    - text: "Most occurred combination of features are [] and []"
-    - text: "Here you have it"
-
-  # comment level related
-  utter_combination_features_CL1:
-    - text: "Most occurred combination of features are [] and []"
-    - text: "Here you have it"
-
-  utter_combination_features_CL2:
-    - text: "Most occurred combination of features are [] and []"
-    - text: "Here you have it"
-
-  # these two should be more easier to do
-  utter_comment_level_1:
-    - text: "Here you have comment level 1 displayed"
-    - text: "Here you have it"
-
-  utter_comment_level_2:
-    - text: "Here you have comment level 2 displayed"
-    - text: "Here you have it"
-
-  # comment level and argument - constructive
-  utter_CL1_argument_constructive:
-    - text: "Here you have nodes that have constructiveness and argumentation in comment level 1"
-    - text: "Here you have it"
-
-  utter_CL2_argument_constructive:
-    - text: "Here you have nodes that have constructiveness and argumentation in comment level 2"
-    - text: "Here you have it"
-
-  # features vs features or level of toxicity
-  utter_constructiveness_feature:
-    - text: "[] features appear more with constructiveness"
-
-  utter_target_person_loT:
-    - text: "In [] level of toxicity target person appears more"
+#  # comment level and very toxic
+#  utter_comment_level_vs_very_toxic:
+#    - text: "I displayed the comment level with the most very toxic nodes which is comment level: "
+#    - text: "Here you have it"
+#
+#  # combination of features in levels of toxicity
+#  utter_combination_features_very_toxic:
+#    - text: "Most occurred combination of features are [] and []"
+#    - text: "Here you have it"
+#
+#  utter_combination_features_toxic:
+#    - text: "Most occurred combination of features are [] and []"
+#    - text: "Here you have it"
+#
+#  utter_combination_features_mildly_toxic:
+#    - text: "Most occurred combination of features are [] and []"
+#    - text: "Here you have it"
+#
+#  utter_combination_features_non_toxic:
+#    - text: "Most occurred combination of features are [] and []"
+#    - text: "Here you have it"
+#
+#  # comment level related
+#  utter_combination_features_CL1:
+#    - text: "Most occurred combination of features are [] and []"
+#    - text: "Here you have it"
+#
+#  utter_combination_features_CL2:
+#    - text: "Most occurred combination of features are [] and []"
+#    - text: "Here you have it"
+#
+#  # these two should be more easier to do
+#  utter_comment_level_1:
+#    - text: "Here you have comment level 1 displayed"
+#    - text: "Here you have it"
+#
+#  utter_comment_level_2:
+#    - text: "Here you have comment level 2 displayed"
+#    - text: "Here you have it"
+#
+#  # comment level and argument - constructive
+#  utter_CL1_argument_constructive:
+#    - text: "Here you have nodes that have constructiveness and argumentation in comment level 1"
+#    - text: "Here you have it"
+#
+#  utter_CL2_argument_constructive:
+#    - text: "Here you have nodes that have constructiveness and argumentation in comment level 2"
+#    - text: "Here you have it"
+#
+#  # features vs features or level of toxicity
+#  utter_constructiveness_feature:
+#    - text: "[] features appear more with constructiveness"
+#
+#  utter_target_person_loT:
+#    - text: "In [] level of toxicity target person appears more"
 
   utter_statistics_features_tree:
     - text: "intent_event,statistics_all_features_tree,These are the statistics of the graph features"
@@ -373,97 +402,242 @@ responses:
     - text: "Do you want to see a bar chart comparing values of features?"
 
   utter_help_glyphs:
-    - text: "You can directly see which features are tagged to which comments by using glyphs.
+    - text: "You can directly see which features are tagged to which comments by using glyphs.  \ \n
+
   Check-all the features on the left column under Features to see the glyphs"
+      image: "https://ecemkavaz.github.io/imagesRasa/features2.png"
 
-  utter_help_bar_chart_pop_up:
-    - text: "You can change features to targets, stances, or level of toxicity to analyse them. Also, you can change the visualisation to a horizontal bar chart or a pie."
+#  utter_help_bar_chart_pop_up:
+#    - text: "You can change features to:  \ \n
+#            - Targets  \ \n
+#            - Stances   \ \n
+#            - Level of Toxicity  \ \n
+#
+#             Also, you can change the visualisation to:  \ \n
+#              - Horizontal Bar   \ \n
+#              - Pie  "
+#
+
+#  utter_explain_glyphs_one:
+#    - text: "Glyphs show the features of each comment. \ \n
+#
+#
+#    "
+  utter_explain_glyphs_one:
+    - text: "Glyphs show the features of each comment."
+      image: "https://ecemkavaz.github.io/imagesRasa/glyphsAll2.png"
+
+#  utter_explain_glyphs_three:
+#    - text: "Circular Glyph"
+#      image: "https://ecemkavaz.github.io/imagesRasa/glyph.svg"
+#
+#  utter_explain_glyphs_four:
+#    - text: "Trivial Cheese"
+#      image: "https://ecemkavaz.github.io/imagesRasa/trivial.svg"
+
+  utter_explain_glyphs_two:
+    - text: "Use left bar to activate/deactivate the features. "
 
 
-# help
-  utter_explain_glyphs:
-    - text: "Glyphs helps you see which comments are annotated with which features.
-    I have three available glyphs: Dots, Circular Glyph, and Trivial Cheese.
-    You can use the left bar to activate the features you want to see. You can select them one-by-one or
-    select 'check all' button to see all of them. You can select glyphs by clicking on
-   the buttons above that have pictures of each glyph."
+  utter_explain_glyphs_three:
+    - text: "Select them: \ \n
+              - one-by-one \ \n
+               - check all "
+      buttons:
+          - title: "Dots"
+            payload: '/change_glyph_dots{{"object_requested":"glyph","glyph_requested":"dots"}}'
+          - title: "Circular"
+            payload: '/change_glyph_circular{{"object_requested":"glyph","glyph_requested":"circular"}}'
+          - title: "Trivial Cheese"
+            payload: '/change_glyph_trivial{{"object_requested":"glyph","glyph_requested":"trivial"}}'
 
-  utter_help_layouts:
-    - text: "There are four available layouts: Tree, Force, Radial,
-    and Circle Packing. I automatically select the best fitted layout according
-    to your data but you can explore other layouts by selecting them above."
+  utter_explain_targets_one:
+    - text: "All comments are annotated with the targets they direct to."
+  utter_explain_targets_two:
+    - text: "Target Group"
+      image: "https://ecemkavaz.github.io/imagesRasa/Group.svg"
+
+  utter_explain_targets_three:
+    - text: "Target Person"
+      image: "https://ecemkavaz.github.io/imagesRasa/Person.svg"
+
+  utter_explain_targets_four:
+    - text: "Stereotype"
+      image: "https://ecemkavaz.github.io/imagesRasa/Stereotype.svg"
+
+  utter_explain_targets_five:
+    - text: "Activate/deactivate targets: \ \n
+                   - From the left bar \ \n
+                   - Asking me"
+      image: "https://ecemkavaz.github.io/imagesRasa/targets.png"
+
+
+  utter_explain_features_tab:
+    - text: "All the comments are tagged with features that they have. \ \n
+
+      Activate/deactivate features: \ \n
+      - From the left bar \ \n
+      - Asking me"
+      image: "https://ecemkavaz.github.io/imagesRasa/features2.png"
+
+#  utter_help_layouts_one:
+#    - text: "There are four available layouts."
+#      image: "https://ecemkavaz.github.io/imagesRasa/layoutsAll2.png"
+
+  utter_help_layouts_one:
+    - text: "I automatically select the best fitted layout according
+                      to your data.
+                      "
+
+      image: "https://ecemkavaz.github.io/imagesRasa/layoutsAll2.png"
+
+  utter_help_layouts_two:
+    - text: "
+              Select layouts:
+               \ \n
+              - From the icons menu
+               \ \n
+             - Asking to me."
+      buttons:
+       - title: "Tree"
+         payload: '/change_layout_tree{{"object_requested":"layout","layout_requested":"tree"}}'
+       - title: "Force"
+         payload: '/change_layout_force{{"object_requested":"layout","layout_requested":"force"}}'
+       - title: "Radial"
+         payload: '/change_layout_radial{{"object_requested":"layout","layout_requested":"radial"}}'
+       - title: "Circle"
+         payload: '/change_layout_circle{{"object_requested":"layout","layout_requested":"circle"}}'
+
+
 
   utter_help_highlight:
-    - text: "Highlight function will show only the comments that include the selected feature.
-    You can ask me to show you or select features from the left bar."
+    - text: "Highlight function will show only the comments that include the selected features. \ \n
+
+    Select features: \ \n
+    - From the left bar \ \n
+    - Asking me"
+      image: "https://ecemkavaz.github.io/imagesRasa/highlight.png"
 
   utter_help_AND:
-    - text: "If you use AND option to select more than one feature,
+    - text: "With AND option,
     you will see the comments that are tagged with all the selected features"
 
   utter_help_OR:
-    - text: "If you use OR option to select more than one feature,
+    - text: "With OR option,
     you will see the comments that are tagged with at least one of the selected features"
 
   utter_help_AND_OR:
-    - text: "If you use AND option to select more than one feature,
-      you will see the comments that are tagged with all the selected features. If you use OR option to select more than one feature,
+    - text: "With AND option,
+      you will see the comments that are tagged with all the selected features. With OR option,
       you will see the comments that are tagged with at least one of the selected features"
 
   utter_help_summary:
-    - text: "Summary shows how many comments are there in different levels of toxicity and how many comments
-    are there in different target features. Summary gets updated when comments are highlighted."
+    - text: "Summary shows how many comments are labelled with different levels of toxicity, and targets.  \ \n
+
+    It reflects data contained in the current visualization."
+      image: "https://ecemkavaz.github.io/imagesRasa/summary.png"
 
   utter_help_main_bar:
-    - text: "If you select 'Selected Comments' button on the top, a bar chart will appear displaying the
-    number of each feature the selected comments have. Also, from the first list you can select
-     to see statistics of Targets, Stances and Level of toxicity. There are available three graphs
-     that you can choose from the second list, Bar Chart, Horizontal Bar Chart and Pie
-     Chart."
+    - text: "Selected Comments button displays a bar chart with the
+    statistics of the current visualisation. "
+
+      image: "https://ecemkavaz.github.io/imagesRasa/selectedcomments.png"
+
+  utter_help_bar_chart_pop_up:
+    - text: "If you want to have more information about this:"
+      buttons:
+        - title: "Click here"
+          payload: '/statistics_help'
+
+  utter_help_main_bar_three:
+    - text: "Click on each bar to highlight the features on the graph. \ \n
+
+     You can
+    remove features by clicking on their name to compare the only features you want."
 
   utter_help_subtree_bar:
-    - text: "If you select Sub Graphs button, bar chart will appear displaying the
-    available features in every sub graph. Also, you can select from the list
-    to see Targets, Stances and Level of toxicity. There are available two graphs
-    that you can choose from the second list, Bar Chart and Horizontal Bar Chart."
+    - text: "Level One Comments button displays a bar chart with the
+    statistics of features of each comment individually in level one and their children.
+          "
+      image: "https://ecemkavaz.github.io/imagesRasa/levelonecomments.png"
 
   utter_general_help:
-    - text: "You can ask me about Layouts, Glyphs, Highlight, Features and Targets on
-      the left bar, Summary, and Two buttons on the top saying Selected Comments and Level one comments"
+    - text: "I can help you with: "
+      buttons:
+        - title: "Highlight"
+          payload: '/help_highlight'
+        - title: "Layouts"
+          payload: '/help_layouts'
+        - title: "Glyphs"
+          payload: '/help_glyphs'
+        - title: "Features"
+          payload: '/features_on_the_left'
+        - title: "Targets"
+          payload: '/targets_help'
+        - title: "Summary"
+          payload: '/help_summary'
+        - title: "Selected Comments"
+          payload: '/help_main_graph_barchart'
+        - title: "Level One Comments"
+          payload: 'help_subtree_barchart'
+        - title: "Sub Regions"
+          payload: '/help_sub_structure'
 
-  utter_help_what_can_you_do:
-    - text: "I am here to guide you through analysis. I can show you the Largest, the Longest, and the Most toxic thread.
-    Also, I can show you Widest level. I can highlight comments for you if you ask me. You can ask me questions about different
-    features of the tool and I can explain how to use them to you."
+  utter_help_sub_structure:
+    - text: "There are sub regions that I can visualise, select one to see."
+      buttons:
+        - title: "the largest thread"
+          payload: '/largest_thread'
+        - title: "the longest thread"
+          payload: '/longest_thread'
+        - title: "the most toxic thread"
+          payload: '/most_toxic_thread'
+        - title: "the widest level"
+          payload: '/widest_level'
 
-  utter_explain_pop_up_toxic:
-    - text: "I highlighted the most toxic thread on the main view. Also, I displayed it separately on
-    a pop-up window. Now the active window is the pop-up that is highlighted with a blue frame. You can switch
-    the active window by selecting the main window. Don't forget I will give answers to your questions considering
-    the active window!"
 
-  utter_explain_pop_up_largest:
-    - text: "I highlighted the largest thread on the main view. Also, I displayed it separately on
-    a pop-up window. Now the active window is the pop-up that is highlighted with a blue frame. You can switch
-    the active window by selecting the main window. Don't forget I will give answers to your questions considering
-    the active window!"
+  utter_help_what_can_you_do_one:
+    - text: "I am here to guide you through the visualisation analysis"
 
-  utter_explain_pop_up_longest:
-    - text: "I highlighted the longest thread on the main view. Also, I displayed it separately on
-    a pop-up window. Now the active window is the pop-up that is highlighted with a blue frame. You can switch
-    the active window by selecting the main window. Don't forget I will give answers to your questions considering
-    the active window!"
+  utter_help_what_can_you_do_two:
+    - text: "I can show you regions of the tree, highlight features, or help you with the tool"
 
-  utter_explain_pop_up_widest:
-    - text: "I highlighted the widest level on the main view. Also, I displayed it separately on
-    a pop-up window. Now the active window is the pop-up that is highlighted with a blue frame. You can switch
-    the active window by selecting the main window. Don't forget I will give answers to your questions considering
-    the active window!"
+  utter_help_what_can_you_do_three:
+    - text: "Here you have some actions to do:"
+      buttons:
+        - title: "the largest thread"
+          payload: '/largest_thread'
+        - title: "the longest thread"
+          payload: '/longest_thread'
+        - title: "the most toxic thread"
+          payload: '/most_toxic_thread'
+        - title: "the widest level"
+          payload: '/widest_level'
+        - title: "learn more"
+          payload: '/tool_help'
+
+
+#  utter_explain_pop_up_toxic:
+#    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
+#
+#  utter_explain_pop_up_largest:
+#    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
+#
+#  utter_explain_pop_up_longest:
+#    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
+
+#  utter_explain_pop_up_widest:
+#    - text: "You can see the the region highlighted in the main view."
 
   utter_guide_bar_charts:
     - text: "Now you can compare the features with additional charts. Also, don't forget you can switch
     active window and compare whole graph's features with additional charts. Just ask me or select the
     button at the top that says 'Selected Comments'."
+
+  utter_active_window_explain:
+    - text: "Now the active window is the pop-up that is highlighted with a blue frame. You can switch
+                the active window by selecting the main window. Don't forget I will give answers to your questions considering
+                the active window!"
 
 session_config:
   session_expiration_time: 60
