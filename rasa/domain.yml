@@ -379,6 +379,9 @@ responses:
   utter_help_bar_chart_pop_up:
     - text: "You can change features to targets, stances, or level of toxicity to analyse them. Also, you can change the visualisation to a horizontal bar chart or a pie."
 
+  utter_help_bar_chart_pop_up_sub:
+    - text: "You can change features to targets, stances, or level of toxicity to analyse them. Also, you can change the visualisation to a horizontal bar chart."
+
 
 # help
   utter_explain_glyphs:
@@ -455,10 +458,7 @@ responses:
     the active window!"
 
   utter_explain_pop_up_widest:
-    - text: "I highlighted the widest level on the main view. Also, I displayed it separately on
-    a pop-up window. Now the active window is the pop-up that is highlighted with a blue frame. You can switch
-    the active window by selecting the main window. Don't forget I will give answers to your questions considering
-    the active window!"
+    - text: "I highlighted the widest level on the main view."
 
   utter_guide_bar_charts:
     - text: "Now you can compare the features with additional charts. Also, don't forget you can switch

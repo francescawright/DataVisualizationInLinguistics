@@ -244,7 +244,7 @@ stories:
     - action: utter_guide_bar_charts
     - intent: statistics_features_subtrees
     - action: utter_statistics_features_subtrees
-    - action: utter_help_bar_chart_pop_up
+    - action: utter_help_bar_chart_pop_up_sub
 
 
 - story: New scenario with guidance without affirm/deny 2
@@ -361,7 +361,7 @@ stories:
     - action: action_highlight_check
     - intent: statistics_features_subtrees
     - action: utter_statistics_features_subtrees
-    - action: utter_help_bar_chart_pop_up
+    - action: utter_help_bar_chart_pop_up_sub
 
 #
 #- story: showing the features of our system 3

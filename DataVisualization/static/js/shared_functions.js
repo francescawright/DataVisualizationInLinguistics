@@ -1643,6 +1643,26 @@ function subtreeToPopup(root, nodesPath, fromCircle = false){
     })
 }
 
+function check_first_request_popup(msg){
+    const formData = new FormData();
+    formData.append('csrfmiddlewaretoken', document.getElementsByName('csrfmiddlewaretoken')[0].value);
+
+    $.ajax({
+        type: "POST",
+        url: "/check_first_request_popup/",
+        data: formData,
+        // handle a successful response
+        success: function (data) {
+            if (data === "true") {
+                injectTextConversation(msg);
+            }
+        },
+        cache: false,
+        contentType: false,
+        processData: false,
+    })
+}
+
 function highlightWidestLevels(nodes, opacityValue, node, link, levelsIndexes, root) {
     nodes.forEach(function (d) {
         d.highlighted = 0;
@@ -1702,6 +1722,8 @@ function widestLevelHandler(static_values_checked, statisticBackground, root, no
 
     injectTextConversation(textMsg);
 
+    check_first_request_popup("test test test sssssssssssssssssssdasdasdasdasdasdsadasdsadsadasdsadsadsadsadasdsadsadsadsadsadsadsadsadsadsad");
+
     highlightWidestLevels(nodes, opacityValue, node, link, widestLevels[0], root);
 
     if (static_values_checked) {
@@ -1723,6 +1745,8 @@ function longestThreadHandler(static_values_checked, statisticBackground, root, 
     }
 
     injectTextConversation(textMsg);
+
+    check_first_request_popup("test test test sssssssssssssssssssdasdasdasdasdasdsadasdsadsadasdsadsadsadsadasdsadsadsadsadsadsadsadsadsadsad");
 
     if (deepestNodes[0].depth > 0) {
         deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
@@ -2778,4 +2802,5 @@ function mostTaggedFeatures(root, fromCircle = false) {
     } else {
         textMsg = "The most tagged features are " + items[0][0] + " &#91;" + items[0][1] + "&#93;, " + items[1][0] + " &#91;" + items[1][1] + "&#93; and " + items[2][0] + " &#91;" + items[2][1] + "&#93;";
     }
+    injectTextConversation(textMsg);
 }

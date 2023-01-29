@@ -79,6 +79,16 @@ def save_first_login(request):
     return HttpResponse(status=204)
 
 
+@require_POST
+def check_first_request_popup(request):
+    print("test")
+    if not 'first_request_popup' in request.session:
+        request.session['first_request_popup'] = True
+        return HttpResponse("true")
+    else:
+        return HttpResponse("false")
+
+
 def generate_dataset(request):
     # Check if there is an active session
     user = getattr(request, 'user', None)
@@ -96,7 +106,10 @@ def generate_dataset(request):
     # ---------------------------------------------------------------------------------
     # JSON PARSING & CURRENT DATASET
     # ---------------------------------------------------------------------------------
-    auxiliar_generate_dataset(request, selected_item)
+    try:
+        auxiliar_generate_dataset(request, selected_item)
+    except ObjectDoesNotExist:
+        return HttpResponseBadRequest("document_not_exist")
     # ---------------------------------------------------------------------------------
     return HttpResponse("/static/" + MAIN_OUTPUT)
 
@@ -134,10 +147,7 @@ def auxiliar_generate_dataset(request, selected_item):
             action_popup == "send_to_popup" and popup_graph_info):
         # There is a subtree in the Popup
         if is_popup_subtree:
-            try:
-                dataset_first_level, doc = get_current_dataset_popup(request, popup_nodes, popup_selected_item_popup)
-            except ObjectDoesNotExist:
-                return HttpResponseBadRequest("document_not_exist")
+            dataset_first_level, doc = get_current_dataset_popup(request, popup_nodes, popup_selected_item_popup)
             # The use of the 'save_data_to_JSON_popup' function indicates that a subtree is being generated.
             # The 'MAIN_OUTPUT' parameter indicates that the subtree is sent to the main window.
             save_data_to_JSON_popup(dataset_first_level, popup_nodes, doc,
@@ -145,19 +155,13 @@ def auxiliar_generate_dataset(request, selected_item):
 
         # There is no subtree in the Popup
         else:
-            try:
-                dataset, doc = get_current_dataset(request, selected_item)
-            except ObjectDoesNotExist:
-                return HttpResponseBadRequest("document_not_exist")
+            dataset, doc = get_current_dataset(request, selected_item)
             # Filter first level childs
             first_level = dataset.filter(comment_level=1)
             save_data_to_JSON(first_level, doc)  # The complete graph is sent to the Main window
 
     if action_popup == "send_to_popup" and not popup_graph_info:
-        try:
-            dataset, doc = get_current_dataset(request, selected_item)
-        except ObjectDoesNotExist:
-            return HttpResponseBadRequest("document_not_exist")
+        dataset, doc = get_current_dataset(request, selected_item)
         # Filter first level childs
         first_level = dataset.filter(comment_level=1)
         save_data_to_JSON(first_level, doc)  # The complete graph is sent to the Main window
@@ -165,20 +169,14 @@ def auxiliar_generate_dataset(request, selected_item):
     if action_popup == "swap" or action_popup == "send_to_popup":
         # There is a subtree in the Main window
         if is_main_subtree:
-            try:
-                dataset_first_level, doc = get_current_dataset_popup(request, main_nodes, main_selected_item_popup)
-            except ObjectDoesNotExist:
-                return HttpResponseBadRequest("document_not_exist")
+            dataset_first_level, doc = get_current_dataset_popup(request, main_nodes, main_selected_item_popup)
             # The use of the 'save_data_to_JSON_popup' function indicates that a subtree is being generated.
             # By default, if the last parameter is not passed, the subtree is sent to the Popup.
             save_data_to_JSON_popup(dataset_first_level, main_nodes, doc)  # The subtree is sent to the Popup
 
         # There is no subtree in the Main window
         else:
-            try:
-                dataset, doc = get_current_dataset(request, selected_item)
-            except ObjectDoesNotExist:
-                return HttpResponseBadRequest("document_not_exist")
+            dataset, doc = get_current_dataset(request, selected_item)
             first_level = dataset.filter(comment_level=1)
             # The use of the 'save_data_to_JSON' function indicates that a complete graph is being generated.
             # The 'POPUP_OUTPUT' parameter indicates that the complete graph is sent to the Popup.
@@ -189,31 +187,22 @@ def auxiliar_generate_dataset(request, selected_item):
         if (popup_graph_info):
             # There is a subtree in the Popup
             if is_popup_subtree:
-                try:
-                    dataset_first_level, doc = get_current_dataset_popup(request, popup_nodes,
+                dataset_first_level, doc = get_current_dataset_popup(request, popup_nodes,
                                                                          popup_selected_item_popup)
-                except ObjectDoesNotExist:
-                    return HttpResponseBadRequest("document_not_exist")
                 # The use of the 'save_data_to_JSON_popup' function indicates that a subtree is being generated.
                 # The 'MAIN_OUTPUT' parameter indicates that the subtree is sent to the main window.
                 save_data_to_JSON_popup(dataset_first_level, popup_nodes, doc)  # The subtree is sent to the Main window
 
             # There is no subtree in the Popup
             else:
-                try:
-                    dataset, doc = get_current_dataset(request, selected_item)
-                except ObjectDoesNotExist:
-                    return HttpResponseBadRequest("document_not_exist")
+                dataset, doc = get_current_dataset(request, selected_item)
                 # Filter first level childs
                 first_level = dataset.filter(comment_level=1)
                 save_data_to_JSON(first_level, doc, POPUP_OUTPUT)  # The complete graph is sent to the Main window
 
         # There is a subtree in the Main window
         if is_main_subtree:
-            try:
-                dataset_first_level, doc = get_current_dataset_popup(request, main_nodes, main_selected_item_popup)
-            except ObjectDoesNotExist:
-                return HttpResponseBadRequest("document_not_exist")
+            dataset_first_level, doc = get_current_dataset_popup(request, main_nodes, main_selected_item_popup)
             # The use of the 'save_data_to_JSON_popup' function indicates that a subtree is being generated.
             # The 'MAIN_OUTPUT' parameter indicates that the subtree is sent to the main window.
             save_data_to_JSON_popup(dataset_first_level, main_nodes, doc,
@@ -221,10 +210,7 @@ def auxiliar_generate_dataset(request, selected_item):
 
         # There is no subtree in the Main window
         else:
-            try:
-                dataset, doc = get_current_dataset(request, selected_item)
-            except ObjectDoesNotExist:
-                return HttpResponseBadRequest("document_not_exist")
+            dataset, doc = get_current_dataset(request, selected_item)
             # Filter first level childs
             first_level = dataset.filter(comment_level=1)
             save_data_to_JSON(first_level, doc)  # The complete graph is sent to the Main window
