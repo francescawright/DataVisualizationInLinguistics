@@ -38,6 +38,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '0.0.0.0',
     'datavisualizationinlinguistics.herokuapp.com',
+    'web-eduvives.cloud.okteto.net',
     '127.0.0.1', 'localhost'
 ]
 
