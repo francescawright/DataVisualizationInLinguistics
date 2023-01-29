@@ -1388,9 +1388,3 @@ nlu:
   examples: |
     - can you tell me more about statistics?
     - can give more information about statistics?
-
-
-#- intent: test
-#  examples: |
-#    - test
-#    - test please

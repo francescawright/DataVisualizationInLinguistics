@@ -13,6 +13,7 @@ intents:
   - generate_response_message:
       use_entities:
       - response_message
+  - generate_help_glyphs_message
   - set_slots
   - logout:
       use_entities:
@@ -88,7 +89,6 @@ intents:
   - help_AND_OR
   - help_what_can_you_do
   - what_can_do_after_glyphs
-  - intent_popup_shown
   - change_glyph_dots
   - change_glyph_circular
   - change_glyph_trivial
@@ -117,8 +117,6 @@ actions:
   - action_highlight_check_last
   - action_highlight_uncheck_last
   - action_highlight_switch_last
-  - action_send_popup_shown_message
-  - action_send_response
 
 
 forms:
@@ -154,7 +152,6 @@ entities:
   - username
   - filter_name
   - first_login
-  - popup_shown
   - glyph_requested
 
 slots:
@@ -198,13 +195,6 @@ slots:
   glyph_requested:
     type: text
     influence_conversation: false
-#  popup_shown:
-#    type: bool
-#  response_sent:
-#    type: bool
-#    initial_value: false
-
-
 
 responses:
 
@@ -325,27 +315,23 @@ responses:
 
   # longest, largest, widest, most toxic
   utter_longest_thread:
-  - text: "intent_event,longest_thread,Here you have it"
-  - text: "intent_event,longest_thread,I've highlighted it in your graph"
+  - text: "intent_event,longest_thread,Here you have the longest thread"
   - text: "intent_event,longest_thread,Here is the longest thread"
 
   utter_widest_level:
-  - text: "intent_event,widest_level,Here you have it"
-  - text: "intent_event,widest_level,I've highlighted it in your graph"
-  - text: "intent_event,widest_level,Here is the widest level"
+  - text: "intent_event,widest_level,I've highlighted the widest level in your graph"
 
   utter_largest_thread:
-  - text: "intent_event,largest_thread,Here you have it"
-  - text: "intent_event,largest_thread,I've highlighted it in your graph"
+  - text: "intent_event,largest_thread,Here you have the largest subtree"
   - text: "intent_event,largest_thread,Here is the largest subtree"
 
   utter_most_toxic_thread:
     - text: "intent_event,most_toxic_thread,Here is the most toxic thread"
-    - text: "intent_event,most_toxic_thread,Here you have it"
+    - text: "intent_event,most_toxic_thread,Here you have the most toxic thread"
 
   utter_most_toxic_subtree:
     - text: "intent_event,most_toxic_subtree,Here is the most toxic subtree"
-    - text: "intent_event,most_toxic_subtree,Here you have it"
+    - text: "intent_event,most_toxic_subtree,Here you have the most toxic subtree"
 
 #  # comment level and very toxic
 #  utter_comment_level_vs_very_toxic:
@@ -652,18 +638,6 @@ responses:
     - text: "Now the active window is the pop-up that is highlighted with a blue frame. You can switch
                 the active window by selecting the main window. Don't forget I will give answers to your questions considering
                 the active window!"
-
-
-#  utter_test:
-#    - text: "do you want to know more?"
-#      buttons:
-#        - title: "yes"
-#          payload: "/affirm"
-#        - title: "no"
-#          payload: "/deny"
-
-
-
 
 session_config:
   session_expiration_time: 60

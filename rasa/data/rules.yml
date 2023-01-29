@@ -109,6 +109,11 @@ rules:
   - intent: generate_response_message
   - action: action_generate_response_message
 
+- rule: Displays in the chat the utter_help_glyphs message
+  steps:
+  - intent: generate_help_glyphs_message
+  - action: utter_help_glyphs
+
 - rule: Automatically fills slots with values passed as entities
   steps:
   - intent: set_slots
@@ -165,33 +170,28 @@ rules:
   steps:
     - intent: longest_thread
     - action: utter_longest_thread
-  wait_for_user_input: false
 
 - rule: User wants to see the widest level/depth
   steps:
     - intent: widest_level
     - action: utter_widest_level
-  wait_for_user_input: false
 
 - rule: User wants to see the largest thread
   steps:
     - intent: largest_thread
     - action: utter_largest_thread
-  wait_for_user_input: false
 
 #highlight most toxic thread
 - rule: User wants to see the most toxic thread
   steps:
     - intent: most_toxic_thread
     - action: utter_most_toxic_thread
-  wait_for_user_input: false
 
 #highlight most toxic subtree
 - rule: User wants to see the most toxic subtree
   steps:
     - intent: most_toxic_subtree
     - action: utter_most_toxic_subtree
-  wait_for_user_input: false
 
 ## comment level and level of toxicity
 #- rule: User wants to see which comment level have the most toxic nodes
@@ -325,7 +325,6 @@ rules:
   steps:
     - intent: help_main_graph_barchart
     - action: utter_help_main_bar
-  wait_for_user_input: false
 
 - rule: User wants to know about sub graphs button
   steps:
@@ -352,10 +351,5 @@ rules:
 #  steps:
 #    - intent: help_what_can_you_do
 #    - action: utter_help_what_can_you_do
-
-#- rule: test buttons
-#  steps:
-#    - intent: test
-#    - action: utter_test
 
 

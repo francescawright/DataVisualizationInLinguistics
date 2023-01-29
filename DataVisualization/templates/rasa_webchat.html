@@ -56,6 +56,7 @@
     background-color:  #fa7070;
     font-size: 20px;
     border-color: #fa7070;
+    justify-content: center;
     text-align: center;
 
 
@@ -639,9 +640,7 @@
                             e.text = "Already in the Trivial Cheese";
                         }
                         else {
-                            e.hidden = true;
-                            document.getElementById(messageList[1]).from_chat = true;
-                            document.getElementById(messageList[1]).from_chat_msg = messageList[2];
+                            e.text =  messageList[2];
                             document.getElementById(messageList[1]).click();
                         }
                     } else {
@@ -790,7 +789,8 @@
             if (textToSpeech && (e.hidden !== true)) {
                 let delay = getDelayChatMsg(e.text);
                 setTimeout(function () {
-                    msgTextToSpeech.text = e.text;
+                    msgTextToSpeech = new SpeechSynthesisUtterance(e.text);
+                    msgTextToSpeech.lang = "en-US";
                     window.speechSynthesis.speak(msgTextToSpeech);
                 }, delay);
             }
@@ -909,7 +909,8 @@
     function speakMsgConnect(msg) {
         if (textToSpeech) {
             setTimeout(function () {
-                msgTextToSpeech.text = msg;
+                msgTextToSpeech = new SpeechSynthesisUtterance(msg);
+                msgTextToSpeech.lang = "en-US";
                 window.speechSynthesis.speak(msgTextToSpeech);
             }, 400);
         }
@@ -981,35 +982,6 @@
     })();
 
 </script>
-
-
-
-
-{#<script>#}
-{#    let messageSent = false;#}
-{#$(document).ready(function(){#}
-{#    $('#popupModal').on('shown.bs.modal', function () {#}
-{#        if (!messageSent) {#}
-{#            messageSent = true;#}
-{#            const event = {#}
-{#                event: "popup_shown",#}
-{#                sender: "javascript"#}
-{#            }#}
-{#            $.ajax({#}
-{#                url: "http://localhost:5055/webhooks/rest/webhook",#}
-{#                type: "POST",#}
-{#                data: JSON.stringify(event),#}
-{#                contentType: "application/json",#}
-{#                success: function() {#}
-{#                    console.log("Event sent");#}
-{##}
-{#                }#}
-{#            });#}
-{#        }#}
-{#    });#}
-{# });#}
-{#</script>#}
-
 
 {#<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.js"></script>#}
 {#<script>#}

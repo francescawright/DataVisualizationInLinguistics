@@ -81,7 +81,6 @@ def save_first_login(request):
 
 @require_POST
 def check_first_request_popup(request):
-    print("test")
     if not 'first_request_popup' in request.session:
         request.session['first_request_popup'] = True
         return HttpResponse("true")

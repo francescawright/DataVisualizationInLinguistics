@@ -238,7 +238,6 @@ stories:
     - action: utter_most_toxic_thread
     - intent: most_tagged_features
     - action: utter_most_tagged_features
-    - action: utter_help_glyphs
     - intent: help_glyphs
     - action: utter_explain_glyphs_one
     - action: utter_explain_glyphs_two
@@ -247,7 +246,7 @@ stories:
     - action: utter_guide_bar_charts
     - intent: statistics_features_subtrees
     - action: utter_statistics_features_subtrees
-    - action: utter_help_bar_chart_pop_up_sub
+    - action: utter_help_bar_chart_pop_up
 
 
 - story: New scenario with guidance without affirm/deny 2
@@ -267,7 +266,6 @@ stories:
     - action: utter_help_bar_chart_pop_up
     - intent: most_tagged_features
     - action: utter_most_tagged_features
-    - action: utter_help_glyphs
     - intent: help_glyphs
     - action: utter_explain_glyphs_one
     - action: utter_explain_glyphs_two
@@ -436,7 +434,7 @@ stories:
     - action: action_highlight_check
     - intent: statistics_features_subtrees
     - action: utter_statistics_features_subtrees
-    - action: utter_help_bar_chart_pop_up_sub
+    - action: utter_help_bar_chart_pop_up
 
 #
 #- story: showing the features of our system 3
@@ -453,12 +451,6 @@ stories:
 #    - intent: affirm
 #    - action: utter_statistics_features_tree
 #    - action: utter_help_bar_chart_pop_up
-
-
-#- story: popup shown
-#  steps:
-#    - intent: popup_shown
-#    - action: action_send_popup_shown_message
 
 
 

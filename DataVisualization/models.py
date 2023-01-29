@@ -10,9 +10,9 @@ from django.db.models.signals import post_save
 class Document(models.Model):
     document_id = models.AutoField(primary_key=True)
     description = models.CharField(max_length=255, unique=True)
-    title = models.CharField(max_length=500)
-    text_URL = models.URLField(max_length=2040)
-    comments_URL = models.URLField(max_length=2040)
+    title = models.CharField(max_length=500, blank=True)
+    text_URL = models.URLField(max_length=2040, blank=True)
+    comments_URL = models.URLField(max_length=2040, blank=True)
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
