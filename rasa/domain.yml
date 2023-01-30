@@ -216,9 +216,9 @@ responses:
   - text: "See you later"
 
   utter_you_are_welcome:
-  - text: "you are welcome"
-  - text: "you're welcome"
-  - text: "no problem"
+  - text: "You are welcome"
+  - text: "You're welcome"
+  - text: "No problem!"
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
@@ -634,10 +634,10 @@ responses:
     active window and compare whole graph's features with additional charts. Just ask me or select the
     button at the top that says 'Selected Comments'."
 
-  utter_active_window_explain:
-    - text: "Now the active window is the pop-up that is highlighted with a blue frame. You can switch
-                the active window by selecting the main window. Don't forget I will give answers to your questions considering
-                the active window!"
+#  utter_active_window_explain:
+#    - text: "Now the active window is the pop-up that is highlighted with a blue frame. You can switch
+#                the active window by selecting the main window. Don't forget I will give answers to your questions considering
+#                the active window!"
 
 session_config:
   session_expiration_time: 60
