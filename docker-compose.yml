@@ -34,11 +34,11 @@ services:
       - ./DataVisualization/postgres-data:/var/lib/postgresql/data
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8080
     volumes:
       - .:/code
     ports:
-      - "8000:8000"
+      - "8000:8080"
     depends_on:
       - db
 networks:
