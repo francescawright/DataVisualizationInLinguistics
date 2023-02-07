@@ -1748,7 +1748,6 @@ function longestThreadHandler(static_values_checked, statisticBackground, root, 
     injectTextConversation(textMsg);
 
     if (deepestNodes[0].depth > 0) {
-        check_first_request_popup();
 
         deepestNodesPath = getDeepestNodesPath(root, deepestNodes);
 
@@ -1778,7 +1777,6 @@ function largestThreadHandler(static_values_checked, statisticBackground, root, 
     injectTextConversation(textMsg);
 
     if (largestThreads.length > 0) {
-        check_first_request_popup();
 
         largestNodesPath = getDescendantsListNodes(root, largestThreads);
 
@@ -1809,7 +1807,6 @@ function mostToxicThreadHandler(static_values_checked, statisticBackground, root
                 textMsg = "There are " + mostToxicNodesPath[2] + " threads with the same maximum level of toxicity";
             }
             injectTextConversation(textMsg);
-            check_first_request_popup();
             highlightThreadPopup(nodes, root, opacityValue, mostToxicNodesPath[0], node, link);
 
             if (static_values_checked) {
@@ -1835,7 +1832,6 @@ function mostToxicSubtreeHandler(static_values_checked, statisticBackground, roo
     injectTextConversation(textMsg);
 
     if (rootNodes.length > 0) {
-        check_first_request_popup();
 
         mostToxicNodesPath = getDescendantsListNodes(root, rootNodes);
 
