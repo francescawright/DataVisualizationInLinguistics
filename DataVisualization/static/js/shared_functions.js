@@ -1654,10 +1654,10 @@ function check_first_request_popup(){
         // handle a successful response
         success: function (data) {
             if (data === "true") {
-                injectTextConversation("I highlighted it on the main view. " +
-                    "Also, I displayed it separately on a pop-up window.\n\nNow the active window is the pop-up that is " +
-                    "highlighted with a blue frame. You can switch the active window by selecting the main window. " +
-                    "Don't forget I will give answers to your questions considering the active window!");
+                injectTextConversation(
+                    "Now the active window is the pop-up " +
+                    "shown with a blue frame.\n\nSwitch the active window by selecting the main window.\n\n " +
+                    "Don't forget I will give answers considering the active window!");
             }
         },
         cache: false,
