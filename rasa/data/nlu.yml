@@ -53,6 +53,7 @@ nlu:
     - okay
     - true
     - yea
+    - yeah
     - yep
     - all right
     - aye
@@ -1388,3 +1389,14 @@ nlu:
   examples: |
     - can you tell me more about statistics?
     - can give more information about statistics?
+
+
+- intent: test_in
+  examples: |
+    - test
+    - test ecu
+
+#- intent: blinking
+#  examples: |
+#    - blinking
+#    - blinking ecu

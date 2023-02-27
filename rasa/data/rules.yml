@@ -353,3 +353,7 @@ rules:
 #    - action: utter_help_what_can_you_do
 
 
+#- rule: blinking test
+#  steps:
+#    - intent: blinking
+#    - action: utter_glyph_blinking

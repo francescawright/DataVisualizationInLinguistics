@@ -401,7 +401,11 @@ stories:
     - intent: help_subtree_barchart
     - action: utter_help_subtree_bar
 
-
+- story: button image test
+  steps:
+    - intent: test_in
+    - action: action_image_test
+    - action: utter_test
 
 
 #- story: showing the features of our system 1
@@ -455,3 +459,8 @@ stories:
 
 
 
+#- story: interactive_story_1
+#  steps:
+#  - intent: interactive_test_intent
+#  - action: utter_interactive_test
+#  - intent: logout

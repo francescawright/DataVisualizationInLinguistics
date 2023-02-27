@@ -47,7 +47,7 @@
     width: auto;
 }
 .rw-conversation-container .rw-replies{
-   display:block;
+   {#display:block;#}
    text-align: center;
 
 }
@@ -647,6 +647,56 @@
                         e.text = "Open a document first, in order to perform this action";
                     }
                     break;
+
+                case "intent_glyphs_blinking":
+                    if ('{{ selected_item }}'){
+                        if (messageList[1]==="glyphs-radio-buttons"){
+                            $("#glyphs-radio-buttons .border").css({
+                                "border-style": "solid",
+                                "box-shadow": "0 0 20px 5px rgba(51, 217, 178, 1)",
+                                "opacity": "1",
+                                "animation": "pulse-green 1s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#glyphs-radio-buttons .border").css({
+                                    "border-style": "",
+                                    "box-shadow": "",
+                                    "opacity": "0",
+                                    "animation": ""
+
+                                });
+                            }, 10000);
+                            e.text =  messageList[2];
+
+
+                        }
+
+                    }
+                    break;
+                case "intent_layouts_signal":
+                    if ('{{ selected_item }}'){
+                        if (messageList[1]==="layouts-radio-buttons"){
+                            $("#layouts-radio-buttons .layout_shadow").css({
+                                "border-style": "solid",
+                                "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                                "opacity": "1",
+                                "animation": "pulse-green-layout 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#layouts-radio-buttons .layout_shadow").css({
+                                    "border-style": "",
+                                    "box-shadow": "",
+                                    "opacity": "0",
+                                    "animation": ""
+                                });
+                            }, 6000);
+                            e.text =  messageList[2];
+
+
+                        }
+
+                    }
+                    break;
                 case "intent_switch_or_and":
                     if ('{{ selected_item }}') {
                         if (messageList[1] === "or_button" && document.getElementById("or_label").classList.contains("active")) {
@@ -982,6 +1032,20 @@
     })();
 
 </script>
+
+{#<script>#}
+{##}
+{#    $(document).ready(function () {#}
+{#        $("#glyphs-radio-buttons").click(function () {#}
+{#            if ($("#glyphs-radio-buttons").css("border-style") === "dotted") {#}
+{#                $("#glyphs-radio-buttons").css("border-style", "none");#}
+{#            } else {#}
+{#                $("#glyphs-radio-buttons").css("border-style", "dotted");#}
+{#            }#}
+{#        });#}
+{#     });#}
+{##}
+{#</script>#}
 
 {#<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.js"></script>#}
 {#<script>#}
