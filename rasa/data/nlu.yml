@@ -637,127 +637,130 @@ nlu:
 
     - I want to see nodes with [constructiveness]{"entity": "filter_name"}
     - Show me comments with [constructiveness]{"entity": "filter_name"}
-    - Highlight nodes with [constructiveness]{"entity": "filter_name"}
     - Show nodes with [constructiveness]{"entity": "filter_name"}
     - I want to see [constructive]{"entity": "filter_name"} nodes
     - Show me [constructive]{"entity": "filter_name"} nodes
-    - Highlight [constructive]{"entity": "filter_name"} comments
     - Show [constructive]{"entity": "filter_name"} nodes
     - Activate the [constructiveness]{"entity": "filter_name"} filter
-    - Check the [constructiveness]{"entity": "filter_name"} filter
     - Activate the [constructive]{"entity": "filter_name"} comments filter
     - Enable [constructive]{"entity": "filter_name"} nodes filtering
     - Enable the [constructive]{"entity": "filter_name"} filter
     - Enable the filter [constructiveness]{"entity": "filter_name"}
+    - Select the filter [constructiveness]{"entity": "filter_name"}
+    - Select [constructive]{"entity": "filter_name"} filter
+    - Select [constructive]{"entity": "filter_name"} node and edge
+
 
     - I want to see comments with [argumentation]{"entity": "filter_name"}
     - Show me comments with [argumentation]{"entity": "filter_name"}
-    - Highlight nodes with [argumentation]{"entity": "filter_name"}
     - Show comments with [argumentation]{"entity": "filter_name"}
     - I want to see [argumentation]{"entity": "filter_name"} nodes
     - Show me [argumentative]{"entity": "filter_name"} nodes
-    - Highlight [argumentative]{"entity": "filter_name"} comments
     - Show [argumentative]{"entity": "filter_name"} comments
     - Activate the [argumentation]{"entity": "filter_name"} filter
-    - Check the [argumentation]{"entity": "filter_name"} filter
     - Activate the [argumentation]{"entity": "filter_name"} nodes filter
     - Enable [argumentation]{"entity": "filter_name"} nodes filtering
     - Enable the [argumentation]{"entity": "filter_name"} , [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
     - Enable the filter [argumentation]{"entity": "filter_name"}
+    - Select the filter [argumentation]{"entity": "filter_name"}
+    - Select [argumentation]{"entity": "filter_name"} filter
+    - Select [argumentation]{"entity": "filter_name"} node and edge
 
     # features--> sarcasm, mockery, intolerance
 
     - I want to see nodes with [sarcasm]{"entity": "filter_name"}
     - Show me comments with [sarcasm]{"entity": "filter_name"}
-    - Highlight comments with [sarcasm]{"entity": "filter_name"}
     - Show nodes with [sarcasm]{"entity": "filter_name"}
     - I want to see [sarcastic]{"entity": "filter_name"} nodes
     - Show me [sarcastic]{"entity": "filter_name"} nodes
-    - Highlight [sarcastic]{"entity": "filter_name"} comments
     - Show [sarcastic]{"entity": "filter_name"} nodes
     - Activate the [sarcasm]{"entity": "filter_name"} filter
-    - Check the [sarcasm]{"entity": "filter_name"} filter
     - Activate the [sarcastic]{"entity": "filter_name"} nodes filter
     - Enable [sarcastic]{"entity": "filter_name"} nodes filtering
     - Enable the [sarcasm]{"entity": "filter_name"} filter
     - Enable the filter [sarcasm]{"entity": "filter_name"}
+    - Select the filter [sarcasm]{"entity": "filter_name"}
+    - Select [sarcasm]{"entity": "filter_name"} filter
+    - Select [sarcasm]{"entity": "filter_name"} node and edge
 
     - I want to see nodes with [mockery]{"entity": "filter_name"}
     - Show me comments with [mockery]{"entity": "filter_name"}
-    - Highlight nodes with [mockery]{"entity": "filter_name"}
     - Show comments with [mockery]{"entity": "filter_name"}
     - I want to see [mockery]{"entity": "filter_name"} nodes
     - Show me [mockery]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} nodes
-    - Highlight [mockery]{"entity": "filter_name"} nodes
     - Show [mockery]{"entity": "filter_name"} comments
     - Activate the [mockery]{"entity": "filter_name"} filter
-    - Check the [mockery]{"entity": "filter_name"} filter
     - Activate the [mockery]{"entity": "filter_name"} nodes filter
     - Enable [mockery]{"entity": "filter_name"} nodes filtering
     - Enable the [mockery]{"entity": "filter_name"} filter
     - Enable the filter [mockery]{"entity": "filter_name"}
+    - Select the filter [mockery]{"entity": "filter_name"}
+    - Select [mockery]{"entity": "filter_name"} filter
+    - Select [mockery]{"entity": "filter_name"} node and edge
 
     - I want to see nodes with [intolerance]{"entity": "filter_name"}
     - Show me comments with [intolerance]{"entity": "filter_name"}
-    - Highlight nodes with [intolerance]{"entity": "filter_name"}
     - Show comments with [intolerance]{"entity": "filter_name"}
     - I want to see [intolerance]{"entity": "filter_name"} nodes
     - Show me [intolerance]{"entity": "filter_name"} nodes
-    - Highlight [intolerance]{"entity": "filter_name"} nodes
     - Show [intolerance]{"entity": "filter_name"} comments
     - Activate the [intolerance]{"entity": "filter_name"} filter
-    - Check the [intolerance]{"entity": "filter_name"} filter
     - Activate the [intolerance]{"entity": "filter_name"} nodes filter
     - Enable [intolerance]{"entity": "filter_name"} nodes filtering
     - Enable the [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} filters
     - Enable the filter [intolerance]{"entity": "filter_name"}
+    - Select the filter [intolerance]{"entity": "filter_name"}
+    - Select [intolerance]{"entity": "filter_name"} filter
+    - Select [intolerance]{"entity": "filter_name"} node and edge
 
     # features--> improper language, insult, aggressiveness - ?
 
     - I want to see nodes with [improper language]{"entity": "filter_name"}
     - Show me nodes with [improper language]{"entity": "filter_name"}
-    - Highlight comments with [improper language]{"entity": "filter_name"}
     - Show nodes with [improper language]{"entity": "filter_name"}
     - I want to see [improper language]{"entity": "filter_name"} comments
     - Show me [improper language]{"entity": "filter_name"} nodes
-    - Highlight [improper language]{"entity": "filter_name"} comments
     - Show [improper language]{"entity": "filter_name"} nodes
     - Activate the [improper language]{"entity": "filter_name"} filter
-    - Check the [improper language]{"entity": "filter_name"} filter
     - Activate the [improper language]{"entity": "filter_name"} nodes filter
     - Enable [improper language]{"entity": "filter_name"} nodes filtering
     - Enable the [improper language]{"entity": "filter_name"} filter
     - Enable the filter [improper language]{"entity": "filter_name"}
+    - Select the filter [improper language]{"entity": "filter_name"}
+    - Select [improper language]{"entity": "filter_name"} filter
+    - Select [improper language]{"entity": "filter_name"} node and edge
 
     - I want to see nodes with [insult]{"entity": "filter_name"}
     - Show me comments with [insult]{"entity": "filter_name"}
-    - Highlight nodes with [insult]{"entity": "filter_name"}
     - Show nodes with [insult]{"entity": "filter_name"}
     - I want to see [insult]{"entity": "filter_name"} nodes
     - Show me [insult]{"entity": "filter_name"} nodes
-    - Highlight [insult]{"entity": "filter_name"} comments
     - Show [insult]{"entity": "filter_name"} comments
     - Activate the [insult]{"entity": "filter_name"} filter
-    - Check the [insult]{"entity": "filter_name"} filter
     - Activate the [insult]{"entity": "filter_name"} nodes filter
     - Enable [insult]{"entity": "filter_name"} nodes filtering
     - Enable the [insult]{"entity": "filter_name"} filter
     - Enable the filter [insult]{"entity": "filter_name"}
+    - Select the filter [insult]{"entity": "filter_name"}
+    - Select [insult]{"entity": "filter_name"} filter
+    - Select [insult]{"entity": "filter_name"} node and edge
+
 
     - I want to see comments with [aggressiveness]{"entity": "filter_name"}
     - Show me comments with [aggressiveness]{"entity": "filter_name"}
-    - Highlight nodes with [aggressiveness]{"entity": "filter_name"}
     - Show comments with [aggressiveness]{"entity": "filter_name"}
     - I want to see [aggressive]{"entity": "filter_name"} nodes
     - Show me [aggressive]{"entity": "filter_name"} nodes
-    - Highlight [aggressive]{"entity": "filter_name"} comments
     - Show [aggressive]{"entity": "filter_name"} nodes
     - Activate the [aggressiveness]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} filters
-    - Check the [aggressiveness]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} filters
     - Activate the [aggressive]{"entity": "filter_name"} nodes filter
     - Enable [aggressive]{"entity": "filter_name"} nodes filtering
     - Enable the [aggressiveness]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
     - Enable the filter [aggressiveness]{"entity": "filter_name"}
+    - Select the filter [aggressiveness]{"entity": "filter_name"}
+    - Select [aggressiveness]{"entity": "filter_name"} filter
+    - Select [aggressiveness]{"entity": "filter_name"} node and edge
+
 
     # features select all
 
@@ -769,7 +772,6 @@ nlu:
     - Select [all features]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} options
     - I want to see comments with [all features]{"entity": "filter_name"}
     - Show me nodes with [all features]{"entity": "filter_name"}
-    - Highlight comments with [all features]{"entity": "filter_name"}
     - Show nodes with [all features]{"entity": "filter_name"}
     - Activate the select [all features]{"entity": "filter_name"} filter
     - Activate the select [all features]{"entity": "filter_name"} comments filter
@@ -782,7 +784,6 @@ nlu:
   examples: |
     - I want to deselect all highlighting filters
     - Desselect all filters
-    - Uncheck all filters
     - Reset the filters
     - Undo all highlighting
     - Undo highlighting
@@ -1142,116 +1143,6 @@ nlu:
     - most toxic subgraph
     - subgraph with most toxic nodes
 
-## Which comment level has the most very toxic nodes?
-#- intent: comment_level_vs_very_toxic
-#  examples: |
-#    - Which comment level has the most very toxic nodes?
-#    - Which comment level has more very toxic nodes?
-#    - In which comment level there are more very toxic nodes?
-#    - In which comment level there are the most very toxic nodes?
-#    - Show me the comment level with the most very toxic nodes?
-#    - Show me the comment level that has the most very toxic nodes?
-#    - I want to see the comment level with the most very toxic nodes
-#    - I want to see the comment level that has the most very toxic nodes
-#    - Can you show me the comment level with the most very toxic nodes
-#    - Can you show me the comment level that has the most very toxic nodes?
-#    - Display the comment level with the most very toxic nodes
-#    - Display the comment level that has the most very toxic nodes
-#    - comment level with the most very toxic nodes
-#
-## What are the most occurred combination of features in most/very toxic nodes?
-#- intent: combination_features_very_toxic
-#  examples: |
-#    - Which combination of features occurred the most in very toxic nodes?
-#    - Which combination of features ocurred the most in most toxic nodes?
-#    - What are the most occurred combination of features in most toxic nodes?
-#    - What are the most occured combination of features in very toxic nodes?
-#
-## What are the most occurred combination of features in toxic nodes?
-#- intent: combination_features_toxic
-#  examples: |
-#    - Which combination of features occurred the most in toxic nodes?
-#    - What are the most occurred combination of features in toxic nodes?
-#
-## What are the most occurred combination of features in mildly toxic nodes?
-#- intent: combination_features_mildly_toxic
-#  examples: |
-#    - Which combination of features occurred the most in mildy toxic nodes?
-#    - Which combination of features ocurred the most in slighyly toxic nodes?
-#    - What are the most occurred combination of features in slightly toxic nodes?
-#    - What are the most occured combination of features in slightly toxic nodes?
-#
-## What are the most occurred combination of features in non toxic nodes?
-#- intent: combination_features_non_toxic
-#  examples: |
-#    - Which combination of features occurred the most in non toxic nodes?
-#    - Which combination of features ocurred the most in least toxic nodes?
-#    - What are the most occurred combination of features in non toxic nodes?
-#    - What are the most occured combination of features in least toxic nodes?
-#
-##What are the most occurred combination of features in Comment level 1 = CL1?
-#- intent: combination_features_CL1
-#  examples: |
-#    - Which combination of features ocurred the most in comment level 1?
-#    - What are the most occurred combination of features in comment level 1?
-#
-##What are the most occurred combination of features in Comment level 2 = CL2?
-#- intent: combination_features_CL2
-#  examples: |
-#    - Which combination of features ocurred the most in comment level 2?
-#    - What are the most occurred combination of features in comment level 2?
-#
-## comment level_1
-#- intent: comment_level_1
-#  examples: |
-#    - Show me comment level 1
-#    - Diplay the comment level 1
-#    - Show the comment level 1
-#    - Only show me comment level 1
-#    - I want to see comment level 1
-#    - I would like to see comment level 1
-#
-## comment level_2
-#- intent: comment_level_2
-#  examples: |
-#    - Show me comment level 2
-#    - Diplay the comment level 2
-#    - Show the comment level 2
-#    - Only show me comment level 2
-#    - I want to see comment level 2
-#    - I would like to see comment level 2
-#
-##In comment level 1 show me argument and constructive comments
-#- intent: CL1_argument_constructive
-#  examples: |
-#    - Can you show me nodes with argumenation and constructiveness in comment level 1?
-#    - Show me nodes in comment level 1 that have argumentation and constructiveness
-#    - I want to see argumentation and constructive nodes in comment level 1
-#    - Only show me argumentation and constructiveness nodes in comment level 1
-#    - Display argumenation and constructive nodes in comment level 1
-#
-##In comment level 2 show me argument and constructive comments
-#- intent: CL2_argument_constructive
-#  examples: |
-#    - Can you show me nodes with argumenation and constructiveness in comment level 2?
-#    - Show me nodes in comment level 2 that have argumentation and constructiveness
-#    - I want to see argumentation and constructive nodes in comment level 2
-#    - Only show me argumentation and constructiveness nodes in comment level 2
-#    - Display argumenation and constructive nodes in comment level 2
-#
-##- Which features are tagged the most along with constructiveness?
-#- intent: constructive_feature
-#  examples: |
-#    - Which features are tagged the most along with constructiveness?
-#    - Which features appear the most with constructiveness?
-#    - Which features constructive nodes have the most?
-#
-##- In which level of toxicity (loT) target person appear more?
-#- intent: target_person_loT
-#  examples: |
-#    - In which level of toxicity target person appear more?
-#    - Which level of toxicity have more target person nodes?
-#    - Which level of toxicity there are more target person nodes?
 
 - intent: statistics_features_tree
   examples: |
@@ -1390,13 +1281,203 @@ nlu:
     - can you tell me more about statistics?
     - can give more information about statistics?
 
-
-- intent: test_in
+- intent: start_analysis
   examples: |
-    - test
-    - test ecu
+    - start analysis
+    - start
 
-#- intent: blinking
+- intent: colour_feature_constructiveness
+  examples: |
+    - Highlight constructiveness colour feature
+    - Highlight constructive glyph
+    - Check constructiveness colour
+    - Check constructiveness colour feature
+    - Show me constructiveness colour feature
+    - Show me constructive colour feature
+    - Check constructiveness colour
+    - I want to see constructiveness colour feature
+    - I would like to see constructiveness colour feature
+    - Turn on constructiveness colour
+    - Turn on constructiveness colour feature
+
+- intent: colour_feature_argumentation
+  examples: |
+    - Highlight argumentation colour feature
+    - Highlight argumentation glyph
+    - Check argumentation colour
+    - Check argumentation colour feature
+    - Show me argumentation colour feature
+    - Show me argument colour feature
+    - Check argumentation colour
+    - I want to see argumentation colour feature
+    - I would like to see argumentation colour feature
+    - Turn on argumentation colour
+    - Turn on argumentation colour feature
+
+- intent: colour_feature_sarcasm
+  examples: |
+    - Highlight sarcasm colour feature
+    - Highlight sarcasm glyph
+    - Check sarcasm colour
+    - Check sarcasm colour feature
+    - Show me sarcasm colour feature
+    - Check sarcasm colour
+    - I want to see sarcasm colour feature
+    - I would like to see sarcasm colour feature
+    - Turn on sarcasm colour
+    - Turn on sarcasm colour feature
+
+- intent: colour_feature_mockery
+  examples: |
+    - Highlight mockery colour feature
+    - Highlight mockery glyph
+    - Check mockery colour
+    - Check mockery colour feature
+    - Show me mockery colour feature
+    - Check mockery colour
+    - I want to see mockery colour feature
+    - I would like to see mockery colour feature
+    - Turn on mockery colour
+    - Turn on mockery colour feature
+
+- intent: colour_feature_intolerance
+  examples: |
+    - Highlight intolerance colour feature
+    - Highlight intolerance glyph
+    - Check intolerance colour
+    - Check intolerance colour feature
+    - Show me intolerance colour feature
+    - Check intolerance colour
+    - I want to see intolerance colour feature
+    - I would like to see intolerance colour feature
+    - Turn on intolerance colour
+    - Turn on intolerance colour feature
+
+- intent: colour_feature_improper
+  examples: |
+    - Highlight improper langauge colour feature
+    - Highlight improper langauge glyph
+    - Check improper langauge colour
+    - Check improper langauge colour feature
+    - Show me improper langauge colour feature
+    - Check improper langauge colour
+    - I want to see improper langauge colour feature
+    - I would like to see improper langauge colour feature
+    - Turn on improper langauge colour
+    - Turn on improper langauge colour feature
+
+- intent: colour_feature_insult
+  examples: |
+    - Highlight insult colour feature
+    - Highlight insult glyph
+    - Check insult colour
+    - Check insult colour feature
+    - Show me insult colour feature
+    - Check insult colour
+    - I want to see insult colour feature
+    - I would like to see insult colour feature
+    - Turn on insult colour
+    - Turn on insult colour feature
+
+- intent: colour_feature_aggressiveness
+  examples: |
+    - Highlight aggressiveness colour feature
+    - Highlight aggressiveness glyph
+    - Check aggressiveness colour
+    - Check aggressiveness colour feature
+    - Show me aggressiveness colour feature
+    - Show me aggressiveness colour feature
+    - Check aggressiveness colour
+    - I want to see aggressiveness colour feature
+    - I would like to see aggressiveness colour feature
+    - Turn on aggressiveness colour
+    - Turn on aggressiveness colour feature
+
+- intent: show_colour_feature
+  examples: |
+    - Highlight colour feature
+    - Check colour feature
+    - Show me colour feature
+    - I want to see colour feature
+    - I would like to see colour feature
+    - Turn on colour features
+
+
+
+- intent: check_all_colour_features
+  examples: |
+    - Highlight all colour features
+    - Check all colours
+    - Check all colour features
+    - Show me all colour features
+    - Check all features
+    - I want to see all colour features
+    - I would like to see all colour features
+    - Turn on all colours
+    - Turn on all colour features
+
+- intent: uncheck_all_colour_features
+  examples: |
+    - Disable all colour features
+    - Uncheck all colours
+    - Uncheck all colour features
+    - Uncheck all features
+    - Turn off all colours
+    - Turn off all colour features
+
+#- intent: check_target_group
 #  examples: |
-#    - blinking
-#    - blinking ecu
+#    - Highlight target group feature
+#    - Highlight target group icon
+#    - Check target group icon
+#    - Show me target group
+#    - Show me target group icon
+#    - I want to see target group icon
+#    - I would like to see target group
+#    - Turn on target group
+#
+#
+#- intent: check_target_person
+#  examples: |
+#    - Highlight target person feature
+#    - Highlight target person icon
+#    - Check target person icon
+#    - Show me target person
+#    - Show me target person icon
+#    - I want to see target person icon
+#    - I would like to see target person
+#    - Turn on target person
+#
+#- intent: check_target_person
+#  examples: |
+#    - Highlight stereotype feature
+#    - Highlight stereotype icon
+#    - Check stereotype icon
+#    - Show me stereotype person
+#    - Show me stereotype icon
+#    - I want to see stereotype icon
+#    - I would like to see stereotype
+#    - Turn on stereotype
+#
+#- intent: check_all_colour_features
+#  examples: |
+#    - Highlight all targets
+#    - Check all colours
+#    - Check all colour features
+#    - Show me all colour features
+#    - Check all features
+#    - I want to see all colour features
+#    - I would like to see all colour features
+#    - Turn on all colours
+#    - Turn on all colour features
+#
+#- intent: uncheck_all_colour_features
+#  examples: |
+#    - Disable all colour features
+#    - Uncheck all colours
+#    - Uncheck all colour features
+#    - Uncheck all features
+#    - Turn off all colours
+#    - Turn off all colour features
+#
+

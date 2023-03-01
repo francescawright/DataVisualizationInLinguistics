@@ -32,6 +32,8 @@
     #glyphs-radio-buttons {
         position: relative; /* need this for absolute positioning */
         /* rest of the styles */
+        {#opacity: 0.5;#}
+        {#cursor: not-allowed;#}
     }
 
     #glyphs-radio-buttons .border {
@@ -233,6 +235,10 @@
         justify-content: center;
         align-items: center;
     }
+
+
+
+
 </style>
 
 <body>
@@ -487,6 +493,8 @@
         }
     }
 
+
+
     jQuery("#tree_layout_button").click(function () {
         $(this).prop("checked", true);
         document.getElementById("tree_label").className = "btn btn-primary active label-navbar-options";
@@ -547,7 +555,6 @@
         $('#main_form').submit();
     });
 
-
     jQuery("#dots_icon_button").click(function () {
         $(this).prop("checked", true);
         document.getElementById("dots_label").className = "btn btn-primary active label-navbar-options";
@@ -583,40 +590,28 @@
     };
 
 
-    {#jQuery("#glyphs-radio-buttons").click(function () {#}
-    {#    if ($("#glyphs-radio-buttons").css("border-style") === "dotted") {#}
-    {#        $("#glyphs-radio-buttons").css("border-style", "none");#}
-    {#    } else {#}
-    {#        $("#glyphs-radio-buttons").css("border-style", "dotted");#}
-    {#    }#}
-    {# });#}
+    if ($('#circle_layout_button').is(':checked')) {
+        // The button is currently active
+         $("#glyphs-radio-buttons").css({
+        "opacity": "0.5",
+        "pointer-events": "none"
+    });
+
+    }
+
+    {#else {#}
+    {#   // The button is not active#}
+    {# }#}
 
 
-    {#$(document).ready(function () {#}
-    {#    $("#glyphs-radio-buttons").click(function () {#}
-    {#        if ($("#glyphs-radio-buttons").css("border-style") === "dotted") {#}
-    {#            $("#glyphs-radio-buttons").css("border-style", "none");#}
-    {#        } else {#}
-    {#            $("#glyphs-radio-buttons").css("border-style", "dotted");#}
-    {#        }#}
-    {#    });#}
-    {# });#}
+   {#$('#glyphs_icon_button').prop('disabled', true);#}
 
-    {#$(document).ready(function () {#}
-    {#    function borderBlink() {#}
-    {#        let intervalId = setInterval(function () {#}
-    {#            $("#glyphs-radio-buttons").toggleClass("blink");#}
-    {#        }, 500);#}
-    {#        setTimeout(function () {#}
-    {#            clearInterval(intervalId);#}
-    {#            $("#glyphs-radio-buttons").removeClass("blink");#}
-    {#        }, 5000);#}
-    {#    }#}
-    {##}
-    {#    $("#glyphs-radio-buttons").mouseover(function () {#}
-    {#        borderBlink();#}
-    {#    });#}
-    {# });#}
+
+
+
+
+
+
 
 
 </script>

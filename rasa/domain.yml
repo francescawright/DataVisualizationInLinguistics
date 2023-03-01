@@ -61,19 +61,6 @@ intents:
   - largest_thread
   - most_toxic_thread
   - most_toxic_subtree
-  - comment_level_vs_very_toxic
-  - combination_features_very_toxic
-  - combination_features_toxic
-  - combination_features_mildly_toxic
-  - combination_features_non_toxic
-  - combination_features_CL1
-  - combination_features_CL2
-  - comment_level_1
-  - comment_level_2
-  - CL1_argument_constructive
-  - CL2_argument_constructive
-  - constructive_feature
-  - target_person_loT
   - statistics_features_tree
   - statistics_features_subtrees
   - most_tagged_features
@@ -92,10 +79,19 @@ intents:
   - change_glyph_dots
   - change_glyph_circular
   - change_glyph_trivial
-  - test_in
-  - blinking
   - change_glyphs
   - highlight_uncheck_last
+  - colour_feature_constructiveness
+  - colour_feature_argumentation
+  - colour_feature_sarcasm
+  - colour_feature_mockery
+  - colour_feature_intolerance
+  - colour_feature_improper
+  - colour_feature_insult
+  - colour_feature_aggressiveness
+  - check_all_colour_features
+  - uncheck_all_colour_features
+  - show_colour_feature
 
 actions:
   - action_check_session_login
@@ -281,7 +277,7 @@ responses:
   - text: "intent_change_layout,circle_layout_button,Layout changed to Circle Packing"
 
   utter_ask_document_selection_form_document_requested:
-  - text: "Which document do you want to open?"
+  - text: "Which file do you want to open?"
 
 #  Glyphs
 
@@ -345,62 +341,6 @@ responses:
   utter_most_toxic_subtree:
     - text: "intent_event,most_toxic_subtree,Here is the most toxic subtree"
     - text: "intent_event,most_toxic_subtree,Here you have the most toxic subtree"
-
-#  # comment level and very toxic
-#  utter_comment_level_vs_very_toxic:
-#    - text: "I displayed the comment level with the most very toxic nodes which is comment level: "
-#    - text: "Here you have it"
-#
-#  # combination of features in levels of toxicity
-#  utter_combination_features_very_toxic:
-#    - text: "Most occurred combination of features are [] and []"
-#    - text: "Here you have it"
-#
-#  utter_combination_features_toxic:
-#    - text: "Most occurred combination of features are [] and []"
-#    - text: "Here you have it"
-#
-#  utter_combination_features_mildly_toxic:
-#    - text: "Most occurred combination of features are [] and []"
-#    - text: "Here you have it"
-#
-#  utter_combination_features_non_toxic:
-#    - text: "Most occurred combination of features are [] and []"
-#    - text: "Here you have it"
-#
-#  # comment level related
-#  utter_combination_features_CL1:
-#    - text: "Most occurred combination of features are [] and []"
-#    - text: "Here you have it"
-#
-#  utter_combination_features_CL2:
-#    - text: "Most occurred combination of features are [] and []"
-#    - text: "Here you have it"
-#
-#  # these two should be more easier to do
-#  utter_comment_level_1:
-#    - text: "Here you have comment level 1 displayed"
-#    - text: "Here you have it"
-#
-#  utter_comment_level_2:
-#    - text: "Here you have comment level 2 displayed"
-#    - text: "Here you have it"
-#
-#  # comment level and argument - constructive
-#  utter_CL1_argument_constructive:
-#    - text: "Here you have nodes that have constructiveness and argumentation in comment level 1"
-#    - text: "Here you have it"
-#
-#  utter_CL2_argument_constructive:
-#    - text: "Here you have nodes that have constructiveness and argumentation in comment level 2"
-#    - text: "Here you have it"
-#
-#  # features vs features or level of toxicity
-#  utter_constructiveness_feature:
-#    - text: "[] features appear more with constructiveness"
-#
-#  utter_target_person_loT:
-#    - text: "In [] level of toxicity target person appears more"
 
   utter_statistics_features_tree:
     - text: "intent_event,statistics_all_features_tree,These are the statistics of the graph features"
@@ -653,11 +593,6 @@ responses:
 #                the active window!"
 
 
-#  utter_test_image:
-#    - text: "test image"
-#      image: "https://ecemkavaz.github.io/imagesRasa/glyphsAll3.png"
-
-
   utter_test:
     - text: ""
       buttons:
@@ -668,6 +603,65 @@ responses:
         - title: "Test3"
           payload: '/change_glyph_dots{{"object_requested":"glyph","glyph_requested":"dots"}}'
 
+  utter_start_analysis:
+    - text: "You need to open a file to start"
+
+
+  utter_colour_feature_constractive:
+    - text: "intent_show_colour_features,constructiveness,Colour feature is checked"
+
+  utter_colour_feature_argumentation:
+    - text: "intent_show_colour_features,argumentation,Colour feature is checked"
+
+  utter_colour_feature_sarcasm:
+    - text: "intent_show_colour_features,sarcasm,Colour feature is checked"
+
+  utter_colour_feature_mockery:
+    - text: "intent_show_colour_features,mockery,Colour feature is checked"
+
+  utter_colour_feature_intolerance:
+    - text: "intent_show_colour_features,intolerance,Colour feature is checked"
+
+  utter_colour_feature_improper:
+    - text: "intent_show_colour_features,improper_language,Colour feature is checked"
+
+  utter_colour_feature_insult:
+    - text: "intent_show_colour_features,insult,Colour feature is checked"
+
+  utter_colour_feature_aggressiveness:
+    - text: "intent_show_colour_features,aggressiveness,Colour feature is checked"
+
+  utter_check_all_colour_features:
+    - text: "intent_show_colour_features,check_button_features,All colour features are checked"
+
+  utter_uncheck_all_colour_features:
+    - text: "intent_show_colour_features,uncheck_button_features,All colour features are unchecked"
+
+  utter_which_colour_feature:
+    - text: "Which colour feature?"
+      buttons:
+        - title: "Constructiveness"
+          payload: '/colour_feature_constructiveness'
+        - title: "Argumentation"
+          payload: '/colour_feature_argumentation'
+        - title: "Sarcasm"
+          payload: '/colour_feature_sarcasm'
+        - title: "Mockery"
+          payload: '/colour_feature_mockery'
+        - title: "Intolerance"
+          payload: '/colour_feature_intolerance'
+        - title: "Improper Language"
+          payload: '/colour_feature_improper'
+        - title: "Insult"
+          payload: '/colour_feature_insult'
+        - title: "Aggressiveness"
+          payload: '/colour_feature_aggressiveness'
+        - title: "All"
+          payload: '/check_all_colour_features'
+
+
+  utter_please_rephrase:
+    - text: "I'm sorry, I didn't quite understand that. Could you rephrase?"
 
 session_config:
   session_expiration_time: 60

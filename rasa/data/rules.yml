@@ -193,75 +193,6 @@ rules:
     - intent: most_toxic_subtree
     - action: utter_most_toxic_subtree
 
-## comment level and level of toxicity
-#- rule: User wants to see which comment level have the most toxic nodes
-#  steps:
-#    - intent: comment_level_vs_very_toxic
-#    - action: utter_comment_level_vs_very_toxic
-##
-## combination of features and level of toxicity
-#- rule: User wants to see the most occurred combination of features in very toxic nodes
-#  steps:
-#    - intent: combination_features_very_toxic
-#    - action: utter_combination_features_very_toxic
-#
-#- rule: User wants to see the most occurred combination of features in toxic nodes
-#  steps:
-#    - intent: combination_features_toxic
-#    - action: utter_combination_features_toxic
-#
-#- rule: User wants to see the most occurred combination of features in mildly toxic nodes
-#  steps:
-#    - intent: combination_features_mildly_toxic
-#    - action: utter_combination_features_mildly_toxic
-#
-#- rule: User wants to see the most occurred combination of features in non toxic nodes
-#  steps:
-#    - intent: combination_features_non_toxic
-#    - action: utter_combination_features_non_toxic
-#
-## comment level
-#- rule: User wants to see the most occurred combination of features in comment level 1
-#  steps:
-#    - intent: combination_features_CL1
-#    - action: utter_combination_features_CL1
-#
-#- rule: User wants to see the most occurred combination of features in comment level 2
-#  steps:
-#    - intent: combination_features_CL2
-#    - action: utter_combination_features_CL2
-#
-#- rule: User wants to see nodes only in comment level 1
-#  steps:
-#    - intent: comment_level_1
-#    - action: utter_comment_level_1
-#
-#- rule: User wants to see nodes only in comment level 2
-#  steps:
-#    - intent: comment_level_2
-#    - action: utter_comment_level_2
-#
-#- rule: User wants to see argument and constructive nodes in comment level 1
-#  steps:
-#    - intent: CL1_argument_constructive
-#    - action: utter_CL1_argument_constructive
-#
-#- rule: User wants to see argument and constructive nodes in comment level 2
-#  steps:
-#    - intent: CL2_argument_constructive
-#    - action: utter_CL2_argument_constructive
-#
-## features vs features or level of toxicity
-#- rule: User wants to see which features are tagged with constructive nodes
-#  steps:
-#    - intent: constructive_feature
-#    - action: utter_constructiveness_feature
-#
-#- rule: User wants to see which in which level of toxicity there are more target person nodes
-#  steps:
-#    - intent: target_person_loT
-#    - action: utter_target_person_loT
-
 - rule: User wants to see the statistics of all the features of the tree
   steps:
     - intent: statistics_features_tree
@@ -293,22 +224,6 @@ rules:
   steps:
     - intent: change_glyphs
     - action: utter_change_glyphs
-
-
-#- rule: User wants to compare the statistics of all the features of the subtrees after bot asking
-#  steps:
-#    - intent: affirm
-#    - action: utter_statistics_features_subtrees
-
-#- rule: User wants to know about glyphs
-#  steps:
-#    - intent: help_glyphs
-#    - action: utter_explain_glyphs
-
-#- rule: User wants to know about layouts
-#  steps:
-#    - intent: help_layouts
-#    - action: utter_help_layouts
 
 - rule: User wants to know about highlights
   steps:
@@ -347,13 +262,70 @@ rules:
     - intent: help_AND_OR
     - action: utter_help_AND_OR
 
+- rule: check colour feature const
+  steps:
+    - intent: colour_feature_constructiveness
+    - action: utter_colour_feature_constractive
+
+- rule: check colour feature argumentation
+  steps:
+    - intent: colour_feature_argumentation
+    - action: utter_colour_feature_argumentation
+
+- rule: check colour feature sarcasm
+  steps:
+    - intent: colour_feature_sarcasm
+    - action: utter_colour_feature_sarcasm
+
+- rule: checck colour feature mockery
+  steps:
+    - intent: colour_feature_mockery
+    - action: utter_colour_feature_mockery
+
+- rule: check colour feature intolerance
+  steps:
+    - intent: colour_feature_intolerance
+    - action: utter_colour_feature_intolerance
+
+- rule: check colour feature improper
+  steps:
+    - intent: colour_feature_improper
+    - action: utter_colour_feature_improper
+
+- rule: check colour feature insult
+  steps:
+    - intent: colour_feature_insult
+    - action: utter_colour_feature_insult
+
+- rule: check colour feature aggressiveness
+  steps:
+    - intent: colour_feature_aggressiveness
+    - action: utter_colour_feature_aggressiveness
+
+- rule: check all colour features
+  steps:
+    - intent: check_all_colour_features
+    - action: utter_check_all_colour_features
+
+- rule: uncheck all colour features
+  steps:
+    - intent: uncheck_all_colour_features
+    - action: utter_uncheck_all_colour_features
+
+- rule: User ask to see a colour feature withou specifiying which one
+  steps:
+    - intent: show_colour_feature
+    - action: utter_which_colour_feature
+
+- rule: Ask the user to rephrase whenever they send a message with low NLU confidence
+  steps:
+  - intent: nlu_fallback
+  - action: utter_please_rephrase
+
+
 #- rule: user wants to know what bot can do
 #  steps:
 #    - intent: help_what_can_you_do
 #    - action: utter_help_what_can_you_do
 
 
-#- rule: blinking test
-#  steps:
-#    - intent: blinking
-#    - action: utter_glyph_blinking

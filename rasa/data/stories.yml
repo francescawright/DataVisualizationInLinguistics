@@ -9,6 +9,18 @@ stories:
   - intent: affirm
   - action: utter_user_affirm_help
 
+- story: User says start analysis
+  steps:
+  - intent: greet
+  - action: utter_offers_help
+  - intent: start_analysis
+  - action: utter_start_analysis
+
+- story: start analysis
+  steps:
+    - intent: start_analysis
+    - action: utter_start_analysis
+
 - story: User does not need help
   steps:
   - intent: greet
@@ -21,6 +33,7 @@ stories:
     - intent: greet
     - action: utter_offers_help
     - action: action_listen
+
 
 - story: User decides to log out and confirms
   steps:
