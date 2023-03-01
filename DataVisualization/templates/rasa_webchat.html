@@ -230,7 +230,6 @@
     }
     .rw-widget-container.rw-full-screen.rw-chat-open .chat-feature-img {
         width: 25px;
-
     }
 }
 @media screen and (max-width: 800px) {
@@ -267,7 +266,6 @@
 </head>
 
 <script>
-
     // Initializes the necessary variables for speech-to-text and text-to-speech functions
     var textToSpeech = getStatusTTS();
     var msgTextToSpeech;
@@ -909,7 +907,7 @@
         existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
 
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:5005/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
+        xhr.open("POST", "https://rasa-eduvives.cloud.okteto.net/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify({
         "name": "generate_response_message",
@@ -928,7 +926,7 @@
         existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
 
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:5005/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
+        xhr.open("POST", "https://rasa-eduvives.cloud.okteto.net/conversations/" + existingStorage["session_id"] + "/trigger_intent?token=DataVisualizationInLinguisticsSecretToken&include_events=NONE&output_channel=socketio", true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify({
         "name": intent,
@@ -1034,7 +1032,7 @@
                 subtitle: getChatSubtitle(),
                 initPayload: generateInitPayload(),
                 customData: { language: "en" },
-                socketUrl: "http://localhost:5005",
+                socketUrl: "https://rasa-eduvives.cloud.okteto.net",
                 profileAvatar:getProfileAvatar(),
                 showFullScreenButton: true,
                 customMessageDelay: (message) => {
@@ -1084,7 +1082,6 @@
         }),
         t.insertBefore(e, t.firstChild);
     })();
-
 </script>
 
 {#<script>#}
