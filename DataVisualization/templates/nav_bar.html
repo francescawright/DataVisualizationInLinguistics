@@ -29,6 +29,84 @@
 
 <style>
 
+    #glyphs-radio-buttons {
+        position: relative; /* need this for absolute positioning */
+        /* rest of the styles */
+        {#opacity: 0.5;#}
+        {#cursor: not-allowed;#}
+    }
+
+    #glyphs-radio-buttons .border {
+        position: absolute;
+        width: calc(100% + 5px); /* extend the width of the border to cover the entire box */
+        height: calc(100% + -18px); /* extend the height of the border to cover the entire box */
+        border: 10px solid #33FF66; /* set the border style */
+        border-radius: 10px; /* set the border radius */
+        opacity: 0;
+        box-shadow: 0px 0px 10px 10px rgba(51, 255, 102, 0.8); /* set the box shadow */
+        {#animation: pulse-green 2s infinite#}
+
+    }
+
+
+@keyframes pulse-green-layout {
+	0% {
+		transform: scale(0.95);
+		box-shadow: -5px 0 0 0 rgba(35, 252, 90, 1);
+	}
+
+	70% {
+		transform: scale(1);
+		box-shadow: -5px 0 0 0 rgba(35, 252, 90, 0.8);
+	}
+
+	100% {
+		transform: scale(0.95);
+		box-shadow: -5px 0 0 0 rgba(35, 252, 90, 0.8);
+	}
+}
+
+@keyframes pulse-green {
+	0% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(35, 252, 90, 1);
+	}
+
+	70% {
+		transform: scale(1);
+		box-shadow: 0 0 0 10px rgba(35, 252, 90, 0.8);
+	}
+
+	100% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(35, 252, 90, 0.8);
+	}
+}
+
+
+    #layouts-radio-buttons {
+        position: relative;
+
+
+
+
+    }
+
+     #layouts-radio-buttons .layout_shadow {
+        position: absolute;
+        width: calc(96% + 1px); /* extend the width of the border to cover the entire box */
+        height: calc(100% + -10px); /* extend the height of the border to cover the entire box */
+        border: 10px solid #33FF66; /* set the border style */
+        border-radius: 10px; /* set the border radius */
+        opacity: 0;
+        box-shadow: -5px 0px 10px 10px rgba(51, 255, 102, 0.7); /* set the box shadow */
+        {#animation: pulse-green 2s infinite#}
+
+    }
+
+
+
+
     .btn-outline-primary {
         color: #C9DAF8;
         background-color: transparent;
@@ -157,6 +235,10 @@
         justify-content: center;
         align-items: center;
     }
+
+
+
+
 </style>
 
 <body>
@@ -223,6 +305,7 @@
     <!-- Layouts Radio Buttons -->
 
     <div style="align-items: center;padding-right: 30px; padding-left: 30px; min-height: 100px;" class="col btn-group btn-group-toggle" id="layouts-radio-buttons" data-toggle="buttons">
+      <div class="layout_shadow"></div>
         <label id="tree_label" style="min-width: 170px; height:fit-content;"
                {% if checked_layout == "tree" %}class="btn btn-outline-primary active label-navbar-options"
                {% else %}class="btn btn-outline-primary label-navbar-options"{% endif %}>
@@ -264,6 +347,7 @@
     <!-- Glyphs Radio Buttons -->
 
     <div style="align-items: center; margin-right: 20px; min-height: 100px;" id="glyphs-radio-buttons" class="btn-group btn-group-toggle" data-toggle="buttons">
+    <div class="border"></div>
         <label id="dots_label" style="min-width: 160px; height:fit-content;"
                {% if selected_icons == "dots" %}class="btn btn-outline-primary active label-navbar-options"
                {% else %}class="btn btn-outline-primary label-navbar-options"{% endif %}>
@@ -409,6 +493,8 @@
         }
     }
 
+
+
     jQuery("#tree_layout_button").click(function () {
         $(this).prop("checked", true);
         document.getElementById("tree_label").className = "btn btn-primary active label-navbar-options";
@@ -469,7 +555,6 @@
         $('#main_form').submit();
     });
 
-
     jQuery("#dots_icon_button").click(function () {
         $(this).prop("checked", true);
         document.getElementById("dots_label").className = "btn btn-primary active label-navbar-options";
@@ -503,6 +588,32 @@
     document.getElementById("navbar-home").onclick = function () {
         window.location="/";
     };
+
+
+    if ($('#circle_layout_button').is(':checked')) {
+        // The button is currently active
+         $("#glyphs-radio-buttons").css({
+        "opacity": "0.5",
+        "pointer-events": "none"
+    });
+
+    }
+
+    {#else {#}
+    {#   // The button is not active#}
+    {# }#}
+
+
+   {#$('#glyphs_icon_button').prop('disabled', true);#}
+
+
+
+
+
+
+
+
+
 </script>
 </body>
 </html>

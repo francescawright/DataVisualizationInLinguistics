@@ -36,4 +36,8 @@ policies:
      max_history: 5
      epochs: 100
    - name: RulePolicy
+   - name: FallbackPolicy
+     nlu_threshold: 0.5
+
+
 

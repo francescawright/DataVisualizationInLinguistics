@@ -12,7 +12,7 @@ class FileForm(forms.ModelForm):
 class UpdateFileForm(forms.ModelForm):
     class Meta:
         model = Document
-        fields = ['description','title', 'text_URL', 'comments_URL']
+        fields = ['description', 'title', 'text_URL', 'comments_URL']
 
 
 class Loginform(forms.Form):

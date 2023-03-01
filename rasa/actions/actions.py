@@ -6,30 +6,23 @@
 
 
 # This is a simple example for a custom action which utters "Hello World!"
-import time
 
 from typing import Any, Text, Dict, List
 
-from rasa.core.agent import Agent
-from rasa.core.channels import OutputChannel
-from rasa.core.nlg import NaturalLanguageGenerator
-from rasa.core.policies.fallback import FallbackPolicy
-from rasa.core.policies.policy import Policy
-from rasa.shared.core.trackers import DialogueStateTracker
-from rasa.shared.core.events import Event
-from rasa_sdk.events import SlotSet, FollowupAction, ActiveLoop
+from rasa_sdk.events import SlotSet, FollowupAction, UserUtteranceReverted
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 
-from thefuzz import fuzz
 from thefuzz import process
 
 import re
 import requests
 import random
 
-domainUrl = "https://web-eduvives.cloud.okteto.net/"
+
+domainUrl = "https://web-ecemkavaz.cloud.okteto.net/"
+
 from cryptography.fernet import Fernet
 
 
@@ -458,10 +451,10 @@ class ActionGreet(Action):
             elif e['entity'] == 'first_login':
                 first_login_value = e['value'] == "True"
 
-        messages_not_logged = ["Hey! Nice to see you here, I am a Chatbot here to help you 😄",
-                               "Hello! I'm a Chatbot here to help if you need me 😄",
-                               "Hi, I am a Chatbot here to guide you 😄",
-                               "Hello there, I am a Chatbot here to help you 😄"] if not greet_again_value else [
+        messages_not_logged = ["Hey! Nice to see you here, I am a Chatbot here to help you. Sign up or Login to start 😄",
+                               "Hello! I'm a Chatbot here to help if you need me. Sign up or Login to start 😄",
+                               "Hi, I am a Chatbot here to guide you. Sign up or Login to start 😄",
+                               "Hello there, I am a Chatbot here to help you. Sign up or Login to start😄"] if not greet_again_value else [
             "How else can I help you? 😉",
             "What else can I do for you? 😉"]
 
@@ -653,6 +646,7 @@ class ActionHighlightUncheckLast(Action):
             dispatcher.utter_message(text="intent_filter_uncheck," + ';'.join(tracker.get_slot("previous_filters")))
         return []
 
+
 # class Options(Action):
 #
 #   def name(self) -> Text:
@@ -680,3 +674,4 @@ class ActionHighlightUncheckLast(Action):
 #       )
 #
 #     return []
+

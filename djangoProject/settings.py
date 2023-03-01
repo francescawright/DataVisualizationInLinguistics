@@ -100,6 +100,7 @@ DATABASES = {
         'PASSWORD': 'postgres',
         'HOST': 'db',
         'PORT': 5432,
+
     }
 
     # 'default': {
