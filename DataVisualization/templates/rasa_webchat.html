@@ -505,7 +505,7 @@
                     break;
                 case "intent_open_document":
                     e.hidden = true;
-                    e.text = "I'm opening the document";
+                    e.text = "I'm opening the file";
                     let documentName = messageList[1];
                     var mainForm = '{{ selected_item }}' ? document.getElementById("main_form") : document.getElementById("chatbotDataSelection");
                     var dataset_dropdown_value;
@@ -580,12 +580,12 @@
                                     if ('{{ selected_item }}') {
                                         document.getElementById("dataset_dropdown").value = dataset_dropdown_value;
                                     }
-                                    injectTextConversation("I cannot find any document with the name you have given me");
+                                    injectTextConversation("I cannot find any file with the name you have given me");
                                 } else if (jqXHR.responseText === "open_document_no_active_session") {
                                     if ('{{ selected_item }}') {
                                         document.getElementById("dataset_dropdown").value = dataset_dropdown_value;
                                     }
-                                    injectTextConversation("You need to be logged in to access the documents");
+                                    injectTextConversation("You need to be logged in to access the files");
                                 } else {
                                     errorText = 'Bad Request [400]';
                                 }
@@ -625,7 +625,7 @@
                             document.getElementById(messageList[1]).click();
                         }
                     } else {
-                        e.text = "Open a document first, in order to perform this action";
+                        e.text = "Open a file first, in order to perform this action";
                     }
                     break;
                 case "intent_change_glyphs":
@@ -637,12 +637,116 @@
                         } else if (messageList[1] === "trivial_icon_button" && document.getElementById("trivial_label").classList.contains("active")) {
                             e.text = "Already in the Trivial Cheese";
                         }
+                        else if (document.getElementById("circle_label").classList.contains("active")) {
+                            e.text = "Glyphs cannot be visualised when using circle packing";
+                        }
                         else {
                             e.text =  messageList[2];
                             document.getElementById(messageList[1]).click();
                         }
                     } else {
-                        e.text = "Open a document first, in order to perform this action";
+                        e.text = "Open a file first, in order to perform this action";
+                    }
+                    break;
+                case "intent_show_colour_features":
+                    if ('{{ selected_item }}') {
+                        if (messageList[1] === "constructiveness" && document.getElementById("constructiveness").classList.contains("checked")) {
+                            e.text = "Constructiveness colour feature unchecked";
+                        } else if (messageList[1] === "argumentation" && document.getElementById("argumentation").classList.contains("checked")) {
+                            e.text = "Argumentation colour feature unchecked";
+                        } else if (messageList[1] === "sarcasm" && document.getElementById("sarcasm").classList.contains("checked")) {
+                            e.text = "Sarcasm colour feature unchecked";
+                        } else if (messageList[1] === "mockery" && document.getElementById("mockery").classList.contains("checked")) {
+                            e.text = "Mockery colour feature unchecked";
+                        } else if (messageList[1] === "intolerance" && document.getElementById("intolerance").classList.contains("checked")) {
+                            e.text = "Intolerance colour feature unchecked";
+                        } else if (messageList[1] === "improper_language" && document.getElementById("improper_language").classList.contains("checked")) {
+                            e.text = "Improper language colour feature unchecked";
+                        } else if (messageList[1] === "insult" && document.getElementById("insult").classList.contains("checked")) {
+                            e.text = "Insult colour feature unchecked";
+                        } else if (messageList[1] === "aggressiveness" && document.getElementById("aggressiveness").classList.contains("checked")) {
+                            e.text = "Aggressiveness colour feature unchecked";
+                        } else if (messageList[1] === "check_button_features" && document.getElementById("check_button_features").classList.contains("checked")) {
+                            e.text = "All colour features unchecked";
+                        } else if (messageList[1] === "uncheck_button_features" && document.getElementById("uncheck_button_features").classList.contains("checked")) {
+                            e.text = "All colour features unchecked";
+                        }
+                        else {
+                            e.text =  messageList[2];
+                            document.getElementById(messageList[1]).click();
+                        }
+                    } else {
+                        e.text = "Open a file first, in order to perform this action";
+                    }
+                    break;
+                case "intent_show_targets":
+                    if ('{{ selected_item }}') {
+                        if (messageList[1] === "target-group" && document.getElementById("target-group").classList.contains("checked")) {
+                            e.text = "Target group unchecked";
+                        } else if (messageList[1] === "target-person" && document.getElementById("target-person").classList.contains("checked")) {
+                            e.text = "Target person unchecked";
+                        } else if (messageList[1] === "target-stereotype" && document.getElementById("target-stereotype").classList.contains("checked")) {
+                            e.text = "Stereotype feature unchecked";
+                        } else if (messageList[1] === "check_button_targets" && document.getElementById("check_button_targets").classList.contains("checked")) {
+                            e.text = "All targets unchecked";
+                        } else if (messageList[1] === "uncheck_button_targets" && document.getElementById("uncheck_button_targets").classList.contains("checked")) {
+                            e.text = "All targets unchecked";
+                        } else {
+                            e.text = messageList[2];
+                            document.getElementById(messageList[1]).click();
+                        }
+                    } else {
+                        e.text = "Open a file first, in order to perform this action";
+                    }
+                    break;
+
+                case "intent_glyphs_blinking":
+                    if ('{{ selected_item }}'){
+                        if (messageList[1]==="glyphs-radio-buttons"){
+                            $("#glyphs-radio-buttons .border").css({
+                                "border-style": "solid",
+                                "box-shadow": "0 0 20px 5px rgba(51, 217, 178, 1)",
+                                "opacity": "1",
+                                "animation": "pulse-green 1.2s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#glyphs-radio-buttons .border").css({
+                                    "border-style": "",
+                                    "box-shadow": "",
+                                    "opacity": "0",
+                                    "animation": ""
+
+                                });
+                            }, 10000);
+                            e.text =  messageList[2];
+
+
+                        }
+
+                    }
+                    break;
+                case "intent_layouts_signal":
+                    if ('{{ selected_item }}'){
+                        if (messageList[1]==="layouts-radio-buttons"){
+                            $("#layouts-radio-buttons .layout_shadow").css({
+                                "border-style": "solid",
+                                "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                                "opacity": "1",
+                                "animation": "pulse-green-layout 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#layouts-radio-buttons .layout_shadow").css({
+                                    "border-style": "",
+                                    "box-shadow": "",
+                                    "opacity": "0",
+                                    "animation": ""
+                                });
+                            }, 6000);
+                            e.text =  messageList[2];
+
+
+                        }
+
                     }
                     break;
                 case "intent_switch_or_and":
@@ -656,7 +760,7 @@
                             document.getElementById(messageList[1]).click();
                         }
                     } else {
-                        e.text = "Open a document first, in order to perform this action";
+                        e.text = "Open a file first, in order to perform this action";
                     }
                     break;
                 case "intent_filter":
@@ -693,7 +797,7 @@
                             e.text =  "I have checked the filters"
                         }
                     } else {
-                        e.text = "Open a document first, in order to perform this action";
+                        e.text = "Open a file first, in order to perform this action";
                     }
                     break;
                 case "intent_filter_switch":
@@ -722,7 +826,7 @@
                             e.text =  "I have changed the filters"
                         }
                     } else {
-                        e.text = "Open a document first, in order to perform this action";
+                        e.text = "Open a file first, in order to perform this action";
                     }
                     break;
                 case "intent_highlight_uncheck_all":
@@ -735,7 +839,7 @@
                         }
                         e.text =  messageList[1];
                     } else {
-                        e.text = "Open a document first, in order to perform this action";
+                        e.text = "Open a file first, in order to perform this action";
                     }
                     break;
                 case "intent_filter_uncheck":
@@ -772,7 +876,7 @@
                             e.text =  "I have unchecked the filters"
                         }
                     } else {
-                        e.text = "Open a document first, in order to perform this action";
+                        e.text = "Open a file first, in order to perform this action";
                     }
                     break;
                 //
@@ -781,7 +885,7 @@
                         e.text = messageList[2];
                         $(window).trigger(messageList[1]);
                     } else {
-                        e.text = "Open a document first, in order to perform this action";
+                        e.text = "Open a file first, in order to perform this action";
                     }
             }
             if (textToSpeech && (e.hidden !== true)) {
@@ -979,6 +1083,20 @@
         t.insertBefore(e, t.firstChild);
     })();
 </script>
+
+{#<script>#}
+{##}
+{#    $(document).ready(function () {#}
+{#        $("#glyphs-radio-buttons").click(function () {#}
+{#            if ($("#glyphs-radio-buttons").css("border-style") === "dotted") {#}
+{#                $("#glyphs-radio-buttons").css("border-style", "none");#}
+{#            } else {#}
+{#                $("#glyphs-radio-buttons").css("border-style", "dotted");#}
+{#            }#}
+{#        });#}
+{#     });#}
+{##}
+{#</script>#}
 
 {#<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.js"></script>#}
 {#<script>#}
