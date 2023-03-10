@@ -92,6 +92,7 @@ intents:
   - check_all_colour_features
   - uncheck_all_colour_features
   - show_colour_feature
+  - two_actions
 
 actions:
   - action_check_session_login
@@ -277,7 +278,7 @@ responses:
   - text: "intent_change_layout,circle_layout_button,Layout changed to Circle Packing"
 
   utter_ask_document_selection_form_document_requested:
-  - text: "Which file do you want to open?"
+  - text: "What file do you want to open?"
 
 #  Glyphs
 
@@ -604,7 +605,7 @@ responses:
           payload: '/change_glyph_dots{{"object_requested":"glyph","glyph_requested":"dots"}}'
 
   utter_start_analysis:
-    - text: "You need to open a file to start"
+    - text: "You need to open a file before you start your analysis."
 
 
   utter_colour_feature_constractive:
@@ -659,6 +660,8 @@ responses:
         - title: "All"
           payload: '/check_all_colour_features'
 
+  utter_two_actions:
+    - text: "Please select one action at a time."
 
   utter_please_rephrase:
     - text: "I'm sorry, I didn't quite understand that. Could you rephrase?"

@@ -400,7 +400,7 @@ def main_form_context(request):
 def open_document_exception(request, error):
     # Django Messages
     if (error == "document_not_exist"):
-        errorMsg = "The document you want to open does not exist"
+        errorMsg = "The file you want to open does not exist"
 
         request.POST = request.POST.copy()
         if "from_button" in request.POST.keys():
@@ -629,7 +629,7 @@ def upload_file(request):
             handle_uploaded_file(request.FILES['document'])
             file_form.save()
             parse_data(Document.objects.last())
-            messages.success(request, "Document has been uploaded correctly")
+            messages.success(request, "File has been uploaded correctly")
             return index(request)
         else:
             messages.error(request, "The form received is not valid")
@@ -688,7 +688,7 @@ def edit_data(request, document_id):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            messages.success(request, "Document has been updated correctly")
+            messages.success(request, "File has been updated correctly")
             return index(request)
         else:
             messages.error(request, "The form received is not valid")
@@ -934,8 +934,8 @@ def get_chat_error_message(errorName):
                 'passwords_not_match': "I have not been able to register the user, the two passwords you have given me do not match",
                 'username_already_exists': "I have not been able to register the user, there is already a user with this name",
                 'logout_no_active_session': "It is not possible to close a session that does not exist, you are not logged in...",
-                'document_not_exist': "I cannot find any document with the name you have given me",
-                'open_document_no_active_session': "You need to be logged in to access the documents", }
+                'document_not_exist': "I cannot find any file with the name you have given me",
+                'open_document_no_active_session': "You need to be logged in to access the files", }
     if errorName in messages_dict:
         return messages_dict[errorName]
     else:
