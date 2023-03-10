@@ -1425,6 +1425,24 @@ nlu:
     - Turn off all colours
     - Turn off all colour features
 
+- intent: two_actions
+  examples: |
+    - Change layout to tree and glyph to dots
+    - Change layout to tree and glyph to circular
+    - Change layout to tree and glyoh to trivial cheese
+    - Change layout to radial and glyph to dots
+    - Change layout to radial and glyph to circular
+    - Change layout to radial and glyph to trivial cheese
+    - Change layout to force and glyph to dots
+    - Change layout to force and glyph to circular
+    - Change layout to force and glyph to trivial cheese
+
+
+
+
+
+
+
 #- intent: check_target_group
 #  examples: |
 #    - Highlight target group feature
