@@ -322,6 +322,11 @@ rules:
   - intent: nlu_fallback
   - action: utter_please_rephrase
 
+- rule: two action a time
+  steps:
+  - intent: two_actions
+  - action: utter_two_actions
+
 
 #- rule: user wants to know what bot can do
 #  steps:

@@ -15,11 +15,14 @@ stories:
   - action: utter_offers_help
   - intent: start_analysis
   - action: utter_start_analysis
+  - action: utter_ask_document_selection_form_document_requested
 
 - story: start analysis
   steps:
     - intent: start_analysis
     - action: utter_start_analysis
+    - action: utter_ask_document_selection_form_document_requested
+
 
 - story: User does not need help
   steps:
