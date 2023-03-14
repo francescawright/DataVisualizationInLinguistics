@@ -254,6 +254,7 @@ nlu:
     - I would like to see the [tree]{"entity": "layout_requested", "value": "tree"}
     - Show me the [tree layout]{"entity": "layout_requested", "value": "tree"}
     - [tree]{"entity": "layout_requested", "value": "tree"}
+    
 
 - intent: change_layout_force
   examples: |
