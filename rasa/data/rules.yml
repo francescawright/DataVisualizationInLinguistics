@@ -193,6 +193,8 @@ rules:
     - intent: most_toxic_subtree
     - action: utter_most_toxic_subtree
 
+# statistical
+
 - rule: User wants to see the statistics of all the features of the tree
   steps:
     - intent: statistics_features_tree
@@ -204,6 +206,8 @@ rules:
     - intent: statistics_features_subtrees
     - action: utter_statistics_features_subtrees
   wait_for_user_input: false
+
+# change glyphs
 
 - rule: User wants to change to dots
   steps:
@@ -224,6 +228,8 @@ rules:
   steps:
     - intent: change_glyphs
     - action: utter_change_glyphs
+
+# help
 
 - rule: User wants to know about highlights
   steps:
@@ -246,7 +252,6 @@ rules:
     - intent: help_subtree_barchart
     - action: utter_help_subtree_bar
 
-
 - rule: User wants to know about AND
   steps:
     - intent: help_AND
@@ -261,6 +266,8 @@ rules:
   steps:
     - intent: help_AND_OR
     - action: utter_help_AND_OR
+
+# check colour features
 
 - rule: check colour feature const
   steps:
@@ -302,6 +309,11 @@ rules:
     - intent: colour_feature_aggressiveness
     - action: utter_colour_feature_aggressiveness
 
+- rule: check colour feature stereotype
+  steps:
+    - intent: colour_feature_stereotype
+    - action: utter_colour_feature_stereotype
+
 - rule: check all colour features
   steps:
     - intent: check_all_colour_features
@@ -312,7 +324,88 @@ rules:
     - intent: uncheck_all_colour_features
     - action: utter_uncheck_all_colour_features
 
-- rule: User ask to see a colour feature withou specifiying which one
+# uncheck colour features
+- rule: uncheck constructiveness colour feature
+  steps:
+    - intent: colour_feature_constructiveness_uncheck
+    - action: utter_colour_feature_constractive_uncheck
+
+- rule: uncheck argumentation colour feature
+  steps:
+    - intent: colour_feature_argumentation_uncheck
+    - action: utter_colour_feature_argumentation_uncheck
+
+- rule: uncheck sarcasm colour feature
+  steps:
+    - intent: colour_feature_sarcasm_uncheck
+    - action: utter_colour_feature_sarcasm_uncheck
+
+- rule: uncheck mockery colour feature
+  steps:
+    - intent: colour_feature_mockery_uncheck
+    - action: utter_colour_feature_mockery_uncheck
+
+- rule: uncheck intolerance colour feature
+  steps:
+    - intent: colour_feature_intolerance_uncheck
+    - action: utter_colour_feature_intolerance_uncheck
+
+- rule: uncheck improper language colour feature
+  steps:
+    - intent: colour_feature_improper_uncheck
+    - action: utter_colour_feature_improper_uncheck
+
+- rule: uncheck insult colour feature
+  steps:
+    - intent: colour_feature_insult_uncheck
+    - action: utter_colour_feature_insult_uncheck
+
+- rule: uncheck aggressiveness colour feature
+  steps:
+    - intent: colour_feature_aggressiveness_uncheck
+    - action: utter_colour_feature_aggressiveness_uncheck
+
+- rule: uncheck stereotype colour feature
+  steps:
+    - intent: colour_feature_stereotype_uncheck
+    - action: utter_colour_feature_stereotype_uncheck
+
+
+
+
+# check targets
+- rule: check target person icon
+  steps:
+    - intent: icon_feature_person
+    - action: utter_icon_feature_person
+
+- rule: check target group icon
+  steps:
+    - intent: icon_feature_group
+    - action: utter_icon_feature_group
+
+- rule: check all target icons
+  steps:
+    - intent: check_all_target_icons
+    - action: utter_icon_feature_checkall
+
+- rule: uncheck all target icons
+  steps:
+    - intent: uncheck_all_target_icons
+    - action: utter_icon_feature_uncheckall
+
+# uncheck targets
+- rule: uncheck target person
+  steps:
+    - intent: uncheck_target_person
+    - action: utter_uncheck_person
+
+- rule: uncheck target group
+  steps:
+    - intent: uncheck_target_group
+    - action: utter_uncheck_group
+
+- rule: User ask to see a colour feature without specifiying which one
   steps:
     - intent: show_colour_feature
     - action: utter_which_colour_feature
@@ -326,6 +419,68 @@ rules:
   steps:
   - intent: two_actions
   - action: utter_two_actions
+
+# asking which method user want to visualise a feature
+
+- rule: filter test
+  steps:
+    - intent: filter_test
+    - action: utter_filter_test
+
+- rule: asking user which filter argumentation
+  steps:
+    - intent: filters_argument
+    - action: utter_filters_argumentation
+
+- rule: asking user which filter sarcasm
+  steps:
+    - intent: filters_sarcasm
+    - action: utter_filters_sarcasm
+
+- rule: asking user which filter mockery
+  steps:
+    - intent: filters_mockery
+    - action: utter_filters_mockery
+
+- rule: asking user which filter intolerance
+  steps:
+    - intent: filters_intolerance
+    - action: utter_filters_intolerance
+
+- rule: asking user which filter improper language
+  steps:
+    - intent: filters_improper
+    - action: utter_filters_improper
+
+- rule: asking user which filter insult
+  steps:
+    - intent: filters_insult
+    - action: utter_filters_insult
+
+- rule: asking user which filter aggressiveness
+  steps:
+    - intent: filters_aggressiveness
+    - action: utter_filters_aggressiveness
+
+- rule: asking user which filter stereotype
+  steps:
+    - intent: filters_stereotype
+    - action: utter_filters_stereotype
+
+- rule: asking user which filter target person
+  steps:
+    - intent: filters_person
+    - action: utter_filters_target_person
+
+- rule: asking user which filter target group
+  steps:
+    - intent: filters_group
+    - action: utter_filters_target_group
+
+- rule: reset all filters
+  steps:
+    - intent: reset_all_filters
+    - action: utter_reset_all_filters
 
 
 #- rule: user wants to know what bot can do

@@ -73,7 +73,7 @@ var colorFeature = ["#90F6B2", "#1B8055",
     "#97CFFF", "#1795FF", "#0B5696",
     "#E3B7E8", "#A313B3", "#5E1566"];
 
-var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
+var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Blank.png", "icons/Stereotype.svg"];
 var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
 // Objects for target images
@@ -762,7 +762,7 @@ function highlightTargetOR(node, enabledHighlight) {
     }
 
     //Stereotype CB is checked
-    if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-stereotype") > -1) {
         node.filter(function (d) {
             if (d.stereotype) d.highlighted = 1;
             return (d.stereotype);
@@ -789,7 +789,7 @@ function highlightTargetAND(node, enabledHighlight, opacityValue = 0.1) {
     }
 
     //Stereotype CB is checked
-    if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-stereotype") > -1) {
         node.filter(function (d) {
             if (!d.stereotype) d.highlighted = 0;
             return (!d.stereotype);
@@ -2385,7 +2385,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Stereotype CB is checked
-        if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-stereotype") > -1) {
             node.filter(function (d) {
                 return (d.stereotype);
             }).style("opacity", 1);
@@ -2587,7 +2587,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         }
 
         //Stereotype CB is checked
-        if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) {
+        if (enabledHighlight.indexOf("highlight-features-stereotype") > -1) {
             node.filter(function (d) {
                 return (!d.stereotype);
             }).style("opacity", opacityValue);

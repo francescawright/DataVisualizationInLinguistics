@@ -18,7 +18,7 @@ var featuresChartSubDict = {"Constructive":"highlight-features-constructiveness"
             "Sarcasm":"highlight-features-sarcasm", "Mockery":"highlight-features-mockery",
             "Intolerance":"highlight-features-intolerance", "Improper":"highlight-features-improper-language",
             "Insult":"highlight-features-insult", "Aggressive":"highlight-features-aggressiveness",
-            "Group":"highlight-target-group","Person":"highlight-target-person","Stereotype":"highlight-target-stereotype",
+            "Group":"highlight-target-group","Person":"highlight-target-person","Stereotype":"highlight-features-stereotype",
             "Neutral":"highlight-stance-neutral","Positive":"highlight-stance-positive","Negative":"highlight-stance-negative",
             "Not toxic":"highlight-toxicity-0","Mildly toxic":"highlight-toxicity-1","Toxic":"highlight-toxicity-2",
             "Very toxic":"highlight-toxicity-3",};
@@ -1098,7 +1098,7 @@ function writeTooltipText(d) {
     } else {
         tooltipText += ' opacity: 0.3;';
     }
-    tooltipText += '"><img src=' + pt + targetImagesPath[2] + ' style="width: 55px; margin-right: 20px;';
+    tooltipText += '"><img src=' + pt + targetImagesPath[3] + ' style="width: 55px; margin-right: 20px;';
     if (d.stereotype) {
         tooltipText += ' opacity: 1;';
     } else {
@@ -1268,7 +1268,7 @@ function writeTooltipTextCircle(d) {
     } else {
         tooltipText += ' opacity: 0.3;';
     }
-    tooltipText += '"><img src=' + pt + targetImagesPath[2] + ' style="width: 55px; margin-right: 20px;';
+    tooltipText += '"><img src=' + pt + targetImagesPath[3] + ' style="width: 55px; margin-right: 20px;';
     if (d.data.stereotype) {
         tooltipText += ' opacity: 1;';
     } else {
@@ -1453,16 +1453,19 @@ function writeStatisticText(root, fromCircle = false) {
         totalNoneUpdate = listStatisticsUpdate.totalTargNone;
 
     var statTitlesToxicity = ["Not toxic", "Mildly toxic", "Toxic", "Very toxic"];
-    var statTitlesTargets = ["Target group", "Target person", "Stereotype", "None"];
+    var statTitlesTargets = ["Target group", "Target person", "None", ""];
     var statValuesTox = [totalNotToxicUpdate, totalMildlyToxicUpdate, totalToxicUpdate, totalVeryToxicUpdate];
-    var statValuesTarg = [totalGroupUpdate, totalPersonUpdate, totalStereotypeUpdate, totalNoneUpdate];
+    var statValuesTarg = [totalGroupUpdate, totalPersonUpdate, totalNoneUpdate, totalStereotypeUpdate,];
 
     for (var i = 0; i < statTitlesToxicity.length; i++) {
         statisticText += "<tr style='font-size: 20px;'>"; //Start table line
 
         //Write toxicity and target line
         statisticText += "<td style='font-size: 20px; width: 400px; margin-right: 25px;'>" + "<img src=" + pf + toxicityLevelsPath[i] + " style='width: 35px; margin-right: 15px; margin-left: 25px;'>" + statTitlesToxicity[i].toString() + ": " + "<td style='padding-right: 55px;'>" + statValuesTox[i].toString() + "</td>";
-        statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
+        // statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
+        if (i != 3) { // do not add stereotype to the UI
+            statisticText += "<td style='font-size: 20px; width: 400px;'>" + "<img src=" + pt + targetImagesPath[i] + " style='width: 25px; margin-right: 15px; margin-left: 25px;'>" + statTitlesTargets[i].toString() + ": " + "<td>" + statValuesTarg[i].toString() + "</td>";
+        }
 
         statisticText += "</tr>"; //End table line
     }
@@ -2344,11 +2347,11 @@ function statisticsTargetTree(root, fromCircle = false, isPopupSelected = null) 
         data: [listStatistics.totalTargPerson],
         backgroundColor: "#606984",
       },
-      {
-        label: 'Stereotype',
-        data: [listStatistics.totalTargStereotype],
-        backgroundColor: "#798c8f",
-      },
+      // {
+      //   label: 'Stereotype',
+      //   data: [listStatistics.totalTargStereotype],
+      //   backgroundColor: "#798c8f",
+      // },
       {
         label: 'None',
         data: [listStatistics.totalTargNone],
@@ -2357,18 +2360,32 @@ function statisticsTargetTree(root, fromCircle = false, isPopupSelected = null) 
     }
 
     chartModalDataPie = {
-      labels: ['Group', 'Person', 'Stereotype', 'None'],
+      labels: ['Group', 'Person', 'None'],
       datasets: [{
         label: 'total',
-        data: [listStatistics.totalTargGroup, listStatistics.totalTargPerson, listStatistics.totalTargStereotype,
+        data: [listStatistics.totalTargGroup, listStatistics.totalTargPerson,
             listStatistics.totalTargNone],
-        backgroundColor: ["#bf7f81", "#606984", "#798c8f", "#303133"],
+        backgroundColor: ["#bf7f81", "#606984", "#303133"],
       }]
     }
     chartModalTitle = 'complete_graph';
 
     createChartModal(isPopupSelected);
 }
+
+//  chartModalDataPie = {
+//       labels: ['Group', 'Person', 'Stereotype', 'None'],
+//       datasets: [{
+//         label: 'total',
+//         data: [listStatistics.totalTargGroup, listStatistics.totalTargPerson, listStatistics.totalTargStereotype,
+//             listStatistics.totalTargNone],
+//         backgroundColor: ["#bf7f81", "#606984", "#798c8f", "#303133"],
+//       }]
+//     }
+//     chartModalTitle = 'complete_graph';
+//
+//     createChartModal(isPopupSelected);
+// }
 
 function statisticsToxicitySubtrees(root, static_values_checked, statisticBackground, nodes, opacityValue, node, link, fromCircle = false, minOpacityValue = null, isPopupSelected = null) {
 
@@ -2521,11 +2538,11 @@ function statisticsTargetSubtrees(root, static_values_checked, statisticBackgrou
         data: targPersonSubtrees,
         backgroundColor: "#606984",
       },
-      {
-        label: 'Stereotype',
-        data: targStereotypeSubtrees,
-        backgroundColor: "#798c8f",
-      },
+      // {
+      //   label: 'Stereotype',
+      //   data: targStereotypeSubtrees,
+      //   backgroundColor: "#798c8f",
+      // },
       {
         label: 'None',
         data: targNoneSubtrees,

@@ -179,7 +179,7 @@ nlu:
     - sign me up
     - [register]{"entity": "action_requested", "value": "signup"} me
     - [signup]{"entity": "action_requested", "value": "signup"}
-
+# layouts
 - synonym: layout
   examples: |
     - visualization layout
@@ -300,10 +300,6 @@ nlu:
     - Show me the [circle layout]{"entity": "layout_requested", "value": "circle"}
     - [circle packing]{"entity": "layout_requested", "value": "circle"}
 
-- synonym: document
-  examples: |
-    - file
-
 # glyph change
 
 - intent: change_glyph_dots
@@ -317,8 +313,6 @@ nlu:
     - [dots]{"entity": "glyph_requested", "value": "dots"}
     - Show [dots]{"entity": "glyph_requested", "value": "dots"}
     - Chnage to [dots]{"entity": "glyph_requested", "value": "dots"}
-
-
 
 - intent: change_glyph_circular
   examples: |
@@ -356,6 +350,10 @@ nlu:
 #- regex: document_requested
 #  examples: |
 #    - [a-zA-Z0-9_-]{1,255}
+
+- synonym: document
+  examples: |
+    - file
 
 - intent: select_document
   examples: |
@@ -456,6 +454,8 @@ nlu:
     - Switch [neutral stance]{"entity": "filter_name"} and [targets all]{"entity": "filter_name"} options
     - Switch [toxic level 1]{"entity": "filter_name"}, [least toxic]{"entity": "filter_name"} and [toxic]{"entity": "filter_name"} filters
     - Switch [most toxic]{"entity": "filter_name"} and [least toxic]{"entity": "filter_name"} filters
+
+# select node & edge
 
 - intent: highlight_check
   examples: |
@@ -585,12 +585,18 @@ nlu:
     - Show me nodes with [target person]{"entity": "filter_name"}
     - Highlight comments with [target person]{"entity": "filter_name"}
     - Show nodes with [target person]{"entity": "filter_name"}
-    - Activate the [target person]{"entity": "filter_name"} filter
+    - Activate the [target person]{"entity": "filter_name"} nodes
     - Check the [target person]{"entity": "filter_name"} filter
-    - Activate the [target person]{"entity": "filter_name"} comments filter
-    - Enable [target person]{"entity": "filter_name"} nodes filtering
-    - Enable the [target person]{"entity": "filter_name"} filter
-    - Enable the filter [target person]{"entity": "filter_name"}
+    - Activate the [target person]{"entity": "filter_name"} comments
+    - Enable [target person]{"entity": "filter_name"} nodes
+    - Enable the [target person]{"entity": "filter_name"} nodes
+    - Enable nodes with [target person]{"entity": "filter_name"}
+    - Check [target person]{"entity": "filter_name"} node and edge
+    - Highlight [target person]{"entity": "filter_name"} node and edge
+    - Highlight [target person]{"entity": "filter_name"} nodes
+    - Turn on [target person]{"entity": "filter_name"} node and edge
+    - Turn on [target person]{"entity": "filter_name"} nodes
+    - Select [target person]{"entity": "filter_name"} nodes
 
     - I want to see comments with [target group]{"entity": "filter_name"}
     - Show me nodes with [target group]{"entity": "filter_name"}
@@ -602,6 +608,12 @@ nlu:
     - Enable [target group]{"entity": "filter_name"} nodes filtering
     - Enable the [target group]{"entity": "filter_name"} filter
     - Enable the filter [target group]{"entity": "filter_name"}
+    - Check [target group]{"entity": "filter_name"} node and edge
+    - Highlight [target group]{"entity": "filter_name"} node and edge
+    - Highlight [target group]{"entity": "filter_name"} nodes
+    - Turn on [target group]{"entity": "filter_name"} node and edge
+    - Turn on [target group]{"entity": "filter_name"} nodes
+    - Select [target group]{"entity": "filter_name"} nodes
 
     - I want to see comments with [stereotype]{"entity": "filter_name"}
     - Show me nodes with [stereotype]{"entity": "filter_name"}
@@ -613,6 +625,12 @@ nlu:
     - Enable [stereotype]{"entity": "filter_name"} nodes filtering
     - Enable the [stereotype]{"entity": "filter_name"} filter
     - Enable the filter [stereotype]{"entity": "filter_name"}
+    - Check [stereotype]{"entity": "filter_name"} node and edge
+    - Highlight [stereotype]{"entity": "filter_name"} node and edge
+    - Highlight [stereotype]{"entity": "filter_name"} nodes
+    - Turn on [stereotype]{"entity": "filter_name"} node and edge
+    - Turn on [stereotype]{"entity": "filter_name"} nodes
+    - Select [stereotype]{"entity": "filter_name"} nodes
 
     # targets select all
 
@@ -644,11 +662,16 @@ nlu:
     - Activate the [constructiveness]{"entity": "filter_name"} filter
     - Activate the [constructive]{"entity": "filter_name"} comments filter
     - Enable [constructive]{"entity": "filter_name"} nodes filtering
-    - Enable the [constructive]{"entity": "filter_name"} filter
-    - Enable the filter [constructiveness]{"entity": "filter_name"}
-    - Select the filter [constructiveness]{"entity": "filter_name"}
-    - Select [constructive]{"entity": "filter_name"} filter
+    - Enable the [constructive]{"entity": "filter_name"} node and edge
+    - Enable node and edge [constructiveness]{"entity": "filter_name"}
+    - Select node and edge [constructiveness]{"entity": "filter_name"}
+    - Select [constructive]{"entity": "filter_name"} nodes
     - Select [constructive]{"entity": "filter_name"} node and edge
+    - Check  [constructive]{"entity": "filter_name"} node and edge
+    - Highlight [constructive]{"entity": "filter_name"} node and edge
+    - Highlight [constructive]{"entity": "filter_name"} nodes
+    - Turn on [constructive]{"entity": "filter_name"} node and edge
+    - Turn on [constructive]{"entity": "filter_name"} nodes
 
 
     - I want to see comments with [argumentation]{"entity": "filter_name"}
@@ -660,11 +683,16 @@ nlu:
     - Activate the [argumentation]{"entity": "filter_name"} filter
     - Activate the [argumentation]{"entity": "filter_name"} nodes filter
     - Enable [argumentation]{"entity": "filter_name"} nodes filtering
-    - Enable the [argumentation]{"entity": "filter_name"} , [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
+    - Enable the [argumentation]{"entity": "filter_name"} , [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} nodes
     - Enable the filter [argumentation]{"entity": "filter_name"}
     - Select the filter [argumentation]{"entity": "filter_name"}
-    - Select [argumentation]{"entity": "filter_name"} filter
+    - Select [argumentation]{"entity": "filter_name"} nodes
     - Select [argumentation]{"entity": "filter_name"} node and edge
+    - Check  [argumentation]{"entity": "filter_name"} node and edge
+    - Highlight [argumentation]{"entity": "filter_name"} node and edge
+    - Highlight [argumentation]{"entity": "filter_name"} nodes
+    - Turn on [argumentation]{"entity": "filter_name"} node and edge
+    - Turn on [argumentation]{"entity": "filter_name"} nodes
 
     # features--> sarcasm, mockery, intolerance
 
@@ -682,6 +710,11 @@ nlu:
     - Select the filter [sarcasm]{"entity": "filter_name"}
     - Select [sarcasm]{"entity": "filter_name"} filter
     - Select [sarcasm]{"entity": "filter_name"} node and edge
+    - Check  [sarcasm]{"entity": "filter_name"} node and edge
+    - Highlight [sarcasm]{"entity": "filter_name"} node and edge
+    - Highlight [sarcasm]{"entity": "filter_name"} nodes
+    - Turn on [sarcasm]{"entity": "filter_name"} node and edge
+    - Turn on [sarcasm]{"entity": "filter_name"} nodes
 
     - I want to see nodes with [mockery]{"entity": "filter_name"}
     - Show me comments with [mockery]{"entity": "filter_name"}
@@ -697,6 +730,11 @@ nlu:
     - Select the filter [mockery]{"entity": "filter_name"}
     - Select [mockery]{"entity": "filter_name"} filter
     - Select [mockery]{"entity": "filter_name"} node and edge
+    - Check  [mockery]{"entity": "filter_name"} node and edge
+    - Highlight [mockery]{"entity": "filter_name"} node and edge
+    - Highlight [mockery]{"entity": "filter_name"} nodes
+    - Turn on [mockery]{"entity": "filter_name"} node and edge
+    - Turn on [mockery]{"entity": "filter_name"} nodes
 
     - I want to see nodes with [intolerance]{"entity": "filter_name"}
     - Show me comments with [intolerance]{"entity": "filter_name"}
@@ -712,6 +750,11 @@ nlu:
     - Select the filter [intolerance]{"entity": "filter_name"}
     - Select [intolerance]{"entity": "filter_name"} filter
     - Select [intolerance]{"entity": "filter_name"} node and edge
+    - Check  [intolerance]{"entity": "filter_name"} node and edge
+    - Highlight [intolerance]{"entity": "filter_name"} node and edge
+    - Highlight [intolerance]{"entity": "filter_name"} nodes
+    - Turn on [intolerance]{"entity": "filter_name"} node and edge
+    - Turn on [intolerance]{"entity": "filter_name"} nodes
 
     # features--> improper language, insult, aggressiveness - ?
 
@@ -729,6 +772,11 @@ nlu:
     - Select the filter [improper language]{"entity": "filter_name"}
     - Select [improper language]{"entity": "filter_name"} filter
     - Select [improper language]{"entity": "filter_name"} node and edge
+    - Check  [improper language]{"entity": "filter_name"} node and edge
+    - Highlight [improper language]{"entity": "filter_name"} node and edge
+    - Highlight [improper language]{"entity": "filter_name"} nodes
+    - Turn on [improper language]{"entity": "filter_name"} node and edge
+    - Turn on [improper language]{"entity": "filter_name"} nodes
 
     - I want to see nodes with [insult]{"entity": "filter_name"}
     - Show me comments with [insult]{"entity": "filter_name"}
@@ -744,7 +792,11 @@ nlu:
     - Select the filter [insult]{"entity": "filter_name"}
     - Select [insult]{"entity": "filter_name"} filter
     - Select [insult]{"entity": "filter_name"} node and edge
-
+    - Check  [insult]{"entity": "filter_name"} node and edge
+    - Highlight [insult]{"entity": "filter_name"} node and edge
+    - Highlight [insult]{"entity": "filter_name"} nodes
+    - Turn on [insult]{"entity": "filter_name"} node and edge
+    - Turn on [insult]{"entity": "filter_name"} nodes
 
     - I want to see comments with [aggressiveness]{"entity": "filter_name"}
     - Show me comments with [aggressiveness]{"entity": "filter_name"}
@@ -760,6 +812,11 @@ nlu:
     - Select the filter [aggressiveness]{"entity": "filter_name"}
     - Select [aggressiveness]{"entity": "filter_name"} filter
     - Select [aggressiveness]{"entity": "filter_name"} node and edge
+    - Check [aggressiveness]{"entity": "filter_name"} node and edge
+    - Highlight [aggressiveness]{"entity": "filter_name"} node and edge
+    - Highlight [aggressiveness]{"entity": "filter_name"} nodes
+    - Turn on [aggressiveness]{"entity": "filter_name"} node and edge
+    - Turn on [aggressiveness]{"entity": "filter_name"} nodes
 
 
     # features select all
@@ -779,17 +836,49 @@ nlu:
     - Enable the select [all features]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
     - Enable the filter select [all features]{"entity": "filter_name"}
 
-# highlight uncheck all
+    - I want to select [all levels of toxicity]{"entity": "filter_name"}
+    - Select [all levels of toxicity]{"entity": "filter_name"}
+    - I want to select [all levels of toxicity]{"entity": "filter_name"} checkbox
+    - Select [all levels of toxicity]{"entity": "filter_name"} checkbox
+    - I want to select [all levels of toxicity]{"entity": "filter_name"} option
+    - Select [all levels of toxicity]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} options
+    - I want to see comments with [all levels of toxicity]{"entity": "filter_name"}
+    - Show me nodes with [all levels of toxicity]{"entity": "filter_name"}
+    - Show nodes with [all levels of toxicity]{"entity": "filter_name"}
+    - Activate the select [all levels of toxicity]{"entity": "filter_name"} filter
+    - Activate the select [all levels of toxicity]{"entity": "filter_name"} comments filter
+    - Enable select [all levels of toxicity]{"entity": "filter_name"} nodes filtering
+    - Enable the select [all levels of toxicity]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
+    - Enable the filter select [all levels of toxicity]{"entity": "filter_name"}
+
+    - I want to select [all stances]{"entity": "filter_name"}
+    - Select [all stances]{"entity": "filter_name"}
+    - I want to select [all stances]{"entity": "filter_name"} checkbox
+    - Select [all stances]{"entity": "filter_name"} checkbox
+    - I want to select [all stances]{"entity": "filter_name"} option
+    - Select [all stances]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} options
+    - I want to see comments with [all stances]{"entity": "filter_name"}
+    - Show me nodes with [all stances]{"entity": "filter_name"}
+    - Show nodes with [all stances]{"entity": "filter_name"}
+    - Activate the select [all stances]{"entity": "filter_name"} filter
+    - Activate the select [all stances]{"entity": "filter_name"} comments filter
+    - Enable select [all stances]{"entity": "filter_name"} nodes filtering
+    - Enable the select [all stances]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
+    - Enable the filter select [all stances]{"entity": "filter_name"}
+
+
+
+  # highlight uncheck all
 - intent: highlight_uncheck_all
   examples: |
-    - I want to deselect all highlighting filters
-    - Desselect all filters
-    - Reset the filters
-    - Undo all highlighting
-    - Undo highlighting
-    - Disable all highlight filters
-    - Remove all filters
-    - Reset filters
+    - I want to deselect all select node and edge filters
+    - Desselect all select node and edge filters
+    - Reset the select node and edge filters
+    - Undo all select node and edge filters
+    - Undo all select node and edge
+    - Disable all select node and edge
+    - Remove all node and edge filters
+    - Reset select node and edge
 
 - intent: highlight_uncheck
   examples: |
@@ -885,6 +974,14 @@ nlu:
     - Disable [features all]{"entity": "filter_name"} option
     - Hide [all features]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} comments
     - Uncheck [all features]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
+
+    - Disable [all levels of toxicity]{"entity": "filter_name"}
+    - Hide [all levels of toxicity]{"entity": "filter_name"} nodes
+    - Uncheck [all levels of toxicity]{"entity": "filter_name"}
+
+    - Disable [all stances]{"entity": "filter_name"}
+    - Hide [all stances]{"entity": "filter_name"} nodes
+    - Uncheck [all stances]{"entity": "filter_name"}
 
 - intent: highlight_switch_last
   examples: |
@@ -1286,145 +1383,6 @@ nlu:
     - start analysis
     - start
 
-- intent: colour_feature_constructiveness
-  examples: |
-    - Highlight constructiveness colour feature
-    - Highlight constructive glyph
-    - Check constructiveness colour
-    - Check constructiveness colour feature
-    - Show me constructiveness colour feature
-    - Show me constructive colour feature
-    - Check constructiveness colour
-    - I want to see constructiveness colour feature
-    - I would like to see constructiveness colour feature
-    - Turn on constructiveness colour
-    - Turn on constructiveness colour feature
-
-- intent: colour_feature_argumentation
-  examples: |
-    - Highlight argumentation colour feature
-    - Highlight argumentation glyph
-    - Check argumentation colour
-    - Check argumentation colour feature
-    - Show me argumentation colour feature
-    - Show me argument colour feature
-    - Check argumentation colour
-    - I want to see argumentation colour feature
-    - I would like to see argumentation colour feature
-    - Turn on argumentation colour
-    - Turn on argumentation colour feature
-
-- intent: colour_feature_sarcasm
-  examples: |
-    - Highlight sarcasm colour feature
-    - Highlight sarcasm glyph
-    - Check sarcasm colour
-    - Check sarcasm colour feature
-    - Show me sarcasm colour feature
-    - Check sarcasm colour
-    - I want to see sarcasm colour feature
-    - I would like to see sarcasm colour feature
-    - Turn on sarcasm colour
-    - Turn on sarcasm colour feature
-
-- intent: colour_feature_mockery
-  examples: |
-    - Highlight mockery colour feature
-    - Highlight mockery glyph
-    - Check mockery colour
-    - Check mockery colour feature
-    - Show me mockery colour feature
-    - Check mockery colour
-    - I want to see mockery colour feature
-    - I would like to see mockery colour feature
-    - Turn on mockery colour
-    - Turn on mockery colour feature
-
-- intent: colour_feature_intolerance
-  examples: |
-    - Highlight intolerance colour feature
-    - Highlight intolerance glyph
-    - Check intolerance colour
-    - Check intolerance colour feature
-    - Show me intolerance colour feature
-    - Check intolerance colour
-    - I want to see intolerance colour feature
-    - I would like to see intolerance colour feature
-    - Turn on intolerance colour
-    - Turn on intolerance colour feature
-
-- intent: colour_feature_improper
-  examples: |
-    - Highlight improper langauge colour feature
-    - Highlight improper langauge glyph
-    - Check improper langauge colour
-    - Check improper langauge colour feature
-    - Show me improper langauge colour feature
-    - Check improper langauge colour
-    - I want to see improper langauge colour feature
-    - I would like to see improper langauge colour feature
-    - Turn on improper langauge colour
-    - Turn on improper langauge colour feature
-
-- intent: colour_feature_insult
-  examples: |
-    - Highlight insult colour feature
-    - Highlight insult glyph
-    - Check insult colour
-    - Check insult colour feature
-    - Show me insult colour feature
-    - Check insult colour
-    - I want to see insult colour feature
-    - I would like to see insult colour feature
-    - Turn on insult colour
-    - Turn on insult colour feature
-
-- intent: colour_feature_aggressiveness
-  examples: |
-    - Highlight aggressiveness colour feature
-    - Highlight aggressiveness glyph
-    - Check aggressiveness colour
-    - Check aggressiveness colour feature
-    - Show me aggressiveness colour feature
-    - Show me aggressiveness colour feature
-    - Check aggressiveness colour
-    - I want to see aggressiveness colour feature
-    - I would like to see aggressiveness colour feature
-    - Turn on aggressiveness colour
-    - Turn on aggressiveness colour feature
-
-- intent: show_colour_feature
-  examples: |
-    - Highlight colour feature
-    - Check colour feature
-    - Show me colour feature
-    - I want to see colour feature
-    - I would like to see colour feature
-    - Turn on colour features
-
-
-
-- intent: check_all_colour_features
-  examples: |
-    - Highlight all colour features
-    - Check all colours
-    - Check all colour features
-    - Show me all colour features
-    - Check all features
-    - I want to see all colour features
-    - I would like to see all colour features
-    - Turn on all colours
-    - Turn on all colour features
-
-- intent: uncheck_all_colour_features
-  examples: |
-    - Disable all colour features
-    - Uncheck all colours
-    - Uncheck all colour features
-    - Uncheck all features
-    - Turn off all colours
-    - Turn off all colour features
-
 - intent: two_actions
   examples: |
     - Change layout to tree and glyph to dots
@@ -1439,63 +1397,507 @@ nlu:
 
 
 
+#check colour features
+
+- intent: colour_feature_constructiveness
+  examples: |
+    - Highlight constructiveness colour feature
+    - Highlight constructive glyph
+    - Check constructiveness colour
+    - Check constructiveness colour feature
+    - Show me constructiveness colour feature
+    - Show me constructive colour feature
+    - Check constructiveness colour
+    - I want to see constructiveness colour feature
+    - I would like to see constructiveness colour feature
+    - Turn on constructiveness colour
+    - Turn on constructiveness colour feature
+    - Select constructiveness colour feature
+    - Select constructiveness colour
+    - Activate constructive colour feature
+    - Enable constructiveness colour feature
+
+- intent: colour_feature_argumentation
+  examples: |
+    - Highlight argumentation colour feature
+    - Highlight argumentation glyph
+    - Check argumentation colour
+    - Check argumentation colour feature
+    - Show me argumentation colour feature
+    - Show me argument colour feature
+    - Check argumentation colour
+    - I want to see argumentation colour feature
+    - I would like to see argumentation colour feature
+    - Turn on argumentation colour
+    - Turn on argumentation colour feature
+    - Select argument colour feature
+    - Select argumentation colour
+    - Activate argumentation colour feature
+    - Enable argumentation colour feature
+
+- intent: colour_feature_sarcasm
+  examples: |
+    - Highlight sarcasm colour feature
+    - Highlight sarcasm glyph
+    - Check sarcasm colour
+    - Check sarcasm colour feature
+    - Show me sarcasm colour feature
+    - Check sarcasm colour
+    - I want to see sarcasm colour feature
+    - I would like to see sarcasm colour feature
+    - Turn on sarcasm colour
+    - Turn on sarcasm colour feature
+    - Select sarcasm colour feature
+    - Select sarcasm colour
+    - Activate sarcasm colour feature
+    - Enable sarcasm colour feature
+
+- intent: colour_feature_mockery
+  examples: |
+    - Highlight mockery colour feature
+    - Highlight mockery glyph
+    - Check mockery colour
+    - Check mockery colour feature
+    - Show me mockery colour feature
+    - Check mockery colour
+    - I want to see mockery colour feature
+    - I would like to see mockery colour feature
+    - Turn on mockery colour
+    - Turn on mockery colour feature
+    - Select mockery colour feature
+    - Select mockery colour
+    - Activate mockery colour feature
+    - Enable mockery colour feature
+
+- intent: colour_feature_intolerance
+  examples: |
+    - Highlight intolerance colour feature
+    - Highlight intolerance glyph
+    - Check intolerance colour
+    - Check intolerance colour feature
+    - Show me intolerance colour feature
+    - Check intolerance colour
+    - I want to see intolerance colour feature
+    - I would like to see intolerance colour feature
+    - Turn on intolerance colour
+    - Turn on intolerance colour feature
+    - Select intolerance colour feature
+    - Select intolerance colour
+    - Activate intolerance colour feature
+    - Enable intolerance colour feature
+
+- intent: colour_feature_improper
+  examples: |
+    - Highlight improper langauge colour feature
+    - Highlight improper langauge glyph
+    - Check improper langauge colour
+    - Check improper langauge colour feature
+    - Show me improper langauge colour feature
+    - Check improper langauge colour
+    - I want to see improper langauge colour feature
+    - I would like to see improper langauge colour feature
+    - Turn on improper langauge colour
+    - Turn on improper langauge colour feature
+    - Select improper language colour feature
+    - Select improper language  colour
+    - Activate improper language feature
+    - Enable improper language feature
+
+- intent: colour_feature_insult
+  examples: |
+    - Highlight insult colour feature
+    - Highlight insult glyph
+    - Check insult colour
+    - Check insult colour feature
+    - Show me insult colour feature
+    - Check insult colour
+    - I want to see insult colour feature
+    - I would like to see insult colour feature
+    - Turn on insult colour
+    - Turn on insult colour feature
+    - Select insult colour feature
+    - Select insult colour
+    - Activate insult colour feature
+    - Enable insult colour feature
+
+- intent: colour_feature_aggressiveness
+  examples: |
+    - Highlight aggressiveness colour feature
+    - Highlight aggressiveness glyph
+    - Check aggressiveness colour
+    - Check aggressiveness colour feature
+    - Show me aggressiveness colour feature
+    - Show me aggressiveness colour feature
+    - Check aggressiveness colour
+    - I want to see aggressiveness colour feature
+    - I would like to see aggressiveness colour feature
+    - Turn on aggressiveness colour
+    - Turn on aggressiveness colour feature
+    - Select aggressiveness colour feature
+    - Select aggressiveness colour
+    - Activate aggressiveness colour feature
+    - Enable aggressiveness colour feature
+
+- intent: colour_feature_stereotype
+  examples: |
+    - Highlight stereotype colour feature
+    - Highlight stereotype glyph
+    - Check stereotype colour
+    - Check stereotype colour feature
+    - Show me stereotype colour feature
+    - Show me stereotype colour feature
+    - Check stereotype colour
+    - I want to see stereotype colour feature
+    - I would like to see stereotype colour feature
+    - Turn on stereotype colour
+    - Turn on stereotype colour feature
+    - Select stereotype colour feature
+    - Select stereotype colour
+    - Activate stereotype colour feature
+    - Enable stereotype colour feature
+
+# ask to check a colour feature without specifying one
+- intent: show_colour_feature
+  examples: |
+    - Highlight colour feature
+    - Check colour feature
+    - Show me colour feature
+    - I want to see colour feature
+    - I would like to see colour feature
+    - Turn on colour features
+    - Select colour feature
+    - Activate colour feature
+    - Enable colour feature
+
+# check/uncheck all colour features
+
+- intent: check_all_colour_features
+  examples: |
+    - Highlight all colour features
+    - Check all colours
+    - Check all colour features
+    - Show me all colour features
+    - Check all features
+    - I want to see all colour features
+    - I would like to see all colour features
+    - Turn on all colours
+    - Turn on all colour features
+    - Select all colour features
+    - Activate all colour features
+    - Enable all colour features
+
+- intent: uncheck_all_colour_features
+  examples: |
+    - Disable all colour features
+    - Uncheck all colours
+    - Uncheck all colour features
+    - Uncheck all features
+    - Turn off all colours
+    - Turn off all colour features
+
+# uncheck colour features
+- intent: colour_feature_constructiveness_uncheck
+  examples: |
+    - Uncheck constructiveness colour
+    - Uncheck constructiveness colour feature
+    - Turn off constructiveness colour
+    - Turn off constructiveness colour feature
+    - Disable constructiveness colour feature
+    - Disable constructiveness colour
+
+- intent: colour_feature_argumentation_uncheck
+  examples: |
+    - Uncheck argumentation colour
+    - Uncheck argumentation colour feature
+    - Turn off argumentation colour
+    - Turn off argumentation colour feature
+    - Disable argumentation colour feature
+    - Disable argumentation colour
+
+- intent: colour_feature_sarcasm_uncheck
+  examples: |
+    - Uncheck sarcasm colour
+    - Uncheck sarcasm colour feature
+    - Turn off sarcasm colour
+    - Turn off sarcasm colour feature
+    - Disable sarcasm colour feature
+    - Disable sarcasm colour
+
+- intent: colour_feature_mockery_uncheck
+  examples: |
+    - Uncheck mockery colour
+    - Uncheck mockery colour feature
+    - Turn off mockery colour
+    - Turn off mockery colour feature
+    - Disable mockery colour feature
+    - Disable mockery colour
+
+- intent: colour_feature_intolerance_uncheck
+  examples: |
+    - Uncheck intolerance colour
+    - Uncheck intolerance colour feature
+    - Turn off intolerance colour
+    - Turn off intolerance colour feature
+    - Disable intolerance colour feature
+    - Disable intolerance colour
+
+- intent: colour_feature_improper_uncheck
+  examples: |
+    - Uncheck improper language colour
+    - Uncheck improper language colour feature
+    - Turn off improper language colour
+    - Turn off improper language colour feature
+    - Disable improper language colour feature
+    - Disable improper language colour
+
+- intent: colour_feature_insult_uncheck
+  examples: |
+    - Uncheck insult colour
+    - Uncheck insult colour feature
+    - Turn off insult colour
+    - Turn off insult colour feature
+    - Disable insult colour feature
+    - Disable insult colour
+
+- intent: colour_feature_aggressiveness_uncheck
+  examples: |
+    - Uncheck aggressiveness colour
+    - Uncheck aggressiveness colour feature
+    - Turn off aggressiveness colour
+    - Turn off aggressiveness colour feature
+    - Disable aggressiveness colour feature
+    - Disable aggressiveness colour
+
+- intent: colour_feature_stereotype_uncheck
+  examples: |
+    - Uncheck stereotype colour
+    - Uncheck stereotype colour feature
+    - Turn off stereotype colour
+    - Turn off stereotype colour feature
+    - Disable stereotype colour feature
+    - Disable stereotype colour
+
+# targets check
+- intent: icon_feature_person
+  examples: |
+    - Highlight target person icon feature
+    - Highlight target person icon
+    - Check target person icon
+    - Check target person icon feature
+    - Show me target person icon feature
+    - Show me target person icon feature
+    - Check target person icon
+    - I want to see target person icon feature
+    - I would like to see target person icon feature
+    - Turn on target person icon
+    - Turn on target person iconr feature
+    - Select target person icon feature
+    - Select target person icon
+    - Activate target person icon feature
+    - Enable target person icon feature
+
+- intent: icon_feature_group
+  examples: |
+    - Highlight target group icon feature
+    - Highlight target group icon
+    - Check target group icon
+    - Check target group icon feature
+    - Show me target group icon feature
+    - Show me target group icon feature
+    - Check target group icon
+    - I want to see target group icon feature
+    - I would like to see target group icon feature
+    - Turn on target group icon
+    - Turn on target group icon feature
+    - Select target group icon feature
+    - Select target group icon
+    - Activate target group icon feature
+    - Enable target group icon feature
+
+#check/uncheck all targets
+- intent: check_all_target_icons
+  examples: |
+    - Highlight all target icons
+    - Check all target icons
+    - Show me all target icons
+    - I want to see all target icons
+    - I would like to see all target icons
+    - Turn on all target icons
+
+- intent: uncheck_all_target_icons
+  examples: |
+    - Disable all target icons
+    - Uncheck all target icons
+    - Turn off all target icons
+
+# uncheck targets
+- intent: uncheck_target_person
+  examples: |
+    - Uncheck target person icon
+    - Turn off target person icon
+    - Disable target person icon
+
+- intent: uncheck_target_group
+  examples: |
+    - Uncheck target group icon
+    - Turn off target group icon
+    - Disable target group icon
 
 
+# asking a filter without specifying which method
+
+- intent: filter_test
+  examples: |
+    - Select [constructiveness]{"entity": "filter_name"}
+    - Select [constructive]{"entity": "filter_name" }
+    - Check  [constructive]{"entity": "filter_name" }
+    - Check  [constructiveness]{"entity": "filter_name"}
+    - Show me [constructiveness]{"entity": "filter_name"}
+    - I want to see [constructiveness]{"entity": "filter_name"}
+    - Activate [constructiveness]{"entity": "filter_name"}
+    - Enable [constructiveness]{"entity": "filter_name"}
+    - Highlight [constructiveness]{"entity": "filter_name"}
+    - Turn on [constructiveness]{"entity": "filter_name"}
+
+- intent: filters_argument
+  examples: |
+    - Select [argumentation]{"entity": "filter_name"}
+    - Select [argument]{"entity": "filter_name" }
+    - Check  [argumentation]{"entity": "filter_name" }
+    - Check  [argument]{"entity": "filter_name"}
+    - Show me [argumentation]{"entity": "filter_name"}
+    - I want to see [argumenation]{"entity": "filter_name"}
+    - Activate [argumenation]{"entity": "filter_name"}
+    - Enable [argumenation]{"entity": "filter_name"}
+    - Highlight [argumenation]{"entity": "filter_name"}
+    - Turn on [argumenation]{"entity": "filter_name"}
 
 
-#- intent: check_target_group
-#  examples: |
-#    - Highlight target group feature
-#    - Highlight target group icon
-#    - Check target group icon
-#    - Show me target group
-#    - Show me target group icon
-#    - I want to see target group icon
-#    - I would like to see target group
-#    - Turn on target group
-#
-#
-#- intent: check_target_person
-#  examples: |
-#    - Highlight target person feature
-#    - Highlight target person icon
-#    - Check target person icon
-#    - Show me target person
-#    - Show me target person icon
-#    - I want to see target person icon
-#    - I would like to see target person
-#    - Turn on target person
-#
-#- intent: check_target_person
-#  examples: |
-#    - Highlight stereotype feature
-#    - Highlight stereotype icon
-#    - Check stereotype icon
-#    - Show me stereotype person
-#    - Show me stereotype icon
-#    - I want to see stereotype icon
-#    - I would like to see stereotype
-#    - Turn on stereotype
-#
-#- intent: check_all_colour_features
-#  examples: |
-#    - Highlight all targets
-#    - Check all colours
-#    - Check all colour features
-#    - Show me all colour features
-#    - Check all features
-#    - I want to see all colour features
-#    - I would like to see all colour features
-#    - Turn on all colours
-#    - Turn on all colour features
-#
-#- intent: uncheck_all_colour_features
-#  examples: |
-#    - Disable all colour features
-#    - Uncheck all colours
-#    - Uncheck all colour features
-#    - Uncheck all features
-#    - Turn off all colours
-#    - Turn off all colour features
-#
+- intent: filters_sarcasm
+  examples: |
+    - Select [sarcasm]{"entity": "filter_name"}
+    - Select [sarcastic]{"entity": "filter_name" }
+    - Check  [sarcasm]{"entity": "filter_name" }
+    - Check  [sarcastic]{"entity": "filter_name"}
+    - Show me [sarcasm]{"entity": "filter_name"}
+    - I want to see [sarcasm]{"entity": "filter_name"}
+    - Activate [sarcasm]{"entity": "filter_name"}
+    - Enable [sarcasm]{"entity": "filter_name"}
+    - Highlight [sarcasm]{"entity": "filter_name"}
+    - Turn on [sarcasm]{"entity": "filter_name"}
+
+- intent: filters_mockery
+  examples: |
+    - Select [mockery]{"entity": "filter_name"}
+    - Select [mockery]{"entity": "filter_name" }
+    - Check  [mockery]{"entity": "filter_name" }
+    - Check  [mockery]{"entity": "filter_name"}
+    - Show me [mockery]{"entity": "filter_name"}
+    - I want to see [mockery]{"entity": "filter_name"}
+    - Activate [mockery]{"entity": "filter_name"}
+    - Enable [mockery]{"entity": "filter_name"}
+    - Highlight [mockery]{"entity": "filter_name"}
+    - Turn on [mockery]{"entity": "filter_name"}
+
+- intent: filters_intolerance
+  examples: |
+    - Select [intolerance]{"entity": "filter_name"}
+    - Select [intolerance]{"entity": "filter_name" }
+    - Check  [intolerance]{"entity": "filter_name" }
+    - Check  [intolerance]{"entity": "filter_name"}
+    - Show me [intolerance]{"entity": "filter_name"}
+    - I want to see [intolerance]{"entity": "filter_name"}
+    - Activate [intolerance]{"entity": "filter_name"}
+    - Enable [intolerance]{"entity": "filter_name"}
+    - Highlight [intolerance]{"entity": "filter_name"}
+    - Turn on [intolerance]{"entity": "filter_name"}
+
+- intent: filters_improper
+  examples: |
+    - Select [improper language]{"entity": "filter_name"}
+    - Select [improper language]{"entity": "filter_name" }
+    - Check  [improper language]{"entity": "filter_name" }
+    - Check  [improper language]{"entity": "filter_name"}
+    - Show me [improper language]{"entity": "filter_name"}
+    - I want to see [improper language]{"entity": "filter_name"}
+    - Activate [improper language]{"entity": "filter_name"}
+    - Enable [improper language]{"entity": "filter_name"}
+    - Highlight [improper language]{"entity": "filter_name"}
+    - Turn on [improper language]{"entity": "filter_name"}
+
+- intent: filters_insult
+  examples: |
+    - Select [insult]{"entity": "filter_name"}
+    - Select [insult]{"entity": "filter_name" }
+    - Check  [insult]{"entity": "filter_name" }
+    - Check  [insult]{"entity": "filter_name"}
+    - Show me [insult]{"entity": "filter_name"}
+    - I want to see [insult]{"entity": "filter_name"}
+    - Activate [insult]{"entity": "filter_name"}
+    - Enable [insult]{"entity": "filter_name"}
+    - Highlight [insult]{"entity": "filter_name"}
+    - Turn on [insult]{"entity": "filter_name"}
+
+- intent: filters_aggressiveness
+  examples: |
+    - Select [aggressiveness]{"entity": "filter_name"}
+    - Select [aggressiveness]{"entity": "filter_name" }
+    - Check  [aggressiveness]{"entity": "filter_name" }
+    - Check  [aggressiveness]{"entity": "filter_name"}
+    - Show me [aggressiveness]{"entity": "filter_name"}
+    - I want to see [aggressiveness]{"entity": "filter_name"}
+    - Activate [aggressiveness]{"entity": "filter_name"}
+    - Enable [aggressiveness]{"entity": "filter_name"}
+    - Highlight [aggressiveness]{"entity": "filter_name"}
+    - Turn on [aggressiveness]{"entity": "filter_name"}
+
+- intent: filters_stereotype
+  examples: |
+    - Select [stereotype]{"entity": "filter_name"}
+    - Select [stereotype]{"entity": "filter_name" }
+    - Check  [stereotype]{"entity": "filter_name" }
+    - Check  [stereotype]{"entity": "filter_name"}
+    - Show me [stereotype]{"entity": "filter_name"}
+    - I want to see [stereotype]{"entity": "filter_name"}
+    - Activate [stereotype]{"entity": "filter_name"}
+    - Enable [stereotype]{"entity": "filter_name"}
+    - Highlight [stereotype]{"entity": "filter_name"}
+    - Turn on [stereotype]{"entity": "filter_name"}
+
+- intent: filters_person
+  examples: |
+    - Select [target person]{"entity": "filter_name"}
+    - Select [target person]{"entity": "filter_name" }
+    - Check [target person]{"entity": "filter_name" }
+    - Check [target person]{"entity": "filter_name"}
+    - Show me [target person]{"entity": "filter_name"}
+    - I want to see [target person]{"entity": "filter_name"}
+    - Activate [target person]{"entity": "filter_name"}
+    - Enable [target person]{"entity": "filter_name"}
+    - Highlight [target person]{"entity": "filter_name"}
+    - Turn on [target person]{"entity": "filter_name"}
+
+- intent: filters_group
+  examples: |
+    - Select [target group]{"entity": "filter_name"}
+    - Select [target group]{"entity": "filter_name" }
+    - Check [target group]{"entity": "filter_name" }
+    - Check [target group]{"entity": "filter_name"}
+    - Show me [target group]{"entity": "filter_name"}
+    - I want to see [target group]{"entity": "filter_name"}
+    - Activate [target group]{"entity": "filter_name"}
+    - Enable [target group]{"entity": "filter_name"}
+    - Highlight [target group]{"entity": "filter_name"}
+    - Turn on [target group]{"entity": "filter_name"}
+
+- intent: reset_all_filters
+  examples: |
+    - I want to deselect all filters
+    - Desselect all filters
+    - Reset all filters
+    - Undo all filters
+    - Disable all filters
+    - Remove all filters
+
+
 
