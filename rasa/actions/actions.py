@@ -525,17 +525,18 @@ filters_ids = {
     "toxic": "highlight-toxicity-2", "positive stance": "highlight-stance-positive",
     "negative stance": "highlight-stance-negative", "neutral stance": "highlight-stance-neutral",
     "target person": "highlight-target-person", "target group": "highlight-target-group",
-    "stereotype": "highlight-target-stereotype", "all targets": "selectAll-target",
+    "stereotype": "highlight-features-stereotype", "all targets": "selectAll-target",
     "constructiveness": "highlight-features-constructiveness", "argumentation": "highlight-features-argumentation",
     "sarcasm": "highlight-features-sarcasm", "mockery": "highlight-features-mockery",
     "intolerance": "highlight-features-intolerance", "improper language": "highlight-features-improper-language",
     "insult": "highlight-features-insult", "aggressiveness": "highlight-features-aggressiveness",
-    "all features": "selectAll-features"
+    "all features": "selectAll-features", "all stances": "selectAll-stance",
+    "all levels of toxicity": "selectAll-toxicity"
 }
 choices = ["not toxic", "non toxic", "very toxic", "mildly toxic", "toxic", "positive stance", "negative stance",
            "neutral stance", "target person", "target group", "stereotype", "all targets", "constructiveness",
            "argumentation", "sarcasm", "mockery", "intolerance", "improper language", "insult", "aggressiveness",
-           "all features"]
+           "all features", "all levels of toxicity", "all stances"]
 threshold = 60
 
 
@@ -548,15 +549,27 @@ class ActionHighlightCheck(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
+        previous_filters = tracker.get_slot("previous_filters")
+
         values = []
         for e in tracker.latest_message['entities']:
             if e['entity'] == 'filter_name':
                 result, confidence = process.extractOne(e['value'], choices)
                 if confidence >= threshold:
                     values.append(filters_ids[result])
-        dispatcher.utter_message(text="intent_filter," + ';'.join(values))
+        if previous_filters is None:
+            # Send the message for the first time
+            dispatcher.utter_message(text="intent_filter," + ';'.join(values))
+            dispatcher.utter_message(text="I have automatically selected AND. You can also change to OR.",
+                                     buttons=[
+                                         {"title": "Read more here", "payload": "/help_AND_OR"}
+                                     ])
 
-        return [SlotSet("previous_filters", values)]
+            return [SlotSet("previous_filters", values)]
+
+        else:
+            dispatcher.utter_message(text="intent_filter," + ';'.join(values))
+            return [SlotSet("previous_filters", values)]
 
 
 class ActionHighlightCheckLast(Action):

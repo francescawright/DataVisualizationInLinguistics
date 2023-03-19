@@ -372,17 +372,7 @@
                                  width="20" height="20" style="float:right; ">
                         </div>
 
-                        <div class="custom-control custom-switch" style="line-height: 23px;">
-                            <input type="checkbox" class="custom-control-input" name="cbTargets"
-                                   value="target-stereotype"
-                                   id="target-stereotype" form="main_form"
-                                   {% if cbTargets.target_stereotype == 1 %}checked{% else %}unchecked{% endif %}>
-                            <label class="custom-control-label" for="target-stereotype">Stereotype
-                            </label>
-                            <img src="{% static './images/targets/icons/Stereotype.svg' %}"
-                                 alt="Orange thinking cloud"
-                                 width="20" height="20" style="float:right;">
-                        </div>
+
 
                     </div>
                 </div>
@@ -540,6 +530,19 @@
                                     </svg>
                                 </div>
                             </div>
+
+
+                            <div class="custom-control custom-switch" style="line-height: 23px;">
+                            <input type="checkbox" class="custom-control-input" name="cbFeatures"
+                                   value="target-stereotype"
+                                   id="target-stereotype" form="main_form"
+                                   {% if cbTargets.target_stereotype == 1 %}checked{% else %}unchecked{% endif %}>
+                            <label class="custom-control-label" for="target-stereotype">Stereotype
+                            </label>
+                            <img src="{% static './images/targets/icons/Stereotype.svg' %}"
+                                 alt="Orange thinking cloud"
+                                 width="20" height="20" style="float:right;">
+                        </div>
 
                         </div>
                     </div>
@@ -741,17 +744,7 @@
                                          width="20"
                                          height="20" style="float:right; margin-right: 10px;">
                                 </div>
-                                <div class="custom-control custom-switch" style="line-height: 23px;">
-                                    <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
-                                           value="highlight-target-stereotype"
-                                           id="highlight-target-stereotypeOR" form="main_form"
-                                           {% if cbFilterOR.highlight_target_stereotype == 1 %}checked{% else %}unchecked{% endif %}>
-                                    <label class="custom-control-label" for="highlight-target-stereotypeOR">Stereotype</label>
-                                    <img src="{% static './images/targets/icons/Stereotype.svg' %}"
-                                         alt="Purple people"
-                                         width="20"
-                                         height="20" style="float:right; margin-right: 10px;">
-                                </div>
+
 
                                 <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
 
@@ -880,6 +873,20 @@
                                                     fill="#5E1566"/>
                                         </svg>
                                     </div>
+                                </div>
+
+
+                                <div class="custom-control custom-switch" style="line-height: 23px;">
+                                    <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                           value="highlight-features-stereotype"
+                                           id="highlight-features-stereotypeOR" form="main_form"
+                                           {% if cbFilterOR.highlight_target_stereotype == 1 %}checked{% else %}unchecked{% endif %}>
+                                    <label class="custom-control-label"
+                                           for="highlight-features-stereotypeOR">Stereotype</label>
+                                    <img src="{% static './images/targets/icons/Stereotype.svg' %}"
+                                         alt="Purple people"
+                                         width="20"
+                                         height="20" style="float:right; margin-right: 10px;">
                                 </div>
 
                                 <div class="text-center" style="padding-top: 10px;">
@@ -1037,20 +1044,7 @@
                                          width="20"
                                          height="20" style="float:right; margin-right: 10px;">
                                 </div>
-                                <div class="custom-control custom-switch" style="line-height: 23px;">
-                                    <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
-                                           value="highlight-target-stereotype"
-                                           id="highlight-target-stereotype" form="main_form"
-                                           {% if cbFilterAND.highlight_target_stereotype == 1 %}checked{% else %}unchecked{% endif %}
 
-                                    ><label
-                                        class="custom-control-label"
-                                        for="highlight-target-stereotype">Stereotype</label>
-                                    <img src="{% static './images/targets/icons/Stereotype.svg' %}"
-                                         alt="Purple people"
-                                         width="20"
-                                         height="20" style="float:right; margin-right: 10px;">
-                                </div>
 
                                 <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
 
@@ -1202,6 +1196,22 @@
                                         </svg>
                                     </div>
                                 </div>
+
+                                <div class="custom-control custom-switch" style="line-height: 23px;">
+                                    <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
+                                           value="highlight-features-stereotype"
+                                           id="highlight-features-stereotype" form="main_form"
+                                           {% if cbFilterAND.highlight_target_stereotype == 1 %}checked{% else %}unchecked{% endif %}
+
+                                    ><label
+                                        class="custom-control-label"
+                                        for="highlight-features-stereotype">Stereotype</label>
+                                    <img src="{% static './images/targets/icons/Stereotype.svg' %}"
+                                         alt="Purple people"
+                                         width="20"
+                                         height="20" style="float:right; margin-right: 10px;">
+                                </div>
+
                                 <div class="text-center" style="padding-top: 10px;">
                                     <input class="btn btn-secondary" type="button" id="uncheck_button_highlight_AND"
                                            name="check_button_highlight" value="Uncheck All"

@@ -652,30 +652,38 @@
                     break;
                 case "intent_show_colour_features":
                     if ('{{ selected_item }}') {
-                        if (messageList[1] === "constructiveness" && document.getElementById("constructiveness").classList.contains("checked")) {
-                            e.text = "Constructiveness colour feature unchecked";
-                        } else if (messageList[1] === "argumentation" && document.getElementById("argumentation").classList.contains("checked")) {
-                            e.text = "Argumentation colour feature unchecked";
-                        } else if (messageList[1] === "sarcasm" && document.getElementById("sarcasm").classList.contains("checked")) {
-                            e.text = "Sarcasm colour feature unchecked";
-                        } else if (messageList[1] === "mockery" && document.getElementById("mockery").classList.contains("checked")) {
-                            e.text = "Mockery colour feature unchecked";
-                        } else if (messageList[1] === "intolerance" && document.getElementById("intolerance").classList.contains("checked")) {
-                            e.text = "Intolerance colour feature unchecked";
-                        } else if (messageList[1] === "improper_language" && document.getElementById("improper_language").classList.contains("checked")) {
-                            e.text = "Improper language colour feature unchecked";
-                        } else if (messageList[1] === "insult" && document.getElementById("insult").classList.contains("checked")) {
-                            e.text = "Insult colour feature unchecked";
-                        } else if (messageList[1] === "aggressiveness" && document.getElementById("aggressiveness").classList.contains("checked")) {
-                            e.text = "Aggressiveness colour feature unchecked";
-                        } else if (messageList[1] === "check_button_features" && document.getElementById("check_button_features").classList.contains("checked")) {
-                            e.text = "All colour features unchecked";
-                        } else if (messageList[1] === "uncheck_button_features" && document.getElementById("uncheck_button_features").classList.contains("checked")) {
-                            e.text = "All colour features unchecked";
+                        const checkboxes = ["constructiveness", "argumentation", "sarcasm", "mockery", "intolerance", "improper_language", "insult", "aggressiveness", "target-stereotype"];
+                        let checked = false;
+                        for (let i = 0; i < checkboxes.length; i++) {
+                            if (messageList[1] === checkboxes[i] && document.getElementById(checkboxes[i]).checked) {
+                                e.text = `${checkboxes[i].charAt(0).toUpperCase() + checkboxes[i].slice(1)} colour feature is already checked`;
+                                checked = true;
+                                break;
+                            }
                         }
-                        else {
-                            e.text =  messageList[2];
+                        if (!checked) {
+                            e.text = messageList[2];
                             document.getElementById(messageList[1]).click();
+                        }
+                    }
+                    else {
+                        e.text = "Open a file first, in order to perform this action";
+                    }
+                    break;
+                case "intent_uncheck_colour_features":
+                    if ('{{ selected_item }}') {
+                        const checkboxes = ["constructiveness", "argumentation", "sarcasm", "mockery", "intolerance", "improper_language", "insult", "aggressiveness", "target-stereotype"];
+                        let checked = false;
+                        for (let i = 0; i < checkboxes.length; i++) {
+                            if (messageList[1] === checkboxes[i] && document.getElementById(checkboxes[i]).checked) {
+                                checked = true;
+                                document.getElementById(checkboxes[i]).click();
+                                e.text = `${checkboxes[i].charAt(0).toUpperCase() + checkboxes[i].slice(1)} colour feature is now unchecked`;
+                                break;
+                            }
+                        }
+                        if (!checked) {
+                            e.text = `${messageList[1].charAt(0).toUpperCase() + messageList[1].slice(1)} colour feature is already unchecked`;
                         }
                     } else {
                         e.text = "Open a file first, in order to perform this action";
@@ -683,25 +691,43 @@
                     break;
                 case "intent_show_targets":
                     if ('{{ selected_item }}') {
-                        if (messageList[1] === "target-group" && document.getElementById("target-group").classList.contains("checked")) {
-                            e.text = "Target group unchecked";
-                        } else if (messageList[1] === "target-person" && document.getElementById("target-person").classList.contains("checked")) {
-                            e.text = "Target person unchecked";
-                        } else if (messageList[1] === "target-stereotype" && document.getElementById("target-stereotype").classList.contains("checked")) {
-                            e.text = "Stereotype feature unchecked";
-                        } else if (messageList[1] === "check_button_targets" && document.getElementById("check_button_targets").classList.contains("checked")) {
-                            e.text = "All targets unchecked";
-                        } else if (messageList[1] === "uncheck_button_targets" && document.getElementById("uncheck_button_targets").classList.contains("checked")) {
-                            e.text = "All targets unchecked";
-                        } else {
+                        const checkboxes = ["target-group", "target-person"];
+                        let checked = false;
+                        for (let i = 0; i < checkboxes.length; i++) {
+                            if (messageList[1] === checkboxes[i] && document.getElementById(checkboxes[i]).checked) {
+                                e.text = `Target is already checked`;
+                                checked = true;
+                                break;
+                            }
+                        }
+                        if (!checked) {
                             e.text = messageList[2];
                             document.getElementById(messageList[1]).click();
+                        }
+                    }
+                    else {
+                        e.text = "Open a file first, in order to perform this action";
+                    }
+                    break;
+                case "intent_uncheck_targets":
+                    if ('{{ selected_item }}') {
+                        const checkboxes = ["target-person", "target-group"];
+                        let checked = false;
+                        for (let i = 0; i < checkboxes.length; i++) {
+                            if (messageList[1] === checkboxes[i] && document.getElementById(checkboxes[i]).checked) {
+                                checked = true;
+                                document.getElementById(checkboxes[i]).click();
+                                e.text = `Target is now unchecked`;
+                                break;
+                            }
+                        }
+                        if (!checked) {
+                            e.text = `Target is already unchecked`;
                         }
                     } else {
                         e.text = "Open a file first, in order to perform this action";
                     }
                     break;
-
                 case "intent_glyphs_blinking":
                     if ('{{ selected_item }}'){
                         if (messageList[1]==="glyphs-radio-buttons"){
@@ -768,6 +794,7 @@
                 case "intent_filter":
                     if ('{{ selected_item }}') {
                         let filters = messageList[1].split(";");
+                        let breakLoop = false; // add variable to break loop
                         for (let i = 0; i < filters.length; i++) {
                             let filterName = filters[i].split("-");
                             if (filterName[0] === "selectAll") {
@@ -776,7 +803,15 @@
                                         document.getElementById("highlight-OR-" + filters[i]).click();
                                     }
                                 } else if (document.getElementById("and_label").classList.contains("active")) {
-                                    if (!document.getElementById("highlight-AND-" + filters[i]).checked) {
+                                    if (filterName[1] === "stance") {
+                                        e.text = "You can't select all stances in AND option.";
+                                        breakLoop = true;
+                                        break;
+                                    } else if (filterName[1] === "toxicity") {
+                                        e.text = "You can't select all levels of toxicity in AND option.";
+                                        breakLoop = true;
+                                        break;
+                                    } else if (!document.getElementById("highlight-AND-" + filters[i]).checked) {
                                         document.getElementById("highlight-AND-" + filters[i]).click();
                                     }
                                 }
@@ -792,11 +827,12 @@
                                 }
                             }
                         }
-
-                        if (filters.length === 1) {
-                            e.text = "I checked the filter"
-                        } else {
-                            e.text =  "I have checked the filters"
+                        if (!breakLoop) { // check variable to skip last if statement
+                            if (filters.length === 1) {
+                                e.text = "I checked the filter"
+                            } else {
+                                e.text = "I have checked the filters"
+                            }
                         }
                     } else {
                         e.text = "Open a file first, in order to perform this action";
@@ -882,6 +918,18 @@
                     }
                     break;
                 //
+                case "intent_reset_filters":
+                    if ('{{ selected_item }}') {
+                        document.getElementById("uncheck_button_highlight_AND").click();
+                        document.getElementById("uncheck_button_highlight_OR").click();
+                        document.getElementById("uncheck_button_features").click();
+                        document.getElementById("uncheck_button_targets").click();
+
+                        e.text = "All filters have been reset.";
+                    } else{
+                        e.text = "Open a file first, in order to perform this action";
+                    }
+                    break;
                 case "intent_event":
                     if ('{{ selected_item }}') {
                         e.text = messageList[2];
@@ -998,6 +1046,12 @@
 </script>
 
 <script>
+
+
+
+</script>
+
+<script>
     // Returns the value of the delay time according to the message provided
     // It depends on the length of the message
     function getDelayChatMsg(message) {
@@ -1042,6 +1096,9 @@
                 },
                 onSocketEvent: {
                     'bot_uttered': botMessageEvent,
+                    'user_uttered': function (e) {
+                        console.log("User message: ", e.message.text);
+                    },
                     'connect': function() {
                         console.log('connection established');
                         addNewFeatures();
@@ -1084,6 +1141,15 @@
         }),
         t.insertBefore(e, t.firstChild);
     })();
+
+</script>
+
+
+<script>
+
+
+
+
 
 </script>
 
