@@ -264,7 +264,7 @@ responses:
 # layouts
 
   utter_change_layout:
-  - text: "To which layout do you want to change?"
+  - text: "Which layout do you want to change to?"
     buttons:
       - title: "Tree"
         payload: '/change_layout_tree{{"object_requested":"layout","layout_requested":"tree"}}'
@@ -393,7 +393,7 @@ responses:
 #      image: "https://ecemkavaz.github.io/imagesRasa/trivial.svg"
 
   utter_explain_glyphs_two:
-    - text: "Use left bar to activate/deactivate the features. "
+    - text: "Use the bar on the left to activate/deactivate the features. "
 
 
   utter_explain_glyphs_three:
@@ -409,7 +409,7 @@ responses:
             payload: '/change_glyph_trivial{{"object_requested":"glyph","glyph_requested":"trivial"}}'
 
   utter_explain_targets_one:
-    - text: "All comments are annotated with the targets they direct to."
+    - text: "All comments are annotated with the targets they are directed at."
   utter_explain_targets_two:
     - text: "Target Group"
       image: "https://ecemkavaz.github.io/imagesRasa/Group.svg"
@@ -438,12 +438,12 @@ responses:
       image: "https://ecemkavaz.github.io/imagesRasa/features2.png"
 
 #  utter_help_layouts_one:
-#    - text: "There are four available layouts."
+#    - text: "There are four layouts available."
 #      image: "https://ecemkavaz.github.io/imagesRasa/layoutsAll2.png"
 
   utter_help_layouts_one:
-    - text: "intent_layouts_signal,layouts-radio-buttons,I automatically select the best fitted layout according
-                      to your data.
+    - text: "intent_layouts_signal,layouts-radio-buttons,I automatically select 
+    the layout that best fits your data.
                       "
 
 #      image: "https://ecemkavaz.github.io/imagesRasa/layoutsAll2.png"
@@ -491,7 +491,7 @@ responses:
   utter_help_summary:
     - text: "Summary shows how many comments are labelled with different levels of toxicity, and targets.  \ \n
 
-    It reflects data contained in the current visualization."
+    It reflects data contained in the current visualisation."
       image: "https://ecemkavaz.github.io/imagesRasa/summary.png"
 
   utter_help_main_bar:
