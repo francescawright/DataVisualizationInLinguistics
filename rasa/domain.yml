@@ -93,6 +93,14 @@ intents:
   - uncheck_all_colour_features
   - show_colour_feature
   - two_actions
+  - filter_test
+  - filters_argument
+  - filters_sarcasm
+  - filters_mockery
+  - filters_intolerance
+  - filters_improper
+  - filters_insult
+  - filters_aggressiveness
 
 actions:
   - action_check_session_login
@@ -253,6 +261,8 @@ responses:
   utter_ask_signup_form_password_confirmation:
   - text: "Please retype the password to confirm it"
 
+# layouts
+
   utter_change_layout:
   - text: "To which layout do you want to change?"
     buttons:
@@ -281,7 +291,6 @@ responses:
   - text: "What file do you want to open?"
 
 #  Glyphs
-
   utter_change_to_dots:
   - text: "intent_change_glyphs,dots_icon_button,Glyph changed to Dots"
 
@@ -290,7 +299,6 @@ responses:
 
   utter_change_to_trivial:
   - text: "intent_change_glyphs,trivial_icon_button,Glyph changed to Trivial"
-
 
   utter_change_glyphs:
    - text: "To which glyph do you want to change?"
@@ -301,7 +309,6 @@ responses:
         payload: '/change_glyph_circular{{"object_requested":"glyph","glyph_requested":"circular"}}'
       - title: "Trivial Cheese"
         payload: '/change_glyph_trivial{{"object_requested":"glyph","glyph_requested":"trivial"}}'
-
 
   # Filters
   # Change to OR / AND
@@ -314,12 +321,6 @@ responses:
   utter_highlight_uncheck_all:
   - text: "intent_highlight_uncheck_all,Here you have it"
 
-  #
-#  utter_glyph_signal:
-#    - text: "intent_glyphs_blinking,glyphs-radio-buttons"
-#
-#  utter_layout_signal:
-#    - text: "intent_layouts_signal,layouts-radio-buttons"
 
   # complex intent responses
 
@@ -354,6 +355,8 @@ responses:
 
   utter_asking_about_barchart:
     - text: "Do you want to see a bar chart comparing values of features?"
+
+# help
 
   utter_help_glyphs:
     - text: "You can directly see which features are tagged to which comments by using glyphs.  \ \n
@@ -571,18 +574,6 @@ responses:
           payload: '/tool_help'
 
 
-#  utter_explain_pop_up_toxic:
-#    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
-#
-#  utter_explain_pop_up_largest:
-#    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
-#
-#  utter_explain_pop_up_longest:
-#    - text: "You can see the the region highlighted in the main view and separately on a pop-up window."
-
-#  utter_explain_pop_up_widest:
-#    - text: "You can see the the region highlighted in the main view."
-
   utter_guide_bar_charts:
     - text: "Now you can compare the features with additional charts. Also, don't forget you can switch
     active window and compare whole graph's features with additional charts. Just ask me or select the
@@ -594,19 +585,11 @@ responses:
 #                the active window!"
 
 
-  utter_test:
-    - text: ""
-      buttons:
-        - title: "Test"
-          payload: '/change_glyph_dots{{"object_requested":"glyph","glyph_requested":"dots"}}'
-        - title: "Test2"
-          payload: '/change_glyph_dots{{"object_requested":"glyph","glyph_requested":"dots"}}'
-        - title: "Test3"
-          payload: '/change_glyph_dots{{"object_requested":"glyph","glyph_requested":"dots"}}'
 
   utter_start_analysis:
     - text: "You need to open a file before you start your analysis."
 
+# check colour features
 
   utter_colour_feature_constractive:
     - text: "intent_show_colour_features,constructiveness,Colour feature is checked"
@@ -638,6 +621,59 @@ responses:
   utter_uncheck_all_colour_features:
     - text: "intent_show_colour_features,uncheck_button_features,All colour features are unchecked"
 
+  utter_colour_feature_stereotype:
+    - text: "intent_show_colour_features,target-stereotype,Colour feature is checked"
+
+# uncheck colour features
+
+  utter_colour_feature_constractive_uncheck:
+    - text: "intent_uncheck_colour_features,constructiveness,Colour feature is unchecked"
+
+  utter_colour_feature_argumentation_uncheck:
+    - text: "intent_uncheck_colour_features,argumentation,Colour feature is unchecked"
+
+  utter_colour_feature_sarcasm_uncheck:
+    - text: "intent_uncheck_colour_features,sarcasm,Colour feature is unchecked"
+
+  utter_colour_feature_mockery_uncheck:
+    - text: "intent_uncheck_colour_features,mockery,Colour feature is unchecked"
+
+  utter_colour_feature_intolerance_uncheck:
+    - text: "intent_uncheck_colour_features,intolerance,Colour feature is unchecked"
+
+  utter_colour_feature_improper_uncheck:
+    - text: "intent_uncheck_colour_features,improper_language,Colour feature is unchecked"
+
+  utter_colour_feature_insult_uncheck:
+    - text: "intent_uncheck_colour_features,insult,Colour feature is unchecked"
+
+  utter_colour_feature_aggressiveness_uncheck:
+    - text: "intent_uncheck_colour_features,aggressiveness,Colour feature is unchecked"
+
+  utter_colour_feature_stereotype_uncheck:
+    - text: "intent_uncheck_colour_features,stereotype,Colour feature is unchecked"
+
+  # check targets
+  utter_icon_feature_person:
+    - text: "intent_show_targets,target-person,Target is checked"
+
+  utter_icon_feature_group:
+    - text: "intent_show_targets,target-group,Target is checked"
+
+  utter_icon_feature_checkall:
+    - text: "intent_show_targets,check_button_targets,All targets are checked"
+
+  utter_icon_feature_uncheckall:
+    - text: "intent_show_targets,uncheck_button_targets,All targets are unchecked"
+
+# uncheck targets
+  utter_uncheck_person:
+    - text: "intent_uncheck_targets,target-person"
+
+  utter_uncheck_group:
+    - text: "intent_uncheck_targets,target-group"
+
+# response to show me colour feature
   utter_which_colour_feature:
     - text: "Which colour feature?"
       buttons:
@@ -657,6 +693,8 @@ responses:
           payload: '/colour_feature_insult'
         - title: "Aggressiveness"
           payload: '/colour_feature_aggressiveness'
+        - title: "Stereotype"
+          payload: '/colour_feature_stereotype'
         - title: "All"
           payload: '/check_all_colour_features'
 
@@ -665,6 +703,101 @@ responses:
 
   utter_please_rephrase:
     - text: "I'm sorry, I didn't quite understand that. Could you rephrase?"
+
+# how do you want to display filter
+  utter_filter_test:
+    - text: "How do you want to display it?"
+      buttons:
+        - title: "Highlight Colour Feature"
+          payload: '/colour_feature_constructiveness'
+        - title: "Select Node & Edge"
+          payload: '/highlight_check{"filter_name": "constructiveness"}'
+
+  utter_filters_argumentation:
+    - text: "How do you want to display it?"
+      buttons:
+       - title: "Highlight Colour Feature"
+         payload: '/colour_feature_argumentation'
+       - title: "Select Node & Edge"
+         payload: '/highlight_check{"filter_name": "argumentation"}'
+
+
+  utter_filters_sarcasm:
+    - text: "How do you want to display it?"
+      buttons:
+      - title: "Highlight Colour Feature"
+        payload: '/colour_feature_sarcasm'
+      - title: "Select Node & Edge"
+        payload: '/highlight_check{"filter_name": "sarcasm"}'
+
+
+  utter_filters_mockery:
+    - text: "How do you want to display it?"
+      buttons:
+      - title: "Highlight Colour Feature"
+        payload: '/colour_feature_mockery'
+      - title: "Select Node & Edge"
+        payload: '/highlight_check{"filter_name": "mockery"}'
+
+
+  utter_filters_intolerance:
+    - text: "How do you want to display it?"
+      buttons:
+      - title: "Highlight Colour Feature"
+        payload: '/colour_feature_intolerance'
+      - title: "Select Node & Edge"
+        payload: '/highlight_check{"filter_name": "intolerance"}'
+
+  utter_filters_improper:
+    - text: "How do you want to display it?"
+      buttons:
+      - title: "Highlight Colour Feature"
+        payload: '/colour_feature_improper'
+      - title: "Select Node & Edge"
+        payload: '/highlight_check{"filter_name": "improper language"}'
+
+  utter_filters_insult:
+    - text: "How do you want to display it?"
+      buttons:
+      - title: "Highlight Colour Feature"
+        payload: '/colour_feature_insult'
+      - title: "Select Node & Edge"
+        payload: '/highlight_check{"filter_name": "insult"}'
+
+  utter_filters_aggressiveness:
+    - text: "How do you want to display it?"
+      buttons:
+      - title: "Highlight Colour Feature"
+        payload: '/colour_feature_aggressiveness'
+      - title: "Select Node & Edge"
+        payload: '/highlight_check{"filter_name": "aggressiveness"}'
+
+  utter_filters_stereotype:
+    - text: "How do you want to display it?"
+      buttons:
+        - title: "Highlight Colour Feature"
+          payload: '/colour_feature_stereotype'
+        - title: "Select Node & Edge"
+          payload: '/highlight_check{"filter_name": "stereotype"}'
+
+  utter_filters_target_person:
+    - text: "How do you want to display it?"
+      buttons:
+        - title: "Targets"
+          payload: '/icon_feature_person'
+        - title: "Select Node & Edge"
+          payload: '/highlight_check{"filter_name": "target person"}'
+
+  utter_filters_target_group:
+    - text: "How do you want to display it?"
+      buttons:
+        - title: "Targets"
+          payload: '/icon_feature_group'
+        - title: "Select Node & Edge"
+          payload: '/highlight_check{"filter_name": "target group"}'
+
+  utter_reset_all_filters:
+    - text: "intent_reset_filters"
 
 session_config:
   session_expiration_time: 60

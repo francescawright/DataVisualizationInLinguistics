@@ -28,7 +28,7 @@ var node;
 
 var root;
 
-var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
+var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Blank.png", "icons/Stereotype.svg"];
 var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
 /* Colours
@@ -962,7 +962,6 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
     function highlightByTarget(node, enabledHighlight, changeNodeOpacity) {
         if (enabledHighlight.indexOf("highlight-target-group") > -1) changeNodeOpacity(node, "target-group");
         if (enabledHighlight.indexOf("highlight-target-person") > -1) changeNodeOpacity(node, "target-person");
-        if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) changeNodeOpacity(node, "target-stereotype");
     }
 
     /**
@@ -979,6 +978,8 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
         if (enabledHighlight.indexOf("highlight-features-improper-language") > -1) changeNodeOpacity(node, "improper_language");
         if (enabledHighlight.indexOf("highlight-features-insult") > -1) changeNodeOpacity(node, "insult");
         if (enabledHighlight.indexOf("highlight-features-aggressiveness") > -1) changeNodeOpacity(node, "aggressiveness");
+
+        if (enabledHighlight.indexOf("highlight-features-stereotype") > -1) changeNodeOpacity(node, "target-stereotype");
     }
 
     // Div where the title of the "Static Values" is displayed

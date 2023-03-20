@@ -17,7 +17,7 @@ const minNodeRadius = 30;
 const incrementRadiusFactorPerChild = 5;
 const dotRadius = 15;
 
-var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Stereotype.svg", "icons/Blank.png"];
+var targetImagesPath = ["icons/Group.svg", "icons/Person.svg", "icons/Blank.png", "icons/Stereotype.svg"];
 var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"];
 
 /* Colours
@@ -351,7 +351,7 @@ function highlightTargetOR(node, enabledHighlight) {
     }
 
     //Stereotype CB is checked
-    if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-stereotype") > -1) {
         node.filter(function (d) {
             if (d.stereotype) d.highlighted = 1;
             return (d.stereotype);
@@ -379,7 +379,7 @@ function highlightTargetAND(node, enabledHighlight, opacityValue = 0.1) {
     }
 
     //Stereotype CB is checked
-    if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-stereotype") > -1) {
         node.filter(function (d) {
             if (!d.stereotype) d.highlighted = 0;
             return (!d.stereotype);

@@ -9,21 +9,6 @@ stories:
   - intent: affirm
   - action: utter_user_affirm_help
 
-- story: User says start analysis
-  steps:
-  - intent: greet
-  - action: utter_offers_help
-  - intent: start_analysis
-  - action: utter_start_analysis
-  - action: utter_ask_document_selection_form_document_requested
-
-- story: start analysis
-  steps:
-    - intent: start_analysis
-    - action: utter_start_analysis
-    - action: utter_ask_document_selection_form_document_requested
-
-
 - story: User does not need help
   steps:
   - intent: greet
@@ -241,6 +226,21 @@ stories:
     - active_loop: null
     - action: action_open_document
 
+- story: User says start analysis
+  steps:
+  - intent: greet
+  - action: utter_offers_help
+  - intent: start_analysis
+  - action: utter_start_analysis
+
+
+
+- story: start analysis
+  steps:
+    - intent: start_analysis
+    - action: utter_start_analysis
+
+
 
 - story: New scenario with guidance without affirm/deny 1
   steps:
@@ -417,11 +417,11 @@ stories:
     - intent: help_subtree_barchart
     - action: utter_help_subtree_bar
 
-- story: button image test
-  steps:
-    - intent: test_in
-    - action: action_image_test
-    - action: utter_test
+#- story: button image test
+#  steps:
+#    - intent: test_in
+#    - action: action_image_test
+#    - action: utter_test
 
 
 #- story: showing the features of our system 1

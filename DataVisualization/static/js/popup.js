@@ -573,7 +573,7 @@ function highlightTargetOR(node, enabledHighlight) {
     }
 
     //Stereotype CB is checked
-    if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-stereotype") > -1) {
         node.filter(function (d) {
             if (d.stereotype) d.highlighted = 1;
             return (d.stereotype);
@@ -600,7 +600,7 @@ function highlightTargetAND(node, enabledHighlight, opacityValue = 0.1) {
     }
 
     //Stereotype CB is checked
-    if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) {
+    if (enabledHighlight.indexOf("highlight-features-stereotype") > -1) {
         node.filter(function (d) {
             if (!d.stereotype) d.highlighted = 0;
             return (!d.stereotype);
@@ -8661,7 +8661,7 @@ $(popup_container).on("open", function () {
                 }
 
                 //Stereotype CB is checked
-                if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) {
+                if (enabledHighlight.indexOf("highlight-features-stereotype") > -1) {
                     node.filter(function (d) {
                         return (d.stereotype);
                     }).style("opacity", 1);
@@ -8863,7 +8863,7 @@ $(popup_container).on("open", function () {
                 }
 
                 //Stereotype CB is checked
-                if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) {
+                if (enabledHighlight.indexOf("highlight-features-stereotype") > -1) {
                     node.filter(function (d) {
                         return (!d.stereotype);
                     }).style("opacity", opacityValue);
@@ -10335,7 +10335,7 @@ $(popup_container).on("open", function () {
             function highlightByTarget(node, enabledHighlight, changeNodeOpacity) {
                 if (enabledHighlight.indexOf("highlight-target-group") > -1) changeNodeOpacity(node, "target-group");
                 if (enabledHighlight.indexOf("highlight-target-person") > -1) changeNodeOpacity(node, "target-person");
-                if (enabledHighlight.indexOf("highlight-target-stereotype") > -1) changeNodeOpacity(node, "target-stereotype");
+
             }
 
             /**
@@ -10352,6 +10352,8 @@ $(popup_container).on("open", function () {
                 if (enabledHighlight.indexOf("highlight-features-improper-language") > -1) changeNodeOpacity(node, "improper_language");
                 if (enabledHighlight.indexOf("highlight-features-insult") > -1) changeNodeOpacity(node, "insult");
                 if (enabledHighlight.indexOf("highlight-features-aggressiveness") > -1) changeNodeOpacity(node, "aggressiveness");
+
+                if (enabledHighlight.indexOf("highlight-features-stereotype") > -1) changeNodeOpacity(node, "target-stereotype");
             }
 
             console.log('[User]', user.split('/')[2], '| [interaction]', 'Circle_layout_loaded', '| [Date]', Date.now());
