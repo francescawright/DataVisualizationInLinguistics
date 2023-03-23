@@ -212,55 +212,144 @@ responses:
   utter_offers_help:
   - text: "Need something? 😊"
   - text: "Can I help you with anything? 😊"
+  - text: "Do you need any help? 😊"
+  - text: "Can I help you? 😊"
+  - text: "Do you need something? 😊"
+  - text: "Is there anything I can do to help? 😊"
+  - text: "Is there anything I could do to help? 😊"
+  - text: "Do you need anything? 😊"
+  - text: "Would you like me to help you with anything? 😊"
+  - text: "Can I do anything for you? 😊"
+  - text: "Would you like some help? 😊"
 
   utter_user_affirm_help:
     - text: "What can I do for you?"
     - text: "How can I help you?"
+    - text: "What would you like me to do?"
+    - text: "What would you like to do?"
+    - text: "How can I help?"
 
   utter_user_deny_help:
     - text: "Okay, don't hesitate to ask me for help if you need it"
     - text: "Okay, I am here if you need any help"
+    - text: "No problem, don't hesitate to ask me for help if you need it"
+    - text: "No problem, I am here if you need any help"
+    - text: "That's okay, don't hesitate to ask me for help if you need it"
+    - text: "That's okay, I am here if you need any help"
+    - text: "Okay, let me know if you need anything"
+    - text: "No problem, let me know if you need anything"
+    - text: "That's okay, let me know if you need anything"
+    - text: "All right, don't hesitate to ask me for help if you need it"
+    - text: "All right, I am here if you need any help?"
+    - text: "All right, let me know if you need anything"
 
   utter_goodbye:
-  - text: "Bye"
+  - text: "Bye!"
   - text: "Goodbye!"
-  - text: "See you later"
+  - text: "See you later!"
+  - text: "See you soon!"
+  - text: "See you next time!"
+  - text: "Goodbye"
+  - text: "See you!"
+
 
   utter_you_are_welcome:
   - text: "You are welcome"
   - text: "You're welcome"
   - text: "No problem!"
+  - text: "You're welcome!"
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
+  - text: "I'm a bot, powered by Rasa."
+  - text: "I am a chatbot, powered by Rasa."
+  - text: "I'm a chatbot, powered by Rasa."
 
   utter_logout_confirmation:
   - text: "Sure you want to log out?"
+  - text: "Are you sure you want to log out?"
+  - text: "Are you sure you're ready to log out?"
+  - text: "Ready to log out?"
+  - text: "Are you ready to log out?"
 
   utter_logout_cancellation:
   - text: "Okay! I will not log you out"
+  - text: "Okay! I will keep you logged in"
+  - text: "Okay! You are still logged in"
+  - text: "No problem! I will not log you out"
+  - text: "No problem! I will keep you logged in"
+  - text: "No problem! You are still logged in"
+  - text: "That's fine! I will not log you out"
+  - text: "That's fine! I will keep you logged in"
+  - text: "That's fine! You are still logged in"
+  - text: "Okay! I haven't logged you out"
+  - text: "No problem! I haven't logged you out"
+  - text: "That's fine! I haven't logged you out"
+  - text: "Okay! I won't log you out"
+  - text: "No problem! I won't log you out"
+  - text: "That's fine! I won't log you out"
 
   utter_logout_to_login:
   - text: "You are already logged in, do you want me to log you out to start a new session?"
+  - text: "You are already logged in, do you want me to log you out and start a new session?"
+  - text: "You are already logged in, would you like to log out to start a new session?"
+  - text: "You are already logged in, would you like to log out and start a new session?"
+  - text: "You are already logged in, would you like me to log you out to start a new session?"
+  - text: "You are already logged in, would you like me to log you out and start a new session?"
+  - text: "You are already logged in, do you want me to log you out and start a new session?"
+  - text: "You're already logged in, do you want me to log you out to start a new session?"
+  - text: "You're already logged in, do you want me to log you out and start a new session?"
+  - text: "You're already logged in, would you like to log out to start a new session?"
+  - text: "You're already logged in, would you like to log out and start a new session?"
+  - text: "You're already logged in, would you like me to log you out to start a new session?"
+  - text: "You're already logged in, would you like me to log you out and start a new session?"
+  - text: "You're already logged in, do you want me to log you out to start a new session?"
+  - text: "You're already logged in, do you want me to log you out and start a new session?"
+  - text: "You are already logged in, do you want to sign out to start a new session?"
+  - text: "You are already logged in, do you want to sign out and start a new session?"
+  - text: "You are already logged in, do you want me to sign you out to start a new session?"
+  - text: "You are already logged in, do you want me to sign you out and start a new session?"
 
   utter_logout_to_signup:
-  - text: "I need to close your current session in order to register the new user, is that ok?"
+  - text: "I need to close your current session in order to register the new user, is that okay?"
+  - text: "I'll have to close your current session in order to register the new user, is that okay?"
+  - text: "I need to log out of your current session in order to register the new user, is that okay?"
+  - text: "I need to close your current session to be able to register the new user, is that okay?"
+  - text: "I need to sign out of this session so that I can register a new user, is that all right with you?"
 
   utter_ask_username:
   - text: "What is your username?"
+  - text: "Could you tell me your username?"
+  - text: "What's your username?"
+  - text: "Can you tell me your username?"
+  - text: "What's your user?"
+  - text: "Could you tell me your user?"
+  - text: "What is your user?"
+
 
   utter_ask_signup_form_username:
   - text: "What username would you like to have?"
+  - text: "What username would you like to choose?"
+  - text: "Please choose a username"
 
   utter_ask_login_form_password:
-  - text: "and the password?"
+  - text: "And your password?"
+  - text: "What is your password?"
+  - text: "And what is your password?"
 
   utter_ask_signup_form_password:
   - text: "What password do you want to set?"
+  - text: "What password would you like to set?"
+  - text: "Now choose a password"
+  - text: "What do you want to set your password as?"
+  - text: "What would you like to set your password as?"
+  - text: "And now choose a password"
 
   utter_ask_signup_form_password_confirmation:
-  - text: "Please retype the password to confirm it"
-
+  - text: "Please retype your password to confirm it"
+  - text: "Please type your password again to confirm it"
+  - text: "Please confirm your password"
+  - text: "Please retype your password"
 # layouts
 
   utter_change_layout:
@@ -276,19 +365,108 @@ responses:
         payload: '/change_layout_circle{{"object_requested":"layout","layout_requested":"circle"}}'
 
   utter_change_layout_tree:
-  - text: "intent_change_layout,tree_layout_button,Layout changed to Tree"
+  - text: "intent_change_layout,tree_layout_button,I have changed the layout to Tree"
+  - text: "intent_change_layout,tree_layout_button,The layout has been changed to Tree"
+  - text: "intent_change_layout,tree_layout_button,Your data is now being visualised in the Tree layout"
+  - text: "intent_change_layout,tree_layout_button,Your data is now being shown in the Tree Layout"
+  - text: "intent_change_layout,tree_layout_button,Your data is now being visualised in the Tree Layout"
+  - text: "intent_change_layout,tree_layout_button,You data is now being displayed in the Tree Layout"
+  - text: "intent_change_layout,tree_layout_button,You are now visualising your data in the Tree Layout"
+  - text: "intent_change_layout,tree_layout_button,You are now displaying your data in the Tree Layout"
+  - text: "intent_change_layout,tree_layout_button,You're now visualising your data in the Tree Layout"
+  - text: "intent_change_layout,tree_layout_button,You're now displaying your data in the Tree Layout "
+  - text: "intent_change_layout,tree_layout_button,I've changed the layout to Tree"
+  - text: "intent_change_layout,tree_layout_button,The layout is now Tree"
+  - text: "intent_change_layout,tree_layout_button,I have set the display to Tree Layout"
+  - text: "intent_change_layout,tree_layout_button,Now displaying as a Tree layout"
+  - text: "intent_change_layout,tree_layout_button,Now visualising as a Tree layout"
+  - text: "intent_change_layout,tree_layout_button,Now showing as a Tree Layout"
+  - text: "intent_change_layout,tree_layout_button,Now using Tree Layout"
+  - text: "intent_change_layout,tree_layout_button, I have switched the layout to Tree"
+  - text: "intent_change_layout,tree_layout_button, I've switched the layout to Tree"
+  - text: "intent_change_layout,tree_layout_button,The layout has been switched to Tree"
+  - text: "intent_change_layout,tree_layout_button, I have adjusted the layout to Tree"
+  - text: "intent_change_layout,tree_layout_button, I've adjusted the layout to Tree"
+  - text: "intent_change_layout,tree_layout_button,The layout has been adjusted to Tree"
 
   utter_change_layout_force:
-  - text: "intent_change_layout,force_layout_button,Layout changed to Force"
+  - text: "intent_change_layout,force_layout_button,I have changed the layout to Force"
+  - text: "intent_change_layout,force_layout_button,The layout has been changed to Force"
+  - text: "intent_change_layout,force_layout_button,Your data is now being visualised in the Force layout"
+  - text: "intent_change_layout,force_layout_button,Your data is now being shown in the Force Layout"
+  - text: "intent_change_layout,force_layout_button,Your data is now being visualised in the Force Layout"
+  - text: "intent_change_layout,force_layout_button,You data is now being displayed in the Force Layout"
+  - text: "intent_change_layout,force_layout_button,You are now visualising your data in the Force Layout"
+  - text: "intent_change_layout,force_layout_button,You are now displaying your data in the Force Layout"
+  - text: "intent_change_layout,force_layout_button,You're now visualising your data in the Force Layout"
+  - text: "intent_change_layout,force_layout_button,You're now displaying your data in the Force Layout "
+  - text: "intent_change_layout,force_layout_button,I've changed the layout to Force"
+  - text: "intent_change_layout,force_layout_button,The layout is now Force"
+  - text: "intent_change_layout,force_layout_button,I have set the display to Force Layout"
+  - text: "intent_change_layout,force_layout_button,Now displaying as a Force Layout"
+  - text: "intent_change_layout,force_layout_button,Now visualising as a Force Layout"
+  - text: "intent_change_layout,force_layout_button,Now showing as a Force Layout"
+  - text: "intent_change_layout,force_layout_button,Now using Force Layout"
+  - text: "intent_change_layout,force_layout_button,I have switched the layout to Force"
+  - text: "intent_change_layout,force_layout_button,I've switched the layout to Force"
+  - text: "intent_change_layout,force_layout_button,The layout has been switched to Force"
+  - text: "intent_change_layout,force_layout_button,I have adjusted the layout to Force"
+  - text: "intent_change_layout,force_layout_button,I've adjusted the layout to Force"
+  - text: "intent_change_layout,force_layout_button,The layout has been adjusted to Force"
 
   utter_change_layout_radial:
-  - text: "intent_change_layout,radial_layout_button,Layout changed to Radial"
+  - text: "intent_change_layout,radial_layout_button,I have changed the layout to Radial"
+  - text: "intent_change_layout,radial_layout_button,The layout has been changed to Radial"
+  - text: "intent_change_layout,radial_layout_button,Your data is now being visualised in the Radial layout"
+  - text: "intent_change_layout,radial_layout_button,Your data is now being shown in the Radial Layout"
+  - text: "intent_change_layout,radial_layout_button,Your data is now being visualised in the Radial Layout"
+  - text: "intent_change_layout,radial_layout_button,You data is now being displayed in the Radial Layout"
+  - text: "intent_change_layout,radial_layout_button,You are now visualising your data in the Radial Layout"
+  - text: "intent_change_layout,radial_layout_button,You are now displaying your data in the Radial Layout"
+  - text: "intent_change_layout,radial_layout_button,You're now visualising your data in the Radial Layout"
+  - text: "intent_change_layout,radial_layout_button,You're now displaying your data in the Radial Layout "
+  - text: "intent_change_layout,radial_layout_button,I've changed the layout to Radial"
+  - text: "intent_change_layout,radial_layout_button,The layout is now Radial"
+  - text: "intent_change_layout,radial_layout_button,I have set the display to Radial Layout"
+  - text: "intent_change_layout,radial_layout_button,Now displaying as a Radial Layout"
+  - text: "intent_change_layout,radial_layout_button,Now visualising as a Radial Layout"
+  - text: "intent_change_layout,radial_layout_button,Now showing as a Radial Layout"
+  - text: "intent_change_layout,radial_layout_button,Now using Radial Layout"
+  - text: "intent_change_layout,radial_layout_button, I have switched the layout to Radial"
+  - text: "intent_change_layout,radial_layout_button, I've switched the layout to Radial"
+  - text: "intent_change_layout,radial_layout_button,The layout has been switched to Radial"
+  - text: "intent_change_layout,radial_layout_button, I have adjusted the layout to Radial"
+  - text: "intent_change_layout,radial_layout_button, I've adjusted the layout to Radial"
+  - text: "intent_change_layout,radial_layout_button,The layout has been adjusted to Radial"
 
   utter_change_layout_circle:
-  - text: "intent_change_layout,circle_layout_button,Layout changed to Circle Packing"
+  - text: "intent_change_layout,circle_layout_button,I have changed the layout to Circle"
+  - text: "intent_change_layout,circle_layout_button,The layout has been changed to Circle"
+  - text: "intent_change_layout,circle_layout_button,Your data is now being visualised as Circle Packing"
+  - text: "intent_change_layout,circle_layout_button,Your data is now being shown in as Circle Packing"
+  - text: "intent_change_layout,circle_layout_button,Your data is now being visualised as Circle Packing"
+  - text: "intent_change_layout,circle_layout_button,You data is now being displayed in Circle Packing"
+  - text: "intent_change_layout,circle_layout_button,You are now visualising your data in Circle Packing "
+  - text: "intent_change_layout,circle_layout_button,You are now displaying your data in Circle Packing"
+  - text: "intent_change_layout,circle_layout_button,You're now visualising your data in Circle Packing"
+  - text: "intent_change_layout,circle_layout_button,You're now displaying your data in Circle Packing "
+  - text: "intent_change_layout,circle_layout_button,I've changed the layout to Circle Packing"
+  - text: "intent_change_layout,circle_layout_button,The layout is now Circle Packing"
+  - text: "intent_change_layout,circle_layout_button,I have set the display to Circle Packing"
+  - text: "intent_change_layout,circle_layout_button,Now displaying as Circle Packing"
+  - text: "intent_change_layout,circle_layout_button,Now visualising as Circle Packing"
+  - text: "intent_change_layout,circle_layout_button,Now showing as Circle Packing"
+  - text: "intent_change_layout,circle_layout_button,Now using Circle Packing"
+  - text: "intent_change_layout,circle_layout_button, I have switched the layout to Circle Packing"
+  - text: "intent_change_layout,circle_layout_button, I've switched the layout to Circle Packing"
+  - text: "intent_change_layout,circle_layout_button,The layout has been switched to Circle Packing"
+  - text: "intent_change_layout,circle_layout_button, I have adjusted the layout to Circle Packing"
+  - text: "intent_change_layout,circle_layout_button, I've adjusted the layout to Circle Packing"
+  - text: "intent_change_layout,circle_layout_button,The layout has been adjusted to Circle Packing"
 
   utter_ask_document_selection_form_document_requested:
   - text: "What file do you want to open?"
+  - text: "What file would you like to open?"
 
 #  Glyphs
   utter_change_to_dots:
@@ -301,7 +479,12 @@ responses:
   - text: "intent_change_glyphs,trivial_icon_button,Glyph changed to Trivial"
 
   utter_change_glyphs:
-   - text: "To which glyph do you want to change?"
+   - text: "Which glyph do you want to change to?"
+   - text: "What glyph do you want to change to?"
+   - text: "What glyph type do you want?"
+   - text: "What glyph type would you like?"
+   - text: "Which glyph type do you want?"
+   - text: "Which glyph type would you like?"
      buttons:
       - title: "Dots"
         payload: '/change_glyph_dots{{"object_requested":"glyph","glyph_requested":"dots"}}'
@@ -313,21 +496,47 @@ responses:
   # Filters
   # Change to OR / AND
   utter_switch_or:
-  - text: "intent_switch_or_and,or_button,Highlighting options changed to OR"
+  - text: "intent_switch_or_and,or_button,Highlighting options have been changed to OR"
+  - text: "intent_switch_or_and,or_button,OR has been selected as your Highlighting option"
+  - text: "intent_switch_or_and,or_button,OR has been chosen as your Highlighting option"
+  - text: "intent_switch_or_and,or_button,OR is now your Highlighting option"
+  - text: "intent_switch_or_and,or_button,I have changed the Highlighting option to OR"
+  - text: "intent_switch_or_and,or_button,I have changed the Highlighting option to OR"
+  - text: "intent_switch_or_and,or_button,I have switched the Highlighting options to OR"
+  - text: "intent_switch_or_and,or_button,Highlighting options have been switched to OR"
+  - text: "intent_switch_or_and,or_button,Highlighting options have been set to OR"
+  - text: "intent_switch_or_and,or_button,I have set the Highlighting options to OR"
+  - text: "intent_switch_or_and,or_button, I have made the Highlighting option OR"
 
   utter_switch_and:
-  - text: "intent_switch_or_and,and_button,Highlighting options changed to AND"
+  - text: "intent_switch_or_and,and_button,Highlighting options have been changed to AND"
+  - text: "intent_switch_or_and,and_button,AND has been selected as your Highlighting option"
+  - text: "intent_switch_or_and,and_button,AND has been chosen as your Highlighting option"
+  - text: "intent_switch_or_and,and_button,AND is now your Highlighting option"
+  - text: "intent_switch_or_and,and_button,I have changed the Highlighting option to AND"
+  - text: "intent_switch_or_and,and_button,I have changed the Highlighting option to AND"
+  - text: "intent_switch_or_and,and_button,I have switched the Highlighting options to AND"
+  - text: "intent_switch_or_and,and_button,Highlighting options have been switched to AND"
+  - text: "intent_switch_or_and,and_button,Highlighting options have been set to AND"
+  - text: "intent_switch_or_and,and_button,I have set the Highlighting options to AND"
+  - text: "intent_switch_or_and,and_button, I have made the Highlighting option AND"
 
   utter_highlight_uncheck_all:
   - text: "intent_highlight_uncheck_all,Here you have it"
-
-
+  - text: "intent_highlight_uncheck_all,I have unchecked all features"
+  - text: "intent_highlight_uncheck_all,I have unchecked all of them"
+  - text: "intent_highlight_uncheck_all,I have unchecked them all"
+  - text: "intent_highlight_uncheck_all,I have unselected all features"
+  - text: "intent_highlight_uncheck_all,I have cleared all features"
   # complex intent responses
 
   # longest, largest, widest, most toxic
   utter_longest_thread:
   - text: "intent_event,longest_thread,Here you have the longest thread"
   - text: "intent_event,longest_thread,Here is the longest thread"
+  - text: "intent_event,longest_thread,Here you have displayed the longest thread"
+  - text: "intent_event,longest_thread,The longest thread is being displayed"
+
 
   utter_widest_level:
   - text: "intent_event,widest_level,I've highlighted the widest level in your graph"
@@ -381,7 +590,7 @@ responses:
 #
 #    "
   utter_explain_glyphs_one:
-    - text: "intent_glyphs_blinking,glyphs-radio-buttons,Glyphs show the features of each comment."
+    - text: "intent_glyphs_blinking,glyphs-radio-buttons,Glyphs let us see features of each comment."
 #      image: "https://ecemkavaz.github.io/imagesRasa/glyphsAll2.png"
 
 #  utter_explain_glyphs_three:
@@ -393,13 +602,13 @@ responses:
 #      image: "https://ecemkavaz.github.io/imagesRasa/trivial.svg"
 
   utter_explain_glyphs_two:
-    - text: "Use the bar on the left to activate/deactivate the features. "
+    - text: "Use the Highlight Colour Features menu to activate/deactivate the features. "
 
 
   utter_explain_glyphs_three:
-    - text: "Select them: \ \n
+    - text: "You can highlight features: \ \n
               - one-by-one \ \n
-               - check all "
+               - all at once "
       buttons:
           - title: "Dots"
             payload: '/change_glyph_dots{{"object_requested":"glyph","glyph_requested":"dots"}}'
@@ -409,7 +618,7 @@ responses:
             payload: '/change_glyph_trivial{{"object_requested":"glyph","glyph_requested":"trivial"}}'
 
   utter_explain_targets_one:
-    - text: "All comments are annotated with the targets they are directed at."
+    - text: "All comments are tagged with the targets that they are directed at."
   utter_explain_targets_two:
     - text: "Target Group"
       image: "https://ecemkavaz.github.io/imagesRasa/Group.svg"
@@ -423,8 +632,8 @@ responses:
       image: "https://ecemkavaz.github.io/imagesRasa/Stereotype.svg"
 
   utter_explain_targets_five:
-    - text: "Activate/deactivate targets: \ \n
-                   - From the left bar \ \n
+    - text: "You can activate/deactivate targets: \ \n
+                   - From the Targets menu on the left \ \n
                    - Asking me"
       image: "https://ecemkavaz.github.io/imagesRasa/targets.png"
 
@@ -452,9 +661,9 @@ responses:
     - text: "
               Select layouts:
                \ \n
-              - From the icons menu
+              - From the menu
                \ \n
-             - Asking to me."
+             - Asking me"
       buttons:
        - title: "Tree"
          payload: '/change_layout_tree{{"object_requested":"layout","layout_requested":"tree"}}'
@@ -465,23 +674,26 @@ responses:
        - title: "Circle"
          payload: '/change_layout_circle{{"object_requested":"layout","layout_requested":"circle"}}'
 
-
+  #utter_help_layouts_three:
+    #buttons:
+    #- title: "Read more here"
+     # payload:
 
   utter_help_highlight:
-    - text: "Highlight function will show only the comments that include the selected features. \ \n
+    - text: "Highlight function will show the selected features for each comment as a colour. \ \n
 
-    Select features: \ \n
-    - From the left bar \ \n
+    Highlight colour features by: \ \n
+    - Using the Highlight Colour Feature menu \ \n
     - Asking me"
       image: "https://ecemkavaz.github.io/imagesRasa/highlight.png"
 
   utter_help_AND:
     - text: "With AND option,
-    you will see the comments that are tagged with all the selected features"
+    you will see the comments that are tagged with all the features you have selected"
 
   utter_help_OR:
     - text: "With OR option,
-    you will see the comments that are tagged with at least one of the selected features"
+    you will see the comments that are tagged with at least one of the features you have selected"
 
   utter_help_AND_OR:
     - text: "With AND option,
@@ -489,16 +701,17 @@ responses:
       you will see the comments that are tagged with at least one of the selected features"
 
   utter_help_summary:
-    - text: "Summary shows how many comments are labelled with different levels of toxicity, and targets.  \ \n
+    - text: "Summary shows how many comments are labelled with different levels of toxicity and targets.  \ \n
 
-    It reflects data contained in the current visualisation."
+    It reflects data in the current visualisation."
       image: "https://ecemkavaz.github.io/imagesRasa/summary.png"
 
-  utter_help_main_bar:
-    - text: "Selected Comments button displays a bar chart with the
-    statistics of the current visualisation. "
+  utter_help_main_bar_one:
+    - text: "Selected Comments shows you the statistics of the current visualisation. \ \n
+    
+    You can change the variables and graph type using the drop down menus that appear in the pop-up window. "
 
-      image: "https://ecemkavaz.github.io/imagesRasa/selectedcomments.png"
+# image: "https://ecemkavaz.github.io/imagesRasa/selectedcomments.png"
 
   utter_help_bar_chart_pop_up:
     - text: "If you want to have more information about this:"

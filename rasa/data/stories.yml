@@ -387,7 +387,8 @@ stories:
     - intent: thanks
     - action: utter_you_are_welcome
     - intent: help_main_graph_barchart
-    - action: utter_help_main_bar
+    - action: utter_help_main_bar_one
+    - action: utter_help_main_bar_two
     - intent: statistics_help
     - action: utter_help_main_bar_three
     - intent: help_layouts
@@ -408,7 +409,7 @@ stories:
 - story: User wants to know about statistics
   steps:
     - intent: help_main_graph_barchart
-    - action: utter_help_main_bar
+    - action: utter_help_main_bar_one
     - intent: statistics_help
     - action: utter_help_main_bar_three
 

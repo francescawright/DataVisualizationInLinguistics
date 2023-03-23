@@ -22,6 +22,8 @@ nlu:
     - thanks
     - thank you very much
     - thanks a lot
+    - thank you so much
+    - ty
 
 - intent: goodbye
   examples: |
@@ -54,6 +56,7 @@ nlu:
     - yea
     - yeah
     - yep
+    - all right
     - alright
     - aye
     - by all means
@@ -116,6 +119,8 @@ nlu:
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+    - what are you?
+    - who are you?
 
 - synonym: logout
   examples: |
@@ -125,6 +130,10 @@ nlu:
     - close
     - exit
     - leave
+    - sign out
+    - sign-out
+    - sign off
+    - quit
 
 - intent: logout
   examples: |
@@ -132,6 +141,9 @@ nlu:
     - I want to [exit]{"entity": "action_requested", "value": "logout"} the session
     - I want to [close]{"entity": "action_requested", "value": "logout"} my session
     - log me out
+    - sign me out
+    - sign me off
+    - I want to log out of the session
     - [logout]{"entity": "action_requested", "value": "logout"}
     - [leave]{"entity": "action_requested", "value": "logout"} the session
     - [log-out]{"entity": "action_requested", "value": "logout"} my session
@@ -146,6 +158,11 @@ nlu:
     - sign in
     - open
     - start
+    - log-on
+    - login
+    - begin
+    - open session
+  
 
 - intent: login
   examples: |
@@ -167,6 +184,7 @@ nlu:
     - sign up
     - sign-up
     - register
+    - make an account
 
 - intent: signup
   examples: |
@@ -767,6 +785,8 @@ nlu:
     - Turn on [intolerance]{"entity": "filter_name"} node and edge
     - Turn on [intolerance]{"entity": "filter_name"} nodes
 
+# synonynms: node and edge
+    -
     # features--> improper language, insult, aggressiveness - ?
 
     - I want to see nodes with [improper language]{"entity": "filter_name"}
@@ -1287,31 +1307,132 @@ nlu:
 
 - intent: help_glyphs
   examples: |
-    - What are the glyphs?
+    - What are the glyphs for?
     - How can I use the glyphs?
     - What are dots, circular glyph and trivial cheese?
     - Give me more information about glyphs
     - Can you give me more information about glyphs?
-
+    - What are glyphs for?
+    - What do glyphs do?
+    - What can I do with glyphs?
+    - What can I see with glyphs?
+    - What do glyphs show?
+    - What can glyphs show me?
+    - What do glyphs show you?
+    - How do I use the glyphs?
+    - How do I use glyphs?
+    - When do I use glyphs?
+    - What is a glyph?
+    - What is a glyph for?
+    - Why should I use a glyph?
+    - Why should I use glyphs?
+    - Tutorial glyphs
+    - Tutorial for glyphs
+    - Help glyphs
 
 - intent: help_layouts
   examples: |
     - Why there are many layouts?
     - What are the layouts?
     - Give me more information about layouts
+    - What are layouts?
+    - What is tree layout?
+    - What is force layout?
+    - What is radial layout?
+    - What is circle packing?
+    - What layouts are there?
+    - Tutorial layouts
+    - Explain to me what layouts are
+    - What is a layout?
+    - Tutorial for layouts
+    - Show me what layouts are
+    - Tell me what layouts are
+    - Explain what layouts are to me
+    - Help layouts
 
 - intent: help_highlight
   examples: |
-    - How can use highlight on the left bar?
+    - How can I use highlight on the left bar?
     - What is highlight on the left bar?
     - What is highlight?
     - Give me more information about highlight
+    - Explain to me what highlight colour features is
+
+
 
 - intent: help_summary
   examples: |
     - What is summary?
     - What does summary show?
     - Give me information about summary
+    - Help summary
+    - Tutorial summary
+    - Tutorial for summary
+    - Explain summary
+    - Explain summary to me
+    - What does summary tell me?
+    - Why do I need summary?
+    - Tell me what summary is
+    - Tell me what summary shows
+    - Tell me what summary means
+    - Tell me what summary displays
+    - What is summary for?
+    - Explain to me what summary is
+    - Explain to me what summary is for
+    - Explain to me what summary means
+    - Explain to me what summary displays
+    - Explain to me what summary shows
+    - Explain what summary is to me
+    - Explain what summary is for to me
+    - Explain what summary means to me
+    - Explain what summary displays to me
+    - Explain what summary shows to me
+    - Can you tell me what summary is
+    - Can you tell me what summary is for
+    - Can you tell me what summary means
+    - Can you tell me what summary displays
+    - Can you tell me what summary shows
+    - Can you explain to me what summary is
+    - Can you explain to me what summary is for
+    - Can you explain to me what summary means
+    - Can you explain to me what summary displays
+    - Can you explain to me what summary shows
+    - Can you show me what summary is
+    - Can you show me what summary is for
+    - Can you show me what summary means
+    - Can you show me what summary displays
+    - Can you show me what summary shows
+    - Could you tell me what summary is
+    - Could you tell me what summary is for
+    - Could you tell me what summary means
+    - Could you tell me what summary displays
+    - Could you tell me what summary shows
+    - Could you explain to me what summary is
+    - Could you explain to me what summary is for
+    - Could you explain to me what summary means
+    - Could you explain to me what summary displays
+    - Could you explain to me what summary shows
+    - Could you show me what summary is
+    - Could you show me what summary is for
+    - Could you show me what summary means
+    - Could you show me what summary displays
+    - Could you show me what summary shows
+    - Would you tell me what summary is
+    - Would you tell me what summary is for
+    - Would you tell me what summary means
+    - Would you tell me what summary displays
+    - Would you tell me what summary shows
+    - Would you explain to me what summary is
+    - Would you explain to me what summary is for
+    - Would you explain to me what summary means
+    - Would you explain to me what summary displays
+    - Would you explain to me what summary shows
+    - Would you show me what summary is
+    - Would you show me what summary is for
+    - Would you show me what summary means
+    - Would you show me what summary displays
+    - Would you show me what summary shows
+    - How does summary work?
 
 - intent: help_main_graph_barchart
   examples: |
@@ -1344,18 +1465,56 @@ nlu:
 
 - intent: help_AND
   examples: |
-    - What is AND on the left bar
-    - What is AND
+    - What is [AND]{"entity": "entity_requested", "value": "AND option"} on the [select node and edge menu]{"entity": "NodeAndEdge_requested", "value": "select node and edge menu"}?
+    - What is [AND]{"entity": "entity_requested", "value": "AND option"}?
+    - How do I use [AND]{"entity": "entity_requested", "value": "AND option"}?
+    - What is [AND]{"entity": "entity_requested", "value": "AND option"} for?
 
 - intent: help_OR
   examples: |
-    - What is OR on the left bar
-    - What is OR
+    - What is [OR]{"entity": "entity_requested", "value": "OR option"} on the [select node and edge menu]{"entity": "entity_requested", "value": "select node and edge menu"}?
+    - What is OR [OR]{"entity": "entity_requested", "value": "OR option"}?
+    - How do I use [OR]{"entity": "entity_requested", "value": "OR option"}?
+    - What is [OR]{"entity": "entity_requested", "value": "OR option"} for?
 
 - intent: help_AND_OR
   examples: |
     - What is the difference between AND and OR
     - Why there are two options AND and OR
+    - What is the difference between OR and AND
+
+- synonym: AND option
+  examples: |
+    - AND option
+    - AND filter
+    - AND button
+    - AND function
+    - AND choice
+    - AND button
+    - AND 
+
+- synonym: select node and edge menu
+    examples: |
+- synonym: OR option
+  examples: |
+    - OR option
+    - OR filter
+    - OR button
+    - OR function
+    - OR choice
+    - OR button
+    - OR
+
+- synonym: select node and edge menu
+  examples: |
+    - select node and edge menu
+    - left hand bar
+    - bar on left
+    - select node and edge bar
+    - left bar
+    - left hand menu
+    - left menu
+    - menu on left
 
 - intent: help_what_can_you_do
   examples: |
@@ -1381,7 +1540,37 @@ nlu:
     - What are targets?
     - What are targets on the left bar?
     - How can I use targets?
-
+    - What are targets for?
+    - What do targets do?
+    - Why are there targets?
+    - Explain to me what targets are
+    - Tell me what targets are
+    - Explain targets to me
+    - Talk to me about targets
+    - Tutorial for targets
+    - Tutorial for targets on the left 
+    - Tutorial for targets on the left hand side bar
+    - Tutorial for targets left hand menu
+    - Tutorial for targets menu
+    - Tutorial targets
+    - Tutorial targets on left
+    - Tutorial targets on the left hand side bar
+    - Tutorial for how to use targets
+    - Tutorial how to use targets
+    - Tutorial how to use targets on left
+    - Tutorial how to use targets left hand side bar
+    - Tutorial how to use targets on left hand menu
+    - Give me a target tutorial
+    - Give me a tutorial for targets
+    - Show me how targets work
+    - Tell me how targets work
+    - Explain to me what targets are for
+    - Tell me what targets are for
+    - Explain to me what targets are used for
+    - Tell me what targets are used for
+    - What are targets on the left for?
+    - Help targets
+    - Help with targets
 
 - intent: help_sub_structure
   examples: |
@@ -1709,11 +1898,13 @@ nlu:
     - I want to see target person icon feature
     - I would like to see target person icon feature
     - Turn on target person icon
-    - Turn on target person iconr feature
+    - Turn on target person icon feature
     - Select target person icon feature
     - Select target person icon
     - Activate target person icon feature
     - Enable target person icon feature
+
+
 
 - intent: icon_feature_group
   examples: |
