@@ -245,7 +245,8 @@ rules:
 - rule: User wants to know about main graph button
   steps:
     - intent: help_main_graph_barchart
-    - action: utter_help_main_bar
+    - action: utter_help_main_bar_one
+
 
 - rule: User wants to know about sub graphs button
   steps:
