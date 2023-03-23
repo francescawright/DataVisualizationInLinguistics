@@ -2,6 +2,7 @@ version: '2.0'
 
 intents:
   - greet
+  - thanks
   - goodbye
   - affirm:
       use_entities: [] # ignore all entities
@@ -48,6 +49,22 @@ intents:
       use_entities:
       - document_requested
       - object_requested
+  - change_glyph_dots:
+      use_entities:
+      - glyph_requested
+      - object_requested
+  - change_glyph_circular:
+      use_entities:
+      - glyph_requested
+      - object_requested
+  - change_glyph_trivial:
+      use_entities:
+      - glyph_requested
+      - object_requested
+  - change_glyphs:
+      use_entities:
+      - glyph_requested
+      - object_requested
   # Filters
   - switch_or
   - switch_and
@@ -55,6 +72,9 @@ intents:
   - highlight_uncheck_all
   - highlight_uncheck
   - highlight_check
+  - highlight_switch_last
+  - highlight_check_last
+  - highlight_uncheck_last
   # Complex intents
   - longest_thread
   - widest_level
@@ -64,23 +84,25 @@ intents:
   - statistics_features_tree
   - statistics_features_subtrees
   - most_tagged_features
+  # help
   - help_glyphs
   - help_layouts
   - help_highlight
   - help_summary
   - help_main_graph_barchart
   - functions
+  - tool_help
   - help_subtree_barchart
   - help_AND
   - help_OR
   - help_AND_OR
   - help_what_can_you_do
   - what_can_do_after_glyphs
-  - change_glyph_dots
-  - change_glyph_circular
-  - change_glyph_trivial
-  - change_glyphs
-  - highlight_uncheck_last
+  - features_on_the_left
+  - targets_help
+  - help_sub_structure
+  - start_analysis
+  - statistics_help
   - colour_feature_constructiveness
   - colour_feature_argumentation
   - colour_feature_sarcasm
@@ -89,11 +111,14 @@ intents:
   - colour_feature_improper
   - colour_feature_insult
   - colour_feature_aggressiveness
+  - colour_feature_stereotype
   - check_all_colour_features
   - uncheck_all_colour_features
   - show_colour_feature
   - two_actions
-  - filter_test
+  - filter_test:
+      use_entities:
+      - filter_name
   - filters_argument
   - filters_sarcasm
   - filters_mockery
@@ -101,6 +126,25 @@ intents:
   - filters_improper
   - filters_insult
   - filters_aggressiveness
+  - filters_stereotype
+  - filters_person
+  - filters_group
+  - reset_all_filters
+  - colour_feature_constructiveness_uncheck
+  - colour_feature_argumentation_uncheck
+  - colour_feature_sarcasm_uncheck
+  - colour_feature_mockery_uncheck
+  - colour_feature_intolerance_uncheck
+  - colour_feature_improper_uncheck
+  - colour_feature_insult_uncheck
+  - colour_feature_aggressiveness_uncheck
+  - colour_feature_stereotype_uncheck
+  - icon_feature_person
+  - icon_feature_group
+  - check_all_target_icons
+  - uncheck_all_target_icons
+  - uncheck_target_person
+  - uncheck_target_group
 
 actions:
   - action_check_session_login

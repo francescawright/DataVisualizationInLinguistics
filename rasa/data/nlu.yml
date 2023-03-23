@@ -579,6 +579,17 @@ nlu:
     - Enable the [neutral stance]{"entity": "filter_name"} and [targets all]{"entity": "filter_name"} filters
     - Enable the filter [neutral stance]{"entity": "filter_name"}
 
+    - I want to see nodes with [both stances]{"entity": "filter_name"}
+    - Show me comments with [both stances]{"entity": "filter_name"}
+    - Highlight [both stances]{"entity": "filter_name"} comments
+    - Show nodes with [both stances]{"entity": "filter_name"}
+    - Activate [both stances]{"entity": "filter_name"} filter
+    - Check [both stances]{"entity": "filter_name"} filter
+    - Activate [both stances]{"entity": "filter_name"} comments filter
+    - Enable [both stances]{"entity": "filter_name"} nodes
+    - Show me [both stances]{"entity": "filter_name"}
+
+
     # targets --> target person, target group, stereotype
 
     - I want to see comments with [target person]{"entity": "filter_name"}
@@ -922,6 +933,10 @@ nlu:
     - Disable [neutral stance]{"entity": "filter_name"} and [targets all]{"entity": "filter_name"} option
     - Hide [neutral]{"entity": "filter_name"} comments
     - Uncheck [neutral stance]{"entity": "filter_name"} filter
+
+    - Disable [both stances]{"entity": "filter_name"}
+    - Hide [both stances]{"entity": "filter_name"}
+    - Uncheck [both stances]{"entity": "filter_name"}
 
     - Disable [target person]{"entity": "filter_name"} option
     - Hide [person]{"entity": "filter_name"} nodes
