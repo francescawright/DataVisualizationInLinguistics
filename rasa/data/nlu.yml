@@ -205,6 +205,8 @@ nlu:
     - visualization design
     - visualisation design
     - display design
+    - display
+    - display type
 
 - synonym: tree
   examples: |
@@ -212,10 +214,25 @@ nlu:
     - tree visualization
     - tree visualisation
     - tree design
+    - tree display
     - first visualization
+    - 1st visualization
+    - 1 visualization
+    - visualization 1
+    - visualization one
     - first visualisation
+    - 1st visualisation
+    - 1 visualisation
+    - visualisation 1
+    - visualisation one
     - first design
+    - 1st design
+    - 1 design
+    - design one
+    - design 1
     - first layout
+    
+    - first display
 
 - synonym: force
   examples: |
@@ -223,10 +240,12 @@ nlu:
     - force visualization
     - force visualisation
     - force design
+    - force display
     - second visualization
     - second visualisation
     - second design
     - second layout
+    - second display
 
 - synonym: radial
   examples: |
@@ -234,10 +253,12 @@ nlu:
     - radial visualization
     - radial visualisation
     - radial design
+    - radial display
     - third visualization
     - third visualisation
     - third design
     - third layout
+    - third display
 
 - synonym: circle
   examples: |
@@ -246,14 +267,17 @@ nlu:
     - circle visualization
     - circle visualisation
     - circle design
+    - circle display
     - circle packing
     - circle packing visualization
     - circle packing visualisation
     - circle packing design
+    - circle packing display
     - fourth visualization
     - fourth visualisation
     - fourth design
     - fourth layout
+    - fourth display
     - last visualization
     - last visualisation
     - last design
@@ -484,8 +508,137 @@ nlu:
     - Switch [toxic level 1]{"entity": "filter_name"}, [least toxic]{"entity": "filter_name"} and [toxic]{"entity": "filter_name"} filters
     - Switch [most toxic]{"entity": "filter_name"} and [least toxic]{"entity": "filter_name"} filters
 
-# select node & edge
+# synonyms for verbs check, uncheck, visualise, switch
+- synonym: check
+  examples: |
+    - check
+    - highlight
+    - select
+    - choose
+    - activate
+    - enable
+    - turn on
+    - switch on
+    - tick
+    - tick off
 
+- synonym: uncheck
+  examples: |
+    - uncheck
+    - deselect
+    - unselect
+    - turn off
+    - disable
+    - hide
+    - switch off
+    - deactivate
+    - untick
+
+- synonym: visualise
+  examples: |
+    - visualise
+    - visualise
+    - show
+    - display 
+
+- synonym: switch
+  examples: |
+    - switch
+    - change
+    - exchange
+
+# Synonyms for menus: select node and edge menu, highlight colour feature menu, **target menu- to be completed**
+
+- synonym: select node and edge menu
+  examples: |
+    - select node and edge menu
+    - select node and edge bar
+    - select nodes and edges menu
+    - select nodes and edges bar
+    - node and edge menu
+    - node and edge bar
+
+- synonym: highlight colour feature menu
+  examples: |
+    - colour features menu
+    - colour feature menu
+    - color features menu
+    - color features menu
+    - colour menu
+    - colours menu
+    - color menu
+    - colors menu
+    - colour bar
+    - colours bar
+    - color bar
+    - colours bar
+    - glyph feature menu
+    - glyph feature bar
+    - highlight colour feature menu
+    - highlight colour features menu
+    - highlight color feature menu
+    - highlight color features menu
+    - highlight colour feature bar
+    - highlight colour features bar
+    - highlight color feature bar
+    - highlight color features bar
+    - highlight colour menu
+    - highlight color menu
+    - highlight colour bar
+    - highlight colour bar
+    - highlight menu
+    - highlight bar
+    - colour glyph feature menu
+    - color glyph feature menu
+    - colour glyph features menu
+    - color glyph features menu
+    - colour glyph feature bar
+    - colour glyph feature bar
+
+# Synonyms nodes and edges and filter
+- synonym: nodes
+  examples: |
+    - nodes
+    - the nodes
+    - node and edge
+    - the node and edge
+    - comments
+    - the comments
+    - node
+    - the node
+    - edge
+    - the edge
+    - edges
+    - the edge
+    - nodes and edges
+    - the nodes and edges
+
+- synonym: filter
+  examples: |
+    - filter
+    - filtering
+    - filters
+
+# Synonym for "formalities" request starter I want to  + issue of questions like **what/Which** ->classfication to be added
+- synonym: I want to
+  examples: |
+    - I want to
+    - I would like to
+    - I'd like to
+    - Can you
+    - Can I 
+    - May you
+    - May I
+    - Could you
+    - Could I 
+    - I want you to
+    - I would like you to
+    - I'd like you to
+    - I was hoping you could
+    - I was wondering if you could
+
+
+# highlight options
 - intent: highlight_check
   examples: |
     - I want to see [non toxic]{"entity": "filter_name", "value": "non toxic"} comments
@@ -496,7 +649,8 @@ nlu:
     - highlight [toxic level 0]{"entity": "filter_name", "value": "non toxic"} comments
     - show me [not toxic]{"entity": "filter_name", "value": "non toxic"} nodes
     - show me [not toxic]{"entity": "filter_name", "value": "non toxic"}
-    - show me [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes
+    - show me [non toxic]{"entity": "filter_name", "value": "non toxic"} comments
+    
     - show [least toxic]{"entity": "filter_name", "value": "non toxic"} nodes
     - show [least toxicity]{"entity": "filter_name", "value": "non toxic"} nodes
     - Which nodes have the [least toxicity]{"entity": "filter_name", "value": "non toxic"}?
@@ -764,29 +918,44 @@ nlu:
     - Highlight [mockery]{"entity": "filter_name"} nodes
     - Turn on [mockery]{"entity": "filter_name"} node and edge
     - Turn on [mockery]{"entity": "filter_name"} nodes
+    
+    - [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
+    - [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}[filter]{"entity" : "general_filter"}
+    - [check]{"entity": "check_verb"}[nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
+    - [check]{"entity": "check_verb"} for me [intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
+    - [check]{"entity": "check_verb"} for me [intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}[filter]{"entity" : "general_filter"}
+    - [check]{"entity": "check_verb"} for me [nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
+    - [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} for me
+    - [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}[filter]{"entity" : "general_filter"} for me
+    - [check]{"entity": "check_verb"}[nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"} for me
+    - [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"} 
+    - [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
+    - [visualise]{"entity": "visualise_verb"} me [intolerance]{"entity": "filter_name"} 
+    - [visualise]{"entity": "visualise_verb"} me [intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
+    - [visualise]{"entity": "visualise_verb"} for me [intolerance]{"entity": "filter_name"} 
+    - [visualise]{"entity": "visualise_verb"} for me [intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
+    - [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"} for me 
+    - [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"} for me
+    - [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
+    - [visualise]{"entity": "visualise_verb"}[nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
+    - [visualise]{"entity": "visualise_verb"}[intolerance] me {"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
+    - [visualise]{"entity": "visualise_verb"}[nodes] me {"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
+    - [visualise]{"entity": "visualise_verb"}[intolerance] for me {"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
+    - [visualise]{"entity": "visualise_verb"} for me [nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
+    - [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"} for me
+    - [visualise]{"entity": "visualise_verb"}[nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"} for me
+    - [I want to]{"entity": "request_starter"}[check]{"entity": "check_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
+    - [I want to]{"entity": "request_starter"}[check]{"entity": "check_verb"} for me [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
+    - [I want to]{"entity": "request_starter"}[check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} for me
+    - [I want to]{"entity": "request_starter"}[check]{"entity": "check_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}[filter]{"entity" : "general_filter"}
+    - [I want to]{"entity": "request_starter"}[check]{"entity": "check_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}[filter]{"entity" : "general_filter"} for me
+    - [I want to]{"entity": "request_starter"}[check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"} [nodes] {"entity": "node_and_edge"}[filter]{"entity" : "general_filter"}
+    - [I want to]{"entity": "request_starter"}[check]{"entity": "check_verb"}[intolerance]{"entity": "filter_name"} [nodes] {"entity": "node_and_edge"}[filter]{"entity" : "general_filter"} for me
+    - [I want to]{"entity": "request_starter"}[visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
+    - [I want to]{"entity": "request_starter"}[visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
+    - [I want to]{"entity": "request_starter"}[visualise]{"entity": "visualise_verb"}[nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
 
-    - I want to see nodes with [intolerance]{"entity": "filter_name"}
-    - Show me comments with [intolerance]{"entity": "filter_name"}
-    - Show comments with [intolerance]{"entity": "filter_name"}
-    - I want to see [intolerance]{"entity": "filter_name"} nodes
-    - Show me [intolerance]{"entity": "filter_name"} nodes
-    - Show [intolerance]{"entity": "filter_name"} comments
-    - Activate the [intolerance]{"entity": "filter_name"} filter
-    - Activate the [intolerance]{"entity": "filter_name"} nodes filter
-    - Enable [intolerance]{"entity": "filter_name"} nodes filtering
-    - Enable the [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} filters
-    - Enable the filter [intolerance]{"entity": "filter_name"}
-    - Select the filter [intolerance]{"entity": "filter_name"}
-    - Select [intolerance]{"entity": "filter_name"} filter
-    - Select [intolerance]{"entity": "filter_name"} node and edge
-    - Check  [intolerance]{"entity": "filter_name"} node and edge
-    - Highlight [intolerance]{"entity": "filter_name"} node and edge
-    - Highlight [intolerance]{"entity": "filter_name"} nodes
-    - Turn on [intolerance]{"entity": "filter_name"} node and edge
-    - Turn on [intolerance]{"entity": "filter_name"} nodes
 
-# synonynms: node and edge
-    -
     # features--> improper language, insult, aggressiveness - ?
 
     - I want to see nodes with [improper language]{"entity": "filter_name"}
@@ -1274,7 +1443,7 @@ nlu:
 
 - intent: statistics_features_tree
   examples: |
-    - Show me the statistics of the graph features
+    - Show me the statistics of the graph
     - Show me the graph features statistics
     - Show me the statistics of the main graph features
     - Show me the statistics of the main view graph features
@@ -1445,6 +1614,9 @@ nlu:
     - What is the selected comments button for?
     - What does selected comments button do?
     - What does selected comments do?
+    - What does the first button on the right do?
+    - What are selected comments statistics?
+    - What is selected comments statistics for?
 
 
 - intent: help_subtree_barchart
@@ -1493,8 +1665,6 @@ nlu:
     - AND button
     - AND 
 
-- synonym: select node and edge menu
-    examples: |
 - synonym: OR option
   examples: |
     - OR option
@@ -1893,16 +2063,34 @@ nlu:
     - Check target person icon
     - Check target person icon feature
     - Show me target person icon feature
-    - Show me target person icon feature
+    - Show me target person icon 
+    - Display target person icon
+    - Display target person icon feature
+    - Visualise target person icon
+    - Visualise target person icon feature
     - Check target person icon
+    - Check target person icon feature
     - I want to see target person icon feature
+    - I want to see target person icon
+    - I want to display target person icon feature
+    - I want to display target person icon 
+    - I want to visualise target person icon feature
+    - I want to visualise target person icon
     - I would like to see target person icon feature
+    - I would like to see target person icon 
+    - I would like to display target person icon feature
+    - I would like to display target person icon
+    - I would like to visualise target person feature
+    - I would like to visualise target person icon
     - Turn on target person icon
     - Turn on target person icon feature
     - Select target person icon feature
     - Select target person icon
     - Activate target person icon feature
+    - Activate target person icon
     - Enable target person icon feature
+    - Enable target person icon
+  
 
 
 
@@ -1913,16 +2101,31 @@ nlu:
     - Check target group icon
     - Check target group icon feature
     - Show me target group icon feature
-    - Show me target group icon feature
+    - Show me target group icon 
+    - Display target group icon feature
+    - Display target group icon
+    - Check target group icon feature
     - Check target group icon
     - I want to see target group icon feature
+    - I want to see target group icon
+    - I want to display target group icon feature
+    - I want to display target group icon
+    - I want to visualise target group icon feature
+    - I want to visualise target group icon
     - I would like to see target group icon feature
+    - I would like to see target group icon feature
+    - I would like to display target group icon feature
+    - I would like to display target group icon
+    - I would like to visualise target group icon feature
+    - I would like to visualise target group icon
     - Turn on target group icon
     - Turn on target group icon feature
     - Select target group icon feature
     - Select target group icon
     - Activate target group icon feature
+    - Activate target group icon
     - Enable target group icon feature
+    - Enable target group icon
 
 #check/uncheck all targets
 - intent: check_all_target_icons
@@ -2009,18 +2212,7 @@ nlu:
     - Highlight [mockery]{"entity": "filter_name"}
     - Turn on [mockery]{"entity": "filter_name"}
 
-- intent: filters_intolerance
-  examples: |
-    - Select [intolerance]{"entity": "filter_name"}
-    - Select [intolerance]{"entity": "filter_name" }
-    - Check  [intolerance]{"entity": "filter_name" }
-    - Check  [intolerance]{"entity": "filter_name"}
-    - Show me [intolerance]{"entity": "filter_name"}
-    - I want to see [intolerance]{"entity": "filter_name"}
-    - Activate [intolerance]{"entity": "filter_name"}
-    - Enable [intolerance]{"entity": "filter_name"}
-    - Highlight [intolerance]{"entity": "filter_name"}
-    - Turn on [intolerance]{"entity": "filter_name"}
+                                 
 
 - intent: filters_improper
   examples: |
@@ -2089,7 +2281,7 @@ nlu:
 
 - intent: filters_group
   examples: |
-    - Select [target group]{"entity": "filter_name"}
+    - Check [target group]{"entity": "filter_name"}
     - Select [target group]{"entity": "filter_name" }
     - Check [target group]{"entity": "filter_name" }
     - Check [target group]{"entity": "filter_name"}
@@ -2103,7 +2295,7 @@ nlu:
 - intent: reset_all_filters
   examples: |
     - I want to deselect all filters
-    - Desselect all filters
+    - Deselect all filters
     - Reset all filters
     - Undo all filters
     - Disable all filters
