@@ -282,6 +282,11 @@ nlu:
     - I would like to see the [tree]{"entity": "layout_requested", "value": "tree"}
     - Show me the [tree layout]{"entity": "layout_requested", "value": "tree"}
     - [tree]{"entity": "layout_requested", "value": "tree"}
+    - Show me the [first layout]{"entity": "layout_requested", "value": "tree"}
+    - Show me the [first visualisation]{"entity": "layout_requested", "value": "tree"}
+    - Show me the [first visualization]{"entity": "layout_requested", "value": "tree"}
+    - Show me the [tree visualisation]{"entity": "layout_requested", "value": "tree"}
+    - Show me the [first design]{"entity": "layout_requested", "value": "tree"}
     
 
 - intent: change_layout_force
@@ -298,6 +303,11 @@ nlu:
     - I would like to see the [force]{"entity": "layout_requested", "value": "force"}
     - Show me the [force layout]{"entity": "layout_requested", "value": "force"}
     - [force]{"entity": "layout_requested", "value": "force"}
+    - Show me the [second layout]{"entity": "layout_requested", "value": "force"}
+    - Show me the [second visualisation]{"entity": "layout_requested", "value": "force"}
+    - Show me the [second visualization]{"entity": "layout_requested", "value": "force"}
+    - Show me the [force visualisation]{"entity": "layout_requested", "value": "force"}
+    - Show me the [second design]{"entity": "layout_requested", "value": "force"}
 
 - intent: change_layout_radial
   examples: |
@@ -313,6 +323,12 @@ nlu:
     - I would like to see the [radial]{"entity": "layout_requested", "value": "radial"}
     - Show me the [radial layout]{"entity": "layout_requested", "value": "radial"}
     - [radial]{"entity": "layout_requested", "value": "radial"}
+    - Show me the [third layout]{"entity": "layout_requested", "value": "radial"}
+    - Show me the [third visualisation]{"entity": "layout_requested", "value": "radial"}
+    - Show me the [third visualization]{"entity": "layout_requested", "value": "radial"}
+    - Show me the [radial visualisation]{"entity": "layout_requested", "value": "radial"}
+    - Show me the [third design]{"entity": "layout_requested", "value": "radial"}
+
 
 - intent: change_layout_circle
   examples: |
@@ -322,14 +338,25 @@ nlu:
     - Set [circle layout]{"entity": "layout_requested", "value": "circle"}
     - Set the [design]{"entity": "object_requested", "value": "layout"} to the [circle visualization]{"entity": "layout_requested", "value": "circle"}
     - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [circle packing]{"entity": "layout_requested", "value": "circle"}
-    - Displays the [circle layout]{"entity": "layout_requested", "value": "circle"}
-    - Displays [circle packing visualization]{"entity": "layout_requested", "value": "circle"}
+    - Display the [circle layout]{"entity": "layout_requested", "value": "circle"}
+    - Display [circle packing visualization]{"entity": "layout_requested", "value": "circle"}
+    - Display [circle packing visualisation]{"entity": "layout_requested", "value": "circle"}
     - I want to see the [circle packing design]{"entity": "layout_requested", "value": "circle"}
     - I would like to see the [circle]{"entity": "layout_requested", "value": "circle"}
     - Show me the [circle layout]{"entity": "layout_requested", "value": "circle"}
     - [circle packing]{"entity": "layout_requested", "value": "circle"}
+    - Show me the [fourth layout]{"entity": "layout_requested", "value": "circle"}
+    - Show me the [fourth visualisation]{"entity": "layout_requested", "value": "circle"}
+    - Show me the [fourth visualization]{"entity": "layout_requested", "value": "circle"}
+    - Show me the [radial visualisation]{"entity": "layout_requested", "value": "circle"}
+    - Show me the [fourth design]{"entity": "layout_requested", "value": "circle"}
+    - Display the [last visualization]{"entity": "layout_requested", "value": "circle"}
+    - Display the [last visualisation]{"entity": "layout_requested", "value": "circle"}
+    - Display the [last layout]{"entity": "layout_requested", "value": "circle"}
+    - Display the [last design]{"entity": "layout_requested", "value": "circle"}
 
-# glyph change
+
+  # glyph change
 
 - intent: change_glyph_dots
   examples: |
@@ -796,8 +823,7 @@ nlu:
     - Turn on [intolerance]{"entity": "filter_name"} node and edge
     - Turn on [intolerance]{"entity": "filter_name"} nodes
 
-# synonynms: node and edge
-    -
+
     # features--> improper language, insult, aggressiveness - ?
 
     - I want to see nodes with [improper language]{"entity": "filter_name"}
@@ -1365,13 +1391,13 @@ nlu:
     - Explain what layouts are to me
     - Help layouts
 
-- intent: help_highlight
-  examples: |
-    - How can I use highlight on the left bar?
-    - What is highlight on the left bar?
-    - What is highlight?
-    - Give me more information about highlight
-    - Explain to me what highlight colour features is
+- intent: help_select_node_edge
+    examples: |
+      - How can I use select node and edge on the left bar?
+      - What is select node and edge on the left bar?
+      - What is select node and edge?
+      - Give me more information about select node and edge
+      - Explain to me what select node and edge is
 
 
 
@@ -1480,17 +1506,18 @@ nlu:
 
 - intent: help_AND
   examples: |
-    - What is [AND]{"entity": "entity_requested", "value": "AND option"} on the [select node and edge menu]{"entity": "NodeAndEdge_requested", "value": "select node and edge menu"}?
-    - What is [AND]{"entity": "entity_requested", "value": "AND option"}?
-    - How do I use [AND]{"entity": "entity_requested", "value": "AND option"}?
-    - What is [AND]{"entity": "entity_requested", "value": "AND option"} for?
+    - What is AND on the select node and edge menu?
+    - What is AND
+    - How do I use AND
+    - What is AND for?
 
 - intent: help_OR
   examples: |
-    - What is [OR]{"entity": "entity_requested", "value": "OR option"} on the [select node and edge menu]{"entity": "entity_requested", "value": "select node and edge menu"}?
-    - What is OR [OR]{"entity": "entity_requested", "value": "OR option"}?
-    - How do I use [OR]{"entity": "entity_requested", "value": "OR option"}?
-    - What is [OR]{"entity": "entity_requested", "value": "OR option"} for?
+    - What is OR on the select node and edge menu?
+    - What is OR ?
+    - How do I use OR
+    - What is OR
+
 
 - intent: help_AND_OR
   examples: |
@@ -1498,38 +1525,38 @@ nlu:
     - Why there are two options AND and OR
     - What is the difference between OR and AND
 
-- synonym: AND option
-  examples: |
-    - AND option
-    - AND filter
-    - AND button
-    - AND function
-    - AND choice
-    - AND button
-    - AND 
+#- synonym: AND option
+#  examples: |
+#    - AND option
+#    - AND filter
+#    - AND button
+#    - AND function
+#    - AND choice
+#    - AND button
+#    - AND
+#
+#- synonym: select node and edge menu
+#    examples: |
+#- synonym: OR option
+#  examples: |
+#    - OR option
+#    - OR filter
+#    - OR button
+#    - OR function
+#    - OR choice
+#    - OR button
+#    - OR
 
-- synonym: select node and edge menu
-    examples: |
-- synonym: OR option
-  examples: |
-    - OR option
-    - OR filter
-    - OR button
-    - OR function
-    - OR choice
-    - OR button
-    - OR
-
-- synonym: select node and edge menu
-  examples: |
-    - select node and edge menu
-    - left hand bar
-    - bar on left
-    - select node and edge bar
-    - left bar
-    - left hand menu
-    - left menu
-    - menu on left
+#- synonym: select node and edge menu
+#  examples: |
+#    - select node and edge menu
+#    - left hand bar
+#    - bar on left
+#    - select node and edge bar
+#    - left bar
+#    - left hand menu
+#    - left menu
+#    - menu on left
 
 - intent: help_what_can_you_do
   examples: |
@@ -2126,3 +2153,15 @@ nlu:
 
 
 
+# ask to check node and edge without specifying one
+- intent: show_colour_feature
+  examples: |
+    - Highlight node and edge
+    - Check node and edge
+    - Show me node and edge
+    - I want to see node and edge
+    - I would like to see node and edge
+    - Turn on node and edge
+    - Select node and edge
+    - Activate node and edge
+    - Enable node and edge
