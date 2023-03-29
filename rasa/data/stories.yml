@@ -306,9 +306,6 @@ stories:
     - intent: targets_help
     - action: utter_explain_targets_one
     - action: utter_explain_targets_two
-    - action: utter_explain_targets_three
-    - action: utter_explain_targets_four
-    - action: utter_explain_targets_five
     - intent: thanks
     - action: utter_you_are_welcome
 
@@ -317,9 +314,7 @@ stories:
     - intent: targets_help
     - action: utter_explain_targets_one
     - action: utter_explain_targets_two
-    - action: utter_explain_targets_three
-    - action: utter_explain_targets_four
-    - action: utter_explain_targets_five
+
 
 
 
@@ -388,7 +383,6 @@ stories:
     - action: utter_you_are_welcome
     - intent: help_main_graph_barchart
     - action: utter_help_main_bar_one
-    - action: utter_help_main_bar_two
     - intent: statistics_help
     - action: utter_help_main_bar_three
     - intent: help_layouts
