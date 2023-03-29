@@ -657,7 +657,7 @@ responses:
             payload: '/change_glyph_trivial{{"object_requested":"glyph","glyph_requested":"trivial"}}'
 
   utter_explain_targets_one:
-    - text: "intent_targets_signal,targets_accordion_button,All comments are tagged with the targets that they are directed at."
+     - text: "intent_targets_signal,targets_accordion_button,All comments are tagged with the targets that they are directed at."
 
     #  utter_explain_targets_two:
     #    - text: "Target Group"
@@ -671,15 +671,17 @@ responses:
     #    - text: "Stereotype"
     #      image: "https://ecemkavaz.github.io/imagesRasa/Stereotype.svg"
 
-    utter_explain_targets_two:
-      - text: "You can activate/deactivate targets: \ \n
+  utter_explain_targets_two:
+    - text: "You can activate/deactivate targets: \ \n
                      - From the Targets menu on the left \ \n
                      - Asking me"
+
+
     #      image: "https://ecemkavaz.github.io/imagesRasa/targets.png"
 
 
-    utter_explain_features_tab:
-      - text: "intent_features_signal,features_accordion_button,All the comments are tagged with features that they have. \ \n
+  utter_explain_features_tab:
+    - text: "intent_features_signal,features_accordion_button,All the comments are tagged with features that they have. \ \n
 
         Activate/deactivate features: \ \n
         - From the left bar \ \n

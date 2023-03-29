@@ -1392,12 +1392,12 @@ nlu:
     - Help layouts
 
 - intent: help_select_node_edge
-    examples: |
-      - How can I use select node and edge on the left bar?
-      - What is select node and edge on the left bar?
-      - What is select node and edge?
-      - Give me more information about select node and edge
-      - Explain to me what select node and edge is
+  examples: |
+    - How can I use select node and edge on the left bar?
+    - What is select node and edge on the left bar?
+    - What is select node and edge?
+    - Give me more information about select node and edge
+    - Explain to me what select node and edge is
 
 
 
