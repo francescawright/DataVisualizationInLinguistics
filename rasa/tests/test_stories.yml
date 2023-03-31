@@ -3,6 +3,12 @@
 
 stories:
   - story:
+    steps:
+      - user: |
+          select [sarcasm]{"entity": "filter_name"} nodes
+        intent: highlight_check
+      - action: action_highlight_check
+
 
 #stories:
 #- story: happy path 1
