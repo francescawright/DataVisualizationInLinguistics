@@ -146,6 +146,10 @@ intents:
   - uncheck_target_person
   - uncheck_target_group
   - help_select_node_edge
+  - filters_all_features
+  - filters_all_targets
+  - filters_all_features_uncheck
+  - filters_all_targets_uncheck
 
 actions:
   - action_check_session_login

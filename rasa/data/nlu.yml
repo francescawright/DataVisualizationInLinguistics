@@ -805,22 +805,25 @@ nlu:
     - I want to see nodes with [intolerance]{"entity": "filter_name"}
     - Show me comments with [intolerance]{"entity": "filter_name"}
     - Show comments with [intolerance]{"entity": "filter_name"}
-    - I want to see [intolerance]{"entity": "filter_name"} nodes
-    - Show me [intolerance]{"entity": "filter_name"} nodes
-    - Show [intolerance]{"entity": "filter_name"} comments
+    - I would like to see [intolerance]{"entity": "filter_name"} nodes
+    - Show me [intolerance]{"entity": "filter_name"} comments
+    - Show [intolerance]{"entity": "filter_name"} comments filtering
     - Activate the [intolerance]{"entity": "filter_name"} filter
     - Activate the [intolerance]{"entity": "filter_name"} nodes filter
-    - Enable [intolerance]{"entity": "filter_name"} nodes filtering
-    - Enable the [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} filters
+    - May you enable [intolerance]{"entity": "filter_name"} nodes filtering
+    - Can you enable the [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} filters
     - Enable the filter [intolerance]{"entity": "filter_name"}
     - Select the filter [intolerance]{"entity": "filter_name"}
     - Select [intolerance]{"entity": "filter_name"} filter
-    - Select [intolerance]{"entity": "filter_name"} node and edge
-    - Check  [intolerance]{"entity": "filter_name"} node and edge
-    - Highlight [intolerance]{"entity": "filter_name"} node and edge
+    - Choose [intolerance]{"entity": "filter_name"} node and edge
+    - Check [intolerance]{"entity": "filter_name"} node and edge
+    - Tick [intolerance]{"entity": "filter_name"} node and edge
     - Highlight [intolerance]{"entity": "filter_name"} nodes
-    - Turn on [intolerance]{"entity": "filter_name"} node and edge
+    - Switch on [intolerance]{"entity": "filter_name"} node and edge
     - Turn on [intolerance]{"entity": "filter_name"} nodes
+    - Tick off [intolerance]{"entity": "filter_name"} nodes
+    - I was hoping you could [intolerance]{"entity": "filter_name"} nodes
+    - I was wondering if you could [intolerance]{"entity": "filter_name"} nodes
 
 
     # features--> improper language, insult, aggressiveness - ?
