@@ -737,6 +737,19 @@
                                         </div>
                                     </div>
 
+                                    <div class="custom-control custom-switch" style="line-height: 23px;">
+                                        <input type="checkbox" class="custom-control-input" name="cbHighlightOR"
+                                               value="highlight-stance-both" id="highlight-stance-both"
+                                               form="main_form"
+                                               {% if cbFilterOR.highlight_stance_both == 1 %}checked{% else %}unchecked{% endif %}>
+                                        <label class="custom-control-label" for="highlight-stance-both" checked>Both stances</label>
+                                        <div style="float: right">
+                                            <svg height=" 10" width="30" style="display: inline-block;">
+                                                <rect width="20" height="10" fill="#ffdd1f"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <hr class="gradient-line" style="margin-top: 5px; margin-bottom: 5px;"/>
 
@@ -1028,6 +1041,20 @@
                                         <div style="float: right">
                                             <svg height=" 10" width="30" style="display: inline-block;">
                                                 <rect width="20" height="10" fill="#ff6961"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    <div class="custom-control custom-switch" style="line-height: 23px;">
+                                        <input type="checkbox" class="custom-control-input" name="cbHighlightAND"
+                                               value="highlight-stance-both" id="highlight-stance-both"
+                                               form="main_form"
+                                               {% if cbFilterAND.highlight_stance_both == 1 %}checked{% else %}unchecked{% endif %}><label
+                                            class="custom-control-label"
+                                            for="highlight-stance-both">Both stances</label>
+                                        <div style="float: right">
+                                            <svg height=" 10" width="30" style="display: inline-block;">
+                                                <rect width="20" height="10" fill="#ffdd1f"/>
                                             </svg>
                                         </div>
                                     </div>

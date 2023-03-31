@@ -43,7 +43,7 @@ var colorDevtools = ["#88FF00", "#FFBB00",
     "#FF5500", "#90F6B2", "#1B8055",
     "#97CFFF", "#1795FF", "#0B5696"
 ];
-var colourBothStances = "#FFDD1F",
+var colourBothStances = "#ffdd1f",
     colourPositiveStance = "#77dd77",
     colourNegativeStance = "#ff6961",
     colourNeutralStance = "#2b2727";
