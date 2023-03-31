@@ -109,10 +109,10 @@ rules:
   - intent: generate_response_message
   - action: action_generate_response_message
 
-- rule: Displays in the chat the utter_help_glyphs message
-  steps:
-  - intent: generate_help_glyphs_message
-  - action: utter_help_glyphs
+#- rule: Displays in the chat the utter_help_glyphs message
+#  steps:
+#  - intent: generate_help_glyphs_message
+#  - action: utter_help_glyphs
 
 - rule: Automatically fills slots with values passed as entities
   steps:
@@ -488,6 +488,28 @@ rules:
   steps:
     - intent: reset_all_filters
     - action: utter_reset_all_filters
+
+- rule: check all features which one
+  steps:
+    - intent: filters_all_features
+    - action: utter_filters_all_features
+
+- rule: check all targets which one
+  steps:
+    - intent: filters_all_targets
+    - action: utter_filters_all_targets
+
+- rule: uncheck all features which one
+  steps:
+    - intent: filters_all_features_uncheck
+    - action: utter_filters_all_features_uncheck
+
+- rule: uncheck all targets which one
+  steps:
+    - intent: filters_all_targets_uncheck
+    - action: utter_filters_all_targets_uncheck
+
+
 
 
 #- rule: user wants to know what bot can do

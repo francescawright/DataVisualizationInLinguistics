@@ -27,7 +27,6 @@ nlu:
 
 - intent: goodbye
   examples: |
-    - good afternoon
     - cu
     - good bye
     - see you later
@@ -348,7 +347,7 @@ nlu:
     - Show me the [fourth layout]{"entity": "layout_requested", "value": "circle"}
     - Show me the [fourth visualisation]{"entity": "layout_requested", "value": "circle"}
     - Show me the [fourth visualization]{"entity": "layout_requested", "value": "circle"}
-    - Show me the [radial visualisation]{"entity": "layout_requested", "value": "circle"}
+    - Show me the [circle visualisation]{"entity": "layout_requested", "value": "circle"}
     - Show me the [fourth design]{"entity": "layout_requested", "value": "circle"}
     - Display the [last visualization]{"entity": "layout_requested", "value": "circle"}
     - Display the [last visualisation]{"entity": "layout_requested", "value": "circle"}
@@ -889,8 +888,8 @@ nlu:
 
     # features select all
 
-    - I want to select [all features]{"entity": "filter_name"}
-    - Select [all features]{"entity": "filter_name"}
+    - I want to select [all features]{"entity": "filter_name"} nodes
+    - Select [all features]{"entity": "filter_name"} node and edge
     - I want to select [all features]{"entity": "filter_name"} checkbox
     - Select [all features]{"entity": "filter_name"} checkbox
     - I want to select [all features]{"entity": "filter_name"} option
@@ -974,7 +973,7 @@ nlu:
     - Disable [level 1 toxicity]{"entity": "filter_name"} option
 
     - Disable [toxic level 2]{"entity": "filter_name"} option
-    - Uncheck [toxic]{"entity": "filter_name"} filter
+    - Uncheck [toxic]{"entity": "filter_name"} filter nodes
     - Hide [toxicity level 2]{"entity": "filter_name"} comments
     - Uncheck [level 2 toxic]{"entity": "filter_name"} filter
     - Disable [level 2 toxicity]{"entity": "filter_name"} option
@@ -1010,6 +1009,7 @@ nlu:
     - Disable [targets all]{"entity": "filter_name"} option
     - Hide [all targets]{"entity": "filter_name"} comments
     - Uncheck [all targets]{"entity": "filter_name"} filter
+    - Unchek [all targets]{"entity": "filter_name"} nodes
 
     - Disable [constructiveness]{"entity": "filter_name"} option
     - Hide [constructive]{"entity": "filter_name"} nodes
@@ -1045,7 +1045,7 @@ nlu:
 
     - Disable [features all]{"entity": "filter_name"} option
     - Hide [all features]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} comments
-    - Uncheck [all features]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
+    - Uncheck [all features]{"entity": "filter_name"} nodes and [all targets]{"entity": "filter_name"} filters
 
     - Disable [all levels of toxicity]{"entity": "filter_name"}
     - Hide [all levels of toxicity]{"entity": "filter_name"} nodes
@@ -1573,9 +1573,14 @@ nlu:
 
 - intent: features_on_the_left
   examples: |
-    - What are features on the left bar?
-    - How can I use features?
-    - What are features?
+    - What is highlight colour features on the left bar?
+    - How can I use highlight colour features?
+    - What are colour features?
+    - How can I use highlight on the left bar?
+    - What is highlight on the left bar?
+    - What is highlight?
+    - Give me more information about highlight
+    - Explain to me what highlight colour features is
 
 - intent: targets_help
   examples: |
@@ -2152,7 +2157,6 @@ nlu:
     - Remove all filters
 
 
-
 # ask to check node and edge without specifying one
 - intent: show_colour_feature
   examples: |
@@ -2165,3 +2169,41 @@ nlu:
     - Select node and edge
     - Activate node and edge
     - Enable node and edge
+
+
+- intent: filters_all_features
+  examples: |
+    - Select [all features]{"entity": "filter_name"}
+    - Check  [all features]{"entity": "filter_name" }
+    - Show me [all features]{"entity": "filter_name"}
+    - I want to see [all features]{"entity": "filter_name"}
+    - Activate [all features]{"entity": "filter_name"}
+    - Enable [all features]{"entity": "filter_name"}
+    - Highlight [all features]{"entity": "filter_name"}
+    - Turn on [all features]{"entity": "filter_name"}
+
+- intent: filters_all_targets
+  examples: |
+    - Select [all targets]{"entity": "filter_name"}
+    - Check  [all targets]{"entity": "filter_name" }
+    - Show me [all targets]{"entity": "filter_name"}
+    - I want to see [all targets]{"entity": "filter_name"}
+    - Activate [all targets]{"entity": "filter_name"}
+    - Enable [all targets]{"entity": "filter_name"}
+    - Highlight [all targets]{"entity": "filter_name"}
+    - Turn on [all targets]{"entity": "filter_name"}
+
+
+- intent: filters_all_features_uncheck
+  examples: |
+    - Uncheck [all features]{"entity": "filter_name"}
+    - Turn off [all features]{"entity": "filter_name"}
+    - Disable [all features]{"entity": "filter_name"}
+    - Hide [all features]{"entity": "filter_name"}
+
+- intent: filters_all_targets_uncheck
+  examples: |
+    - Uncheck [all targets]{"entity": "filter_name"}
+    - Turn off [all targets]{"entity": "filter_name"}
+    - Disable [all targets]{"entity": "filter_name"}
+    - Hide [all targets]{"entity": "filter_name"}

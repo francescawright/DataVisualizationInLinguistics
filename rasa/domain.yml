@@ -145,6 +145,7 @@ intents:
   - uncheck_all_target_icons
   - uncheck_target_person
   - uncheck_target_group
+  - help_select_node_edge
 
 actions:
   - action_check_session_login
@@ -279,13 +280,14 @@ responses:
     - text: "No problem, don't hesitate to ask me for help if you need it"
     - text: "No problem, I am here if you need any help"
     - text: "That's okay, don't hesitate to ask me for help if you need it"
-    - text: "That's okay, I am here if you need any help"
-    - text: "Okay, let me know if you need anything"
-    - text: "No problem, let me know if you need anything"
-    - text: "That's okay, let me know if you need anything"
-    - text: "All right, don't hesitate to ask me for help if you need it"
-    - text: "All right, I am here if you need any help?"
-    - text: "All right, let me know if you need anything"
+
+#    - text: "That's okay, I am here if you need any help"
+#    - text: "Okay, let me know if you need anything"
+#    - text: "No problem, let me know if you need anything"
+#    - text: "That's okay, let me know if you need anything"
+#    - text: "All right, don't hesitate to ask me for help if you need it"
+#    - text: "All right, I am here if you need any help?"
+#    - text: "All right, let me know if you need anything"
 
   utter_goodbye:
   - text: "Bye!"
@@ -322,16 +324,17 @@ responses:
   - text: "Okay! You are still logged in"
   - text: "No problem! I will not log you out"
   - text: "No problem! I will keep you logged in"
-  - text: "No problem! You are still logged in"
-  - text: "That's fine! I will not log you out"
-  - text: "That's fine! I will keep you logged in"
-  - text: "That's fine! You are still logged in"
-  - text: "Okay! I haven't logged you out"
-  - text: "No problem! I haven't logged you out"
-  - text: "That's fine! I haven't logged you out"
-  - text: "Okay! I won't log you out"
-  - text: "No problem! I won't log you out"
-  - text: "That's fine! I won't log you out"
+
+#  - text: "No problem! You are still logged in"
+#  - text: "That's fine! I will not log you out"
+#  - text: "That's fine! I will keep you logged in"
+#  - text: "That's fine! You are still logged in"
+#  - text: "Okay! I haven't logged you out"
+#  - text: "No problem! I haven't logged you out"
+#  - text: "That's fine! I haven't logged you out"
+#  - text: "Okay! I won't log you out"
+#  - text: "No problem! I won't log you out"
+#  - text: "That's fine! I won't log you out"
 
   utter_logout_to_login:
   - text: "You are already logged in, do you want me to log you out to start a new session?"
@@ -340,19 +343,20 @@ responses:
   - text: "You are already logged in, would you like to log out and start a new session?"
   - text: "You are already logged in, would you like me to log you out to start a new session?"
   - text: "You are already logged in, would you like me to log you out and start a new session?"
-  - text: "You are already logged in, do you want me to log you out and start a new session?"
-  - text: "You're already logged in, do you want me to log you out to start a new session?"
-  - text: "You're already logged in, do you want me to log you out and start a new session?"
-  - text: "You're already logged in, would you like to log out to start a new session?"
-  - text: "You're already logged in, would you like to log out and start a new session?"
-  - text: "You're already logged in, would you like me to log you out to start a new session?"
-  - text: "You're already logged in, would you like me to log you out and start a new session?"
-  - text: "You're already logged in, do you want me to log you out to start a new session?"
-  - text: "You're already logged in, do you want me to log you out and start a new session?"
-  - text: "You are already logged in, do you want to sign out to start a new session?"
-  - text: "You are already logged in, do you want to sign out and start a new session?"
-  - text: "You are already logged in, do you want me to sign you out to start a new session?"
-  - text: "You are already logged in, do you want me to sign you out and start a new session?"
+
+#  - text: "You are already logged in, do you want me to log you out and start a new session?"
+#  - text: "You're already logged in, do you want me to log you out to start a new session?"
+#  - text: "You're already logged in, do you want me to log you out and start a new session?"
+#  - text: "You're already logged in, would you like to log out to start a new session?"
+#  - text: "You're already logged in, would you like to log out and start a new session?"
+#  - text: "You're already logged in, would you like me to log you out to start a new session?"
+#  - text: "You're already logged in, would you like me to log you out and start a new session?"
+#  - text: "You're already logged in, do you want me to log you out to start a new session?"
+#  - text: "You're already logged in, do you want me to log you out and start a new session?"
+#  - text: "You are already logged in, do you want to sign out to start a new session?"
+#  - text: "You are already logged in, do you want to sign out and start a new session?"
+#  - text: "You are already logged in, do you want me to sign you out to start a new session?"
+#  - text: "You are already logged in, do you want me to sign you out and start a new session?"
 
   utter_logout_to_signup:
   - text: "I need to close your current session in order to register the new user, is that okay?"
@@ -414,99 +418,103 @@ responses:
   - text: "intent_change_layout,tree_layout_button,Your data is now being visualised in the Tree layout"
   - text: "intent_change_layout,tree_layout_button,Your data is now being shown in the Tree Layout"
   - text: "intent_change_layout,tree_layout_button,Your data is now being visualised in the Tree Layout"
-  - text: "intent_change_layout,tree_layout_button,You data is now being displayed in the Tree Layout"
-  - text: "intent_change_layout,tree_layout_button,You are now visualising your data in the Tree Layout"
-  - text: "intent_change_layout,tree_layout_button,You are now displaying your data in the Tree Layout"
-  - text: "intent_change_layout,tree_layout_button,You're now visualising your data in the Tree Layout"
-  - text: "intent_change_layout,tree_layout_button,You're now displaying your data in the Tree Layout "
-  - text: "intent_change_layout,tree_layout_button,I've changed the layout to Tree"
-  - text: "intent_change_layout,tree_layout_button,The layout is now Tree"
-  - text: "intent_change_layout,tree_layout_button,I have set the display to Tree Layout"
-  - text: "intent_change_layout,tree_layout_button,Now displaying as a Tree layout"
-  - text: "intent_change_layout,tree_layout_button,Now visualising as a Tree layout"
-  - text: "intent_change_layout,tree_layout_button,Now showing as a Tree Layout"
-  - text: "intent_change_layout,tree_layout_button,Now using Tree Layout"
-  - text: "intent_change_layout,tree_layout_button, I have switched the layout to Tree"
-  - text: "intent_change_layout,tree_layout_button, I've switched the layout to Tree"
-  - text: "intent_change_layout,tree_layout_button,The layout has been switched to Tree"
-  - text: "intent_change_layout,tree_layout_button, I have adjusted the layout to Tree"
-  - text: "intent_change_layout,tree_layout_button, I've adjusted the layout to Tree"
-  - text: "intent_change_layout,tree_layout_button,The layout has been adjusted to Tree"
+
+#  - text: "intent_change_layout,tree_layout_button,You data is now being displayed in the Tree Layout"
+#  - text: "intent_change_layout,tree_layout_button,You are now visualising your data in the Tree Layout"
+#  - text: "intent_change_layout,tree_layout_button,You are now displaying your data in the Tree Layout"
+#  - text: "intent_change_layout,tree_layout_button,You're now visualising your data in the Tree Layout"
+#  - text: "intent_change_layout,tree_layout_button,You're now displaying your data in the Tree Layout "
+#  - text: "intent_change_layout,tree_layout_button,I've changed the layout to Tree"
+#  - text: "intent_change_layout,tree_layout_button,The layout is now Tree"
+#  - text: "intent_change_layout,tree_layout_button,I have set the display to Tree Layout"
+#  - text: "intent_change_layout,tree_layout_button,Now displaying as a Tree layout"
+#  - text: "intent_change_layout,tree_layout_button,Now visualising as a Tree layout"
+#  - text: "intent_change_layout,tree_layout_button,Now showing as a Tree Layout"
+#  - text: "intent_change_layout,tree_layout_button,Now using Tree Layout"
+#  - text: "intent_change_layout,tree_layout_button, I have switched the layout to Tree"
+#  - text: "intent_change_layout,tree_layout_button, I've switched the layout to Tree"
+#  - text: "intent_change_layout,tree_layout_button,The layout has been switched to Tree"
+#  - text: "intent_change_layout,tree_layout_button, I have adjusted the layout to Tree"
+#  - text: "intent_change_layout,tree_layout_button, I've adjusted the layout to Tree"
+#  - text: "intent_change_layout,tree_layout_button,The layout has been adjusted to Tree"
 
   utter_change_layout_force:
   - text: "intent_change_layout,force_layout_button,I have changed the layout to Force"
   - text: "intent_change_layout,force_layout_button,The layout has been changed to Force"
   - text: "intent_change_layout,force_layout_button,Your data is now being visualised in the Force layout"
   - text: "intent_change_layout,force_layout_button,Your data is now being shown in the Force Layout"
-  - text: "intent_change_layout,force_layout_button,Your data is now being visualised in the Force Layout"
-  - text: "intent_change_layout,force_layout_button,You data is now being displayed in the Force Layout"
-  - text: "intent_change_layout,force_layout_button,You are now visualising your data in the Force Layout"
-  - text: "intent_change_layout,force_layout_button,You are now displaying your data in the Force Layout"
-  - text: "intent_change_layout,force_layout_button,You're now visualising your data in the Force Layout"
-  - text: "intent_change_layout,force_layout_button,You're now displaying your data in the Force Layout "
-  - text: "intent_change_layout,force_layout_button,I've changed the layout to Force"
-  - text: "intent_change_layout,force_layout_button,The layout is now Force"
-  - text: "intent_change_layout,force_layout_button,I have set the display to Force Layout"
-  - text: "intent_change_layout,force_layout_button,Now displaying as a Force Layout"
-  - text: "intent_change_layout,force_layout_button,Now visualising as a Force Layout"
-  - text: "intent_change_layout,force_layout_button,Now showing as a Force Layout"
-  - text: "intent_change_layout,force_layout_button,Now using Force Layout"
-  - text: "intent_change_layout,force_layout_button,I have switched the layout to Force"
-  - text: "intent_change_layout,force_layout_button,I've switched the layout to Force"
-  - text: "intent_change_layout,force_layout_button,The layout has been switched to Force"
-  - text: "intent_change_layout,force_layout_button,I have adjusted the layout to Force"
-  - text: "intent_change_layout,force_layout_button,I've adjusted the layout to Force"
-  - text: "intent_change_layout,force_layout_button,The layout has been adjusted to Force"
+
+#  - text: "intent_change_layout,force_layout_button,Your data is now being visualised in the Force Layout"
+#  - text: "intent_change_layout,force_layout_button,You data is now being displayed in the Force Layout"
+#  - text: "intent_change_layout,force_layout_button,You are now visualising your data in the Force Layout"
+#  - text: "intent_change_layout,force_layout_button,You are now displaying your data in the Force Layout"
+#  - text: "intent_change_layout,force_layout_button,You're now visualising your data in the Force Layout"
+#  - text: "intent_change_layout,force_layout_button,You're now displaying your data in the Force Layout "
+#  - text: "intent_change_layout,force_layout_button,I've changed the layout to Force"
+#  - text: "intent_change_layout,force_layout_button,The layout is now Force"
+#  - text: "intent_change_layout,force_layout_button,I have set the display to Force Layout"
+#  - text: "intent_change_layout,force_layout_button,Now displaying as a Force Layout"
+#  - text: "intent_change_layout,force_layout_button,Now visualising as a Force Layout"
+#  - text: "intent_change_layout,force_layout_button,Now showing as a Force Layout"
+#  - text: "intent_change_layout,force_layout_button,Now using Force Layout"
+#  - text: "intent_change_layout,force_layout_button,I have switched the layout to Force"
+#  - text: "intent_change_layout,force_layout_button,I've switched the layout to Force"
+#  - text: "intent_change_layout,force_layout_button,The layout has been switched to Force"
+#  - text: "intent_change_layout,force_layout_button,I have adjusted the layout to Force"
+#  - text: "intent_change_layout,force_layout_button,I've adjusted the layout to Force"
+#  - text: "intent_change_layout,force_layout_button,The layout has been adjusted to Force"
 
   utter_change_layout_radial:
   - text: "intent_change_layout,radial_layout_button,I have changed the layout to Radial"
   - text: "intent_change_layout,radial_layout_button,The layout has been changed to Radial"
   - text: "intent_change_layout,radial_layout_button,Your data is now being visualised in the Radial layout"
   - text: "intent_change_layout,radial_layout_button,Your data is now being shown in the Radial Layout"
-  - text: "intent_change_layout,radial_layout_button,Your data is now being visualised in the Radial Layout"
-  - text: "intent_change_layout,radial_layout_button,You data is now being displayed in the Radial Layout"
-  - text: "intent_change_layout,radial_layout_button,You are now visualising your data in the Radial Layout"
-  - text: "intent_change_layout,radial_layout_button,You are now displaying your data in the Radial Layout"
-  - text: "intent_change_layout,radial_layout_button,You're now visualising your data in the Radial Layout"
-  - text: "intent_change_layout,radial_layout_button,You're now displaying your data in the Radial Layout "
-  - text: "intent_change_layout,radial_layout_button,I've changed the layout to Radial"
-  - text: "intent_change_layout,radial_layout_button,The layout is now Radial"
-  - text: "intent_change_layout,radial_layout_button,I have set the display to Radial Layout"
-  - text: "intent_change_layout,radial_layout_button,Now displaying as a Radial Layout"
-  - text: "intent_change_layout,radial_layout_button,Now visualising as a Radial Layout"
-  - text: "intent_change_layout,radial_layout_button,Now showing as a Radial Layout"
-  - text: "intent_change_layout,radial_layout_button,Now using Radial Layout"
-  - text: "intent_change_layout,radial_layout_button, I have switched the layout to Radial"
-  - text: "intent_change_layout,radial_layout_button, I've switched the layout to Radial"
-  - text: "intent_change_layout,radial_layout_button,The layout has been switched to Radial"
-  - text: "intent_change_layout,radial_layout_button, I have adjusted the layout to Radial"
-  - text: "intent_change_layout,radial_layout_button, I've adjusted the layout to Radial"
-  - text: "intent_change_layout,radial_layout_button,The layout has been adjusted to Radial"
+
+#  - text: "intent_change_layout,radial_layout_button,Your data is now being visualised in the Radial Layout"
+#  - text: "intent_change_layout,radial_layout_button,You data is now being displayed in the Radial Layout"
+#  - text: "intent_change_layout,radial_layout_button,You are now visualising your data in the Radial Layout"
+#  - text: "intent_change_layout,radial_layout_button,You are now displaying your data in the Radial Layout"
+#  - text: "intent_change_layout,radial_layout_button,You're now visualising your data in the Radial Layout"
+#  - text: "intent_change_layout,radial_layout_button,You're now displaying your data in the Radial Layout "
+#  - text: "intent_change_layout,radial_layout_button,I've changed the layout to Radial"
+#  - text: "intent_change_layout,radial_layout_button,The layout is now Radial"
+#  - text: "intent_change_layout,radial_layout_button,I have set the display to Radial Layout"
+#  - text: "intent_change_layout,radial_layout_button,Now displaying as a Radial Layout"
+#  - text: "intent_change_layout,radial_layout_button,Now visualising as a Radial Layout"
+#  - text: "intent_change_layout,radial_layout_button,Now showing as a Radial Layout"
+#  - text: "intent_change_layout,radial_layout_button,Now using Radial Layout"
+#  - text: "intent_change_layout,radial_layout_button, I have switched the layout to Radial"
+#  - text: "intent_change_layout,radial_layout_button, I've switched the layout to Radial"
+#  - text: "intent_change_layout,radial_layout_button,The layout has been switched to Radial"
+#  - text: "intent_change_layout,radial_layout_button, I have adjusted the layout to Radial"
+#  - text: "intent_change_layout,radial_layout_button, I've adjusted the layout to Radial"
+#  - text: "intent_change_layout,radial_layout_button,The layout has been adjusted to Radial"
 
   utter_change_layout_circle:
   - text: "intent_change_layout,circle_layout_button,I have changed the layout to Circle"
   - text: "intent_change_layout,circle_layout_button,The layout has been changed to Circle"
   - text: "intent_change_layout,circle_layout_button,Your data is now being visualised as Circle Packing"
-  - text: "intent_change_layout,circle_layout_button,Your data is now being shown in as Circle Packing"
-  - text: "intent_change_layout,circle_layout_button,Your data is now being visualised as Circle Packing"
-  - text: "intent_change_layout,circle_layout_button,You data is now being displayed in Circle Packing"
-  - text: "intent_change_layout,circle_layout_button,You are now visualising your data in Circle Packing "
-  - text: "intent_change_layout,circle_layout_button,You are now displaying your data in Circle Packing"
-  - text: "intent_change_layout,circle_layout_button,You're now visualising your data in Circle Packing"
-  - text: "intent_change_layout,circle_layout_button,You're now displaying your data in Circle Packing "
-  - text: "intent_change_layout,circle_layout_button,I've changed the layout to Circle Packing"
-  - text: "intent_change_layout,circle_layout_button,The layout is now Circle Packing"
-  - text: "intent_change_layout,circle_layout_button,I have set the display to Circle Packing"
-  - text: "intent_change_layout,circle_layout_button,Now displaying as Circle Packing"
-  - text: "intent_change_layout,circle_layout_button,Now visualising as Circle Packing"
-  - text: "intent_change_layout,circle_layout_button,Now showing as Circle Packing"
-  - text: "intent_change_layout,circle_layout_button,Now using Circle Packing"
-  - text: "intent_change_layout,circle_layout_button, I have switched the layout to Circle Packing"
-  - text: "intent_change_layout,circle_layout_button, I've switched the layout to Circle Packing"
-  - text: "intent_change_layout,circle_layout_button,The layout has been switched to Circle Packing"
-  - text: "intent_change_layout,circle_layout_button, I have adjusted the layout to Circle Packing"
-  - text: "intent_change_layout,circle_layout_button, I've adjusted the layout to Circle Packing"
-  - text: "intent_change_layout,circle_layout_button,The layout has been adjusted to Circle Packing"
+
+#  - text: "intent_change_layout,circle_layout_button,Your data is now being shown in as Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button,Your data is now being visualised as Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button,You data is now being displayed in Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button,You are now visualising your data in Circle Packing "
+#  - text: "intent_change_layout,circle_layout_button,You are now displaying your data in Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button,You're now visualising your data in Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button,You're now displaying your data in Circle Packing "
+#  - text: "intent_change_layout,circle_layout_button,I've changed the layout to Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button,The layout is now Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button,I have set the display to Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button,Now displaying as Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button,Now visualising as Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button,Now showing as Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button,Now using Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button, I have switched the layout to Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button, I've switched the layout to Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button,The layout has been switched to Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button, I have adjusted the layout to Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button, I've adjusted the layout to Circle Packing"
+#  - text: "intent_change_layout,circle_layout_button,The layout has been adjusted to Circle Packing"
 
   utter_ask_document_selection_form_document_requested:
   - text: "What file do you want to open?"
@@ -539,34 +547,38 @@ responses:
   - text: "intent_switch_or_and,or_button,OR has been selected as your Highlighting option"
   - text: "intent_switch_or_and,or_button,OR has been chosen as your Highlighting option"
   - text: "intent_switch_or_and,or_button,OR is now your Highlighting option"
-  - text: "intent_switch_or_and,or_button,I have changed the Highlighting option to OR"
-  - text: "intent_switch_or_and,or_button,I have changed the Highlighting option to OR"
-  - text: "intent_switch_or_and,or_button,I have switched the Highlighting options to OR"
-  - text: "intent_switch_or_and,or_button,Highlighting options have been switched to OR"
-  - text: "intent_switch_or_and,or_button,Highlighting options have been set to OR"
-  - text: "intent_switch_or_and,or_button,I have set the Highlighting options to OR"
-  - text: "intent_switch_or_and,or_button, I have made the Highlighting option OR"
+
+#  - text: "intent_switch_or_and,or_button,I have changed the Highlighting option to OR"
+#  - text: "intent_switch_or_and,or_button,I have changed the Highlighting option to OR"
+#  - text: "intent_switch_or_and,or_button,I have switched the Highlighting options to OR"
+#  - text: "intent_switch_or_and,or_button,Highlighting options have been switched to OR"
+#  - text: "intent_switch_or_and,or_button,Highlighting options have been set to OR"
+#  - text: "intent_switch_or_and,or_button,I have set the Highlighting options to OR"
+#  - text: "intent_switch_or_and,or_button, I have made the Highlighting option OR"
 
   utter_switch_and:
   - text: "intent_switch_or_and,and_button,Highlighting options have been changed to AND"
   - text: "intent_switch_or_and,and_button,AND has been selected as your Highlighting option"
   - text: "intent_switch_or_and,and_button,AND has been chosen as your Highlighting option"
   - text: "intent_switch_or_and,and_button,AND is now your Highlighting option"
-  - text: "intent_switch_or_and,and_button,I have changed the Highlighting option to AND"
-  - text: "intent_switch_or_and,and_button,I have changed the Highlighting option to AND"
-  - text: "intent_switch_or_and,and_button,I have switched the Highlighting options to AND"
-  - text: "intent_switch_or_and,and_button,Highlighting options have been switched to AND"
-  - text: "intent_switch_or_and,and_button,Highlighting options have been set to AND"
-  - text: "intent_switch_or_and,and_button,I have set the Highlighting options to AND"
-  - text: "intent_switch_or_and,and_button, I have made the Highlighting option AND"
+
+#  - text: "intent_switch_or_and,and_button,I have changed the Highlighting option to AND"
+#  - text: "intent_switch_or_and,and_button,I have changed the Highlighting option to AND"
+#  - text: "intent_switch_or_and,and_button,I have switched the Highlighting options to AND"
+#  - text: "intent_switch_or_and,and_button,Highlighting options have been switched to AND"
+#  - text: "intent_switch_or_and,and_button,Highlighting options have been set to AND"
+#  - text: "intent_switch_or_and,and_button,I have set the Highlighting options to AND"
+#  - text: "intent_switch_or_and,and_button, I have made the Highlighting option AND"
 
   utter_highlight_uncheck_all:
   - text: "intent_highlight_uncheck_all,Here you have it"
   - text: "intent_highlight_uncheck_all,I have unchecked all features"
   - text: "intent_highlight_uncheck_all,I have unchecked all of them"
-  - text: "intent_highlight_uncheck_all,I have unchecked them all"
-  - text: "intent_highlight_uncheck_all,I have unselected all features"
-  - text: "intent_highlight_uncheck_all,I have cleared all features"
+
+#  - text: "intent_highlight_uncheck_all,I have unchecked them all"
+#  - text: "intent_highlight_uncheck_all,I have unselected all features"
+#  - text: "intent_highlight_uncheck_all,I have cleared all features"
+
   # complex intent responses
 
   # longest, largest, widest, most toxic
@@ -606,11 +618,11 @@ responses:
 
 # help
 
-  utter_help_glyphs:
-    - text: "You can directly see which features are tagged to which comments by using glyphs.  \ \n
-
-  Check-all the features on the left column under Features to see the glyphs"
-      image: "https://ecemkavaz.github.io/imagesRasa/features2.png"
+#  utter_help_glyphs:
+#    - text: "You can directly see which features are tagged to which comments by using glyphs.  \ \n
+#
+#  Check-all the features on the left column under Features to see the glyphs"
+#      image: "https://ecemkavaz.github.io/imagesRasa/features2.png"
 
 #  utter_help_bar_chart_pop_up:
 #    - text: "You can change features to:  \ \n
@@ -724,11 +736,12 @@ responses:
      # payload:
 
   utter_help_select_node_edge:
-    - text: "intent_node_edge_signal,highlight_accordion_button,Select node and edge will show comment with selected tags. \ \n
+    - text: "intent_node_edge_signal,highlight_accordion_button,Select node and edge will show comment with selected tags.
+    \ \n
 
       Select node and edge by: \ \n
       - Using the Highlight Colour Feature menu \ \n
-       Asking me"
+      - Asking me"
 
   #    - text: "Highlight function will show the selected features for each comment as a colour. \ \n
   #
@@ -739,17 +752,20 @@ responses:
 
 
   utter_help_AND:
-    - text: "With AND option,
+    - text: "intent_and_or_signal,With AND option,
     you will see the comments that are tagged with all the features you have selected"
+      image: "https://ecemkavaz.github.io/imagesRasa/AndOr3.png"
 
   utter_help_OR:
-    - text: "With OR option,
+    - text: "intent_and_or_signal,With OR option,
     you will see the comments that are tagged with at least one of the features you have selected"
+      image: "https://ecemkavaz.github.io/imagesRasa/AndOr3.png"
 
   utter_help_AND_OR:
-    - text: "With AND option,
-      you will see the comments that are tagged with all the selected features. With OR option,
+    - text: "intent_and_or_signal,With AND option,
+      you will see the comments that are tagged with all the selected features. With OR option
       you will see the comments that are tagged with at least one of the selected features"
+      image: "https://ecemkavaz.github.io/imagesRasa/AndOr3.png"
 
   utter_help_summary:
     - text: "Summary shows how many comments are labelled with different levels of toxicity and targets.  \ \n
@@ -780,7 +796,7 @@ responses:
     - text: "Level One Comments button displays a bar chart with the
     statistics of features of each comment individually in level one and their children.
           "
-      image: "https://ecemkavaz.github.io/imagesRasa/levelonecomments.png"
+#      image: "https://ecemkavaz.github.io/imagesRasa/levelonecomments.png"
 
   utter_general_help:
     - text: "I can help you with: "
@@ -963,7 +979,7 @@ responses:
           payload: '/check_all_colour_features'
 
   utter_two_actions:
-    - text: "Please select one action at a time."
+    - text: "Please select one action at a time. [Ecu](https://www.youtube.com/) https://www.youtube.com "
 
   utter_please_rephrase:
     - text: "I'm sorry, I didn't quite understand that. Could you rephrase?"
@@ -1059,6 +1075,41 @@ responses:
           payload: '/icon_feature_group'
         - title: "Select Node & Edge"
           payload: '/highlight_check{"filter_name": "target group"}'
+
+  utter_filters_all_features:
+    - text: "How do you want to display it?"
+      buttons:
+        - title: "Highlight Colour Feature"
+          payload: '/check_all_colour_features'
+        - title: "Select Node & Edge"
+          payload: '/highlight_check{"filter_name": "all features"}'
+
+  utter_filters_all_targets:
+    - text: "How do you want to display it?"
+      buttons:
+        - title: "Targets"
+          payload: '/check_all_target_icons'
+        - title: "Select Node & Edge"
+          payload: '/highlight_check{"filter_name": "all targets"}'
+
+
+  utter_filters_all_features_uncheck:
+    - text: "How do you want to display it?"
+      buttons:
+        - title: "Highlight Colour Feature"
+          payload: '/uncheck_all_colour_features'
+        - title: "Select Node & Edge"
+          payload: '/highlight_uncheck{"filter_name": "all features"}'
+
+  utter_filters_all_targets_uncheck:
+    - text: "How do you want to display it?"
+      buttons:
+        - title: "Targets"
+          payload: '/uncheck_all_target_icons'
+        - title: "Select Node & Edge"
+          payload: '/highlight_uncheck{"filter_name": "all targets"}'
+
+
 
   utter_reset_all_filters:
     - text: "intent_reset_filters"

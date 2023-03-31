@@ -43,8 +43,8 @@
 <style>
 
 .rw-conversation-container .rw-image-details .rw-image-frame{
-    height: 110px;
-    width: auto;
+    height: 300px;
+    width: 300px;
 }
 .rw-conversation-container .rw-replies{
    display:block;
@@ -761,8 +761,8 @@
                     }
                     break;
                 case "intent_glyphs_blinking":
-                    if ('{{ selected_item }}'){
-                        if (messageList[1]==="glyphs-radio-buttons"){
+                    if ('{{ selected_item }}') {
+                        if (messageList[1] === "glyphs-radio-buttons") {
                             $("#glyphs-radio-buttons .border").css({
                                 "border-style": "solid",
                                 "box-shadow": "0 0 20px 5px rgba(51, 217, 178, 1)",
@@ -777,9 +777,27 @@
                                     "animation": ""
 
                                 });
-                            }, 10000);
-                            e.text =  messageList[2];
+                            }, 8000);
+                            e.text = messageList[2];
 
+                            $("#features_accordion_button").css({
+                                "width": "calc(100% + 5px)",
+                                "height": "calc(100% + -18px)",
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                                "animation": "pulse-green-side-bar 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#features_accordion_button").css({
+                                    "width": "",
+                                    "height": "",
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "animation": ""
+                                });
+                            }, 8000);
 
                         }
 
@@ -813,16 +831,20 @@
                     if ('{{ selected_item }}'){
                         if (messageList[1]==="targets_accordion_button"){
                             $("#targets_accordion_button").css({
-                                "border-style": "solid",
+                                "width": "calc(100% + 5px)",
+                                "height": "calc(100% + -18px)",
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
                                 "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
-                                "opacity": "1",
                                 "animation": "pulse-green-side-bar 1.3s infinite"
                             });
                             setTimeout(function () {
                                 $("#targets_accordion_button").css({
-                                    "border-style": "",
+                                    "width": "",
+                                    "height": "",
+                                    "border": "",
+                                    "border-radius": "",
                                     "box-shadow": "",
-                                    "opacity": "1",
                                     "animation": ""
                                 });
                             }, 6000);
@@ -837,21 +859,24 @@
                     if ('{{ selected_item }}'){
                         if (messageList[1]==="features_accordion_button"){
                             $("#features_accordion_button").css({
-                                "border-style": "solid",
+                                "width": "calc(100% + 5px)",
+                                "height": "calc(100% + -18px)",
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
                                 "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
-                                "opacity": "1",
                                 "animation": "pulse-green-side-bar 1.3s infinite"
                             });
                             setTimeout(function () {
                                 $("#features_accordion_button").css({
-                                    "border-style": "",
+                                    "width": "",
+                                    "height": "",
+                                    "border": "",
+                                    "border-radius": "",
                                     "box-shadow": "",
-                                    "opacity": "1",
                                     "animation": ""
                                 });
                             }, 6000);
                             e.text =  messageList[2];
-
 
                         }
 
@@ -882,6 +907,27 @@
 
 
                         }
+
+                    }
+                    break;
+                case "intent_and_or_signal":
+                    if ('{{ selected_item }}') {
+                        $("#and_or_signal").css({
+                            "border": "10px solid #33FF66",
+                            "border-radius": "10px",
+                            "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                            "animation": "pulse-green-side-bar 1.3s infinite"
+                        });
+                        setTimeout(function () {
+                            $("#and_or_signal").css({
+                                "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
+                                "animation": ""
+                            });
+                        }, 6000);
+                        e.text = messageList[1] + "," +  " " + messageList[2]
+
 
                     }
                     break;
