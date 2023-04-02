@@ -511,7 +511,6 @@ nlu:
 # synonyms for verbs check, uncheck, visualise, switch
 - synonym: check
   examples: |
-    - check
     - highlight
     - select
     - choose
@@ -524,7 +523,6 @@ nlu:
 
 - synonym: uncheck
   examples: |
-    - uncheck
     - deselect
     - unselect
     - turn off
@@ -533,19 +531,19 @@ nlu:
     - switch off
     - deactivate
     - untick
+    - clear
+    - reset
 
 - synonym: visualise
   examples: |
-    - visualise
-    - visualise
     - show
     - display 
 
 - synonym: switch
   examples: |
-    - switch
     - change
     - exchange
+    - adjust
 
 # Synonyms for menus: select node and edge menu, highlight colour feature menu, **target menu- to be completed**
 
@@ -598,26 +596,13 @@ nlu:
 # Synonyms nodes and edges and filter
 - synonym: nodes
   examples: |
-    - nodes
-    - the nodes
-    - node and edge
-    - the node and edge
-    - comments
-    - the comments
     - node
-    - the node
-    - edge
-    - the edge
-    - edges
-    - the edge
-    - nodes and edges
-    - the nodes and edges
+    - comment
+    - comment nodes
 
 - synonym: filter
   examples: |
-    - filter
     - filtering
-    - filters
 
 # Synonym for "formalities" request starter I want to  + issue of questions like **what/Which** ->classfication to be added
 - synonym: I want to
@@ -920,40 +905,36 @@ nlu:
     - Turn on [mockery]{"entity": "filter_name"} nodes
     
     - [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
-    - [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}[filter]{"entity" : "general_filter"}
-    - [check]{"entity": "check_verb"}[nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
-    - [check]{"entity": "check_verb"} for me [intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
-    - [check]{"entity": "check_verb"} for me [intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}[filter]{"entity" : "general_filter"}
+    - [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"} [filter]{"entity": "general_filter"}
+    - [check]{"entity": "check_verb"} [nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
+    - [check]{"entity": "check_verb"} for me [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
+    - [check]{"entity": "check_verb"} for me [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} [filter]{"entity": "general_filter"}
     - [check]{"entity": "check_verb"} for me [nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
     - [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} for me
-    - [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}[filter]{"entity" : "general_filter"} for me
+    - [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} [filter]{"entity": "general_filter"} for me
     - [check]{"entity": "check_verb"}[nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"} for me
-    - [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"} 
-    - [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
-    - [visualise]{"entity": "visualise_verb"} me [intolerance]{"entity": "filter_name"} 
-    - [visualise]{"entity": "visualise_verb"} me [intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
-    - [visualise]{"entity": "visualise_verb"} for me [intolerance]{"entity": "filter_name"} 
-    - [visualise]{"entity": "visualise_verb"} for me [intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
-    - [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"} for me 
-    - [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"} for me
-    - [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
+    - [visualise]{"entity": "visualise_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
+    - [visualise]{"entity": "visualise_verb"} me [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
+    - [visualise]{"entity": "visualise_verb"} for me [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
+    - [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} for me
+    - [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
     - [visualise]{"entity": "visualise_verb"}[nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
-    - [visualise]{"entity": "visualise_verb"}[intolerance] me {"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
+    - [visualise]{"entity": "visualise_verb"}[intolerance] me {"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
     - [visualise]{"entity": "visualise_verb"}[nodes] me {"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
-    - [visualise]{"entity": "visualise_verb"}[intolerance] for me {"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
+    - [visualise]{"entity": "visualise_verb"}[intolerance] for me {"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
     - [visualise]{"entity": "visualise_verb"} for me [nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
-    - [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"} for me
-    - [visualise]{"entity": "visualise_verb"}[nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"} for me
-    - [I want to]{"entity": "request_starter"}[check]{"entity": "check_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
-    - [I want to]{"entity": "request_starter"}[check]{"entity": "check_verb"} for me [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
-    - [I want to]{"entity": "request_starter"}[check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} for me
-    - [I want to]{"entity": "request_starter"}[check]{"entity": "check_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}[filter]{"entity" : "general_filter"}
-    - [I want to]{"entity": "request_starter"}[check]{"entity": "check_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}[filter]{"entity" : "general_filter"} for me
-    - [I want to]{"entity": "request_starter"}[check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"} [nodes] {"entity": "node_and_edge"}[filter]{"entity" : "general_filter"}
-    - [I want to]{"entity": "request_starter"}[check]{"entity": "check_verb"}[intolerance]{"entity": "filter_name"} [nodes] {"entity": "node_and_edge"}[filter]{"entity" : "general_filter"} for me
-    - [I want to]{"entity": "request_starter"}[visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
-    - [I want to]{"entity": "request_starter"}[visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
-    - [I want to]{"entity": "request_starter"}[visualise]{"entity": "visualise_verb"}[nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
+    - [visualise]{"entity": "visualise_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} for me
+    - [visualise]{"entity": "visualise_verb"} [nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"} for me
+    - [I want to]{"entity": "request_starter"} [check]{"entity": "check_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
+    - [I want to]{"entity": "request_starter"} [check]{"entity": "check_verb"} for me [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
+    - [I want to]{"entity": "request_starter"} [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} for me
+    - [I want to]{"entity": "request_starter"} [check]{"entity": "check_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} [filter]{"entity": "general_filter"}
+    - [I want to]{"entity": "request_starter"} [check]{"entity": "check_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} [filter]{"entity": "general_filter"} for me
+    - [I want to]{"entity": "request_starter"} [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} [filter]{"entity": "general_filter"}
+    - [I want to]{"entity": "request_starter"} [check]{"entity": "check_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} [filter]{"entity": "general_filter"} for me
+    - [I want to]{"entity": "request_starter"} [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
+    - [I want to]{"entity": "request_starter"} [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
+    - [I want to]{"entity": "request_starter"} [visualise]{"entity": "visualise_verb"} [nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
 
 
     # features--> improper language, insult, aggressiveness - ?
@@ -2231,8 +2212,8 @@ nlu:
   examples: |
     - Select [insult]{"entity": "filter_name"}
     - Select [insult]{"entity": "filter_name" }
-    - Check  [insult]{"entity": "filter_name" }
-    - Check  [insult]{"entity": "filter_name"}
+    - Check [insult]{"entity": "filter_name" }
+    - Check [insult]{"entity": "filter_name"}
     - Show me [insult]{"entity": "filter_name"}
     - I want to see [insult]{"entity": "filter_name"}
     - Activate [insult]{"entity": "filter_name"}
@@ -2301,5 +2282,98 @@ nlu:
     - Disable all filters
     - Remove all filters
 
+# Definitions of features
+- intent: define_sarcasm
+  examples: |
+    - What is [sarcasm]{"entity": "filter_name"}?
+    - What does [sarcasm]{"entity": "filter_name"} mean?
+    - What is meant by [sarcasm]{"entity": "filter_name"}?
+    - What does [sarcasm]{"entity": "filter_name"} refer to?
+    - What is the definition of [sarcasm]{"entity": "filter_name"}?
+    - How is [sarcasm]{"entity": "filter_name"} defined?
 
+- intent: define_mockery
+  examples: |
+    - What is [mockery]{"entity": "filter_name"}?
+    - What does [mockery]{"entity": "filter_name"} mean?
+    - What is meant by [mockery]{"entity": "filter_name"}?
+    - What does [mockery]{"entity": "filter_name"} refer to?
+    - What is the definition of [mockery]{"entity": "filter_name"}?
+    - How is [mockery]{"entity": "filter_name"} defined?
 
+- intent: define_insult
+  examples: | 
+    - What is [insult]{"entity": "filter_name"}?
+    - What does [insult]{"entity": "filter_name"} mean?
+    - What is meant by [insult]{"entity": "filter_name"}?
+    - What does [insult]{"entity": "filter_name"} refer to?
+    - What is the definition of [insult]{"entity": "filter_name"}?
+    - How is [insult]{"entity": "filter_name"} defined?
+
+- intent: define_improper_language
+  examples: |
+    - What is [improper language]{"entity": "filter_name"}?
+    - What does [improper language]{"entity": "filter_name"} mean?
+    - What is meant by [improper language]{"entity": "filter_name"}?
+    - What does [improper language]{"entity": "filter_name"} refer to?
+    - What is the definition of [improper language]{"entity": "filter_name"}?
+    - How is [improper language]{"entity": "filter_name"} defined?
+
+- intent: define_aggressiveness
+  examples: |
+    - What is [aggressiveness]{"entity": "filter_name"}?
+    - What does [aggressiveness]{"entity": "filter_name"} mean?
+    - What is meant by [aggressiveness]{"entity": "filter_name"}?
+    - What does [aggressiveness]{"entity": "filter_name"} refer to?
+    - What is the definition of [aggressiveness]{"entity": "filter_name"}?
+    - How is [aggressiveness]{"entity": "filter_name"} defined?
+
+- intent: define_stereotype
+  examples: |
+    - What is [stereotype]{"entity": "filter_name"}?
+    - What does [stereotype]{"entity": "filter_name"} mean?
+    - What is meant by [stereotype]{"entity": "filter_name"}?
+    - What does [stereotype]{"entity": "filter_name"} refer to?
+    - What is the definition of [stereotype]{"entity": "filter_name"}?
+    - How is [stereotype]{"entity": "filter_name"} defined?
+     
+- intent: define_stance
+  examples: |
+    - What is stance?
+    - What does stance mean?
+    - What is meant by stance?
+    - What does stance refer to?
+    - What is the definition of stance?
+    - How is stance defined?
+
+- intent: define_toxic
+  examples: | 
+    - What is toxic?
+    - What does toxic mean?
+    - What is meant by toxic?
+    - What does toxic refer to?
+    - What is the definition of toxic?
+    - How is toxic defined?
+
+- intent: define_commentid
+    - What is comment id?
+    - What does comment id mean?
+    - What is meant by comment id ?
+    - What does comment id refer to?
+    - What is the definition of comment id?
+    - How is comment id defined?
+
+- synonym: comment id
+  examples: |
+    - comment id number
+    - comment id No.
+    - commentid
+    - commentid number
+    - commentid No.
+    - comment identification
+    - comment identification number
+    - comment identification No.
+    - id number
+    - id No.
+    - identification number
+    - identification No.
