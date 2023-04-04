@@ -268,7 +268,7 @@ rules:
 - rule: check colour feature const
   steps:
     - intent: colour_feature_constructiveness
-    - action: utter_colour_feature_constractive
+    - action: utter_colour_feature_constructive
 
 - rule: check colour feature argumentation
   steps:
@@ -324,7 +324,7 @@ rules:
 - rule: uncheck constructiveness colour feature
   steps:
     - intent: colour_feature_constructiveness_uncheck
-    - action: utter_colour_feature_constractive_uncheck
+    - action: utter_colour_feature_constructive_uncheck
 
 - rule: uncheck argumentation colour feature
   steps:
@@ -555,6 +555,50 @@ rules:
   steps:
     - intent: filters_group_hide
     - action: utter_filters_target_group_uncheck
+- rule: user asks for definition of sarcasm
+  steps:
+    - intent: define_sarcasm
+    - action: utter_sarcasm_definition
+
+- rule: user asks for definition of mockery
+  steps:
+    - intent: define_mockery
+    - action: utter_mockery_definition
+
+- rule: user asks for definition of insult
+  steps:
+    - intent: define_insult
+    - action: utter_insult_definition
+
+- rule: user asks for definition of improper language
+  steps:
+    - intent: define_improper_language
+    - action: utter_improper_language_definition
+
+- rule: user asks for definition of aggressiveness
+  steps:
+    - intent: define_aggressiveness
+    - action: utter_aggressiveness_definition
+
+- rule: user asks for definition of stereotypes
+  steps:
+    - intent: define_stereotype
+    - action: utter_stereotype_definition
+
+- rule: user asks for definition of stance
+  steps:
+    - intent: define_stance
+    - action: utter_stance_definition
+
+- rule: user asks for definition of toxic
+  steps:
+    - intent: define_toxic
+    - action: utter_toxic_definition
+
+- rule: user asks for definition of comment id
+  steps:
+    - intent: define_commentid
+    - action: utter_comment_id_definition
 
 #- rule: user wants to know what bot can do
 #  steps:

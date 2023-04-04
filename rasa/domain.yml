@@ -2,7 +2,6 @@ version: '2.0'
 
 intents:
   - greet
-  - thanks
   - goodbye
   - affirm:
       use_entities: [] # ignore all entities
@@ -49,6 +48,7 @@ intents:
       use_entities:
       - document_requested
       - object_requested
+  # Filter actions
   - change_glyph_dots:
       use_entities:
       - glyph_requested
@@ -75,6 +75,12 @@ intents:
   - highlight_switch_last
   - highlight_check_last
   - highlight_uncheck_last
+  - check_verb
+  - visualise_verb
+  - request_starter
+  # Filter type
+  - node_and_edge
+  - general_filter
   # Complex intents
   - longest_thread
   - widest_level
@@ -98,6 +104,11 @@ intents:
   - help_AND_OR
   - help_what_can_you_do
   - what_can_do_after_glyphs
+  - change_glyph_dots
+  - change_glyph_circular
+  - change_glyph_trivial
+  - change_glyphs
+  - highlight_uncheck_last
   - features_on_the_left
   - targets_help
   - help_sub_structure
@@ -537,13 +548,13 @@ responses:
 
 #  Glyphs
   utter_change_to_dots:
-  - text: "intent_change_glyphs,dots_icon_button,Glyph changed to Dots"
+  - text: "intent_change_glyphs,dots_icon_button,Glyph has been changed to Dots"
 
   utter_change_to_circular:
-  - text: "intent_change_glyphs,glyphs_icon_button,Glyph changed to Circular"
+  - text: "intent_change_glyphs,glyphs_icon_button,Glyph has been changed to Circular"
 
   utter_change_to_trivial:
-  - text: "intent_change_glyphs,trivial_icon_button,Glyph changed to Trivial"
+  - text: "intent_change_glyphs,trivial_icon_button,Glyph has been changed to Trivial Cheese"
 
   utter_change_glyphs:
    - text: "Which glyph do you want to change to?"
@@ -586,13 +597,7 @@ responses:
 #  - text: "intent_switch_or_and,and_button, I have made the Highlighting option AND"
 
   utter_highlight_uncheck_all:
-  - text: "intent_highlight_uncheck_all,Here you have it"
-  - text: "intent_highlight_uncheck_all,I have unchecked all features"
-  - text: "intent_highlight_uncheck_all,I have unchecked all of them"
-
-#  - text: "intent_highlight_uncheck_all,I have unchecked them all"
-#  - text: "intent_highlight_uncheck_all,I have unselected all features"
-#  - text: "intent_highlight_uncheck_all,I have cleared all features"
+  - text: "intent_highlight_uncheck_all,All nodes and edges have been unchecked"
 
   # complex intent responses
 
@@ -651,8 +656,15 @@ responses:
 #
 
   utter_explain_glyphs_one:
-    - text: "intent_glyphs_blinking,glyphs-radio-buttons,Glyphs let us see features of each comment."
+    - text: "intent_glyphs_blinking,glyphs-radio-buttons,Glyphs let us see features that each comment is tagged with."
 
+#  utter_explain_glyphs_three:
+#    - text: "Circular Glyph"
+#      image: "https://ecemkavaz.github.io/imagesRasa/glyph.svg"
+#
+#  utter_explain_glyphs_four:
+#    - text: "Trivial Cheese"
+#      image: "https://ecemkavaz.github.io/imagesRasa/trivial.svg"
 
   utter_explain_glyphs_two:
     - text: "Use the Highlight Colour Features menu to activate/deactivate the features. "
@@ -733,7 +745,7 @@ responses:
       image: "https://ecemkavaz.github.io/imagesRasa/AndOr3.png"
 
   utter_help_summary:
-    - text: "Summary shows how many comments are labelled with different levels of toxicity and targets.  \ \n
+    - text: "Summary shows how many comments are labelled with different levels of toxicity and their targets.  \ \n
 
     It reflects data in the current visualisation."
       image: "https://ecemkavaz.github.io/imagesRasa/summary.png"
@@ -746,20 +758,20 @@ responses:
 
 
   utter_help_bar_chart_pop_up:
-    - text: "If you want to have more information about this:"
+    - text: "If you want more information about this:"
       buttons:
         - title: "Click here"
           payload: '/statistics_help'
 
   utter_help_main_bar_three:
-    - text: "Click on each bar to highlight the features on the graph. \ \n
+    - text: "By clicking on each bar you highlight the features on the graph. \ \n
 
      You can
-    remove features by clicking on their name to compare the only features you want."
+    remove features by clicking on their name to compare the features you want."
 
   utter_help_subtree_bar:
-    - text: "intent_signal_additional_graphs,chart_sub_button,statistics_all_features_subtrees,Level One Comments button displays a bar chart with the
-    statistics of features of each comment individually in level one and their children.
+    - text: "intent_signal_additional_graphs,chart_sub_button,statistics_all_features_subtrees,Level One Comments display a bar chart with the
+                                                                                                   statistics of features of each comment individually that are at level one, and their children.
           "
 
 
@@ -829,80 +841,80 @@ responses:
 
 # check colour features
 
-  utter_colour_feature_constractive:
-    - text: "intent_show_colour_features,constructiveness,Colour feature is checked"
+  utter_colour_feature_constructive:
+    - text: "intent_show_colour_features,constructiveness,Colour feature has been checked"
 
   utter_colour_feature_argumentation:
-    - text: "intent_show_colour_features,argumentation,Colour feature is checked"
+    - text: "intent_show_colour_features,argumentation,Colour feature has been checked"
 
   utter_colour_feature_sarcasm:
-    - text: "intent_show_colour_features,sarcasm,Colour feature is checked"
+    - text: "intent_show_colour_features,sarcasm,Colour feature has been checked"
 
   utter_colour_feature_mockery:
-    - text: "intent_show_colour_features,mockery,Colour feature is checked"
+    - text: "intent_show_colour_features,mockery,Colour feature has been checked"
 
   utter_colour_feature_intolerance:
-    - text: "intent_show_colour_features,intolerance,Colour feature is checked"
+    - text: "intent_show_colour_features,intolerance,Colour feature has been checked"
 
   utter_colour_feature_improper:
-    - text: "intent_show_colour_features,improper_language,Colour feature is checked"
+    - text: "intent_show_colour_features,improper_language,Colour feature has been checked"
 
   utter_colour_feature_insult:
-    - text: "intent_show_colour_features,insult,Colour feature is checked"
+    - text: "intent_show_colour_features,insult,Colour feature has been checked"
 
   utter_colour_feature_aggressiveness:
-    - text: "intent_show_colour_features,aggressiveness,Colour feature is checked"
+    - text: "intent_show_colour_features,aggressiveness,Colour feature has been checked"
 
   utter_check_all_colour_features:
-    - text: "intent_show_colour_features,check_button_features,All colour features are checked"
+    - text: "intent_show_colour_features,check_button_features,All colour features have been checked"
 
   utter_uncheck_all_colour_features:
-    - text: "intent_show_colour_features,uncheck_button_features,All colour features are unchecked"
+    - text: "intent_show_colour_features,uncheck_button_features,All colour features have been unchecked"
 
   utter_colour_feature_stereotype:
-    - text: "intent_show_colour_features,target-stereotype,Colour feature is checked"
+    - text: "intent_show_colour_features,target-stereotype,Colour feature has been checked"
 
 # uncheck colour features
 
-  utter_colour_feature_constractive_uncheck:
-    - text: "intent_uncheck_colour_features,constructiveness,Colour feature is unchecked"
+  utter_colour_feature_constructive_uncheck:
+    - text: "intent_uncheck_colour_features,constructiveness,Colour feature has been unchecked"
 
   utter_colour_feature_argumentation_uncheck:
-    - text: "intent_uncheck_colour_features,argumentation,Colour feature is unchecked"
+    - text: "intent_uncheck_colour_features,argumentation,Colour feature has been unchecked"
 
   utter_colour_feature_sarcasm_uncheck:
-    - text: "intent_uncheck_colour_features,sarcasm,Colour feature is unchecked"
+    - text: "intent_uncheck_colour_features,sarcasm,Colour feature has been unchecked"
 
   utter_colour_feature_mockery_uncheck:
-    - text: "intent_uncheck_colour_features,mockery,Colour feature is unchecked"
+    - text: "intent_uncheck_colour_features,mockery,Colour feature has been unchecked"
 
   utter_colour_feature_intolerance_uncheck:
-    - text: "intent_uncheck_colour_features,intolerance,Colour feature is unchecked"
+    - text: "intent_uncheck_colour_features,intolerance,Colour feature has been unchecked"
 
   utter_colour_feature_improper_uncheck:
-    - text: "intent_uncheck_colour_features,improper_language,Colour feature is unchecked"
+    - text: "intent_uncheck_colour_features,improper_language,Colour feature has been unchecked"
 
   utter_colour_feature_insult_uncheck:
-    - text: "intent_uncheck_colour_features,insult,Colour feature is unchecked"
+    - text: "intent_uncheck_colour_features,insult,Colour feature has been unchecked"
 
   utter_colour_feature_aggressiveness_uncheck:
-    - text: "intent_uncheck_colour_features,aggressiveness,Colour feature is unchecked"
+    - text: "intent_uncheck_colour_features,aggressiveness,Colour feature has been unchecked"
 
   utter_colour_feature_stereotype_uncheck:
-    - text: "intent_uncheck_colour_features,target-stereotype,Colour feature is unchecked"
+    - text: "intent_uncheck_colour_features,target-stereotype,Colour feature has been unchecked"
 
   # check targets
   utter_icon_feature_person:
-    - text: "intent_show_targets,target-person,Target is checked"
+    - text: "intent_show_targets,target-person,Target Person has been checked"
 
   utter_icon_feature_group:
-    - text: "intent_show_targets,target-group,Target is checked"
+    - text: "intent_show_targets,target-group,Target Group has been checked"
 
   utter_icon_feature_checkall:
-    - text: "intent_show_targets,check_button_targets,All targets are checked"
+    - text: "intent_show_targets,check_button_targets,All targets have been checked"
 
   utter_icon_feature_uncheckall:
-    - text: "intent_show_targets,uncheck_button_targets,All targets are unchecked"
+    - text: "intent_show_targets,uncheck_button_targets,All targets have been unchecked"
 
 # uncheck targets
   utter_uncheck_person:
@@ -940,7 +952,7 @@ responses:
     - text: "Please select one action at a time. [Ecu](https://www.youtube.com/) https://www.youtube.com "
 
   utter_please_rephrase:
-    - text: "I'm sorry, I didn't quite understand that. Could you rephrase?"
+    - text: "I'm sorry, I didn't quite understand that. Could you rephrase that please?"
 
 # how do you want to display filter
   utter_filter_test:
@@ -1163,6 +1175,82 @@ responses:
 
   utter_reset_all_filters:
     - text: "intent_reset_filters"
+
+# Definitions of features
+  utter_sarcasm_definition:
+    - text: "A comment is sarcastic when the content is ironic, that is, when the writer uses words
+    that mean the opposite of what he really wants to say and when it is accompanied by a harsh,
+    sharp and negative criticism and made in bad faith. \ \n"
+
+
+  utter_mockery_definition:
+    - text: "This category indicates that the comment ridicules, humiliates or mocks a person or group."
+
+  utter_insult_definition:
+    - text: "This category indicates that the comment contains one or more
+    explicit insults or slurs with the intention to offend a person or group.
+    This attribute correlates with the improper language category, which means that if the comment contains insults,
+    it is also annotated as improper language, but not the other way around (i.e. improper language does not necessarily imply insults or slurs)."
+
+
+  utter_improper_language_definition:
+    - text: "The category Improper language indicates
+    that the comment contains language not consider to be proper or that
+    is vulgar and impolite and/or which includes rude words.
+    However, we may find comments that include insults or improper language used
+    with a humoristic or positive intentionality."
+
+  utter_aggressiveness_definition:
+    - text: "A comment contains aggressive language when it expresses
+  violence or a desire to exercise it in a deliberate and conscious or unconscious way, without necessarily including sarcasm,
+  mockery or insults. This aggressiveness can be expressed in a passive manner,
+  by justifying or empathizing with an aggressive action, or in an active way, by promoting and encouraging or inciting violence"
+
+  utter_stereotype_definition:
+    - text: "Stereotypes are defined as beliefs and ideas widely attributed to a group,
+  by which the individuals in this group are characterised in an undifferentiated and simplified way based on
+  the magnification or exaggeration of an individual characteristic (race, ethnicity, religion, gender,
+  sexual orientation and age, among others)"
+
+  utter_stance_definition:
+    - text: "
+    Stance indicates the author's attitude towards a topic of discussion. \ \n
+
+    There are 4 Stances, each assigned a colour: \ \n
+
+    Positive Stance
+    \ \n
+
+    Negative Stance \ \n
+
+    Neutral Stance \ \n
+
+    Both Positive and Negative stance \ \n
+
+    You can activate/deactivate Stance: \ \n
+
+    - Using the Select Node and Edge menu \ \n
+
+    - Asking me"
+
+  utter_toxic_definition:
+    - text: "A comment's toxicity is determined by the number and combination of features that appear in it \ \n
+
+        There are 4 possible levels of toxicity, each assigned a colour: \ \n
+
+        Not toxic \ \n
+        Mildly toxic \ \n
+        Toxic \ \n
+        Very Toxic \ \n
+
+      You can activate/deactivate Toxicity: \ \n
+
+    - Using the Select Node and Edge menu \ \n
+
+    - Asking me"
+
+  utter_comment_id_definition:
+    - text: "A number that indicates the chronological order in which the comment was posted in the time thread on the website."
 
 session_config:
   session_expiration_time: 60
