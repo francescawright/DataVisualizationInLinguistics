@@ -7139,7 +7139,7 @@ $(popup_container).on("open", function () {
 
             /* Colours
        * */
-            var colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
+            var colourBothStances = "#FFDD1F", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
                 colourNeutralStance = "#2b2727";
             var colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
                 colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue",

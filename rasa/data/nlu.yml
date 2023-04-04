@@ -27,7 +27,6 @@ nlu:
 
 - intent: goodbye
   examples: |
-    - good afternoon
     - cu
     - good bye
     - see you later
@@ -231,7 +230,6 @@ nlu:
     - design one
     - design 1
     - first layout
-    
     - first display
 
 - synonym: force
@@ -306,7 +304,12 @@ nlu:
     - I would like to see the [tree]{"entity": "layout_requested", "value": "tree"}
     - Show me the [tree layout]{"entity": "layout_requested", "value": "tree"}
     - [tree]{"entity": "layout_requested", "value": "tree"}
-    
+    - Show me the [first layout]{"entity": "layout_requested", "value": "tree"}
+    - Show me the [first visualisation]{"entity": "layout_requested", "value": "tree"}
+    - Show me the [first visualization]{"entity": "layout_requested", "value": "tree"}
+    - Show me the [tree visualisation]{"entity": "layout_requested", "value": "tree"}
+    - Show me the [first design]{"entity": "layout_requested", "value": "tree"}
+
 
 - intent: change_layout_force
   examples: |
@@ -322,6 +325,11 @@ nlu:
     - I would like to see the [force]{"entity": "layout_requested", "value": "force"}
     - Show me the [force layout]{"entity": "layout_requested", "value": "force"}
     - [force]{"entity": "layout_requested", "value": "force"}
+    - Show me the [second layout]{"entity": "layout_requested", "value": "force"}
+    - Show me the [second visualisation]{"entity": "layout_requested", "value": "force"}
+    - Show me the [second visualization]{"entity": "layout_requested", "value": "force"}
+    - Show me the [force visualisation]{"entity": "layout_requested", "value": "force"}
+    - Show me the [second design]{"entity": "layout_requested", "value": "force"}
 
 - intent: change_layout_radial
   examples: |
@@ -337,6 +345,12 @@ nlu:
     - I would like to see the [radial]{"entity": "layout_requested", "value": "radial"}
     - Show me the [radial layout]{"entity": "layout_requested", "value": "radial"}
     - [radial]{"entity": "layout_requested", "value": "radial"}
+    - Show me the [third layout]{"entity": "layout_requested", "value": "radial"}
+    - Show me the [third visualisation]{"entity": "layout_requested", "value": "radial"}
+    - Show me the [third visualization]{"entity": "layout_requested", "value": "radial"}
+    - Show me the [radial visualisation]{"entity": "layout_requested", "value": "radial"}
+    - Show me the [third design]{"entity": "layout_requested", "value": "radial"}
+
 
 - intent: change_layout_circle
   examples: |
@@ -346,12 +360,23 @@ nlu:
     - Set [circle layout]{"entity": "layout_requested", "value": "circle"}
     - Set the [design]{"entity": "object_requested", "value": "layout"} to the [circle visualization]{"entity": "layout_requested", "value": "circle"}
     - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [circle packing]{"entity": "layout_requested", "value": "circle"}
-    - Displays the [circle layout]{"entity": "layout_requested", "value": "circle"}
-    - Displays [circle packing visualization]{"entity": "layout_requested", "value": "circle"}
+    - Display the [circle layout]{"entity": "layout_requested", "value": "circle"}
+    - Display [circle packing visualization]{"entity": "layout_requested", "value": "circle"}
+    - Display [circle packing visualisation]{"entity": "layout_requested", "value": "circle"}
     - I want to see the [circle packing design]{"entity": "layout_requested", "value": "circle"}
     - I would like to see the [circle]{"entity": "layout_requested", "value": "circle"}
     - Show me the [circle layout]{"entity": "layout_requested", "value": "circle"}
     - [circle packing]{"entity": "layout_requested", "value": "circle"}
+    - Show me the [fourth layout]{"entity": "layout_requested", "value": "circle"}
+    - Show me the [fourth visualisation]{"entity": "layout_requested", "value": "circle"}
+    - Show me the [fourth visualization]{"entity": "layout_requested", "value": "circle"}
+    - Show me the [circle visualisation]{"entity": "layout_requested", "value": "circle"}
+    - Show me the [fourth design]{"entity": "layout_requested", "value": "circle"}
+    - Display the [last visualization]{"entity": "layout_requested", "value": "circle"}
+    - Display the [last visualisation]{"entity": "layout_requested", "value": "circle"}
+    - Display the [last layout]{"entity": "layout_requested", "value": "circle"}
+    - Display the [last design]{"entity": "layout_requested", "value": "circle"}
+
 
 # glyph change
 
@@ -537,7 +562,7 @@ nlu:
 - synonym: visualise
   examples: |
     - show
-    - display 
+    - display
 
 - synonym: switch
   examples: |
@@ -611,11 +636,11 @@ nlu:
     - I would like to
     - I'd like to
     - Can you
-    - Can I 
+    - Can I
     - May you
     - May I
     - Could you
-    - Could I 
+    - Could I
     - I want you to
     - I would like you to
     - I'd like you to
@@ -635,7 +660,6 @@ nlu:
     - show me [not toxic]{"entity": "filter_name", "value": "non toxic"} nodes
     - show me [not toxic]{"entity": "filter_name", "value": "non toxic"}
     - show me [non toxic]{"entity": "filter_name", "value": "non toxic"} comments
-    
     - show [least toxic]{"entity": "filter_name", "value": "non toxic"} nodes
     - show [least toxicity]{"entity": "filter_name", "value": "non toxic"} nodes
     - Which nodes have the [least toxicity]{"entity": "filter_name", "value": "non toxic"}?
@@ -747,6 +771,17 @@ nlu:
     - Enable the [neutral stance]{"entity": "filter_name"} and [targets all]{"entity": "filter_name"} filters
     - Enable the filter [neutral stance]{"entity": "filter_name"}
 
+    - I want to see nodes with [both stances]{"entity": "filter_name"}
+    - Show me comments with [both stances]{"entity": "filter_name"}
+    - Highlight [both stances]{"entity": "filter_name"} comments
+    - Show nodes with [both stances]{"entity": "filter_name"}
+    - Activate [both stances]{"entity": "filter_name"} filter
+    - Check [both stances]{"entity": "filter_name"} filter
+    - Activate [both stances]{"entity": "filter_name"} comments filter
+    - Enable [both stances]{"entity": "filter_name"} nodes
+    - Show me [both stances]{"entity": "filter_name"}
+
+
     # targets --> target person, target group, stereotype
 
     - I want to see comments with [target person]{"entity": "filter_name"}
@@ -802,8 +837,7 @@ nlu:
 
     # targets select all
 
-    - I want to select [all targets]{"entity": "filter_name"}
-    - Select [all targets]{"entity": "filter_name"}
+    - I want to select [all targets]{"entity": "filter_name"} nodes
     - I want to select [all targets]{"entity": "filter_name"} checkbox
     - Select [all targets]{"entity": "filter_name"} checkbox
     - I want to select [all targets]{"entity": "filter_name"} option
@@ -903,38 +937,29 @@ nlu:
     - Highlight [mockery]{"entity": "filter_name"} nodes
     - Turn on [mockery]{"entity": "filter_name"} node and edge
     - Turn on [mockery]{"entity": "filter_name"} nodes
-    
-    - [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"}
-    - [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"}[nodes]{"entity": "node_and_edge"} [filter]{"entity": "general_filter"}
-    - [check]{"entity": "check_verb"} [nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
-    - [check]{"entity": "check_verb"} for me [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
-    - [check]{"entity": "check_verb"} for me [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} [filter]{"entity": "general_filter"}
-    - [check]{"entity": "check_verb"} for me [nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
-    - [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} for me
-    - [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} [filter]{"entity": "general_filter"} for me
-    - [check]{"entity": "check_verb"}[nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"} for me
-    - [visualise]{"entity": "visualise_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
-    - [visualise]{"entity": "visualise_verb"} me [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
-    - [visualise]{"entity": "visualise_verb"} for me [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
-    - [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} for me
-    - [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
-    - [visualise]{"entity": "visualise_verb"}[nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
-    - [visualise]{"entity": "visualise_verb"}[intolerance] me {"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
-    - [visualise]{"entity": "visualise_verb"}[nodes] me {"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
-    - [visualise]{"entity": "visualise_verb"}[intolerance] for me {"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
-    - [visualise]{"entity": "visualise_verb"} for me [nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
-    - [visualise]{"entity": "visualise_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} for me
-    - [visualise]{"entity": "visualise_verb"} [nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"} for me
-    - [I want to]{"entity": "request_starter"} [check]{"entity": "check_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
-    - [I want to]{"entity": "request_starter"} [check]{"entity": "check_verb"} for me [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
-    - [I want to]{"entity": "request_starter"} [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} for me
-    - [I want to]{"entity": "request_starter"} [check]{"entity": "check_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} [filter]{"entity": "general_filter"}
-    - [I want to]{"entity": "request_starter"} [check]{"entity": "check_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} [filter]{"entity": "general_filter"} for me
-    - [I want to]{"entity": "request_starter"} [check]{"entity": "check_verb"} [intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} [filter]{"entity": "general_filter"}
-    - [I want to]{"entity": "request_starter"} [check]{"entity": "check_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"} [filter]{"entity": "general_filter"} for me
-    - [I want to]{"entity": "request_starter"} [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
-    - [I want to]{"entity": "request_starter"} [visualise]{"entity": "visualise_verb"}[intolerance]{"entity": "filter_name"} [nodes]{"entity": "node_and_edge"}
-    - [I want to]{"entity": "request_starter"} [visualise]{"entity": "visualise_verb"} [nodes]{"entity": "node_and_edge"} with [intolerance]{"entity": "filter_name"}
+
+    - I want to see nodes with [intolerance]{"entity": "filter_name"}
+    - Show me comments with [intolerance]{"entity": "filter_name"}
+    - Show comments with [intolerance]{"entity": "filter_name"}
+    - I would like to see [intolerance]{"entity": "filter_name"} nodes
+    - Show me [intolerance]{"entity": "filter_name"} comments
+    - Show [intolerance]{"entity": "filter_name"} comments filtering
+    - Activate the [intolerance]{"entity": "filter_name"} filter
+    - Activate the [intolerance]{"entity": "filter_name"} nodes filter
+    - May you enable [intolerance]{"entity": "filter_name"} nodes filtering
+    - Can you enable the [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} filters
+    - Enable the filter [intolerance]{"entity": "filter_name"}
+    - Select the filter [intolerance]{"entity": "filter_name"}
+    - Select [intolerance]{"entity": "filter_name"} filter
+    - Choose [intolerance]{"entity": "filter_name"} node and edge
+    - Check [intolerance]{"entity": "filter_name"} node and edge
+    - Tick [intolerance]{"entity": "filter_name"} node and edge
+    - Highlight [intolerance]{"entity": "filter_name"} nodes
+    - Switch on [intolerance]{"entity": "filter_name"} node and edge
+    - Turn on [intolerance]{"entity": "filter_name"} nodes
+    - Tick off [intolerance]{"entity": "filter_name"} nodes
+    - I was hoping you could [intolerance]{"entity": "filter_name"} nodes
+    - I was wondering if you could [intolerance]{"entity": "filter_name"} nodes
 
 
     # features--> improper language, insult, aggressiveness - ?
@@ -1002,8 +1027,8 @@ nlu:
 
     # features select all
 
-    - I want to select [all features]{"entity": "filter_name"}
-    - Select [all features]{"entity": "filter_name"}
+    - I want to select [all features]{"entity": "filter_name"} nodes
+    - Select [all features]{"entity": "filter_name"} node and edge
     - I want to select [all features]{"entity": "filter_name"} checkbox
     - Select [all features]{"entity": "filter_name"} checkbox
     - I want to select [all features]{"entity": "filter_name"} option
@@ -1087,7 +1112,7 @@ nlu:
     - Disable [level 1 toxicity]{"entity": "filter_name"} option
 
     - Disable [toxic level 2]{"entity": "filter_name"} option
-    - Uncheck [toxic]{"entity": "filter_name"} filter
+    - Uncheck [toxic]{"entity": "filter_name"} filter nodes
     - Hide [toxicity level 2]{"entity": "filter_name"} comments
     - Uncheck [level 2 toxic]{"entity": "filter_name"} filter
     - Disable [level 2 toxicity]{"entity": "filter_name"} option
@@ -1104,6 +1129,10 @@ nlu:
     - Hide [neutral]{"entity": "filter_name"} comments
     - Uncheck [neutral stance]{"entity": "filter_name"} filter
 
+    - Disable [both stances]{"entity": "filter_name"}
+    - Hide [both stances]{"entity": "filter_name"}
+    - Uncheck [both stances]{"entity": "filter_name"}
+
     - Disable [target person]{"entity": "filter_name"} option
     - Hide [person]{"entity": "filter_name"} nodes
     - Uncheck [target person]{"entity": "filter_name"} filter
@@ -1119,6 +1148,7 @@ nlu:
     - Disable [targets all]{"entity": "filter_name"} option
     - Hide [all targets]{"entity": "filter_name"} comments
     - Uncheck [all targets]{"entity": "filter_name"} filter
+    - Unchek [all targets]{"entity": "filter_name"} nodes
 
     - Disable [constructiveness]{"entity": "filter_name"} option
     - Hide [constructive]{"entity": "filter_name"} nodes
@@ -1154,7 +1184,7 @@ nlu:
 
     - Disable [features all]{"entity": "filter_name"} option
     - Hide [all features]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} comments
-    - Uncheck [all features]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
+    - Uncheck [all features]{"entity": "filter_name"} nodes and [all targets]{"entity": "filter_name"} filters
 
     - Disable [all levels of toxicity]{"entity": "filter_name"}
     - Hide [all levels of toxicity]{"entity": "filter_name"} nodes
@@ -1500,13 +1530,13 @@ nlu:
     - Explain what layouts are to me
     - Help layouts
 
-- intent: help_highlight
+- intent: help_select_node_edge
   examples: |
-    - How can I use highlight on the left bar?
-    - What is highlight on the left bar?
-    - What is highlight?
-    - Give me more information about highlight
-    - Explain to me what highlight colour features is
+    - How can I use select node and edge on the left bar?
+    - What is select node and edge on the left bar?
+    - What is select node and edge?
+    - Give me more information about select node and edge
+    - Explain to me what select node and edge is
 
 
 
@@ -1618,17 +1648,18 @@ nlu:
 
 - intent: help_AND
   examples: |
-    - What is [AND]{"entity": "entity_requested", "value": "AND option"} on the [select node and edge menu]{"entity": "NodeAndEdge_requested", "value": "select node and edge menu"}?
-    - What is [AND]{"entity": "entity_requested", "value": "AND option"}?
-    - How do I use [AND]{"entity": "entity_requested", "value": "AND option"}?
-    - What is [AND]{"entity": "entity_requested", "value": "AND option"} for?
+    - What is AND on the select node and edge menu?
+    - What is AND
+    - How do I use AND
+    - What is AND for?
 
 - intent: help_OR
   examples: |
-    - What is [OR]{"entity": "entity_requested", "value": "OR option"} on the [select node and edge menu]{"entity": "entity_requested", "value": "select node and edge menu"}?
-    - What is OR [OR]{"entity": "entity_requested", "value": "OR option"}?
-    - How do I use [OR]{"entity": "entity_requested", "value": "OR option"}?
-    - What is [OR]{"entity": "entity_requested", "value": "OR option"} for?
+    - What is OR on the select node and edge menu?
+    - What is OR ?
+    - How do I use OR
+    - What is OR
+
 
 - intent: help_AND_OR
   examples: |
@@ -1636,36 +1667,38 @@ nlu:
     - Why there are two options AND and OR
     - What is the difference between OR and AND
 
-- synonym: AND option
-  examples: |
-    - AND option
-    - AND filter
-    - AND button
-    - AND function
-    - AND choice
-    - AND button
-    - AND 
+#- synonym: AND option
+#  examples: |
+#    - AND option
+#    - AND filter
+#    - AND button
+#    - AND function
+#    - AND choice
+#    - AND button
+#    - AND
+#
+#- synonym: select node and edge menu
+#    examples: |
+#- synonym: OR option
+#  examples: |
+#    - OR option
+#    - OR filter
+#    - OR button
+#    - OR function
+#    - OR choice
+#    - OR button
+#    - OR
 
-- synonym: OR option
-  examples: |
-    - OR option
-    - OR filter
-    - OR button
-    - OR function
-    - OR choice
-    - OR button
-    - OR
-
-- synonym: select node and edge menu
-  examples: |
-    - select node and edge menu
-    - left hand bar
-    - bar on left
-    - select node and edge bar
-    - left bar
-    - left hand menu
-    - left menu
-    - menu on left
+#- synonym: select node and edge menu
+#  examples: |
+#    - select node and edge menu
+#    - left hand bar
+#    - bar on left
+#    - select node and edge bar
+#    - left bar
+#    - left hand menu
+#    - left menu
+#    - menu on left
 
 - intent: help_what_can_you_do
   examples: |
@@ -1682,9 +1715,14 @@ nlu:
 
 - intent: features_on_the_left
   examples: |
-    - What are features on the left bar?
-    - How can I use features?
-    - What are features?
+    - What is highlight colour features on the left bar?
+    - How can I use highlight colour features?
+    - What are colour features?
+    - How can I use highlight on the left bar?
+    - What is highlight on the left bar?
+    - What is highlight?
+    - Give me more information about highlight
+    - Explain to me what highlight colour features is
 
 - intent: targets_help
   examples: |
@@ -1950,7 +1988,6 @@ nlu:
     - Disable all colour features
     - Uncheck all colours
     - Uncheck all colour features
-    - Uncheck all features
     - Turn off all colours
     - Turn off all colour features
 
@@ -2044,7 +2081,7 @@ nlu:
     - Check target person icon
     - Check target person icon feature
     - Show me target person icon feature
-    - Show me target person icon 
+    - Show me target person icon
     - Display target person icon
     - Display target person icon feature
     - Visualise target person icon
@@ -2054,11 +2091,11 @@ nlu:
     - I want to see target person icon feature
     - I want to see target person icon
     - I want to display target person icon feature
-    - I want to display target person icon 
+    - I want to display target person icon
     - I want to visualise target person icon feature
     - I want to visualise target person icon
     - I would like to see target person icon feature
-    - I would like to see target person icon 
+    - I would like to see target person icon
     - I would like to display target person icon feature
     - I would like to display target person icon
     - I would like to visualise target person feature
@@ -2071,7 +2108,7 @@ nlu:
     - Activate target person icon
     - Enable target person icon feature
     - Enable target person icon
-  
+
 
 
 
@@ -2082,7 +2119,7 @@ nlu:
     - Check target group icon
     - Check target group icon feature
     - Show me target group icon feature
-    - Show me target group icon 
+    - Show me target group icon
     - Display target group icon feature
     - Display target group icon
     - Check target group icon feature
@@ -2193,7 +2230,7 @@ nlu:
     - Highlight [mockery]{"entity": "filter_name"}
     - Turn on [mockery]{"entity": "filter_name"}
 
-                                 
+
 
 - intent: filters_improper
   examples: |
@@ -2273,6 +2310,79 @@ nlu:
     - Highlight [target group]{"entity": "filter_name"}
     - Turn on [target group]{"entity": "filter_name"}
 
+# asking to hide filters without specifying which method
+
+- intent: filters_constructive_hide
+  examples: |
+    - Uncheck [constructiveness]{"entity": "filter_name"}
+    - Hide [constructive]{"entity": "filter_name" }
+    - Deselect [constructive]{"entity": "filter_name" }
+
+- intent: filters_argument_hide
+  examples: |
+    - Hide [argumentation]{"entity": "filter_name"}
+    - Deselect [argument]{"entity": "filter_name" }
+    - Uncheck  [argumentation]{"entity": "filter_name" }
+
+
+- intent: filters_sarcasm_hide
+  examples: |
+    - Deselect [sarcasm]{"entity": "filter_name"}
+    - Hide [sarcastic]{"entity": "filter_name" }
+    - Uncheck [sarcasm]{"entity": "filter_name" }
+
+
+- intent: filters_mockery_hide
+  examples: |
+    - Deselect [mockery]{"entity": "filter_name"}
+    - Hide [mockery]{"entity": "filter_name" }
+    - Uncheck  [mockery]{"entity": "filter_name"}
+
+- intent: filters_intolerance_hide
+  examples: |
+    - Deselect [intolerance]{"entity": "filter_name"}
+    - Hide [intolerance]{"entity": "filter_name" }
+    - Uncheck  [intolerance]{"entity": "filter_name" }
+
+
+- intent: filters_improper_hide
+  examples: |
+    - Deselect [improper language]{"entity": "filter_name"}
+    - Hide [improper language]{"entity": "filter_name" }
+    - Uncheck [improper language]{"entity": "filter_name" }
+
+- intent: filters_insult_hide
+  examples: |
+    - Deselect [insult]{"entity": "filter_name"}
+    - Hide [insult]{"entity": "filter_name" }
+    - Uncheck [insult]{"entity": "filter_name" }
+
+- intent: filters_aggressiveness_hide
+  examples: |
+    - Hide [aggressiveness]{"entity": "filter_name"}
+    - Deselect [aggressiveness]{"entity": "filter_name" }
+    - Uncheck  [aggressiveness]{"entity": "filter_name" }
+
+
+- intent: filters_stereotype_hide
+  examples: |
+    - Deselect [stereotype]{"entity": "filter_name"}
+    - Hide [stereotype]{"entity": "filter_name" }
+    - Uncheck  [stereotype]{"entity": "filter_name" }
+
+
+- intent: filters_person_hide
+  examples: |
+    - Deselect [target person]{"entity": "filter_name"}
+    - Hide [target person]{"entity": "filter_name" }
+    - Uncheck [target person]{"entity": "filter_name" }
+
+- intent: filters_group_hide
+  examples: |
+    - Deselect [target group]{"entity": "filter_name"}
+    - Hide [target group]{"entity": "filter_name" }
+    - Uncheck [target group]{"entity": "filter_name" }
+
 - intent: reset_all_filters
   examples: |
     - I want to deselect all filters
@@ -2302,7 +2412,7 @@ nlu:
     - How is [mockery]{"entity": "filter_name"} defined?
 
 - intent: define_insult
-  examples: | 
+  examples: |
     - What is [insult]{"entity": "filter_name"}?
     - What does [insult]{"entity": "filter_name"} mean?
     - What is meant by [insult]{"entity": "filter_name"}?
@@ -2328,6 +2438,42 @@ nlu:
     - What is the definition of [aggressiveness]{"entity": "filter_name"}?
     - How is [aggressiveness]{"entity": "filter_name"} defined?
 
+# ask to check node and edge without specifying one
+- intent: show_node_and_edge
+  examples: |
+    - Highlight node and edge
+    - Check node and edge
+    - Show me node and edge
+    - I want to see node and edge
+    - I would like to see node and edge
+    - Turn on node and edge
+    - Select node and edge
+    - Activate node and edge
+    - Enable node and edge
+
+
+- intent: filters_all_features
+  examples: |
+    - Select [all features]{"entity": "filter_name"}
+    - Check  [all features]{"entity": "filter_name" }
+    - Show me [all features]{"entity": "filter_name"}
+    - I want to see [all features]{"entity": "filter_name"}
+    - Activate [all features]{"entity": "filter_name"}
+    - Enable [all features]{"entity": "filter_name"}
+    - Highlight [all features]{"entity": "filter_name"}
+    - Turn on [all features]{"entity": "filter_name"}
+
+- intent: filters_all_targets
+  examples: |
+    - Select [all targets]{"entity": "filter_name"}
+    - Check  [all targets]{"entity": "filter_name" }
+    - Show me [all targets]{"entity": "filter_name"}
+    - I want to see [all targets]{"entity": "filter_name"}
+    - Activate [all targets]{"entity": "filter_name"}
+    - Enable [all targets]{"entity": "filter_name"}
+    - Highlight [all targets]{"entity": "filter_name"}
+    - Turn on [all targets]{"entity": "filter_name"}
+
 - intent: define_stereotype
   examples: |
     - What is [stereotype]{"entity": "filter_name"}?
@@ -2336,7 +2482,7 @@ nlu:
     - What does [stereotype]{"entity": "filter_name"} refer to?
     - What is the definition of [stereotype]{"entity": "filter_name"}?
     - How is [stereotype]{"entity": "filter_name"} defined?
-     
+
 - intent: define_stance
   examples: |
     - What is stance?
@@ -2347,7 +2493,7 @@ nlu:
     - How is stance defined?
 
 - intent: define_toxic
-  examples: | 
+  examples: |
     - What is toxic?
     - What does toxic mean?
     - What is meant by toxic?
@@ -2377,3 +2523,17 @@ nlu:
     - id No.
     - identification number
     - identification No.
+
+- intent: filters_all_features_uncheck
+  examples: |
+    - Uncheck [all features]{"entity": "filter_name"}
+    - Turn off [all features]{"entity": "filter_name"}
+    - Disable [all features]{"entity": "filter_name"}
+    - Hide [all features]{"entity": "filter_name"}
+
+- intent: filters_all_targets_uncheck
+  examples: |
+    - Uncheck [all targets]{"entity": "filter_name"}
+    - Turn off [all targets]{"entity": "filter_name"}
+    - Disable [all targets]{"entity": "filter_name"}
+    - Hide [all targets]{"entity": "filter_name"}

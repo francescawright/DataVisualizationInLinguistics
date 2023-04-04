@@ -62,7 +62,7 @@ const pathTargets = pt;
 
 const colourToxicity0 = "#FAFFA8", colourToxicity1 = "#F8BB7C", colourToxicity2 = "#F87A54",
     colourToxicity3 = "#7A1616", colourNewsArticle = "lightsteelblue";
-const colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
+const colourBothStances = "#FFDA0A", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
     colourNeutralStance = "#2b2727";
 const colourConstructiveness = "#90F6B2", colourArgumentation = "#1B8055", colourSarcasm = "#97CFFF",
     colourMockery = "#1795FF",
@@ -706,6 +706,14 @@ function highlightStanceOR(node, enabledHighlight) {
         }).style("opacity", 1);
     }
 
+    //Positive + Negative stance CB is checked
+    if (enabledHighlight.indexOf("highlight-stance-both") > -1) {
+        node.filter(function (d) {
+            if (d.negative_stance && d.positive_stance) d.highlighted = 1;
+            return ((d.negative_stance && d.positive_stance));
+        }).style("opacity", 1);
+
+    }
 }
 
 function highlightStanceAND(node, enabledHighlight, opacityValue = 0.1) {
@@ -737,6 +745,17 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.1) {
             if (!d.negative_stance) d.highlighted = 0;
             return (!d.negative_stance);
         })//.select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
+    }
+
+    //Positive + Negative stance CB is checked
+    if (enabledHighlight.indexOf("highlight-stance-both") > -1) {
+        node.filter(function (d) {
+            if (!(d.negative_stance && d.positive_stance)) d.highlighted = 0;
+            return (!(d.negative_stance && d.positive_stance));
+        }) //.select("circle.nodeCircle")
             .style("position", "relative")
             .style("z-index", 1)
             .style("opacity", opacityValue);
@@ -956,7 +975,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
 
     /* Colours
    * */
-    var colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
+    var colourBothStances = "#FFDD1F", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
         colourNeutralStance = "#2b2727";
     var colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
         colourToxicity3 = "#000000", colourNewsArticle = "lightsteelblue", colourCollapsed1Son = "lightsteelblue";
@@ -2542,6 +2561,8 @@ treeJSON = d3.json(dataset, function (error, treeData) {
             }).style("opacity", opacityValue);
         }
 
+
+
         //Positive stance CB is checked
         if (enabledHighlight.indexOf("highlight-stance-positive") > -1) {
             node.filter(function (d) {
@@ -2708,6 +2729,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         // If any stance checkboxes are checked, highlight the link from which it originates
         if (enabledHighlight.indexOf("highlight-stance-negative") > -1 ||
             enabledHighlight.indexOf("highlight-stance-positive") > -1 ||
+            enabledHighlight.indexOf("highlight-stance-both") > -1 ||
             enabledHighlight.indexOf("highlight-stance-neutral") > -1) {
             link.style("opacity", function (d) {
                 return d.target.highlighted ? 1 : opacityValue;
@@ -2737,6 +2759,7 @@ treeJSON = d3.json(dataset, function (error, treeData) {
         // If any stance checkboxes are checked, highlight the link from which it originates
         if (enabledHighlight.indexOf("highlight-stance-negative") > -1 ||
             enabledHighlight.indexOf("highlight-stance-positive") > -1 ||
+            enabledHighlight.indexOf("highlight-stance-both") > -1 ||
             enabledHighlight.indexOf("highlight-stance-neutral") > -1) {
             link.style("opacity", function (d) {
                 return d.target.highlighted ? 1 : opacityValue;

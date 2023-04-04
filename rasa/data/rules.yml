@@ -109,10 +109,10 @@ rules:
   - intent: generate_response_message
   - action: action_generate_response_message
 
-- rule: Displays in the chat the utter_help_glyphs message
-  steps:
-  - intent: generate_help_glyphs_message
-  - action: utter_help_glyphs
+#- rule: Displays in the chat the utter_help_glyphs message
+#  steps:
+#  - intent: generate_help_glyphs_message
+#  - action: utter_help_glyphs
 
 - rule: Automatically fills slots with values passed as entities
   steps:
@@ -231,27 +231,22 @@ rules:
 
 # help
 
-- rule: User wants to know about highlights
+#- rule: User wants to know about highlights
+#  steps:
+#    - intent: help_highlight
+#    - action: utter_help_highlight
+
+- rule: User wants to know about select node and edge
   steps:
-    - intent: help_highlight
-    - action: utter_help_highlight
+    - intent: help_select_node_edge
+    - action: utter_help_select_node_edge
+
 
 - rule: User want to know about what summary does
   steps:
     - intent: help_summary
     - action: utter_help_summary
 
-
-- rule: User wants to know about main graph button
-  steps:
-    - intent: help_main_graph_barchart
-    - action: utter_help_main_bar_one
-
-
-- rule: User wants to know about sub graphs button
-  steps:
-    - intent: help_subtree_barchart
-    - action: utter_help_subtree_bar
 
 - rule: User wants to know about AND
   steps:
@@ -483,6 +478,83 @@ rules:
     - intent: reset_all_filters
     - action: utter_reset_all_filters
 
+- rule: check all features which one
+  steps:
+    - intent: filters_all_features
+    - action: utter_filters_all_features
+
+- rule: check all targets which one
+  steps:
+    - intent: filters_all_targets
+    - action: utter_filters_all_targets
+
+- rule: uncheck all features which one
+  steps:
+    - intent: filters_all_features_uncheck
+    - action: utter_filters_all_features_uncheck
+
+- rule: uncheck all targets which one
+  steps:
+    - intent: filters_all_targets_uncheck
+    - action: utter_filters_all_targets_uncheck
+
+
+# asking to hide feature without specifying which method
+
+- rule: uncheck constructive which one
+  steps:
+    - intent: filters_constructive_hide
+    - action: utter_filters_constructive_uncheck
+
+- rule: uncheck argument which one
+  steps:
+    - intent: filters_argument_hide
+    - action: utter_filters_argumentation_uncheck
+
+- rule: uncheck sarcasm which one
+  steps:
+    - intent: filters_sarcasm_hide
+    - action: utter_filters_sarcasm_uncheck
+
+- rule: uncheck mockery which one
+  steps:
+    - intent: filters_mockery_hide
+    - action: utter_filters_mockery_uncheck
+
+- rule: uncheck intolerance which one
+  steps:
+    - intent: filters_intolerance_hide
+    - action: utter_filters_intolerance_uncheck
+
+- rule: uncheck improper which one
+  steps:
+    - intent: filters_improper_hide
+    - action: utter_filters_improper_uncheck
+
+- rule: uncheck insult which one
+  steps:
+    - intent: filters_insult_hide
+    - action: utter_filters_insult_uncheck
+
+- rule: uncheck aggressiveness which one
+  steps:
+    - intent: filters_aggressiveness_hide
+    - action: utter_filters_aggressiveness_uncheck
+
+- rule: uncheck stereotype which one
+  steps:
+    - intent: filters_stereotype_hide
+    - action: utter_filters_stereotype_uncheck
+
+- rule: uncheck target person which one
+  steps:
+    - intent: filters_person_hide
+    - action: utter_filters_target_person_uncheck
+
+- rule: uncheck target group which one
+  steps:
+    - intent: filters_group_hide
+    - action: utter_filters_target_group_uncheck
 - rule: user asks for definition of sarcasm
   steps:
     - intent: define_sarcasm

@@ -2604,17 +2604,22 @@ function statisticsAllFeaturesTree(root, fromCircle = false, isPopupSelected = n
         label: 'Aggressive',
         data: [listStatistics.totalAggressiveness],
         backgroundColor: "#5E1566",
+      },
+      {
+        label: 'Stereotype',
+        data: [listStatistics.totalTargStereotype],
+        backgroundColor: "#798c8f",
       }]
     }
 
     chartModalDataPie = {
-      labels: ['Constructive', 'Argument', 'Sarcasm', 'Mockery', 'Intolerance', 'Improper', 'Insult', 'Aggressive'],
+      labels: ['Constructive', 'Argument', 'Sarcasm', 'Mockery', 'Intolerance', 'Improper', 'Insult', 'Aggressive', 'Stereotype'],
       datasets: [{
         label: 'total',
         data: [listStatistics.totalConstructiveness, listStatistics.totalArgumentation, listStatistics.totalSarcasm,
                 listStatistics.totalMockery, listStatistics.totalIntolerance, listStatistics.totalImproper_language,
-                listStatistics.totalInsult, listStatistics.totalAggressiveness],
-        backgroundColor: ["#90F6B2", "#1B8055", "#97CFFF", "#1795FF", "#0B5696", "#E3B7E8", "#A313B3", "#5E1566"],
+                listStatistics.totalInsult, listStatistics.totalAggressiveness, listStatistics.totalTargStereotype],
+        backgroundColor: ["#90F6B2", "#1B8055", "#97CFFF", "#1795FF", "#0B5696", "#E3B7E8", "#A313B3", "#5E1566", "#798c8f"],
       }]
     }
     chartModalTitle = 'complete_graph';
@@ -2636,6 +2641,7 @@ function statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBac
     let improperLanguageSubtrees = [];
     let insultSubtrees = [];
     let aggressivenessSubtrees = [];
+    let targStereotypeSubtrees = [];
 
     if (children) {
         children.forEach(function (d) {
@@ -2653,6 +2659,7 @@ function statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBac
             improperLanguageSubtrees.push(listStatistics.totalImproper_language + d.improper_language);
             insultSubtrees.push(listStatistics.totalInsult + d.insult);
             aggressivenessSubtrees.push(listStatistics.totalAggressiveness + d.aggressiveness);
+            targStereotypeSubtrees.push(listStatistics.totalTargStereotype + d.stereotype);
         });
     }
 
@@ -2698,7 +2705,13 @@ function statisticsAllFeaturesSubtrees(root, static_values_checked, statisticBac
         label: 'Aggressive',
         data: aggressivenessSubtrees,
         backgroundColor: "#5E1566",
-      }]
+      },
+      {
+        label: 'Stereotype',
+        data: targStereotypeSubtrees,
+        backgroundColor: "#798c8f",
+      }
+      ]
     }
 
     chartModalTitle = 'subgraphs';
@@ -2801,7 +2814,7 @@ function mostTaggedFeatures(root, fromCircle = false) {
 
     let dictFeatures = {'Constructive':listStatistics.totalConstructiveness,'Argument':listStatistics.totalArgumentation,
         'Sarcasm':listStatistics.totalSarcasm,'Mockery':listStatistics.totalMockery,'Intolerance':listStatistics.totalIntolerance,
-        'Improper language':listStatistics.totalImproper_language,'Insult':listStatistics.totalInsult,'Aggressive':listStatistics.totalAggressiveness}
+        'Improper language':listStatistics.totalImproper_language,'Insult':listStatistics.totalInsult,'Aggressive':listStatistics.totalAggressiveness, 'Stereotype':listStatistics.totalTargStereotype}
 
     // Create items array
     var items = Object.keys(dictFeatures).map(function(key) {

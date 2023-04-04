@@ -36,7 +36,7 @@ var toxicityLevelsPath = ["Level0.png", "Level1.png", "Level2.png", "Level3.png"
 const colourToxicity0 = "#f7f7f7", colourToxicity1 = "#cccccc", colourToxicity2 = "#737373",
     colourToxicity3 = "#000000", colourNewsArticle = "#C8EAFC";
 
-var colourBothStances = "#FFA500", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
+var colourBothStances = "#FFDD1F", colourPositiveStance = "#77dd77", colourNegativeStance = "#ff6961",
     colourNeutralStance = "#2b2727";
 
 var colorFeature = ["#90F6B2", "#1B8055",
@@ -956,6 +956,7 @@ function highlightNodesByPropertyAND(node, enabledHighlight) {
         if (enabledHighlight.indexOf("highlight-stance-neutral") > -1) changeNodeOpacity(node, "neutral");
         if (enabledHighlight.indexOf("highlight-stance-positive") > -1) changeNodeOpacity(node, "positive");
         if (enabledHighlight.indexOf("highlight-stance-negative") > -1) changeNodeOpacity(node, "negative");
+        if (enabledHighlight.indexOf("highlight-stance-both") > -1) changeNodeOpacity(node, "both");
         if (enabledHighlight.indexOf("highlight-both") > -1) changeNodeOpacity(node, "both");
     }
 

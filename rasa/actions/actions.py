@@ -531,12 +531,12 @@ filters_ids = {
     "intolerance": "highlight-features-intolerance", "improper language": "highlight-features-improper-language",
     "insult": "highlight-features-insult", "aggressiveness": "highlight-features-aggressiveness",
     "all features": "selectAll-features", "all stances": "selectAll-stance",
-    "all levels of toxicity": "selectAll-toxicity"
+    "all levels of toxicity": "selectAll-toxicity", "both stances": "highlight-stance-both"
 }
 choices = ["not toxic", "non toxic", "very toxic", "mildly toxic", "toxic", "positive stance", "negative stance",
            "neutral stance", "target person", "target group", "stereotype", "all targets", "constructiveness",
            "argumentation", "sarcasm", "mockery", "intolerance", "improper language", "insult", "aggressiveness",
-           "all features", "all levels of toxicity", "all stances"]
+           "all features", "all levels of toxicity", "all stances", "both stances"]
 threshold = 60
 
 

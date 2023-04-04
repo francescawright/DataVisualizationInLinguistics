@@ -34,7 +34,7 @@ FEATURES = ["argumentation", "constructiveness", "sarcasm", "mockery", "intolera
             "improper_language", "insult",
             "aggressiveness"]
 FILTERS = ["highlight_toxicity_0", "highlight_toxicity_1", "highlight_toxicity_2", "highlight_toxicity_3"] + \
-          ["highlight_stance_neutral", "highlight_stance_positive", "highlight_stance_negative"] + \
+          ["highlight_stance_neutral", "highlight_stance_positive", "highlight_stance_negative", "highlight_stance_both"] + \
           ["highlight_" + target for target in TARGETS] + \
           ["highlight_features_" + feature for feature in FEATURES] + \
           ["highlight_OR_selectAll_toxicity", "highlight_OR_selectAll_stance", "highlight_OR_selectAll_target",
