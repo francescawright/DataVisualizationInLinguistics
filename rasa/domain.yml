@@ -150,6 +150,17 @@ intents:
   - filters_all_targets
   - filters_all_features_uncheck
   - filters_all_targets_uncheck
+  - filters_constructive_hide
+  - filters_argument_hide
+  - filters_sarcasm_hide
+  - filters_mockery_hide
+  - filters_intolerance_hide
+  - filters_improper_hide
+  - filters_insult_hide
+  - filters_aggressiveness_hide
+  - filters_stereotype_hide
+  - filters_person_hide
+  - filters_group_hide
 
 actions:
   - action_check_session_login
@@ -639,22 +650,9 @@ responses:
 #              - Pie  "
 #
 
-#  utter_explain_glyphs_one:
-#    - text: "Glyphs show the features of each comment. \ \n
-#
-#
-#    "
   utter_explain_glyphs_one:
     - text: "intent_glyphs_blinking,glyphs-radio-buttons,Glyphs let us see features of each comment."
-#      image: "https://ecemkavaz.github.io/imagesRasa/glyphsAll2.png"
 
-#  utter_explain_glyphs_three:
-#    - text: "Circular Glyph"
-#      image: "https://ecemkavaz.github.io/imagesRasa/glyph.svg"
-#
-#  utter_explain_glyphs_four:
-#    - text: "Trivial Cheese"
-#      image: "https://ecemkavaz.github.io/imagesRasa/trivial.svg"
 
   utter_explain_glyphs_two:
     - text: "Use the Highlight Colour Features menu to activate/deactivate the features. "
@@ -675,26 +673,10 @@ responses:
   utter_explain_targets_one:
      - text: "intent_targets_signal,targets_accordion_button,All comments are tagged with the targets that they are directed at."
 
-    #  utter_explain_targets_two:
-    #    - text: "Target Group"
-    #      image: "https://ecemkavaz.github.io/imagesRasa/Group.svg"
-    #
-    #  utter_explain_targets_three:
-    #    - text: "Target Person"
-    #      image: "https://ecemkavaz.github.io/imagesRasa/Person.svg"
-    #
-    #  utter_explain_targets_four:
-    #    - text: "Stereotype"
-    #      image: "https://ecemkavaz.github.io/imagesRasa/Stereotype.svg"
-
   utter_explain_targets_two:
     - text: "You can activate/deactivate targets: \ \n
                      - From the Targets menu on the left \ \n
                      - Asking me"
-
-
-    #      image: "https://ecemkavaz.github.io/imagesRasa/targets.png"
-
 
   utter_explain_features_tab:
     - text: "intent_features_signal,features_accordion_button,All the comments are tagged with features that they have. \ \n
@@ -703,19 +685,9 @@ responses:
         - From the left bar \ \n
         - Asking me"
 
-#      image: "https://ecemkavaz.github.io/imagesRasa/features2.png"
-
-
-  #  utter_help_layouts_one:
-#    - text: "There are four layouts available."
-#      image: "https://ecemkavaz.github.io/imagesRasa/layoutsAll2.png"
-
   utter_help_layouts_one:
     - text: "intent_layouts_signal,layouts-radio-buttons,I automatically select 
-    the layout that best fits your data.
-                      "
-
-#      image: "https://ecemkavaz.github.io/imagesRasa/layoutsAll2.png"
+    the layout that best fits your data."
 
   utter_help_layouts_two:
     - text: "
@@ -734,10 +706,7 @@ responses:
        - title: "Circle"
          payload: '/change_layout_circle{{"object_requested":"layout","layout_requested":"circle"}}'
 
-  #utter_help_layouts_three:
-    #buttons:
-    #- title: "Read more here"
-     # payload:
+
 
   utter_help_select_node_edge:
     - text: "intent_node_edge_signal,highlight_accordion_button,Select node and edge will show comment with selected tags.
@@ -746,14 +715,6 @@ responses:
       Select node and edge by: \ \n
       - Using the Highlight Colour Feature menu \ \n
       - Asking me"
-
-  #    - text: "Highlight function will show the selected features for each comment as a colour. \ \n
-  #
-  #    Highlight colour features by: \ \n
-  #    - Using the Highlight Colour Feature menu \ \n
-  #    - Asking me"
-  #      image: "https://ecemkavaz.github.io/imagesRasa/highlight.png"
-
 
   utter_help_AND:
     - text: "intent_and_or_signal,With AND option,
@@ -778,11 +739,11 @@ responses:
       image: "https://ecemkavaz.github.io/imagesRasa/summary.png"
 
   utter_help_main_bar_one:
-    - text: "Selected Comments shows you the statistics of the current visualisation. \ \n
+    - text: "intent_signal_additional_graphs,chart_main_button,statistics_all_features_tree,Selected Comments shows you the statistics of the current visualisation. \ \n
     
     You can change the variables and graph type using the drop down menus that appear in the pop-up window. "
 
-# image: "https://ecemkavaz.github.io/imagesRasa/selectedcomments.png"
+
 
   utter_help_bar_chart_pop_up:
     - text: "If you want to have more information about this:"
@@ -797,10 +758,10 @@ responses:
     remove features by clicking on their name to compare the only features you want."
 
   utter_help_subtree_bar:
-    - text: "Level One Comments button displays a bar chart with the
+    - text: "intent_signal_additional_graphs,chart_sub_button,statistics_all_features_subtrees,Level One Comments button displays a bar chart with the
     statistics of features of each comment individually in level one and their children.
           "
-#      image: "https://ecemkavaz.github.io/imagesRasa/levelonecomments.png"
+
 
   utter_general_help:
     - text: "I can help you with: "
@@ -862,13 +823,6 @@ responses:
     - text: "Now you can compare the features with additional charts. Also, don't forget you can switch
     active window and compare whole graph's features with additional charts. Just ask me or select the
     button at the top that says 'Selected Comments'."
-
-#  utter_active_window_explain:
-#    - text: "Now the active window is the pop-up that is highlighted with a blue frame. You can switch
-#                the active window by selecting the main window. Don't forget I will give answers to your questions considering
-#                the active window!"
-
-
 
   utter_start_analysis:
     - text: "You need to open a file before you start your analysis."
@@ -935,7 +889,7 @@ responses:
     - text: "intent_uncheck_colour_features,aggressiveness,Colour feature is unchecked"
 
   utter_colour_feature_stereotype_uncheck:
-    - text: "intent_uncheck_colour_features,stereotype,Colour feature is unchecked"
+    - text: "intent_uncheck_colour_features,target-stereotype,Colour feature is unchecked"
 
   # check targets
   utter_icon_feature_person:
@@ -1113,6 +1067,98 @@ responses:
         - title: "Select Node & Edge"
           payload: '/highlight_uncheck{"filter_name": "all targets"}'
 
+#  unchek features which one?
+
+  utter_filters_constructive_uncheck:
+    - text: "How do you want to hide it?"
+      buttons:
+        - title: "Highlight Colour Feature"
+          payload: '/colour_feature_constructiveness_uncheck'
+        - title: "Select Node & Edge"
+          payload: '/highlight_uncheck{"filter_name": "constructiveness"}'
+
+  utter_filters_argumentation_uncheck:
+    - text: "How do you want to hide it?"
+      buttons:
+        - title: "Highlight Colour Feature"
+          payload: '/colour_feature_argumentation_uncheck'
+        - title: "Select Node & Edge"
+          payload: '/highlight_uncheck{"filter_name": "argumentation"}'
+
+
+  utter_filters_sarcasm_uncheck:
+    - text: "How do you want to hide it?"
+      buttons:
+        - title: "Highlight Colour Feature"
+          payload: '/colour_feature_sarcasm_uncheck'
+        - title: "Select Node & Edge"
+          payload: '/highlight_uncheck{"filter_name": "sarcasm"}'
+
+
+  utter_filters_mockery_uncheck:
+    - text: "How do you want to hide it?"
+      buttons:
+        - title: "Highlight Colour Feature"
+          payload: '/colour_feature_mockery_uncheck'
+        - title: "Select Node & Edge"
+          payload: '/highlight_uncheck{"filter_name": "mockery"}'
+
+
+  utter_filters_intolerance_uncheck:
+    - text: "How do you want to hide it?"
+      buttons:
+        - title: "Highlight Colour Feature"
+          payload: '/colour_feature_intolerance_uncheck'
+        - title: "Select Node & Edge"
+          payload: '/highlight_uncheck{"filter_name": "intolerance"}'
+
+  utter_filters_improper_uncheck:
+    - text: "How do you want to hide it?"
+      buttons:
+        - title: "Highlight Colour Feature"
+          payload: '/colour_feature_improper_uncheck'
+        - title: "Select Node & Edge"
+          payload: '/highlight_uncheck{"filter_name": "improper language"}'
+
+  utter_filters_insult_uncheck:
+    - text: "How do you want to hide it?"
+      buttons:
+        - title: "Highlight Colour Feature"
+          payload: '/colour_feature_insult_uncheck'
+        - title: "Select Node & Edge"
+          payload: '/highlight_uncheck{"filter_name": "insult"}'
+
+  utter_filters_aggressiveness_uncheck:
+    - text: "How do you want to hide it?"
+      buttons:
+        - title: "Highlight Colour Feature"
+          payload: '/colour_feature_aggressiveness_uncheck'
+        - title: "Select Node & Edge"
+          payload: '/highlight_uncheck{"filter_name": "aggressiveness"}'
+
+  utter_filters_stereotype_uncheck:
+    - text: "How do you want to hide it?"
+      buttons:
+        - title: "Highlight Colour Feature"
+          payload: '/colour_feature_stereotype_uncheck'
+        - title: "Select Node & Edge"
+          payload: '/highlight_uncheck{"filter_name": "stereotype"}'
+
+  utter_filters_target_person_uncheck:
+    - text: "How do you want to hide it?"
+      buttons:
+        - title: "Targets"
+          payload: '/uncheck_target_person'
+        - title: "Select Node & Edge"
+          payload: '/highlight_uncheck{"filter_name": "target person"}'
+
+  utter_filters_target_group_uncheck:
+    - text: "How do you want to hide it?"
+      buttons:
+        - title: "Targets"
+          payload: '/uncheck_target_group'
+        - title: "Select Node & Edge"
+          payload: '/highlight_uncheck{"filter_name": "target group"}'
 
 
   utter_reset_all_filters:

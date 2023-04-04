@@ -700,8 +700,7 @@ nlu:
 
     # targets select all
 
-    - I want to select [all targets]{"entity": "filter_name"}
-    - Select [all targets]{"entity": "filter_name"}
+    - I want to select [all targets]{"entity": "filter_name"} nodes
     - I want to select [all targets]{"entity": "filter_name"} checkbox
     - Select [all targets]{"entity": "filter_name"} checkbox
     - I want to select [all targets]{"entity": "filter_name"} option
@@ -1501,6 +1500,7 @@ nlu:
     - What is level one comments button?
     - What is the level one comments button?
 
+
 - intent: tool_help
   examples: |
     - What are the functions of this tool?
@@ -1849,7 +1849,6 @@ nlu:
     - Disable all colour features
     - Uncheck all colours
     - Uncheck all colour features
-    - Uncheck all features
     - Turn off all colours
     - Turn off all colour features
 
@@ -2150,6 +2149,79 @@ nlu:
     - Highlight [target group]{"entity": "filter_name"}
     - Turn on [target group]{"entity": "filter_name"}
 
+# asking to hide filters without specifying which method
+
+- intent: filters_constructive_hide
+  examples: |
+    - Uncheck [constructiveness]{"entity": "filter_name"}
+    - Hide [constructive]{"entity": "filter_name" }
+    - Deselect [constructive]{"entity": "filter_name" }
+
+- intent: filters_argument_hide
+  examples: |
+    - Hide [argumentation]{"entity": "filter_name"}
+    - Deselect [argument]{"entity": "filter_name" }
+    - Uncheck  [argumentation]{"entity": "filter_name" }
+
+
+- intent: filters_sarcasm_hide
+  examples: |
+    - Deselect [sarcasm]{"entity": "filter_name"}
+    - Hide [sarcastic]{"entity": "filter_name" }
+    - Uncheck [sarcasm]{"entity": "filter_name" }
+
+
+- intent: filters_mockery_hide
+  examples: |
+    - Deselect [mockery]{"entity": "filter_name"}
+    - Hide [mockery]{"entity": "filter_name" }
+    - Uncheck  [mockery]{"entity": "filter_name"}
+
+- intent: filters_intolerance_hide
+  examples: |
+    - Deselect [intolerance]{"entity": "filter_name"}
+    - Hide [intolerance]{"entity": "filter_name" }
+    - Uncheck  [intolerance]{"entity": "filter_name" }
+
+
+- intent: filters_improper_hide
+  examples: |
+    - Deselect [improper language]{"entity": "filter_name"}
+    - Hide [improper language]{"entity": "filter_name" }
+    - Uncheck [improper language]{"entity": "filter_name" }
+
+- intent: filters_insult_hide
+  examples: |
+    - Deselect [insult]{"entity": "filter_name"}
+    - Hide [insult]{"entity": "filter_name" }
+    - Uncheck [insult]{"entity": "filter_name" }
+
+- intent: filters_aggressiveness_hide
+  examples: |
+    - Hide [aggressiveness]{"entity": "filter_name"}
+    - Deselect [aggressiveness]{"entity": "filter_name" }
+    - Uncheck  [aggressiveness]{"entity": "filter_name" }
+
+
+- intent: filters_stereotype_hide
+  examples: |
+    - Deselect [stereotype]{"entity": "filter_name"}
+    - Hide [stereotype]{"entity": "filter_name" }
+    - Uncheck  [stereotype]{"entity": "filter_name" }
+
+
+- intent: filters_person_hide
+  examples: |
+    - Deselect [target person]{"entity": "filter_name"}
+    - Hide [target person]{"entity": "filter_name" }
+    - Uncheck [target person]{"entity": "filter_name" }
+
+- intent: filters_group_hide
+  examples: |
+    - Deselect [target group]{"entity": "filter_name"}
+    - Hide [target group]{"entity": "filter_name" }
+    - Uncheck [target group]{"entity": "filter_name" }
+
 - intent: reset_all_filters
   examples: |
     - I want to deselect all filters
@@ -2161,7 +2233,7 @@ nlu:
 
 
 # ask to check node and edge without specifying one
-- intent: show_colour_feature
+- intent: show_node_and_edge
   examples: |
     - Highlight node and edge
     - Check node and edge

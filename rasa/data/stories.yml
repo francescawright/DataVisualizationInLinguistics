@@ -392,6 +392,7 @@ stories:
     - action: utter_help_subtree_bar
 
 
+
 - story: help layout
   steps:
     - intent: help_layouts
@@ -411,6 +412,7 @@ stories:
   steps:
     - intent: help_subtree_barchart
     - action: utter_help_subtree_bar
+
 
 #- story: button image test
 #  steps:
