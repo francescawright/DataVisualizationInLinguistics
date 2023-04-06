@@ -194,6 +194,7 @@ nlu:
     - sign me up
     - [register]{"entity": "action_requested", "value": "signup"} me
     - [signup]{"entity": "action_requested", "value": "signup"}
+
 # layouts
 - synonym: layout
   examples: |
@@ -204,7 +205,6 @@ nlu:
     - visualization design
     - visualisation design
     - display design
-    - display
     - display type
 
 - synonym: tree
@@ -533,120 +533,120 @@ nlu:
     - Switch [toxic level 1]{"entity": "filter_name"}, [least toxic]{"entity": "filter_name"} and [toxic]{"entity": "filter_name"} filters
     - Switch [most toxic]{"entity": "filter_name"} and [least toxic]{"entity": "filter_name"} filters
 
-# synonyms for verbs check, uncheck, visualise, switch
-- synonym: check
-  examples: |
-    - highlight
-    - select
-    - choose
-    - activate
-    - enable
-    - turn on
-    - switch on
-    - tick
-    - tick off
+## synonyms for verbs check, uncheck, visualise, switch
+#- synonym: check
+#  examples: |
+#    - highlight
+#    - select
+#    - choose
+#    - activate
+#    - enable
+#    - turn on
+#    - switch on
+#    - tick
+#    - tick off
+#
+#- synonym: uncheck
+#  examples: |
+#    - deselect
+#    - unselect
+#    - turn off
+#    - disable
+#    - hide
+#    - switch off
+#    - deactivate
+#    - untick
+#    - clear
+#    - reset
+#
+#- synonym: visualise
+#  examples: |
+#    - show
+#    - display
 
-- synonym: uncheck
-  examples: |
-    - deselect
-    - unselect
-    - turn off
-    - disable
-    - hide
-    - switch off
-    - deactivate
-    - untick
-    - clear
-    - reset
-
-- synonym: visualise
-  examples: |
-    - show
-    - display
-
-- synonym: switch
-  examples: |
-    - change
-    - exchange
-    - adjust
+#- synonym: switch
+#  examples: |
+#    - change
+#    - exchange
+#    - adjust
 
 # Synonyms for menus: select node and edge menu, highlight colour feature menu, **target menu- to be completed**
+#
+#- synonym: select node and edge menu
+#  examples: |
+#    - select node and edge menu
+#    - select node and edge bar
+#    - select nodes and edges menu
+#    - select nodes and edges bar
+#    - node and edge menu
+#    - node and edge bar
+#
+#- synonym: highlight colour feature menu
+#  examples: |
+#    - colour features menu
+#    - colour feature menu
+#    - color features menu
+#    - color features menu
+#    - colour menu
+#    - colours menu
+#    - color menu
+#    - colors menu
+#    - colour bar
+#    - colours bar
+#    - color bar
+#    - colours bar
+#    - glyph feature menu
+#    - glyph feature bar
+#    - highlight colour feature menu
+#    - highlight colour features menu
+#    - highlight color feature menu
+#    - highlight color features menu
+#    - highlight colour feature bar
+#    - highlight colour features bar
+#    - highlight color feature bar
+#    - highlight color features bar
+#    - highlight colour menu
+#    - highlight color menu
+#    - highlight colour bar
+#    - highlight colour bar
+#    - highlight menu
+#    - highlight bar
+#    - colour glyph feature menu
+#    - color glyph feature menu
+#    - colour glyph features menu
+#    - color glyph features menu
+#    - colour glyph feature bar
+#    - colour glyph feature bar
 
-- synonym: select node and edge menu
-  examples: |
-    - select node and edge menu
-    - select node and edge bar
-    - select nodes and edges menu
-    - select nodes and edges bar
-    - node and edge menu
-    - node and edge bar
+## Synonyms nodes and edges and filter
+#- synonym: nodes
+#  examples: |
+#    - node
+#    - comment
+#    - comment nodes
 
-- synonym: highlight colour feature menu
-  examples: |
-    - colour features menu
-    - colour feature menu
-    - color features menu
-    - color features menu
-    - colour menu
-    - colours menu
-    - color menu
-    - colors menu
-    - colour bar
-    - colours bar
-    - color bar
-    - colours bar
-    - glyph feature menu
-    - glyph feature bar
-    - highlight colour feature menu
-    - highlight colour features menu
-    - highlight color feature menu
-    - highlight color features menu
-    - highlight colour feature bar
-    - highlight colour features bar
-    - highlight color feature bar
-    - highlight color features bar
-    - highlight colour menu
-    - highlight color menu
-    - highlight colour bar
-    - highlight colour bar
-    - highlight menu
-    - highlight bar
-    - colour glyph feature menu
-    - color glyph feature menu
-    - colour glyph features menu
-    - color glyph features menu
-    - colour glyph feature bar
-    - colour glyph feature bar
-
-# Synonyms nodes and edges and filter
-- synonym: nodes
-  examples: |
-    - node
-    - comment
-    - comment nodes
-
-- synonym: filter
-  examples: |
-    - filtering
+#- synonym: filter
+#  examples: |
+#    - filtering
 
 # Synonym for "formalities" request starter I want to  + issue of questions like **what/Which** ->classfication to be added
-- synonym: I want to
-  examples: |
-    - I want to
-    - I would like to
-    - I'd like to
-    - Can you
-    - Can I
-    - May you
-    - May I
-    - Could you
-    - Could I
-    - I want you to
-    - I would like you to
-    - I'd like you to
-    - I was hoping you could
-    - I was wondering if you could
-
+#- synonym: I want to
+#  examples: |
+#    - I want to
+#    - I would like to
+#    - I'd like to
+#    - Can you
+#    - Can I
+#    - May you
+#    - May I
+#    - Could you
+#    - Could I
+#    - I want you to
+#    - I would like you to
+#    - I'd like you to
+#    - I was hoping you could
+#    - I was wondering if you could
+#
 
 # highlight options
 - intent: highlight_check
@@ -1798,160 +1798,190 @@ nlu:
 
 - intent: colour_feature_constructiveness
   examples: |
-    - Highlight constructiveness colour feature
-    - Highlight constructive glyph
-    - Check constructiveness colour
-    - Check constructiveness colour feature
-    - Show me constructiveness colour feature
+    - Highlight constructiveness colour feature filter
+    - Can you highlight constructive glyph
+    - Check constructiveness colour filering
+    - Tick off constructive colour feature
+    - May you show me constructiveness colour feature
     - Show me constructive colour feature
-    - Check constructiveness colour
-    - I want to see constructiveness colour feature
+    - Could you check constructiveness colour
+    - I want to see constructiveness colour feature filter
     - I would like to see constructiveness colour feature
-    - Turn on constructiveness colour
-    - Turn on constructiveness colour feature
-    - Select constructiveness colour feature
-    - Select constructiveness colour
+    - Turn on constructive colour
+    - Switch on constructiveness colour feature
+    - Choose constructiveness colour feature
+    - Tick constructiveness colour filering
     - Activate constructive colour feature
-    - Enable constructiveness colour feature
+    - Enable constructive colour feature filter
+    - I was hoping you could check constructiveness colour feature
+    - I was wondering if you could select constructiveness colour
 
 - intent: colour_feature_argumentation
   examples: |
     - Highlight argumentation colour feature
-    - Highlight argumentation glyph
-    - Check argumentation colour
-    - Check argumentation colour feature
+    - Can I highlight argumentation glyph
+    - Check argumentation colour filter
+    - Switch on argument colour feature
     - Show me argumentation colour feature
-    - Show me argument colour feature
-    - Check argumentation colour
+    - May you tick argument colour feature filtering
+    - Check argument colour
     - I want to see argumentation colour feature
     - I would like to see argumentation colour feature
-    - Turn on argumentation colour
-    - Turn on argumentation colour feature
-    - Select argument colour feature
-    - Select argumentation colour
+    - Turn on argumentation colour filtering
+    - Could you switch on argumentation colour feature
+    - Select argument colour feature filter
+    - Choose argumentation colour
     - Activate argumentation colour feature
     - Enable argumentation colour feature
+    - Tick off argument colour feature
+    - I was hoping you could check argumentation colour feature
+    - I was wondering if you could select argument colour filter
 
 - intent: colour_feature_sarcasm
   examples: |
     - Highlight sarcasm colour feature
-    - Highlight sarcasm glyph
-    - Check sarcasm colour
-    - Check sarcasm colour feature
+    - Can you highlight sarcasm glyph
+    - Check sarcastic colour filter
+    - Switch on sarcasm colour feature
     - Show me sarcasm colour feature
-    - Check sarcasm colour
+    - May I tick sarcasm colour feature filtering
+    - Check sarcastic colour
     - I want to see sarcasm colour feature
     - I would like to see sarcasm colour feature
-    - Turn on sarcasm colour
-    - Turn on sarcasm colour feature
-    - Select sarcasm colour feature
-    - Select sarcasm colour
+    - Turn on sarcastic colour filtering
+    - Could I switch on sarcasm colour feature
+    - Select sarcastic colour feature filter
+    - Choose sarcasm colour
     - Activate sarcasm colour feature
     - Enable sarcasm colour feature
+    - Tick off sarcasm colour feature
+    - I was hoping you could check sarcasm colour feature
+    - I was wondering if you could select sarcasm colour filter
 
 - intent: colour_feature_mockery
   examples: |
     - Highlight mockery colour feature
-    - Highlight mockery glyph
-    - Check mockery colour
-    - Check mockery colour feature
+    - Can I highlight mockery glyph
+    - Check mockery colour filter
+    - Switch on mockery colour feature
     - Show me mockery colour feature
+    - May you tick mockery colour feature filtering
     - Check mockery colour
     - I want to see mockery colour feature
     - I would like to see mockery colour feature
-    - Turn on mockery colour
-    - Turn on mockery colour feature
-    - Select mockery colour feature
-    - Select mockery colour
+    - Turn on mockery colour filtering
+    - Could you switch on mockery colour feature
+    - Select mockery colour feature filter
+    - Choose mockery colour
     - Activate mockery colour feature
     - Enable mockery colour feature
+    - Tick off mockery colour feature
+    - I was hoping you could check mockery colour feature
+    - I was wondering if you could select mockery colour filter
 
 - intent: colour_feature_intolerance
   examples: |
     - Highlight intolerance colour feature
-    - Highlight intolerance glyph
-    - Check intolerance colour
-    - Check intolerance colour feature
+    - Can you highlight intolerance glyph
+    - Check intolerance colour filter
+    - Switch on intolerance colour feature
     - Show me intolerance colour feature
+    - May I tick intolerance colour feature filtering
     - Check intolerance colour
     - I want to see intolerance colour feature
     - I would like to see intolerance colour feature
-    - Turn on intolerance colour
-    - Turn on intolerance colour feature
-    - Select intolerance colour feature
-    - Select intolerance colour
+    - Turn on intolerance colour filtering
+    - Could I switch on intolerance colour feature
+    - Select intolerance colour feature filter
+    - Choose intolerance colour
     - Activate intolerance colour feature
     - Enable intolerance colour feature
+    - Tick off intolerance colour feature
+    - I was hoping you could check intolerance colour feature
+    - I was wondering if you could select intolerance colour filter
 
 - intent: colour_feature_improper
   examples: |
-    - Highlight improper langauge colour feature
-    - Highlight improper langauge glyph
-    - Check improper langauge colour
-    - Check improper langauge colour feature
-    - Show me improper langauge colour feature
-    - Check improper langauge colour
-    - I want to see improper langauge colour feature
-    - I would like to see improper langauge colour feature
-    - Turn on improper langauge colour
-    - Turn on improper langauge colour feature
-    - Select improper language colour feature
-    - Select improper language  colour
-    - Activate improper language feature
-    - Enable improper language feature
+    - Highlight improper language colour feature
+    - Can I highlight improper language  glyph
+    - Check improper language  colour filter
+    - Switch on improper language  colour feature
+    - Show me improper language  colour feature
+    - May you tick improper language colour feature filtering
+    - Check improper language colour
+    - I want to see improper language colour feature
+    - I would like to see improper language colour feature
+    - Turn on improper language colour filtering
+    - Could you switch on improper language colour feature
+    - Select improper language colour feature filter
+    - Choose improper language colour
+    - Activate improper language colour feature
+    - Enable improper language colour feature
+    - Tick off improper language colour feature
+    - I was hoping you could check improper language colour feature
+    - I was wondering if you could select improper language colour filter
 
 - intent: colour_feature_insult
   examples: |
-    - Highlight insult colour feature
-    - Highlight insult glyph
-    - Check insult colour
-    - Check insult colour feature
+    - Highlight insult colour feature filter
+    - Can you highlight insult glyph
+    - Check insult colour filering
+    - Tick off insult colour feature
+    - May you show me insult colour feature
     - Show me insult colour feature
-    - Check insult colour
-    - I want to see insult colour feature
+    - Could you check insult colour
+    - I want to see insult colour feature filter
     - I would like to see insult colour feature
     - Turn on insult colour
-    - Turn on insult colour feature
-    - Select insult colour feature
-    - Select insult colour
+    - Switch on insult colour feature
+    - Choose insult colour feature
+    - Tick insult colour filering
     - Activate insult colour feature
-    - Enable insult colour feature
+    - Enable insult colour feature filter
+    - I was hoping you could check insult colour feature
+    - I was wondering if you could select insult colour
 
 - intent: colour_feature_aggressiveness
   examples: |
     - Highlight aggressiveness colour feature
-    - Highlight aggressiveness glyph
-    - Check aggressiveness colour
-    - Check aggressiveness colour feature
+    - Can you highlight aggressiveness glyph
+    - Check aggressiveness colour filter
+    - Switch on aggressiveness colour feature
     - Show me aggressiveness colour feature
-    - Show me aggressiveness colour feature
+    - May I tick aggressiveness colour feature filtering
     - Check aggressiveness colour
     - I want to see aggressiveness colour feature
     - I would like to see aggressiveness colour feature
-    - Turn on aggressiveness colour
-    - Turn on aggressiveness colour feature
-    - Select aggressiveness colour feature
-    - Select aggressiveness colour
+    - Turn on aggressiveness colour filtering
+    - Could I switch on aggressiveness colour feature
+    - Select aggressiveness colour feature filter
+    - Choose aggressiveness colour
     - Activate aggressiveness colour feature
     - Enable aggressiveness colour feature
+    - Tick off aggressiveness colour feature
+    - I was hoping you could check aggressiveness colour feature
+    - I was wondering if you could select aggressiveness colour filter
 
 - intent: colour_feature_stereotype
   examples: |
     - Highlight stereotype colour feature
-    - Highlight stereotype glyph
-    - Check stereotype colour
-    - Check stereotype colour feature
+    - Can I highlight stereotype glyph
+    - Check stereotype colour filter
+    - Switch on stereotype colour feature
     - Show me stereotype colour feature
-    - Show me stereotype colour feature
+    - May you tick stereotype colour feature filtering
     - Check stereotype colour
     - I want to see stereotype colour feature
     - I would like to see stereotype colour feature
-    - Turn on stereotype colour
-    - Turn on stereotype colour feature
-    - Select stereotype colour feature
-    - Select stereotype colour
+    - Turn on stereotype colour filtering
+    - Could you switch on stereotype colour feature
+    - Select stereotype colour feature filter
+    - Choose stereotype colour
     - Activate stereotype colour feature
     - Enable stereotype colour feature
+    - Tick off stereotype colour feature
+    - I was hoping you could check stereotype colour feature
+    - I was wondering if you could select stereotype colour filter
 
 # ask to check a colour feature without specifying one
 - intent: show_colour_feature
@@ -2179,110 +2209,166 @@ nlu:
 
 - intent: filter_test
   examples: |
-    - Select [constructiveness]{"entity": "filter_name"}
-    - Select [constructive]{"entity": "filter_name" }
-    - Check  [constructive]{"entity": "filter_name" }
-    - Check  [constructiveness]{"entity": "filter_name"}
-    - Show me [constructiveness]{"entity": "filter_name"}
+    - Select [constructiveness]{"entity": "filter_name"} filter
+    - Choose [constructive]{"entity": "filter_name" }
+    - Can you tick [constructive]{"entity": "filter_name" } filtering
+    - May you check [constructiveness]{"entity": "filter_name"}
+    - Show me [constructiveness]{"entity": "filter_name"} filter
     - I want to see [constructiveness]{"entity": "filter_name"}
-    - Activate [constructiveness]{"entity": "filter_name"}
-    - Enable [constructiveness]{"entity": "filter_name"}
+    - I want you to select [constructiveness]{"entity": "filter_name"} filtering
+    - Could you activate [constructiveness]{"entity": "filter_name"}
+    - Enable [constructiveness]{"entity": "filter_name"} filter
     - Highlight [constructiveness]{"entity": "filter_name"}
-    - Turn on [constructiveness]{"entity": "filter_name"}
+    - Turn on [constructiveness]{"entity": "filter_name"} filtering
+    - Tick off [constructiveness]{"entity": "filter_name"}
+    - Switch on [constructiveness]{"entity": "filter_name"} filter
+    - I was hoping you could check [constructiveness]{"entity": "filter_name"}
+    - I was wondering if you could enable [constructiveness]{"entity": "filter_name"} filtering
 
 - intent: filters_argument
   examples: |
-    - Select [argumentation]{"entity": "filter_name"}
-    - Select [argument]{"entity": "filter_name" }
-    - Check  [argumentation]{"entity": "filter_name" }
-    - Check  [argument]{"entity": "filter_name"}
-    - Show me [argumentation]{"entity": "filter_name"}
+    - Select [argumentation]{"entity": "filter_name"} filter
+    - Choose [argument]{"entity": "filter_name" }
+    - Can you tick [argumentation]{"entity": "filter_name" } filtering
+    - May you check [argument]{"entity": "filter_name"}
+    - Show me [argumentation]{"entity": "filter_name"} filter
     - I want to see [argumenation]{"entity": "filter_name"}
-    - Activate [argumenation]{"entity": "filter_name"}
+    - I would like to select [argumenation]{"entity": "filter_name"}
+    - Could I activate [argumenation]{"entity": "filter_name"} filtering
     - Enable [argumenation]{"entity": "filter_name"}
-    - Highlight [argumenation]{"entity": "filter_name"}
+    - Highlight [argumenation]{"entity": "filter_name"} filter
     - Turn on [argumenation]{"entity": "filter_name"}
+    - Tick off [argumentation]{"entity": "filter_name"}
+    - Switch on [argumentation]{"entity": "filter_name"} filter
+    - I was hoping you could check [argumentation]{"entity": "filter_name"}
+    - I was wondering if you could enable [argumentation]{"entity": "filter_name"} filtering
 
 
 - intent: filters_sarcasm
   examples: |
-    - Select [sarcasm]{"entity": "filter_name"}
-    - Select [sarcastic]{"entity": "filter_name" }
-    - Check  [sarcasm]{"entity": "filter_name" }
-    - Check  [sarcastic]{"entity": "filter_name"}
+    - Select [sarcasm]{"entity": "filter_name"} filter
+    - Choose [sarcastic]{"entity": "filter_name" } filtering
+    - Can I check [sarcasm]{"entity": "filter_name" }
+    - May I tick [sarcastic]{"entity": "filter_name"} filter
     - Show me [sarcasm]{"entity": "filter_name"}
     - I want to see [sarcasm]{"entity": "filter_name"}
-    - Activate [sarcasm]{"entity": "filter_name"}
-    - Enable [sarcasm]{"entity": "filter_name"}
+    - I want you to select [sarcasm]{"entity": "filter_name"} filtering
+    - Could you activate [sarcasm]{"entity": "filter_name"}
+    - Enable [sarcasm]{"entity": "filter_name"} filter
     - Highlight [sarcasm]{"entity": "filter_name"}
-    - Turn on [sarcasm]{"entity": "filter_name"}
+    - Turn on [sarcasm]{"entity": "filter_name"} filtering
+    - Tick off [sarcasm]{"entity": "filter_name"}
+    - Switch on [sarcasm]{"entity": "filter_name"} filter
+    - I was hoping you could check [sarcasm]{"entity": "filter_name"}
+    - I was wondering if you could enable [sarcasm]{"entity": "filter_name"} filtering
 
 - intent: filters_mockery
   examples: |
-    - Select [mockery]{"entity": "filter_name"}
-    - Select [mockery]{"entity": "filter_name" }
-    - Check  [mockery]{"entity": "filter_name" }
-    - Check  [mockery]{"entity": "filter_name"}
-    - Show me [mockery]{"entity": "filter_name"}
+    - Can I select [mockery]{"entity": "filter_name"} filtering
+    - May I choose [mockery]{"entity": "filter_name" } filter
+    - Check [mockery]{"entity": "filter_name" }
+    - Tick [mockery]{"entity": "filter_name"} filtering
+    - Show me [mockery]{"entity": "filter_name"} filter
     - I want to see [mockery]{"entity": "filter_name"}
-    - Activate [mockery]{"entity": "filter_name"}
-    - Enable [mockery]{"entity": "filter_name"}
+    - I would like to see [mockery]{"entity": "filter_name"}
+    - Activate [mockery]{"entity": "filter_name"} filtering
+    - Could you enable [mockery]{"entity": "filter_name"} filter
     - Highlight [mockery]{"entity": "filter_name"}
-    - Turn on [mockery]{"entity": "filter_name"}
+    - Turn on [mockery]{"entity": "filter_name"} filtering
+    - Tick off [mockery]{"entity": "filter_name"}
+    - Switch on [mockery]{"entity": "filter_name"} filter
+    - I was hoping you could check [mockery]{"entity": "filter_name"}
+    - I was wondering if you could enable [mockery]{"entity": "filter_name"} filtering
 
-
+- intent: filters_intolerance
+  examples: |
+    - Select [intolerance]{"entity": "filter_name"} filter
+    - Can I choose [intolerance]{"entity": "filter_name"} filtering
+    - Check  [intolerance]{"entity": "filter_name" }
+    - May you tick [intolerance]{"entity": "filter_name"} filter
+    - Show me [intolerance]{"entity": "filter_name"}
+    - I want to see [intolerance]{"entity": "filter_name"} filtering
+    - I would like you to tick [intolerance]{"entity": "filter_name"}
+    - Activate [intolerance]{"entity": "filter_name"}
+    - Could I enable [intolerance]{"entity": "filter_name"} filter
+    - Highlight [intolerance]{"entity": "filter_name"}
+    - Turn on [intolerance]{"entity": "filter_name"} filtering
+    - Tick off [intolerance]{"entity": "filter_name"}
+    - Switch on [intolerance]{"entity": "filter_name"} filter
+    - I was hoping you could check [intolerance]{"entity": "filter_name"}
+    - I was wondering if you could enable [intolerance]{"entity": "filter_name"} filtering
 
 - intent: filters_improper
   examples: |
-    - Select [improper language]{"entity": "filter_name"}
-    - Select [improper language]{"entity": "filter_name" }
-    - Check  [improper language]{"entity": "filter_name" }
-    - Check  [improper language]{"entity": "filter_name"}
-    - Show me [improper language]{"entity": "filter_name"}
+    - Can you select [improper language]{"entity": "filter_name"} filter
+    - Choose [improper language]{"entity": "filter_name" }
+    - Check [improper language]{"entity": "filter_name" } filtering
+    - May I tick [improper language]{"entity": "filter_name"}
+    - Show me [improper language]{"entity": "filter_name"} filter
     - I want to see [improper language]{"entity": "filter_name"}
+    - I would like to see [improper language]{"entity": "filter_name"} filtering
     - Activate [improper language]{"entity": "filter_name"}
-    - Enable [improper language]{"entity": "filter_name"}
+    - Enable [improper language]{"entity": "filter_name"} filter
     - Highlight [improper language]{"entity": "filter_name"}
-    - Turn on [improper language]{"entity": "filter_name"}
+    - Could you turn on [improper language]{"entity": "filter_name"} filtering
+    - Tick off [improper language]{"entity": "filter_name"}
+    - Switch on [improper language]{"entity": "filter_name"} filter
+    - I was hoping you could check [improper language]{"entity": "filter_name"}
+    - I was wondering if you could enable [improper language]{"entity": "filter_name"} filtering
 
 - intent: filters_insult
   examples: |
-    - Select [insult]{"entity": "filter_name"}
-    - Select [insult]{"entity": "filter_name" }
-    - Check [insult]{"entity": "filter_name" }
-    - Check [insult]{"entity": "filter_name"}
-    - Show me [insult]{"entity": "filter_name"}
+    - Choose [insult]{"entity": "filter_name"} filter
+    - May you select [insult]{"entity": "filter_name"}
+    - Tick [insult]{"entity": "filter_name" } filtering
+    - Can I check [insult]{"entity": "filter_name"}
+    - Show me [insult]{"entity": "filter_name"} filter
     - I want to see [insult]{"entity": "filter_name"}
+    - I'd like to see [insult]{"entity": "filter_name"} filtering
     - Activate [insult]{"entity": "filter_name"}
-    - Enable [insult]{"entity": "filter_name"}
-    - Highlight [insult]{"entity": "filter_name"}
-    - Turn on [insult]{"entity": "filter_name"}
+    - Enable [insult]{"entity": "filter_name"} filter
+    - Could you highlight [insult]{"entity": "filter_name"}
+    - Turn on [insult]{"entity": "filter_name"} filtering
+    - Tick off [insult]{"entity": "filter_name"}
+    - Switch on [insult]{"entity": "filter_name"} filter
+    - I was hoping you could check [insult]{"entity": "filter_name"}
+    - I was wondering if you could enable [insult]{"entity": "filter_name"} filtering
 
 - intent: filters_aggressiveness
   examples: |
-    - Select [aggressiveness]{"entity": "filter_name"}
+    - Choose [aggressiveness]{"entity": "filter_name"} filter
     - Select [aggressiveness]{"entity": "filter_name" }
-    - Check  [aggressiveness]{"entity": "filter_name" }
-    - Check  [aggressiveness]{"entity": "filter_name"}
-    - Show me [aggressiveness]{"entity": "filter_name"}
+    - Can you check [aggressiveness]{"entity": "filter_name" } filtering
+    - May you tick [aggressiveness]{"entity": "filter_name"}
+    - Show me [aggressiveness]{"entity": "filter_name"} filter
     - I want to see [aggressiveness]{"entity": "filter_name"}
-    - Activate [aggressiveness]{"entity": "filter_name"}
+    - I would like you to check [aggressiveness]{"entity": "filter_name"}
+    - Activate [aggressiveness]{"entity": "filter_name"} filtering
     - Enable [aggressiveness]{"entity": "filter_name"}
-    - Highlight [aggressiveness]{"entity": "filter_name"}
+    - Highlight [aggressiveness]{"entity": "filter_name"} filter
     - Turn on [aggressiveness]{"entity": "filter_name"}
+    - Could you tick off [aggressiveness]{"entity": "filter_name"} filtering
+    - Switch on [aggressiveness]{"entity": "filter_name"} filter
+    - I was hoping you could check [aggressiveness]{"entity": "filter_name"}
+    - I was wondering if you could enable [aggressiveness]{"entity": "filter_name"} filtering
 
 - intent: filters_stereotype
   examples: |
-    - Select [stereotype]{"entity": "filter_name"}
-    - Select [stereotype]{"entity": "filter_name" }
-    - Check  [stereotype]{"entity": "filter_name" }
-    - Check  [stereotype]{"entity": "filter_name"}
+    - Can I select [stereotype]{"entity": "filter_name"}
+    - Choose [stereotype]{"entity": "filter_name" }
+    - Check [stereotype]{"entity": "filter_name" }
+    - May you tick [stereotype]{"entity": "filter_name"}
     - Show me [stereotype]{"entity": "filter_name"}
     - I want to see [stereotype]{"entity": "filter_name"}
+    - I want you to check [stereotype]{"entity": "filter_name"}
     - Activate [stereotype]{"entity": "filter_name"}
     - Enable [stereotype]{"entity": "filter_name"}
     - Highlight [stereotype]{"entity": "filter_name"}
     - Turn on [stereotype]{"entity": "filter_name"}
+    - Could you tick off [stereotype]{"entity": "filter_name"} filtering
+    - Switch on [stereotype]{"entity": "filter_name"} filter
+    - I was hoping you could check [stereotype]{"entity": "filter_name"}
+    - I was wondering if you could enable [stereotype]{"entity": "filter_name"} filtering
 
 - intent: filters_person
   examples: |
@@ -2502,6 +2588,7 @@ nlu:
     - How is toxic defined?
 
 - intent: define_commentid
+  examples: |
     - What is comment id?
     - What does comment id mean?
     - What is meant by comment id ?

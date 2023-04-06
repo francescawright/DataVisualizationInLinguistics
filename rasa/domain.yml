@@ -104,11 +104,6 @@ intents:
   - help_AND_OR
   - help_what_can_you_do
   - what_can_do_after_glyphs
-  - change_glyph_dots
-  - change_glyph_circular
-  - change_glyph_trivial
-  - change_glyphs
-  - highlight_uncheck_last
   - features_on_the_left
   - targets_help
   - help_sub_structure
@@ -172,6 +167,18 @@ intents:
   - filters_stereotype_hide
   - filters_person_hide
   - filters_group_hide
+  - define_sarcasm
+  - define_mockery
+  - define_insult
+  - define_improper_language
+  - define_aggressiveness
+  - define_stereotype
+  - define_stance
+  - define_toxic
+  - define_commentid
+  - thanks
+  - show_node_and_edge
+
 
 actions:
   - action_check_session_login
@@ -199,6 +206,7 @@ actions:
   - action_highlight_switch_last
   - action_image_test
   - action_save_chat_logs
+  - filter_selection_form
 
 
 forms:
@@ -217,6 +225,7 @@ forms:
   document_selection_form:
     document_requested:
     - type: from_text
+
 
 entities:
   - action_requested
@@ -275,6 +284,9 @@ slots:
   first_login:
     type: bool
   glyph_requested:
+    type: text
+    influence_conversation: false
+  filter_name:
     type: text
     influence_conversation: false
 
@@ -745,10 +757,10 @@ responses:
       image: "https://ecemkavaz.github.io/imagesRasa/AndOr3.png"
 
   utter_help_summary:
-    - text: "Summary shows how many comments are labelled with different levels of toxicity and their targets.  \ \n
+    - text: "intent_summary_signal,Summary shows how many comments are labelled with different levels of toxicity and their targets.  \ \n
 
     It reflects data in the current visualisation."
-      image: "https://ecemkavaz.github.io/imagesRasa/summary.png"
+
 
   utter_help_main_bar_one:
     - text: "intent_signal_additional_graphs,chart_main_button,statistics_all_features_tree,Selected Comments shows you the statistics of the current visualisation. \ \n

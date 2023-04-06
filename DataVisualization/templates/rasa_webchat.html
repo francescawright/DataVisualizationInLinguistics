@@ -41,6 +41,12 @@
 <!-- Rasa WebChat Style -->
 
 <style>
+{#.rw-widget-container .rw-launcher {#}
+{#  border: #007bff solid 2px;#}
+{#  box-shadow: 0px 0px 10px rgb(68, 221, 13); /* add your preferred shadow values here */#}
+  {#animation: pulse 2s ease-in-out infinite;#}
+{##}
+{#}#}
 
 .rw-conversation-container .rw-image-details .rw-image-frame{
     height: 300px;
@@ -261,6 +267,7 @@
     }
 }
 
+
 </style>
 
 <head>
@@ -268,7 +275,6 @@
 </head>
 
 <script>
-
     // Initializes the necessary variables for speech-to-text and text-to-speech functions
     var textToSpeech = getStatusTTS();
     var msgTextToSpeech;
@@ -932,6 +938,30 @@
 
                     }
                     break;
+                case "intent_summary_signal":
+                    if ('{{ selected_item }}') {
+                        $("#statistics-bar").css({
+                            "border": "10px solid #33FF66",
+                            "border-radius": "10px",
+                            "height": "210px",
+                            "padding-right": "25px",
+                            "animation": "pulse-green-side-bar 1.3s infinite"
+                        });
+                        setTimeout(function () {
+                            $("#statistics-bar").css({
+                                "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
+                                "height": "",
+                                "padding-right": "",
+                                "animation": ""
+                            });
+                        }, 6000);
+                        e.text = messageList[1]
+
+
+                    }
+                    break;
                 case "intent_switch_or_and":
                     if ('{{ selected_item }}') {
                         if (messageList[1] === "or_button" && document.getElementById("or_label").classList.contains("active")) {
@@ -1288,6 +1318,7 @@
 </script>
 
 <script>
+
     // Returns the value of the delay time according to the message provided
     // It depends on the length of the message
     function getDelayChatMsg(message) {
@@ -1378,10 +1409,15 @@
         t.insertBefore(e, t.firstChild);
     })();
 
+
+
+
 </script>
 
 
 <script>
+
+
 
 </script>
 
