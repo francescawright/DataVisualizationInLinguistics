@@ -204,7 +204,6 @@ nlu:
     - visualization design
     - visualisation design
     - display design
-    - display
     - display type
 
 - synonym: tree
@@ -558,6 +557,7 @@ nlu:
     - untick
     - clear
     - reset
+    - remove
 
 - synonym: visualise
   examples: |
@@ -646,6 +646,8 @@ nlu:
     - I'd like you to
     - I was hoping you could
     - I was wondering if you could
+    - Would I able to
+    - Would you be able to
 
 
 # highlight options
@@ -1166,9 +1168,16 @@ nlu:
     - Hide [mockery]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} comments
     - Uncheck [mockery]{"entity": "filter_name"} filter
 
-    - Disable [intolerance]{"entity": "filter_name"} option
-    - Hide [intolerance]{"entity": "filter_name"} nodes
-    - Uncheck [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} filter
+    - Disable [intolerance]{"entity": "filter_name"} node option
+    - Hide [intolerance]{"entity": "filter_name"} node
+    - Uncheck [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} nodes filter
+    - May you switch off [intolerance]{"entity": "filter_name"} comment nodes
+    - I was hoping you could Deactivate [intolerance]{"entity": "filter_name"} nodes filtering
+    - Untick [intolerance]{"entity": "filter_name"} node and edge
+    - Clear [intolerance]{"entity": "filter_name"} node filter option
+    - I want to reset [intolerance]{"entity": "filter_name"} node option
+    - I would like to remove [intolerance]{"entity": "filter_name"} node
+    - Can you turn off [intolerance]{"entity": "filter_name"} nodes filter
 
     - Disable [improper language]{"entity": "filter_name"} option
     - Hide [improper language]{"entity": "filter_name"} comments
@@ -1547,7 +1556,6 @@ nlu:
     - Give me information about summary
     - Help summary
     - Tutorial summary
-    - Tutorial for summary
     - Explain summary
     - Explain summary to me
     - What does summary tell me?
@@ -1613,32 +1621,47 @@ nlu:
     - Would you show me what summary displays
     - Would you show me what summary shows
     - How does summary work?
+    - What is meant by summary?
+    - What does summary refer to?
+    - What is the definition of summary?
+    
 
 - intent: help_main_graph_barchart
   examples: |
     - What is selected comments?
-    - What are selected comments?
-    - What does first button on the right show?
-    - What does the first button on the right show?
-    - What is selected comments button?
-    - What is the selected comments button?
-    - What is the selected comments button for?
+    - What is selected comments button for?
     - What does selected comments button do?
     - What does selected comments do?
-    - What does the first button on the right do?
     - What are selected comments statistics?
     - What is selected comments statistics for?
+    - What does selected comments show?
+    - Can you explain to me what selected comments means?
+    - Tutorial selected comments
+    - Explain selected comments function
+    - What does selected comments statistics graph show?
+    - How are selected comments defined?
+    - What is the definition of selected comments?
+    - What does selected comments refer to?
+    - What is meant by selected comments statistics feature?
+    - How do I use selected comments statistics feature?
 
 
 - intent: help_subtree_barchart
   examples: |
-    - What is sub graphs?
-    - What are sub graphs?
-    - What does second button on the right show?
-    - What does the second button on the right show?
+    - What are level one comment statistics?
+    - What does level one comments stats graph show?
     - What is that button saying level one comments?
-    - What is level one comments button?
-    - What is the level one comments button?
+    - What is the level one comments button for?
+    - What does level one comments stats graph show?
+    - Can you explain to me what level one comments means?
+   - Tutorial level one comments
+   - Explain level one comments statistics feature function
+   - What does level one comments graph show?
+   - How is level one comment statistics defined?
+   - What is the definition of level one comments?
+   - What does level one comments refer to?
+   - What is meant by level one comments feature?
+   - How do I use level one comment statistics option?
 
 - intent: tool_help
   examples: |
@@ -2392,6 +2415,56 @@ nlu:
     - Disable all filters
     - Remove all filters
 
+# ask to check node and edge without specifying one
+- intent: show_node_and_edge
+  examples: |
+    - Highlight node and edge
+    - Check node and edge
+    - Show me node and edge
+    - I want to see node and edge
+    - I would like to see node and edge
+    - Turn on node and edge
+    - Select node and edge
+    - Activate node and edge
+    - Enable node and edge
+
+
+- intent: filters_all_features
+  examples: |
+    - Select [all features]{"entity": "filter_name"}
+    - Check  [all features]{"entity": "filter_name" }
+    - Show me [all features]{"entity": "filter_name"}
+    - I want to see [all features]{"entity": "filter_name"}
+    - Activate [all features]{"entity": "filter_name"}
+    - Enable [all features]{"entity": "filter_name"}
+    - Highlight [all features]{"entity": "filter_name"}
+    - Turn on [all features]{"entity": "filter_name"}
+
+- intent: filters_all_targets
+  examples: |
+    - Select [all targets]{"entity": "filter_name"}
+    - Check  [all targets]{"entity": "filter_name" }
+    - Show me [all targets]{"entity": "filter_name"}
+    - I want to see [all targets]{"entity": "filter_name"}
+    - Activate [all targets]{"entity": "filter_name"}
+    - Enable [all targets]{"entity": "filter_name"}
+    - Highlight [all targets]{"entity": "filter_name"}
+    - Turn on [all targets]{"entity": "filter_name"}
+
+- intent: filters_all_features_uncheck
+  examples: |
+    - Uncheck [all features]{"entity": "filter_name"}
+    - Turn off [all features]{"entity": "filter_name"}
+    - Disable [all features]{"entity": "filter_name"}
+    - Hide [all features]{"entity": "filter_name"}
+
+- intent: filters_all_targets_uncheck
+  examples: |
+    - Uncheck [all targets]{"entity": "filter_name"}
+    - Turn off [all targets]{"entity": "filter_name"}
+    - Disable [all targets]{"entity": "filter_name"}
+    - Hide [all targets]{"entity": "filter_name"}
+
 # Definitions of features
 - intent: define_sarcasm
   examples: |
@@ -2438,42 +2511,6 @@ nlu:
     - What is the definition of [aggressiveness]{"entity": "filter_name"}?
     - How is [aggressiveness]{"entity": "filter_name"} defined?
 
-# ask to check node and edge without specifying one
-- intent: show_node_and_edge
-  examples: |
-    - Highlight node and edge
-    - Check node and edge
-    - Show me node and edge
-    - I want to see node and edge
-    - I would like to see node and edge
-    - Turn on node and edge
-    - Select node and edge
-    - Activate node and edge
-    - Enable node and edge
-
-
-- intent: filters_all_features
-  examples: |
-    - Select [all features]{"entity": "filter_name"}
-    - Check  [all features]{"entity": "filter_name" }
-    - Show me [all features]{"entity": "filter_name"}
-    - I want to see [all features]{"entity": "filter_name"}
-    - Activate [all features]{"entity": "filter_name"}
-    - Enable [all features]{"entity": "filter_name"}
-    - Highlight [all features]{"entity": "filter_name"}
-    - Turn on [all features]{"entity": "filter_name"}
-
-- intent: filters_all_targets
-  examples: |
-    - Select [all targets]{"entity": "filter_name"}
-    - Check  [all targets]{"entity": "filter_name" }
-    - Show me [all targets]{"entity": "filter_name"}
-    - I want to see [all targets]{"entity": "filter_name"}
-    - Activate [all targets]{"entity": "filter_name"}
-    - Enable [all targets]{"entity": "filter_name"}
-    - Highlight [all targets]{"entity": "filter_name"}
-    - Turn on [all targets]{"entity": "filter_name"}
-
 - intent: define_stereotype
   examples: |
     - What is [stereotype]{"entity": "filter_name"}?
@@ -2502,6 +2539,7 @@ nlu:
     - How is toxic defined?
 
 - intent: define_commentid
+  examples: | 
     - What is comment id?
     - What does comment id mean?
     - What is meant by comment id ?
@@ -2524,16 +2562,53 @@ nlu:
     - identification number
     - identification No.
 
-- intent: filters_all_features_uncheck
+- intent: define_argumentation
   examples: |
-    - Uncheck [all features]{"entity": "filter_name"}
-    - Turn off [all features]{"entity": "filter_name"}
-    - Disable [all features]{"entity": "filter_name"}
-    - Hide [all features]{"entity": "filter_name"}
+    - What is argumentation?
+    - What does argumentation mean?
+    - What is meant by argumentation ?
+    - What does argumentation refer to?
+    - What is the definition of argumentation?
+    - How is argumentation defined?
 
-- intent: filters_all_targets_uncheck
+- intent: define_constructiveness
   examples: |
-    - Uncheck [all targets]{"entity": "filter_name"}
-    - Turn off [all targets]{"entity": "filter_name"}
-    - Disable [all targets]{"entity": "filter_name"}
-    - Hide [all targets]{"entity": "filter_name"}
+    - What is [constructiveness]{"entity": "filter_name"}?
+    - What does [constructiveness]{"entity": "filter_name"} mean?
+    - What is meant by [constructiveness]{"entity": "filter_name"}?
+    - What does [constructiveness]{"entity": "filter_name"} refer to?
+    - What is the definition of [constructiveness]{"entity": "filter_name"}?
+    - How is [constructiveness]{"entity": "filter_name"} defined?
+
+- intent: define_commentlevel
+  examples: |
+    - What is comment level?
+    - What does comment level mean?
+    - What is meant by comment level?
+    - What does comment level refer to?
+    - What does the level of the comment refer to?
+    - What is the definition of comment level?
+    - How is comment level defined?
+
+- intent: define_commentdepth
+  examples: |
+    - What is comment depth?
+    - What does comment depth mean?
+    - What is meant by comment depth?
+    - What does comment depth refer to?
+    - What does the depth of the comment refer to?
+    - What is the definition of comment depth?
+    - How is comment depth defined?
+
+- intent: define_subtrees
+  examples: |
+    - What are subtrees
+    - What does subtrees mean?
+    - What is meant by subtrees?
+    - What does subtree refer to?
+    - What are subtrees for
+    - What is the definition of subtrees?
+    - How can I use subtrees?
+    - Explain subtrees
+    - Tutorial subtrees
+

@@ -104,11 +104,6 @@ intents:
   - help_AND_OR
   - help_what_can_you_do
   - what_can_do_after_glyphs
-  - change_glyph_dots
-  - change_glyph_circular
-  - change_glyph_trivial
-  - change_glyphs
-  - highlight_uncheck_last
   - features_on_the_left
   - targets_help
   - help_sub_structure
@@ -172,7 +167,22 @@ intents:
   - filters_stereotype_hide
   - filters_person_hide
   - filters_group_hide
-
+  - define_sarcasm
+  - define_mockery
+  - define_insult
+  - define_improper_language
+  - define_aggressiveness
+  - define_stereotype
+  - define_toxic
+  - define_commentid
+  - define_stance
+  - thanks
+  - show_node_and_edge
+  - define_argumentation
+  - define_constructivity
+  - define_commentlevel
+  - define_commentdepth
+  - define_subtrees
 actions:
   - action_check_session_login
   - action_check_session_signup
@@ -745,17 +755,21 @@ responses:
       image: "https://ecemkavaz.github.io/imagesRasa/AndOr3.png"
 
   utter_help_summary:
-    - text: "Summary shows how many comments are labelled with different levels of toxicity and their targets.  \ \n
+    - text: "Summary tells us how many comments are labelled with different levels of toxicity and their targets.  \ \n
 
     It reflects data in the current visualisation."
-      image: "https://ecemkavaz.github.io/imagesRasa/summary.png"
+      image: "https://ecemkavaz.github.io/imagesRasa/summary.png \ \n 
+      
+      You can also see this data displayed as a graph in Selected Comments Statistics"
 
   utter_help_main_bar_one:
-    - text: "intent_signal_additional_graphs,chart_main_button,statistics_all_features_tree,Selected Comments shows you the statistics of the current visualisation. \ \n
+    - text: "intent_signal_additional_graphs,chart_main_button,statistics_all_features_tree,Selected Comments shows you the statistics of the current visualisation of the main interface. \ \n
     
-    You can change the variables and graph type using the drop down menus that appear in the pop-up window. "
+    You can change the variables and graph type using the drop down menus. \ \n 
 
+    The graphs are also interactive, meaning if you click variables on your graph, they will also be activated on the main interface \ \n
 
+    Read more about Interactive Graphs [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_help_bar_chart_pop_up:
     - text: "If you want more information about this:"
@@ -770,10 +784,15 @@ responses:
     remove features by clicking on their name to compare the features you want."
 
   utter_help_subtree_bar:
-    - text: "intent_signal_additional_graphs,chart_sub_button,statistics_all_features_subtrees,Level One Comments display a bar chart with the
-                                                                                                   statistics of features of each comment individually that are at level one, and their children.
-          "
+    - text: "intent_signal_additional_graphs,chart_sub_button,statistics_all_features_subtrees, Comment level 1 indicates that the comment was posted directly under the news article \ \n
+    
+    Level One Comments Statistics is a feature that allows you to analyse the statistics of comments tagged as level one. \ \n
 
+  You can change the variables and graph type using the two drop-down menus. \ \n
+
+  The graphs are also interactive, meaning if you click variables on your graph, they will also be activated on the main interface \ \n
+
+ Read more about Interactive Graphs [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_general_help:
     - text: "I can help you with: "
@@ -1172,7 +1191,6 @@ responses:
         - title: "Select Node & Edge"
           payload: '/highlight_uncheck{"filter_name": "target group"}'
 
-
   utter_reset_all_filters:
     - text: "intent_reset_filters"
 
@@ -1181,7 +1199,6 @@ responses:
     - text: "A comment is sarcastic when the content is ironic, that is, when the writer uses words
     that mean the opposite of what he really wants to say and when it is accompanied by a harsh,
     sharp and negative criticism and made in bad faith. \ \n"
-
 
   utter_mockery_definition:
     - text: "This category indicates that the comment ridicules, humiliates or mocks a person or group."
@@ -1250,7 +1267,50 @@ responses:
     - Asking me"
 
   utter_comment_id_definition:
-    - text: "A number that indicates the chronological order in which the comment was posted in the time thread on the website."
+    - text: "Comment ID is a number that indicates the chronological order in which the comment was posted in the time thread on the website."
+
+  utter_argumentation_definition:
+    - text: " Argumentation indicates that the comment gives arguments or reasoned explanations or grounds opinions with evidences. \ \n
+    
+    Read more about Argumentation [here](https://dspace5.zcu.cz/handle/11025/45010)"
+
+  utter_constructiveness_definition:
+    - text: "A comment is constructive when it is respectful and polite
+    (regardless of whether it is in favour or against the content of the article or of another comment), 
+    when it intends to create an enriching and useful dialogue, when it contributes with new knowledge, ideas and proposals and 
+    offers new perspectives and insights to approach the subject \ \n
+
+     Read more about Constructiveness [here](https://dspace5.zcu.cz/handle/11025/45010)"
+
+  utter_comment_level_definition:
+  - text: "Comment levels refers to the relationship of the news article with its' comments. \ \n
+
+  Comment level 1 indicates that the comment was posted directly under the news article. \ \n
+
+  Comment level 2 indicates that the comment originates from another comment. \ \n
+
+  To access this information, you can hover over each node. \ \n
+
+  To display statistics for Level One Comments, click the Level One Comments button. \ \n
+
+     Read more about Comment Level [here](https://dspace5.zcu.cz/handle/11025/45010)"
+
+  utter_comment_depth_definition:
+    - text: "Comment depth indicates a node's position in a thread \ \n
+
+    To access this information, you can hover over each node. \ \n
+
+    Read more about Comment Depth [here](https://dspace5.zcu.cz/handle/11025/45010)"
+
+
+  utter_subtrees_definition:
+    - text: "Subtrees function allows you to extract threads and levels with certain characteristics and shows them in a pop-up window. \ \n
+    You can save them by giving them a name and clicking save so that you can access them again once you have closed the pop-up window  \ \n
+    You can ask me to show you the following: \ \n
+    - the largest thread \ \n
+    - the longest thread \ \n
+    - the most toxic thread  \ \n
+    - the widest level "
 
 session_config:
   session_expiration_time: 60
