@@ -1305,8 +1305,11 @@ responses:
 
   utter_subtrees_definition:
     - text: "Subtrees function allows you to extract threads and levels with certain characteristics and shows them in a pop-up window. \ \n
+    
     You can save them by giving them a name and clicking save so that you can access them again once you have closed the pop-up window  \ \n
+    
     You can ask me to show you the following: \ \n
+    
     - the largest thread \ \n
     - the longest thread \ \n
     - the most toxic thread  \ \n
