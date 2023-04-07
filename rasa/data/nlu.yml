@@ -1645,7 +1645,6 @@ nlu:
     - What is meant by selected comments statistics feature?
     - How do I use selected comments statistics feature?
 
-
 - intent: help_subtree_barchart
   examples: |
     - What are level one comment statistics?
@@ -1654,14 +1653,14 @@ nlu:
     - What is the level one comments button for?
     - What does level one comments stats graph show?
     - Can you explain to me what level one comments means?
-   - Tutorial level one comments
-   - Explain level one comments statistics feature function
-   - What does level one comments graph show?
-   - How is level one comment statistics defined?
-   - What is the definition of level one comments?
-   - What does level one comments refer to?
-   - What is meant by level one comments feature?
-   - How do I use level one comment statistics option?
+    - Tutorial level one comments
+    - Explain level one comments statistics feature function
+    - What does level one comments graph show?
+    - How is level one comment statistics defined?
+    - What is the definition of level one comments?
+    - What does level one comments refer to?
+    - What is meant by level one comments feature?
+    - How do I use level one comment statistics option?
 
 - intent: tool_help
   examples: |
