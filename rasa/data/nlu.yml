@@ -648,7 +648,9 @@ nlu:
     - I was wondering if you could
     - Would I able to
     - Would you be able to
-
+    - Would it be possible for you to
+    - Could you possibly 
+    - How about you
 
 # highlight options
 - intent: highlight_check
@@ -2427,7 +2429,6 @@ nlu:
     - Activate node and edge
     - Enable node and edge
 
-
 - intent: filters_all_features
   examples: |
     - Select [all features]{"entity": "filter_name"}
@@ -2591,13 +2592,30 @@ nlu:
 
 - intent: define_commentdepth
   examples: |
-    - What is comment depth?
-    - What does comment depth mean?
-    - What is meant by comment depth?
-    - What does comment depth refer to?
-    - What does the depth of the comment refer to?
-    - What is the definition of comment depth?
-    - How is comment depth defined?
+    - Can you tell me what is meant by comment depth?
+    - I was wondering if you could explain comment depth to me?
+    - Could you explain to me what the depth of the comment refers to?
+    - I would like you to explain what comment depth is
+    - Would you be able to give me a tutorial for comment depth?
+    - I want you to give me an explanation about comment depth
+    - I was hoping you could help me understand comment depth
+    - I'd like you to define comment depth
+    - Would it be possible to have a tutorial for comment depth?
+    - Could you possibly go into more detail about what comment depth is for?
+    - Give me help on comment depth
+    - Guide for comment depth
+#- Tutorial for comment depth- yes
+#- What is the definition of comment depth?- yes
+#- What does comment depth mean?-yes
+# How do I use comment depth?- yes
+# I need an explanation on comment depth- yes
+# Help comment depth- yes
+#- How is comment depth defined?- yes
+#- May I know what comment depth is for?-yes
+#- What is comment depth?- yes
+# help define comment depth- yes
+# tell me about comment depth- yes
+
 
 - intent: define_subtrees
   examples: |
