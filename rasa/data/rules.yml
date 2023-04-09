@@ -570,6 +570,11 @@ rules:
     - intent: define_insult
     - action: utter_insult_definition
 
+- rule: user asks for definition of intolerance
+  steps:
+    - intent: define_intolerance
+    - action: utter_intolerance_definition
+
 - rule: user asks for definition of improper language
   steps:
     - intent: define_improper_language

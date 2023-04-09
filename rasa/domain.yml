@@ -170,6 +170,7 @@ intents:
   - define_sarcasm
   - define_mockery
   - define_insult
+  - define_intolerance
   - define_improper_language
   - define_aggressiveness
   - define_stereotype
@@ -183,6 +184,8 @@ intents:
   - define_commentlevel
   - define_commentdepth
   - define_subtrees
+  - tag_comment_id
+
 actions:
   - action_check_session_login
   - action_check_session_signup
@@ -635,10 +638,14 @@ responses:
     - text: "intent_event,most_toxic_subtree,Here you have the most toxic subtree"
 
   utter_statistics_features_tree:
-    - text: "intent_event,statistics_all_features_tree,These are the statistics of the graph features"
+    - text: "intent_event,statistics_all_features_tree,I've shown you the statistics for the current visualisation in the pop-up window\ \n
+    
+    You can change the variables and graph type using the drop down menus"
 
   utter_statistics_features_subtrees:
-    - text: "intent_event,statistics_all_features_subtrees,These are the statistics of the subgraphs features"
+    - text: "intent_event,statistics_all_features_subtrees,I've shown you the statistics for level one comments in the pop-up window \ \n
+    
+    You can change the variables and graph type using the drop down menus"
 
   utter_most_tagged_features:
     - text: "intent_event,most_tagged_features,Here you have it"
@@ -709,7 +716,9 @@ responses:
 
   utter_help_layouts_one:
     - text: "intent_layouts_signal,layouts-radio-buttons,I automatically select 
-    the layout that best fits your data."
+    the layout that best fits your data. \ \n
+    
+    Read more about selecting the best layout for data [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_help_layouts_two:
     - text: "
@@ -727,7 +736,6 @@ responses:
          payload: '/change_layout_radial{{"object_requested":"layout","layout_requested":"radial"}}'
        - title: "Circle"
          payload: '/change_layout_circle{{"object_requested":"layout","layout_requested":"circle"}}'
-
 
 
   utter_help_select_node_edge:
@@ -772,16 +780,23 @@ responses:
     Read more about Interactive Graphs [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_help_bar_chart_pop_up:
-    - text: "If you want more information about this:"
+    - text: "If you want more information about other types of statistics:"
       buttons:
         - title: "Click here"
           payload: '/statistics_help'
 
   utter_help_main_bar_three:
-    - text: "By clicking on each bar you highlight the features on the graph. \ \n
+    - text: "There are two statistics options: \ \n
+    
+    - Selected Comments \ \n
+    
+    - Level One comments \ \n
+    
+    You can change the variables and graph type using the drop down menus.  \ \n
+  
+    The graphs are also interactive, meaning if you click variables on your graph, they will also be activated on the main interface \ \n
 
-     You can
-    remove features by clicking on their name to compare the features you want."
+    Read more about Interactive Graphs [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_help_subtree_bar:
     - text: "intent_signal_additional_graphs,chart_sub_button,statistics_all_features_subtrees, Comment level 1 indicates that the comment was posted directly under the news article \ \n
@@ -1209,6 +1224,11 @@ responses:
     This attribute correlates with the improper language category, which means that if the comment contains insults,
     it is also annotated as improper language, but not the other way around (i.e. improper language does not necessarily imply insults or slurs)."
 
+  utter_intolerance_definition:
+    - text: "This category indicates the intolerant atttitude of the writer of the comment. 
+    That means when he or she expresses intransigence or non-acceptance or 
+  rejection of the difference of the ‘other’ or ‘others’, such as different traditions, customs, beliefs, 
+  religions, skin color, sexual orientation or gender, both when they are addressed to an individual and a group."
 
   utter_improper_language_definition:
     - text: "The category Improper language indicates
