@@ -533,6 +533,7 @@ nlu:
     - Switch [toxic level 1]{"entity": "filter_name"}, [least toxic]{"entity": "filter_name"} and [toxic]{"entity": "filter_name"} filters
     - Switch [most toxic]{"entity": "filter_name"} and [least toxic]{"entity": "filter_name"} filters
 
+
 ## synonyms for verbs check, uncheck, visualise, switch
 #- synonym: check
 #  examples: |
@@ -563,6 +564,39 @@ nlu:
 #  examples: |
 #    - show
 #    - display
+
+# synonyms for verbs check, uncheck, visualise, switch
+- synonym: check
+  examples: |
+    - highlight
+    - select
+    - choose
+    - activate
+    - enable
+    - turn on
+    - switch on
+    - tick
+    - tick off
+
+- synonym: uncheck
+  examples: |
+    - deselect
+    - unselect
+    - turn off
+    - disable
+    - hide
+    - switch off
+    - deactivate
+    - untick
+    - clear
+    - reset
+    - remove
+
+- synonym: visualise
+  examples: |
+    - show
+    - display
+
 
 #- synonym: switch
 #  examples: |
@@ -630,6 +664,7 @@ nlu:
 #    - filtering
 
 # Synonym for "formalities" request starter I want to  + issue of questions like **what/Which** ->classfication to be added
+
 #- synonym: I want to
 #  examples: |
 #    - I want to
@@ -647,6 +682,29 @@ nlu:
 #    - I was hoping you could
 #    - I was wondering if you could
 #
+
+- synonym: I want to
+  examples: |
+    - I want to
+    - I would like to
+    - I'd like to
+    - Can you
+    - Can I
+    - May you
+    - May I
+    - Could you
+    - Could I
+    - I want you to
+    - I would like you to
+    - I'd like you to
+    - I was hoping you could
+    - I was wondering if you could
+    - Would I able to
+    - Would you be able to
+    - Would it be possible for you to
+    - Could you possibly 
+    - How about you
+
 
 # highlight options
 - intent: highlight_check
@@ -1166,9 +1224,16 @@ nlu:
     - Hide [mockery]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} comments
     - Uncheck [mockery]{"entity": "filter_name"} filter
 
-    - Disable [intolerance]{"entity": "filter_name"} option
-    - Hide [intolerance]{"entity": "filter_name"} nodes
-    - Uncheck [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} filter
+    - Disable [intolerance]{"entity": "filter_name"} node option
+    - Hide [intolerance]{"entity": "filter_name"} node
+    - Uncheck [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} nodes filter
+    - May you switch off [intolerance]{"entity": "filter_name"} comment nodes
+    - I was hoping you could Deactivate [intolerance]{"entity": "filter_name"} nodes filtering
+    - Untick [intolerance]{"entity": "filter_name"} node and edge
+    - Clear [intolerance]{"entity": "filter_name"} node filter option
+    - I want to reset [intolerance]{"entity": "filter_name"} node option
+    - I would like to remove [intolerance]{"entity": "filter_name"} node
+    - Can you turn off [intolerance]{"entity": "filter_name"} nodes filter
 
     - Disable [improper language]{"entity": "filter_name"} option
     - Hide [improper language]{"entity": "filter_name"} comments
@@ -1454,29 +1519,40 @@ nlu:
 
 - intent: statistics_features_tree
   examples: |
-    - Show me the statistics of the graph
-    - Show me the graph features statistics
-    - Show me the statistics of the main graph features
-    - Show me the statistics of the main view graph features
-    - Compare the graph features
-    - Compare the main graph features
-    - Compare the main view graph features
-    - Display a chart of the statistics of the graph features
-    - Show me the graph features statistics in a chart
-    - Show me the statistics of the whole graph
+    - I want you to show me the statistics of selected comments
+    - Can you display for me the selected comments statistics
+    - I was wondering if you could visualise the statistics of the selected comments for me
+    - I was hoping you might bring up the statistics of selected comments
+    - Would you be able to open the selected comments statistics
+    - Would it be possible for you to show me the selected comments stats
+    - Could you possibly help me compare selected comments
+    - Compare the features of selected comments
+    - Analyse the current visualisation
+    - I'd like you to show me a chart for the current layout
+    - Could you possibly compare the nodes and edges of the main view 
+    - Display a chart of the statistics for the main layout
+    - Show me the selected comments in a chart
+    - Can I see the statistics of what is displayed right now
+    - May you draw up the stats of the main interface display
+
 
 - intent: statistics_features_subtrees
   examples: |
-    - Compare the features of subtrees
-    - Compare the features of all subtrees
-    - Compare all subtrees features
-    - Compare the features of subgraphs
-    - Compare all subgraphs features
-    - Compare the subtrees features on a chart
-    - Show me the statistics of the subtrees features
-    - Show me the subtrees features statistics
-    - Show me the statistics of the subgraphs features
-    - Display the statistics of the subgraphs features in a chart
+    - I want you to show me the statistics of level one comments
+    - Can you display for me the level one comments statistics
+    - I was wondering if you could visualise the statistics of the level one comments for me
+    - I was hoping you might bring up the statistics of comment level one
+    - Would you be able to open the level one comments statistics
+    - Would it be possible for you to show me the level one comments stats
+    - Could you possibly help me compare level one comments
+    - Compare the features of level one comments
+    - Analyse level one comments
+    - I'd like you to show me a chart for comment level one 
+    - Could you possibly compare the colour features of comments in first position 
+    - Display a chart of the statistics for comments at level one
+    - Show me the level one comments in a chart
+    - Can I see the statistics of comments directly connected to the news article
+    - May you draw up the stats of the comments directly from the main node
 
 - intent: most_tagged_features
   examples: |
@@ -1487,158 +1563,108 @@ nlu:
 
 - intent: help_glyphs
   examples: |
-    - What are the glyphs for?
-    - How can I use the glyphs?
+    - Can you tell me what is meant by glyphs
+    - I was wondering if you could explain glyphs to me?    
+    - Could you explain to me what glyphs refers to?
+    - I would like you to explain what glyphs there are
+    - Would you be able to give me a tutorial for glyph bar?
+    - I want you to give me an explanation about glyph menu
+    - I was hoping you could help me understand glyph
+    - I'd like you to define glyphs
+    - Would it be possible to have a tutorial for glyph visualisation?
+    - Could you possibly go into more detail about what glyph options there are?
+    - Give me help on glyph designs
+    - Guide for glyph choices
+    - May you inform me on glyph types
+    - What do glyphs do
+    - Why should I use glyphs in the top menu
     - What are dots, circular glyph and trivial cheese?
-    - Give me more information about glyphs
-    - Can you give me more information about glyphs?
-    - What are glyphs for?
-    - What do glyphs do?
-    - What can I do with glyphs?
-    - What can I see with glyphs?
-    - What do glyphs show?
-    - What can glyphs show me?
-    - What do glyphs show you?
-    - How do I use the glyphs?
-    - How do I use glyphs?
-    - When do I use glyphs?
-    - What is a glyph?
-    - What is a glyph for?
-    - Why should I use a glyph?
-    - Why should I use glyphs?
-    - Tutorial glyphs
-    - Tutorial for glyphs
-    - Help glyphs
 
 - intent: help_layouts
   examples: |
-    - Why there are many layouts?
-    - What are the layouts?
-    - Give me more information about layouts
-    - What are layouts?
-    - What is tree layout?
-    - What is force layout?
-    - What is radial layout?
-    - What is circle packing?
-    - What layouts are there?
-    - Tutorial layouts
-    - Explain to me what layouts are
-    - What is a layout?
-    - Tutorial for layouts
-    - Show me what layouts are
-    - Tell me what layouts are
-    - Explain what layouts are to me
-    - Help layouts
+    - Can you tell me what is meant by layouts?
+    - I was wondering if you could explain visualisation layouts to me?    
+    - Could you explain to me what display layouts refers to?
+    - I would like you to explain what designs there are
+    - Would you be able to give me a tutorial for layout options?
+    - I want you to give me an explanation about layout menu
+    - I was hoping you could help me understand visualisation options
+    - I'd like you to define layout bar
+    - Would it be possible to have a tutorial for layouts types?
+    - Could you possibly go into more detail about what display types there are?
+    - Give me help on display designs
+    - Guide for layout choices
+    - May you inform me on visualisation designs
+    - Tell me about what layout displays choices there are
+    - Help visualisation display
+    - Why is this the best layout
+    - How did you select this layout for me
+    - What are the tree layout, force layout, radial layout and circle packing in the top menu for?
+    - Why are there different layouts
 
 - intent: help_select_node_edge
   examples: |
-    - How can I use select node and edge on the left bar?
-    - What is select node and edge on the left bar?
-    - What is select node and edge?
-    - Give me more information about select node and edge
-    - Explain to me what select node and edge is
-
-
+    - Can you tell me what is meant by node and edge on left bar?
+    - I was wondering if you could explain node and edge on left menu to me?    
+    - Could you explain to me what node and edge refers to?
+    - I would like you to explain what node and edge is
+    - Would you be able to give me a tutorial for node and edge option?
+    - I want you to give me an explanation about node and edge menu
+    - I was hoping you could help me understand node and edge feature
+    - I'd like you to define node and edge bar
+    - Would it be possible to have a tutorial for node and edge?
+    - Could you possibly go into more detail about what node and edge is?
+    - Give me help on node and edge
+    - Guide for node and edge
+    - May you inform me on node and edge
 
 - intent: help_summary
   examples: |
-    - What is summary?
-    - What does summary show?
-    - Give me information about summary
-    - Help summary
-    - Tutorial summary
-    - Tutorial for summary
-    - Explain summary
-    - Explain summary to me
-    - What does summary tell me?
-    - Why do I need summary?
-    - Tell me what summary is
-    - Tell me what summary shows
-    - Tell me what summary means
-    - Tell me what summary displays
-    - What is summary for?
-    - Explain to me what summary is
-    - Explain to me what summary is for
-    - Explain to me what summary means
-    - Explain to me what summary displays
-    - Explain to me what summary shows
-    - Explain what summary is to me
-    - Explain what summary is for to me
-    - Explain what summary means to me
-    - Explain what summary displays to me
-    - Explain what summary shows to me
-    - Can you tell me what summary is
-    - Can you tell me what summary is for
-    - Can you tell me what summary means
-    - Can you tell me what summary displays
-    - Can you tell me what summary shows
-    - Can you explain to me what summary is
-    - Can you explain to me what summary is for
-    - Can you explain to me what summary means
-    - Can you explain to me what summary displays
-    - Can you explain to me what summary shows
-    - Can you show me what summary is
-    - Can you show me what summary is for
-    - Can you show me what summary means
-    - Can you show me what summary displays
-    - Can you show me what summary shows
-    - Could you tell me what summary is
-    - Could you tell me what summary is for
-    - Could you tell me what summary means
-    - Could you tell me what summary displays
-    - Could you tell me what summary shows
-    - Could you explain to me what summary is
-    - Could you explain to me what summary is for
-    - Could you explain to me what summary means
-    - Could you explain to me what summary displays
-    - Could you explain to me what summary shows
-    - Could you show me what summary is
-    - Could you show me what summary is for
-    - Could you show me what summary means
-    - Could you show me what summary displays
-    - Could you show me what summary shows
-    - Would you tell me what summary is
-    - Would you tell me what summary is for
-    - Would you tell me what summary means
-    - Would you tell me what summary displays
-    - Would you tell me what summary shows
-    - Would you explain to me what summary is
-    - Would you explain to me what summary is for
-    - Would you explain to me what summary means
-    - Would you explain to me what summary displays
-    - Would you explain to me what summary shows
-    - Would you show me what summary is
-    - Would you show me what summary is for
-    - Would you show me what summary means
-    - Would you show me what summary displays
-    - Would you show me what summary shows
-    - How does summary work?
+    - Can you tell me what is meant by summary information?
+    - I was wondering if you could explain summary of file to me?    
+    - Could you explain to me what summary details refers to?
+    - I would like you to explain what summary is
+    - Would you be able to give me a tutorial for summary?
+    - I want you to give me an explanation about summary
+    - I was hoping you could help me understand summary feature
+    - I'd like you to define summary feature
+    - Would it be possible to have a tutorial for summary?
+    - Could you possibly go into more detail about what summary?
+    - Give me help on summary
+    - Guide for comment selected summary
+    - May you inform me on summary
 
 - intent: help_main_graph_barchart
   examples: |
-    - What is selected comments?
-    - What are selected comments?
-    - What does first button on the right show?
-    - What does the first button on the right show?
-    - What is selected comments button?
-    - What is the selected comments button?
-    - What is the selected comments button for?
-    - What does selected comments button do?
-    - What does selected comments do?
-    - What does the first button on the right do?
-    - What are selected comments statistics?
-    - What is selected comments statistics for?
-
+    - Can you tell me what is meant by selected commments statistics?
+    - I was wondering if you could explain selected comments stats graph to me?    
+    - Could you explain to me what selected comments refers to?
+    - I would like you to explain what selected comments statistics button are
+    - Would you be able to give me a tutorial for selected comments button?
+    - I want you to give me an explanation about selected comments stats
+    - I was hoping you could help me understand selected comments statistics feature
+    - I'd like you to define selected comments stats feature
+    - Would it be possible to have a tutorial for selected comments graphs?
+    - Could you possibly go into more detail about what selected comments statistics graphs?
+    - Give me help on selected comments graph button
+    - Guide for comment selected comments statistics option
+    - May you inform me on selected comments graphs
 
 - intent: help_subtree_barchart
   examples: |
-    - What is sub graphs?
-    - What are sub graphs?
-    - What does second button on the right show?
-    - What does the second button on the right show?
-    - What is that button saying level one comments?
-    - What is level one comments button?
-    - What is the level one comments button?
+    - Can you tell me what is meant by level one comment statistics?
+    - I was wondering if you could explain level one comments stats graph to me?
+    - Could you explain to me what level one comments refers to?
+    - I would like you to explain what level one statistics button are
+    - Would you be able to give me a tutorial for level one comments button?
+    - I want you to give me an explanation about level one comments stats
+    - I was hoping you could help me understand level one statistics feature
+    - I'd like you to define level one comments stats feature
+    - Would it be possible to have a tutorial for level one graphs?
+    - Could you possibly go into more detail about what level one statistics graphs?
+    - Give me help on level one comments graph button
+    - Guide for comment level one statistics option
+    - May you inform me on comment level one graphs
 
 - intent: tool_help
   examples: |
@@ -1648,24 +1674,58 @@ nlu:
 
 - intent: help_AND
   examples: |
-    - What is AND on the select node and edge menu?
-    - What is AND
-    - How do I use AND
-    - What is AND for?
+    - Can you tell me what is meant by AND?
+    - I was wondering if you could explain AND button to me?
+    - Could you explain to me what AND filter refers to?
+    - I would like you to explain what AND filtering are
+    - Would you be able to give me a tutorial for AND filter button?
+    - I want you to give me an explanation about AND filtering button
+    - I was hoping you could help me understand AND filter type
+    - I'd like you to define AND filtering type
+    - Would it be possible to have a tutorial for AND option?
+    - Could you possibly go into more detail about what AND filter option?
+    - Give me help on AND filtering option
+    - Guide for AND option button
+    - May you inform me on AND on select node and edge menu
 
 - intent: help_OR
   examples: |
-    - What is OR on the select node and edge menu?
-    - What is OR ?
-    - How do I use OR
-    - What is OR
-
+    - Can you tell me what is meant by OR?
+    - I was wondering if you could explain OR button to me?
+    - Could you explain to me what OR filter refers to?
+    - I would like you to explain what OR filtering are
+    - Would you be able to give me a tutorial for OR filter button?
+    - I want you to give me an explanation about OR filtering button
+    - I was hoping you could help me understand OR filter type
+    - I'd like you to define OR filtering type
+    - Would it be possible to have a tutorial for OR option?
+    - Could you possibly go into more detail about what OR filter option?
+    - Give me help on OR filtering option
+    - Guide for OR option button
+    - May you inform me on OR on select node and edge menu
 
 - intent: help_AND_OR
   examples: |
-    - What is the difference between AND and OR
-    - Why there are two options AND and OR
-    - What is the difference between OR and AND
+    - What is the difference between AND and OR filter option?
+    - Why there are two options AND and OR filter
+    - What is the difference between OR and AND option?
+    - How can I use AND and OR button option?
+    - What will be different if I use AND or OR filter button?
+    - Can you show me how AND and OR filtering options differ?
+    - Would you be able to give me an example of how AND/OR button works?
+    - Can you tell me what is meant by AND and OR filtering types?
+    - I was wondering if you could explain AND and OR to me?
+    - Could you explain to me what OR and AND refers to?
+    - I would like you to explain what AND and OR buttons are
+    - Would you be able to give me a tutorial for OR/AND filtering buttons?
+    - I want you to give me an explanation about AND and OR
+    - I was hoping you could help me understand AND/OR
+    - I'd like you to define AND and OR
+    - Would it be possible to have a tutorial for AND or OR?
+    - Could you possibly go into more detail about what AND/OR is for?
+    - Give me help on AND and OR option
+    - Guide for OR/AND filter type
+    - May you inform me on AND/OR filtering options   
 
 #- synonym: AND option
 #  examples: |
@@ -1706,7 +1766,6 @@ nlu:
     - What can I ask you?
     - How can you help me?
 
-
 - intent: what_can_do_after_glyphs
   examples: |
     - What can I do now after viewing glyphs?
@@ -1715,51 +1774,35 @@ nlu:
 
 - intent: features_on_the_left
   examples: |
-    - What is highlight colour features on the left bar?
-    - How can I use highlight colour features?
-    - What are colour features?
-    - How can I use highlight on the left bar?
-    - What is highlight on the left bar?
-    - What is highlight?
-    - Give me more information about highlight
-    - Explain to me what highlight colour features is
+    - Can you tell me what is meant by highlight colour features in left bar?
+    - I was wondering if you could explain colour features to me?
+    - Could you explain to me what highlight colour features refers to?
+    - I would like you to explain what colour features are
+    - Would you be able to give me a tutorial for highlight colour features?
+    - I want you to give me an explanation about highlight colour features in left menu
+    - I was hoping you could help me understand colour features
+    - I'd like you to define colour features
+    - Would it be possible to have a tutorial for highlight colour features?
+    - Could you possibly go into more detail about what highlight colour features is for?
+    - Give me help on highlight colour features
+    - Guide for colour features
+    - May you inform me on highlight colour features
 
 - intent: targets_help
   examples: |
-    - What are targets?
-    - What are targets on the left bar?
-    - How can I use targets?
-    - What are targets for?
-    - What do targets do?
-    - Why are there targets?
-    - Explain to me what targets are
-    - Tell me what targets are
-    - Explain targets to me
-    - Talk to me about targets
-    - Tutorial for targets
-    - Tutorial for targets on the left 
-    - Tutorial for targets on the left hand side bar
-    - Tutorial for targets left hand menu
-    - Tutorial for targets menu
-    - Tutorial targets
-    - Tutorial targets on left
-    - Tutorial targets on the left hand side bar
-    - Tutorial for how to use targets
-    - Tutorial how to use targets
-    - Tutorial how to use targets on left
-    - Tutorial how to use targets left hand side bar
-    - Tutorial how to use targets on left hand menu
-    - Give me a target tutorial
-    - Give me a tutorial for targets
-    - Show me how targets work
-    - Tell me how targets work
-    - Explain to me what targets are for
-    - Tell me what targets are for
-    - Explain to me what targets are used for
-    - Tell me what targets are used for
-    - What are targets on the left for?
-    - Help targets
-    - Help with targets
+    - Can you tell me what is meant by targets in left bar?
+    - I was wondering if you could explain targets icons to me?
+    - Could you explain to me what targets refers to?
+    - I would like you to explain what targets is
+    - Would you be able to give me a tutorial for targets icons?
+    - I want you to give me an explanation about targets in left menu
+    - I was hoping you could help me understand targets
+    - I'd like you to define targets icons
+    - Would it be possible to have a tutorial for targets?
+    - Could you possibly go into more detail about what targets is for?
+    - Give me help on targets
+    - Guide for targets
+    - May you inform me on targets icons
 
 - intent: help_sub_structure
   examples: |
@@ -1772,8 +1815,19 @@ nlu:
 
 - intent: statistics_help
   examples: |
-    - can you tell me more about statistics?
-    - can you give more information about statistics?
+    - Can you tell me what is meant by statistics?
+    - I was wondering if you could explain statistics graphs to me?
+    - Could you explain to me what statistics feature refers to?
+    - I would like you to explain what statistics buttons are
+    - Would you be able to give me a tutorial for stats?
+    - I want you to give me an explanation about stats graphs
+    - I was hoping you could help me understand stats feature
+    - I'd like you to define stats buttons
+    - Would it be possible to have a tutorial for statistics option?
+    - Could you possibly go into more detail about what stats options is for?
+    - Give me help on statistics
+    - Guide for stats
+    - May you inform me on statistics graphs
 
 - intent: start_analysis
   examples: |
@@ -2478,52 +2532,6 @@ nlu:
     - Disable all filters
     - Remove all filters
 
-# Definitions of features
-- intent: define_sarcasm
-  examples: |
-    - What is [sarcasm]{"entity": "filter_name"}?
-    - What does [sarcasm]{"entity": "filter_name"} mean?
-    - What is meant by [sarcasm]{"entity": "filter_name"}?
-    - What does [sarcasm]{"entity": "filter_name"} refer to?
-    - What is the definition of [sarcasm]{"entity": "filter_name"}?
-    - How is [sarcasm]{"entity": "filter_name"} defined?
-
-- intent: define_mockery
-  examples: |
-    - What is [mockery]{"entity": "filter_name"}?
-    - What does [mockery]{"entity": "filter_name"} mean?
-    - What is meant by [mockery]{"entity": "filter_name"}?
-    - What does [mockery]{"entity": "filter_name"} refer to?
-    - What is the definition of [mockery]{"entity": "filter_name"}?
-    - How is [mockery]{"entity": "filter_name"} defined?
-
-- intent: define_insult
-  examples: |
-    - What is [insult]{"entity": "filter_name"}?
-    - What does [insult]{"entity": "filter_name"} mean?
-    - What is meant by [insult]{"entity": "filter_name"}?
-    - What does [insult]{"entity": "filter_name"} refer to?
-    - What is the definition of [insult]{"entity": "filter_name"}?
-    - How is [insult]{"entity": "filter_name"} defined?
-
-- intent: define_improper_language
-  examples: |
-    - What is [improper language]{"entity": "filter_name"}?
-    - What does [improper language]{"entity": "filter_name"} mean?
-    - What is meant by [improper language]{"entity": "filter_name"}?
-    - What does [improper language]{"entity": "filter_name"} refer to?
-    - What is the definition of [improper language]{"entity": "filter_name"}?
-    - How is [improper language]{"entity": "filter_name"} defined?
-
-- intent: define_aggressiveness
-  examples: |
-    - What is [aggressiveness]{"entity": "filter_name"}?
-    - What does [aggressiveness]{"entity": "filter_name"} mean?
-    - What is meant by [aggressiveness]{"entity": "filter_name"}?
-    - What does [aggressiveness]{"entity": "filter_name"} refer to?
-    - What is the definition of [aggressiveness]{"entity": "filter_name"}?
-    - How is [aggressiveness]{"entity": "filter_name"} defined?
-
 # ask to check node and edge without specifying one
 - intent: show_node_and_edge
   examples: |
@@ -2536,7 +2544,6 @@ nlu:
     - Select node and edge
     - Activate node and edge
     - Enable node and edge
-
 
 - intent: filters_all_features
   examples: |
@@ -2560,41 +2567,181 @@ nlu:
     - Highlight [all targets]{"entity": "filter_name"}
     - Turn on [all targets]{"entity": "filter_name"}
 
+- intent: filters_all_features_uncheck
+  examples: |
+    - Uncheck [all features]{"entity": "filter_name"}
+    - Turn off [all features]{"entity": "filter_name"}
+    - Disable [all features]{"entity": "filter_name"}
+    - Hide [all features]{"entity": "filter_name"}
+
+- intent: filters_all_targets_uncheck
+  examples: |
+    - Uncheck [all targets]{"entity": "filter_name"}
+    - Turn off [all targets]{"entity": "filter_name"}
+    - Disable [all targets]{"entity": "filter_name"}
+    - Hide [all targets]{"entity": "filter_name"}
+
+# Definitions of features
+- intent: define_sarcasm
+  examples: | 
+    - Can you tell me what is meant by [sarcasm]{"entity": "filter_name"}?
+    - I was wondering if you could explain [sarcasm]{"entity": "filter_name"} to me?
+    - Could you explain to me what [sarcasm]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [sarcasm]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [sarcasm]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [sarcasm]{"entity": "filter_name"}
+    - I was hoping you could help me understand [sarcasm]{"entity": "filter_name"}
+    - I'd like you to define [sarcasm]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [sarcasm]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [sarcasm]{"entity": "filter_name"} is for?
+    - Give me help on [sarcasm]{"entity": "filter_name"}
+    - Guide for [sarcasm]{"entity": "filter_name"}
+    - May you inform me on [sarcasm]{"entity": "filter_name"}
+
+- intent: define_mockery
+  examples: |
+    - Can you tell me what is meant by [mockery]{"entity": "filter_name"}?
+    - I was wondering if you could explain [mockery]{"entity": "filter_name"} to me?
+    - Could you explain to me what [mockery]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [mockery]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [mockery]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [mockery]{"entity": "filter_name"}
+    - I was hoping you could help me understand [mockery]{"entity": "filter_name"}
+    - I'd like you to define [mockery]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [mockery]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [mockery]{"entity": "filter_name"} is for?
+    - Give me help on [mockery]{"entity": "filter_name"}
+    - Guide for [mockery]{"entity": "filter_name"}
+    - May you inform me on [mockery]{"entity": "filter_name"}
+
+- intent: define_intolerance
+  examples: | 
+    - Can you tell me what is meant by [intolerance]{"entity": "filter_name"}?
+    - I was wondering if you could explain [intolerance]{"entity": "filter_name"} to me?
+    - Could you explain to me what [intolerance]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [intolerance]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [intolerance]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [intolerance]{"entity": "filter_name"}
+    - I was hoping you could help me understand [intolerance]{"entity": "filter_name"}
+    - I'd like you to define [intolerance]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [intolerance]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [intolerance]{"entity": "filter_name"} is for?
+    - Give me help on [intolerance]{"entity": "filter_name"}
+    - Guide for [intolerance]{"entity": "filter_name"}
+    - May you inform me on [intolerance]{"entity": "filter_name"}
+
+- intent: define_insult
+  examples: |
+    - Can you tell me what is meant by [insult]{"entity": "filter_name"}?
+    - I was wondering if you could explain [insult]{"entity": "filter_name"} to me?
+    - Could you explain to me what [insult]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [insult]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [insult]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [insult]{"entity": "filter_name"}
+    - I was hoping you could help me understand [insult]{"entity": "filter_name"}
+    - I'd like you to define [insult]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [insult]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [insult]{"entity": "filter_name"} is for?
+    - Give me help on [insult]{"entity": "filter_name"}
+    - Guide for [insult]{"entity": "filter_name"}
+    - May you inform me on [insult]{"entity": "filter_name"}
+
+- intent: define_improper_language
+  examples: |
+    - Can you tell me what is meant by [improper language]{"entity": "filter_name"}?
+    - I was wondering if you could explain [improper language]{"entity": "filter_name"} to me?
+    - Could you explain to me what [improper language]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [improper language]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [improper language]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [improper language]{"entity": "filter_name"}
+    - I was hoping you could help me understand [improper language]{"entity": "filter_name"}
+    - I'd like you to define [improper language]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [improper language]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [improper language]{"entity": "filter_name"} is for?
+    - Give me help on [improper language]{"entity": "filter_name"}
+    - Guide for [improper language]{"entity": "filter_name"}
+    - May you inform me on [improper language]{"entity": "filter_name"}
+
+- intent: define_aggressiveness
+  examples: |
+    - Can you tell me what is meant by [aggressiveness]{"entity": "filter_name"}?
+    - I was wondering if you could explain [aggressiveness]{"entity": "filter_name"} to me?
+    - Could you explain to me what [aggressiveness]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [aggressiveness]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [aggressiveness]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [aggressiveness]{"entity": "filter_name"}
+    - I was hoping you could help me understand [aggressiveness]{"entity": "filter_name"}
+    - I'd like you to define [aggressiveness]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [aggressiveness]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [aggressiveness]{"entity": "filter_name"} is for?
+    - Give me help on [aggressiveness]{"entity": "filter_name"}
+    - Guide for [aggressiveness]{"entity": "filter_name"}
+    - May you inform me on [aggressiveness]{"entity": "filter_name"}
+
 - intent: define_stereotype
   examples: |
-    - What is [stereotype]{"entity": "filter_name"}?
-    - What does [stereotype]{"entity": "filter_name"} mean?
-    - What is meant by [stereotype]{"entity": "filter_name"}?
-    - What does [stereotype]{"entity": "filter_name"} refer to?
-    - What is the definition of [stereotype]{"entity": "filter_name"}?
-    - How is [stereotype]{"entity": "filter_name"} defined?
+    - Can you tell me what is meant by [stereotype]{"entity": "filter_name"}?
+    - I was wondering if you could explain [stereotype]{"entity": "filter_name"} to me?
+    - Could you explain to me what [stereotype]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [stereotype]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [stereotype]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [stereotype]{"entity": "filter_name"}
+    - I was hoping you could help me understand [stereotype]{"entity": "filter_name"}
+    - I'd like you to define [stereotype]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [stereotype]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [stereotype]{"entity": "filter_name"} is for?
+    - Give me help on [stereotype]{"entity": "filter_name"}
+    - Guide for [stereotype]{"entity": "filter_name"}
+    - May you inform me on stereotype
 
 - intent: define_stance
   examples: |
-    - What is stance?
-    - What does stance mean?
-    - What is meant by stance?
-    - What does stance refer to?
-    - What is the definition of stance?
-    - How is stance defined?
+    - Can you tell me what is meant by stance?
+    - I was wondering if you could explain stance to me?
+    - Could you explain to me what stance refers to?
+    - I would like you to explain what stance is
+    - Would you be able to give me a tutorial for stance?
+    - I want you to give me an explanation about stance
+    - I was hoping you could help me understand stance
+    - I'd like you to define stance
+    - Would it be possible to have a tutorial for stance?
+    - Could you possibly go into more detail about what stance is for?
+    - Give me help on stance
+    - Guide for stance
+    - May you inform me on stance
 
 - intent: define_toxic
   examples: |
-    - What is toxic?
-    - What does toxic mean?
-    - What is meant by toxic?
-    - What does toxic refer to?
-    - What is the definition of toxic?
-    - How is toxic defined?
+    - Can you tell me what is meant by toxic?
+    - I was wondering if you could explain toxic to me?
+    - Could you explain to me what toxic refers to?
+    - I would like you to explain what toxic is
+    - Would you be able to give me a tutorial for toxic?
+    - I want you to give me an explanation about toxic
+    - I was hoping you could help me understand toxic
+    - I'd like you to define toxic
+    - Would it be possible to have a tutorial for toxic?
+    - Could you possibly go into more detail about what toxic is for?
+    - Give me help on toxic
+    - Guide for toxic
+    - May you inform me on toxic
 
 - intent: define_commentid
-  examples: |
-    - What is comment id?
-    - What does comment id mean?
-    - What is meant by comment id ?
-    - What does comment id refer to?
-    - What is the definition of comment id?
-    - How is comment id defined?
+  examples: | 
+    - Can you tell me what is meant by [comment id]{"entity": "tag_comment_id"}?
+    - I was wondering if you could explain [comment id]{"entity": "tag_comment_id"} to me?
+    - Could you explain to me what [comment id]{"entity": "tag_comment_id"} refers to?
+    - I would like you to explain what [comment id]{"entity": "tag_comment_id"} is
+    - Would you be able to give me a tutorial for [comment id]{"entity": "tag_comment_id"}?
+    - I want you to give me an explanation about [comment id]{"entity": "tag_comment_id"}
+    - I was hoping you could help me understand [comment id]{"entity": "tag_comment_id"}
+    - I'd like you to define [comment id]{"entity": "tag_comment_id"}
+    - Would it be possible to have a tutorial for [comment id]{"entity": "tag_comment_id"}?
+    - Could you possibly go into more detail about what [comment id]{"entity": "tag_comment_id"} is for?
+    - Give me help on [comment id]{"entity": "tag_comment_id"}
+    - Guide for [comment id]{"entity": "tag_comment_id"}
+    - May you inform me on [comment id]{"entity": "tag_comment_id"}
+
 
 - synonym: comment id
   examples: |
@@ -2611,16 +2758,90 @@ nlu:
     - identification number
     - identification No.
 
-- intent: filters_all_features_uncheck
+- intent: define_argumentation
   examples: |
-    - Uncheck [all features]{"entity": "filter_name"}
-    - Turn off [all features]{"entity": "filter_name"}
-    - Disable [all features]{"entity": "filter_name"}
-    - Hide [all features]{"entity": "filter_name"}
+    - Can you tell me what is meant by [argumentation]{"entity": "filter_name"}?
+    - I was wondering if you could explain [argumentation]{"entity": "filter_name"} to me?
+    - Could you explain to me what [argumentation]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [argumentation]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [argumentation]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [argumentation]{"entity": "filter_name"}
+    - I was hoping you could help me understand [argumentation]{"entity": "filter_name"}
+    - I'd like you to define [argumentation]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [argumentation]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [argumentation]{"entity": "filter_name"} is for?
+    - Give me help on [argumentation]{"entity": "filter_name"}
+    - Guide for [argumentation]{"entity": "filter_name"}
+    - May you inform me on [argumentation]{"entity": "filter_name"}
 
-- intent: filters_all_targets_uncheck
+- intent: define_constructiveness
   examples: |
-    - Uncheck [all targets]{"entity": "filter_name"}
-    - Turn off [all targets]{"entity": "filter_name"}
-    - Disable [all targets]{"entity": "filter_name"}
-    - Hide [all targets]{"entity": "filter_name"}
+    - Can you tell me what is meant by [constructiveness]{"entity": "filter_name"}?
+    - I was wondering if you could explain [constructiveness]{"entity": "filter_name"} to me?
+    - Could you explain to me what [constructiveness]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [constructiveness]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [constructiveness]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [constructiveness]{"entity": "filter_name"}
+    - I was hoping you could help me understand [constructiveness]{"entity": "filter_name"}
+    - I'd like you to define [constructiveness]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [constructiveness]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [constructiveness]{"entity": "filter_name"} is for?
+    - Give me help on [constructiveness]{"entity": "filter_name"}
+    - Guide for [constructiveness]{"entity": "filter_name"}
+    - May you inform me on [constructiveness]{"entity": "filter_name"}
+
+- intent: define_commentlevel
+  examples: |
+    - Can you tell me what is meant by comment level?
+    - I was wondering if you could explain comment level to me?
+    - Could you explain to me what the level of the comment refers to?
+    - I would like you to explain what comment level is
+    - Would you be able to give me a tutorial for comment level?
+    - I want you to give me an explanation about comment level
+    - I was hoping you could help me understand comment level
+    - I'd like you to define comment level
+    - Would it be possible to have a tutorial for comment level?
+    - Could you possibly go into more detail about what comment level is for?
+    - Give me help on comment level
+    - Guide for comment level
+    - May you inform me on comment level
+
+- intent: define_commentdepth
+  examples: |
+    - Can you tell me what is meant by comment depth?
+    - I was wondering if you could explain comment depth to me?
+    - Could you explain to me what the depth of the comment refers to?
+    - I would like you to explain what comment depth is
+    - Would you be able to give me a tutorial for comment depth?
+    - I want you to give me an explanation about comment depth
+    - I was hoping you could help me understand comment depth
+    - I'd like you to define comment depth
+    - Would it be possible to have a tutorial for comment depth?
+    - Could you possibly go into more detail about what comment depth is for?
+    - Give me help on comment depth
+    - Guide for comment depth
+    - May you inform me on comment depth
+#- Tutorial for comment depth- yes
+#- What is the definition of comment depth?- yes
+#- What does comment depth mean?-yes
+# How do I use comment depth?- yes
+# I need an explanation on comment depth- yes
+# Help comment depth- yes
+#- How is comment depth defined?- yes
+#- May I know what comment depth is for?-yes
+#- What is comment depth?- yes
+# help define comment depth- yes
+# tell me about comment depth- yes
+
+- intent: define_subtrees
+  examples: |
+    - What are subtrees
+    - What does subtrees mean?
+    - What is meant by subtrees?
+    - What does subtree refer to?
+    - What are subtrees for
+    - What is the definition of subtrees?
+    - How can I use subtrees?
+    - Explain subtrees
+    - Tutorial for subtrees
+
