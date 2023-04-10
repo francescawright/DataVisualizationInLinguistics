@@ -180,7 +180,7 @@ intents:
   - thanks
   - show_node_and_edge
   - define_argumentation
-  - define_constructivity
+  - define_constructiveness
   - define_commentlevel
   - define_commentdepth
   - define_subtrees

@@ -420,10 +420,22 @@ nlu:
 - intent: change_glyphs
   examples: |
     - I want to change the [glyph]{"entity": "object_requested", "value": "glyph"}
-    - Change [glyph]{"entity": "object_requested", "value": "glyph"}
-    - I want to see another [glyph]{"entity": "object_requested", "value": "glyph"}
-    - I would like to see another [glyph]{"entity": "object_requested", "value": "glyph"}
-    - Other [glyph]{"entity": "object_requested", "value": "glyph"}
+    - Can you swap the [glyph]{"entity": "object_requested", "value": "glyph"}
+    - I was hoping you could show me another [glyph]{"entity": "object_requested", "value": "glyph"}
+    - Could I possibly choose another [glyph]{"entity": "object_requested", "value": "glyph"} type
+    - Would you be able to use a different [glyph]{"entity": "object_requested", "value": "glyph"}
+    - Could you possibly show me other [glyph]{"entity": "object_requested", "value": "glyph"} options
+    - Would it be possible for you to display features with another [glyph]{"entity": "object_requested", "value": "glyph"} style
+    - Show me other [glyph]{"entity": "object_requested", "value": "glyph"}
+    - May you visualise the colour features as [glyph]{"entity": "object_requested", "value": "glyph"}
+    - I was wondering if I may select another [glyph]{"entity": "object_requested", "value": "glyph"} display
+    - What are the other [glyph]{"entity": "object_requested", "value": "glyph"} choices
+    - Are there any other [glyph]{"entity": "object_requested", "value": "glyph"} I can use
+# would i be able to see the other glyph options that I can use?- yes
+# what are the available glyph options?- yes
+# change to glyph-yes
+# display the features in glyphs-yes
+# other glyphs- yes
 
 #- regex: document_requested
 #  examples: |
@@ -434,18 +446,59 @@ nlu:
     - file
 
 - intent: select_document
-  examples: |
+  examples: |   
     - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - Open [Compact_200]{"entity": "document_requested"}
-    - Open [document]{"entity": "object_requested", "value": "document"}
-    - Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
-    - Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
-    - Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - I want to open a [file]{"entity": "object_requested", "value": "document"}
-    - I want to open [wide]{"entity": "document_requested"}
-    - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
-    - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
+    - I want you to open [Compact_200]{"entity": "document_requested"}
+    - I would like you to show me the [file]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
+    - Can you open for me [531_MI]{"entity": "document_requested"}
+    - I was hoping you could bring up [test2]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} for me
+    - Would you be able to select [test4-Com]{"entity": "document_requested"}
+    - Would it be possible for you to choose [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - I'd like to analyse [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Begin analysis of [file]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
+    - May I look at [file]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
+    - Would I be able to start the analysis of [20170819_CR]{"entity": "document_requested"}
+    - Could you possibly start with [531_MI]{"entity": "document_requested"}
+    - Let me see [file]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
+    - Choose [531_MI]{"entity": "document_requested"} to analyse first
+
+#Let's analyse 20200608_SO- yes
+# bring up file 20200608_SO- yes
+# let's begin with file 20200608_SO - yes
+
+# - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+#    - Open [Compact_200]{"entity": "document_requested"}
+#    - Open [document]{"entity": "object_requested", "value": "document"}
+#    - Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
+#    - Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
+#   - Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+#   - I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+#    - I want to open a [file]{"entity": "object_requested", "value": "document"}
+#    - I want to open [wide]{"entity": "document_requested"}
+ #   - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
+#    - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
+
+- synonym: I want to
+  examples: |
+    - I want to
+    - I would like to
+    - I'd like to
+    - Can you
+    - Can I
+    - May you
+    - May I
+    - Could you
+    - Could I
+    - I want you to
+    - I would like you to
+    - I'd like you to
+    - I was hoping you could
+    - I was wondering if you could
+    - Would I able to
+    - Would you be able to
+    - Would it be possible for you to
+    - Could you possibly 
+    - How about you
 
 # Ask bot to change to OR / AND
 - intent: switch_or
