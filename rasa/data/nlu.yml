@@ -1615,6 +1615,7 @@ nlu:
     - Give me help on node and edge
     - Guide for node and edge
     - May you inform me on node and edge
+    - What is select node and edge
 
 - intent: help_summary
   examples: |
@@ -2727,12 +2728,14 @@ nlu:
     - Would you be able to give me a tutorial for toxic?
     - I want you to give me an explanation about toxic
     - I was hoping you could help me understand toxic
-    - I'd like you to define toxic
+    - I'd like you to define toxicity level
     - Would it be possible to have a tutorial for toxic?
     - Could you possibly go into more detail about what toxic is for?
     - Give me help on toxic
     - Guide for toxic
     - May you inform me on toxic
+    - What is toxic?
+    - What does level of toxicity mean?
 
 - intent: define_commentid
   examples: | 
