@@ -186,6 +186,7 @@ intents:
   - define_subtrees
   - tag_comment_id
 
+
 actions:
   - action_check_session_login
   - action_check_session_signup
@@ -212,6 +213,7 @@ actions:
   - action_highlight_switch_last
   - action_image_test
   - action_save_chat_logs
+  - filter_selection_form
 
 
 forms:
@@ -230,6 +232,7 @@ forms:
   document_selection_form:
     document_requested:
     - type: from_text
+
 
 entities:
   - action_requested
@@ -288,6 +291,9 @@ slots:
   first_login:
     type: bool
   glyph_requested:
+    type: text
+    influence_conversation: false
+  filter_name:
     type: text
     influence_conversation: false
 
@@ -763,12 +769,14 @@ responses:
       image: "https://ecemkavaz.github.io/imagesRasa/AndOr3.png"
 
   utter_help_summary:
-    - text: "Summary tells us how many comments are labelled with different levels of toxicity and their targets.  \ \n
+    - text: "intent_summary_signal,Summary tells us how many comments are labelled with different levels of toxicity and their targets.   \ \n
 
-    It reflects data in the current visualisation."
-      image: "https://ecemkavaz.github.io/imagesRasa/summary.png \ \n 
+    It reflects data in the current visualisation. 
+    \ \n 
       
       You can also see this data displayed as a graph in Selected Comments Statistics"
+
+
 
   utter_help_main_bar_one:
     - text: "intent_signal_additional_graphs,chart_main_button,statistics_all_features_tree,Selected Comments shows you the statistics of the current visualisation of the main interface. \ \n
