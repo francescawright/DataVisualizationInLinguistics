@@ -449,37 +449,31 @@ nlu:
 # Ask bot to change to OR / AND
 - intent: switch_or
   examples: |
-    - Change to or
-    - Switch to OR
-    - I want to switch to OR
     - I want to change to or
-    - I would like to switch to or
-    - I would like to change to RO
-    - I want to change the highlights to OR
-    - I want to change highlights to or
-    - I want to switch the highlights to or
-    - I want to switch highlights to OR
-    - Change the highlight to OR
-    - Change highlight to or
-    - Switch the highlight to or
-    - Switch highlight to OR
+    - I would like to switch to OR
+    - Can you to adjust to OR
+    - Could I want to change to and to or
+    - I was hoping you could switch and for or
+    - I was wondering if you could exchange and for or
+    - Would it be possible to change the highlight from and to or
+    - Would you be able to adjust highlighting to or
+    - Could you possibly select or 
+    - May you change the visualising options to OR
+# Put the select type as OR- yes
+
 
 - intent: switch_and
   examples: |
-    - Change to and
-    - Switch to AND
-    - I want to switch to AND
     - I want to change to and
-    - I would like to switch to and
-    - I would like to change to AND
-    - I want to change the highlights to AND
-    - I want to change highlights to and
-    - I want to switch the highlights to and
-    - I want to switch highlights to AND
-    - Change the highlight to AND
-    - Change highlight to and
-    - Switch the highlight to and
-    - Switch highlight to AND
+    - I would like to switch to AND
+    - Can you to adjust to AND
+    - Could I want to change to or to AND
+    - I was hoping you could switch or for and
+    - I was wondering if you could exchange or for and
+    - Would it be possible to change the highlight from or to and
+    - Would you be able to adjust highlighting to and
+    - Could you possibly select and 
+    - May you change the visualising options to AND
 
 # toxicity--> not toxic, mildly toxic, toxic, very toxic
 
@@ -1081,14 +1075,18 @@ nlu:
   # highlight uncheck all
 - intent: highlight_uncheck_all
   examples: |
-    - I want to deselect all select node and edge filters
-    - Deselect all select node and edge filters
-    - Reset the select node and edge filters
-    - Undo all select node and edge filters
-    - Undo all select node and edge
-    - Disable all select node and edge
-    - Remove all node and edge filters
-    - Reset select node and edge
+    - I want to deselect all node and edge filters
+    - Could you remove all the selected nodes and edges
+    - I was hoping you could reset all nodes and edges selected
+    - Would you be able to undo all nodes filters
+    - Could you possibly disable edges filters
+    - I would like you to turn off all nodes filtering
+    - Take off all edges filtering
+    - Would it be possible for you to get rid of nodes filters 
+    - Clear the edges filters
+    - Switch off nodes and edges
+#- Would I be able to get rid of the nodes and edges filters- yes
+
 
 - intent: highlight_uncheck
   examples: |
@@ -2386,11 +2384,21 @@ nlu:
 - intent: reset_all_filters
   examples: |
     - I want to deselect all filters
-    - Deselect all filters
-    - Reset all filters
-    - Undo all filters
-    - Disable all filters
-    - Remove all filters
+    - Could you remove all filters
+    - I was hoping you could reset all selected
+    - Would you be able to undo all filters
+    - Could you possibly disable all filters
+    - I would like you to turn off all filtering
+    - Take off all filtering
+    - Would it be possible for you to go back to the original display
+    - Clear the interface filters
+    - Would I be able to get rid of the selected filters
+    - Go back to the beginning
+    - Switch off filters
+#clear the filters off the interface- yes
+# take the filters off the interface- yes
+#i'd like you to deactivate all filtering- yes
+# get rid of filters- yes
 
 # ask to check node and edge without specifying one
 - intent: show_node_and_edge
