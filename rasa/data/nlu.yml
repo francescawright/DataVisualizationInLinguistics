@@ -198,14 +198,17 @@ nlu:
 # layouts
 - synonym: layout
   examples: |
-    - visualization layout
     - visualisation layout
+    - visualization layout
     - display layout
     - design
-    - visualization design
     - visualisation design
     - display design
     - display type
+    - visualisation type
+    - display layout
+    - visualisation
+    
 
 - synonym: tree
   examples: |
@@ -282,13 +285,22 @@ nlu:
     - last layout
 
 - intent: change_layout
-  examples: |
+  examples: |   
     - I want to change the [visualization layout]{"entity": "object_requested", "value": "layout"}
-    - I want to change the [display layout]{"entity": "object_requested", "value": "layout"}
-    - Change [design]{"entity": "object_requested", "value": "layout"}
-    - I want to see another [display design]{"entity": "object_requested", "value": "layout"}
-    - I would like to see another [visualization design]{"entity": "object_requested", "value": "layout"}
-    - Other [layout]{"entity": "object_requested", "value": "layout"}
+    - Can you swap the [display layout]{"entity": "object_requested", "value": "layout"}
+    - I was hoping you could show me another [display]{"entity": "object_requested", "value": "layout"}
+    - Could I possibly choose another [display]{"entity": "object_requested", "value": "layout"} 
+    - Would you be able to use a different [layout]{"entity": "object_requested", "value": "layout"} option
+    - Could you possibly show me other [display layout]{"entity": "object_requested", "value": "layout"}
+    - Would it be possible for you to display features with another [visualization layout]{"entity": "object_requested", "value": "layout"} style
+    - Show me other [visualization layout]{"entity": "object_requested", "value": "layout"} types
+    - Would you visualise the features in [visualization layout]{"entity": "object_requested", "value": "layout"}
+    - I was wondering if I could select another [visualisation layout]{"entity": "object_requested", "value": "layout"} option
+    - What are the other [visualization layout]{"entity": "object_requested", "value": "layout"} choices
+    - Are there any other [visualization]{"entity": "object_requested", "value": "layout"} I can use
+    - Switch the [visualisation type]{"entity": "object_requested", "value": "layout"} format
+    
+
 
 - intent: change_layout_tree
   examples: |
@@ -382,40 +394,48 @@ nlu:
 
 - intent: change_glyph_dots
   examples: |
-    - Change the [glyph]{"entity": "object_requested", "value": "glyph"} to [dots]{"entity": "glyph_requested", "value": "dots"}
-    - Set the [dots]{"entity": "glyph_requested", "value": "dots"}
-    - Display the [dots]{"entity": "glyph_requested", "value": "dots"}
-    - I want to see the [dots]{"entity": "glyph_requested", "value": "dots"} as glyph
-    - I would like to see the [dots]{"entity": "glyph_requested", "value": "dots"} as glyph
-    - Show me the [dots]{"entity": "glyph_requested", "value": "dots"}
-    - [dots]{"entity": "glyph_requested", "value": "dots"}
-    - Show [dots]{"entity": "glyph_requested", "value": "dots"}
-    - Change to [dots]{"entity": "glyph_requested", "value": "dots"}
+    - I want to change the [glyph]{"entity": "object_requested", "value": "glyph"} to [dots]{"entity": "glyph_requested", "value": "dots"}
+    - Can you swap the [glyph]{"entity": "object_requested", "value": "glyph"} to [dots]{"entity": "glyph_requested", "value": "dots"}
+    - I was hoping you could bring up [dots]{"entity": "glyph_requested", "value": "dots"} style glyph
+    - Could I possibly choose to [dots]{"entity": "glyph_requested", "value": "dots"} glyph type
+    - Would you be able to use to [dots]{"entity": "glyph_requested", "value": "dots"} glyph
+    - Could you possibly show me [dots]{"entity": "glyph_requested", "value": "dots"} glyph format
+    - Would it be possible for you to display features with to [dots]{"entity": "glyph_requested", "value": "dots"} style glyph
+    - Show me [dots]{"entity": "glyph_requested", "value": "dots"} style
+    - Would you visualise the colour features as [dots]{"entity": "glyph_requested", "value": "dots"} glyphs
+    - I was wondering if I could select [dots]{"entity": "glyph_requested", "value": "dots"} display
+    - Let me choose [dots]{"entity": "glyph_requested", "value": "dots"} option
+    - Let's visualise the selected features in [dots]{"entity": "glyph_requested", "value": "dots"} glyphs
 
 - intent: change_glyph_circular
   examples: |
-    - Change the [glyph]{"entity": "object_requested", "value": "glyph"} to [circular]{"entity": "glyph_requested", "value": "circular"}
-    - Set the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - Display the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - I want to see the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - I would like to see the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - Show me the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - Show [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - Chnage to [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-
+    - I want to change the [glyph]{"entity": "object_requested", "value": "glyph"} to [circular]{"entity": "glyph_requested", "value": "circular"}
+    - Can you swap the [glyph]{"entity": "object_requested", "value": "glyph"} to [circular]{"entity": "glyph_requested", "value": "circular"}
+    - I was hoping you could bring up [circular]{"entity": "glyph_requested", "value": "circular"} style glyph
+    - Could I possibly choose to [circular]{"entity": "glyph_requested", "value": "circular"} glyph type
+    - Would you be able to use to [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - Could you possibly show me [circular]{"entity": "glyph_requested", "value": "circular"} glyph format
+    - Would it be possible for you to display features with to [circular]{"entity": "glyph_requested", "value": "circular"} style glyph
+    - Show me [circular]{"entity": "glyph_requested", "value": "circular"} style
+    - Would you visualise the colour features as [circular]{"entity": "glyph_requested", "value": "circular"} glyphs
+    - I was wondering if I could select [circular]{"entity": "glyph_requested", "value": "circular"} display
+    - Let me choose [circular]{"entity": "glyph_requested", "value": "circular"} option
+    - Let's visualise the selected features in [circular]{"entity": "glyph_requested", "value": "circular"} glyphs
 
 - intent: change_glyph_trivial
-  examples: |
-    - Change the [glyph]{"entity": "object_requested", "value": "glyph"} to [trivial]{"entity": "glyph_requested", "value": "trivial"}
-    - Set the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - Display the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - I want to see the [trivial]{"entity": "glyph_requested", "value": "trivial"}
-    - I would like to see the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - Show me the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - Show [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - Change to [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+  examples: |    
+    - I want to change the [glyph]{"entity": "object_requested", "value": "glyph"} to [trivial]{"entity": "glyph_requested", "value": "trivial"}
+    - Can you swap the [glyph]{"entity": "object_requested", "value": "glyph"} to [trivial]{"entity": "glyph_requested", "value": "trivial"}
+    - I was hoping you could bring up [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese style glyph
+    - Could I possibly choose to [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese glyph type
+    - Would you be able to use to [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese glyph
+    - Could you possibly show me  [trivial]{"entity": "glyph_requested", "value": "trivial"} glyph format
+    - Would it be possible for you to display features with to [trivial]{"entity": "glyph_requested", "value": "trivial"} style glyph
+    - Show me [trivial]{"entity": "glyph_requested", "value": "trivial"} style
+    - Would you visualise the colour features as [trivial]{"entity": "glyph_requested", "value": "trivial"} glyphs
+    - I was wondering if I could select [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese display
+    - Let me choose [trivial]{"entity": "glyph_requested", "value": "trivial"} option
+    - Let's visualise the selected features in [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese glyphs
 
 - intent: change_glyphs
   examples: |
@@ -427,15 +447,17 @@ nlu:
     - Could you possibly show me other [glyph]{"entity": "object_requested", "value": "glyph"} options
     - Would it be possible for you to display features with another [glyph]{"entity": "object_requested", "value": "glyph"} style
     - Show me other [glyph]{"entity": "object_requested", "value": "glyph"}
-    - May you visualise the colour features as [glyph]{"entity": "object_requested", "value": "glyph"}
-    - I was wondering if I may select another [glyph]{"entity": "object_requested", "value": "glyph"} display
+    - Would you visualise the colour features as [glyph]{"entity": "object_requested", "value": "glyph"}
+    - I was wondering if I could select another [glyph]{"entity": "object_requested", "value": "glyph"} display
     - What are the other [glyph]{"entity": "object_requested", "value": "glyph"} choices
     - Are there any other [glyph]{"entity": "object_requested", "value": "glyph"} I can use
+    - Switch the [glyph]{"entity": "object_requested", "value": "glyph"} format
 # would i be able to see the other glyph options that I can use?- yes
 # what are the available glyph options?- yes
 # change to glyph-yes
 # display the features in glyphs-yes
 # other glyphs- yes
+# set the glyphs- yes
 
 #- regex: document_requested
 #  examples: |
