@@ -147,7 +147,7 @@ class ActionLogoutToSignupCancellation(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        dispatcher.utter_message(text="Okey! I will not log you out")
+        dispatcher.utter_message(text="Okay! I will not log you out")
         return [SlotSet("username", None), SlotSet("password", None), SlotSet("password_confirmation", None)]
 
 
@@ -451,20 +451,20 @@ class ActionGreet(Action):
             elif e['entity'] == 'first_login':
                 first_login_value = e['value'] == "True"
 
-        messages_not_logged = ["Hey! Nice to see you here, I am a Chatbot here to help you. Sign up or Login to start 😄",
-                               "Hello! I'm a Chatbot here to help if you need me. Sign up or Login to start 😄",
-                               "Hi, I am a Chatbot here to guide you. Sign up or Login to start 😄",
-                               "Hello there, I am a Chatbot here to help you. Sign up or Login to start😄"] if not greet_again_value else [
-            "How else can I help you? 😉",
-            "What else can I do for you? 😉"]
+        messages_not_logged = ["Hey! Nice to see you here. I am a Chatbot here to help you carry out actions, explain the interface and give you tips. Ask me to Sign up or Login, or click the buttons 😄",
+                               "Hello! I'm a Chatbot here to help you carry out actions and explain the interface and give you tips. ASk me to Sign up or Login, or click the buttons 😄",
+                               "Hi, I'm a Chatbot here to help you carry out actions and explain the interface and give you tips. ASk me to Sign up or Login, or click the buttons 😄",
+                               "Hello there, I'm a Chatbot here to help you carry out actions and explain the interface and give you tips. ASk me to Sign up or Login, or click the buttons 😄"] if not greet_again_value else [
+            "How else can I help you? 😄",
+            "What else can I do for you? 😄"]
 
         if tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None":
             if nickname_value:
                 messages = ["Hey, " + nickname_value + ". Nice to see you! 😄",
                             "Hi, " + nickname_value + ". How are you? 😄",
                             "Hello, " + nickname_value + ". I'm here if you need me 😄"] if not greet_again_value else \
-                    ["Hey, " + nickname_value + ". How else can I help you? 😉",
-                     "Hi, " + nickname_value + ". What else can I do for you? 😉"]
+                    ["Hey, " + nickname_value + ". How else can I help you? 😄",
+                     "Hi, " + nickname_value + ". What else can I do for you? 😄"]
                 dispatcher.utter_message(text=random.choice(messages))
 
                 if first_login_value:

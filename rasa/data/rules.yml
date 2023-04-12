@@ -570,6 +570,11 @@ rules:
     - intent: define_insult
     - action: utter_insult_definition
 
+- rule: user asks for definition of intolerance
+  steps:
+    - intent: define_intolerance
+    - action: utter_intolerance_definition
+
 - rule: user asks for definition of improper language
   steps:
     - intent: define_improper_language
@@ -600,9 +605,34 @@ rules:
     - intent: define_commentid
     - action: utter_comment_id_definition
 
+- rule: user asks for definition of argumentation
+  steps:
+    - intent: define_argumentation
+    - action: utter_argumentation_definition
+
+- rule: user asks for definition of constructiveness
+  steps:
+    - intent: define_constructiveness
+    - action: utter_constructiveness_definition
+
+- rule: user asks for definition of comment level
+  steps:
+    - intent: define_commentlevel
+    - action: utter_comment_level_definition
+
+- rule: user asks for definition of comment depth
+  steps:
+    - intent: define_commentdepth
+    - action: utter_comment_depth_definition
+
 #- rule: user wants to know what bot can do
 #  steps:
 #    - intent: help_what_can_you_do
 #    - action: utter_help_what_can_you_do
+
+- rule: user asks for definition of subtrees
+  steps:
+    - intent: define_subtrees
+    - action: utter_subtrees_definition
 
 
