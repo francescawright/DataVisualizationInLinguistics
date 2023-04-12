@@ -198,14 +198,17 @@ nlu:
 # layouts
 - synonym: layout
   examples: |
-    - visualization layout
     - visualisation layout
+    - visualization layout
     - display layout
     - design
-    - visualization design
     - visualisation design
     - display design
     - display type
+    - visualisation type
+    - display layout
+    - visualisation
+    
 
 - synonym: tree
   examples: |
@@ -282,148 +285,162 @@ nlu:
     - last layout
 
 - intent: change_layout
-  examples: |
+  examples: |   
     - I want to change the [visualization layout]{"entity": "object_requested", "value": "layout"}
-    - I want to change the [display layout]{"entity": "object_requested", "value": "layout"}
-    - Change [design]{"entity": "object_requested", "value": "layout"}
-    - I want to see another [display design]{"entity": "object_requested", "value": "layout"}
-    - I would like to see another [visualization design]{"entity": "object_requested", "value": "layout"}
-    - Other [layout]{"entity": "object_requested", "value": "layout"}
+    - Can you swap the [display layout]{"entity": "object_requested", "value": "layout"}
+    - I was hoping you could show me another [display]{"entity": "object_requested", "value": "layout"}
+    - Could I possibly choose another [display]{"entity": "object_requested", "value": "layout"} 
+    - Would you be able to use a different [layout]{"entity": "object_requested", "value": "layout"} option
+    - Could you possibly show me other [display layout]{"entity": "object_requested", "value": "layout"}
+    - Would it be possible for you to display features with another [visualization layout]{"entity": "object_requested", "value": "layout"} style
+    - Show me other [visualization layout]{"entity": "object_requested", "value": "layout"} types
+    - Would you visualise the features in [visualization layout]{"entity": "object_requested", "value": "layout"}
+    - I was wondering if I could select another [visualisation layout]{"entity": "object_requested", "value": "layout"} option
+    - What are the other [visualization layout]{"entity": "object_requested", "value": "layout"} choices
+    - Are there any other [visualization]{"entity": "object_requested", "value": "layout"} I can use
+    - Switch the [visualisation type]{"entity": "object_requested", "value": "layout"} format
+    
+
 
 - intent: change_layout_tree
   examples: |
-    - Change the [layout]{"entity": "object_requested", "value": "layout"} to [tree]{"entity": "layout_requested", "value": "tree"}
-    - Change [design]{"entity": "object_requested", "value": "layout"} to [tree visualization]{"entity": "layout_requested", "value": "tree"}
-    - Set the [tree design]{"entity": "layout_requested", "value": "tree"}
-    - Set [tree layout]{"entity": "layout_requested", "value": "tree"}
-    - Set the [design]{"entity": "object_requested", "value": "layout"} to the [tree visualization]{"entity": "layout_requested", "value": "tree"}
-    - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [tree]{"entity": "layout_requested", "value": "tree"}
-    - Displays the [tree layout]{"entity": "layout_requested", "value": "tree"}
-    - Displays [tree visualization]{"entity": "layout_requested", "value": "tree"}
-    - I want to see the [tree design]{"entity": "layout_requested", "value": "tree"}
-    - I would like to see the [tree]{"entity": "layout_requested", "value": "tree"}
-    - Show me the [tree layout]{"entity": "layout_requested", "value": "tree"}
-    - [tree]{"entity": "layout_requested", "value": "tree"}
-    - Show me the [first layout]{"entity": "layout_requested", "value": "tree"}
-    - Show me the [first visualisation]{"entity": "layout_requested", "value": "tree"}
-    - Show me the [first visualization]{"entity": "layout_requested", "value": "tree"}
-    - Show me the [tree visualisation]{"entity": "layout_requested", "value": "tree"}
-    - Show me the [first design]{"entity": "layout_requested", "value": "tree"}
+    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [tree]{"entity": "layout_requested", "value": "tree"}
+    - Can you swap the [force]{"entity": "layout_requested", "value": "force"} to [tree design]{"entity": "layout_requested", "value": "tree"}
+    - Can you swap the [radial layout]{"entity": "layout_requested", "value": "radial"} to [tree]{"entity": "layout_requested", "value": "tree"}
+    - Can you swap from [circle packing] {"entity": "layout_requested", "value": "circle"} to [tree]{"entity": "layout_requested", "value": "tree"}
+    - I was hoping you could bring up [tree layout]{"entity": "layout_requested", "value": "tree"} style
+    - Could I possibly choose to [tree layout]{"entity": "layout_requested", "value": "tree"} type
+    - Would you be able to use to [tree layout]{"entity": "layout_requested", "value": "tree"} option
+    - Could you possibly show me [tree layout]{"entity": "layout_requested", "value": "tree"} format
+    - Would it be possible for you to display features with [tree layout]{"entity": "layout_requested", "value": "tree"} display
+    - Show me [tree layout]{"entity": "layout_requested", "value": "tree"}
+    - Would you visualise the current display as [tree layout]{"entity": "layout_requested", "value": "tree"} 
+    - I was wondering if I could select [first layout]{"entity": "layout_requested", "value": "tree"} display
+    - Let me choose [dots]{"entity": "glyph_requested", "value": "dots"} option
+    - Let's visualise the selected features in [first design]{"entity": "layout_requested", "value": "tree"} format
 
 
 - intent: change_layout_force
   examples: |
-    - Change the [layout]{"entity": "object_requested", "value": "layout"} to [force]{"entity": "layout_requested", "value": "force"}
-    - Change [design]{"entity": "object_requested", "value": "layout"} to [force visualization]{"entity": "layout_requested", "value": "force"}
-    - Set the [force design]{"entity": "layout_requested", "value": "force"}
-    - Set [force layout]{"entity": "layout_requested", "value": "force"}
-    - Set the [design]{"entity": "object_requested", "value": "layout"} to the [force visualization]{"entity": "layout_requested", "value": "force"}
-    - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [force]{"entity": "layout_requested", "value": "force"}
-    - Displays the [force layout]{"entity": "layout_requested", "value": "force"}
-    - Displays [force visualization]{"entity": "layout_requested", "value": "force"}
-    - I want to see the [force design]{"entity": "layout_requested", "value": "force"}
-    - I would like to see the [force]{"entity": "layout_requested", "value": "force"}
-    - Show me the [force layout]{"entity": "layout_requested", "value": "force"}
-    - [force]{"entity": "layout_requested", "value": "force"}
-    - Show me the [second layout]{"entity": "layout_requested", "value": "force"}
-    - Show me the [second visualisation]{"entity": "layout_requested", "value": "force"}
-    - Show me the [second visualization]{"entity": "layout_requested", "value": "force"}
-    - Show me the [force visualisation]{"entity": "layout_requested", "value": "force"}
-    - Show me the [second design]{"entity": "layout_requested", "value": "force"}
+    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [force]{"entity": "layout_requested", "value": "force"}
+    - Can you swap the [tree layout]{"entity": "layout_requested", "value": "tree"} to [force]{"entity": "layout_requested", "value": "force"}
+    - Can you swap the [radial layout]{"entity": "layout_requested", "value": "radial"} to [force]{"entity": "layout_requested", "value": "force"}
+    - Can you swap from [circle packing] {"entity": "layout_requested", "value": "circle"} to [force]{"entity": "layout_requested", "value": "force"}
+    - I was hoping you could bring up [force]{"entity": "layout_requested", "value": "force"} style
+    - Could I possibly choose to [force]{"entity": "layout_requested", "value": "force"} type
+    - Would you be able to use to [force]{"entity": "layout_requested", "value": "force"} option
+    - Could you possibly show me [force]{"entity": "layout_requested", "value": "force"} format
+    - Would it be possible for you to display features with [force]{"entity": "layout_requested", "value": "force"} display
+    - Show me [force]{"entity": "layout_requested", "value": "force"}
+    - Would you visualise the current display as [force]{"entity": "layout_requested", "value": "force"}
+    - I was wondering if I could select [second layout]{"entity": "layout_requested", "value": "force"} display
+    - Let me choose [second layout]{"entity": "layout_requested", "value": "force"} option
+    - Let's visualise the selected features in [second layout]{"entity": "layout_requested", "value": "force"} format
 
 - intent: change_layout_radial
   examples: |
-    - Change the [layout]{"entity": "object_requested", "value": "layout"} to [radial]{"entity": "layout_requested", "value": "radial"}
-    - Change [design]{"entity": "object_requested", "value": "layout"} to [radial visualization]{"entity": "layout_requested", "value": "radial"}
-    - Set the [radial design]{"entity": "layout_requested", "value": "radial"}
-    - Set [radial layout]{"entity": "layout_requested", "value": "radial"}
-    - Set the [design]{"entity": "object_requested", "value": "layout"} to the [radial visualization]{"entity": "layout_requested", "value": "radial"}
-    - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [radial]{"entity": "layout_requested", "value": "radial"}
-    - Displays the [radial layout]{"entity": "layout_requested", "value": "radial"}
-    - Displays [radial visualization]{"entity": "layout_requested", "value": "radial"}
-    - I want to see the [radial design]{"entity": "layout_requested", "value": "radial"}
-    - I would like to see the [radial]{"entity": "layout_requested", "value": "radial"}
-    - Show me the [radial layout]{"entity": "layout_requested", "value": "radial"}
-    - [radial]{"entity": "layout_requested", "value": "radial"}
-    - Show me the [third layout]{"entity": "layout_requested", "value": "radial"}
-    - Show me the [third visualisation]{"entity": "layout_requested", "value": "radial"}
-    - Show me the [third visualization]{"entity": "layout_requested", "value": "radial"}
-    - Show me the [radial visualisation]{"entity": "layout_requested", "value": "radial"}
-    - Show me the [third design]{"entity": "layout_requested", "value": "radial"}
+    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [radial]{"entity": "layout_requested", "value": "radial"}
+    - Can you swap the [tree layout]{"entity": "layout_requested", "value": "tree"} to [radial visualisation]{"entity": "layout_requested", "value": "radial"}
+    - Can you swap the [force layout]{"entity": "layout_requested", "value": "force"} to [radial visualisation]{"entity": "layout_requested", "value": "radial"}
+    - Can you swap from [circle packing] {"entity": "layout_requested", "value": "circle"} to [radial]{"entity": "layout_requested", "value": "radial"}
+    - I was hoping you could bring up [radial]{"entity": "layout_requested", "value": "radial"} style
+    - Could I possibly choose to [radial]{"entity": "layout_requested", "value": "radial"} type
+    - Would you be able to use to [radial]{"entity": "layout_requested", "value": "radial"} option
+    - Could you possibly show me [radial]{"entity": "layout_requested", "value": "radial"} format
+    - Would it be possible for you to display features with [radial]{"entity": "layout_requested", "value": "radial"} display
+    - Show me [radial]{"entity": "layout_requested", "value": "radial"}
+    - Would you visualise the current display as [radial]{"entity": "layout_requested", "value": "radial"}
+    - I was wondering if I could select the [third layout]{"entity": "layout_requested", "value": "radial"} display
+    - Let me choose [third layout]{"entity": "layout_requested", "value": "radial"} option
+    - Let's visualise the selected features in [third visualization]{"entity": "layout_requested", "value": "radial"} format
 
 
 - intent: change_layout_circle
   examples: |
-    - Change the [layout]{"entity": "object_requested", "value": "layout"} to [circle]{"entity": "layout_requested", "value": "circle"}
-    - Change [design]{"entity": "object_requested", "value": "layout"} to [circle visualization]{"entity": "layout_requested", "value": "circle"}
-    - Set the [circle design]{"entity": "layout_requested", "value": "circle"}
-    - Set [circle layout]{"entity": "layout_requested", "value": "circle"}
-    - Set the [design]{"entity": "object_requested", "value": "layout"} to the [circle visualization]{"entity": "layout_requested", "value": "circle"}
-    - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [circle packing]{"entity": "layout_requested", "value": "circle"}
-    - Display the [circle layout]{"entity": "layout_requested", "value": "circle"}
-    - Display [circle packing visualization]{"entity": "layout_requested", "value": "circle"}
-    - Display [circle packing visualisation]{"entity": "layout_requested", "value": "circle"}
-    - I want to see the [circle packing design]{"entity": "layout_requested", "value": "circle"}
-    - I would like to see the [circle]{"entity": "layout_requested", "value": "circle"}
-    - Show me the [circle layout]{"entity": "layout_requested", "value": "circle"}
-    - [circle packing]{"entity": "layout_requested", "value": "circle"}
-    - Show me the [fourth layout]{"entity": "layout_requested", "value": "circle"}
-    - Show me the [fourth visualisation]{"entity": "layout_requested", "value": "circle"}
-    - Show me the [fourth visualization]{"entity": "layout_requested", "value": "circle"}
-    - Show me the [circle visualisation]{"entity": "layout_requested", "value": "circle"}
-    - Show me the [fourth design]{"entity": "layout_requested", "value": "circle"}
-    - Display the [last visualization]{"entity": "layout_requested", "value": "circle"}
-    - Display the [last visualisation]{"entity": "layout_requested", "value": "circle"}
-    - Display the [last layout]{"entity": "layout_requested", "value": "circle"}
-    - Display the [last design]{"entity": "layout_requested", "value": "circle"}
-
+    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [circle visualization]{"entity": "layout_requested", "value": "circle"}
+    - Can you swap the [tree layout]{"entity": "layout_requested", "value": "tree"} to [circle visualization]{"entity": "layout_requested", "value": "circle"}
+    - Can you swap the [force layout]{"entity": "layout_requested", "value": "force"} to [circle visualization]{"entity": "layout_requested", "value": "circle"}
+    - Can you swap from [radial layout] {"entity": "layout_requested", "value": "radial"} to [circle]{"entity": "layout_requested", "value": "circle"}
+    - I was hoping you could bring up [circle visualization]{"entity": "layout_requested", "value": "circle"} style
+    - Could I possibly choose to [circle visualization]{"entity": "layout_requested", "value": "circle"} type
+    - Would you be able to use to [circle visualization]{"entity": "layout_requested", "value": "circle"} option
+    - Could you possibly show me [circle visualization]{"entity": "layout_requested", "value": "circle"} format
+    - Would it be possible for you to display features with [circle visualization]{"entity": "layout_requested", "value": "circle"} display
+    - Show me [circle visualization]{"entity": "layout_requested", "value": "circle"}
+    - Would you visualise the current display as [circle visualization]{"entity": "layout_requested", "value": "circle"}
+    - I was wondering if I could select the [fourth layout]{"entity": "layout_requested", "value": "circle"} display
+    - Let me choose the [last layout]{"entity": "layout_requested", "value": "circle"} option
+    - Let's visualise the selected features in [fourth visualization]{"entity": "layout_requested", "value": "circle"} format
+    - Display the data in the [last design]{"entity": "layout_requested", "value": "circle"}
 
 # glyph change
 
 - intent: change_glyph_dots
   examples: |
-    - Change the [glyph]{"entity": "object_requested", "value": "glyph"} to [dots]{"entity": "glyph_requested", "value": "dots"}
-    - Set the [dots]{"entity": "glyph_requested", "value": "dots"}
-    - Display the [dots]{"entity": "glyph_requested", "value": "dots"}
-    - I want to see the [dots]{"entity": "glyph_requested", "value": "dots"} as glyph
-    - I would like to see the [dots]{"entity": "glyph_requested", "value": "dots"} as glyph
-    - Show me the [dots]{"entity": "glyph_requested", "value": "dots"}
-    - [dots]{"entity": "glyph_requested", "value": "dots"}
-    - Show [dots]{"entity": "glyph_requested", "value": "dots"}
-    - Change to [dots]{"entity": "glyph_requested", "value": "dots"}
+    - I want to change the [glyph]{"entity": "object_requested", "value": "glyph"} to [dots]{"entity": "glyph_requested", "value": "dots"}
+    - Can you swap the [glyph]{"entity": "object_requested", "value": "glyph"} to [dots]{"entity": "glyph_requested", "value": "dots"}
+    - I was hoping you could bring up [dots]{"entity": "glyph_requested", "value": "dots"} style glyph
+    - Could I possibly choose to [dots]{"entity": "glyph_requested", "value": "dots"} glyph type
+    - Would you be able to use to [dots]{"entity": "glyph_requested", "value": "dots"} glyph
+    - Could you possibly show me [dots]{"entity": "glyph_requested", "value": "dots"} glyph format
+    - Would it be possible for you to display features with to [dots]{"entity": "glyph_requested", "value": "dots"} style glyph
+    - Show me [dots]{"entity": "glyph_requested", "value": "dots"} style
+    - Would you visualise the colour features as [dots]{"entity": "glyph_requested", "value": "dots"} glyphs
+    - I was wondering if I could select [dots]{"entity": "glyph_requested", "value": "dots"} display
+    - Let me choose [dots]{"entity": "glyph_requested", "value": "dots"} option
+    - Let's visualise the selected features in [dots]{"entity": "glyph_requested", "value": "dots"} glyphs
 
 - intent: change_glyph_circular
   examples: |
-    - Change the [glyph]{"entity": "object_requested", "value": "glyph"} to [circular]{"entity": "glyph_requested", "value": "circular"}
-    - Set the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - Display the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - I want to see the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - I would like to see the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - Show me the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - Show [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - Chnage to [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-
+    - I want to change the [glyph]{"entity": "object_requested", "value": "glyph"} to [circular]{"entity": "glyph_requested", "value": "circular"}
+    - Can you swap the [glyph]{"entity": "object_requested", "value": "glyph"} to [circular]{"entity": "glyph_requested", "value": "circular"}
+    - I was hoping you could bring up [circular]{"entity": "glyph_requested", "value": "circular"} style glyph
+    - Could I possibly choose to [circular]{"entity": "glyph_requested", "value": "circular"} glyph type
+    - Would you be able to use to [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - Could you possibly show me [circular]{"entity": "glyph_requested", "value": "circular"} glyph format
+    - Would it be possible for you to display features with to [circular]{"entity": "glyph_requested", "value": "circular"} style glyph
+    - Show me [circular]{"entity": "glyph_requested", "value": "circular"} style
+    - Would you visualise the colour features as [circular]{"entity": "glyph_requested", "value": "circular"} glyphs
+    - I was wondering if I could select [circular]{"entity": "glyph_requested", "value": "circular"} display
+    - Let me choose [circular]{"entity": "glyph_requested", "value": "circular"} option
+    - Let's visualise the selected features in [circular]{"entity": "glyph_requested", "value": "circular"} glyphs
 
 - intent: change_glyph_trivial
-  examples: |
-    - Change the [glyph]{"entity": "object_requested", "value": "glyph"} to [trivial]{"entity": "glyph_requested", "value": "trivial"}
-    - Set the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - Display the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - I want to see the [trivial]{"entity": "glyph_requested", "value": "trivial"}
-    - I would like to see the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - Show me the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - Show [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - Change to [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+  examples: |    
+    - I want to change the [glyph]{"entity": "object_requested", "value": "glyph"} to [trivial]{"entity": "glyph_requested", "value": "trivial"}
+    - Can you swap the [glyph]{"entity": "object_requested", "value": "glyph"} to [trivial]{"entity": "glyph_requested", "value": "trivial"}
+    - I was hoping you could bring up [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese style glyph
+    - Could I possibly choose to [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese glyph type
+    - Would you be able to use to [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese glyph
+    - Could you possibly show me  [trivial]{"entity": "glyph_requested", "value": "trivial"} glyph format
+    - Would it be possible for you to display features with to [trivial]{"entity": "glyph_requested", "value": "trivial"} style glyph
+    - Show me [trivial]{"entity": "glyph_requested", "value": "trivial"} style
+    - Would you visualise the colour features as [trivial]{"entity": "glyph_requested", "value": "trivial"} glyphs
+    - I was wondering if I could select [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese display
+    - Let me choose [trivial]{"entity": "glyph_requested", "value": "trivial"} option
+    - Let's visualise the selected features in [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese glyphs
 
 - intent: change_glyphs
   examples: |
     - I want to change the [glyph]{"entity": "object_requested", "value": "glyph"}
-    - Change [glyph]{"entity": "object_requested", "value": "glyph"}
-    - I want to see another [glyph]{"entity": "object_requested", "value": "glyph"}
-    - I would like to see another [glyph]{"entity": "object_requested", "value": "glyph"}
-    - Other [glyph]{"entity": "object_requested", "value": "glyph"}
+    - Can you swap the [glyph]{"entity": "object_requested", "value": "glyph"}
+    - I was hoping you could show me another [glyph]{"entity": "object_requested", "value": "glyph"}
+    - Could I possibly choose another [glyph]{"entity": "object_requested", "value": "glyph"} type
+    - Would you be able to use a different [glyph]{"entity": "object_requested", "value": "glyph"}
+    - Could you possibly show me other [glyph]{"entity": "object_requested", "value": "glyph"} options
+    - Would it be possible for you to display features with another [glyph]{"entity": "object_requested", "value": "glyph"} style
+    - Show me other [glyph]{"entity": "object_requested", "value": "glyph"}
+    - Would you visualise the colour features as [glyph]{"entity": "object_requested", "value": "glyph"}
+    - I was wondering if I could select another [glyph]{"entity": "object_requested", "value": "glyph"} display
+    - What are the other [glyph]{"entity": "object_requested", "value": "glyph"} choices
+    - Are there any other [glyph]{"entity": "object_requested", "value": "glyph"} I can use
+    - Switch the [glyph]{"entity": "object_requested", "value": "glyph"} format
+# would i be able to see the other glyph options that I can use?- yes
+# what are the available glyph options?- yes
+# change to glyph-yes
+# display the features in glyphs-yes
+# other glyphs- yes
+# set the glyphs- yes
 
 #- regex: document_requested
 #  examples: |
@@ -434,53 +451,88 @@ nlu:
     - file
 
 - intent: select_document
-  examples: |
+  examples: |   
     - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - Open [Compact_200]{"entity": "document_requested"}
-    - Open [document]{"entity": "object_requested", "value": "document"}
-    - Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
-    - Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
-    - Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - I want to open a [file]{"entity": "object_requested", "value": "document"}
-    - I want to open [wide]{"entity": "document_requested"}
-    - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
-    - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
+    - I want you to open [Compact_200]{"entity": "document_requested"}
+    - I would like you to show me the [file]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
+    - Can you open for me [531_MI]{"entity": "document_requested"}
+    - I was hoping you could bring up [test2]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} for me
+    - Would you be able to select [test4-Com]{"entity": "document_requested"}
+    - Would it be possible for you to choose [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - I'd like to analyse [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Begin analysis of [file]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
+    - May I look at [file]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
+    - Would I be able to start the analysis of [20170819_CR]{"entity": "document_requested"}
+    - Could you possibly start with [531_MI]{"entity": "document_requested"}
+    - Let me see [file]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
+    - Choose [531_MI]{"entity": "document_requested"} to analyse first
+
+#Let's analyse 20200608_SO- yes
+# bring up file 20200608_SO- yes
+# let's begin with file 20200608_SO - yes
+
+# - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+#    - Open [Compact_200]{"entity": "document_requested"}
+#    - Open [document]{"entity": "object_requested", "value": "document"}
+#    - Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
+#    - Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
+#   - Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+#   - I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+#    - I want to open a [file]{"entity": "object_requested", "value": "document"}
+#    - I want to open [wide]{"entity": "document_requested"}
+ #   - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
+#    - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
+
+- synonym: I want to
+  examples: |
+    - I want to
+    - I would like to
+    - I'd like to
+    - Can you
+    - Can I
+    - May you
+    - May I
+    - Could you
+    - Could I
+    - I want you to
+    - I would like you to
+    - I'd like you to
+    - I was hoping you could
+    - I was wondering if you could
+    - Would I able to
+    - Would you be able to
+    - Would it be possible for you to
+    - Could you possibly 
+    - How about you
 
 # Ask bot to change to OR / AND
 - intent: switch_or
   examples: |
-    - Change to or
-    - Switch to OR
-    - I want to switch to OR
     - I want to change to or
-    - I would like to switch to or
-    - I would like to change to RO
-    - I want to change the highlights to OR
-    - I want to change highlights to or
-    - I want to switch the highlights to or
-    - I want to switch highlights to OR
-    - Change the highlight to OR
-    - Change highlight to or
-    - Switch the highlight to or
-    - Switch highlight to OR
+    - I would like to switch to OR
+    - Can you to adjust to OR
+    - Could I want to change to and to or
+    - I was hoping you could switch and for or
+    - I was wondering if you could exchange and for or
+    - Would it be possible to change the highlight from and to or
+    - Would you be able to adjust highlighting to or
+    - Could you possibly select or 
+    - May you change the visualising options to OR
+# Put the select type as OR- yes
+
 
 - intent: switch_and
   examples: |
-    - Change to and
-    - Switch to AND
-    - I want to switch to AND
     - I want to change to and
-    - I would like to switch to and
-    - I would like to change to AND
-    - I want to change the highlights to AND
-    - I want to change highlights to and
-    - I want to switch the highlights to and
-    - I want to switch highlights to AND
-    - Change the highlight to AND
-    - Change highlight to and
-    - Switch the highlight to and
-    - Switch highlight to AND
+    - I would like to switch to AND
+    - Can you to adjust to AND
+    - Could I want to change to or to AND
+    - I was hoping you could switch or for and
+    - I was wondering if you could exchange or for and
+    - Would it be possible to change the highlight from or to and
+    - Would you be able to adjust highlighting to and
+    - Could you possibly select and 
+    - May you change the visualising options to AND
 
 # toxicity--> not toxic, mildly toxic, toxic, very toxic
 
@@ -1135,14 +1187,18 @@ nlu:
   # highlight uncheck all
 - intent: highlight_uncheck_all
   examples: |
-    - I want to deselect all select node and edge filters
-    - Deselect all select node and edge filters
-    - Reset the select node and edge filters
-    - Undo all select node and edge filters
-    - Undo all select node and edge
-    - Disable all select node and edge
-    - Remove all node and edge filters
-    - Reset select node and edge
+    - I want to deselect all node and edge filters
+    - Could you remove all the selected nodes and edges
+    - I was hoping you could reset all nodes and edges selected
+    - Would you be able to undo all nodes filters
+    - Could you possibly disable edges filters
+    - I would like you to turn off all nodes filtering
+    - Take off all edges filtering
+    - Would it be possible for you to get rid of nodes filters 
+    - Clear the edges filters
+    - Switch off nodes and edges
+#- Would I be able to get rid of the nodes and edges filters- yes
+
 
 - intent: highlight_uncheck
   examples: |
@@ -1617,6 +1673,7 @@ nlu:
     - Give me help on node and edge
     - Guide for node and edge
     - May you inform me on node and edge
+    - What is select node and edge
 
 - intent: help_summary
   examples: |
@@ -2526,11 +2583,21 @@ nlu:
 - intent: reset_all_filters
   examples: |
     - I want to deselect all filters
-    - Deselect all filters
-    - Reset all filters
-    - Undo all filters
-    - Disable all filters
-    - Remove all filters
+    - Could you remove all filters
+    - I was hoping you could reset all selected
+    - Would you be able to undo all filters
+    - Could you possibly disable all filters
+    - I would like you to turn off all filtering
+    - Take off all filtering
+    - Would it be possible for you to go back to the original display
+    - Clear the interface filters
+    - Would I be able to get rid of the selected filters
+    - Go back to the beginning
+    - Switch off filters
+#clear the filters off the interface- yes
+# take the filters off the interface- yes
+#i'd like you to deactivate all filtering- yes
+# get rid of filters- yes
 
 # ask to check node and edge without specifying one
 - intent: show_node_and_edge
@@ -2719,12 +2786,14 @@ nlu:
     - Would you be able to give me a tutorial for toxic?
     - I want you to give me an explanation about toxic
     - I was hoping you could help me understand toxic
-    - I'd like you to define toxic
+    - I'd like you to define toxicity level
     - Would it be possible to have a tutorial for toxic?
     - Could you possibly go into more detail about what toxic is for?
     - Give me help on toxic
     - Guide for toxic
     - May you inform me on toxic
+    - What is toxic?
+    - What does level of toxicity mean?
 
 - intent: define_commentid
   examples: | 

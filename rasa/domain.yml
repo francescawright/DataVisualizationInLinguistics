@@ -180,7 +180,7 @@ intents:
   - thanks
   - show_node_and_edge
   - define_argumentation
-  - define_constructivity
+  - define_constructiveness
   - define_commentlevel
   - define_commentdepth
   - define_subtrees
@@ -458,7 +458,7 @@ responses:
         payload: '/change_layout_circle{{"object_requested":"layout","layout_requested":"circle"}}'
 
   utter_change_layout_tree:
-  - text: "intent_change_layout,tree_layout_button,I have changed the layout to Tree"
+  - text: "intent_change_layout,tree_layout_button,I have changed the layout to Tree Layout"
   - text: "intent_change_layout,tree_layout_button,The layout has been changed to Tree"
   - text: "intent_change_layout,tree_layout_button,Your data is now being visualised in the Tree layout"
   - text: "intent_change_layout,tree_layout_button,Your data is now being shown in the Tree Layout"
