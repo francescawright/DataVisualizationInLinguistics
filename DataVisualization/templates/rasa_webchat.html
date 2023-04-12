@@ -653,13 +653,13 @@
                 case "intent_change_layout":
                     if ('{{ selected_item }}') {
                         if (messageList[1] === "tree_layout_button" && document.getElementById("tree_label").classList.contains("active")) {
-                            e.text = "Already in the layout Tree";
+                            e.text = "You have already chosen Tree Layout";
                         } else if (messageList[1] === "force_layout_button" && document.getElementById("force_label").classList.contains("active")) {
-                            e.text = "Already in the layout Force";
+                            e.text = "You have already chosen Force Layout";
                         } else if (messageList[1] === "radial_layout_button" && document.getElementById("radial_label").classList.contains("active")) {
-                            e.text = "Already in the layout Radial";
+                            e.text = "You have already chosen Radial Layout";
                         } else if (messageList[1] === "circle_layout_button" && document.getElementById("circle_label").classList.contains("active")) {
-                            e.text = "Already in the layout Circle Packing";
+                            e.text = "You have already chosen Circle Packing Layout";
                         } else {
                             e.hidden = true;
                             document.getElementById(messageList[1]).from_chat = true;
@@ -673,11 +673,11 @@
                 case "intent_change_glyphs":
                     if ('{{ selected_item }}') {
                         if (messageList[1] === "dots_icon_button" && document.getElementById("dots_label").classList.contains("active")) {
-                            e.text = "Already in the Dots";
+                            e.text = "You have already chosen Dots";
                         } else if (messageList[1] === "glyphs_icon_button" && document.getElementById("glyphs_label").classList.contains("active")) {
-                            e.text = "Already in the Circular Glyph";
+                            e.text = "You have already chosen Circular Glyph";
                         } else if (messageList[1] === "trivial_icon_button" && document.getElementById("trivial_label").classList.contains("active")) {
-                            e.text = "Already in the Trivial Cheese";
+                            e.text = "You have already chosen Trivial Cheese";
                         } else if (document.getElementById("circle_label").classList.contains("active")) {
                             e.text = "Glyphs cannot be visualised when using circle packing";
                         }

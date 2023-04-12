@@ -277,7 +277,7 @@ def main_form_handler(request):
         if request.POST.get('changed_main_layout'):
             success_message = request.POST.get('from_chat_msg')
         else:
-            success_message = "I have selected the best visualization according to the graph characteristics"
+            success_message = "I have selected the best visualisation according to the graph characteristics"
 
     try:
         selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout = main_form_context(
@@ -289,7 +289,7 @@ def main_form_handler(request):
     # for which the best display layout has already been selected.
     best_layout_selected = request.POST.get('best_layout_selected')
     if best_layout_selected == 'true':
-        messages.success(request, "The best visualization according to the graph characteristics has been selected")
+        messages.success(request, "The best visualisation according to the graph characteristics has been selected")
 
     context = {'dataset': MAIN_OUTPUT, 'options': get_all_documents(), 'layouts': LAYOUTS,
                'selected_layout': selected_layout,
@@ -943,7 +943,7 @@ def get_chat_error_message(errorName):
 
 
 def get_chat_success_message(request, successName):
-    messages_dict = {'best_layout': "I have selected the best visualization according to the graph characteristics"}
+    messages_dict = {'best_layout': "I have selected the best visualisation according to the graph characteristics"}
     return messages_dict[successName]
 
 
