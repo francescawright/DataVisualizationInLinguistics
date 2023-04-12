@@ -7,7 +7,7 @@
 
 # This is a simple example for a custom action which utters "Hello World!"
 
-from typing import Any, Text, Dict, List
+from typing import Any, Text, Dict, List, Union
 
 from rasa_sdk.events import SlotSet, FollowupAction, UserUtteranceReverted
 from rasa_sdk import Action, Tracker, FormValidationAction
@@ -659,6 +659,37 @@ class ActionHighlightUncheckLast(Action):
             dispatcher.utter_message(text="intent_filter_uncheck," + ';'.join(tracker.get_slot("previous_filters")))
         return []
 
+
+class FilterSelectionForm(FormValidationAction):
+    def name(self) -> Text:
+        return "filter_selection_form"
+
+    @staticmethod
+    def required_slots(tracker: Tracker) -> List[Text]:
+        return ["filter_name"]
+
+    def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
+        return {
+            "filter_name": self.from_text()
+        }
+
+    def validate_filter_name(
+            self,
+            value: Text,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> Dict[Text, Any]:
+
+        filters = ["not toxic", "non toxic", "very toxic", "mildly toxic", "toxic", "positive stance", "negative stance",
+           "neutral stance", "target person", "target group", "stereotype", "all targets", "constructiveness",
+           "argumentation", "sarcasm", "mockery", "intolerance", "improper language", "insult", "aggressiveness",
+           "all features", "all levels of toxicity", "all stances", "both stances"]  # replace with your actual filter names
+
+        if value.lower() not in filters:
+            dispatcher.utter_message(text="Invalid filter name. Please choose from {}.".format(", ".join(filters)))
+            return {"filter_name": None}
+
+        return {"filter_name": value}
 
 # class Options(Action):
 #

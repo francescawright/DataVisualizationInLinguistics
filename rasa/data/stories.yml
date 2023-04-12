@@ -226,6 +226,30 @@ stories:
     - active_loop: null
     - action: action_open_document
 
+
+### story to highlight a filter
+#- story: Highlight a filter without filter name
+#  steps:
+#    - intent: highlight_check
+#    - action: filter_selection_form
+#    - active_loop: filter_selection_form
+#    - slot_was_set:
+#        - requested_slot: filter_name
+#    - slot_was_set:
+#        - filter_name: "sarcasm"
+#    - slot_was_set:
+#        - requested_slot: null
+#    - action: action_highlight_check
+
+- story: Highlight a filter with filter name
+  steps:
+  - intent: highlight_check
+    entities:
+      - filter_name: "positive stance"
+  - action: action_highlight_check
+
+
+
 - story: User says start analysis
   steps:
   - intent: greet
@@ -447,11 +471,12 @@ stories:
     - action: utter_help_what_can_you_do_three
     - intent: widest_level
     - action: utter_widest_level
-    - intent: highlight_check
-    - action: action_highlight_check
     - intent: statistics_features_subtrees
     - action: utter_statistics_features_subtrees
     - action: utter_help_bar_chart_pop_up
+
+
+
 
 #
 #- story: showing the features of our system 3
