@@ -316,7 +316,7 @@ nlu:
     - Show me [tree layout]{"entity": "layout_requested", "value": "tree"}
     - Would you visualise the current display as [tree layout]{"entity": "layout_requested", "value": "tree"} 
     - I was wondering if I could select [first layout]{"entity": "layout_requested", "value": "tree"} display
-    - Let me choose [dots]{"entity": "glyph_requested", "value": "dots"} option
+    - Let me choose [tree]{"entity": "glyph_requested", "value": "dots"} option
     - Let's visualise the selected features in [first design]{"entity": "layout_requested", "value": "tree"} format
 
 
@@ -466,8 +466,21 @@ nlu:
     - Could you possibly start with [531_MI]{"entity": "document_requested"}
     - Let me see [file]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
     - Choose [531_MI]{"entity": "document_requested"} to analyse first
+    - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Open [Compact_200]{"entity": "document_requested"}
+    - Open [document]{"entity": "object_requested", "value": "document"}
+    - Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
+    - Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
+    - Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - I want to open a [file]{"entity": "object_requested", "value": "document"}
+    - I want to open [wide]{"entity": "document_requested"}
+    - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
+    - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
 
-#Let's analyse 20200608_SO- yes
+
+
+  #Let's analyse 20200608_SO- yes
 # bring up file 20200608_SO- yes
 # let's begin with file 20200608_SO - yes
 
@@ -1020,7 +1033,6 @@ nlu:
     - Enable the [sarcasm]{"entity": "filter_name"} filter
     - Enable the filter [sarcasm]{"entity": "filter_name"}
     - Select the filter [sarcasm]{"entity": "filter_name"}
-    - Select [sarcasm]{"entity": "filter_name"} filter
     - Select [sarcasm]{"entity": "filter_name"} node and edge
     - Check  [sarcasm]{"entity": "filter_name"} node and edge
     - Highlight [sarcasm]{"entity": "filter_name"} node and edge
@@ -1060,7 +1072,6 @@ nlu:
     - Can you enable the [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} filters
     - Enable the filter [intolerance]{"entity": "filter_name"}
     - Select the filter [intolerance]{"entity": "filter_name"}
-    - Select [intolerance]{"entity": "filter_name"} filter
     - Choose [intolerance]{"entity": "filter_name"} node and edge
     - Check [intolerance]{"entity": "filter_name"} node and edge
     - Tick [intolerance]{"entity": "filter_name"} node and edge
