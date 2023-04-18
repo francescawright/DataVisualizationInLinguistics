@@ -277,7 +277,7 @@ def main_form_handler(request):
         if request.POST.get('changed_main_layout'):
             success_message = request.POST.get('from_chat_msg')
         else:
-            success_message = "I have selected the best visualization according to the graph characteristics"
+            success_message = "I have selected the best visualisation according to the graph characteristics"
 
     try:
         selected_item, cbTargets, cbFeatures, cbFilterOR, cbFilterAND, cbCommons, selected_icons, selected_layout, template, checked_layout = main_form_context(
