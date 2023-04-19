@@ -630,6 +630,11 @@ rules:
     - intent: define_commentlevel
     - action: utter_comment_level_definition
 
+- rule: user asks for definition of direct comments
+  steps:
+    - intent: define_directcomment
+    - action: utter_direct_comment_definition
+
 - rule: user asks for definition of comment depth
   steps:
     - intent: define_commentdepth

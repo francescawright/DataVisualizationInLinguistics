@@ -1822,6 +1822,8 @@ nlu:
     - Give me help on targets
     - Guide for targets
     - May you inform me on targets icons
+    - What's the difference between target person and target group?
+#target person and group intents neew combos to be checked
 
 - intent: help_sub_structure
   examples: |
@@ -2918,6 +2920,26 @@ nlu:
 # tell me about comment depth- yes
 # how can I use comment depth- yes
 # i was wondering if you could explain to me what comment depth indicates- yes
+
+- intent: define_directcomment
+  examples: |
+    - Can you tell me what is meant by direct comments?
+    - I was wondering if you could explain direct comments to me?
+    - Could you explain to me what direct comments refers to?
+    - I would like you to explain what direct comments is
+    - Would you be able to give me a tutorial for direct comments?
+    - I want you to give me an explanation about direct comments
+    - I was hoping you could help me understand direct comments
+    - I'd like you to define direct comments
+    - Could you possibly go into more detail about what direct comments is for?
+    - Give me help on direct comments
+    - Guide for direct comments
+    - May you inform me on direct comments
+#what are direct comments- yes
+#what is direct comments for- yes
+#what does direct comments mean- yes
+#could you possibly tell me more about direct comments- yes
+#- Would it be possible to have a tutorial for direct comments?
 
 - intent: define_subtrees
   examples: |

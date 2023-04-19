@@ -186,6 +186,7 @@ intents:
   - define_targetperson
   - define_commentlevel
   - define_commentdepth
+  - define_directcomment
   - define_subtrees
   - tag_comment_id
 
@@ -1367,6 +1368,15 @@ responses:
     To access this information, you can hover over each node. \ \n
 
     Read more about Comment Depth [here](https://dspace5.zcu.cz/handle/11025/45010)"
+
+  utter_direct_comment_definition:
+    - text: "Direct comments is a number indicating how many comments were posted directly under the news article (Comment Level 1) \ \n
+    
+    To access this information, you can hover over each node \ \n
+    
+    To display statistics for Level One Comments, click the Level One Comments button. \ \n
+
+     Read more about Comment Level [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
 
   utter_subtrees_definition:
