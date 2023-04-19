@@ -1749,6 +1749,7 @@ nlu:
     - May you inform me on comment level one graph   
     - How can I analyse level one comment data?
     - How can I analyse comments at level one?
+    - What are level one comments?
   #how can i analyse the features that appear at level one?- yes
 
 - intent: tool_help

@@ -807,7 +807,6 @@ responses:
     The graphs are also interactive, meaning if you click variables on your graph, they will also be activated on the main interface \ \n
 
     Read more about Interactive Graphs [here](https://dspace5.zcu.cz/handle/11025/45010)"
-
   utter_help_subtree_bar:
     - text: "intent_signal_additional_graphs,chart_sub_button,statistics_all_features_subtrees, Comment level 1 indicates that the comment was posted directly under the news article \ \n
     
@@ -1366,7 +1365,7 @@ responses:
    
    You can see the same data displayed in a graph using the Selected Comments Statistics feature. \ \n
    
-   There is also the Level One Comments statistics feature, allowing you to analyse the statistics of comments tagged as level one. \ \n
+   There is also the Level One Comments statistics feature. This shows you the statistics of comments tagged as level one. \ \n
    
    In both Statistics features you can change the variables and graph type using the two drop-down menus. 
    The graphs are also interactive, meaning if you click 
