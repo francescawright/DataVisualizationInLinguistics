@@ -615,6 +615,16 @@ rules:
     - intent: define_constructiveness
     - action: utter_constructiveness_definition
 
+- rule: user asks for definition of target person
+  steps:
+    - intent: define_targetperson
+    - action: utter_target_person_definition
+
+- rule: user asks for definition of target group
+  steps:
+    - intent: define_targetgroup
+    - action: utter_target_group_definition
+
 - rule: user asks for definition of comment level
   steps:
     - intent: define_commentlevel

@@ -182,6 +182,8 @@ intents:
   - show_node_and_edge
   - define_argumentation
   - define_constructiveness
+  - define_targetgroup
+  - define_targetperson
   - define_commentlevel
   - define_commentdepth
   - define_subtrees
@@ -717,7 +719,11 @@ responses:
             payload: '/change_glyph_trivial{{"object_requested":"glyph","glyph_requested":"trivial"}}'
 
   utter_explain_targets_one:
-     - text: "intent_targets_signal,targets_accordion_button,All comments are tagged with the targets that they are directed at."
+     - text: "intent_targets_signal,targets_accordion_button,All comments are tagged with the targets that they are directed at: 
+     
+     - Target group \ \n
+     - Target person \ \n
+     - None"
 
   utter_explain_targets_two:
     - text: "You can activate/deactivate targets: \ \n
@@ -729,7 +735,9 @@ responses:
 
         Activate/deactivate features: \ \n
         - From the left bar \ \n
-        - Asking me"
+        - Asking me \ \n
+        
+        Summary will also tell you how many targets there are in the current visualisation"
 
   utter_help_layouts_one:
     - text: "intent_layouts_signal,layouts-radio-buttons,I automatically select 
@@ -1320,6 +1328,26 @@ responses:
 
      Read more about Constructiveness [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
+  utter_target_group_definition:
+    - text: "All comments are tagged with the targets that they are directed at. Target person refers to comments targeting a group. \ \n
+     
+         You can activate/deactivate targets: \ \n
+
+          - From the Targets menu on the left \ \n
+          - Asking me \ \n
+          
+          Summary will also tell you how many targets there are in the current visualisation"
+
+  utter_target_person_definition:
+    - text: "All comments are tagged with the targets that they are directed at. Target person refers to comments targeting a person. \ \n
+
+         You can activate/deactivate targets: \ \n
+
+          - From the Targets menu on the left \ \n
+          - Asking me
+          
+          Summary will also tell you how many targets there are in the current visualisation \ \n"
+
   utter_comment_level_definition:
   - text: "Comment levels refers to the relationship of the news article with its' comments. \ \n
 
@@ -1364,7 +1392,13 @@ responses:
    
   Glyphs let us see features that each comment is tagged with.  Use the Highlight Colour Features menu to activate/deactivate the features. \ \n
    
-  All comments are tagged with the targets that they are directed at. Use the targets menu to activate/deactivate targets. \ \n
+  All comments are tagged with the targets that they are directed at: 
+  
+  - Target group \ \n
+  - Target person \ \n
+  - None \ \n
+  
+  Use the targets menu to activate/deactivate targets. \ \n
   
   Select node and edge will show comment with selected tags. Use the Select node and edge menu to activate/deactivate the features \ \n
    

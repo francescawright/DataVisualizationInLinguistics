@@ -1194,7 +1194,7 @@ nlu:
     - Disable [targets all]{"entity": "filter_name"} option
     - Hide [all targets]{"entity": "filter_name"} comments
     - Uncheck [all targets]{"entity": "filter_name"} filter
-    - Unchek [all targets]{"entity": "filter_name"} nodes
+    - Uncheck [all targets]{"entity": "filter_name"} nodes
 
     - Disable [constructiveness]{"entity": "filter_name"} option
     - Hide [constructive]{"entity": "filter_name"} nodes
@@ -2840,6 +2840,38 @@ nlu:
     - Give me help on [constructiveness]{"entity": "filter_name"}
     - Guide for [constructiveness]{"entity": "filter_name"}
     - May you inform me on [constructiveness]{"entity": "filter_name"}
+
+- intent: define_targetgroup
+  - examples: |
+    - Can you tell me what is meant by target group?
+    - I was wondering if you could explain target group to me?
+    - Could you explain to me what target group refers to?
+    - I would like you to explain what target group is
+    - Would you be able to give me a tutorial for target group?
+    - I want you to give me an explanation about target group
+    - I was hoping you could help me understand target group
+    - I'd like you to define target group
+    - Would it be possible to have a tutorial for target group?
+    - Could you possibly go into more detail about what target group is for?
+    - Give me help on target group
+    - Guide for target group
+    - May you inform me on target group
+
+- intent: define_targetperson
+  - examples: |
+    - Can you tell me what is meant by target person?
+    - I was wondering if you could explain target person to me?
+    - Could you explain to me what target person refers to?
+    - I would like you to explain what target person is
+    - Would you be able to give me a tutorial for target person?
+    - I want you to give me an explanation about target person
+    - I was hoping you could help me understand target person
+    - I'd like you to define target person
+    - Would it be possible to have a tutorial for target person?
+    - Could you possibly go into more detail about what target person is for?
+    - Give me help on target person
+    - Guide for target person
+    - May you inform me on target person
 
 
 - intent: define_commentlevel
