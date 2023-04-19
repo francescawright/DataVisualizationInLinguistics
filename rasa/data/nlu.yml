@@ -623,7 +623,7 @@ nlu:
     - exchange
     - adjust
 
- Synonyms for menus: select node and edge menu, highlight colour feature menu, **target menu- to be completed**
+ #Synonyms for menus: select node and edge menu, highlight colour feature menu, **target menu- to be completed**
 
 - synonym: select node and edge menu
   examples: |
@@ -2842,7 +2842,7 @@ nlu:
     - May you inform me on [constructiveness]{"entity": "filter_name"}
 
 - intent: define_targetgroup
-  - examples: |
+  examples: |
     - Can you tell me what is meant by target group?
     - I was wondering if you could explain target group to me?
     - Could you explain to me what target group refers to?
@@ -2858,7 +2858,7 @@ nlu:
     - May you inform me on target group
 
 - intent: define_targetperson
-  - examples: |
+  examples: |
     - Can you tell me what is meant by target person?
     - I was wondering if you could explain target person to me?
     - Could you explain to me what target person refers to?
