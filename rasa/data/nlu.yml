@@ -213,27 +213,17 @@ nlu:
 - synonym: tree
   examples: |
     - tree layout
-    - tree visualization
-    - tree visualisation
-    - tree design
-    - tree display
     - first visualization
     - 1st visualization
     - 1 visualization
     - visualization 1
     - visualization one
-    - first visualisation
     - 1st visualisation
     - 1 visualisation
     - visualisation 1
     - visualisation one
-    - first design
-    - 1st design
-    - 1 design
-    - design one
-    - design 1
     - first layout
-    - first display
+
 
 - synonym: force
   examples: |
@@ -288,7 +278,7 @@ nlu:
   examples: |   
     - I want to change the [visualization layout]{"entity": "object_requested", "value": "layout"}
     - Can you swap the [display layout]{"entity": "object_requested", "value": "layout"}
-    - I was hoping you could show me another [display]{"entity": "object_requested", "value": "layout"}
+    - I was hoping you could show me another [display design]{"entity": "object_requested", "value": "layout"}
     - Could I possibly choose another [display]{"entity": "object_requested", "value": "layout"} 
     - Would you be able to use a different [layout]{"entity": "object_requested", "value": "layout"} option
     - Could you possibly show me other [display layout]{"entity": "object_requested", "value": "layout"}
@@ -299,25 +289,27 @@ nlu:
     - What are the other [visualization layout]{"entity": "object_requested", "value": "layout"} choices
     - Are there any other [visualization]{"entity": "object_requested", "value": "layout"} I can use
     - Switch the [visualisation type]{"entity": "object_requested", "value": "layout"} format
+
     
 
 
 - intent: change_layout_tree
   examples: |
-    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [tree]{"entity": "layout_requested", "value": "tree"}
-    - Can you swap the [force]{"entity": "layout_requested", "value": "force"} to [tree design]{"entity": "layout_requested", "value": "tree"}
-    - Can you swap the [radial layout]{"entity": "layout_requested", "value": "radial"} to [tree]{"entity": "layout_requested", "value": "tree"}
-    - Can you swap from [circle packing] {"entity": "layout_requested", "value": "circle"} to [tree]{"entity": "layout_requested", "value": "tree"}
+    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [first visualisation]{"entity": "layout_requested", "value": "tree"}
+    - Can you swap the [force]{"entity": "layout_requested", "value": "force"} to [1st visualization]{"entity": "layout_requested", "value": "tree"} layout
+    - Can you swap the [radial layout]{"entity": "layout_requested", "value": "radial"} to [tree]{"entity": "layout_requested", "value": "tree"} design
+    - Can you swap from [circle packing] {"entity": "layout_requested", "value": "circle"} to [tree]{"entity": "layout_requested", "value": "tree"} visualisation
     - I was hoping you could bring up [tree layout]{"entity": "layout_requested", "value": "tree"} style
-    - Could I possibly choose to [tree layout]{"entity": "layout_requested", "value": "tree"} type
-    - Would you be able to use to [tree layout]{"entity": "layout_requested", "value": "tree"} option
+    - Could I possibly choose to [tree visualization]{"entity": "layout_requested", "value": "tree"} type
+    - Would you be able to use to [visualisation 1]{"entity": "layout_requested", "value": "tree"} option
     - Could you possibly show me [tree layout]{"entity": "layout_requested", "value": "tree"} format
-    - Would it be possible for you to display features with [tree layout]{"entity": "layout_requested", "value": "tree"} display
+    - Would it be possible for you to display features with [1st layout]{"entity": "layout_requested", "value": "tree"} display
     - Show me [tree layout]{"entity": "layout_requested", "value": "tree"}
     - Would you visualise the current display as [tree layout]{"entity": "layout_requested", "value": "tree"} 
     - I was wondering if I could select [first layout]{"entity": "layout_requested", "value": "tree"} display
     - Let me choose [tree]{"entity": "glyph_requested", "value": "dots"} option
-    - Let's visualise the selected features in [first design]{"entity": "layout_requested", "value": "tree"} format
+    - Let's visualise the selected features in [visualisation one]{"entity": "layout_requested", "value": "tree"} format
+    - Change layout to [tree]{"entity": "layout_requested", "value": "tree"} design
 
 
 - intent: change_layout_force
@@ -599,36 +591,6 @@ nlu:
     - Switch [most toxic]{"entity": "filter_name"} and [least toxic]{"entity": "filter_name"} filters
 
 
-## synonyms for verbs check, uncheck, visualise, switch
-#- synonym: check
-#  examples: |
-#    - highlight
-#    - select
-#    - choose
-#    - activate
-#    - enable
-#    - turn on
-#    - switch on
-#    - tick
-#    - tick off
-#
-#- synonym: uncheck
-#  examples: |
-#    - deselect
-#    - unselect
-#    - turn off
-#    - disable
-#    - hide
-#    - switch off
-#    - deactivate
-#    - untick
-#    - clear
-#    - reset
-#
-#- synonym: visualise
-#  examples: |
-#    - show
-#    - display
 
 # synonyms for verbs check, uncheck, visualise, switch
 - synonym: check
@@ -663,91 +625,72 @@ nlu:
     - display
 
 
-#- synonym: switch
-#  examples: |
-#    - change
-#    - exchange
-#    - adjust
+- synonym: switch
+  examples: |
+    - change
+    - exchange
+    - adjust
 
-# Synonyms for menus: select node and edge menu, highlight colour feature menu, **target menu- to be completed**
-#
-#- synonym: select node and edge menu
-#  examples: |
-#    - select node and edge menu
-#    - select node and edge bar
-#    - select nodes and edges menu
-#    - select nodes and edges bar
-#    - node and edge menu
-#    - node and edge bar
-#
-#- synonym: highlight colour feature menu
-#  examples: |
-#    - colour features menu
-#    - colour feature menu
-#    - color features menu
-#    - color features menu
-#    - colour menu
-#    - colours menu
-#    - color menu
-#    - colors menu
-#    - colour bar
-#    - colours bar
-#    - color bar
-#    - colours bar
-#    - glyph feature menu
-#    - glyph feature bar
-#    - highlight colour feature menu
-#    - highlight colour features menu
-#    - highlight color feature menu
-#    - highlight color features menu
-#    - highlight colour feature bar
-#    - highlight colour features bar
-#    - highlight color feature bar
-#    - highlight color features bar
-#    - highlight colour menu
-#    - highlight color menu
-#    - highlight colour bar
-#    - highlight colour bar
-#    - highlight menu
-#    - highlight bar
-#    - colour glyph feature menu
-#    - color glyph feature menu
-#    - colour glyph features menu
-#    - color glyph features menu
-#    - colour glyph feature bar
-#    - colour glyph feature bar
+ Synonyms for menus: select node and edge menu, highlight colour feature menu, **target menu- to be completed**
 
-## Synonyms nodes and edges and filter
-#- synonym: nodes
-#  examples: |
-#    - node
-#    - comment
-#    - comment nodes
+- synonym: select node and edge menu
+  examples: |
+    - select node and edge menu
+    - select node and edge bar
+    - select nodes and edges menu
+    - select nodes and edges bar
+    - node and edge menu
+    - node and edge bar
 
-#- synonym: filter
-#  examples: |
-#    - filtering
+- synonym: highlight colour feature menu
+  examples: |
+    - colour features menu
+    - colour feature menu
+    - color features menu
+    - color features menu
+    - colour menu
+    - colours menu
+    - color menu
+    - colors menu
+    - colour bar
+    - colours bar
+    - color bar
+    - colours bar
+    - glyph feature menu
+    - glyph feature bar
+    - highlight colour feature menu
+    - highlight colour features menu
+    - highlight color feature menu
+    - highlight color features menu
+    - highlight colour feature bar
+    - highlight colour features bar
+    - highlight color feature bar
+    - highlight color features bar
+    - highlight colour menu
+    - highlight color menu
+    - highlight colour bar
+    - highlight colour bar
+    - highlight menu
+    - highlight bar
+    - colour glyph feature menu
+    - color glyph feature menu
+    - colour glyph features menu
+    - color glyph features menu
+    - colour glyph feature bar
+    - colour glyph feature bar
+
+# Synonyms nodes and edges and filter
+- synonym: nodes
+  examples: |
+    - node
+    - comment
+    - comment nodes
+
+- synonym: filter
+  examples: |
+    - filtering
 
 # Synonym for "formalities" request starter I want to  + issue of questions like **what/Which** ->classfication to be added
-
-#- synonym: I want to
-#  examples: |
-#    - I want to
-#    - I would like to
-#    - I'd like to
-#    - Can you
-#    - Can I
-#    - May you
-#    - May I
-#    - Could you
-#    - Could I
-#    - I want you to
-#    - I would like you to
-#    - I'd like you to
-#    - I was hoping you could
-#    - I was wondering if you could
-#
-
 - synonym: I want to
   examples: |
     - I want to
@@ -912,7 +855,7 @@ nlu:
     - Highlight comments with [target person]{"entity": "filter_name"}
     - Show nodes with [target person]{"entity": "filter_name"}
     - Activate the [target person]{"entity": "filter_name"} nodes
-    - Check the [target person]{"entity": "filter_name"} filter
+    - Check the [target person]{"entity": "filter_name"} node and edge filter
     - Activate the [target person]{"entity": "filter_name"} comments
     - Enable [target person]{"entity": "filter_name"} nodes
     - Enable the [target person]{"entity": "filter_name"} nodes
@@ -928,12 +871,11 @@ nlu:
     - Show me nodes with [target group]{"entity": "filter_name"}
     - Highlight comments with [target group]{"entity": "filter_name"}
     - Show nodes with [target group]{"entity": "filter_name"}
-    - Activate the [target group]{"entity": "filter_name"} filter
-    - Check the [target group]{"entity": "filter_name"} filter
+    - Activate the [target group]{"entity": "filter_name"} node and edge filter
+    - Check the [target group]{"entity": "filter_name"} nodes filtering
     - Activate the [target group]{"entity": "filter_name"} comments filter
     - Enable [target group]{"entity": "filter_name"} nodes filtering
-    - Enable the [target group]{"entity": "filter_name"} filter
-    - Enable the filter [target group]{"entity": "filter_name"}
+    - Enable the [target group]{"entity": "filter_name"} node and edge filter
     - Check [target group]{"entity": "filter_name"} node and edge
     - Highlight [target group]{"entity": "filter_name"} node and edge
     - Highlight [target group]{"entity": "filter_name"} nodes
@@ -949,8 +891,7 @@ nlu:
     - Check the [stereotype]{"entity": "filter_name"} [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} filters
     - Activate the [stereotype]{"entity": "filter_name"} comments filter
     - Enable [stereotype]{"entity": "filter_name"} nodes filtering
-    - Enable the [stereotype]{"entity": "filter_name"} filter
-    - Enable the filter [stereotype]{"entity": "filter_name"}
+    - Enable the node and edge filter [stereotype]{"entity": "filter_name"}
     - Check [stereotype]{"entity": "filter_name"} node and edge
     - Highlight [stereotype]{"entity": "filter_name"} node and edge
     - Highlight [stereotype]{"entity": "filter_name"} nodes
@@ -963,13 +904,13 @@ nlu:
     - I want to select [all targets]{"entity": "filter_name"} nodes
     - I want to select [all targets]{"entity": "filter_name"} checkbox
     - Select [all targets]{"entity": "filter_name"} checkbox
-    - I want to select [all targets]{"entity": "filter_name"} option
-    - Select [all targets]{"entity": "filter_name"} option
+    - I want to select [all targets]{"entity": "filter_name"} node an edge option
+    - Select [all targets]{"entity": "filter_name"} nodes option
     - I want to see nodes with [all targets]{"entity": "filter_name"}
     - Show me nodes with [all targets]{"entity": "filter_name"}
     - Highlight comments with [all targets]{"entity": "filter_name"}
     - Show comments with [all targets]{"entity": "filter_name"}
-    - Activate the select [all targets]{"entity": "filter_name"} filter
+    - Activate the select [all targets]{"entity": "filter_name"} node and edge filter
     - Check the select [all targets]{"entity": "filter_name"} filter
     - Activate the select [all targets]{"entity": "filter_name"} comments filter
     - Enable select [all targets]{"entity": "filter_name"} nodes filtering
@@ -984,7 +925,6 @@ nlu:
     - I want to see [constructive]{"entity": "filter_name"} nodes
     - Show me [constructive]{"entity": "filter_name"} nodes
     - Show [constructive]{"entity": "filter_name"} nodes
-    - Activate the [constructiveness]{"entity": "filter_name"} filter
     - Activate the [constructive]{"entity": "filter_name"} comments filter
     - Enable [constructive]{"entity": "filter_name"} nodes filtering
     - Enable the [constructive]{"entity": "filter_name"} node and edge
@@ -998,19 +938,16 @@ nlu:
     - Turn on [constructive]{"entity": "filter_name"} node and edge
     - Turn on [constructive]{"entity": "filter_name"} nodes
 
-
     - I want to see comments with [argumentation]{"entity": "filter_name"}
     - Show me comments with [argumentation]{"entity": "filter_name"}
     - Show comments with [argumentation]{"entity": "filter_name"}
     - I want to see [argumentation]{"entity": "filter_name"} nodes
     - Show me [argumentative]{"entity": "filter_name"} nodes
     - Show [argumentative]{"entity": "filter_name"} comments
-    - Activate the [argumentation]{"entity": "filter_name"} filter
     - Activate the [argumentation]{"entity": "filter_name"} nodes filter
     - Enable [argumentation]{"entity": "filter_name"} nodes filtering
     - Enable the [argumentation]{"entity": "filter_name"} , [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} nodes
-    - Enable the filter [argumentation]{"entity": "filter_name"}
-    - Select the filter [argumentation]{"entity": "filter_name"}
+    - Enable the select filter [argumentation]{"entity": "filter_name"}
     - Select [argumentation]{"entity": "filter_name"} nodes
     - Select [argumentation]{"entity": "filter_name"} node and edge
     - Check  [argumentation]{"entity": "filter_name"} node and edge
@@ -1027,12 +964,10 @@ nlu:
     - I want to see [sarcastic]{"entity": "filter_name"} nodes
     - Show me [sarcastic]{"entity": "filter_name"} nodes
     - Show [sarcastic]{"entity": "filter_name"} nodes
-    - Activate the [sarcasm]{"entity": "filter_name"} filter
     - Activate the [sarcastic]{"entity": "filter_name"} nodes filter
     - Enable [sarcastic]{"entity": "filter_name"} nodes filtering
-    - Enable the [sarcasm]{"entity": "filter_name"} filter
-    - Enable the filter [sarcasm]{"entity": "filter_name"}
-    - Select the filter [sarcasm]{"entity": "filter_name"}
+    - Enable the select filter [sarcasm]{"entity": "filter_name"}
+    - Select the node and edge filter [sarcasm]{"entity": "filter_name"}
     - Select [sarcasm]{"entity": "filter_name"} node and edge
     - Check  [sarcasm]{"entity": "filter_name"} node and edge
     - Highlight [sarcasm]{"entity": "filter_name"} node and edge
@@ -1046,13 +981,10 @@ nlu:
     - I want to see [mockery]{"entity": "filter_name"} nodes
     - Show me [mockery]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} nodes
     - Show [mockery]{"entity": "filter_name"} comments
-    - Activate the [mockery]{"entity": "filter_name"} filter
     - Activate the [mockery]{"entity": "filter_name"} nodes filter
     - Enable [mockery]{"entity": "filter_name"} nodes filtering
-    - Enable the [mockery]{"entity": "filter_name"} filter
-    - Enable the filter [mockery]{"entity": "filter_name"}
-    - Select the filter [mockery]{"entity": "filter_name"}
-    - Select [mockery]{"entity": "filter_name"} filter
+    - Enable the select filter [mockery]{"entity": "filter_name"}
+    - Select the node and edge [mockery]{"entity": "filter_name"}
     - Select [mockery]{"entity": "filter_name"} node and edge
     - Check  [mockery]{"entity": "filter_name"} node and edge
     - Highlight [mockery]{"entity": "filter_name"} node and edge
@@ -1066,12 +998,11 @@ nlu:
     - I would like to see [intolerance]{"entity": "filter_name"} nodes
     - Show me [intolerance]{"entity": "filter_name"} comments
     - Show [intolerance]{"entity": "filter_name"} comments filtering
-    - Activate the [intolerance]{"entity": "filter_name"} filter
     - Activate the [intolerance]{"entity": "filter_name"} nodes filter
     - May you enable [intolerance]{"entity": "filter_name"} nodes filtering
     - Can you enable the [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} filters
-    - Enable the filter [intolerance]{"entity": "filter_name"}
-    - Select the filter [intolerance]{"entity": "filter_name"}
+    - Enable the select filter [intolerance]{"entity": "filter_name"}
+    - Select the node and edge filter [intolerance]{"entity": "filter_name"}
     - Choose [intolerance]{"entity": "filter_name"} node and edge
     - Check [intolerance]{"entity": "filter_name"} node and edge
     - Tick [intolerance]{"entity": "filter_name"} node and edge
@@ -1091,13 +1022,10 @@ nlu:
     - I want to see [improper language]{"entity": "filter_name"} comments
     - Show me [improper language]{"entity": "filter_name"} nodes
     - Show [improper language]{"entity": "filter_name"} nodes
-    - Activate the [improper language]{"entity": "filter_name"} filter
     - Activate the [improper language]{"entity": "filter_name"} nodes filter
     - Enable [improper language]{"entity": "filter_name"} nodes filtering
-    - Enable the [improper language]{"entity": "filter_name"} filter
-    - Enable the filter [improper language]{"entity": "filter_name"}
-    - Select the filter [improper language]{"entity": "filter_name"}
-    - Select [improper language]{"entity": "filter_name"} filter
+    - Enable the select filter [improper language]{"entity": "filter_name"}
+    - Select the node and edge filter [improper language]{"entity": "filter_name"}
     - Select [improper language]{"entity": "filter_name"} node and edge
     - Check  [improper language]{"entity": "filter_name"} node and edge
     - Highlight [improper language]{"entity": "filter_name"} node and edge
@@ -1111,13 +1039,10 @@ nlu:
     - I want to see [insult]{"entity": "filter_name"} nodes
     - Show me [insult]{"entity": "filter_name"} nodes
     - Show [insult]{"entity": "filter_name"} comments
-    - Activate the [insult]{"entity": "filter_name"} filter
     - Activate the [insult]{"entity": "filter_name"} nodes filter
     - Enable [insult]{"entity": "filter_name"} nodes filtering
-    - Enable the [insult]{"entity": "filter_name"} filter
-    - Enable the filter [insult]{"entity": "filter_name"}
-    - Select the filter [insult]{"entity": "filter_name"}
-    - Select [insult]{"entity": "filter_name"} filter
+    - Enable the select filter [insult]{"entity": "filter_name"}
+    - Select the nodes filter [insult]{"entity": "filter_name"}
     - Select [insult]{"entity": "filter_name"} node and edge
     - Check  [insult]{"entity": "filter_name"} node and edge
     - Highlight [insult]{"entity": "filter_name"} node and edge
@@ -1135,9 +1060,8 @@ nlu:
     - Activate the [aggressive]{"entity": "filter_name"} nodes filter
     - Enable [aggressive]{"entity": "filter_name"} nodes filtering
     - Enable the [aggressiveness]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
-    - Enable the filter [aggressiveness]{"entity": "filter_name"}
-    - Select the filter [aggressiveness]{"entity": "filter_name"}
-    - Select [aggressiveness]{"entity": "filter_name"} filter
+    - Enable the select filter [aggressiveness]{"entity": "filter_name"}
+    - Select the node and edge filter [aggressiveness]{"entity": "filter_name"}
     - Select [aggressiveness]{"entity": "filter_name"} node and edge
     - Check [aggressiveness]{"entity": "filter_name"} node and edge
     - Highlight [aggressiveness]{"entity": "filter_name"} node and edge
@@ -1151,13 +1075,13 @@ nlu:
     - I want to select [all features]{"entity": "filter_name"} nodes
     - Select [all features]{"entity": "filter_name"} node and edge
     - I want to select [all features]{"entity": "filter_name"} checkbox
-    - Select [all features]{"entity": "filter_name"} checkbox
-    - I want to select [all features]{"entity": "filter_name"} option
+    - Select [all features]{"entity": "filter_name"} checkbox node and edge
+    - I want to select [all features]{"entity": "filter_name"} option in node and edge
     - Select [all features]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} options
     - I want to see comments with [all features]{"entity": "filter_name"}
     - Show me nodes with [all features]{"entity": "filter_name"}
     - Show nodes with [all features]{"entity": "filter_name"}
-    - Activate the select [all features]{"entity": "filter_name"} filter
+    - Activate the select [all features]{"entity": "filter_name"} node and edge
     - Activate the select [all features]{"entity": "filter_name"} comments filter
     - Enable select [all features]{"entity": "filter_name"} nodes filtering
     - Enable the select [all features]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
@@ -1208,6 +1132,8 @@ nlu:
     - Would it be possible for you to get rid of nodes filters 
     - Clear the edges filters
     - Switch off nodes and edges
+    - Unhcek all node and edge filters
+    - Hide all filters in node and edge
 #- Would I be able to get rid of the nodes and edges filters- yes
 
 
@@ -1601,6 +1527,8 @@ nlu:
     - Show me the selected comments in a chart
     - Can I see the statistics of what is displayed right now
     - May you draw up the stats of the main interface display
+    - Show me the statistics of features
+    - Show me the distrubution of features
 
 
 - intent: statistics_features_subtrees
@@ -1685,6 +1613,8 @@ nlu:
     - Guide for node and edge
     - May you inform me on node and edge
     - What is select node and edge
+    - What is select node and edge on left bar
+
 
 - intent: help_summary
   examples: |
@@ -2117,23 +2047,36 @@ nlu:
     - Select colour feature
     - Activate colour feature
     - Enable colour feature
+    - Can you switch on colour feature
+    - May you tick colour feature
+    - Could you check colour feature
+    - Choose colour feature
+    - Tick off colour feature
+    - I was hoping you could check colour feature
+    - I was wondering if you could select colour feature
 
 # check/uncheck all colour features
 
 - intent: check_all_colour_features
   examples: |
     - Highlight all colour features
-    - Check all colours
+    - Can I highlight all colour features
     - Check all colour features
+    - Switch on all colour features filters
     - Show me all colour features
-    - Check all features
+    - May you tick all colour features filtering
+    - Check all colours
     - I want to see all colour features
     - I would like to see all colour features
-    - Turn on all colours
-    - Turn on all colour features
-    - Select all colour features
+    - Turn on stereotype all colour features filtering
+    - Could you switch on all colour features
+    - Select stereotype all colour features
+    - Choose all colours
     - Activate all colour features
-    - Enable all colour features
+    - Enable all colour features filters
+    - Tick off all colour features
+    - I was hoping you could check all colour features
+    - I was wondering if you could select all colour features
 
 - intent: uncheck_all_colour_features
   examples: |
@@ -2228,84 +2171,71 @@ nlu:
 # targets check
 - intent: icon_feature_person
   examples: |
-    - Highlight target person icon feature
-    - Highlight target person icon
-    - Check target person icon
-    - Check target person icon feature
-    - Show me target person icon feature
-    - Show me target person icon
-    - Display target person icon
-    - Display target person icon feature
-    - Visualise target person icon
-    - Visualise target person icon feature
-    - Check target person icon
-    - Check target person icon feature
-    - I want to see target person icon feature
-    - I want to see target person icon
     - I want to display target person icon feature
-    - I want to display target person icon
-    - I want to visualise target person icon feature
     - I want to visualise target person icon
+    - Can I highlight target person icon
+    - Check target person icon filter
+    - Switch on target person icon feature
+    - Show me target person icon feature
+    - May you tick target person icon feature filtering
+    - Check target person icon
+    - I want to see target person icon feature
     - I would like to see target person icon feature
-    - I would like to see target person icon
-    - I would like to display target person icon feature
-    - I would like to display target person icon
-    - I would like to visualise target person feature
-    - I would like to visualise target person icon
-    - Turn on target person icon
-    - Turn on target person icon feature
-    - Select target person icon feature
-    - Select target person icon
-    - Activate target person icon feature
+    - Turn on target person icon filtering
+    - Could you switch on target person icon feature
+    - Select target person icon filter
+    - Choose target person icon
     - Activate target person icon
     - Enable target person icon feature
-    - Enable target person icon
-
-
+    - Tick off target person icon feature
+    - I was hoping you could check target person icon feature
+    - I was wondering if you could select target person icon filter
 
 
 - intent: icon_feature_group
   examples: |
-    - Highlight target group icon feature
-    - Highlight target group icon
-    - Check target group icon
-    - Check target group icon feature
+    - I want to display target group icon feature
+    - I want to visualise target group icon
+    - Can I highlight target group icon
+    - Check target group  icon filter
+    - Switch on target group icon feature
     - Show me target group icon feature
-    - Show me target group icon
-    - Display target group icon feature
-    - Display target group icon
-    - Check target group icon feature
+    - May you tick target group icon feature filtering
     - Check target group icon
     - I want to see target group icon feature
-    - I want to see target group icon
-    - I want to display target group icon feature
-    - I want to display target group icon
-    - I want to visualise target group icon feature
-    - I want to visualise target group icon
     - I would like to see target group icon feature
-    - I would like to see target group icon feature
-    - I would like to display target group icon feature
-    - I would like to display target group icon
-    - I would like to visualise target group icon feature
-    - I would like to visualise target group icon
-    - Turn on target group icon
-    - Turn on target group icon feature
-    - Select target group icon feature
-    - Select target group icon
-    - Activate target group icon feature
+    - Turn on target group icon filtering
+    - Could you switch on target group icon feature
+    - Select target group icon filter
+    - Choose target group icon
     - Activate target group icon
     - Enable target group icon feature
-    - Enable target group icon
+    - Tick off target group icon feature
+    - I was hoping you could check target group icon feature
+    - I was wondering if you could select target group icon filter
 
 #check/uncheck all targets
 - intent: check_all_target_icons
   examples: |
     - Highlight all target icons
-    - Check all target icons
+    - Can I highlight all target icon features
+    - Check all target icon features
+    - Switch on all target icon filters
     - Show me all target icons
-    - I want to see all target icons
-    - I would like to see all target icons
-    - Turn on all target icons
+    - May you tick all target icons
+    - Check all target icons
+    - I want to see all target icon features
+    - I would like to see all target icons features
+    - Turn on stereotype all target icon features filtering
+    - Could you switch on all target icon features
+    - Select stereotype all target icons
+    - Choose all target icons
+    - Activate all target icons
+    - Enable all target icon filters
+    - Tick off all target icon features
+    - I was hoping you could check all target icons
+    - I was wondering if you could select all target icons
+
 
 - intent: uncheck_all_target_icons
   examples: |
@@ -2494,29 +2424,40 @@ nlu:
 
 - intent: filters_person
   examples: |
-    - Select [target person]{"entity": "filter_name"}
-    - Select [target person]{"entity": "filter_name" }
+    - Can I select [target person]{"entity": "filter_name"}
+    - Choose [target person]{"entity": "filter_name" }
     - Check [target person]{"entity": "filter_name" }
-    - Check [target person]{"entity": "filter_name"}
+    - May you tick [target person]{"entity": "filter_name"}
     - Show me [target person]{"entity": "filter_name"}
     - I want to see [target person]{"entity": "filter_name"}
+    - I want you to check [target person]{"entity": "filter_name"}
     - Activate [target person]{"entity": "filter_name"}
     - Enable [target person]{"entity": "filter_name"}
     - Highlight [target person]{"entity": "filter_name"}
     - Turn on [target person]{"entity": "filter_name"}
+    - Could you tick off [target person]{"entity": "filter_name"} filtering
+    - Switch on [target person]{"entity": "filter_name"} filter
+    - I was hoping you could check [target person]{"entity": "filter_name"}
+    - I was wondering if you could enable [target person]{"entity": "filter_name"} filtering
 
 - intent: filters_group
   examples: |
-    - Check [target group]{"entity": "filter_name"}
-    - Select [target group]{"entity": "filter_name" }
+    - Can I select [target group]{"entity": "filter_name"}
+    - Choose [target group]{"entity": "filter_name" }
     - Check [target group]{"entity": "filter_name" }
-    - Check [target group]{"entity": "filter_name"}
+    - May you tick [target group]{"entity": "filter_name"}
     - Show me [target group]{"entity": "filter_name"}
     - I want to see [target group]{"entity": "filter_name"}
+    - I want you to check [target group]{"entity": "filter_name"}
     - Activate [target group]{"entity": "filter_name"}
     - Enable [target group]{"entity": "filter_name"}
     - Highlight [target group]{"entity": "filter_name"}
     - Turn on [target group]{"entity": "filter_name"}
+    - Could you tick off [target group]{"entity": "filter_name"} filtering
+    - Switch on [target group]{"entity": "filter_name"} filter
+    - I was hoping you could check [target group]{"entity": "filter_name"}
+    - I was wondering if you could enable [target group]{"entity": "filter_name"} filtering
+
 
 # asking to hide filters without specifying which method
 
@@ -2605,6 +2546,8 @@ nlu:
     - Would I be able to get rid of the selected filters
     - Go back to the beginning
     - Switch off filters
+    - Uncheck all filters
+
 #clear the filters off the interface- yes
 # take the filters off the interface- yes
 #i'd like you to deactivate all filtering- yes
@@ -2644,6 +2587,7 @@ nlu:
     - Enable [all targets]{"entity": "filter_name"}
     - Highlight [all targets]{"entity": "filter_name"}
     - Turn on [all targets]{"entity": "filter_name"}
+    - Show me targets
 
 - intent: filters_all_features_uncheck
   examples: |
@@ -2771,6 +2715,7 @@ nlu:
     - Give me help on [stereotype]{"entity": "filter_name"}
     - Guide for [stereotype]{"entity": "filter_name"}
     - May you inform me on stereotype
+    - What is stereotype
 
 - intent: define_stance
   examples: |
@@ -2787,6 +2732,8 @@ nlu:
     - Give me help on stance
     - Guide for stance
     - May you inform me on stance
+    - What are stances
+    - What is stance
 
 - intent: define_toxic
   examples: |
@@ -2808,35 +2755,28 @@ nlu:
 
 - intent: define_commentid
   examples: | 
-    - Can you tell me what is meant by [comment id]{"entity": "tag_comment_id"}?
-    - I was wondering if you could explain [comment id]{"entity": "tag_comment_id"} to me?
-    - Could you explain to me what [comment id]{"entity": "tag_comment_id"} refers to?
+    - Can you tell me what is meant by [comment id]{"entity": "tag_comment_id"}? No.
+    - I was wondering if you could explain [comment id]{"entity": "tag_comment_id"} number to me?
+    - Could you explain to me what [id]{"entity": "tag_comment_id"} number refers to?
     - I would like you to explain what [comment id]{"entity": "tag_comment_id"} is
     - Would you be able to give me a tutorial for [comment id]{"entity": "tag_comment_id"}?
-    - I want you to give me an explanation about [comment id]{"entity": "tag_comment_id"}
-    - I was hoping you could help me understand [comment id]{"entity": "tag_comment_id"}
-    - I'd like you to define [comment id]{"entity": "tag_comment_id"}
+    - I want you to give me an explanation about [commentid]{"entity": "tag_comment_id"} number
+    - I was hoping you could help me understand [commentid]{"entity": "tag_comment_id"} No.
+    - I'd like you to define [commentid]{"entity": "tag_comment_id"} No.
     - Would it be possible to have a tutorial for [comment id]{"entity": "tag_comment_id"}?
-    - Could you possibly go into more detail about what [comment id]{"entity": "tag_comment_id"} is for?
-    - Give me help on [comment id]{"entity": "tag_comment_id"}
+    - Could you possibly go into more detail about what [commentid]{"entity": "tag_comment_id"} No. is for?
+    - Give me help on [comment identification]{"entity": "tag_comment_id"} number
     - Guide for [comment id]{"entity": "tag_comment_id"}
-    - May you inform me on [comment id]{"entity": "tag_comment_id"}
+    - May you inform me on [identification]{"entity": "tag_comment_id"} No.
 
 
 - synonym: comment id
   examples: |
-    - comment id number
-    - comment id No.
     - commentid
-    - commentid number
-    - commentid No.
     - comment identification
-    - comment identification number
-    - comment identification No.
-    - id number
-    - id No.
-    - identification number
-    - identification No.
+    - id
+    - identification
+
 
 - intent: define_argumentation
   examples: |
