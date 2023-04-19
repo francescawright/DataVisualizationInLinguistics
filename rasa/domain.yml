@@ -122,6 +122,7 @@ intents:
   - uncheck_all_colour_features
   - show_colour_feature
   - two_actions
+  - ask_tutorial
   - filter_test:
       use_entities:
       - filter_name
@@ -214,6 +215,9 @@ actions:
   - action_image_test
   - action_save_chat_logs
   - validate_filter_selection_form
+  - filter_selection_form
+  - utter_tutorial_mode
+
 
 
 forms:
@@ -756,7 +760,7 @@ responses:
     \ \n
 
       Select node and edge by: \ \n
-      - Using the Highlight Colour Feature menu \ \n
+      - Using the Select node and edge menu \ \n
       - Asking me"
 
   utter_help_AND:
@@ -812,7 +816,6 @@ responses:
     The graphs are also interactive, meaning if you click variables on your graph, they will also be activated on the main interface \ \n
 
     Read more about Interactive Graphs [here](https://dspace5.zcu.cz/handle/11025/45010)"
-
   utter_help_subtree_bar:
     - text: "intent_signal_additional_graphs,chart_sub_button,statistics_all_features_subtrees, Comment level 1 indicates that the comment was posted directly under the news article \ \n
     
@@ -847,7 +850,7 @@ responses:
           payload: '/help_sub_structure'
 
   utter_help_sub_structure:
-    - text: "There are sub regions that I can visualise, select one to see."
+    - text: "Here are the subtrees that I can visualise, select one to see it."
       buttons:
         - title: "the largest thread"
           payload: '/largest_thread'
@@ -998,7 +1001,7 @@ responses:
           payload: '/check_all_colour_features'
 
   utter_two_actions:
-    - text: "Please select one action at a time. [Ecu](https://www.youtube.com/) https://www.youtube.com "
+    - text: "Please select one action at a time. "
 
   utter_please_rephrase:
     - text: "I'm sorry, I didn't quite understand that. Could you rephrase that please?"
@@ -1349,6 +1352,58 @@ responses:
     - the longest thread \ \n
     - the most toxic thread  \ \n
     - the widest level "
+
+  utter_tutorial_mode:
+    - text: "With this interface you can:
+    
+  - Visualise features \ \n
+  - Carry out statistical analysis \ \n
+  - Visualise subtrees. \ \n
+ 
+  First, I automatically select the layout that best fits your data, but you can select a different layout from the menu. \ \n
+   
+  Glyphs let us see features that each comment is tagged with.  Use the Highlight Colour Features menu to activate/deactivate the features. \ \n
+   
+  All comments are tagged with the targets that they are directed at. Use the targets menu to activate/deactivate targets. \ \n
+  
+  Select node and edge will show comment with selected tags. Use the Select node and edge menu to activate/deactivate the features \ \n
+   
+   Then, you can carry out a statistical analysis.  \ \n
+   
+   Summary tells us how many comments are labelled with different levels of toxicity and their targets. It reflects data in the current visualisation \ \n
+   
+   You can see the same data displayed in a graph using the Selected Comments Statistics feature. \ \n
+   
+   There is also the Level One Comments statistics feature. This shows you the statistics of comments tagged as level one. \ \n
+   
+   In both Statistics features you can change the variables and graph type using the two drop-down menus. 
+   The graphs are also interactive, meaning if you click 
+   variables on your graph, they will also be activated on the main interface \ \n
+  
+    I can also answer basic statistics questions like: \ \n
+    - What is the most tagged feature? \ \n
+    
+    My answer will also change depending on your current visualisation \ \n
+  
+    Then, to visualise sub regions, you must ask me to show you:
+    
+    - The largest thread \ \n
+    - The longest thread \ \n
+    - The most toxic thread \ \n
+    - The widest level \ \n
+  
+   You can visualise features exclusively in this region  \ \n
+  
+   To save these sub regions using the button in the pop-up window \ \n
+   
+   You can change files using the drop down menu \ \n
+   
+   And the final part of this interface is me! 
+   Remember, I’m here to carry out any of the functions on the interface, show you subregions and help you when you when you need it 😄"
+
+
+
+
 
 session_config:
   session_expiration_time: 60

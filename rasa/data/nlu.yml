@@ -289,6 +289,7 @@ nlu:
     - What are the other [visualization layout]{"entity": "object_requested", "value": "layout"} choices
     - Are there any other [visualization]{"entity": "object_requested", "value": "layout"} I can use
     - Switch the [visualisation type]{"entity": "object_requested", "value": "layout"} format
+    - Change [layout]{"entity": "object_requested", "value": "layout"}
 
     
 
@@ -457,18 +458,9 @@ nlu:
     - Would I be able to start the analysis of [20170819_CR]{"entity": "document_requested"}
     - Could you possibly start with [531_MI]{"entity": "document_requested"}
     - Let me see [file]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
-    - Choose [531_MI]{"entity": "document_requested"} to analyse first
-    - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - Open [Compact_200]{"entity": "document_requested"}
-    - Open [document]{"entity": "object_requested", "value": "document"}
-    - Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
-    - Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
-    - Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - I want to open a [file]{"entity": "object_requested", "value": "document"}
-    - I want to open [wide]{"entity": "document_requested"}
-    - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
-    - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
+    - Choose {20170819]{"entity": "document_requested"} to analyse first
+#start with X
+
 
 
 
@@ -1134,6 +1126,9 @@ nlu:
     - Switch off nodes and edges
     - Unhcek all node and edge filters
     - Hide all filters in node and edge
+    - Reset
+    - Go back to the beginning
+
 #- Would I be able to get rid of the nodes and edges filters- yes
 
 
@@ -1529,6 +1524,12 @@ nlu:
     - May you draw up the stats of the main interface display
     - Show me the statistics of features
     - Show me the distrubution of features
+    - Could I possibly analyse what I have chosen?
+    - Is there a way I can look at the data for the visualisation?
+    - Would I be able to analyse what I have highlighted
+  # is it possible to compare features of the visualisation- yes
+    
+
 
 
 - intent: statistics_features_subtrees
@@ -1548,6 +1549,11 @@ nlu:
     - Show me the level one comments in a chart
     - Can I see the statistics of comments directly connected to the news article
     - May you draw up the stats of the comments directly from the main node
+    - Compare features at level one
+#show me the data for level one-yes
+#bring up level one charts-yes
+# bring up level one comment data chart-yes
+#show me the charts for level one-yes
 
 - intent: most_tagged_features
   examples: |
@@ -1614,6 +1620,7 @@ nlu:
     - May you inform me on node and edge
     - What is select node and edge
     - What is select node and edge on left bar
+    - Tell me about nodes and edges
 
 
 - intent: help_summary
@@ -1631,10 +1638,11 @@ nlu:
     - Give me help on summary
     - Guide for comment selected summary
     - May you inform me on summary
+#tell me about summary
 
 - intent: help_main_graph_barchart
   examples: |
-    - Can you tell me what is meant by selected commments statistics?
+    - Can you tell me what is meant by selected comments statistics?
     - I was wondering if you could explain selected comments stats graph to me?    
     - Could you explain to me what selected comments refers to?
     - I would like you to explain what selected comments statistics button are
@@ -1647,6 +1655,15 @@ nlu:
     - Give me help on selected comments graph button
     - Guide for comment selected comments statistics option
     - May you inform me on selected comments graphs
+    - What are selected comments?
+    - How can I analyse selected comments data?
+    - How can I analyse what I have highlighted?
+    - How can I analyse what I have selected?
+  # how can i analyse what I have chosen- yes
+  #how can i analyse the comments i have selected - yes
+  #how can i know if my there are relationships between features- yes
+    
+  
 
 - intent: help_subtree_barchart
   examples: |
@@ -1662,7 +1679,11 @@ nlu:
     - Could you possibly go into more detail about what level one statistics graphs?
     - Give me help on level one comments graph button
     - Guide for comment level one statistics option
-    - May you inform me on comment level one graphs
+    - May you inform me on comment level one graph   
+    - How can I analyse level one comment data?
+    - How can I analyse comments at level one?
+    - What are level one comments?
+  #how can i analyse the features that appear at level one?- yes
 
 - intent: tool_help
   examples: |
@@ -1826,6 +1847,14 @@ nlu:
     - Give me help on statistics
     - Guide for stats
     - May you inform me on statistics graphs
+    - How can I analyse my data?
+    - Is there a way to compare the features
+    - Would I be able to see if there is a relationship between features?
+#what statistics options are there- yes
+#May you inform me on statistics graphs-yes
+#compare the relationships of the features-yes
+#what data options are there- yes
+
 
 - intent: start_analysis
   examples: |
@@ -2714,8 +2743,9 @@ nlu:
     - Could you possibly go into more detail about what [stereotype]{"entity": "filter_name"} is for?
     - Give me help on [stereotype]{"entity": "filter_name"}
     - Guide for [stereotype]{"entity": "filter_name"}
-    - May you inform me on stereotype
-    - What is stereotype
+    - What is [stereotype]{"entity": "filter_name"}
+    - May you inform me on [stereotype]{"entity": "filter_name"}
+
 
 - intent: define_stance
   examples: |
@@ -2752,6 +2782,7 @@ nlu:
     - May you inform me on toxic
     - What is toxic?
     - What does level of toxicity mean?
+#help me with toxicity
 
 - intent: define_commentid
   examples: | 
@@ -2810,6 +2841,7 @@ nlu:
     - Guide for [constructiveness]{"entity": "filter_name"}
     - May you inform me on [constructiveness]{"entity": "filter_name"}
 
+
 - intent: define_commentlevel
   examples: |
     - Can you tell me what is meant by comment level?
@@ -2852,16 +2884,41 @@ nlu:
 #- What is comment depth?- yes
 # help define comment depth- yes
 # tell me about comment depth- yes
+# how can I use comment depth- yes
+# i was wondering if you could explain to me what comment depth indicates- yes
 
 - intent: define_subtrees
   examples: |
-    - What are subtrees
-    - What does subtrees mean?
-    - What is meant by subtrees?
-    - What does subtree refer to?
-    - What are subtrees for
-    - What is the definition of subtrees?
-    - How can I use subtrees?
-    - Explain subtrees
-    - Tutorial for subtrees
+    - Can you tell me what is meant by subtrees?
+    - I was wondering if you could explain subtrees to me?
+    - Could you explain to me what subtrees refers to?
+    - I would like you to explain what subtrees are
+    - Would you be able to give me a tutorial for subtrees?
+    - I want you to give me an explanation about subtrees
+    - I was hoping you could help me understand subtrees
+    - I'd like you to define subtrees
+    - Would it be possible to have a tutorial for subtrees?
+    - Could you possibly go into more detail about what subtrees are for?
+    - Give me help on subtrees
+    - Guide for subtrees
+    - May you inform me on subtrees
+
+#synonym: subtree
+ # examples: |
+  #  - subregion
+  # - sub section
+  # parts of the visualisation
+  # parts of the layout
+  # parts of the display
+  # regions of the visualisation
+  # regions of the display
+  # regions of the layout
+  # sections of the visualisation
+  # sections of the layout
+  # sections of the display
+
+- intent: ask_tutorial
+  examples: |
+    - I want a tutorial
+    - I need a tutorial
 
