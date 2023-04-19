@@ -1329,7 +1329,7 @@ responses:
      Read more about Constructiveness [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_target_group_definition:
-    - text: "All comments are tagged with the targets that they are directed at. Target person refers to comments targeting a group. \ \n
+    - text: "All comments are tagged with the targets that they are directed at. Target Group refers to comments targeting a group. \ \n
      
          You can activate/deactivate targets: \ \n
 
@@ -1339,7 +1339,7 @@ responses:
           Summary will also tell you how many targets there are in the current visualisation"
 
   utter_target_person_definition:
-    - text: "All comments are tagged with the targets that they are directed at. Target person refers to comments targeting a person. \ \n
+    - text: "All comments are tagged with the targets that they are directed at. Target Person refers to comments targeting a person. \ \n
 
          You can activate/deactivate targets: \ \n
 
