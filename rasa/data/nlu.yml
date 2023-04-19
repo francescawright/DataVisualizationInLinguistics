@@ -596,6 +596,8 @@ nlu:
     - switch on
     - tick
     - tick off
+    - mark
+    - mark off
 
 - synonym: uncheck
   examples: |
@@ -608,102 +610,106 @@ nlu:
     - deactivate
     - untick
     - clear
+    - clear off
     - reset
     - remove
+    - unmark
+    - get rid of
+    - take off
 
-- synonym: visualise
-  examples: |
-    - show
-    - display
+#- synonym: visualise
+ # examples: |
+  #  - show
+  #  - display
 
 
-- synonym: switch
-  examples: |
-    - change
-    - exchange
-    - adjust
+#- synonym: switch
+ # examples: |
+#    - change
+ #   - exchange
+ #   - adjust
 
  #Synonyms for menus: select node and edge menu, highlight colour feature menu, **target menu- to be completed**
 
-- synonym: select node and edge menu
-  examples: |
-    - select node and edge menu
-    - select node and edge bar
-    - select nodes and edges menu
-    - select nodes and edges bar
-    - node and edge menu
-    - node and edge bar
+#- synonym: select node and edge menu
+#  examples: |
+#    - select node and edge menu
+#    - select node and edge bar
+#    - select nodes and edges menu
+#    - select nodes and edges bar
+#    - node and edge menu
+ #   - node and edge bar
 
-- synonym: highlight colour feature menu
-  examples: |
-    - colour features menu
-    - colour feature menu
-    - color features menu
-    - color features menu
-    - colour menu
-    - colours menu
-    - color menu
-    - colors menu
-    - colour bar
-    - colours bar
-    - color bar
-    - colours bar
-    - glyph feature menu
-    - glyph feature bar
-    - highlight colour feature menu
-    - highlight colour features menu
-    - highlight color feature menu
-    - highlight color features menu
-    - highlight colour feature bar
-    - highlight colour features bar
-    - highlight color feature bar
-    - highlight color features bar
-    - highlight colour menu
-    - highlight color menu
-    - highlight colour bar
-    - highlight colour bar
-    - highlight menu
-    - highlight bar
-    - colour glyph feature menu
-    - color glyph feature menu
-    - colour glyph features menu
-    - color glyph features menu
-    - colour glyph feature bar
-    - colour glyph feature bar
+#- synonym: highlight colour feature menu
+#  examples: |
+#    - colour features menu
+#    - colour feature menu
+#    - color features menu
+#    - color features menu
+#    - colour menu
+ #   - colours menu
+#    - color menu
+ #   - colors menu
+ #   - colour bar
+ #   - colours bar
+ #   - color bar
+ #   - colours bar
+#    - glyph feature menu
+#    - glyph feature bar
+#    - highlight colour feature menu
+#    - highlight colour features menu
+#    - highlight color feature menu
+ #   - highlight color features menu
+#    - highlight colour feature bar
+#    - highlight colour features bar
+#    - highlight color feature bar
+ #   - highlight color features bar
+ #   - highlight colour menu
+#    - highlight color menu
+#    - highlight colour bar
+#    - highlight colour bar
+ #   - highlight menu
+#    - highlight bar
+#    - colour glyph feature menu
+#    - color glyph feature menu
+#    - colour glyph features menu
+#    - color glyph features menu
+#    - colour glyph feature bar
+#    - colour glyph feature bar
 
 # Synonyms nodes and edges and filter
-- synonym: nodes
-  examples: |
-    - node
-    - comment
-    - comment nodes
+#- synonym: nodes
+ # examples: |
+ #   - node
+ #   - comment
+ #   - comment nodes
 
-- synonym: filter
-  examples: |
-    - filtering
+#- synonym: filter
+#  examples: |
+ #   - filtering
 
 # Synonym for "formalities" request starter I want to  + issue of questions like **what/Which** ->classfication to be added
-- synonym: I want to
-  examples: |
-    - I want to
-    - I would like to
-    - I'd like to
-    - Can you
-    - Can I
-    - May you
-    - May I
-    - Could you
-    - Could I
-    - I want you to
-    - I would like you to
-    - I'd like you to
-    - I was hoping you could
-    - I was wondering if you could
-    - Would I able to
-    - Would you be able to
-    - Would it be possible for you to
-    - Could you possibly 
-    - How about you
+#- synonym: I want to
+#  examples: |
+ #   - I want to
+ #   - I would like to
+ #   - I'd like to
+#    - Can you
+#    - Can I
+#    - May you
+ #   - May I
+#    - Could you
+#    - Could I
+#    - I want you to
+#    - I would like you to
+#    - I'd like you to
+#    - I was hoping you could
+#    - I was wondering if you could
+#    - Would I able to
+#    - Would you be able to
+#    - Would it be possible for you to
+#    - Could you possibly
+#    - How about you
 
 
 # highlight options
@@ -1823,7 +1829,7 @@ nlu:
     - Guide for targets
     - May you inform me on targets icons
     - What's the difference between target person and target group?
-#target person and group intents neew combos to be checked
+#target person and group intents new combos to be checked
 
 - intent: help_sub_structure
   examples: |
@@ -1883,7 +1889,7 @@ nlu:
   examples: |
     - Highlight constructiveness colour feature filter
     - Can you highlight constructive glyph
-    - Check constructiveness colour filering
+    - Check constructiveness colour filtering
     - Tick off constructive colour feature
     - May you show me constructiveness colour feature
     - Show me constructive colour feature
@@ -1893,11 +1899,16 @@ nlu:
     - Turn on constructive colour
     - Switch on constructiveness colour feature
     - Choose constructiveness colour feature
-    - Tick constructiveness colour filering
+    - Tick constructiveness colour filtering
     - Activate constructive colour feature
     - Enable constructive colour feature filter
     - I was hoping you could check constructiveness colour feature
     - I was wondering if you could select constructiveness colour
+    - Would you be able to mark off constructivity colour glyph
+#would we be able to select constructiveness colour-yes
+#now can you enable constructivity colour glyph- yes
+# turn on constructivity glyph- yes
+#bring up constructivity colour filter- yes
 
 - intent: colour_feature_argumentation
   examples: |
@@ -1919,6 +1930,7 @@ nlu:
     - Tick off argument colour feature
     - I was hoping you could check argumentation colour feature
     - I was wondering if you could select argument colour filter
+    - Would you be able to mark off argumentation colour glyph
 
 - intent: colour_feature_sarcasm
   examples: |
@@ -1940,6 +1952,7 @@ nlu:
     - Tick off sarcasm colour feature
     - I was hoping you could check sarcasm colour feature
     - I was wondering if you could select sarcasm colour filter
+    - Would you be able to mark off sarcasm colour glyph
 
 - intent: colour_feature_mockery
   examples: |
@@ -1961,6 +1974,7 @@ nlu:
     - Tick off mockery colour feature
     - I was hoping you could check mockery colour feature
     - I was wondering if you could select mockery colour filter
+    - Would you be able to mark off mockery colour glyph
 
 - intent: colour_feature_intolerance
   examples: |
@@ -1982,6 +1996,7 @@ nlu:
     - Tick off intolerance colour feature
     - I was hoping you could check intolerance colour feature
     - I was wondering if you could select intolerance colour filter
+    - Would you be able to mark off intolerance colour glyph
 
 - intent: colour_feature_improper
   examples: |
@@ -2003,12 +2018,14 @@ nlu:
     - Tick off improper language colour feature
     - I was hoping you could check improper language colour feature
     - I was wondering if you could select improper language colour filter
+    - Would you be able to mark off improper colour glyph
+#check improper-> PROBLEM 2 answers can be given, one is improper_language colour feature is already checked
 
 - intent: colour_feature_insult
   examples: |
     - Highlight insult colour feature filter
     - Can you highlight insult glyph
-    - Check insult colour filering
+    - Check insult colour filtering
     - Tick off insult colour feature
     - May you show me insult colour feature
     - Show me insult colour feature
@@ -2018,11 +2035,12 @@ nlu:
     - Turn on insult colour
     - Switch on insult colour feature
     - Choose insult colour feature
-    - Tick insult colour filering
+    - Tick insult colour filtering
     - Activate insult colour feature
     - Enable insult colour feature filter
     - I was hoping you could check insult colour feature
     - I was wondering if you could select insult colour
+    - Would you be able to mark off insult colour glyph
 
 - intent: colour_feature_aggressiveness
   examples: |
@@ -2044,6 +2062,8 @@ nlu:
     - Tick off aggressiveness colour feature
     - I was hoping you could check aggressiveness colour feature
     - I was wondering if you could select aggressiveness colour filter
+    - Would you be able to mark off aggressive colour glyph
+#check aggressive- yes
 
 - intent: colour_feature_stereotype
   examples: |
@@ -2065,6 +2085,7 @@ nlu:
     - Tick off stereotype colour feature
     - I was hoping you could check stereotype colour feature
     - I was wondering if you could select stereotype colour filter
+    - Would you be able to mark off stereotype colour glyph
 
 # ask to check a colour feature without specifying one
 - intent: show_colour_feature
@@ -2085,6 +2106,8 @@ nlu:
     - Tick off colour feature
     - I was hoping you could check colour feature
     - I was wondering if you could select colour feature
+#could you possibly mark a colour feature-yes
+# would you be able to choose a colour feature- yes
 
 # check/uncheck all colour features
 
@@ -2108,6 +2131,8 @@ nlu:
     - Tick off all colour features
     - I was hoping you could check all colour features
     - I was wondering if you could select all colour features
+#could you possibly mark all colour features-yes
+# would you be able to choose all colour features- yes
 
 - intent: uncheck_all_colour_features
   examples: |
@@ -2221,6 +2246,9 @@ nlu:
     - Tick off target person icon feature
     - I was hoping you could check target person icon feature
     - I was wondering if you could select target person icon filter
+#- Would you be able to mark off target person icon filtering- yes
+# bring up target person icon- yes
+# switch target person icon on- yes
 
 
 - intent: icon_feature_group
@@ -2244,6 +2272,9 @@ nlu:
     - Tick off target group icon feature
     - I was hoping you could check target group icon feature
     - I was wondering if you could select target group icon filter
+#- Would you be able to mark off target group icon filtering-yes
+# bring up target group icon-yes
+# switch target group icon on-yes
 
 #check/uncheck all targets
 - intent: check_all_target_icons
@@ -2252,40 +2283,89 @@ nlu:
     - Can I highlight all target icon features
     - Check all target icon features
     - Switch on all target icon filters
-    - Show me all target icons
+    - Show me all target icon filtering
     - May you tick all target icons
     - Check all target icons
     - I want to see all target icon features
     - I would like to see all target icons features
-    - Turn on stereotype all target icon features filtering
+    - Turn all target icon features filtering
     - Could you switch on all target icon features
-    - Select stereotype all target icons
-    - Choose all target icons
+    - Select all target icons
+    - Choose all target icon filtering
     - Activate all target icons
     - Enable all target icon filters
     - Tick off all target icon features
     - I was hoping you could check all target icons
     - I was wondering if you could select all target icons
+#- Would you be able to mark off all target icon filtering-yes
+# bring up all target icons-yes
+# switch all target icons on-yes
 
 
 - intent: uncheck_all_target_icons
   examples: |
-    - Disable all target icons
-    - Uncheck all target icons
-    - Turn off all target icons
+    - Can I disable all target icons 
+    - Uncheck all target icons features
+    - May you turn off all target icons filters
+    - I want to reset all target icons features
+    - I would like to switch off all target icon features
+    - Deselect all target icons filtering
+    - Could you hide all target icon features
+    - I was hoping you could switch off all target icons
+    - I was wondering if you could deactivate all target icons features
+    - Would you be able to untick all target icon filters
+    - Could you possibly clear all target icon filtering
+    - Clear off all target icon feature filters
+    - May you remove both target icons
+    - Would it be possible for you to unmark both target icon filters
+    - Unselect both target icon filtering
+    - Get rid of both target icon features
+    - Would I be able to take both target icons off
+#COMPROBAR Ecem
+    
 
 # uncheck targets
 - intent: uncheck_target_person
   examples: |
-    - Uncheck target person icon
-    - Turn off target person icon
-    - Disable target person icon
+    - Can I disable target person icon 
+    - Uncheck target person icon features
+    - May you turn off target person icon filters
+    - I want to reset target person icon features
+    - I would like to switch off target person icon features
+    - Deselect target person icon filtering
+    - Could you hide target person icon features
+    - I was hoping you could switch off target person icon
+    - I was wondering if you could deactivate target person icon features
+    - Would you be able to untick target person icon filters
+    - Could you possibly clear target person icon filtering
+    - Clear off target person icon feature filters
+    - May you remove target person icon
+    - Would it be possible for you to unmark target person icon filters
+    - Unselect target person icon filtering
+    - Get rid of target person icon features
+    - Would I be able to take target person icon off
+#COMPROBAR Ecem
 
 - intent: uncheck_target_group
-  examples: |
-    - Uncheck target group icon
-    - Turn off target group icon
-    - Disable target group icon
+  examples: |  
+    - Can I disable target group icon 
+    - Uncheck target group icon features
+    - May you turn off target group icon filters
+    - I want to reset target group icon features
+    - I would like to switch off target group icon features
+    - Deselect target group icon filtering
+    - Could you hide target group icon features
+    - I was hoping you could switch off target group icon
+    - I was wondering if you could deactivate target group icon features
+    - Would you be able to untick target group icon filters
+    - Could you possibly clear target group icon filtering
+    - Clear off target group icon feature filters
+    - May you remove target group icon
+    - Would it be possible for you to unmark target group icon filters
+    - Unselect target group icon filtering
+    - Get rid of target group icon features
+    - Would I be able to take target group icon off
+#COMPROBAR Ecem
 
 
 # asking a filter without specifying which method

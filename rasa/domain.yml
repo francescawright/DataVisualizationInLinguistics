@@ -1360,19 +1360,19 @@ responses:
 
   To display statistics for Level One Comments, click the Level One Comments button. \ \n
 
-     Read more about Comment Level [here](https://dspace5.zcu.cz/handle/11025/45010)"
+  Read more about Comment Level [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_comment_depth_definition:
-    - text: "Comment depth indicates a node's position in a thread \ \n
+    - text: "Comment depth indicates a node's position in a thread. \ \n
 
     To access this information, you can hover over each node. \ \n
 
     Read more about Comment Depth [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_direct_comment_definition:
-    - text: "Direct comments is a number indicating how many comments were posted directly under the news article (Comment Level 1) \ \n
+    - text: "Direct comments is a number indicating how many comments were posted directly under the news article (Comment Level 1). \ \n
     
-    To access this information, you can hover over each node \ \n
+    To access this information, you can hover over each node. \ \n
     
     To display statistics for Level One Comments, click the Level One Comments button. \ \n
 
