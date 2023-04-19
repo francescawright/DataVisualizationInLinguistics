@@ -7,7 +7,7 @@
 
 # This is a simple example for a custom action which utters "Hello World!"
 
-from typing import Any, Text, Dict, List
+from typing import Any, Text, Dict, List, Union
 
 from rasa_sdk.events import SlotSet, FollowupAction, UserUtteranceReverted
 from rasa_sdk import Action, Tracker, FormValidationAction
@@ -452,9 +452,9 @@ class ActionGreet(Action):
                 first_login_value = e['value'] == "True"
 
         messages_not_logged = ["Hey! Nice to see you here. I am a Chatbot here to help you carry out actions, explain the interface and give you tips. Ask me to Sign up or Login, or click the buttons 😄",
-                               "Hello! I'm a Chatbot here to help you carry out actions and explain the interface and give you tips. ASk me to Sign up or Login, or click the buttons 😄",
-                               "Hi, I'm a Chatbot here to help you carry out actions and explain the interface and give you tips. ASk me to Sign up or Login, or click the buttons 😄",
-                               "Hello there, I'm a Chatbot here to help you carry out actions and explain the interface and give you tips. ASk me to Sign up or Login, or click the buttons 😄"] if not greet_again_value else [
+                               "Hello! I'm a Chatbot here to help you carry out actions and explain the interface and give you tips. Ask me to Sign up or Login, or click the buttons 😄",
+                               "Hi, I'm a Chatbot here to help you carry out actions and explain the interface and give you tips. Ask me to Sign up or Login, or click the buttons 😄",
+                               "Hello there, I'm a Chatbot here to help you carry out actions and explain the interface and give you tips. Ask me to Sign up or Login, or click the buttons 😄"] if not greet_again_value else [
             "How else can I help you? 😄",
             "What else can I do for you? 😄"]
 
@@ -658,6 +658,7 @@ class ActionHighlightUncheckLast(Action):
         else:
             dispatcher.utter_message(text="intent_filter_uncheck," + ';'.join(tracker.get_slot("previous_filters")))
         return []
+
 
 
 # class Options(Action):

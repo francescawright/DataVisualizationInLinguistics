@@ -214,8 +214,10 @@ actions:
   - action_highlight_switch_last
   - action_image_test
   - action_save_chat_logs
+  - validate_filter_selection_form
   - filter_selection_form
   - utter_tutorial_mode
+
 
 
 forms:
@@ -234,6 +236,10 @@ forms:
   document_selection_form:
     document_requested:
     - type: from_text
+  filter_selection_form:
+    filter_name:
+    - type: from_text
+
 
 
 entities:
@@ -567,6 +573,9 @@ responses:
   - text: "What file do you want to open?"
   - text: "What file would you like to open?"
 
+  utter_ask_filter_selection_form_filter_name:
+    - text: "What feature do you want to see?"
+
 #  Glyphs
   utter_change_to_dots:
   - text: "intent_change_glyphs,dots_icon_button,Glyph has been changed to Dots"
@@ -798,7 +807,7 @@ responses:
   utter_help_main_bar_three:
     - text: "There are two statistics options: \ \n
     
-    - Selected Comments \ \n
+    - Selected Comments
     
     - Level One comments \ \n
     
@@ -1284,14 +1293,14 @@ responses:
 
         There are 4 possible levels of toxicity, each assigned a colour: \ \n
 
-        Not toxic \ \n
-        Mildly toxic \ \n
-        Toxic \ \n
-        Very Toxic \ \n
+       - Not toxic \ \n
+       - Mildly toxic \ \n
+       - Toxic \ \n
+       - Very Toxic \ \n
 
       You can activate/deactivate Toxicity: \ \n
 
-    - Using the Select Node and Edge menu \ \n
+    - Using the Select Node and Edge menu
 
     - Asking me"
 

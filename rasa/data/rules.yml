@@ -140,10 +140,10 @@ rules:
   - intent: highlight_uncheck
   - action: action_highlight_uncheck
 
-- rule: User wants to check one or more filters
-  steps:
-  - intent: highlight_check
-  - action: action_highlight_check
+#- rule: User wants to check one or more filters
+#  steps:
+#  - intent: highlight_check
+#  - action: action_highlight_check
 
 - rule: User wants to switch one or more filters
   steps:
