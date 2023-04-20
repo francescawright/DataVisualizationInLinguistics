@@ -726,7 +726,7 @@ nlu:
     - I would like to visualise [non toxic]{"entity": "filter_name", "value": "non toxic"} comments
     - Could you switch on  [least toxic]{"entity": "filter_name", "value": "non toxic"} nodes
     - Could you select [least toxicity]{"entity": "filter_name", "value": "non toxic"} nodes
-    - Which nodes have the [least toxicity]{"entity": "filter_name", "value": "non toxic"}?
+    - Which nodes have the [least toxicity]{"entity": "filter_name", "value": "non toxic"} label?
     - Which comments are the [least toxic]{"entity": "filter_name", "value": "non toxic"}?
     - Which nodes are [non toxic]{"entity": "filter_name", "value": "non toxic"}?
     - Choose [least toxic]{"entity": "filter_name", "value": "non toxic"} comments?
@@ -736,72 +736,77 @@ nlu:
     - I was hoping you could check [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes filtering
     - I was wondering if you could turn [non toxic]{"entity": "filter_name", "value": "non toxic"} and [very toxic]{"entity": "filter_name"} filters on
     - Could you possibly bring up [non toxic]{"entity": "filter_name", "value": "non toxic"} for me
-    
-   
 
-    - I want to see [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
-    - I want to see [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"}
-    - I want to see [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} and [least toxic]{"entity": "filter_name"} nodes
-    - highlight [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
-    - highlight [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"}
-    - highlight [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
-    - show me [level 1 toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
-    - show me [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"}
-    - show me [level 1 toxicity]{"entity": "filter_name", "value": "mildly toxic"} , [least toxic]{"entity": "filter_name"} and [toxic]{"entity": "filter_name"} comments
-    - show [toxicity level 1]{"entity": "filter_name", "value": "mildly toxic"} nodes
-    - show [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
-    - Which nodes are [toxic level 1]{"entity": "filter_name", "value": "mildly toxic"}?
-    - Can you show me [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes?
-    - Activate the [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} filter
-    - Check the [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} filter
-    - Activate the [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments filter
-    - Enable [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes filtering
-    - Enable the [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} filter
-    - Enable the filter [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"}
 
-    - I want to see [toxic]{"entity": "filter_name", "value": "toxic"} comments
-    - I want to see [toxic]{"entity": "filter_name", "value": "toxic"}
-    - I want to see [toxic]{"entity": "filter_name", "value": "toxic"} nodes
-    - highlight [level 2 toxic]{"entity": "filter_name", "value": "toxic"} comments
-    - highlight [toxic]{"entity": "filter_name", "value": "toxic"}
-    - highlight [toxic]{"entity": "filter_name", "value": "toxic"} nodes
-    - show me [toxic]{"entity": "filter_name", "value": "toxic"} comments
-    - show me [toxic]{"entity": "filter_name", "value": "toxic"}
-    - show me [level 2 toxicity]{"entity": "filter_name", "value": "toxic"} comments
-    - show [toxicity level 2]{"entity": "filter_name", "value": "toxic"} nodes
-    - show [toxic]{"entity": "filter_name", "value": "toxic"} nodes
-    - Which comments are [toxic level 2]{"entity": "filter_name", "value": "toxic"}?
-    - Can you show me [toxic]{"entity": "filter_name", "value": "toxic"} comments?
+    - Highlight [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
+    - Can I highlight [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"}
+    - Check [level 1 toxicity]{"entity": "filter_name", "value": "mildly toxic"} nodes and [least toxic]{"entity": "filter_name"} nodes
+    - Show me [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
+    - May you tick [toxicity level 1]{"entity": "filter_name", "value": "mildly toxic"}
+    - Check [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
+    - Show me [level 1 toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
+    - I want to see [level 1 toxicity]{"entity": "filter_name", "value": "mildly toxic"}
+    - I would like to visualise [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
+    - Could you switch on [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
+    - Could you select [level 1 toxicity]{"entity": "filter_name", "value": "mildly toxic"} comments
+    - Which nodes have the [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} label?
+    - Which comments are the [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"}?
+    - Which nodes are [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"}?
+    - Choose [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments?
+    - Activate the [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} filter
+    - Check the [level 1 toxicity]{"entity": "filter_name", "value": "mildly toxic"} filter
+    - Tick off [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes filter
+    - I was hoping you could check [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes filtering
+    - I was wondering if you could turn on [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} and [least toxic]{"entity": "filter_name" } and [toxic]{"entity": "filter_name"} cfilter
+    - Could you possibly bring up [level 1 toxic]{"entity": "filter_name", "value": "mildly toxic"} for me                                                               
+
+    - Highlight [toxic]{"entity": "filter_name", "value": "toxic"} comments
+    - Can I highlight [toxic]{"entity": "filter_name", "value": "toxic"}
+    - Check [toxic]{"entity": "filter_name", "value": "toxic"} nodes
+    - Show me [toxic]{"entity": "filter_name", "value": "toxic"} nodes
+    - May you tick [toxic]{"entity": "filter_name", "value": "toxic"}
+    - Check [toxic]{"entity": "filter_name", "value": "toxic"} comments
+    - Show me [level 2 toxic]{"entity": "filter_name", "value": "toxic" } nodes
+    - I want to see [level 2 toxicity]{"entity": "filter_name", "value": "toxic" }
+    - I would like to visualise [toxic]{"entity": "filter_name", "value": "toxic"} comments
+    - Could you switch on [toxic]{"entity": "filter_name", "value": "toxic" } nodes
+    - Could you select [level 2 toxicity]{"entity": "filter_name", "value": "toxic" } nodes
+    - Which nodes have the [toxic]{"entity": "filter_name", "value": "toxic"} label?
+    - Which comments are [toxic]{"entity": "filter_name", "value": "toxic"}?
+    - Which nodes are [toxic]{"entity": "filter_name", "value": "toxic"}?
+    - Choose [toxic]{"entity": "filter_name", "value": "toxic" } comments?
     - Activate the [toxic]{"entity": "filter_name", "value": "toxic"} filter
-    - Check the [toxic]{"entity": "filter_name", "value": "toxic"} filter
-    - Activate the [toxic]{"entity": "filter_name", "value": "toxic"} nodes filter
-    - Enable [toxic]{"entity": "filter_name", "value": "toxic"} comments filtering
-    - Enable the [toxic]{"entity": "filter_name", "value": "toxic"} filter
-    - Enable the filter [toxic]{"entity": "filter_name", "value": "toxic"}
-
-    - I want to see [very toxic]{"entity": "filter_name", "value": "very toxic"} comments
-    - I want to see [level 3 toxic]{"entity": "filter_name", "value": "very toxic"}
-    - I want to see [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes
-    - highlight [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes
-    - highlight [very toxic]{"entity": "filter_name", "value": "very toxic"}
-    - highlight [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes
-    - show me [level 3 toxicity]{"entity": "filter_name", "value": "very toxic"} comments
-    - show me [very toxic]{"entity": "filter_name", "value": "very toxic"}
-    - show me [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes
-    - show [very toxic]{"entity": "filter_name", "value": "very toxic"} comments
-    - show [very toxic]{"entity": "filter_name", "value": "very toxic"}
-    - show [toxicity level 3]{"entity": "filter_name", "value": "very toxic"} nodes
-    - Which nodes have the [highest toxicity]{"entity": "filter_name", "value": "very toxic"}?
-    - Which comments are [toxic level 3]{"entity": "filter_name", "value": "very toxic"}?
-    - Which nodes are the [most toxic]{"entity": "filter_name", "value": "very toxic"}?
-    - Can you show me [very toxic]{"entity": "filter_name", "value": "very toxic"} comments?
+    - Check the [level 2 toxicity]{"entity": "filter_name", "value": "toxic" } filter
+    - Tick off [toxic]{"entity": "filter_name", "value": "toxic"} nodes filter
+    - I was hoping you could check [toxic]{"entity": "filter_name", "value": "toxic"} nodes filtering
+    - I was wondering if you could turn on [toxic]{"entity": "filter_name", "value": "toxic"} comments
+    - Could you possibly bring up [level 2 toxic]{"entity": "filter_name", "value": "toxic" } for me
+  
+    
+    - Highlight [very toxic]{"entity": "filter_name", "value": "very toxic"} comments
+    - Can I highlight [level 3 toxicity]{"entity": "filter_name", "value": "very toxic"}
+    - Check [level 3 toxic]{"entity": "filter_name", "value": "very toxic"} nodes
+    - Show me [the most toxic]{"entity": "filter_name", "value": "very toxic"} nodes
+    - May you tick [toxicity level 3]{"entity": "filter_name", "value": "very toxic"}
+    - Check [very toxic]{"entity": "filter_name", "value": "very toxic"} comments
+    - Show me [level 3 toxic]{"entity": "filter_name", "value": "very toxic"} nodes
+    - I want to see [very toxic]{"entity": "filter_name", "value": "very toxic"}
+    - I would like to visualise [level 3 toxic]{"entity": "filter_name", "value": "very toxic"} comments
+    - Could you switch on [level 3 toxicity]{"entity": "filter_name", "value": "very toxic"} nodes
+    - Could you select [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes
+    - Which nodes have the [the most toxic]{"entity": "filter_name", "value": "very toxic"} label?
+    - Which comments are [level 3 toxic]{"entity": "filter_name", "value": "very toxic"}?
+    - Which nodes are [level 3 toxicity]{"entity": "filter_name", "value": "very toxic"}?
+    - Choose [very toxic]{"entity": "filter_name", "value": "very toxic"} comments?
     - Activate the [very toxic]{"entity": "filter_name", "value": "very toxic"} filter
-    - Check the [very toxic]{"entity": "filter_name", "value": "very toxic"} filter
-    - Activate the [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes filter
-    - Enable [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes filtering
-    - Enable the [very toxic]{"entity": "filter_name", "value": "very toxic"} filter
-    - Enable the filter [very toxic]{"entity": "filter_name", "value": "very toxic"}
+    - Check the [level 3 toxic{"entity": "filter_name", "value": "very toxic"} filter
+    - Tick off [level 3 toxicity]{"entity": "filter_name", "value": "very toxic"} nodes filter
+    - I was hoping you could check [the most toxic]{"entity": "filter_name", "value": "very toxic"} nodes filtering
+    - I was wondering if you could turn on [very toxic]{"entity": "filter_name", "value": "very toxic"} comments
+    - Could you possibly bring up [level 3 toxicity]{"entity": "filter_name", "value": "very toxic"} for me
 
+    ##which comments are tagged with non toxic- yes
+    ## which comments have the none toxic label- yes
     # positive, negative, neutral stance
 
     - I want to see [positive]{"entity": "filter_name"} comments
