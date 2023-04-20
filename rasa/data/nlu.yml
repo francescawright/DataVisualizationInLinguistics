@@ -715,27 +715,29 @@ nlu:
 # highlight options
 - intent: highlight_check
   examples: |
-    - I want to see [non toxic]{"entity": "filter_name", "value": "non toxic"} comments
+    - Highlight [non toxic]{"entity": "filter_name", "value": "non toxic"} comments
+    - Can I highlight [not toxic]{"entity": "filter_name", "value": "non toxic"}
+    - Check [not toxic]{"entity": "filter_name", "value": "non toxic"} nodes
+    - Show me [level 0 toxicity]{"entity": "filter_name", "value": "non toxic"} nodes
+    - May you tick  [not toxic]{"entity": "filter_name", "value": "non toxic"}
+    - Check [toxic level 0]{"entity": "filter_name", "value": "non toxic"} comments
+    - Show me [not toxic]{"entity": "filter_name", "value": "non toxic"} nodes
     - I want to see [not toxic]{"entity": "filter_name", "value": "non toxic"}
-    - I want to see [not toxic]{"entity": "filter_name", "value": "non toxic"} nodes
-    - highlight [level 0 toxicity]{"entity": "filter_name", "value": "non toxic"} nodes
-    - highlight [not toxic]{"entity": "filter_name", "value": "non toxic"}
-    - highlight [toxic level 0]{"entity": "filter_name", "value": "non toxic"} comments
-    - show me [not toxic]{"entity": "filter_name", "value": "non toxic"} nodes
-    - show me [not toxic]{"entity": "filter_name", "value": "non toxic"}
-    - show me [non toxic]{"entity": "filter_name", "value": "non toxic"} comments
-    - show [least toxic]{"entity": "filter_name", "value": "non toxic"} nodes
-    - show [least toxicity]{"entity": "filter_name", "value": "non toxic"} nodes
+    - I would like to visualise [non toxic]{"entity": "filter_name", "value": "non toxic"} comments
+    - Could you switch on  [least toxic]{"entity": "filter_name", "value": "non toxic"} nodes
+    - Could you select [least toxicity]{"entity": "filter_name", "value": "non toxic"} nodes
     - Which nodes have the [least toxicity]{"entity": "filter_name", "value": "non toxic"}?
     - Which comments are the [least toxic]{"entity": "filter_name", "value": "non toxic"}?
     - Which nodes are [non toxic]{"entity": "filter_name", "value": "non toxic"}?
-    - Can you show me the [least toxic]{"entity": "filter_name", "value": "non toxic"} comments?
+    - Choose [least toxic]{"entity": "filter_name", "value": "non toxic"} comments?
     - Activate the [non toxic]{"entity": "filter_name", "value": "non toxic"} filter
     - Check the [non toxic]{"entity": "filter_name", "value": "non toxic"} filter
-    - Activate the [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes filter
-    - Enable [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes filtering
-    - Enable the [non toxic]{"entity": "filter_name", "value": "non toxic"} and [very toxic]{"entity": "filter_name"} filters
-    - Enable the filter [non toxic]{"entity": "filter_name", "value": "non toxic"}
+    - Tick off [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes filter
+    - I was hoping you could check [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes filtering
+    - I was wondering if you could turn [non toxic]{"entity": "filter_name", "value": "non toxic"} and [very toxic]{"entity": "filter_name"} filters on
+    - Could you possibly bring up [non toxic]{"entity": "filter_name", "value": "non toxic"} for me
+    
+   
 
     - I want to see [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
     - I want to see [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"}
@@ -1130,11 +1132,10 @@ nlu:
     - Would it be possible for you to get rid of nodes filters 
     - Clear the edges filters
     - Switch off nodes and edges
-    - Unhcek all node and edge filters
+    - Uncheck all node and edge filters
     - Hide all filters in node and edge
     - Reset
     - Go back to the beginning
-
 #- Would I be able to get rid of the nodes and edges filters- yes
 
 
@@ -2122,9 +2123,9 @@ nlu:
     - Check all colours
     - I want to see all colour features
     - I would like to see all colour features
-    - Turn on stereotype all colour features filtering
+    - Turn on all colour features filtering
     - Could you switch on all colour features
-    - Select stereotype all colour features
+    - Select all colour features
     - Choose all colours
     - Activate all colour features
     - Enable all colour features filters
