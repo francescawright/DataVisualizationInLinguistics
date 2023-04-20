@@ -903,23 +903,6 @@ nlu:
 
     # targets --> target person, target group, stereotype
 
-    - I want to see comments with [target person]{"entity": "filter_name"}
-    - Show me nodes with [target person]{"entity": "filter_name"}
-    - Highlight comments with [target person]{"entity": "filter_name"}
-    - Show nodes with [target person]{"entity": "filter_name"}
-    - Activate the [target person]{"entity": "filter_name"} nodes
-    - Check the [target person]{"entity": "filter_name"} node and edge filter
-    - Activate the [target person]{"entity": "filter_name"} comments
-    - Enable [target person]{"entity": "filter_name"} nodes
-    - Enable the [target person]{"entity": "filter_name"} nodes
-    - Enable nodes with [target person]{"entity": "filter_name"}
-    - Check [target person]{"entity": "filter_name"} node and edge
-    - Highlight [target person]{"entity": "filter_name"} node and edge
-    - Highlight [target person]{"entity": "filter_name"} nodes
-    - Turn on [target person]{"entity": "filter_name"} node and edge
-    - Turn on [target person]{"entity": "filter_name"} nodes
-    - Select [target person]{"entity": "filter_name"} nodes
-
     - Highlight [target person]{"entity": "filter_name" } comments
     - Can I highlight [target person]{"entity": "filter_name" } nodes and edges
     - Check [target person]{"entity": "filter_name" } edges
@@ -942,22 +925,6 @@ nlu:
     - I was wondering if you could turn on [target person]{"entity": "filter_name" } comments filter
     - Could you possibly bring up [target person]{"entity": "filter_name" } comments for me?
 
-    - I want to see comments with [target group]{"entity": "filter_name"}
-    - Show me nodes with [target group]{"entity": "filter_name"}
-    - Highlight comments with [target group]{"entity": "filter_name"}
-    - Show nodes with [target group]{"entity": "filter_name"}
-    - Activate the [target group]{"entity": "filter_name"} node and edge filter
-    - Check the [target group]{"entity": "filter_name"} nodes filtering
-    - Activate the [target group]{"entity": "filter_name"} comments filter
-    - Enable [target group]{"entity": "filter_name"} nodes filtering
-    - Enable the [target group]{"entity": "filter_name"} node and edge filter
-    - Check [target group]{"entity": "filter_name"} node and edge
-    - Highlight [target group]{"entity": "filter_name"} node and edge
-    - Highlight [target group]{"entity": "filter_name"} nodes
-    - Turn on [target group]{"entity": "filter_name"} node and edge
-    - Turn on [target group]{"entity": "filter_name"} nodes
-    - Select [target group]{"entity": "filter_name"} nodes
-
     - Highlight [target group]{"entity": "filter_name" } comments
     - Can I highlight [target group]{"entity": "filter_name" } nodes and edges
     - Check [target group]{"entity": "filter_name" } edges
@@ -979,40 +946,52 @@ nlu:
     - I was hoping you could check [target group]{"entity": "filter_name" } nodes filtering
     - I was wondering if you could turn on [target group]{"entity": "filter_name" } comments filter
     - Could you possibly bring up [target group]{"entity": "filter_name" } comments for me?
-
-    - I want to see comments with [stereotype]{"entity": "filter_name"}
-    - Show me nodes with [stereotype]{"entity": "filter_name"}
-    - Highlight nodes with [stereotype]{"entity": "filter_name"}
-    - Show comments with [stereotype]{"entity": "filter_name"}
-    - Activate the [stereotype]{"entity": "filter_name"} [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} filters
-    - Check the [stereotype]{"entity": "filter_name"} [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} filters
-    - Activate the [stereotype]{"entity": "filter_name"} comments filter
-    - Enable [stereotype]{"entity": "filter_name"} nodes filtering
-    - Enable the node and edge filter [stereotype]{"entity": "filter_name"}
-    - Check [stereotype]{"entity": "filter_name"} node and edge
-    - Highlight [stereotype]{"entity": "filter_name"} node and edge
-    - Highlight [stereotype]{"entity": "filter_name"} nodes
-    - Turn on [stereotype]{"entity": "filter_name"} node and edge
-    - Turn on [stereotype]{"entity": "filter_name"} nodes
-    - Select [stereotype]{"entity": "filter_name"} nodes
+    
+    - Highlight [stereotype]{"entity": "filter_name" } comments
+    - Can I highlight [stereotype]{"entity": "filter_name" } nodes and edges
+    - Check [stereotype]{"entity": "filter_name" } edges
+    - Show me [stereotype]{"entity": "filter_name" } edges filter
+    - May you tick [stereotype]{"entity": "filter_name" } nodes and edges filter
+    - Check [stereotype]{"entity": "filter_name" }, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} filters
+    - Show me [stereotype]{"entity": "filter_name" } edges filtering
+    - I want to see [stereotype]{"entity": "filter_name" } nodes and edges filtering
+    - I would like to visualise [stereotype]{"entity": "filter_name" } comments
+    - Could you switch on [stereotype]{"entity": "filter_name" }, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} comments filters
+    - Could you select [stereotype]{"entity": "filter_name" } comments filtering
+    - Which nodes and edges have the [stereotype]{"entity": "filter_name" } label?
+    - Which comments are [stereotype]{"entity": "filter_name" } ?
+    - Which nodes are [stereotype]{"entity": "filter_name" } ?
+    - Choose [stereotype]{"entity": "filter_name" } node comments
+    - Activate the [stereotype]{"entity": "filter_name" } nodes
+    - Check the [stereotype]{"entity": "filter_name" } nodes filter
+    - Tick off [stereotype]{"entity": "filter_name" }  nodes filtering
+    - I was hoping you could check [stereotype]{"entity": "filter_name" } nodes filtering
+    - I was wondering if you could turn on [stereotype]{"entity": "filter_name" } comments filter
+    - Could you possibly bring up [stereotype]{"entity": "filter_name" } comments for me?
 
     # targets select all
 
-    - I want to select [all targets]{"entity": "filter_name"} nodes
-    - I want to select [all targets]{"entity": "filter_name"} checkbox
-    - Select [all targets]{"entity": "filter_name"} checkbox
-    - I want to select [all targets]{"entity": "filter_name"} node an edge option
-    - Select [all targets]{"entity": "filter_name"} nodes option
-    - I want to see nodes with [all targets]{"entity": "filter_name"}
-    - Show me nodes with [all targets]{"entity": "filter_name"}
-    - Highlight comments with [all targets]{"entity": "filter_name"}
-    - Show comments with [all targets]{"entity": "filter_name"}
-    - Activate the select [all targets]{"entity": "filter_name"} node and edge filter
-    - Check the select [all targets]{"entity": "filter_name"} filter
-    - Activate the select [all targets]{"entity": "filter_name"} comments filter
-    - Enable select [all targets]{"entity": "filter_name"} nodes filtering
-    - Enable the select [all targets]{"entity": "filter_name"} filter
-    - Enable the filter select [all targets]{"entity": "filter_name"}
+    - Highlight comments with [all targets]{"entity": "filter_name" }
+    - Can I highlight [both targets]{"entity": "filter_name" } nodes and edges
+    - Check [all targets]{"entity": "filter_name" } edges
+    - Show me nodes and edges with [both targets]{"entity": "filter_name" } 
+    - May you tick [all targets]{"entity": "filter_name" } nodes and edges filter
+    - Check [both targets]{"entity": "filter_name" }  comments checkbox
+    - Show me [all targets]{"entity": "filter_name" } edges filtering
+    - I want to see [both targets]{"entity": "filter_name" } nodes and edges filtering
+    - I would like to visualise [all targets]{"entity": "filter_name" } comments
+    - Could you switch on the [all targets]{"entity": "filter_name" } comments filter
+    - Could you select [both targets]{"entity": "filter_name" } comments filtering
+    - Which nodes and edges have the [all targets]{"entity": "filter_name" } label?
+    - Which comments are [all targets]{"entity": "filter_name" } ?
+    - Which nodes are [both targets]{"entity": "filter_name" } ?
+    - Choose [all targets]{"entity": "filter_name" } node comments
+    - Activate the [both targets]{"entity": "filter_name" } nodes
+    - Check the [all targets]{"entity": "filter_name" } nodes filter
+    - Tick off [all targets]{"entity": "filter_name" }  nodes filtering
+    - I was hoping you could check [both targets]{"entity": "filter_name" } nodes filtering
+    - I was wondering if you could turn on [all targets]{"entity": "filter_name" } comments filter
+    - Could you possibly bring up comments with [both targets]{"entity": "filter_name" } for me?
 
     # features--> constructiveness, argumentation
 
