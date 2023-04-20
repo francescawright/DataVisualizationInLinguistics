@@ -2136,93 +2136,206 @@ nlu:
 
 - intent: uncheck_all_colour_features
   examples: |
-    - Disable all colour features
+    - Can I disable all colour features 
     - Uncheck all colours
-    - Uncheck all colour features
-    - Turn off all colours
-    - Turn off all colour features
+    - May you turn off all colour features filters
+    - I want to reset all colour filters
+    - I would like to switch off all colour features filtering
+    - Deselect all colour filtering
+    - Could you hide all colour glyph features
+    - I was hoping you could switch off all colour glyphs
+    - I was wondering if you could deactivate all colour glyph filters
+    - Would you be able to untick all colour filtering
+    - Could you possibly clear every colour feature
+    - Clear off every colour feature filter
+    - May you remove every colour feature filtering
+    - Would it be possible for you to unmark every colour feature glyph
+    - Unselect every colour filter
+    - Get rid of every colour glyph feature
+    - Would I be able to take all colour highlights off
+#remove all colour highlighting-yes
 
 # uncheck colour features
 - intent: colour_feature_constructiveness_uncheck
   examples: |
-    - Uncheck constructiveness colour
-    - Uncheck constructiveness colour feature
-    - Turn off constructiveness colour
-    - Turn off constructiveness colour feature
-    - Disable constructiveness colour feature
-    - Disable constructiveness colour
+    - Can I disable constructiveness colour feature 
+    - Uncheck constructive colours
+    - May you turn off all constructivity colour filters
+    - I want to reset constructiveness colour filters
+    - I would like to switch off all constructiveness colour features filtering
+    - Deselect constructivity colour filtering
+    - Could you hide constructive colour glyph features
+    - I was hoping you could switch off all constructive colour glyphs
+    - I was wondering if you could deactivate constructiveness colour glyph filters
+    - Would you be able to untick all constructiveness colour filtering
+    - Could you possibly clear constructiveness colour feature
+    - Clear off all constructivity colour feature filters
+    - May you remove constructiveness colour filtering
+    - Would it be possible for you to unmark all constructiveness colour feature glyphs
+    - Unselect all constructiveness colour filter
+    - Get rid of all constructive colour features
+    - Would I be able to take constructivity colours off
+#COMPROBADO
 
 - intent: colour_feature_argumentation_uncheck
   examples: |
-    - Uncheck argumentation colour
-    - Uncheck argumentation colour feature
-    - Turn off argumentation colour
-    - Turn off argumentation colour feature
-    - Disable argumentation colour feature
-    - Disable argumentation colour
+    - Can I disable argumentation colour feature 
+    - Uncheck argument colours
+    - May you turn off argumentation colour filters
+    - I want to reset argumentation colour filters
+    - I would like to switch off argumentation colour features filtering
+    - Deselect argumentation colour filtering
+    - Could you hide argument colour glyph features
+    - I was hoping you could switch off argumentation colour glyphs
+    - I was wondering if you could deactivate argumentation colour glyph filters
+    - Would you be able to untick argument colour filtering
+    - Could you possibly clear argument colour feature
+    - Clear off all argumentation colour feature filters
+    - May you remove argumentation colour filtering
+    - Would it be possible for you to unmark argumentation colour feature glyphs
+    - Unselect argumentation colour filter
+    - Get rid of argumentation colour features
+    - Would I be able to take argumentation colours off
 
 - intent: colour_feature_sarcasm_uncheck
   examples: |
-    - Uncheck sarcasm colour
-    - Uncheck sarcasm colour feature
-    - Turn off sarcasm colour
-    - Turn off sarcasm colour feature
-    - Disable sarcasm colour feature
-    - Disable sarcasm colour
+   - Can I disable sarcasm colour feature 
+    - Uncheck sarcastic colours
+    - May you turn off sarcasm colour filters
+    - I want to reset sarcasm colour filters
+    - I would like to switch off sarcasm colour features filtering
+    - Deselect sarcastic colour filtering
+    - Could you hide sarcasm colour glyph features
+    - I was hoping you could switch off sarcasm colour glyphs
+    - I was wondering if you could deactivate sarcastic colour glyph filters
+    - Would you be able to untick sarcasm colour filtering
+    - Could you possibly clear sarcasm colour feature
+    - Clear off sarcastic colour feature filters
+    - May you remove sarcasm colour filtering
+    - Would it be possible for you to unmark sarcasm colour feature glyphs
+    - Unselect sarcasm colour filter
+    - Get rid of sarcastic colour features
+    - Would I be able to take sarcasm colours off
 
 - intent: colour_feature_mockery_uncheck
   examples: |
+    - Can I disable mockery colour feature 
     - Uncheck mockery colour
-    - Uncheck mockery colour feature
-    - Turn off mockery colour
-    - Turn off mockery colour feature
-    - Disable mockery colour feature
-    - Disable mockery colour
+    - May you turn off mockery colour filter
+    - I want to reset mockery colour filter
+    - I would like to switch off mockery colour feature filtering
+    - Deselect mockery colour filtering
+    - Could you hide mockery colour glyph feature
+    - I was hoping you could switch off mockery colour glyphs
+    - I was wondering if you could deactivate mockery colour glyph filters
+    - Would you be able to untick mockery colour filtering
+    - Could you possibly clear mockery colour feature
+    - Clear off mockery colour feature filter
+    - May you remove mockery colour filtering
+    - Would it be possible for you to unmark mockery colour feature glyphs
+    - Unselect mockery colour filter
+    - Get rid of mockery colour feature
+    - Would I be able to take mockery colours off
 
 - intent: colour_feature_intolerance_uncheck
   examples: |
+    - Can I disable intolerance colour feature 
     - Uncheck intolerance colour
-    - Uncheck intolerance colour feature
-    - Turn off intolerance colour
-    - Turn off intolerance colour feature
-    - Disable intolerance colour feature
-    - Disable intolerance colour
+    - May you turn off intolerant colour filter
+    - I want to reset intolerance colour filter
+    - I would like to switch off intolerant colour feature filtering
+    - Deselect intolerance colour filtering
+    - Could you hide intolerance colour glyph feature
+    - I was hoping you could switch off intolerance colour glyphs
+    - I was wondering if you could deactivate intolerant colour glyph filters
+    - Would you be able to untick intolerance colour filtering
+    - Could you possibly clear intolerance colour feature
+    - Clear off intolerance colour feature filter
+    - May you remove intolerant colour filtering
+    - Would it be possible for you to unmark intolerance colour feature glyphs
+    - Unselect intolerant colour filter
+    - Get rid of intolerance colour feature
+    - Would I be able to take intolerant colours off
 
 - intent: colour_feature_improper_uncheck
   examples: |
+    - Can I disable improper language colour feature 
     - Uncheck improper language colour
-    - Uncheck improper language colour feature
-    - Turn off improper language colour
-    - Turn off improper language colour feature
-    - Disable improper language colour feature
-    - Disable improper language colour
+    - May you turn off improper colour filter
+    - I want to reset improper language colour filter
+    - I would like to switch off improper colour feature filtering
+    - Deselect improper colour filtering
+    - Could you hide improper language colour glyph feature
+    - I was hoping you could switch off improper colour glyphs
+    - I was wondering if you could deactivate improper language colour glyph filters
+    - Would you be able to untick improper language colour filtering
+    - Could you possibly clear improper colour feature
+    - Clear off improper language colour feature filter
+    - May you remove improper colour filtering
+    - Would it be possible for you to unmark improper language colour feature glyphs
+    - Unselect improper language colour filter
+    - Get rid of improper colour feature
+    - Would I be able to take improper language colours off
 
 - intent: colour_feature_insult_uncheck
   examples: |
+    - Can I disable insult colour feature 
     - Uncheck insult colour
-    - Uncheck insult colour feature
-    - Turn off insult colour
-    - Turn off insult colour feature
-    - Disable insult colour feature
-    - Disable insult colour
+    - May you turn off insult colour filter
+    - I want to reset insult colour filter
+    - I would like to switch off insult colour feature filtering
+    - Deselect insult colour filtering
+    - Could you hide insult colour glyph feature
+    - I was hoping you could switch off insult colour glyphs
+    - I was wondering if you could deactivate insult colour glyph filters
+    - Would you be able to untick insult colour filtering
+    - Could you possibly clear insult colour feature
+    - Clear off insult colour feature filter
+    - May you remove insult colour filtering
+    - Would it be possible for you to unmark insult colour feature glyphs
+    - Unselect insult colour filter
+    - Get rid of insult colour feature
+    - Would I be able to take insult colours off
 
 - intent: colour_feature_aggressiveness_uncheck
   examples: |
+    - Can I disable aggressiveness colour feature 
     - Uncheck aggressiveness colour
-    - Uncheck aggressiveness colour feature
-    - Turn off aggressiveness colour
-    - Turn off aggressiveness colour feature
-    - Disable aggressiveness colour feature
-    - Disable aggressiveness colour
+    - May you turn off aggressive colour filter
+    - I want to reset aggressiveness colour filter
+    - I would like to switch off aggressive colour feature filtering
+    - Deselect aggressive colour filtering
+    - Could you hide aggressive colour glyph feature
+    - I was hoping you could switch off aggressiveness colour glyphs
+    - I was wondering if you could deactivate aggressiveness colour glyph filters
+    - Would you be able to untick aggressive colour filtering
+    - Could you possibly clear aggressiveness colour feature
+    - Clear off aggressive colour feature filter
+    - May you remove aggressiveness colour filtering
+    - Would it be possible for you to unmark aggressiveness colour feature glyphs
+    - Unselect aggressive colour filter
+    - Get rid of aggressiveness colour feature
+    - Would I be able to take aggressiveness colours off
 
 - intent: colour_feature_stereotype_uncheck
   examples: |
+    - Can I disable stereotype colour feature 
     - Uncheck stereotype colour
-    - Uncheck stereotype colour feature
-    - Turn off stereotype colour
-    - Turn off stereotype colour feature
-    - Disable stereotype colour feature
-    - Disable stereotype colour
+    - May you turn off stereotype colour filter
+    - I want to reset stereotype colour filter
+    - I would like to switch off stereotype colour feature filtering
+    - Deselect stereotype colour filtering
+    - Could you hide stereotype colour glyph feature
+    - I was hoping you could switch off stereotype colour glyphs
+    - I was wondering if you could deactivate stereotype colour glyph filters
+    - Would you be able to untick stereotype colour filtering
+    - Could you possibly clear stereotype colour feature
+    - Clear off stereotype colour feature filter
+    - May you remove stereotype colour filtering
+    - Would it be possible for you to unmark stereotype colour feature glyphs
+    - Unselect stereotype colour filter
+    - Get rid of stereotype colour feature
+    - Would I be able to take stereotype colours off
 
 # targets check
 - intent: icon_feature_person
@@ -2256,7 +2369,7 @@ nlu:
     - I want to display target group icon feature
     - I want to visualise target group icon
     - Can I highlight target group icon
-    - Check target group  icon filter
+    - Check target group icon filter
     - Switch on target group icon feature
     - Show me target group icon feature
     - May you tick target group icon feature filtering
@@ -2395,12 +2508,12 @@ nlu:
     - Can you tick [argumentation]{"entity": "filter_name" } filtering
     - May you check [argument]{"entity": "filter_name"}
     - Show me [argumentation]{"entity": "filter_name"} filter
-    - I want to see [argumenation]{"entity": "filter_name"}
-    - I would like to select [argumenation]{"entity": "filter_name"}
-    - Could I activate [argumenation]{"entity": "filter_name"} filtering
-    - Enable [argumenation]{"entity": "filter_name"}
-    - Highlight [argumenation]{"entity": "filter_name"} filter
-    - Turn on [argumenation]{"entity": "filter_name"}
+    - I want to see [argumentation]{"entity": "filter_name"}
+    - I would like to select [argumentation]{"entity": "filter_name"}
+    - Could I activate [argumentation]{"entity": "filter_name"} filtering
+    - Enable [argumentation]{"entity": "filter_name"}
+    - Highlight [argumentation]{"entity": "filter_name"} filter
+    - Turn on [argumentation]{"entity": "filter_name"}
     - Tick off [argumentation]{"entity": "filter_name"}
     - Switch on [argumentation]{"entity": "filter_name"} filter
     - I was hoping you could check [argumentation]{"entity": "filter_name"}
@@ -2658,7 +2771,6 @@ nlu:
     - Go back to the beginning
     - Switch off filters
     - Uncheck all filters
-
 #clear the filters off the interface- yes
 # take the filters off the interface- yes
 #i'd like you to deactivate all filtering- yes
