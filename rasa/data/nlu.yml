@@ -460,10 +460,6 @@ nlu:
     - Let me see [file]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
     - Choose {20170819]{"entity": "document_requested"} to analyse first
 #start with X
-
-
-
-
   #Let's analyse 20200608_SO- yes
 # bring up file 20200608_SO- yes
 # let's begin with file 20200608_SO - yes
@@ -480,27 +476,6 @@ nlu:
  #   - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
 #    - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
 
-- synonym: I want to
-  examples: |
-    - I want to
-    - I would like to
-    - I'd like to
-    - Can you
-    - Can I
-    - May you
-    - May I
-    - Could you
-    - Could I
-    - I want you to
-    - I would like you to
-    - I'd like you to
-    - I was hoping you could
-    - I was wondering if you could
-    - Would I able to
-    - Would you be able to
-    - Would it be possible for you to
-    - Could you possibly 
-    - How about you
 
 # Ask bot to change to OR / AND
 - intent: switch_or
@@ -1164,7 +1139,7 @@ nlu:
     - Enable the filter select [all features]{"entity": "filter_name"}
 
     - I want to select [all levels of toxicity]{"entity": "filter_name"}
-    - Select [all levels of toxicity]{"entity": "filter_name"}
+    - Select [all toxicity levels]{"entity": "filter_name"}
     - I want to select [all levels of toxicity]{"entity": "filter_name"} checkbox
     - Select [all levels of toxicity]{"entity": "filter_name"} checkbox
     - I want to select [all levels of toxicity]{"entity": "filter_name"} option
@@ -1210,20 +1185,33 @@ nlu:
     - Switch off nodes and edges
     - Uncheck all node and edge filters
     - Hide all filters in node and edge
-    - Reset
-    - Go back to the beginning
+
 #- Would I be able to get rid of the nodes and edges filters- yes
+#turn off all node and edges checkboxes
+#reset
+#go back to the beginning
 
 
 - intent: highlight_uncheck
   examples: |
-    - Disable [non toxic]{"entity": "filter_name"} option
-    - Hide [least toxic]{"entity": "filter_name"} comments
-    - Uncheck [not toxic]{"entity": "filter_name"} filter
-    - Disable [least toxicity]{"entity": "filter_name"} option
-    - Hide [toxic level 0]{"entity": "filter_name"} nodes
-    - Uncheck [level 0 toxic]{"entity": "filter_name"} filter
-    - Disable [level 0 toxicity]{"entity": "filter_name"} and [very toxic]{"entity": "filter_name"} options
+    
+    - Can I disable [non toxic]{"entity": "filter_name"} option 
+    - Uncheck [least toxic]{"entity": "filter_name"} from the check list
+    - May you turn off [not toxic]{"entity": "filter_name"} filter
+    - I want to reset [toxicity level 0]{"entity": "filter_name"} filter option
+    - I would like to switch off [level 0 toxicity]{"entity": "filter_name"} filtering option
+    - Deselect [non toxic]{"entity": "filter_name"} filter selection
+    - Could you hide [toxicity 0 ]{"entity": "filter_name"} comments
+    - I was hoping you could switch off [level 0 toxic]{"entity": "filter_name"} nodes filter
+    - I was wondering if you could deactivate [non toxic]{"entity": "filter_name"} nodes filtering
+    - Would you be able to untick [least toxic]{"entity": "filter_name"} nodes
+    - Could you possibly clear [non toxic]{"entity": "filter_name"} filtering
+    - Clear off [level 0 toxic]{"entity": "filter_name"} comment filter
+    - May you remove [least toxic]{"entity": "filter_name"} comment filtering
+    - Would it be possible for you to unmark comments labelled [non toxic]{"entity": "filter_name"} 
+    - Unselect [non toxic]{"entity": "filter_name"} tag
+    - Get rid of [least toxic]{"entity": "filter_name"} label
+    - Would I be able to take [level 0 toxic]{"entity": "filter_name"} off
 
     - Disable [toxicity level 3]{"entity": "filter_name"} option
     - Hide [most toxic]{"entity": "filter_name"} and [least toxic]{"entity": "filter_name"} nodes
@@ -1232,7 +1220,7 @@ nlu:
     - Hide [toxic level 3]{"entity": "filter_name"} comments
     - Uncheck [level 3 toxic]{"entity": "filter_name"} filter
     - Disable [level 3 toxicity]{"entity": "filter_name"} option
-
+    
     - Disable [toxicity level 1]{"entity": "filter_name"} option
     - Hide [slightly toxic]{"entity": "filter_name"} comments
     - Uncheck [mildly toxic]{"entity": "filter_name"} filter
@@ -1435,42 +1423,45 @@ nlu:
 # related to depth
 - intent: longest_thread
   examples: |
-    - Show me the longest thread
     - I want to see the longest thread
-    - Which thread is the longest
     - Can you show me the longest thread
-    - Which thread is the deepest
-    - Can you show me the deepest thread
-    - Show me the deepest thread
-    - I want to see deepest thread
+    - Which thread is the longest?
+    - I was wondering if could you highlight the longest thread for me
+    - Which thread is the deepest?
+    - I was hoping you could show me the deepest thread
+    - Would you be able to bring up the deepest thread
+    - What is the deepest thread?
+    - What thread is the longest?
     - I would like to see deepest thread
-    - I would like to see the longest thread
-    - Display the longest thread
-    - Display the deepest thread
-    - Show the longest thread
-    - Display the longest thread
-    - deepest thread
-    - longest thread
+    - I would like to display the longest thread
+#extract the longest/deepest thread- yes
+#COMPROBADO
+#however could improve for circle packing
+
 
 # related to the wideness
 - intent: widest_level
   examples: |
-    - Show me the widest level
     - I want to see the widest level
+    - Can you show me the widest width thread
     - Which level is the widest?
-    - Can you show me the widest level?
-    - I would like to see the widest level
-    - Display the widest level
-    - Show the widest level
-    - Show me the widest depth
-    - I want to see the widest depth
-    - Which depth is the widest?
-    - Can you show me the widest depth?
-    - I would like to see the widest depth
-    - Display the widest depth
-    - Show the widest depth
-    - widest level
-    - widest depth
+    - I was wondering if could you highlight the widest width for me
+    - Which level is the widest?
+    - I was hoping you could display me the widest width for me
+    - Would you be able to bring up the level with the widest width
+    - What is the widest level?
+    - At what depth is the widest level?
+    - At what level are there most comments?
+    - At what comment level are there more comments?
+    - How many comments are there at the widest level?
+    - What's the widest point of the visualisation?
+    - What's the widest part of my data?
+    - At what level can the most comments be seen?
+    - At what level is the visualisation the deepest?
+  #COMPROBAR
+  #how many nodes are there at the widest level-yes
+  #at what point are there most nodes-yes
+  #better BUT i think the questions can be improved for circle packing visualisation
 
 # related to the size
 # It can be referenced as thread or subtree.
@@ -1478,8 +1469,8 @@ nlu:
   examples: |
     - Show me the largest thread
     - I want to see the largest thread
-    - Which thread is the largest
-    - Can you show me the largest thread
+    - Which thread is the largest?
+    - Can you show me the largest thread?
     - I would like to see the largest thread
     - Display the largest thread
     - Show the largest thread
@@ -1491,21 +1482,19 @@ nlu:
     - I want to see the most crowded thread
     - I would like to see the most crowded thread
     - Show the most crowded thread
-    - Display the most crowded thread
-    - largest thread
-    - crowded thread
+    - Could you display the most crowded thread for me
     - Show me the largest subtree
     - I want to see the largest subtree
-    - Which subtree is the largest
+    - Which subtree is the largest?
     - Can you show me the largest subtree
-    - I would like to see the largest subtree
+    - I would like you to show me the largest subtree
     - Display the largest subtree
     - Show the largest subtree
     - Which subtree is the most crowded?
     - Which subtree has the most nodes?
     - Can you show me the most crowded subtree?
     - Can you show me the subtree with most nodes?
-    - Show me the most crowded subtree
+    - Would you be able to show me the most crowded subtree
     - I want to see the most crowded subtree
     - I would like to see the most crowded subtree
     - Show the most crowded subtree
@@ -1906,16 +1895,18 @@ nlu:
     - Guide for targets
     - May you inform me on targets icons
     - What's the difference between target person and target group?
-#target person and group intents new combos to be checked
+#COMPROBAR target person and group intents new combos to be checked
 
-- intent: help_sub_structure
+- intent: sub_structure_options
   examples: |
-    - what are sub structures?
-    - help me with sub structures?
-    - what are regions?
-    - can you visualise regions of the graph?
-    - can you visualize regions of the graph?
-
+    - What are the sub structure options?
+    - Can you remind of me the sub tree options?
+    - What are the sub regions you can highlight?
+    - Would you be able to tell me the sub regions again?
+    - Is it possible to analyse a smaller part of the visualisation?
+    - Can I analyse a small section of my data?
+    - Is it possible to look at smaller regions of my data?
+#COMPROBAR
 
 - intent: statistics_help
   examples: |
@@ -1939,26 +1930,45 @@ nlu:
 #May you inform me on statistics graphs-yes
 #compare the relationships of the features-yes
 #what data options are there- yes
-
+#COMPROBADO
 
 - intent: start_analysis
   examples: |
-    - start analysis
-    - start
+    - I want to start analysis
+    - Can you start that analysis
+    - I would like to begin analysing
+#COMPROBADO
 
 - intent: two_actions
   examples: |
-    - Change layout to tree and glyph to dots
-    - Change layout to tree and glyph to circular
-    - Change layout to tree and glyph to trivial cheese
-    - Change layout to radial and glyph to dots
-    - Change layout to radial and glyph to circular
-    - Change layout to radial and glyph to trivial cheese
-    - Change layout to force and glyph to dots
-    - Change layout to force and glyph to circular
-    - Change layout to force and glyph to trivial cheese
-
-
+    - I want to change layout to tree and glyph to dots
+    - I would like to change layout to tree and glyph to circular
+    - Could you change layout to tree and glyph to trivial cheese
+    - I want to change layout to radial and glyph to dots
+    - I would like to change layout to radial and glyph to circular
+    - Could you change layout to radial and glyph to trivial cheese
+    - I want to change layout to force and glyph to dots
+    - I would like to change layout to force and glyph to circular
+    - Could you change layout to force and glyph to trivial cheese
+    - I was hoping you could switch layout to tree and glyph to dots
+    - Would you be able to switch layout to tree and glyph to circular
+    - Could you possibly switch layout to tree and glyph to trivial cheese
+    - I was hoping you could switch layout to radial and glyph to dots
+    - Would you be able to switch layout to radial and glyph to circular
+    - Could you possibly switch layout to radial and glyph to trivial cheese
+    - I was hoping you could switch force to tree and glyph to dots
+    - Would you be able to switch force to tree and glyph to circular
+    - Could you possibly switch force to tree and glyph to trivial cheese
+    - Would it be possible to swap layout to tree and glyph to dots
+    - May you swap layout to tree and glyph to circular
+    - Select layout as tree and glyph as trivial cheese
+    - Would it be possible to swap layout to radial and glyph to dots
+    - May you swap layout to force and radial to circular
+    - Select layout as radial and glyph as trivial cheese
+    - Would it be possible to swap layout to force and glyph to dots
+    - May you swap layout to force and glyph to circular
+    - Select layout as force and glyph as trivial cheese
+ #COMPROBADO-> only for layouts and glyphs. Will ultimately need to be extended to all types of multiple actions
 
 #check colour features
 
@@ -2895,6 +2905,7 @@ nlu:
     - Turn off [all features]{"entity": "filter_name"}
     - Disable [all features]{"entity": "filter_name"}
     - Hide [all features]{"entity": "filter_name"}
+    - Turn off [all features]{"entity": "filter_name"} 
 
 - intent: filters_all_targets_uncheck
   examples: |

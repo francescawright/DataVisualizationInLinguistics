@@ -106,7 +106,7 @@ intents:
   - what_can_do_after_glyphs
   - features_on_the_left
   - targets_help
-  - help_sub_structure
+  - sub_structure_options
   - start_analysis
   - statistics_help
   - colour_feature_constructiveness
@@ -636,22 +636,16 @@ responses:
 
   # longest, largest, widest, most toxic
   utter_longest_thread:
-  - text: "intent_event,longest_thread,Here you have the longest thread"
-  - text: "intent_event,longest_thread,Here is the longest thread"
-  - text: "intent_event,longest_thread,Here you have displayed the longest thread"
-  - text: "intent_event,longest_thread,The longest thread is being displayed"
-
+  - text: "intent_event,longest_thread,I've extracted the longest thread"
 
   utter_widest_level:
-  - text: "intent_event,widest_level,I've highlighted the widest level in your graph"
+  - text: "intent_event,widest_level,I've highlighted the widest level"
 
   utter_largest_thread:
   - text: "intent_event,largest_thread,Here you have the largest subtree"
-  - text: "intent_event,largest_thread,Here is the largest subtree"
 
   utter_most_toxic_thread:
     - text: "intent_event,most_toxic_thread,Here is the most toxic thread"
-    - text: "intent_event,most_toxic_thread,Here you have the most toxic thread"
 
   utter_most_toxic_subtree:
     - text: "intent_event,most_toxic_subtree,Here is the most toxic subtree"
@@ -858,7 +852,7 @@ responses:
         - title: "Sub Regions"
           payload: '/help_sub_structure'
 
-  utter_help_sub_structure:
+  utter_sub_structure_options:
     - text: "Here are the subtrees that I can visualise, select one to see it."
       buttons:
         - title: "the largest thread"
