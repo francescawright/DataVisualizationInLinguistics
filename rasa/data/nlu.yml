@@ -807,51 +807,99 @@ nlu:
 
     ##which comments are tagged with non toxic- yes
     ## which comments have the none toxic label- yes
+    
     # positive, negative, neutral stance
+   
+    - Highlight [positive]{"entity": "filter_name"}  comments
+    - Can I highlight [positive stance]{"entity": "filter_name"} 
+    - Check [positive]{"entity": "filter_name"} edges
+    - Show me [positive stance]{"entity": "filter_name"} edges filter
+    - May you tick [positive]{"entity": "filter_name"} 
+    - Check [positive stance]{"entity": "filter_name"}  comments
+    - Show me [positive]{"entity": "filter_name"} edges filtering
+    - I want to see [positive stance]{"entity": "filter_name"} 
+    - I would like to visualise [positive]{"entity": "filter_name"} comments
+    - Could you switch on [positive stance ]{"entity": "filter_name"} comments filter
+    - Could you select [positive]{"entity": "filter_name"} comments filtering
+    - Which edges have the [positive stance]{"entity": "filter_name"} label?
+    - Which comments are [positive stance]{"entity": "filter_name"} ?
+    - Which nodes are [positive]{"entity": "filter_name"} ?
+    - Choose [positive stance]{"entity": "filter_name"}  comments?
+    - Activate the [positive]{"entity": "filter_name"} nodes
+    - Check the [positive stance]{"entity": "filter_name"} nodes filter
+    - Tick off [positive]{"entity": "filter_name"}  nodes filtering
+    - I was hoping you could check [positive stance]{"entity": "filter_name"} nodes filtering
+    - I was wondering if you could turn on [positive]{"entity": "filter_name"} comments filter
+    - Could you possibly bring up [positive stance]{"entity": "filter_name"} comments for me?
 
-    - I want to see [positive]{"entity": "filter_name"} comments
-    - Show me nodes with [positive stance]{"entity": "filter_name"}
-    - Highlight nodes with [positive stance]{"entity": "filter_name"}
-    - Show comments with [positive stance]{"entity": "filter_name"}
-    - Activate the [positive stance]{"entity": "filter_name"} filter
-    - Check the [positive stance]{"entity": "filter_name"} filter
-    - Activate the [positive stance]{"entity": "filter_name"} comments filter
-    - Enable [positive stance]{"entity": "filter_name"} nodes filtering
-    - Enable the [positive stance]{"entity": "filter_name"} filter
-    - Enable the filter [positive stance]{"entity": "filter_name"}
 
-    - I want to see nodes with [negative stance]{"entity": "filter_name"}
-    - Show me [negative]{"entity": "filter_name"} nodes
-    - Highlight comments with [negative stance]{"entity": "filter_name"}
-    - Show nodes with [negative stance]{"entity": "filter_name"}
-    - Activate the [negative stance]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
-    - Check the [negative stance]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
-    - Activate the [negative stance]{"entity": "filter_name"} comments filter
-    - Enable [negative stance]{"entity": "filter_name"} nodes filtering
-    - Enable the [negative stance]{"entity": "filter_name"} filter
-    - Enable the filter [negative stance]{"entity": "filter_name"}
+    - Highlight [negative]{"entity": "filter_name" }  comments
+    - Can I highlight [negative stance]{"entity": "filter_name" }
+    - Check [negative]{"entity": "filter_name" } edges
+    - Show me [negative stance]{"entity": "filter_name" } edges filter
+    - May you tick [negative]{"entity": "filter_name" }
+    - Check [negative stance]{"entity": "filter_name" }  comments
+    - Show me [negative]{"entity": "filter_name" } edges filtering
+    - I want to see [negative stance]{"entity": "filter_name" }
+    - I would like to visualise [negative]{"entity": "filter_name" } comments
+    - Could you switch on [negative stance ]{"entity": "filter_name" } comments filter
+    - Could you select [negative]{"entity": "filter_name" } comments filtering
+    - Which edges have the [negative stance]{"entity": "filter_name" } label?
+    - Which comments are [negative stance]{"entity": "filter_name" } ?
+    - Which nodes are [negative]{"entity": "filter_name" } ?
+    - Choose [negative stance]{"entity": "filter_name" }  comments?
+    - Activate the [negative]{"entity": "filter_name" } nodes
+    - Check the [negative stance]{"entity": "filter_name" } nodes filter
+    - Tick off [negative]{"entity": "filter_name" }  nodes filtering
+    - I was hoping you could check [negative stance]{"entity": "filter_name" } nodes filtering
+    - I was wondering if you could turn on [negative]{"entity": "filter_name" } comments filter
+    - Could you possibly bring up [negative stance]{"entity": "filter_name" } comments for me?
 
-    - I want to see nodes with [neutral stance]{"entity": "filter_name"}
-    - Show me comments with [neutral stance]{"entity": "filter_name"}
-    - Highlight [neutral]{"entity": "filter_name"} comments
-    - Show nodes with [neutral stance]{"entity": "filter_name"}
-    - Activate the [neutral stance]{"entity": "filter_name"} filter
-    - Check the [neutral stance]{"entity": "filter_name"} filter
-    - Activate the [neutral stance]{"entity": "filter_name"} comments filter
-    - Enable [neutral stance]{"entity": "filter_name"} nodes filtering
-    - Enable the [neutral stance]{"entity": "filter_name"} and [targets all]{"entity": "filter_name"} filters
-    - Enable the filter [neutral stance]{"entity": "filter_name"}
 
-    - I want to see nodes with [both stances]{"entity": "filter_name"}
-    - Show me comments with [both stances]{"entity": "filter_name"}
-    - Highlight [both stances]{"entity": "filter_name"} comments
-    - Show nodes with [both stances]{"entity": "filter_name"}
-    - Activate [both stances]{"entity": "filter_name"} filter
-    - Check [both stances]{"entity": "filter_name"} filter
-    - Activate [both stances]{"entity": "filter_name"} comments filter
-    - Enable [both stances]{"entity": "filter_name"} nodes
-    - Show me [both stances]{"entity": "filter_name"}
+    - Highlight [neutral]{"entity": "filter_name" }  comments
+    - Can I highlight [neutral stance]{"entity": "filter_name" }
+    - Check [neutral]{"entity": "filter_name" } edges
+    - Show me [neutral stance]{"entity": "filter_name" } edges filter
+    - May you tick [neutral]{"entity": "filter_name" }
+    - Check [neutral stance]{"entity": "filter_name" }  comments
+    - Show me [neutral]{"entity": "filter_name" } edges filtering
+    - I want to see [neutral stance]{"entity": "filter_name" }
+    - I would like to visualise [neutral]{"entity": "filter_name" } comments
+    - Could you switch on [neutral stance ]{"entity": "filter_name" } comments filter
+    - Could you select [neutral]{"entity": "filter_name" } comments filtering
+    - Which edges have the [neutral stance]{"entity": "filter_name" } label?
+    - Which comments are [neutral stance]{"entity": "filter_name" } ?
+    - Which nodes are [neutral]{"entity": "filter_name" } ?
+    - Choose [neutral stance]{"entity": "filter_name" }  comments?
+    - Activate the [neutral]{"entity": "filter_name" } nodes
+    - Check the [neutral stance]{"entity": "filter_name" } nodes filter
+    - Tick off [neutral]{"entity": "filter_name" }  nodes filtering
+    - I was hoping you could check [neutral stance]{"entity": "filter_name" } nodes filtering
+    - I was wondering if you could turn on [neutral]{"entity": "filter_name" } comments filter
+    - Could you possibly bring up [neutral stance]{"entity": "filter_name" } comments for me?
 
+
+    - Highlight [both stances]{"entity": "filter_name" }  comments
+    - Can I highlight [both stances]{"entity": "filter_name" }
+    - Check [both stances]{"entity": "filter_name" } edges
+    - Show me [both stances]{"entity": "filter_name" } edges filter
+    - May you tick [both stances]{"entity": "filter_name" }
+    - Check [both stances]{"entity": "filter_name" }  comments
+    - Show me [both stances]{"entity": "filter_name" } edges filtering
+    - I want to see [both stances]{"entity": "filter_name" }
+    - I would like to visualise [both stances]{"entity": "filter_name" } comments
+    - Could you switch on [both stances]{"entity": "filter_name" } comments filter
+    - Could you select [both stances]{"entity": "filter_name" } comments filtering
+    - Which edges have the [both stances]{"entity": "filter_name" } label?
+    - Which comments are [both stances]{"entity": "filter_name" } ?
+    - Which nodes are [both stances]{"entity": "filter_name" } ?
+    - Choose [both stances]{"entity": "filter_name" }  comments?
+    - Activate the [both stances]{"entity": "filter_name" } nodes
+    - Check the [both stances]{"entity": "filter_name" } nodes filter
+    - Tick off [both stances]{"entity": "filter_name" }  nodes filtering
+    - I was hoping you could check [both stances]{"entity": "filter_name" } nodes filtering
+    - I was wondering if you could turn on [both stances]{"entity": "filter_name" } comments filter
+    - Could you possibly bring up [both stances]{"entity": "filter_name" } comments for me?
 
     # targets --> target person, target group, stereotype
 
@@ -872,6 +920,28 @@ nlu:
     - Turn on [target person]{"entity": "filter_name"} nodes
     - Select [target person]{"entity": "filter_name"} nodes
 
+    - Highlight [target person]{"entity": "filter_name" } comments
+    - Can I highlight [target person]{"entity": "filter_name" } nodes and edges
+    - Check [target person]{"entity": "filter_name" } edges
+    - Show me [target person]{"entity": "filter_name" } edges filter
+    - May you tick [target person]{"entity": "filter_name" } nodes and edges filter
+    - Check [target person]{"entity": "filter_name" }  comments
+    - Show me [target person]{"entity": "filter_name" } edges filtering
+    - I want to see [target person]{"entity": "filter_name" } nodes and edges filtering
+    - I would like to visualise [target person]{"entity": "filter_name" } comments
+    - Could you switch on [target person]{"entity": "filter_name" } comments filter
+    - Could you select [target person]{"entity": "filter_name" } comments filtering
+    - Which nodes and edges have the [target person]{"entity": "filter_name" } label?
+    - Which comments are [target person]{"entity": "filter_name" } ?
+    - Which nodes are [target person]{"entity": "filter_name" } ?
+    - Choose [target person]{"entity": "filter_name" } node comments
+    - Activate the [target person]{"entity": "filter_name" } nodes
+    - Check the [target person]{"entity": "filter_name" } nodes filter
+    - Tick off [target person]{"entity": "filter_name" }  nodes filtering
+    - I was hoping you could check [target person]{"entity": "filter_name" } nodes filtering
+    - I was wondering if you could turn on [target person]{"entity": "filter_name" } comments filter
+    - Could you possibly bring up [target person]{"entity": "filter_name" } comments for me?
+
     - I want to see comments with [target group]{"entity": "filter_name"}
     - Show me nodes with [target group]{"entity": "filter_name"}
     - Highlight comments with [target group]{"entity": "filter_name"}
@@ -887,6 +957,28 @@ nlu:
     - Turn on [target group]{"entity": "filter_name"} node and edge
     - Turn on [target group]{"entity": "filter_name"} nodes
     - Select [target group]{"entity": "filter_name"} nodes
+
+    - Highlight [target group]{"entity": "filter_name" } comments
+    - Can I highlight [target group]{"entity": "filter_name" } nodes and edges
+    - Check [target group]{"entity": "filter_name" } edges
+    - Show me [target group]{"entity": "filter_name" } edges filter
+    - May you tick [target group]{"entity": "filter_name" } nodes and edges filter
+    - Check [target group]{"entity": "filter_name" }  comments
+    - Show me [target group]{"entity": "filter_name" } edges filtering
+    - I want to see [target group]{"entity": "filter_name" } nodes and edges filtering
+    - I would like to visualise [target group]{"entity": "filter_name" } comments
+    - Could you switch on [target group]{"entity": "filter_name" } comments filter
+    - Could you select [target group]{"entity": "filter_name" } comments filtering
+    - Which nodes and edges have the [target group]{"entity": "filter_name" } label?
+    - Which comments are [target group]{"entity": "filter_name" } ?
+    - Which nodes are [target group]{"entity": "filter_name" } ?
+    - Choose [target group]{"entity": "filter_name" } node comments
+    - Activate the [target group]{"entity": "filter_name" } nodes
+    - Check the [target group]{"entity": "filter_name" } nodes filter
+    - Tick off [target group]{"entity": "filter_name" }  nodes filtering
+    - I was hoping you could check [target group]{"entity": "filter_name" } nodes filtering
+    - I was wondering if you could turn on [target group]{"entity": "filter_name" } comments filter
+    - Could you possibly bring up [target group]{"entity": "filter_name" } comments for me?
 
     - I want to see comments with [stereotype]{"entity": "filter_name"}
     - Show me nodes with [stereotype]{"entity": "filter_name"}
