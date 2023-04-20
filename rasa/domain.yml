@@ -1137,7 +1137,7 @@ responses:
 #  unchek features which one?
 
   utter_filters_constructive_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_constructiveness_uncheck'
@@ -1145,7 +1145,7 @@ responses:
           payload: '/highlight_uncheck{"filter_name": "constructiveness"}'
 
   utter_filters_argumentation_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_argumentation_uncheck'
@@ -1154,7 +1154,7 @@ responses:
 
 
   utter_filters_sarcasm_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_sarcasm_uncheck'
@@ -1163,7 +1163,7 @@ responses:
 
 
   utter_filters_mockery_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_mockery_uncheck'
@@ -1172,7 +1172,7 @@ responses:
 
 
   utter_filters_intolerance_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_intolerance_uncheck'
@@ -1180,7 +1180,7 @@ responses:
           payload: '/highlight_uncheck{"filter_name": "intolerance"}'
 
   utter_filters_improper_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_improper_uncheck'
@@ -1188,7 +1188,7 @@ responses:
           payload: '/highlight_uncheck{"filter_name": "improper language"}'
 
   utter_filters_insult_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_insult_uncheck'
@@ -1196,7 +1196,7 @@ responses:
           payload: '/highlight_uncheck{"filter_name": "insult"}'
 
   utter_filters_aggressiveness_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_aggressiveness_uncheck'
@@ -1204,7 +1204,7 @@ responses:
           payload: '/highlight_uncheck{"filter_name": "aggressiveness"}'
 
   utter_filters_stereotype_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_stereotype_uncheck'
@@ -1212,7 +1212,7 @@ responses:
           payload: '/highlight_uncheck{"filter_name": "stereotype"}'
 
   utter_filters_target_person_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Targets"
           payload: '/uncheck_target_person'
@@ -1220,7 +1220,7 @@ responses:
           payload: '/highlight_uncheck{"filter_name": "target person"}'
 
   utter_filters_target_group_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Targets"
           payload: '/uncheck_target_group'
