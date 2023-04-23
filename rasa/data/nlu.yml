@@ -146,6 +146,7 @@ nlu:
     - [logout]{"entity": "action_requested", "value": "logout"}
     - [leave]{"entity": "action_requested", "value": "logout"} the session
     - [log-out]{"entity": "action_requested", "value": "logout"} my session
+#HACER
 
 - synonym: login
   examples: |
@@ -155,11 +156,8 @@ nlu:
     - access
     - log on
     - sign in
-    - open
-    - start
     - log-on
     - login
-    - begin
     - open session
   
 
@@ -794,7 +792,7 @@ nlu:
     - Show me [positive]{"entity": "filter_name"} edges filtering
     - I want to see [positive stance]{"entity": "filter_name"} 
     - I would like to visualise [positive]{"entity": "filter_name"} comments
-    - Could you switch on [positive stance ]{"entity": "filter_name"} comments filter
+    - Could you switch on [positive stance]{"entity": "filter_name"} comments filter
     - Could you select [positive]{"entity": "filter_name"} comments filtering
     - Which edges have the [positive stance]{"entity": "filter_name"} label?
     - Which comments are [positive stance]{"entity": "filter_name"} ?
@@ -817,7 +815,7 @@ nlu:
     - Show me [negative]{"entity": "filter_name" } edges filtering
     - I want to see [negative stance]{"entity": "filter_name" }
     - I would like to visualise [negative]{"entity": "filter_name" } comments
-    - Could you switch on [negative stance ]{"entity": "filter_name" } comments filter
+    - Could you switch on [negative stance]{"entity": "filter_name" } comments filter
     - Could you select [negative]{"entity": "filter_name" } comments filtering
     - Which edges have the [negative stance]{"entity": "filter_name" } label?
     - Which comments are [negative stance]{"entity": "filter_name" } ?
@@ -840,7 +838,7 @@ nlu:
     - Show me [neutral]{"entity": "filter_name" } edges filtering
     - I want to see [neutral stance]{"entity": "filter_name" }
     - I would like to visualise [neutral]{"entity": "filter_name" } comments
-    - Could you switch on [neutral stance ]{"entity": "filter_name" } comments filter
+    - Could you switch on [neutral stance]{"entity": "filter_name" } comments filter
     - Could you select [neutral]{"entity": "filter_name" } comments filtering
     - Which edges have the [neutral stance]{"entity": "filter_name" } label?
     - Which comments are [neutral stance]{"entity": "filter_name" } ?
@@ -1193,15 +1191,14 @@ nlu:
 
 
 - intent: highlight_uncheck
-  examples: |
-    
+  examples: | 
     - Can I disable [non toxic]{"entity": "filter_name"} option 
     - Uncheck [least toxic]{"entity": "filter_name"} from the check list
     - May you turn off [not toxic]{"entity": "filter_name"} filter
     - I want to reset [toxicity level 0]{"entity": "filter_name"} filter option
     - I would like to switch off [level 0 toxicity]{"entity": "filter_name"} filtering option
     - Deselect [non toxic]{"entity": "filter_name"} filter selection
-    - Could you hide [toxicity 0 ]{"entity": "filter_name"} comments
+    - Could you hide [toxicity 0]{"entity": "filter_name"} comments
     - I was hoping you could switch off [level 0 toxic]{"entity": "filter_name"} nodes filter
     - I was wondering if you could deactivate [non toxic]{"entity": "filter_name"} nodes filtering
     - Would you be able to untick [least toxic]{"entity": "filter_name"} nodes
@@ -1213,55 +1210,102 @@ nlu:
     - Get rid of [least toxic]{"entity": "filter_name"} label
     - Would I be able to take [level 0 toxic]{"entity": "filter_name"} off
 
-    - Disable [toxicity level 3]{"entity": "filter_name"} option
-    - Hide [most toxic]{"entity": "filter_name"} and [least toxic]{"entity": "filter_name"} nodes
-    - Uncheck [very toxic]{"entity": "filter_name"} filter
-    - Disable [highest toxicity]{"entity": "filter_name"} option
-    - Hide [toxic level 3]{"entity": "filter_name"} comments
-    - Uncheck [level 3 toxic]{"entity": "filter_name"} filter
-    - Disable [level 3 toxicity]{"entity": "filter_name"} option
+    - Can I disable [toxicity level 3]{"entity": "filter_name"} option 
+    - Uncheck [toxicity level 3]{"entity": "filter_name"} from the check list
+    - May you turn off [toxicity level 3]{"entity": "filter_name"} filter
+    - I want to reset [toxicity level 3]{"entity": "filter_name"} filter option
+    - I would like to switch off [most toxic]{"entity": "filter_name"} filtering option
+    - Deselect [toxicity level 3]{"entity": "filter_name"} filter selection
+    - Could you hide [level 3 toxic]{"entity": "filter_name"} comments
+    - I was hoping you could switch off [level 3 toxic]{"entity": "filter_name"} nodes filter
+    - I was wondering if you could deactivate [very toxic]{"entity": "filter_name"} nodes filtering
+    - Would you be able to untick [highest toxicity]{"entity": "filter_name"} nodes
+    - Could you possibly clear [most toxic]{"entity": "filter_name"} filtering
+    - Clear off [level 3 toxic]{"entity": "filter_name"} comment filter
+    - May you remove [most toxic]{"entity": "filter_name"} comment filtering
+    - Would it be possible for you to unmark comments labelled [very toxic]{"entity": "filter_name"} 
+    - Unselect [very toxic]{"entity": "filter_name"} tag
+    - Get rid of [most toxic]{"entity": "filter_name"} label
+    - Would I be able to take [level 3 toxic]{"entity": "filter_name"} off
+      
+    - Can I disable [toxicity level 1]{"entity": "filter_name"} option 
+    - Uncheck [toxicity level 1]{"entity": "filter_name"} from the check list
+    - May you turn off [toxicity level 1]{"entity": "filter_name"} filter
+    - I want to reset [toxicity level 1]{"entity": "filter_name"} filter option
+    - I would like to switch off [slightly toxic]{"entity": "filter_name"} filtering option
+    - Deselect [mildly toxic]{"entity": "filter_name"} filter selection
+    - Could you hide [slightly toxic]{"entity": "filter_name"} comments
+    - I was hoping you could switch off [level 1 toxic]{"entity": "filter_name"} nodes filter
+    - I was wondering if you could deactivate [level 1 toxic]{"entity": "filter_name"} nodes filtering
+    - Would you be able to untick [mildly toxic]{"entity": "filter_name"} nodes
+    - Could you possibly clear [mildly toxic]{"entity": "filter_name"} filtering
+    - Clear off [level 1 toxic]{"entity": "filter_name"} comment filter
+    - May you remove [slightly toxic]{"entity": "filter_name"} comment filtering
+    - Would it be possible for you to unmark comments labelled [level 1 toxicity]{"entity": "filter_name"} 
+    - Unselect [level 1 toxicity]{"entity": "filter_name"} tag
+    - Get rid of [toxicity level 1]{"entity": "filter_name"} label
+    - Would I be able to take [toxicity level 1]{"entity": "filter_name"} off
     
-    - Disable [toxicity level 1]{"entity": "filter_name"} option
-    - Hide [slightly toxic]{"entity": "filter_name"} comments
-    - Uncheck [mildly toxic]{"entity": "filter_name"} filter
-    - Hide [toxic level 1]{"entity": "filter_name"}, [least toxic]{"entity": "filter_name"} and [toxic]{"entity": "filter_name"} nodes
-    - Uncheck [level 1 toxic]{"entity": "filter_name"} filter
-    - Disable [level 1 toxicity]{"entity": "filter_name"} option
-
-    - Disable [toxic level 2]{"entity": "filter_name"} option
-    - Uncheck [toxic]{"entity": "filter_name"} filter nodes
-    - Hide [toxicity level 2]{"entity": "filter_name"} comments
-    - Uncheck [level 2 toxic]{"entity": "filter_name"} filter
-    - Disable [level 2 toxicity]{"entity": "filter_name"} option
-
-    - Disable [positive stance]{"entity": "filter_name"} option
-    - Hide [positive]{"entity": "filter_name"} comments
-    - Uncheck [positive stance]{"entity": "filter_name"} filter
+    - Can I disable [toxicity level 2]{"entity": "filter_name"} option 
+    - Uncheck [toxicity level 2]{"entity": "filter_name"} from the check list
+    - May you turn off [toxicity level 2]{"entity": "filter_name"} filter
+    - I want to reset [toxicity level 2]{"entity": "filter_name"} filter option
+    - I would like to switch off [toxic]{"entity": "filter_name"} filtering option
+    - Deselect [toxic]{"entity": "filter_name"} filter selection
+    - Could you hide [toxic]{"entity": "filter_name"} comments
+    - I was hoping you could switch off [toxic]{"entity": "filter_name"} nodes filter
+    - I was wondering if you could deactivate [level 2 toxic]{"entity": "filter_name"} nodes filtering
+    - Would you be able to untick [toxic]{"entity": "filter_name"} nodes
+    - Could you possibly clear [toxic level 2]{"entity": "filter_name"} filtering
+    - Clear off [level 2 toxic]{"entity": "filter_name"} comment filter
+    - May you remove [toxic]{"entity": "filter_name"} comment filtering
+    - Would it be possible for you to unmark comments labelled [level 2 toxicity]{"entity": "filter_name"} 
+    - Unselect [level 2 toxicity]{"entity": "filter_name"} tag
+    - Get rid of [toxicity level 2]{"entity": "filter_name"} label
+    - Would I be able to take [toxicity level 2]{"entity": "filter_name"} off
+    
+    - Can I disable [positive stance]{"entity": "filter_name"} option 
+    - Uncheck [positive stance]{"entity": "filter_name"} from the check list
+    - May you turn off [positive stance]{"entity": "filter_name"} filter
+    - I want to reset [positive stance]{"entity": "filter_name"} filter option
+    - I would like to switch off [positive stance]{"entity": "filter_name"} filtering option
+    - Deselect [positive stance]{"entity": "filter_name"} filter selection
+    - Could you hide [positive stance]{"entity": "filter_name"} comments
+    - I was hoping you could switch off [positive stance]{"entity": "filter_name"} edges filter
+    - I was wondering if you could deactivate [positive stance]{"entity": "filter_name"} edges filtering
+    - Would you be able to untick [positive stance]{"entity": "filter_name"} node and edge
+    - Could you possibly clear [positive stance]{"entity": "filter_name"} node and edge filtering
+    - Clear off [positive stance]{"entity": "filter_name"} comment filter
+    - May you remove [positive stance]{"entity": "filter_name"} comment filtering
+    - Would it be possible for you to unmark edges labelled [positive stance]{"entity": "filter_name"} 
+    - Unselect [positive stance]{"entity": "filter_name"} tag
+    - Get rid of [positive stance]{"entity": "filter_name"} label
+    - Would I be able to take [positive stance]{"entity": "filter_name"} node and edge filter off
 
     - Disable [negative stance]{"entity": "filter_name"} option
     - Hide [negative]{"entity": "filter_name"} nodes
     - Uncheck [negative stance]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
-
+    
     - Disable [neutral stance]{"entity": "filter_name"} and [targets all]{"entity": "filter_name"} option
     - Hide [neutral]{"entity": "filter_name"} comments
     - Uncheck [neutral stance]{"entity": "filter_name"} filter
-
+    
     - Disable [both stances]{"entity": "filter_name"}
     - Hide [both stances]{"entity": "filter_name"}
     - Uncheck [both stances]{"entity": "filter_name"}
-
+    
     - Disable [target person]{"entity": "filter_name"} option
     - Hide [person]{"entity": "filter_name"} nodes
     - Uncheck [target person]{"entity": "filter_name"} filter
-
+    
     - Disable [target group]{"entity": "filter_name"} option
     - Hide [group]{"entity": "filter_name"} comments
     - Uncheck [target group]{"entity": "filter_name"} filter
-
+    
     - Disable [stereotype]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} options
     - Hide [stereotype]{"entity": "filter_name"} nodes
     - Uncheck [stereotype]{"entity": "filter_name"} filter
-
+    
     - Disable [targets all]{"entity": "filter_name"} option
     - Hide [all targets]{"entity": "filter_name"} comments
     - Uncheck [all targets]{"entity": "filter_name"} filter
@@ -1287,7 +1331,7 @@ nlu:
     - Hide [intolerance]{"entity": "filter_name"} node
     - Uncheck [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} nodes filter
     - May you switch off [intolerance]{"entity": "filter_name"} comment nodes
-    - I was hoping you could Deactivate [intolerance]{"entity": "filter_name"} nodes filtering
+    - I was hoping you could deactivate [intolerance]{"entity": "filter_name"} nodes filtering
     - Untick [intolerance]{"entity": "filter_name"} node and edge
     - Clear [intolerance]{"entity": "filter_name"} node filter option
     - I want to reset [intolerance]{"entity": "filter_name"} node option
@@ -2286,7 +2330,7 @@ nlu:
 
 - intent: colour_feature_sarcasm_uncheck
   examples: |
-   - Can I disable sarcasm colour feature 
+    - Can I disable sarcasm colour feature 
     - Uncheck sarcastic colours
     - May you turn off sarcasm colour filters
     - I want to reset sarcasm colour filters
@@ -2866,53 +2910,96 @@ nlu:
 # ask to check node and edge without specifying one
 - intent: show_node_and_edge
   examples: |
-    - Highlight node and edge
-    - Check node and edge
+    - Can I select node and edge
+    - Choose node and edge
+    - May you tick node and edge
     - Show me node and edge
     - I want to see node and edge
-    - I would like to see node and edge
-    - Turn on node and edge
-    - Select node and edge
+    - I want you to check node and edge
     - Activate node and edge
-    - Enable node and edge
+    - Enable node and edge 
+    - Highlight node and edge
+    - Turn on node and edge
+    - Could you tick off node and edge filtering
+    - Switch on node and edge filter
+    - I was hoping you could check node and edge
+    - I was wondering if you could enable node and edge filtering
+    - Would you be able to activate node and edge
+#DOESN'T WORK
 
 - intent: filters_all_features
   examples: |
-    - Select [all features]{"entity": "filter_name"}
-    - Check  [all features]{"entity": "filter_name" }
+    - Can I select [all features]{"entity": "filter_name"}
+    - Choose [the features]{"entity": "filter_name"}
+    - May you tick [all features]{"entity": "filter_name"}
     - Show me [all features]{"entity": "filter_name"}
-    - I want to see [all features]{"entity": "filter_name"}
+    - I want to see [all of the features]{"entity": "filter_name"}
+    - I want you to check [the features]{"entity": "filter_name"}
     - Activate [all features]{"entity": "filter_name"}
-    - Enable [all features]{"entity": "filter_name"}
-    - Highlight [all features]{"entity": "filter_name"}
+    - Enable [all of the features]{"entity": "filter_name"}
+    - Highlight [the features]{"entity": "filter_name"}
     - Turn on [all features]{"entity": "filter_name"}
+    - Could you tick off [all of the features]{"entity": "filter_name"}
+    - Switch on [the features]{"entity": "filter_name"}
+    - I was hoping you could check [all features]{"entity": "filter_name"}
+    - I was wondering if you could enable [all features]{"entity": "filter_name"}
+#COMPROBADO
 
 - intent: filters_all_targets
   examples: |
-    - Select [all targets]{"entity": "filter_name"}
-    - Check  [all targets]{"entity": "filter_name" }
-    - Show me [all targets]{"entity": "filter_name"}
-    - I want to see [all targets]{"entity": "filter_name"}
-    - Activate [all targets]{"entity": "filter_name"}
-    - Enable [all targets]{"entity": "filter_name"}
+    - Can I select [all targets]{"entity": "filter_name"}
+    - Choose [the targets]{"entity": "filter_name"}
+    - May you tick [all targets]{"entity": "filter_name"}
+    - Show me [all of the  targets]{"entity": "filter_name"}
+    - I want to see [the targets]{"entity": "filter_name"}
+    - I want you to check [all targets]{"entity": "filter_name"}
+    - Activate [all of the targets]{"entity": "filter_name"}
+    - Enable [the targets]{"entity": "filter_name"}
     - Highlight [all targets]{"entity": "filter_name"}
-    - Turn on [all targets]{"entity": "filter_name"}
-    - Show me targets
+    - Turn on [all of the targets]{"entity": "filter_name"}
+    - Could you tick off [the targets]{"entity": "filter_name"}
+    - Switch on [all targets]{"entity": "filter_name"}
+    - I was hoping you could check [the targets]{"entity": "filter_name"}
+    - I was wondering if you could enable [all targets]{"entity": "filter_name"}
+#COMPROBADO
 
 - intent: filters_all_features_uncheck
   examples: |
-    - Uncheck [all features]{"entity": "filter_name"}
-    - Turn off [all features]{"entity": "filter_name"}
-    - Disable [all features]{"entity": "filter_name"}
-    - Hide [all features]{"entity": "filter_name"}
-    - Turn off [all features]{"entity": "filter_name"} 
+    - I want to deselect all filters
+    - Could you remove all filters
+    - I was hoping you could reset all selected filters
+    - Would you be able to undo all filters
+    - Could you possibly disable all filters
+    - I would like you to turn off all filtering
+    - Take off all selected filtering
+    - Would it be possible for you to go back to the original display
+    - Clear the interface filters
+    - Go back to the beginning
+    - Switch off filters
+    - Uncheck all selected filters
+    - Reset all
+#COMPROBAR
+# Would I be able to get rid of the selected filters- no
+# reset all- yes
+# reset everything -yes
+# Would it be possible for you to go back to the original display-yes
+
 
 - intent: filters_all_targets_uncheck
   examples: |
-    - Uncheck [all targets]{"entity": "filter_name"}
-    - Turn off [all targets]{"entity": "filter_name"}
-    - Disable [all targets]{"entity": "filter_name"}
-    - Hide [all targets]{"entity": "filter_name"}
+    - I want to deselect [all targets]{"entity": "filter_name"}
+    - Could you remove [the targets]{"entity": "filter_name"}
+    - I was hoping you could reset [all of the targets]{"entity": "filter_name"}
+    - Would you be able to undo [all targets]{"entity": "filter_name"}
+    - Could you possibly disable [the targets]{"entity": "filter_name"}
+    - I would like you to turn off [all of targets]{"entity": "filter_name"}
+    - Take off [all targets]{"entity": "filter_name"} filtering
+    - Would it be possible for you to get rid of [the targets]{"entity": "filter_name"}
+    - Clear off [all of the targets]{"entity": "filter_name"}
+    - Would I be able to get rid of the [selected targets]{"entity": "filter_name"}
+    - Switch off [selected targets]{"entity": "filter_name"}
+    - Uncheck all [all selected targets]{"entity": "filter_name"}
+#COMPROBADO
 
 # Definitions of features
 - intent: define_sarcasm
