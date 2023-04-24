@@ -341,8 +341,8 @@ stories:
     - action: utter_offers_help
     - intent: tool_help
     - action: utter_general_help
-    - intent: help_sub_structure
-    - action: utter_help_sub_structure
+    - intent: sub_structure_options
+    - action: utter_sub_structure_options
     - intent: thanks
     - action: utter_you_are_welcome
     - intent: help_main_graph_barchart
