@@ -1,0 +1,69 @@
+{
+  "tag_comment_id": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 20,
+    "confused_with": {}
+  },
+  "object_requested": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 55,
+    "confused_with": {}
+  },
+  "document_requested": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 14,
+    "confused_with": {}
+  },
+  "layout_requested": {
+    "precision": 0.9905660377358491,
+    "recall": 1.0,
+    "f1-score": 0.9952606635071091,
+    "support": 105,
+    "confused_with": {}
+  },
+  "filter_name": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 1361,
+    "confused_with": {}
+  },
+  "action_requested": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 23,
+    "confused_with": {}
+  },
+  "glyph_requested": {
+    "precision": 0.9736842105263158,
+    "recall": 1.0,
+    "f1-score": 0.9866666666666666,
+    "support": 37,
+    "confused_with": {}
+  },
+  "micro avg": {
+    "precision": 0.9987631416202845,
+    "recall": 1.0,
+    "f1-score": 0.9993811881188118,
+    "support": 1615
+  },
+  "macro avg": {
+    "precision": 0.9948928926088808,
+    "recall": 1.0,
+    "f1-score": 0.997418190024825,
+    "support": 1615
+  },
+  "weighted avg": {
+    "precision": 0.9987837459763084,
+    "recall": 1.0,
+    "f1-score": 0.9993864002073766,
+    "support": 1615
+  }
+}

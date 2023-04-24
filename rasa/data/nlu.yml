@@ -584,126 +584,126 @@ nlu:
 
 
 
-# synonyms for verbs check, uncheck, visualise, switch
-- synonym: check
-  examples: |
-    - highlight
-    - select
-    - choose
-    - activate
-    - enable
-    - turn on
-    - switch on
-    - tick
-    - tick off
+## synonyms for verbs check, uncheck, visualise, switch
+#- synonym: check
+#  examples: |
+#    - highlight
+#    - select
+#    - choose
+#    - activate
+#    - enable
+#    - turn on
+#    - switch on
+#    - tick
+#    - tick off
+#
+#- synonym: uncheck
+#  examples: |
+#    - deselect
+#    - unselect
+#    - turn off
+#    - disable
+#    - hide
+#    - switch off
+#    - deactivate
+#    - untick
+#    - clear
+#    - reset
+#    - remove
+#
+##- synonym: visualise
+##  examples: |
+##    - show
+##    - display
+#
+#
+#- synonym: switch
+#  examples: |
+#    - change
+#    - exchange
+#    - adjust
 
-- synonym: uncheck
-  examples: |
-    - deselect
-    - unselect
-    - turn off
-    - disable
-    - hide
-    - switch off
-    - deactivate
-    - untick
-    - clear
-    - reset
-    - remove
+# Synonyms for menus: select node and edge menu, highlight colour feature menu, **target menu- to be completed**
+#
+#- synonym: select node and edge menu
+#  examples: |
+#    - select node and edge menu
+#    - select node and edge bar
+#    - select nodes and edges menu
+#    - select nodes and edges bar
+#    - node and edge menu
+#    - node and edge bar
 
-- synonym: visualise
-  examples: |
-    - show
-    - display
-
-
-- synonym: switch
-  examples: |
-    - change
-    - exchange
-    - adjust
-
- Synonyms for menus: select node and edge menu, highlight colour feature menu, **target menu- to be completed**
-
-- synonym: select node and edge menu
-  examples: |
-    - select node and edge menu
-    - select node and edge bar
-    - select nodes and edges menu
-    - select nodes and edges bar
-    - node and edge menu
-    - node and edge bar
-
-- synonym: highlight colour feature menu
-  examples: |
-    - colour features menu
-    - colour feature menu
-    - color features menu
-    - color features menu
-    - colour menu
-    - colours menu
-    - color menu
-    - colors menu
-    - colour bar
-    - colours bar
-    - color bar
-    - colours bar
-    - glyph feature menu
-    - glyph feature bar
-    - highlight colour feature menu
-    - highlight colour features menu
-    - highlight color feature menu
-    - highlight color features menu
-    - highlight colour feature bar
-    - highlight colour features bar
-    - highlight color feature bar
-    - highlight color features bar
-    - highlight colour menu
-    - highlight color menu
-    - highlight colour bar
-    - highlight colour bar
-    - highlight menu
-    - highlight bar
-    - colour glyph feature menu
-    - color glyph feature menu
-    - colour glyph features menu
-    - color glyph features menu
-    - colour glyph feature bar
-    - colour glyph feature bar
-
-# Synonyms nodes and edges and filter
-- synonym: nodes
-  examples: |
-    - node
-    - comment
-    - comment nodes
-
-- synonym: filter
-  examples: |
-    - filtering
-
-# Synonym for "formalities" request starter I want to  + issue of questions like **what/Which** ->classfication to be added
-- synonym: I want to
-  examples: |
-    - I want to
-    - I would like to
-    - I'd like to
-    - Can you
-    - Can I
-    - May you
-    - May I
-    - Could you
-    - Could I
-    - I want you to
-    - I would like you to
-    - I'd like you to
-    - I was hoping you could
-    - I was wondering if you could
-    - Would I able to
-    - Would you be able to
-    - Would it be possible for you to
-    - Could you possibly 
-    - How about you
+#- synonym: highlight colour feature menu
+#  examples: |
+#    - colour features menu
+#    - colour feature menu
+#    - color features menu
+#    - color features menu
+#    - colour menu
+#    - colours menu
+#    - color menu
+#    - colors menu
+#    - colour bar
+#    - colours bar
+#    - color bar
+#    - colours bar
+#    - glyph feature menu
+#    - glyph feature bar
+#    - highlight colour feature menu
+#    - highlight colour features menu
+#    - highlight color feature menu
+#    - highlight color features menu
+#    - highlight colour feature bar
+#    - highlight colour features bar
+#    - highlight color feature bar
+#    - highlight color features bar
+#    - highlight colour menu
+#    - highlight color menu
+#    - highlight colour bar
+#    - highlight colour bar
+#    - highlight menu
+#    - highlight bar
+#    - colour glyph feature menu
+#    - color glyph feature menu
+#    - colour glyph features menu
+#    - color glyph features menu
+#    - colour glyph feature bar
+#    - colour glyph feature bar
+#
+## Synonyms nodes and edges and filter
+#- synonym: nodes
+#  examples: |
+#    - node
+#    - comment
+#    - comment nodes
+#
+#- synonym: filter
+#  examples: |
+#    - filtering
+#
+## Synonym for "formalities" request starter I want to  + issue of questions like **what/Which** ->classfication to be added
+#- synonym: I want to
+#  examples: |
+#    - I want to
+#    - I would like to
+#    - I'd like to
+#    - Can you
+#    - Can I
+#    - May you
+#    - May I
+#    - Could you
+#    - Could I
+#    - I want you to
+#    - I would like you to
+#    - I'd like you to
+#    - I was hoping you could
+#    - I was wondering if you could
+#    - Would I able to
+#    - Would you be able to
+#    - Would it be possible for you to
+#    - Could you possibly
+#    - How about you
 
 
 # highlight options
@@ -1126,8 +1126,7 @@ nlu:
     - Switch off nodes and edges
     - Unhcek all node and edge filters
     - Hide all filters in node and edge
-    - Reset
-    - Go back to the beginning
+
 
 #- Would I be able to get rid of the nodes and edges filters- yes
 

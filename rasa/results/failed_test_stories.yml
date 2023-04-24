@@ -1,0 +1,36 @@
+ version: "2.0"
+stories:
+- story: None (/var/folders/rz/fxffxml14qlcw91f90jw25q00000gn/T/tmpkv9bce4s/f02b873a819249619d9593c8be55e5d9_test_stories.yml)
+  steps:
+  - intent: greet
+  - action: utter_offers_help
+  - intent: change_layout_tree  # predicted: change_layout_tree: Change layout to [tree]{"entity": "layout_requested", "value": "dots"} design
+    entities:
+    - layout_requested: tree
+  - slot_was_set:
+    - layout_requested: tree
+  - action: utter_change_layout_tree
+  - intent: change_glyph_dots  # predicted: change_glyph_dots: change glyph to dots
+    entities:
+    - glyph_requested: dots
+  - slot_was_set:
+    - glyph_requested: dots
+  - action: utter_change_to_dots
+  - intent: highlight_check
+    entities:
+    - filter_name: non toxic
+  - slot_was_set:
+    - filter_name: non toxic
+  - action: action_highlight_check
+  - intent: highlight_uncheck
+    entities:
+    - filter_name: intolerance
+  - slot_was_set:
+    - filter_name: intolerance
+  - action: action_highlight_uncheck
+  - intent: longest_thread
+  - action: utter_longest_thread
+  - intent: colour_feature_insult
+  - action: utter_colour_feature_insult
+  - intent: define_argumentation  # predicted: define_argumentation: what is [argumentation](filter_name)
+  - action: utter_argumentation_definition

@@ -5,9 +5,41 @@ stories:
   - story:
     steps:
       - user: |
-          select [sarcasm]{"entity": "filter_name"} nodes
+          hello
+        intent: greet
+      - action: utter_offers_help
+      - user: |
+          Change layout to [tree]{"entity": "layout_requested", "value": "tree"} design
+        intent: change_layout_tree
+      - action: utter_change_layout_tree
+      - user: |
+          change glyph to [dots]{"entity": "glyph_requested", "value": "dots"}
+        intent: change_glyph_dots
+      - action: utter_change_to_dots
+      - user: |
+          show me [not toxic]{"entity": "filter_name", "value": "non toxic"} comments
         intent: highlight_check
       - action: action_highlight_check
+      - user: |
+          hide [intolerance]{"entity": "filter_name", "value": "intolerance"} comments
+        intent: highlight_uncheck
+      - action: action_highlight_uncheck
+      - user: |
+          I want to see the longest thread
+        intent: longest_thread
+      - action: utter_longest_thread
+      - user: |
+          show me insult colour feature
+        intent: colour_feature_insult
+      - action: utter_colour_feature_insult
+      - user: |
+          what is argumentation
+        intent: define_argumentation
+      - action: utter_argumentation_definition
+
+
+
+
 
 
 #stories:

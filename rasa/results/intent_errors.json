@@ -1,0 +1,26 @@
+[
+  {
+    "text": "Could I want to change to or to AND",
+    "intent": "switch_and",
+    "intent_prediction": {
+      "name": "switch_or",
+      "confidence": 0.6322398781776428
+    }
+  },
+  {
+    "text": "I was wondering if you could exchange or for and",
+    "intent": "switch_and",
+    "intent_prediction": {
+      "name": "switch_or",
+      "confidence": 0.5148634910583496
+    }
+  },
+  {
+    "text": "Would it be possible to change the highlight from or to and",
+    "intent": "switch_and",
+    "intent_prediction": {
+      "name": "switch_or",
+      "confidence": 0.5904881954193115
+    }
+  }
+]

@@ -1,0 +1,51 @@
+[
+  {
+    "text": "Can you swap the force to 1st visualization layout",
+    "entities": [
+      {
+        "start": 17,
+        "end": 22,
+        "value": "force",
+        "entity": "layout_requested"
+      },
+      {
+        "start": 26,
+        "end": 43,
+        "value": "tree",
+        "entity": "layout_requested"
+      }
+    ],
+    "predicted_entities": [
+      {
+        "entity": "layout_requested",
+        "start": 17,
+        "end": 22,
+        "confidence_entity": 0.7719318866729736,
+        "value": "force",
+        "extractor": "DIETClassifier"
+      },
+      {
+        "entity": "layout_requested",
+        "start": 26,
+        "end": 50,
+        "confidence_entity": 0.7700345516204834,
+        "value": "1st visualization layout",
+        "extractor": "DIETClassifier"
+      }
+    ]
+  },
+  {
+    "text": "What are dots, circular glyph and trivial cheese?",
+    "entities": [],
+    "predicted_entities": [
+      {
+        "entity": "glyph_requested",
+        "start": 34,
+        "end": 41,
+        "confidence_entity": 0.9240124225616455,
+        "value": "trivial",
+        "extractor": "DIETClassifier"
+      }
+    ]
+  }
+]
