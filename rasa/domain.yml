@@ -106,7 +106,7 @@ intents:
   - what_can_do_after_glyphs
   - features_on_the_left
   - targets_help
-  - help_sub_structure
+  - sub_structure_options
   - start_analysis
   - statistics_help
   - colour_feature_constructiveness
@@ -182,8 +182,11 @@ intents:
   - show_node_and_edge
   - define_argumentation
   - define_constructiveness
+  - define_targetgroup
+  - define_targetperson
   - define_commentlevel
   - define_commentdepth
+  - define_directcomment
   - define_subtrees
   - tag_comment_id
 
@@ -633,22 +636,16 @@ responses:
 
   # longest, largest, widest, most toxic
   utter_longest_thread:
-  - text: "intent_event,longest_thread,Here you have the longest thread"
-  - text: "intent_event,longest_thread,Here is the longest thread"
-  - text: "intent_event,longest_thread,Here you have displayed the longest thread"
-  - text: "intent_event,longest_thread,The longest thread is being displayed"
-
+  - text: "intent_event,longest_thread,I've extracted the longest thread"
 
   utter_widest_level:
-  - text: "intent_event,widest_level,I've highlighted the widest level in your graph"
+  - text: "intent_event,widest_level,I've highlighted the widest level"
 
   utter_largest_thread:
   - text: "intent_event,largest_thread,Here you have the largest subtree"
-  - text: "intent_event,largest_thread,Here is the largest subtree"
 
   utter_most_toxic_thread:
     - text: "intent_event,most_toxic_thread,Here is the most toxic thread"
-    - text: "intent_event,most_toxic_thread,Here you have the most toxic thread"
 
   utter_most_toxic_subtree:
     - text: "intent_event,most_toxic_subtree,Here is the most toxic subtree"
@@ -717,7 +714,11 @@ responses:
             payload: '/change_glyph_trivial{{"object_requested":"glyph","glyph_requested":"trivial"}}'
 
   utter_explain_targets_one:
-     - text: "intent_targets_signal,targets_accordion_button,All comments are tagged with the targets that they are directed at."
+     - text: "intent_targets_signal,targets_accordion_button,All comments are tagged with the targets that they are directed at: 
+     
+     - Target group \ \n
+     - Target person \ \n
+     - None"
 
   utter_explain_targets_two:
     - text: "You can activate/deactivate targets: \ \n
@@ -729,7 +730,9 @@ responses:
 
         Activate/deactivate features: \ \n
         - From the left bar \ \n
-        - Asking me"
+        - Asking me \ \n
+        
+        Summary will also tell you how many targets there are in the current visualisation"
 
   utter_help_layouts_one:
     - text: "intent_layouts_signal,layouts-radio-buttons,I automatically select 
@@ -849,7 +852,7 @@ responses:
         - title: "Sub Regions"
           payload: '/help_sub_structure'
 
-  utter_help_sub_structure:
+  utter_sub_structure_options:
     - text: "Here are the subtrees that I can visualise, select one to see it."
       buttons:
         - title: "the largest thread"
@@ -1134,7 +1137,7 @@ responses:
 #  unchek features which one?
 
   utter_filters_constructive_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_constructiveness_uncheck'
@@ -1142,7 +1145,7 @@ responses:
           payload: '/highlight_uncheck{"filter_name": "constructiveness"}'
 
   utter_filters_argumentation_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_argumentation_uncheck'
@@ -1151,7 +1154,7 @@ responses:
 
 
   utter_filters_sarcasm_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_sarcasm_uncheck'
@@ -1160,7 +1163,7 @@ responses:
 
 
   utter_filters_mockery_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_mockery_uncheck'
@@ -1169,7 +1172,7 @@ responses:
 
 
   utter_filters_intolerance_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_intolerance_uncheck'
@@ -1177,7 +1180,7 @@ responses:
           payload: '/highlight_uncheck{"filter_name": "intolerance"}'
 
   utter_filters_improper_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_improper_uncheck'
@@ -1185,7 +1188,7 @@ responses:
           payload: '/highlight_uncheck{"filter_name": "improper language"}'
 
   utter_filters_insult_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_insult_uncheck'
@@ -1193,7 +1196,7 @@ responses:
           payload: '/highlight_uncheck{"filter_name": "insult"}'
 
   utter_filters_aggressiveness_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_aggressiveness_uncheck'
@@ -1201,7 +1204,7 @@ responses:
           payload: '/highlight_uncheck{"filter_name": "aggressiveness"}'
 
   utter_filters_stereotype_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Highlight Colour Feature"
           payload: '/colour_feature_stereotype_uncheck'
@@ -1209,7 +1212,7 @@ responses:
           payload: '/highlight_uncheck{"filter_name": "stereotype"}'
 
   utter_filters_target_person_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Targets"
           payload: '/uncheck_target_person'
@@ -1217,7 +1220,7 @@ responses:
           payload: '/highlight_uncheck{"filter_name": "target person"}'
 
   utter_filters_target_group_uncheck:
-    - text: "How do you want to hide it?"
+    - text: "Where do you want to uncheck it from?"
       buttons:
         - title: "Targets"
           payload: '/uncheck_target_group'
@@ -1320,6 +1323,26 @@ responses:
 
      Read more about Constructiveness [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
+  utter_target_group_definition:
+    - text: "All comments are tagged with the targets that they are directed at. Target Group refers to comments targeting a group. \ \n
+     
+         You can activate/deactivate targets: \ \n
+
+          - From the Targets menu on the left \ \n
+          - Asking me \ \n
+          
+          Summary will also tell you how many targets there are in the current visualisation"
+
+  utter_target_person_definition:
+    - text: "All comments are tagged with the targets that they are directed at. Target Person refers to comments targeting a person. \ \n
+
+         You can activate/deactivate targets: \ \n
+
+          - From the Targets menu on the left \ \n
+          - Asking me \ \n
+          
+          Summary will also tell you how many targets there are in the current visualisation \ \n"
+
   utter_comment_level_definition:
   - text: "Comment levels refers to the relationship of the news article with its' comments. \ \n
 
@@ -1331,14 +1354,23 @@ responses:
 
   To display statistics for Level One Comments, click the Level One Comments button. \ \n
 
-     Read more about Comment Level [here](https://dspace5.zcu.cz/handle/11025/45010)"
+  Read more about Comment Level [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_comment_depth_definition:
-    - text: "Comment depth indicates a node's position in a thread \ \n
+    - text: "Comment depth indicates a node's position in a thread. \ \n
 
     To access this information, you can hover over each node. \ \n
 
     Read more about Comment Depth [here](https://dspace5.zcu.cz/handle/11025/45010)"
+
+  utter_direct_comment_definition:
+    - text: "Direct comments is a number indicating how many comments were posted directly under the news article (Comment Level 1). \ \n
+    
+    To access this information, you can hover over each node. \ \n
+    
+    To display statistics for Level One Comments, click the Level One Comments button. \ \n
+
+     Read more about Comment Level [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
 
   utter_subtrees_definition:
@@ -1364,7 +1396,13 @@ responses:
    
   Glyphs let us see features that each comment is tagged with.  Use the Highlight Colour Features menu to activate/deactivate the features. \ \n
    
-  All comments are tagged with the targets that they are directed at. Use the targets menu to activate/deactivate targets. \ \n
+  All comments are tagged with the targets that they are directed at: 
+  
+  - Target group \ \n
+  - Target person \ \n
+  - None \ \n
+  
+  Use the targets menu to activate/deactivate targets. \ \n
   
   Select node and edge will show comment with selected tags. Use the Select node and edge menu to activate/deactivate the features \ \n
    
@@ -1398,8 +1436,10 @@ responses:
    
    You can change files using the drop down menu \ \n
    
-   And the final part of this interface is me! 
-   Remember, I’m here to carry out any of the functions on the interface, show you subregions and help you when you when you need it 😄"
+   And the final part of this interface is me! \ \n
+    
+   Remember, I’m here to carry out any of the functions on the interface, show you subregions and help you when you when you need it 😄. 
+   Use this window or your microphone to talk to me! \ \n"
 
 
 

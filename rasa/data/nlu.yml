@@ -480,27 +480,6 @@ nlu:
  #   - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
 #    - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
 
-- synonym: I want to
-  examples: |
-    - I want to
-    - I would like to
-    - I'd like to
-    - Can you
-    - Can I
-    - May you
-    - May I
-    - Could you
-    - Could I
-    - I want you to
-    - I would like you to
-    - I'd like you to
-    - I was hoping you could
-    - I was wondering if you could
-    - Would I able to
-    - Would you be able to
-    - Would it be possible for you to
-    - Could you possibly 
-    - How about you
 
 # Ask bot to change to OR / AND
 - intent: switch_or
@@ -584,47 +563,53 @@ nlu:
 
 
 
-## synonyms for verbs check, uncheck, visualise, switch
-#- synonym: check
-#  examples: |
-#    - highlight
-#    - select
-#    - choose
-#    - activate
-#    - enable
-#    - turn on
-#    - switch on
-#    - tick
-#    - tick off
-#
-#- synonym: uncheck
-#  examples: |
-#    - deselect
-#    - unselect
-#    - turn off
-#    - disable
-#    - hide
-#    - switch off
-#    - deactivate
-#    - untick
-#    - clear
-#    - reset
-#    - remove
-#
-##- synonym: visualise
-##  examples: |
-##    - show
-##    - display
-#
-#
-#- synonym: switch
-#  examples: |
-#    - change
-#    - exchange
-#    - adjust
+# synonyms for verbs check, uncheck, visualise, switch
+- synonym: check
+  examples: |
+    - highlight
+    - select
+    - choose
+    - activate
+    - enable
+    - turn on
+    - switch on
+    - tick
+    - tick off
+    - mark
+    - mark off
 
-# Synonyms for menus: select node and edge menu, highlight colour feature menu, **target menu- to be completed**
-#
+- synonym: uncheck
+  examples: |
+    - deselect
+    - unselect
+    - turn off
+    - disable
+    - hide
+    - switch off
+    - deactivate
+    - untick
+    - clear
+    - clear off
+    - reset
+    - remove
+    - unmark
+    - get rid of
+    - take off
+
+#- synonym: visualise
+ # examples: |
+  #  - show
+  #  - display
+
+
+#- synonym: switch
+ # examples: |
+#    - change
+ #   - exchange
+ #   - adjust
+
+ #Synonyms for menus: select node and edge menu, highlight colour feature menu, **target menu- to be completed**
+
 #- synonym: select node and edge menu
 #  examples: |
 #    - select node and edge menu
@@ -632,7 +617,7 @@ nlu:
 #    - select nodes and edges menu
 #    - select nodes and edges bar
 #    - node and edge menu
-#    - node and edge bar
+ #   - node and edge bar
 
 #- synonym: highlight colour feature menu
 #  examples: |
@@ -641,28 +626,28 @@ nlu:
 #    - color features menu
 #    - color features menu
 #    - colour menu
-#    - colours menu
+ #   - colours menu
 #    - color menu
-#    - colors menu
-#    - colour bar
-#    - colours bar
-#    - color bar
-#    - colours bar
+ #   - colors menu
+ #   - colour bar
+ #   - colours bar
+ #   - color bar
+ #   - colours bar
 #    - glyph feature menu
 #    - glyph feature bar
 #    - highlight colour feature menu
 #    - highlight colour features menu
 #    - highlight color feature menu
-#    - highlight color features menu
+ #   - highlight color features menu
 #    - highlight colour feature bar
 #    - highlight colour features bar
 #    - highlight color feature bar
-#    - highlight color features bar
-#    - highlight colour menu
+ #   - highlight color features bar
+ #   - highlight colour menu
 #    - highlight color menu
 #    - highlight colour bar
 #    - highlight colour bar
-#    - highlight menu
+ #   - highlight menu
 #    - highlight bar
 #    - colour glyph feature menu
 #    - color glyph feature menu
@@ -670,28 +655,28 @@ nlu:
 #    - color glyph features menu
 #    - colour glyph feature bar
 #    - colour glyph feature bar
-#
-## Synonyms nodes and edges and filter
+
+# Synonyms nodes and edges and filter
 #- synonym: nodes
-#  examples: |
-#    - node
-#    - comment
-#    - comment nodes
-#
+ # examples: |
+ #   - node
+ #   - comment
+ #   - comment nodes
+
 #- synonym: filter
 #  examples: |
-#    - filtering
-#
-## Synonym for "formalities" request starter I want to  + issue of questions like **what/Which** ->classfication to be added
+ #   - filtering
+
+# Synonym for "formalities" request starter I want to  + issue of questions like **what/Which** ->classfication to be added
 #- synonym: I want to
 #  examples: |
-#    - I want to
-#    - I would like to
-#    - I'd like to
+ #   - I want to
+ #   - I would like to
+ #   - I'd like to
 #    - Can you
 #    - Can I
 #    - May you
-#    - May I
+ #   - May I
 #    - Could you
 #    - Could I
 #    - I want you to
@@ -1126,7 +1111,6 @@ nlu:
     - Switch off nodes and edges
     - Unhcek all node and edge filters
     - Hide all filters in node and edge
-
 
 #- Would I be able to get rid of the nodes and edges filters- yes
 
@@ -2263,6 +2247,9 @@ nlu:
     - Tick off all target icon features
     - I was hoping you could check all target icons
     - I was wondering if you could select all target icons
+#- Would you be able to mark off all target icon filtering-yes
+# bring up all target icons-yes
+# switch all target icons on-yes
 
 
 - intent: uncheck_all_target_icons
@@ -2840,6 +2827,38 @@ nlu:
     - Guide for [constructiveness]{"entity": "filter_name"}
     - May you inform me on [constructiveness]{"entity": "filter_name"}
 
+- intent: define_targetgroup
+  examples: |
+    - Can you tell me what is meant by target group?
+    - I was wondering if you could explain target group to me?
+    - Could you explain to me what target group refers to?
+    - I would like you to explain what target group is
+    - Would you be able to give me a tutorial for target group?
+    - I want you to give me an explanation about target group
+    - I was hoping you could help me understand target group
+    - I'd like you to define target group
+    - Would it be possible to have a tutorial for target group?
+    - Could you possibly go into more detail about what target group is for?
+    - Give me help on target group
+    - Guide for target group
+    - May you inform me on target group
+
+- intent: define_targetperson
+  examples: |
+    - Can you tell me what is meant by target person?
+    - I was wondering if you could explain target person to me?
+    - Could you explain to me what target person refers to?
+    - I would like you to explain what target person is
+    - Would you be able to give me a tutorial for target person?
+    - I want you to give me an explanation about target person
+    - I was hoping you could help me understand target person
+    - I'd like you to define target person
+    - Would it be possible to have a tutorial for target person?
+    - Could you possibly go into more detail about what target person is for?
+    - Give me help on target person
+    - Guide for target person
+    - May you inform me on target person
+
 
 - intent: define_commentlevel
   examples: |
@@ -2885,6 +2904,26 @@ nlu:
 # tell me about comment depth- yes
 # how can I use comment depth- yes
 # i was wondering if you could explain to me what comment depth indicates- yes
+
+- intent: define_directcomment
+  examples: |
+    - Can you tell me what is meant by direct comments?
+    - I was wondering if you could explain direct comments to me?
+    - Could you explain to me what direct comments refers to?
+    - I would like you to explain what direct comments is
+    - Would you be able to give me a tutorial for direct comments?
+    - I want you to give me an explanation about direct comments
+    - I was hoping you could help me understand direct comments
+    - I'd like you to define direct comments
+    - Could you possibly go into more detail about what direct comments is for?
+    - Give me help on direct comments
+    - Guide for direct comments
+    - May you inform me on direct comments
+#what are direct comments- yes
+#what is direct comments for- yes
+#what does direct comments mean- yes
+#could you possibly tell me more about direct comments- yes
+#- Would it be possible to have a tutorial for direct comments?
 
 - intent: define_subtrees
   examples: |
