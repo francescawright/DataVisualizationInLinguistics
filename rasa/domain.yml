@@ -189,6 +189,7 @@ intents:
   - define_directcomment
   - define_subtrees
   - tag_comment_id
+  - help_sub_structure
 
 
 actions:
