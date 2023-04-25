@@ -2965,19 +2965,19 @@ nlu:
 
 - intent: filters_all_features_uncheck
   examples: |
-    - I want to deselect all filters
-    - Could you remove all filters
-    - I was hoping you could reset all selected filters
-    - Would you be able to undo all filters
-    - Could you possibly disable all filters
-    - I would like you to turn off all filtering
-    - Take off all selected filtering
-    - Would it be possible for you to go back to the original display
-    - Clear the interface filters
-    - Go back to the beginning
-    - Switch off filters
-    - Uncheck all selected filters
-    - Reset all
+    - I want to deselect all features
+    - Could you remove all features
+    - I was hoping you could reset all selected features
+    - Would you be able to undo all features
+    - Could you possibly disable all features
+    - I would like you to turn off all features
+    - Take off all selected features filtering
+#    - Would it be possible for you to go back to the original display
+#    - Clear the interface filters
+#    - Go back to the beginning
+#    - Switch off filters
+#    - Uncheck all selected filters
+#    - Reset all
 #COMPROBAR
 # Would I be able to get rid of the selected filters- no
 # reset all- yes
