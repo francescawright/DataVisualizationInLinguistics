@@ -308,6 +308,7 @@ slots:
     type: text
     influence_conversation: false
 
+
 responses:
 
   utter_offers_help:
