@@ -718,7 +718,9 @@ responses:
      
      - Target group \ \n
      - Target person \ \n
-     - None"
+     - None
+     
+     Summary will also tell you how many targets there are in the current visualisation"
 
   utter_explain_targets_two:
     - text: "You can activate/deactivate targets: \ \n
@@ -730,9 +732,7 @@ responses:
 
         Activate/deactivate features: \ \n
         - From the left bar \ \n
-        - Asking me \ \n
-        
-        Summary will also tell you how many targets there are in the current visualisation"
+        - Asking me \ \n"
 
   utter_help_layouts_one:
     - text: "intent_layouts_signal,layouts-radio-buttons,I automatically select 
