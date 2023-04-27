@@ -556,39 +556,39 @@ nlu:
     - Switch [most toxic]{"entity": "filter_name"} and [least toxic]{"entity": "filter_name"} filters
 
 
+#
+## synonyms for verbs check, uncheck, visualise, switch
+#- synonym: check
+#  examples: |
+#    - highlight
+#    - select
+#    - choose
+#    - activate
+#    - enable
+#    - turn on
+#    - switch on
+#    - tick
+#    - tick off
+#    - mark
+#    - mark off
 
-# synonyms for verbs check, uncheck, visualise, switch
-- synonym: check
-  examples: |
-    - highlight
-    - select
-    - choose
-    - activate
-    - enable
-    - turn on
-    - switch on
-    - tick
-    - tick off
-    - mark
-    - mark off
-
-- synonym: uncheck
-  examples: |
-    - deselect
-    - unselect
-    - turn off
-    - disable
-    - hide
-    - switch off
-    - deactivate
-    - untick
-    - clear
-    - clear off
-    - reset
-    - remove
-    - unmark
-    - get rid of
-    - take off
+#- synonym: uncheck
+#  examples: |
+#    - deselect
+#    - unselect
+#    - turn off
+#    - disable
+#    - hide
+#    - switch off
+#    - deactivate
+#    - untick
+#    - clear
+#    - clear off
+#    - reset
+#    - remove
+#    - unmark
+#    - get rid of
+#    - take off
 
 #- synonym: visualise
  # examples: |
@@ -1801,7 +1801,7 @@ nlu:
     - What are level one comments?
   #how can i analyse the features that appear at level one?- yes
 
-- intent: tool_help
+- intent: reminder_help
   examples: |
     - What are the functions of this tool?
     - How can I use this tool?
@@ -1893,7 +1893,7 @@ nlu:
 #    - left menu
 #    - menu on left
 
-- intent: help_what_can_you_do
+- intent: reminder_highlevel_questions
   examples: |
     - What can you do?
     - What can I ask you?
@@ -2963,19 +2963,19 @@ nlu:
 
 - intent: filters_all_features_uncheck
   examples: |
-    - I want to deselect all filters
-    - Could you remove all filters
-    - I was hoping you could reset all selected filters
-    - Would you be able to undo all filters
-    - Could you possibly disable all filters
-    - I would like you to turn off all filtering
-    - Take off all selected filtering
-    - Would it be possible for you to go back to the original display
-    - Clear the interface filters
-    - Go back to the beginning
-    - Switch off filters
-    - Uncheck all selected filters
-    - Reset all
+    - I want to deselect all features
+    - Could you remove all features
+    - I was hoping you could reset all selected features
+    - Would you be able to undo all features
+    - Could you possibly disable all features
+    - I would like you to turn off all features
+    - Take off all selected features filtering
+#    - Would it be possible for you to go back to the original display
+#    - Clear the interface filters
+#    - Go back to the beginning
+#    - Switch off filters
+#    - Uncheck all selected filters
+#    - Reset all
 #COMPROBAR
 # Would I be able to get rid of the selected filters- no
 # reset all- yes

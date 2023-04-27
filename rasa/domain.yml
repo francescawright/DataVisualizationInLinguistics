@@ -97,12 +97,12 @@ intents:
   - help_summary
   - help_main_graph_barchart
   - functions
-  - tool_help
+  - reminder_help
   - help_subtree_barchart
   - help_AND
   - help_OR
   - help_AND_OR
-  - help_what_can_you_do
+  - reminder_highlevel_questions
   - what_can_do_after_glyphs
   - help_colour_features
   - targets_help
@@ -808,7 +808,7 @@ responses:
           payload: '/statistics_help'
 
   utter_help_main_bar_three:
-    - text: "There are two statistics options: \ \n
+    - text: "intent_summary_signal,There are two statistics options: \ \n
     
     - Selected Comments
     
@@ -830,27 +830,28 @@ responses:
 
  Read more about Interactive Graphs [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
-  utter_general_help:
+  utter_reminder_help:
     - text: "I can help you with: "
       buttons:
-        - title: "Highlight"
-          payload: '/help_highlight'
         - title: "Layouts"
           payload: '/help_layouts'
         - title: "Glyphs"
           payload: '/help_glyphs'
-        - title: "Highlight Colour Features"
-          payload: '/help_colour_features'
         - title: "Targets"
           payload: '/targets_help'
+        - title: "Highlight Colour Features"
+          payload: '/help_colour_features'
+        - title: "Select node & edge"
+          payload: "help_select_node_edge"
         - title: "Summary"
           payload: '/help_summary'
         - title: "Selected Comments"
           payload: '/help_main_graph_barchart'
         - title: "Level One Comments"
-          payload: 'help_subtree_barchart'
-        - title: "Subtrees"
-          payload: '/sub_structure_options'
+          payload: '/help_subtree_barchart'
+        - title: "High-level questions"
+          payload: '/reminder_highlevel_questions'
+
 
   utter_sub_structure_options:
     - text: "Here are the subtrees that I can visualise, select one to see it."
@@ -865,25 +866,26 @@ responses:
           payload: '/widest_level'
 
 
-  utter_help_what_can_you_do_one:
-    - text: "I am here to guide you through the visualisation analysis"
-
-  utter_help_what_can_you_do_two:
+  utter_reminder_highlevel_questions_one:
     - text: "I can show you regions of the tree, highlight features, or help you with the tool"
 
-  utter_help_what_can_you_do_three:
+  utter_reminder_highlevel_questions_two:
     - text: "Here you have some actions to do:"
       buttons:
+        - title: "most tagged features"
+          payload: '/most_tagged_features'
         - title: "the largest thread"
           payload: '/largest_thread'
         - title: "the longest thread"
           payload: '/longest_thread'
         - title: "the most toxic thread"
           payload: '/most_toxic_thread'
+        - title: "the most toxic subtree"
+          payload: '/most_toxic_subtree'
         - title: "the widest level"
           payload: '/widest_level'
-        - title: "learn more"
-          payload: '/tool_help'
+        - title: "more help"
+          payload: '/reminder_help'
 
 
   utter_guide_bar_charts:
@@ -1232,62 +1234,59 @@ responses:
 
 # Definitions of features
   utter_sarcasm_definition:
-    - text: "A comment is sarcastic when the content is ironic, that is, when the writer uses words
+    - text: "intent_features_definition_signals,A comment is sarcastic when the content is ironic, that is, when the writer uses words
     that mean the opposite of what he really wants to say and when it is accompanied by a harsh,
     sharp and negative criticism and made in bad faith. \ \n"
 
   utter_mockery_definition:
-    - text: "This category indicates that the comment ridicules, humiliates or mocks a person or group."
+    - text: "intent_features_definition_signals,This category indicates that the comment ridicules, humiliates or mocks a person or group."
 
   utter_insult_definition:
-    - text: "This category indicates that the comment contains one or more
+    - text: "intent_features_definition_signals,This category indicates that the comment contains one or more
     explicit insults or slurs with the intention to offend a person or group.
     This attribute correlates with the improper language category, which means that if the comment contains insults,
     it is also annotated as improper language, but not the other way around (i.e. improper language does not necessarily imply insults or slurs)."
 
   utter_intolerance_definition:
-    - text: "This category indicates the intolerant atttitude of the writer of the comment. 
+    - text: "intent_features_definition_signals,This category indicates the intolerant attitude of the writer of the comment.
     That means when he or she expresses intransigence or non-acceptance or 
   rejection of the difference of the ‘other’ or ‘others’, such as different traditions, customs, beliefs, 
   religions, skin color, sexual orientation or gender, both when they are addressed to an individual and a group."
 
   utter_improper_language_definition:
-    - text: "The category Improper language indicates
+    - text: "intent_features_definition_signals,The category Improper language indicates
     that the comment contains language not consider to be proper or that
     is vulgar and impolite and/or which includes rude words.
     However, we may find comments that include insults or improper language used
     with a humoristic or positive intentionality."
 
   utter_aggressiveness_definition:
-    - text: "A comment contains aggressive language when it expresses
+    - text: "intent_features_definition_signals,A comment contains aggressive language when it expresses
   violence or a desire to exercise it in a deliberate and conscious or unconscious way, without necessarily including sarcasm,
   mockery or insults. This aggressiveness can be expressed in a passive manner,
   by justifying or empathizing with an aggressive action, or in an active way, by promoting and encouraging or inciting violence"
 
   utter_stereotype_definition:
-    - text: "Stereotypes are defined as beliefs and ideas widely attributed to a group,
+    - text: "intent_features_definition_signals,Stereotypes are defined as beliefs and ideas widely attributed to a group,
   by which the individuals in this group are characterised in an undifferentiated and simplified way based on
   the magnification or exaggeration of an individual characteristic (race, ethnicity, religion, gender,
   sexual orientation and age, among others)"
 
   utter_stance_definition:
     - text: "
-    Stance indicates the author's attitude towards a topic of discussion. \ \n
+    intent_node_edge_signal,highlight_accordion_button,Stance indicates the author's attitude towards a topic of discussion. \ \n
 
     There are 4 Stances, each assigned a colour: \ \n
 
-    Positive Stance
-    \ \n
-
-    Negative Stance \ \n
-
-    Neutral Stance \ \n
-
-    Both Positive and Negative stance \ \n
+    - Positive Stance \ \n
+    - Negative Stance \ \n
+    -  Neutral Stance \ \n
+    - Both Positive and \ \n
+    - Negative stance \ \n
 
     You can activate/deactivate Stance: \ \n
 
-    - Using the Select Node and Edge menu \ \n
+    - Using the Select Node and Edge menu
 
     - Asking me"
 
@@ -1311,12 +1310,12 @@ responses:
     - text: "Comment ID is a number that indicates the chronological order in which the comment was posted in the time thread on the website."
 
   utter_argumentation_definition:
-    - text: " Argumentation indicates that the comment gives arguments or reasoned explanations or grounds opinions with evidences. \ \n
+    - text: "intent_features_definition_signals,Argumentation indicates that the comment gives arguments or reasoned explanations or grounds opinions with evidences. \ \n
     
     Read more about Argumentation [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_constructiveness_definition:
-    - text: "A comment is constructive when it is respectful and polite
+    - text: "intent_features_definition_signals,A comment is constructive when it is respectful and polite
     (regardless of whether it is in favour or against the content of the article or of another comment), 
     when it intends to create an enriching and useful dialogue, when it contributes with new knowledge, ideas and proposals and 
     offers new perspectives and insights to approach the subject \ \n
@@ -1324,7 +1323,7 @@ responses:
      Read more about Constructiveness [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_target_group_definition:
-    - text: "All comments are tagged with the targets that they are directed at. Target Group refers to comments targeting a group. \ \n
+    - text: "intent_targets_signal,targets_accordion_button,All comments are tagged with the targets that they are directed at. Target Group refers to comments targeting a group. \ \n
      
          You can activate/deactivate targets: \ \n
 
@@ -1334,7 +1333,7 @@ responses:
           Summary will also tell you how many targets there are in the current visualisation"
 
   utter_target_person_definition:
-    - text: "All comments are tagged with the targets that they are directed at. Target Person refers to comments targeting a person. \ \n
+    - text: "intent_targets_signal,targets_accordion_button,All comments are tagged with the targets that they are directed at. Target Person refers to comments targeting a person. \ \n
 
          You can activate/deactivate targets: \ \n
 
