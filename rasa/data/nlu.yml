@@ -1905,7 +1905,7 @@ nlu:
     - What more I can do now?
 
 
-- intent: features_on_the_left
+- intent: help_colour_features
   examples: |
     - Can you tell me what is meant by highlight colour features in left bar?
     - I was wondering if you could explain colour features to me?
@@ -1948,7 +1948,7 @@ nlu:
     - Is it possible to analyse a smaller part of the visualisation?
     - Can I analyse a small section of my data?
     - Is it possible to look at smaller regions of my data?
-#COMPROBAR
+#IMPROVE
 
 - intent: statistics_help
   examples: |

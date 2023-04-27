@@ -104,7 +104,7 @@ intents:
   - help_AND_OR
   - help_what_can_you_do
   - what_can_do_after_glyphs
-  - features_on_the_left
+  - help_colour_features
   - targets_help
   - sub_structure_options
   - start_analysis
@@ -839,8 +839,8 @@ responses:
           payload: '/help_layouts'
         - title: "Glyphs"
           payload: '/help_glyphs'
-        - title: "Features"
-          payload: '/features_on_the_left'
+        - title: "Highlight Colour Features"
+          payload: '/help_colour_features'
         - title: "Targets"
           payload: '/targets_help'
         - title: "Summary"
@@ -849,8 +849,8 @@ responses:
           payload: '/help_main_graph_barchart'
         - title: "Level One Comments"
           payload: 'help_subtree_barchart'
-        - title: "Sub Regions"
-          payload: '/help_sub_structure'
+        - title: "Subtrees"
+          payload: '/sub_structure_options'
 
   utter_sub_structure_options:
     - text: "Here are the subtrees that I can visualise, select one to see it."
@@ -1404,11 +1404,11 @@ responses:
   
   Use the targets menu to activate/deactivate targets. \ \n
   
+  Summary tells us how many comments are labelled with different levels of toxicity and their targets. It reflects data in the current visualisation \ \n
+  
   Select node and edge will show comment with selected tags. Use the Select node and edge menu to activate/deactivate the features \ \n
    
    Then, you can carry out a statistical analysis.  \ \n
-   
-   Summary tells us how many comments are labelled with different levels of toxicity and their targets. It reflects data in the current visualisation \ \n
    
    You can see the same data displayed in a graph using the Selected Comments Statistics feature. \ \n
    
@@ -1423,11 +1423,12 @@ responses:
     
     My answer will also change depending on your current visualisation \ \n
   
-    Then, to visualise sub regions, you must ask me to show you:
+    Then, to visualise subtree, you must ask me to show you:
     
     - The largest thread \ \n
     - The longest thread \ \n
     - The most toxic thread \ \n
+    - The most toxic subtree \ \n
     - The widest level \ \n
   
    You can visualise features exclusively in this region  \ \n

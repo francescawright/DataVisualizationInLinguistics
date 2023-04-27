@@ -309,7 +309,7 @@ stories:
 
 - story: left bar help
   steps:
-    - intent: features_on_the_left
+    - intent: help_colour_features
     - action: utter_explain_features_tab
     - intent: targets_help
     - action: utter_explain_targets_one
