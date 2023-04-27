@@ -855,7 +855,25 @@
                                     "animation": ""
                                 });
                             }, 6000);
-                            e.text =  messageList[2];
+
+                            $("#statistics-bar").css({
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "height": "210px",
+                                "padding-right": "25px",
+                                "animation": "pulse-green-side-bar 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#statistics-bar").css({
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "height": "",
+                                    "padding-right": "",
+                                    "animation": ""
+                                });
+                            }, 6000);
+                            e.text = messageList[2];
 
 
                         }
@@ -917,6 +935,50 @@
 
                     }
                     break;
+                case "intent_features_definition_signals":
+                    if ('{{ selected_item }}') {
+                        $("#highlight_accordion_button").css({
+                            "width": "calc(100% + 5px)",
+                            "height": "calc(100% + -18px)",
+                            "border": "10px solid #33FF66",
+                            "border-radius": "10px",
+                            "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                            "animation": "pulse-green-side-bar 1.3s infinite"
+                        });
+                        setTimeout(function () {
+                            $("#highlight_accordion_button").css({
+                                "width": "",
+                                "height": "",
+                                "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
+                                "animation": ""
+                            });
+                        }, 6000);
+
+
+                        $("#features_accordion_button").css({
+                            "width": "calc(100% + 5px)",
+                            "height": "calc(100% + -18px)",
+                            "border": "10px solid #33FF66",
+                            "border-radius": "10px",
+                            "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                            "animation": "pulse-green-side-bar 1.3s infinite"
+                        });
+                        setTimeout(function () {
+                            $("#features_accordion_button").css({
+                                "width": "",
+                                "height": "",
+                                "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
+                                "animation": ""
+                            });
+                        }, 6000);
+
+                        e.text = messageList[1];
+                    }
+                    break;
                 case "intent_and_or_signal":
                     if ('{{ selected_item }}') {
                         $("#and_or_signal").css({
@@ -958,8 +1020,6 @@
                             });
                         }, 6000);
                         e.text = messageList[1]
-
-
                     }
                     break;
                 case "intent_switch_or_and":

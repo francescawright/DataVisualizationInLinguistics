@@ -556,39 +556,39 @@ nlu:
     - Switch [most toxic]{"entity": "filter_name"} and [least toxic]{"entity": "filter_name"} filters
 
 
+#
+## synonyms for verbs check, uncheck, visualise, switch
+#- synonym: check
+#  examples: |
+#    - highlight
+#    - select
+#    - choose
+#    - activate
+#    - enable
+#    - turn on
+#    - switch on
+#    - tick
+#    - tick off
+#    - mark
+#    - mark off
 
-# synonyms for verbs check, uncheck, visualise, switch
-- synonym: check
-  examples: |
-    - highlight
-    - select
-    - choose
-    - activate
-    - enable
-    - turn on
-    - switch on
-    - tick
-    - tick off
-    - mark
-    - mark off
-
-- synonym: uncheck
-  examples: |
-    - deselect
-    - unselect
-    - turn off
-    - disable
-    - hide
-    - switch off
-    - deactivate
-    - untick
-    - clear
-    - clear off
-    - reset
-    - remove
-    - unmark
-    - get rid of
-    - take off
+#- synonym: uncheck
+#  examples: |
+#    - deselect
+#    - unselect
+#    - turn off
+#    - disable
+#    - hide
+#    - switch off
+#    - deactivate
+#    - untick
+#    - clear
+#    - clear off
+#    - reset
+#    - remove
+#    - unmark
+#    - get rid of
+#    - take off
 
 #- synonym: visualise
  # examples: |
