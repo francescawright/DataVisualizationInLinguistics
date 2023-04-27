@@ -1801,7 +1801,7 @@ nlu:
     - What are level one comments?
   #how can i analyse the features that appear at level one?- yes
 
-- intent: tool_help
+- intent: reminder_help
   examples: |
     - What are the functions of this tool?
     - How can I use this tool?
@@ -1895,7 +1895,7 @@ nlu:
 #    - left menu
 #    - menu on left
 
-- intent: help_what_can_you_do
+- intent: reminder_highlevel_questions
   examples: |
     - What can you do?
     - What can I ask you?
@@ -1907,7 +1907,7 @@ nlu:
     - What more I can do now?
 
 
-- intent: features_on_the_left
+- intent: help_colour_features
   examples: |
     - Can you tell me what is meant by highlight colour features in left bar?
     - I was wondering if you could explain colour features to me?

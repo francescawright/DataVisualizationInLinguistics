@@ -97,14 +97,14 @@ intents:
   - help_summary
   - help_main_graph_barchart
   - functions
-  - tool_help
+  - reminder_help
   - help_subtree_barchart
   - help_AND
   - help_OR
   - help_AND_OR
-  - help_what_can_you_do
+  - reminder_highlevel_questions
   - what_can_do_after_glyphs
-  - features_on_the_left
+  - help_colour_feature
   - targets_help
   - sub_structure_options
   - start_analysis
@@ -830,27 +830,27 @@ responses:
 
  Read more about Interactive Graphs [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
-  utter_general_help:
+  utter_reminder_help:
     - text: "I can help you with: "
       buttons:
-        - title: "Highlight"
-          payload: '/help_highlight'
         - title: "Layouts"
           payload: '/help_layouts'
         - title: "Glyphs"
           payload: '/help_glyphs'
-        - title: "Features"
-          payload: '/features_on_the_left'
         - title: "Targets"
           payload: '/targets_help'
+        - title: "Highlight Colour Features"
+          payload: '/help_colour_features'
+        - title: "Select node & edge"
+          payload: "help_select_node_edge"
         - title: "Summary"
           payload: '/help_summary'
         - title: "Selected Comments"
           payload: '/help_main_graph_barchart'
         - title: "Level One Comments"
-          payload: 'help_subtree_barchart'
-        - title: "Sub Regions"
-          payload: '/help_sub_structure'
+          payload: '/help_subtree_barchart'
+        - title: "High-level questions"
+          payload: '/reminder_highlevel_questions'
 
   utter_sub_structure_options:
     - text: "Here are the subtrees that I can visualise, select one to see it."
@@ -865,25 +865,26 @@ responses:
           payload: '/widest_level'
 
 
-  utter_help_what_can_you_do_one:
-    - text: "I am here to guide you through the visualisation analysis"
-
-  utter_help_what_can_you_do_two:
+  utter_reminder_highlevel_questions_one:
     - text: "I can show you regions of the tree, highlight features, or help you with the tool"
 
-  utter_help_what_can_you_do_three:
+  utter_reminder_highlevel_questions_two:
     - text: "Here you have some actions to do:"
       buttons:
+        - title: "most tagged features"
+          payload: '/most_tagged_features'
         - title: "the largest thread"
           payload: '/largest_thread'
         - title: "the longest thread"
           payload: '/longest_thread'
         - title: "the most toxic thread"
           payload: '/most_toxic_thread'
+        - title: "the most toxic subtree"
+          payload: '/most_toxic_subtree'
         - title: "the widest level"
           payload: '/widest_level'
-        - title: "learn more"
-          payload: '/tool_help'
+        - title: "more help"
+          payload: '/reminder_help'
 
 
   utter_guide_bar_charts:
