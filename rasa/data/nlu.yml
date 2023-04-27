@@ -456,7 +456,7 @@ nlu:
     - Would I be able to start the analysis of [20170819_CR]{"entity": "document_requested"}
     - Could you possibly start with [531_MI]{"entity": "document_requested"}
     - Let me see [file]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
-    - Choose {20170819]{"entity": "document_requested"} to analyse first
+    - Choose [20170819]{"entity": "document_requested"} to analyse first
 #start with X
   #Let's analyse 20200608_SO- yes
 # bring up file 20200608_SO- yes
@@ -661,7 +661,7 @@ nlu:
 #  examples: |
  #   - filtering
 
-# Synonym for "formalities" request starter I want to  + issue of questions like **what/Which** ->classfication to be added
+# Synonym for "formalities" request starter I want to
 #- synonym: I want to
 #  examples: |
  #   - I want to
@@ -1639,7 +1639,7 @@ nlu:
     - Can I see the statistics of what is displayed right now
     - May you draw up the stats of the main interface display
     - Show me the statistics of features
-    - Show me the distrubution of features
+    - Show me the distribution of features
     - Could I possibly analyse what I have chosen?
     - Is there a way I can look at the data for the visualisation?
     - Would I be able to analyse what I have highlighted
@@ -1754,7 +1754,7 @@ nlu:
     - Give me help on summary
     - Guide for comment selected summary
     - May you inform me on summary
-#tell me about summary
+#tell me about summary-yes
 
 - intent: help_main_graph_barchart
   examples: |
@@ -1871,9 +1871,7 @@ nlu:
 #    - AND choice
 #    - AND button
 #    - AND
-#
-#- synonym: select node and edge menu
-#    examples: |
+
 #- synonym: OR option
 #  examples: |
 #    - OR option
@@ -1950,7 +1948,7 @@ nlu:
     - Is it possible to analyse a smaller part of the visualisation?
     - Can I analyse a small section of my data?
     - Is it possible to look at smaller regions of my data?
-#COMPROBAR
+#IMPROVE
 
 - intent: statistics_help
   examples: |
@@ -3338,7 +3336,7 @@ nlu:
   # sections of the layout
   # sections of the display
 
-- intent: ask_tutorial
+-
   examples: |
     - I want a tutorial
     - I need a tutorial

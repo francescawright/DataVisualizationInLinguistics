@@ -104,7 +104,7 @@ intents:
   - help_AND_OR
   - reminder_highlevel_questions
   - what_can_do_after_glyphs
-  - help_colour_feature
+  - help_colour_features
   - targets_help
   - sub_structure_options
   - start_analysis
@@ -718,7 +718,9 @@ responses:
      
      - Target group \ \n
      - Target person \ \n
-     - None"
+     - None
+     
+     Summary will also tell you how many targets there are in the current visualisation"
 
   utter_explain_targets_two:
     - text: "You can activate/deactivate targets: \ \n
@@ -730,9 +732,7 @@ responses:
 
         Activate/deactivate features: \ \n
         - From the left bar \ \n
-        - Asking me \ \n
-        
-        Summary will also tell you how many targets there are in the current visualisation"
+        - Asking me \ \n"
 
   utter_help_layouts_one:
     - text: "intent_layouts_signal,layouts-radio-buttons,I automatically select 
@@ -851,6 +851,7 @@ responses:
           payload: '/help_subtree_barchart'
         - title: "High-level questions"
           payload: '/reminder_highlevel_questions'
+
 
   utter_sub_structure_options:
     - text: "Here are the subtrees that I can visualise, select one to see it."
@@ -1402,11 +1403,11 @@ responses:
   
   Use the targets menu to activate/deactivate targets. \ \n
   
+  Summary tells us how many comments are labelled with different levels of toxicity and their targets. It reflects data in the current visualisation \ \n
+  
   Select node and edge will show comment with selected tags. Use the Select node and edge menu to activate/deactivate the features \ \n
    
    Then, you can carry out a statistical analysis.  \ \n
-   
-   Summary tells us how many comments are labelled with different levels of toxicity and their targets. It reflects data in the current visualisation \ \n
    
    You can see the same data displayed in a graph using the Selected Comments Statistics feature. \ \n
    
@@ -1421,11 +1422,12 @@ responses:
     
     My answer will also change depending on your current visualisation \ \n
   
-    Then, to visualise sub regions, you must ask me to show you:
+    Then, to visualise subtree, you must ask me to show you:
     
     - The largest thread \ \n
     - The longest thread \ \n
     - The most toxic thread \ \n
+    - The most toxic subtree \ \n
     - The widest level \ \n
   
    You can visualise features exclusively in this region  \ \n
