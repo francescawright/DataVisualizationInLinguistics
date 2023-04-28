@@ -442,37 +442,40 @@ nlu:
     - file
 
 - intent: select_document
-  examples: |   
+  examples: | 
     - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - I want you to open [Compact_200]{"entity": "document_requested"}
-    - I would like you to show me the [file]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
-    - Can you open for me [531_MI]{"entity": "document_requested"}
-    - I was hoping you could bring up [test2]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} for me
-    - Would you be able to select [test4-Com]{"entity": "document_requested"}
-    - Would it be possible for you to choose [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - I'd like to analyse [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - Begin analysis of [file]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
-    - May I look at [file]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
-    - Would I be able to start the analysis of [20170819_CR]{"entity": "document_requested"}
-    - Could you possibly start with [531_MI]{"entity": "document_requested"}
-    - Let me see [file]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
-    - Choose [20170819]{"entity": "document_requested"} to analyse first
+    - Open [Compact_200]{"entity": "document_requested"}
+    - Open [document]{"entity": "object_requested", "value": "document"}
+    - Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
+    - Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
+    - Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - I want to open a [file]{"entity": "object_requested", "value": "document"}
+    - I want to open [wide]{"entity": "document_requested"}
+    - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
+    - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
+
+#- Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+#- I want you to open [Compact_200]{"entity": "document_requested"}
+#- I would like you to show me the [file]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
+#- Can you open for me [531_MI]{"entity": "document_requested"}
+#- I was hoping you could bring up [test2]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} for me
+#- Would you be able to select [test4-Com]{"entity": "document_requested"}
+#- Would it be possible for you to choose [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+#- I'd like to analyse [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+#- Begin analysis of [file]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
+#- May I look at [file]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
+#- Would I be able to start the analysis of [20170819_CR]{"entity": "document_requested"}
+#- Could you possibly start with [531_MI]{"entity": "document_requested"}
+#- Let me see [file]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
+#- Choose [20170819]{"entity": "document_requested"} to analyse first
+
 #start with X
   #Let's analyse 20200608_SO- yes
 # bring up file 20200608_SO- yes
 # let's begin with file 20200608_SO - yes
 
-# - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-#    - Open [Compact_200]{"entity": "document_requested"}
-#    - Open [document]{"entity": "object_requested", "value": "document"}
-#    - Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
-#    - Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
-#   - Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-#   - I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-#    - I want to open a [file]{"entity": "object_requested", "value": "document"}
-#    - I want to open [wide]{"entity": "document_requested"}
- #   - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
-#    - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
+
 
 
 # Ask bot to change to OR / AND
@@ -1189,7 +1192,7 @@ nlu:
 #reset
 #go back to the beginning
 
-
+#unchecking select node and edge menus
 - intent: highlight_uncheck
   examples: | 
     - Can I disable [non toxic]{"entity": "filter_name"} option 
@@ -2815,10 +2818,28 @@ nlu:
 # asking to hide filters without specifying which method
 
 - intent: filters_constructive_hide
-  examples: |
-    - Uncheck [constructiveness]{"entity": "filter_name"}
-    - Hide [constructive]{"entity": "filter_name" }
-    - Deselect [constructive]{"entity": "filter_name" }
+  examples: |    
+    - Can I [constructiveness]{"entity": "filter_name"}
+    - Uncheck [constructiveness]{"entity": "filter_name"} features
+    - May you turn off [constructiveness]{"entity": "filter_name"} filters
+    - I want to reset [constructiveness]{"entity": "filter_name"} features
+    - I would like to switch off [constructiveness]{"entity": "filter_name"} features
+    - Deselect [constructiveness]{"entity": "filter_name"} filtering
+    - Could you hide [constructiveness]{"entity": "filter_name"} features
+    - I was hoping you could switch off [constructiveness]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [constructiveness]{"entity": "filter_name"}
+    - Would you be able to untick [constructiveness]{"entity": "filter_name"} filters
+    - Could you possibly clear [constructiveness]{"entity": "filter_name"} filtering
+    - Clear off [constructiveness]{"entity": "filter_name"} filters
+    - May you remove [constructiveness]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [constructiveness]{"entity": "filter_name"} filters
+    - Unselect [constructiveness]{"entity": "filter_name"} filtering
+    - Get rid of [constructiveness]{"entity": "filter_name"} features
+    - Would I be able to take [constructiveness]{"entity": "filter_name"} off
+    - I'd like to clear off [constructiveness]{"entity": "filter_name"}
+  #- Uncheck [constructiveness]{"entity": "filter_name"}
+  #- Hide [constructive]{"entity": "filter_name" }
+  #- Deselect [constructive]{"entity": "filter_name" }
 
 - intent: filters_argument_hide
   examples: |
