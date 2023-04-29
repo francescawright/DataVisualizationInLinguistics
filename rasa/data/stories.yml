@@ -268,8 +268,6 @@ stories:
     - action: utter_explain_glyphs_one
     - action: utter_explain_glyphs_two
     - action: utter_explain_glyphs_three
-    - intent: what_can_do_after_glyphs
-    - action: utter_guide_bar_charts
     - intent: statistics_features_subtrees
     - action: utter_statistics_features_subtrees
     - action: utter_help_bar_chart_pop_up
@@ -337,10 +335,11 @@ stories:
   steps:
     - intent: greet
     - action: utter_offers_help
-    - intent: tool_help
+    - intent: reminder_help
     - action: utter_reminder_help
-    - intent: sub_structure_options
-    - action: utter_sub_structure_options
+    - intent: reminder_highlevel_questions
+    - action: utter_reminder_highlevel_questions_one
+    - action: utter_reminder_highlevel_questions_two
     - intent: thanks
     - action: utter_you_are_welcome
     - intent: help_main_graph_barchart

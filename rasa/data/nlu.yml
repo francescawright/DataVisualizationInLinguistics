@@ -1809,6 +1809,27 @@ nlu:
     - What are the functions of this tool?
     - How can I use this tool?
     - Tell me about how to use this tool?
+    - Can you remind me what I can do?
+    - I need you to remind me how to use the interface
+    - Could you possibly tell me again what you can do?
+    - I'd like you to recap 
+    - What is this tool for?
+    - How can I use this interface?
+    - I don't know what to do
+    - Can you help me
+    - Could you give me suggestions on what to do next
+    - I would like you to help me 
+    - What can I do now?
+    - Would you be able to give me help on what to do next?
+    - Would it be possible for you to give me a summary of what I can do
+
+#synonym: reminder
+#examples: |
+# remind
+# a reminder
+# recap
+# summary help
+# *again
 
 - intent: help_AND
   examples: |
@@ -1898,15 +1919,30 @@ nlu:
 
 - intent: reminder_highlevel_questions
   examples: |
-    - What can you do?
-    - What can I ask you?
-    - How can you help me?
-
-- intent: what_can_do_after_glyphs
-  examples: |
-    - What can I do now after viewing glyphs?
-    - What more I can do now?
-
+    - What are the subtrees you can show me
+    - Could you remind me of the subtree choices
+    - What are the subtree options again?
+    - What statistics questions are there?
+    - What are more complex questions I can ask you?
+    - Would you be able to tell me more about subtrees
+    - I would like to know about the basic statistics questions I can ask you
+    - What are the basic statistic questions you can answer?
+    - Would you possibly remind me of the basic statistics options
+    - What are the questions I can only ask you?
+    - How can I see subtrees?
+    - How can I find out the subtrees choices again?
+    - I want to know the basic statistics questions
+    - I'd like you to remind me of the basic statistics questions
+    - Can you tell me what other questions i can ask you
+    - What are the different subtrees you can show me
+    - What are the sub structure options?
+    - What are the sub regions you can highlight?
+    - Would you be able to tell me the sub regions again?
+    - Is it possible to analyse a smaller part of the visualisation?
+    - Can I analyse a small section of my data?
+     - Is it possible to look at smaller regions of my data?
+#could you remind me of the basic statistics options- yes
+#what were the questions i can ask you- yes
 
 - intent: help_colour_features
   examples: |
@@ -1942,15 +1978,15 @@ nlu:
     - What's the difference between target person and target group?
 #COMPROBAR target person and group intents new combos to be checked
 
-- intent: sub_structure_options
-  examples: |
-    - What are the sub structure options?
-    - Can you remind of me the sub tree options?
-    - What are the sub regions you can highlight?
-    - Would you be able to tell me the sub regions again?
-    - Is it possible to analyse a smaller part of the visualisation?
-    - Can I analyse a small section of my data?
-    - Is it possible to look at smaller regions of my data?
+#- intent: sub_structure_options
+# examples: |
+#    - What are the sub structure options?
+#    - Can you remind of me the sub tree options?
+#    - What are the sub regions you can highlight?
+ #   - Would you be able to tell me the sub regions again?
+ #   - Is it possible to analyse a smaller part of the visualisation?
+#    - Can I analyse a small section of my data?
+ #   - Is it possible to look at smaller regions of my data?
 #IMPROVE
 
 - intent: statistics_help
@@ -2837,15 +2873,16 @@ nlu:
     - Get rid of [constructiveness]{"entity": "filter_name"} features
     - Would I be able to take [constructiveness]{"entity": "filter_name"} off
     - I'd like to clear off [constructiveness]{"entity": "filter_name"}
-  #- Uncheck [constructiveness]{"entity": "filter_name"}
-  #- Hide [constructive]{"entity": "filter_name" }
-  #- Deselect [constructive]{"entity": "filter_name" }
+
+
 
 - intent: filters_argument_hide
   examples: |
     - Hide [argumentation]{"entity": "filter_name"}
     - Deselect [argument]{"entity": "filter_name" }
     - Uncheck  [argumentation]{"entity": "filter_name" }
+    
+    
 
 
 - intent: filters_sarcasm_hide
@@ -2984,24 +3021,18 @@ nlu:
 
 - intent: filters_all_features_uncheck
   examples: |
-    - I want to deselect all features
-    - Could you remove all features
-    - I was hoping you could reset all selected features
-    - Would you be able to undo all features
-    - Could you possibly disable all features
-    - I would like you to turn off all features
-    - Take off all selected features filtering
-#    - Would it be possible for you to go back to the original display
-#    - Clear the interface filters
-#    - Go back to the beginning
-#    - Switch off filters
-#    - Uncheck all selected filters
-#    - Reset all
-#COMPROBAR
-# Would I be able to get rid of the selected filters- no
-# reset all- yes
-# reset everything -yes
-# Would it be possible for you to go back to the original display-yes
+    - I want to deselect all colour features
+    - Could you remove all colour glyphs
+    - I was hoping you could reset all selected colour features
+    - Would you be able to undo all selected colour glyphs
+    - Could you possibly disable all selected colours
+    - I would like you to turn off all colour filters
+    - Take off all selected colours filtering
+    - Would it be possible for you to clear off colour filtering
+    - Switch off glyphs
+    - Can you uncheck all colour filters
+    - Reset all colours
+    - I was wondering if you could turn off all glyphs
 
 
 - intent: filters_all_targets_uncheck
@@ -3347,6 +3378,7 @@ nlu:
  # examples: |
   #  - subregion
   # - sub section
+  # substructure
   # parts of the visualisation
   # parts of the layout
   # parts of the display
@@ -3357,8 +3389,20 @@ nlu:
   # sections of the layout
   # sections of the display
 
--
+- intent: ask_tutorial
   examples: |
     - I want a tutorial
     - I need a tutorial
+    - I was wondering if you could explain everything again
+    - Give me a tutorial on everything
+    - I was hoping you could tell me everything you can do again
+    - I'd like you to tell me everything I can do
+    - Explain to me how to use this tool
+    - I would like a tutorial
+    - Would you be able to give me a tutorial
+    - Can I have a full tutorial
+    - Would it be possible to have a tutorial for every function
+    - Tell me everything I can do 
+    - Could you possibly run through all the functions of this site
+  
 
