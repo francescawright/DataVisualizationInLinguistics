@@ -3033,6 +3033,9 @@ nlu:
     - Can you uncheck all colour filters
     - Reset all colours
     - I was wondering if you could turn off all glyphs
+    - Get rid of all glyphs
+    - Could you deselect the selected glyphs
+    - Turn off all colours
 
 
 - intent: filters_all_targets_uncheck
