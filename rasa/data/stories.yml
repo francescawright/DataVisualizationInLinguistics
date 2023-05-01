@@ -337,7 +337,7 @@ stories:
   steps:
     - intent: greet
     - action: utter_offers_help
-    - intent: tool_help
+    - intent: reminder_help
     - action: utter_reminder_help
     - intent: sub_structure_options
     - action: utter_sub_structure_options

@@ -650,9 +650,9 @@ rules:
     - intent: define_subtrees
     - action: utter_subtrees_definition
 
-- rule: user asks for tutorial
-  steps:
-    - intent: ask_tutorial
-    - action: utter_tutorial_mode
-
-
+#- rule: user asks for tutorial
+#  steps:
+#    - intent: ask_tutorial
+#    - action: utter_tutorial_mode
+#
+#

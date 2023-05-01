@@ -257,7 +257,7 @@ class ActionLogin(Action):
         else:
             key = b'ZeuY3kEaYn2XkyPQPQKgDmDeDRJfKYM3-tTx_5NmMm4='
             dispatcher.utter_message(
-                text='intent_login,' + encrypt(tracker.get_slot("username").encode(), key).decode() + ',' + encrypt(
+                text='intent_login;' + encrypt(tracker.get_slot("username").encode(), key).decode() + ',' + encrypt(
                     tracker.get_slot("password").encode(), key).decode())
             return [SlotSet("username", None), SlotSet("password", None)]
 
@@ -303,7 +303,7 @@ class ActionSignup(Action):
         else:
             key = b'JlgbJKpxVhwF3NXJf_n-lt4c4AvdCATnuXYDK4xivPY='
             dispatcher.utter_message(
-                text='intent_signup,' + encrypt(tracker.get_slot("username").encode(), key).decode()
+                text='intent_signup;' + encrypt(tracker.get_slot("username").encode(), key).decode()
                      + ',' + encrypt(tracker.get_slot("password").encode(), key).decode()
                      + ',' + encrypt(tracker.get_slot("password_confirmation").encode(), key).decode())
             return [SlotSet("username", None), SlotSet("password", None), SlotSet("password_confirmation", None)]
@@ -414,7 +414,7 @@ class ActionOpenDocument(Action):
                 if e['entity'] == 'document_requested':
                     document_requested_value = e['value']
 
-            dispatcher.utter_message(text='intent_open_document,' + document_requested_value)
+            dispatcher.utter_message(text='intent_open_document;' + document_requested_value)
             return [SlotSet("document_requested", None)]
 
 
@@ -559,7 +559,7 @@ class ActionHighlightCheck(Action):
                     values.append(filters_ids[result])
         if previous_filters is None:
             # Send the message for the first time
-            dispatcher.utter_message(text="intent_filter," + ';'.join(values))
+            dispatcher.utter_message(text="intent_filter;" + ';'.join(values))
             dispatcher.utter_message(text="I have automatically selected AND. You can also change to OR.",
                                      buttons=[
                                          {"title": "Read more here", "payload": "/help_AND_OR"}
@@ -568,7 +568,7 @@ class ActionHighlightCheck(Action):
             return [SlotSet("previous_filters", values)]
 
         else:
-            dispatcher.utter_message(text="intent_filter," + ';'.join(values))
+            dispatcher.utter_message(text="intent_filter;" + ';'.join(values))
             return [SlotSet("previous_filters", values)]
 
 
@@ -584,7 +584,7 @@ class ActionHighlightCheckLast(Action):
         if not tracker.get_slot("previous_filters"):
             dispatcher.utter_message(text="You have not interacted with any filter through the chat yet")
         else:
-            dispatcher.utter_message(text="intent_filter," + ';'.join(tracker.get_slot("previous_filters")))
+            dispatcher.utter_message(text="intent_filter;" + ';'.join(tracker.get_slot("previous_filters")))
         return []
 
 
@@ -603,7 +603,7 @@ class ActionHighlightSwitch(Action):
                 result, confidence = process.extractOne(e['value'], choices)
                 if confidence >= threshold:
                     values.append(filters_ids[result])
-        dispatcher.utter_message(text="intent_filter_switch," + ';'.join(values))
+        dispatcher.utter_message(text="intent_filter_switch;" + ';'.join(values))
 
         return [SlotSet("previous_filters", values)]
 
@@ -620,7 +620,7 @@ class ActionHighlightSwitchLast(Action):
         if not tracker.get_slot("previous_filters"):
             dispatcher.utter_message(text="You have not interacted with any filter through the chat yet")
         else:
-            dispatcher.utter_message(text="intent_filter_switch," + ';'.join(tracker.get_slot("previous_filters")))
+            dispatcher.utter_message(text="intent_filter_switch;" + ';'.join(tracker.get_slot("previous_filters")))
         return []
 
 
@@ -639,7 +639,7 @@ class ActionHighlightUncheck(Action):
                 result, confidence = process.extractOne(e['value'], choices)
                 if confidence >= threshold:
                     values.append(filters_ids[result])
-        dispatcher.utter_message(text="intent_filter_uncheck," + ';'.join(values))
+        dispatcher.utter_message(text="intent_filter_uncheck;" + ';'.join(values))
 
         return [SlotSet("previous_filters", values)]
 
@@ -656,7 +656,7 @@ class ActionHighlightUncheckLast(Action):
         if not tracker.get_slot("previous_filters"):
             dispatcher.utter_message(text="You have not interacted with any filter through the chat yet")
         else:
-            dispatcher.utter_message(text="intent_filter_uncheck," + ';'.join(tracker.get_slot("previous_filters")))
+            dispatcher.utter_message(text="intent_filter_uncheck;" + ';'.join(tracker.get_slot("previous_filters")))
         return []
 
 

@@ -51,6 +51,8 @@
 .rw-conversation-container .rw-image-details .rw-image-frame{
     height: 300px;
     width: 300px;
+    {#width: auto;#}
+    {#height: auto;#}
 }
 .rw-conversation-container .rw-replies{
    display:block;
@@ -487,7 +489,7 @@
             // Otherwise, convert the sessionStorage string to an array
             existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
 
-            let messageList = e.text.split(",");
+            let messageList = e.text.split(";");
             switch (messageList[0]) {
                 case "intent_logout":
                     e.hidden = true;
@@ -995,7 +997,8 @@
                                 "animation": ""
                             });
                         }, 6000);
-                        e.text = messageList[1] + "," +  " " + messageList[2]
+                        e.text = messageList[1]
+                        {#e.text = messageList[1] + "," +  " " + messageList[2]#}
 
 
                     }
@@ -1016,6 +1019,25 @@
                                 "box-shadow": "",
                                 "height": "",
                                 "padding-right": "",
+                                "animation": ""
+                            });
+                        }, 6000);
+                        e.text = messageList[1]
+                    }
+                    break;
+                case "intent_subtrees_signal":
+                    if ('{{ selected_item }}') {
+                        $("#subtrees-btn").css({
+                            "border": "6px solid #33FF66",
+                            {#"border-radius": "10px",#}
+                            "box-shadow": "0px 0px 10px 10px rgba(51, 255, 102, 0.8)",
+                            "animation": "pulse-green 1.3s infinite"
+                        });
+                        setTimeout(function () {
+                            $("#subtrees-btn").css({
+                                "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
                                 "animation": ""
                             });
                         }, 6000);
@@ -1258,6 +1280,32 @@
                             }, 6000);
 
                             e.text = messageList[3]
+
+                        }
+                    }
+                    break;
+                case "intent_signal_level_one_button":
+                    if ('{{ selected_item }}') {
+                        if (messageList[1] === "chart_sub_button"){
+                            $("#chart_sub_button").css({
+                                "width": "130px",
+                                "height": "calc(100% + -10px)",
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                                "animation": "pulse-green-side-bar 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#chart_sub_button").css({
+                                    "width": "",
+                                    "height": "",
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "animation": ""
+                                });
+                            }, 10000);
+                            e.text = messageList[2]
 
                         }
                     }
