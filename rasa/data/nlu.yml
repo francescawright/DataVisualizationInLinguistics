@@ -303,7 +303,7 @@ nlu:
     - Would you be able to use to [visualisation 1]{"entity": "layout_requested", "value": "tree"} option
     - Could you possibly show me [tree layout]{"entity": "layout_requested", "value": "tree"} format
     - Would it be possible for you to display features with [1st layout]{"entity": "layout_requested", "value": "tree"} display
-    - Show me [tree layout]{"entity": "layout_requested", "value": "tree"}
+    - Show me [layout one]{"entity": "layout_requested", "value": "tree"}
     - Would you visualise the current display as [tree layout]{"entity": "layout_requested", "value": "tree"} 
     - I was wondering if I could select [first layout]{"entity": "layout_requested", "value": "tree"} display
     - Let me choose [tree]{"entity": "glyph_requested", "value": "dots"} option
@@ -442,32 +442,47 @@ nlu:
     - file
 
 - intent: select_document
-  examples: | 
+  examples: |
     - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - Open [Compact_200]{"entity": "document_requested"}
-    - Open [document]{"entity": "object_requested", "value": "document"}
-    - Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
-    - Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
-    - Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - I want to open a [file]{"entity": "object_requested", "value": "document"}
-    - I want to open [wide]{"entity": "document_requested"}
-    - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
-    - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
+    - I want you to open [Compact_200]{"entity": "document_requested"}
+    - I would like you to show me the [20190519_SO]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} 
+    - Can you open for me [531_MI]{"entity": "document_requested"}
+    - I was hoping you could bring up [test2]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} for me
+    - Would you be able to select [test4-Com]{"entity": "document_requested"}
+    - Would it be possible for you to choose [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - I'd like to analyse [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Begin analysis of  [20190519_SO]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - May I look at [test]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Would I be able to start the analysis of [20170819_CR]{"entity": "document_requested"}
+    - Could you possibly start with [531_MI]{"entity": "document_requested"}
+    - Let me see [test]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Choose [20170819]{"entity": "document_requested"} to analyse first
+
+  #- Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+  #- Open [Compact_200]{"entity": "document_requested"}
+  #- Open [document]{"entity": "object_requested", "value": "document"}
+  #- Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
+  #- Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
+  #- Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+  #- I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+  #- I want to open a [file]{"entity": "object_requested", "value": "document"}
+  #- I want to open [wide]{"entity": "document_requested"}
+  #- I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
+  #- I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
 
 #- Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
 #- I want you to open [Compact_200]{"entity": "document_requested"}
-#- I would like you to show me the [file]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
+#- I would like you to show me the [20190519_SO]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
 #- Can you open for me [531_MI]{"entity": "document_requested"}
 #- I was hoping you could bring up [test2]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} for me
 #- Would you be able to select [test4-Com]{"entity": "document_requested"}
 #- Would it be possible for you to choose [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
 #- I'd like to analyse [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-#- Begin analysis of [file]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
-#- May I look at [file]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
+#- Begin analysis of  [20190519_SO]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+#- May I look at [test]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
 #- Would I be able to start the analysis of [20170819_CR]{"entity": "document_requested"}
 #- Could you possibly start with [531_MI]{"entity": "document_requested"}
-#- Let me see [file]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
+#- Let me see [test]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
 #- Choose [20170819]{"entity": "document_requested"} to analyse first
 
 #start with X
@@ -2007,6 +2022,7 @@ nlu:
     - How can I analyse my data?
     - Is there a way to compare the features
     - Would I be able to see if there is a relationship between features?
+    - How can I see the relationships between features?
 #what statistics options are there- yes
 #May you inform me on statistics graphs-yes
 #compare the relationships of the features-yes
@@ -3270,7 +3286,7 @@ nlu:
     - Could you explain to me what target group refers to?
     - I would like you to explain what target group is
     - Would you be able to give me a tutorial for target group?
-    - I want you to give me an explanation about target group
+    - I want you to give me an explanation for target group
     - I was hoping you could help me understand target group
     - I'd like you to define target group
     - Would it be possible to have a tutorial for target group?
@@ -3286,7 +3302,7 @@ nlu:
     - Could you explain to me what target person refers to?
     - I would like you to explain what target person is
     - Would you be able to give me a tutorial for target person?
-    - I want you to give me an explanation about target person
+    - I want you to give me an explanation for target person
     - I was hoping you could help me understand target person
     - I'd like you to define target person
     - Would it be possible to have a tutorial for target person?
@@ -3303,7 +3319,7 @@ nlu:
     - Could you explain to me what the level of the comment refers to?
     - I would like you to explain what comment level is
     - Would you be able to give me a tutorial for comment level?
-    - I want you to give me an explanation about comment level
+    - I want you to give me an explanation for comment level
     - I was hoping you could help me understand comment level
     - I'd like you to define comment level
     - Would it be possible to have a tutorial for comment level?
@@ -3319,7 +3335,7 @@ nlu:
     - Could you explain to me what the depth of the comment refers to?
     - I would like you to explain what comment depth is
     - Would you be able to give me a tutorial for comment depth?
-    - I want you to give me an explanation about comment depth
+    - I want you to give me an explanation for comment depth
     - I was hoping you could help me understand comment depth
     - I'd like you to define comment depth
     - Would it be possible to have a tutorial for comment depth?
@@ -3327,6 +3343,8 @@ nlu:
     - Give me help on comment depth
     - Guide for comment depth
     - May you inform me on comment depth
+    
+
 #- Tutorial for comment depth- yes
 #- What is the definition of comment depth?- yes
 #- What does comment depth mean?-yes
@@ -3348,7 +3366,7 @@ nlu:
     - Could you explain to me what direct comments refers to?
     - I would like you to explain what direct comments is
     - Would you be able to give me a tutorial for direct comments?
-    - I want you to give me an explanation about direct comments
+    - I want you to give me an explanation for direct comments
     - I was hoping you could help me understand direct comments
     - I'd like you to define direct comments
     - Could you possibly go into more detail about what direct comments is for?

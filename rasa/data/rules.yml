@@ -555,6 +555,7 @@ rules:
   steps:
     - intent: filters_group_hide
     - action: utter_filters_target_group_uncheck
+
 - rule: user asks for definition of sarcasm
   steps:
     - intent: define_sarcasm
