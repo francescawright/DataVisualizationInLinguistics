@@ -198,13 +198,8 @@ nlu:
   examples: |
     - visualisation layout
     - visualization layout
-    - display layout
-    - design
     - visualisation design
-    - display design
-    - display type
     - visualisation type
-    - display layout
     - visualisation
     
 
@@ -228,69 +223,55 @@ nlu:
     - force layout
     - force visualization
     - force visualisation
-    - force design
-    - force display
     - second visualization
     - second visualisation
-    - second design
     - second layout
-    - second display
+    - 2nd layout
+
 
 - synonym: radial
   examples: |
     - radial layout
     - radial visualization
     - radial visualisation
-    - radial design
-    - radial display
     - third visualization
     - third visualisation
-    - third design
     - third layout
-    - third display
+    - 3rd layout
+
 
 - synonym: circle
   examples: |
-    - circle
     - circle layout
     - circle visualization
     - circle visualisation
-    - circle design
-    - circle display
     - circle packing
-    - circle packing visualization
-    - circle packing visualisation
-    - circle packing design
-    - circle packing display
     - fourth visualization
     - fourth visualisation
-    - fourth design
     - fourth layout
-    - fourth display
     - last visualization
     - last visualisation
-    - last design
-    - last layout
+    - 4th layout
+
 
 - intent: change_layout
   examples: |   
     - I want to change the [visualization layout]{"entity": "object_requested", "value": "layout"}
-    - Can you swap the [display layout]{"entity": "object_requested", "value": "layout"}
-    - I was hoping you could show me another [display design]{"entity": "object_requested", "value": "layout"}
-    - Could I possibly choose another [display]{"entity": "object_requested", "value": "layout"} 
+    - Can you swap the [layout]{"entity": "object_requested", "value": "layout"} display
+    - I was hoping you could show me another [layout]{"entity": "object_requested", "value": "layout"} design
+    - Could I possibly choose another [visualisation type]{"entity": "object_requested", "value": "layout"}
     - Would you be able to use a different [layout]{"entity": "object_requested", "value": "layout"} option
-    - Could you possibly show me other [display layout]{"entity": "object_requested", "value": "layout"}
+    - Could you possibly show me other [visualisation]{"entity": "object_requested", "value": "layout"}
     - Would it be possible for you to display features with another [visualization layout]{"entity": "object_requested", "value": "layout"} style
     - Show me other [visualization layout]{"entity": "object_requested", "value": "layout"} types
-    - Would you visualise the features in [visualization layout]{"entity": "object_requested", "value": "layout"}
+    - Would you visualise the features in [layout]{"entity": "object_requested", "value": "layout"}
     - I was wondering if I could select another [visualisation layout]{"entity": "object_requested", "value": "layout"} option
     - What are the other [visualization layout]{"entity": "object_requested", "value": "layout"} choices
     - Are there any other [visualization]{"entity": "object_requested", "value": "layout"} I can use
     - Switch the [visualisation type]{"entity": "object_requested", "value": "layout"} format
     - Change [layout]{"entity": "object_requested", "value": "layout"}
 
-    
-
+   
 
 - intent: change_layout_tree
   examples: |
@@ -300,27 +281,31 @@ nlu:
     - Could I possibly choose to [tree visualization]{"entity": "layout_requested", "value": "tree"} type
     - Would you be able to use to [visualisation 1]{"entity": "layout_requested", "value": "tree"} option
     - Could you possibly show me [first visualisation]{"entity": "layout_requested", "value": "tree"} format
-    - Would it be possible for you to display features with [1st layout]{"entity": "layout_requested", "value": "tree"}
+    - Would it be possible for you to display features with [1st layout]{"entity": "layout_requested", "value": "tree"} display
     - Show me [layout one]{"entity": "layout_requested", "value": "tree"}
-    - Would you visualise the current display as [first layout]{"entity": "layout_requested", "value": "tree"} 
-    - I was wondering if I could select [tree layout]{"entity": "layout_requested", "value": "tree"} display
+    - Would you visualise the current display as [tree layout]{"entity": "layout_requested", "value": "tree"} 
+    - I was wondering if I could select [first layout]{"entity": "layout_requested", "value": "tree"} display
     - Let me choose [tree]{"entity": "layout_requested", "value": "tree"} option
     - Let's visualise the selected features in [visualisation one]{"entity": "layout_requested", "value": "tree"} format
     - Change layout to [tree]{"entity": "layout_requested", "value": "tree"} design
-    - Can I look at features in [layout one]{"entity": "layout_requested", "value": "tree"}
+
 
 - intent: change_layout_force
   examples: |
-    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [force]{"entity": "layout_requested", "value": "force"}
+    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [force]{"entity": "layout_requested", "value": "force"} design
     - Can you swap the [layout]{"entity": "object_requested", "value": "layout"} to the [second layout]{"entity": "layout_requested", "value": "force"} layout
-    - I was hoping you could bring up [second visualisation]{"entity": "layout_requested", "value": "force"} style
-    - Could I possibly choose to [force layout]{"entity": "layout_requested", "value": "force"} type
-    - Would you be able to use to [layout two]{"entity": "layout_requested", "value": "force"} option
-    - Could you possibly show me [second visualisation]{"entity": "layout_requested", "value": "force"} format
-    - Would it be possible for you to display features with [visualisation two]{"entity": "layout_requested", "value": "force"} display
-    - Show me [force layout]{"entity": "layout_requested", "value": "force"}
-    - Would you visualise the current display as [2nd layout]{"entity": "layout_requested", "value": "force"} 
-    - I was wondering if I could select [layout 2]{"entity": "layout_requested", "value": "force"} display
+    - I was hoping you could bring up [force layout]{"entity": "layout_requested", "value": "force"} style
+    - Could I possibly choose to [second layout]{"entity": "layout_requested", "value": "force"} type
+    - Would you be able to use to [second visualisation]{"entity": "layout_requested", "value": "force"} option
+    - Could you possibly show me [force visualization]{"entity": "layout_requested", "value": "force"} format
+    - Would it be possible for you to display features with [force]{"entity": "layout_requested", "value": "force"} display
+    - Show me [second visualization]{"entity": "layout_requested", "value": "force"}
+    - Would you visualise the current display as [layout two]{"entity": "layout_requested", "value": "force"}
+    - I was wondering if I could select [second layout]{"entity": "layout_requested", "value": "force"} display
+    - Let me choose [second layout]{"entity": "layout_requested", "value": "force"} option
+    - Let's visualise the selected features in [2nd layout]{"entity": "layout_requested", "value": "force"} format
+    - Can you show me [visualisation two]{"entity": "layout_requested", "value": "force"} display
+    - Select [layout 2]{"entity": "layout_requested", "value": "force"} display
     - Let me choose [2nd visualisation]{"entity": "layout_requested", "value": "force"} option
     - Let's visualise the selected features in [force layout]{"entity": "layout_requested", "value": "force"} format
     - Change layout to [force layout]{"entity": "layout_requested", "value": "force"} design
@@ -342,6 +327,7 @@ nlu:
     - Let's visualise the selected features in [3rd layout]{"entity": "layout_requested", "value": "radial"} format
     - Change layout to [third visualisation]{"entity": "layout_requested", "value": "radial"} design
     - Can I look at features in [third layout]{"entity": "layout_requested", "value": "radial"}
+   
 
 - intent: change_layout_circle
   examples: |    
@@ -359,6 +345,14 @@ nlu:
     - Let's visualise the selected features in the [last visualisation]{"entity": "layout_requested", "value": "circle"} format
     - Change layout to [last]{"entity": "layout_requested", "value": "circle"} design
     - Can I look at features in [last layout]{"entity": "layout_requested", "value": "circle"}
+    - Visualise me [circle layout]{"entity": "layout_requested", "value": "circle"} style
+    - Would you be able to use to [last visualization]{"entity": "layout_requested", "value": "circle"} option
+    - Could you possibly show me [circle visualization]{"entity": "layout_requested", "value": "circle"} format
+    - Show me [circle packing]{"entity": "layout_requested", "value": "circle"} design
+    - Let me see the [last layout]{"entity": "layout_requested", "value": "circle"} option
+    - Let's visualise the selected features in [fourth visualization]{"entity": "layout_requested", "value": "circle"} format
+    - Display the data in the [last visualisation]{"entity": "layout_requested", "value": "circle"}
+
 
 # glyph change
 
@@ -465,29 +459,10 @@ nlu:
   #- I want to open [wide]{"entity": "document_requested"}
   #- I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
   #- I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
-
-#- Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-#- I want you to open [Compact_200]{"entity": "document_requested"}
-#- I would like you to show me the [20190519_SO]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-#- Can you open for me [531_MI]{"entity": "document_requested"}
-#- I was hoping you could bring up [test2]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} for me
-#- Would you be able to select [test4-Com]{"entity": "document_requested"}
-#- Would it be possible for you to choose [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-#- I'd like to analyse [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-#- Begin analysis of  [20190519_SO]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-#- May I look at [test]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-#- Would I be able to start the analysis of [20170819_CR]{"entity": "document_requested"}
-#- Could you possibly start with [531_MI]{"entity": "document_requested"}
-#- Let me see [test]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-#- Choose [20170819]{"entity": "document_requested"} to analyse first
-
-#start with X
+  
   #Let's analyse 20200608_SO- yes
 # bring up file 20200608_SO- yes
 # let's begin with file 20200608_SO - yes
-
-
-
 
 # Ask bot to change to OR / AND
 - intent: switch_or
@@ -703,13 +678,13 @@ nlu:
 - intent: highlight_check
   examples: |
     - Highlight [non toxic]{"entity": "filter_name", "value": "non toxic"} comments
-    - Can I highlight [not toxic]{"entity": "filter_name", "value": "non toxic"}
+    - Can I highlight [not toxic]{"entity": "filter_name", "value": "non toxic"} nodes
     - Check [not toxic]{"entity": "filter_name", "value": "non toxic"} nodes
     - Show me [level 0 toxicity]{"entity": "filter_name", "value": "non toxic"} nodes
-    - May you tick  [not toxic]{"entity": "filter_name", "value": "non toxic"}
+    - May you tick [not toxic]{"entity": "filter_name", "value": "non toxic"} comments
     - Check [toxic level 0]{"entity": "filter_name", "value": "non toxic"} comments
     - Show me [not toxic]{"entity": "filter_name", "value": "non toxic"} nodes
-    - I want to see [not toxic]{"entity": "filter_name", "value": "non toxic"}
+    - I want to see [not toxic]{"entity": "filter_name", "value": "non toxic"} node and edge
     - I would like to visualise [non toxic]{"entity": "filter_name", "value": "non toxic"} comments
     - Could you switch on  [least toxic]{"entity": "filter_name", "value": "non toxic"} nodes
     - Could you select [least toxicity]{"entity": "filter_name", "value": "non toxic"} nodes
@@ -717,343 +692,118 @@ nlu:
     - Which comments are the [least toxic]{"entity": "filter_name", "value": "non toxic"}?
     - Which nodes are [non toxic]{"entity": "filter_name", "value": "non toxic"}?
     - Choose [least toxic]{"entity": "filter_name", "value": "non toxic"} comments?
-    - Activate the [non toxic]{"entity": "filter_name", "value": "non toxic"} filter
-    - Check the [non toxic]{"entity": "filter_name", "value": "non toxic"} filter
+    - Activate the [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes filter
+    - Check the [non toxic]{"entity": "filter_name", "value": "non toxic"} comments filter
     - Tick off [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes filter
     - I was hoping you could check [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes filtering
     - I was wondering if you could turn [non toxic]{"entity": "filter_name", "value": "non toxic"} and [very toxic]{"entity": "filter_name"} filters on
-    - Could you possibly bring up [non toxic]{"entity": "filter_name", "value": "non toxic"} for me
-
+    - Could you possibly bring up [non toxic]{"entity": "filter_name", "value": "non toxic"} comments for me
 
     - Highlight [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
-    - Can I highlight [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"}
+    - Can I highlight [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
     - Check [level 1 toxicity]{"entity": "filter_name", "value": "mildly toxic"} nodes and [least toxic]{"entity": "filter_name"} nodes
-    - Show me [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
-    - May you tick [toxicity level 1]{"entity": "filter_name", "value": "mildly toxic"}
-    - Check [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
-    - Show me [level 1 toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
-    - I want to see [level 1 toxicity]{"entity": "filter_name", "value": "mildly toxic"}
-    - I would like to visualise [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
-    - Could you switch on [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
-    - Could you select [level 1 toxicity]{"entity": "filter_name", "value": "mildly toxic"} comments
-    - Which nodes have the [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} label?
-    - Which comments are the [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"}?
-    - Which nodes are [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"}?
-    - Choose [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments?
-    - Activate the [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} filter
-    - Check the [level 1 toxicity]{"entity": "filter_name", "value": "mildly toxic"} filter
-    - Tick off [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes filter
-    - I was hoping you could check [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes filtering
-    - I was wondering if you could turn on [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} and [least toxic]{"entity": "filter_name" } and [toxic]{"entity": "filter_name"} cfilter
-    - Could you possibly bring up [level 1 toxic]{"entity": "filter_name", "value": "mildly toxic"} for me                                                               
+    - May you tick [toxicity level 1]{"entity": "filter_name", "value": "mildly toxic"} comments
 
     - Highlight [toxic]{"entity": "filter_name", "value": "toxic"} comments
-    - Can I highlight [toxic]{"entity": "filter_name", "value": "toxic"}
-    - Check [toxic]{"entity": "filter_name", "value": "toxic"} nodes
-    - Show me [toxic]{"entity": "filter_name", "value": "toxic"} nodes
-    - May you tick [toxic]{"entity": "filter_name", "value": "toxic"}
-    - Check [toxic]{"entity": "filter_name", "value": "toxic"} comments
     - Show me [level 2 toxic]{"entity": "filter_name", "value": "toxic" } nodes
-    - I want to see [level 2 toxicity]{"entity": "filter_name", "value": "toxic" }
-    - I would like to visualise [toxic]{"entity": "filter_name", "value": "toxic"} comments
-    - Could you switch on [toxic]{"entity": "filter_name", "value": "toxic" } nodes
-    - Could you select [level 2 toxicity]{"entity": "filter_name", "value": "toxic" } nodes
-    - Which nodes have the [toxic]{"entity": "filter_name", "value": "toxic"} label?
-    - Which comments are [toxic]{"entity": "filter_name", "value": "toxic"}?
-    - Which nodes are [toxic]{"entity": "filter_name", "value": "toxic"}?
-    - Choose [toxic]{"entity": "filter_name", "value": "toxic" } comments?
-    - Activate the [toxic]{"entity": "filter_name", "value": "toxic"} filter
-    - Check the [level 2 toxicity]{"entity": "filter_name", "value": "toxic" } filter
-    - Tick off [toxic]{"entity": "filter_name", "value": "toxic"} nodes filter
-    - I was hoping you could check [toxic]{"entity": "filter_name", "value": "toxic"} nodes filtering
-    - I was wondering if you could turn on [toxic]{"entity": "filter_name", "value": "toxic"} comments
-    - Could you possibly bring up [level 2 toxic]{"entity": "filter_name", "value": "toxic" } for me
-  
-    
+    - I want to see [level 2 toxicity]{"entity": "filter_name", "value": "toxic"} comments
+
     - Highlight [very toxic]{"entity": "filter_name", "value": "very toxic"} comments
-    - Can I highlight [level 3 toxicity]{"entity": "filter_name", "value": "very toxic"}
+    - Can I highlight [level 3 toxicity]{"entity": "filter_name", "value": "very toxic"} node and edge
     - Check [level 3 toxic]{"entity": "filter_name", "value": "very toxic"} nodes
     - Show me [the most toxic]{"entity": "filter_name", "value": "very toxic"} nodes
-    - May you tick [toxicity level 3]{"entity": "filter_name", "value": "very toxic"}
-    - Check [very toxic]{"entity": "filter_name", "value": "very toxic"} comments
-    - Show me [level 3 toxic]{"entity": "filter_name", "value": "very toxic"} nodes
-    - I want to see [very toxic]{"entity": "filter_name", "value": "very toxic"}
-    - I would like to visualise [level 3 toxic]{"entity": "filter_name", "value": "very toxic"} comments
-    - Could you switch on [level 3 toxicity]{"entity": "filter_name", "value": "very toxic"} nodes
-    - Could you select [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes
-    - Which nodes have the [the most toxic]{"entity": "filter_name", "value": "very toxic"} label?
-    - Which comments are [level 3 toxic]{"entity": "filter_name", "value": "very toxic"}?
-    - Which nodes are [level 3 toxicity]{"entity": "filter_name", "value": "very toxic"}?
-    - Choose [very toxic]{"entity": "filter_name", "value": "very toxic"} comments?
-    - Activate the [very toxic]{"entity": "filter_name", "value": "very toxic"} filter
-    - Check the [level 3 toxic{"entity": "filter_name", "value": "very toxic"} filter
-    - Tick off [level 3 toxicity]{"entity": "filter_name", "value": "very toxic"} nodes filter
-    - I was hoping you could check [the most toxic]{"entity": "filter_name", "value": "very toxic"} nodes filtering
-    - I was wondering if you could turn on [very toxic]{"entity": "filter_name", "value": "very toxic"} comments
-    - Could you possibly bring up [level 3 toxicity]{"entity": "filter_name", "value": "very toxic"} for me
 
     ##which comments are tagged with non toxic- yes
     ## which comments have the none toxic label- yes
     
     # positive, negative, neutral stance
-   
-    - Highlight [positive]{"entity": "filter_name"}  comments
-    - Can I highlight [positive stance]{"entity": "filter_name"} 
-    - Check [positive]{"entity": "filter_name"} edges
-    - Show me [positive stance]{"entity": "filter_name"} edges filter
-    - May you tick [positive]{"entity": "filter_name"} 
+
+    - May you tick [positive]{"entity": "filter_name"} nodes
     - Check [positive stance]{"entity": "filter_name"}  comments
     - Show me [positive]{"entity": "filter_name"} edges filtering
-    - I want to see [positive stance]{"entity": "filter_name"} 
-    - I would like to visualise [positive]{"entity": "filter_name"} comments
-    - Could you switch on [positive stance]{"entity": "filter_name"} comments filter
-    - Could you select [positive]{"entity": "filter_name"} comments filtering
+    - I want to see [positive stance]{"entity": "filter_name"} comments
     - Which edges have the [positive stance]{"entity": "filter_name"} label?
     - Which comments are [positive stance]{"entity": "filter_name"} ?
     - Which nodes are [positive]{"entity": "filter_name"} ?
-    - Choose [positive stance]{"entity": "filter_name"}  comments?
-    - Activate the [positive]{"entity": "filter_name"} nodes
-    - Check the [positive stance]{"entity": "filter_name"} nodes filter
-    - Tick off [positive]{"entity": "filter_name"}  nodes filtering
-    - I was hoping you could check [positive stance]{"entity": "filter_name"} nodes filtering
-    - I was wondering if you could turn on [positive]{"entity": "filter_name"} comments filter
-    - Could you possibly bring up [positive stance]{"entity": "filter_name"} comments for me?
-
 
     - Highlight [negative]{"entity": "filter_name" }  comments
-    - Can I highlight [negative stance]{"entity": "filter_name" }
-    - Check [negative]{"entity": "filter_name" } edges
-    - Show me [negative stance]{"entity": "filter_name" } edges filter
-    - May you tick [negative]{"entity": "filter_name" }
-    - Check [negative stance]{"entity": "filter_name" }  comments
-    - Show me [negative]{"entity": "filter_name" } edges filtering
-    - I want to see [negative stance]{"entity": "filter_name" }
-    - I would like to visualise [negative]{"entity": "filter_name" } comments
-    - Could you switch on [negative stance]{"entity": "filter_name" } comments filter
-    - Could you select [negative]{"entity": "filter_name" } comments filtering
-    - Which edges have the [negative stance]{"entity": "filter_name" } label?
-    - Which comments are [negative stance]{"entity": "filter_name" } ?
-    - Which nodes are [negative]{"entity": "filter_name" } ?
-    - Choose [negative stance]{"entity": "filter_name" }  comments?
-    - Activate the [negative]{"entity": "filter_name" } nodes
-    - Check the [negative stance]{"entity": "filter_name" } nodes filter
-    - Tick off [negative]{"entity": "filter_name" }  nodes filtering
-    - I was hoping you could check [negative stance]{"entity": "filter_name" } nodes filtering
-    - I was wondering if you could turn on [negative]{"entity": "filter_name" } comments filter
-    - Could you possibly bring up [negative stance]{"entity": "filter_name" } comments for me?
+    - Can I highlight [negative stance]{"entity": "filter_name"} nodes
+    - Check [negative]{"entity": "filter_name"} edges
+    - Show me [negative stance]{"entity": "filter_name"} edges filter
 
+    - Highlight [neutral]{"entity": "filter_name"} comments
+    - Can I highlight [neutral stance]{"entity": "filter_name"} nodes
+    - Check [neutral]{"entity": "filter_name"} edges
+    - Show me [neutral stance]{"entity": "filter_name"} edges filter
 
-    - Highlight [neutral]{"entity": "filter_name" }  comments
-    - Can I highlight [neutral stance]{"entity": "filter_name" }
-    - Check [neutral]{"entity": "filter_name" } edges
-    - Show me [neutral stance]{"entity": "filter_name" } edges filter
-    - May you tick [neutral]{"entity": "filter_name" }
-    - Check [neutral stance]{"entity": "filter_name" }  comments
-    - Show me [neutral]{"entity": "filter_name" } edges filtering
-    - I want to see [neutral stance]{"entity": "filter_name" }
-    - I would like to visualise [neutral]{"entity": "filter_name" } comments
-    - Could you switch on [neutral stance]{"entity": "filter_name" } comments filter
-    - Could you select [neutral]{"entity": "filter_name" } comments filtering
-    - Which edges have the [neutral stance]{"entity": "filter_name" } label?
-    - Which comments are [neutral stance]{"entity": "filter_name" } ?
-    - Which nodes are [neutral]{"entity": "filter_name" } ?
-    - Choose [neutral stance]{"entity": "filter_name" }  comments?
-    - Activate the [neutral]{"entity": "filter_name" } nodes
-    - Check the [neutral stance]{"entity": "filter_name" } nodes filter
-    - Tick off [neutral]{"entity": "filter_name" }  nodes filtering
-    - I was hoping you could check [neutral stance]{"entity": "filter_name" } nodes filtering
-    - I was wondering if you could turn on [neutral]{"entity": "filter_name" } comments filter
-    - Could you possibly bring up [neutral stance]{"entity": "filter_name" } comments for me?
-
-
-    - Highlight [both stances]{"entity": "filter_name" }  comments
-    - Can I highlight [both stances]{"entity": "filter_name" }
-    - Check [both stances]{"entity": "filter_name" } edges
-    - Show me [both stances]{"entity": "filter_name" } edges filter
-    - May you tick [both stances]{"entity": "filter_name" }
-    - Check [both stances]{"entity": "filter_name" }  comments
-    - Show me [both stances]{"entity": "filter_name" } edges filtering
-    - I want to see [both stances]{"entity": "filter_name" }
-    - I would like to visualise [both stances]{"entity": "filter_name" } comments
-    - Could you switch on [both stances]{"entity": "filter_name" } comments filter
-    - Could you select [both stances]{"entity": "filter_name" } comments filtering
-    - Which edges have the [both stances]{"entity": "filter_name" } label?
-    - Which comments are [both stances]{"entity": "filter_name" } ?
-    - Which nodes are [both stances]{"entity": "filter_name" } ?
-    - Choose [both stances]{"entity": "filter_name" }  comments?
-    - Activate the [both stances]{"entity": "filter_name" } nodes
-    - Check the [both stances]{"entity": "filter_name" } nodes filter
-    - Tick off [both stances]{"entity": "filter_name" }  nodes filtering
-    - I was hoping you could check [both stances]{"entity": "filter_name" } nodes filtering
-    - I was wondering if you could turn on [both stances]{"entity": "filter_name" } comments filter
-    - Could you possibly bring up [both stances]{"entity": "filter_name" } comments for me?
+    - Tick off [both stances]{"entity": "filter_name"}  nodes filtering
+    - I was hoping you could check [both stances]{"entity": "filter_name"} nodes filtering
+    - I was wondering if you could turn on [both stances]{"entity": "filter_name"} comments filter
+    - Could you possibly bring up [both stances]{"entity": "filter_name"} comments for me?
 
     # targets --> target person, target group, stereotype
 
-    - Highlight [target person]{"entity": "filter_name" } comments
-    - Can I highlight [target person]{"entity": "filter_name" } nodes and edges
-    - Check [target person]{"entity": "filter_name" } edges
-    - Show me [target person]{"entity": "filter_name" } edges filter
-    - May you tick [target person]{"entity": "filter_name" } nodes and edges filter
-    - Check [target person]{"entity": "filter_name" }  comments
-    - Show me [target person]{"entity": "filter_name" } edges filtering
-    - I want to see [target person]{"entity": "filter_name" } nodes and edges filtering
-    - I would like to visualise [target person]{"entity": "filter_name" } comments
-    - Could you switch on [target person]{"entity": "filter_name" } comments filter
-    - Could you select [target person]{"entity": "filter_name" } comments filtering
-    - Which nodes and edges have the [target person]{"entity": "filter_name" } label?
-    - Which comments are [target person]{"entity": "filter_name" } ?
-    - Which nodes are [target person]{"entity": "filter_name" } ?
-    - Choose [target person]{"entity": "filter_name" } node comments
-    - Activate the [target person]{"entity": "filter_name" } nodes
-    - Check the [target person]{"entity": "filter_name" } nodes filter
-    - Tick off [target person]{"entity": "filter_name" }  nodes filtering
-    - I was hoping you could check [target person]{"entity": "filter_name" } nodes filtering
-    - I was wondering if you could turn on [target person]{"entity": "filter_name" } comments filter
-    - Could you possibly bring up [target person]{"entity": "filter_name" } comments for me?
+    - May you tick [target person]{"entity": "filter_name"} nodes and edges filter
+    - Check [target person]{"entity": "filter_name"}  comments
+    - Show me [target person]{"entity": "filter_name"} edges filtering
+    - I want to see [target person]{"entity": "filter_name"} nodes and edges filtering
+    - I would like to visualise [target person]{"entity": "filter_name"} comments
+    - Could you switch on [target person]{"entity": "filter_name"} comments filter
+    - Could you select [target person]{"entity": "filter_name"} comments filtering
+    - Which nodes and edges have the [target person]{"entity": "filter_name"} label?
+    - Which comments are [target person]{"entity": "filter_name"} ?
+    - Which nodes are [target person]{"entity": "filter_name"} ?
+    - Choose [target person]{"entity": "filter_name"} node comments
+    - Activate the [target person]{"entity": "filter_name"} nodes
+    - Check the [target person]{"entity": "filter_name"} nodes filter
+    - Tick off [target person]{"entity": "filter_name"}  nodes filtering
+    - I was hoping you could check [target person]{"entity": "filter_name"} nodes filtering
+    - I was wondering if you could turn on [target person]{"entity": "filter_name"} comments filter
+    - Could you possibly bring up [target person]{"entity": "filter_name"}  comments for me?
 
-    - Highlight [target group]{"entity": "filter_name" } comments
-    - Can I highlight [target group]{"entity": "filter_name" } nodes and edges
-    - Check [target group]{"entity": "filter_name" } edges
-    - Show me [target group]{"entity": "filter_name" } edges filter
-    - May you tick [target group]{"entity": "filter_name" } nodes and edges filter
-    - Check [target group]{"entity": "filter_name" }  comments
-    - Show me [target group]{"entity": "filter_name" } edges filtering
-    - I want to see [target group]{"entity": "filter_name" } nodes and edges filtering
-    - I would like to visualise [target group]{"entity": "filter_name" } comments
-    - Could you switch on [target group]{"entity": "filter_name" } comments filter
-    - Could you select [target group]{"entity": "filter_name" } comments filtering
-    - Which nodes and edges have the [target group]{"entity": "filter_name" } label?
-    - Which comments are [target group]{"entity": "filter_name" } ?
-    - Which nodes are [target group]{"entity": "filter_name" } ?
-    - Choose [target group]{"entity": "filter_name" } node comments
-    - Activate the [target group]{"entity": "filter_name" } nodes
-    - Check the [target group]{"entity": "filter_name" } nodes filter
-    - Tick off [target group]{"entity": "filter_name" }  nodes filtering
-    - I was hoping you could check [target group]{"entity": "filter_name" } nodes filtering
-    - I was wondering if you could turn on [target group]{"entity": "filter_name" } comments filter
-    - Could you possibly bring up [target group]{"entity": "filter_name" } comments for me?
-    
-    - Highlight [stereotype]{"entity": "filter_name" } comments
-    - Can I highlight [stereotype]{"entity": "filter_name" } nodes and edges
-    - Check [stereotype]{"entity": "filter_name" } edges
-    - Show me [stereotype]{"entity": "filter_name" } edges filter
-    - May you tick [stereotype]{"entity": "filter_name" } nodes and edges filter
-    - Check [stereotype]{"entity": "filter_name" }, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} filters
-    - Show me [stereotype]{"entity": "filter_name" } edges filtering
-    - I want to see [stereotype]{"entity": "filter_name" } nodes and edges filtering
-    - I would like to visualise [stereotype]{"entity": "filter_name" } comments
-    - Could you switch on [stereotype]{"entity": "filter_name" }, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} comments filters
-    - Could you select [stereotype]{"entity": "filter_name" } comments filtering
-    - Which nodes and edges have the [stereotype]{"entity": "filter_name" } label?
-    - Which comments are [stereotype]{"entity": "filter_name" } ?
-    - Which nodes are [stereotype]{"entity": "filter_name" } ?
-    - Choose [stereotype]{"entity": "filter_name" } node comments
-    - Activate the [stereotype]{"entity": "filter_name" } nodes
-    - Check the [stereotype]{"entity": "filter_name" } nodes filter
-    - Tick off [stereotype]{"entity": "filter_name" }  nodes filtering
-    - I was hoping you could check [stereotype]{"entity": "filter_name" } nodes filtering
-    - I was wondering if you could turn on [stereotype]{"entity": "filter_name" } comments filter
-    - Could you possibly bring up [stereotype]{"entity": "filter_name" } comments for me?
+    - Highlight [target group]{"entity": "filter_name"} comments
+    - Can I highlight [target group]{"entity": "filter_name"} nodes and edges
+    - Check [target group]{"entity": "filter_name"} edges
+    - Show me [target group]{"entity": "filter_name"} edges filter
+
+    - Highlight [stereotype]{"entity": "filter_name"} comments
+    - Can I highlight [stereotype]{"entity": "filter_name"} nodes and edges
+    - Check [stereotype]{"entity": "filter_name"} edges
+    - Show me [stereotype]{"entity": "filter_name"} edges filter
+
 
     # targets select all
 
-    - Highlight comments with [all targets]{"entity": "filter_name" }
-    - Can I highlight [both targets]{"entity": "filter_name" } nodes and edges
-    - Check [all targets]{"entity": "filter_name" } edges
-    - Show me nodes and edges with [both targets]{"entity": "filter_name" } 
-    - May you tick [all targets]{"entity": "filter_name" } nodes and edges filter
-    - Check [both targets]{"entity": "filter_name" }  comments checkbox
-    - Show me [all targets]{"entity": "filter_name" } edges filtering
-    - I want to see [both targets]{"entity": "filter_name" } nodes and edges filtering
-    - I would like to visualise [all targets]{"entity": "filter_name" } comments
-    - Could you switch on the [all targets]{"entity": "filter_name" } comments filter
-    - Could you select [both targets]{"entity": "filter_name" } comments filtering
-    - Which nodes and edges have the [all targets]{"entity": "filter_name" } label?
-    - Which comments are [all targets]{"entity": "filter_name" } ?
-    - Which nodes are [both targets]{"entity": "filter_name" } ?
-    - Choose [all targets]{"entity": "filter_name" } node comments
-    - Activate the [both targets]{"entity": "filter_name" } nodes
-    - Check the [all targets]{"entity": "filter_name" } nodes filter
-    - Tick off [all targets]{"entity": "filter_name" }  nodes filtering
-    - I was hoping you could check [both targets]{"entity": "filter_name" } nodes filtering
-    - I was wondering if you could turn on [all targets]{"entity": "filter_name" } comments filter
-    - Could you possibly bring up comments with [both targets]{"entity": "filter_name" } for me?
+    - Highlight comments with [all targets]{"entity": "filter_name"}
+    - Can I highlight [both targets]{"entity": "filter_name"} nodes and edges
+    - Check [all targets]{"entity": "filter_name"} edges
+    - Show me nodes and edges with [both targets]{"entity": "filter_name"}
+
 
     # features--> constructiveness, argumentation
 
     - I want to see nodes with [constructiveness]{"entity": "filter_name"}
     - Show me comments with [constructiveness]{"entity": "filter_name"}
-    - Show nodes with [constructiveness]{"entity": "filter_name"}
-    - I want to see [constructive]{"entity": "filter_name"} nodes
-    - Show me [constructive]{"entity": "filter_name"} nodes
-    - Show [constructive]{"entity": "filter_name"} nodes
-    - Activate the [constructive]{"entity": "filter_name"} comments filter
     - Enable [constructive]{"entity": "filter_name"} nodes filtering
-    - Enable the [constructive]{"entity": "filter_name"} node and edge
-    - Enable node and edge [constructiveness]{"entity": "filter_name"}
-    - Select node and edge [constructiveness]{"entity": "filter_name"}
-    - Select [constructive]{"entity": "filter_name"} nodes
-    - Select [constructive]{"entity": "filter_name"} node and edge
-    - Check  [constructive]{"entity": "filter_name"} node and edge
-    - Highlight [constructive]{"entity": "filter_name"} node and edge
-    - Highlight [constructive]{"entity": "filter_name"} nodes
-    - Turn on [constructive]{"entity": "filter_name"} node and edge
     - Turn on [constructive]{"entity": "filter_name"} nodes
 
-    - I want to see comments with [argumentation]{"entity": "filter_name"}
+    - I want to see comments with [argument]{"entity": "filter_name"}
     - Show me comments with [argumentation]{"entity": "filter_name"}
-    - Show comments with [argumentation]{"entity": "filter_name"}
-    - I want to see [argumentation]{"entity": "filter_name"} nodes
-    - Show me [argumentative]{"entity": "filter_name"} nodes
-    - Show [argumentative]{"entity": "filter_name"} comments
-    - Activate the [argumentation]{"entity": "filter_name"} nodes filter
-    - Enable [argumentation]{"entity": "filter_name"} nodes filtering
-    - Enable the [argumentation]{"entity": "filter_name"} , [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} nodes
-    - Enable the select filter [argumentation]{"entity": "filter_name"}
-    - Select [argumentation]{"entity": "filter_name"} nodes
-    - Select [argumentation]{"entity": "filter_name"} node and edge
     - Check  [argumentation]{"entity": "filter_name"} node and edge
     - Highlight [argumentation]{"entity": "filter_name"} node and edge
-    - Highlight [argumentation]{"entity": "filter_name"} nodes
-    - Turn on [argumentation]{"entity": "filter_name"} node and edge
-    - Turn on [argumentation]{"entity": "filter_name"} nodes
+
 
     # features--> sarcasm, mockery, intolerance
 
     - I want to see nodes with [sarcasm]{"entity": "filter_name"}
-    - Show me comments with [sarcasm]{"entity": "filter_name"}
-    - Show nodes with [sarcasm]{"entity": "filter_name"}
     - I want to see [sarcastic]{"entity": "filter_name"} nodes
-    - Show me [sarcastic]{"entity": "filter_name"} nodes
-    - Show [sarcastic]{"entity": "filter_name"} nodes
-    - Activate the [sarcastic]{"entity": "filter_name"} nodes filter
-    - Enable [sarcastic]{"entity": "filter_name"} nodes filtering
-    - Enable the select filter [sarcasm]{"entity": "filter_name"}
-    - Select the node and edge filter [sarcasm]{"entity": "filter_name"}
-    - Select [sarcasm]{"entity": "filter_name"} node and edge
     - Check  [sarcasm]{"entity": "filter_name"} node and edge
-    - Highlight [sarcasm]{"entity": "filter_name"} node and edge
-    - Highlight [sarcasm]{"entity": "filter_name"} nodes
-    - Turn on [sarcasm]{"entity": "filter_name"} node and edge
-    - Turn on [sarcasm]{"entity": "filter_name"} nodes
+    - Highlight [sarcastic]{"entity": "filter_name"} node and edge
 
-    - I want to see nodes with [mockery]{"entity": "filter_name"}
-    - Show me comments with [mockery]{"entity": "filter_name"}
-    - Show comments with [mockery]{"entity": "filter_name"}
-    - I want to see [mockery]{"entity": "filter_name"} nodes
-    - Show me [mockery]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} nodes
-    - Show [mockery]{"entity": "filter_name"} comments
-    - Activate the [mockery]{"entity": "filter_name"} nodes filter
-    - Enable [mockery]{"entity": "filter_name"} nodes filtering
-    - Enable the select filter [mockery]{"entity": "filter_name"}
-    - Select the node and edge [mockery]{"entity": "filter_name"}
     - Select [mockery]{"entity": "filter_name"} node and edge
     - Check  [mockery]{"entity": "filter_name"} node and edge
-    - Highlight [mockery]{"entity": "filter_name"} node and edge
     - Highlight [mockery]{"entity": "filter_name"} nodes
     - Turn on [mockery]{"entity": "filter_name"} node and edge
-    - Turn on [mockery]{"entity": "filter_name"} nodes
 
     - I want to see nodes with [intolerance]{"entity": "filter_name"}
     - Show me comments with [intolerance]{"entity": "filter_name"}
@@ -1073,64 +823,27 @@ nlu:
     - Switch on [intolerance]{"entity": "filter_name"} node and edge
     - Turn on [intolerance]{"entity": "filter_name"} nodes
     - Tick off [intolerance]{"entity": "filter_name"} nodes
-    - I was hoping you could [intolerance]{"entity": "filter_name"} nodes
+    - I was hoping you could check turn on [intolerance]{"entity": "filter_name"} nodes
     - I was wondering if you could [intolerance]{"entity": "filter_name"} nodes
 
 
     # features--> improper language, insult, aggressiveness - ?
 
-    - I want to see nodes with [improper language]{"entity": "filter_name"}
-    - Show me nodes with [improper language]{"entity": "filter_name"}
-    - Show nodes with [improper language]{"entity": "filter_name"}
-    - I want to see [improper language]{"entity": "filter_name"} comments
     - Show me [improper language]{"entity": "filter_name"} nodes
     - Show [improper language]{"entity": "filter_name"} nodes
     - Activate the [improper language]{"entity": "filter_name"} nodes filter
     - Enable [improper language]{"entity": "filter_name"} nodes filtering
-    - Enable the select filter [improper language]{"entity": "filter_name"}
-    - Select the node and edge filter [improper language]{"entity": "filter_name"}
-    - Select [improper language]{"entity": "filter_name"} node and edge
-    - Check  [improper language]{"entity": "filter_name"} node and edge
-    - Highlight [improper language]{"entity": "filter_name"} node and edge
-    - Highlight [improper language]{"entity": "filter_name"} nodes
-    - Turn on [improper language]{"entity": "filter_name"} node and edge
-    - Turn on [improper language]{"entity": "filter_name"} nodes
 
-    - I want to see nodes with [insult]{"entity": "filter_name"}
-    - Show me comments with [insult]{"entity": "filter_name"}
-    - Show nodes with [insult]{"entity": "filter_name"}
-    - I want to see [insult]{"entity": "filter_name"} nodes
-    - Show me [insult]{"entity": "filter_name"} nodes
     - Show [insult]{"entity": "filter_name"} comments
     - Activate the [insult]{"entity": "filter_name"} nodes filter
     - Enable [insult]{"entity": "filter_name"} nodes filtering
     - Enable the select filter [insult]{"entity": "filter_name"}
-    - Select the nodes filter [insult]{"entity": "filter_name"}
-    - Select [insult]{"entity": "filter_name"} node and edge
-    - Check  [insult]{"entity": "filter_name"} node and edge
-    - Highlight [insult]{"entity": "filter_name"} node and edge
-    - Highlight [insult]{"entity": "filter_name"} nodes
-    - Turn on [insult]{"entity": "filter_name"} node and edge
-    - Turn on [insult]{"entity": "filter_name"} nodes
 
     - I want to see comments with [aggressiveness]{"entity": "filter_name"}
-    - Show me comments with [aggressiveness]{"entity": "filter_name"}
-    - Show comments with [aggressiveness]{"entity": "filter_name"}
-    - I want to see [aggressive]{"entity": "filter_name"} nodes
-    - Show me [aggressive]{"entity": "filter_name"} nodes
-    - Show [aggressive]{"entity": "filter_name"} nodes
     - Activate the [aggressiveness]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} filters
-    - Activate the [aggressive]{"entity": "filter_name"} nodes filter
-    - Enable [aggressive]{"entity": "filter_name"} nodes filtering
     - Enable the [aggressiveness]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
     - Enable the select filter [aggressiveness]{"entity": "filter_name"}
-    - Select the node and edge filter [aggressiveness]{"entity": "filter_name"}
     - Select [aggressiveness]{"entity": "filter_name"} node and edge
-    - Check [aggressiveness]{"entity": "filter_name"} node and edge
-    - Highlight [aggressiveness]{"entity": "filter_name"} node and edge
-    - Highlight [aggressiveness]{"entity": "filter_name"} nodes
-    - Turn on [aggressiveness]{"entity": "filter_name"} node and edge
-    - Turn on [aggressiveness]{"entity": "filter_name"} nodes
 
 
     # features select all
@@ -1141,40 +854,12 @@ nlu:
     - Select [all features]{"entity": "filter_name"} checkbox node and edge
     - I want to select [all features]{"entity": "filter_name"} option in node and edge
     - Select [all features]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} options
-    - I want to see comments with [all features]{"entity": "filter_name"}
-    - Show me nodes with [all features]{"entity": "filter_name"}
-    - Show nodes with [all features]{"entity": "filter_name"}
-    - Activate the select [all features]{"entity": "filter_name"} node and edge
-    - Activate the select [all features]{"entity": "filter_name"} comments filter
-    - Enable select [all features]{"entity": "filter_name"} nodes filtering
-    - Enable the select [all features]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
-    - Enable the filter select [all features]{"entity": "filter_name"}
 
-    - I want to select [all levels of toxicity]{"entity": "filter_name"}
-    - Select [all toxicity levels]{"entity": "filter_name"}
-    - I want to select [all levels of toxicity]{"entity": "filter_name"} checkbox
-    - Select [all levels of toxicity]{"entity": "filter_name"} checkbox
-    - I want to select [all levels of toxicity]{"entity": "filter_name"} option
-    - Select [all levels of toxicity]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} options
     - I want to see comments with [all levels of toxicity]{"entity": "filter_name"}
     - Show me nodes with [all levels of toxicity]{"entity": "filter_name"}
     - Show nodes with [all levels of toxicity]{"entity": "filter_name"}
     - Activate the select [all levels of toxicity]{"entity": "filter_name"} filter
-    - Activate the select [all levels of toxicity]{"entity": "filter_name"} comments filter
-    - Enable select [all levels of toxicity]{"entity": "filter_name"} nodes filtering
-    - Enable the select [all levels of toxicity]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
-    - Enable the filter select [all levels of toxicity]{"entity": "filter_name"}
 
-    - I want to select [all stances]{"entity": "filter_name"}
-    - Select [all stances]{"entity": "filter_name"}
-    - I want to select [all stances]{"entity": "filter_name"} checkbox
-    - Select [all stances]{"entity": "filter_name"} checkbox
-    - I want to select [all stances]{"entity": "filter_name"} option
-    - Select [all stances]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} options
-    - I want to see comments with [all stances]{"entity": "filter_name"}
-    - Show me nodes with [all stances]{"entity": "filter_name"}
-    - Show nodes with [all stances]{"entity": "filter_name"}
-    - Activate the select [all stances]{"entity": "filter_name"} filter
     - Activate the select [all stances]{"entity": "filter_name"} comments filter
     - Enable select [all stances]{"entity": "filter_name"} nodes filtering
     - Enable the select [all stances]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
@@ -1206,84 +891,34 @@ nlu:
 #unchecking select node and edge menus
 - intent: highlight_uncheck
   examples: | 
-    - Can I disable [non toxic]{"entity": "filter_name"} option 
-    - Uncheck [least toxic]{"entity": "filter_name"} from the check list
-    - May you turn off [not toxic]{"entity": "filter_name"} filter
-    - I want to reset [toxicity level 0]{"entity": "filter_name"} filter option
-    - I would like to switch off [level 0 toxicity]{"entity": "filter_name"} filtering option
-    - Deselect [non toxic]{"entity": "filter_name"} filter selection
-    - Could you hide [toxicity 0]{"entity": "filter_name"} comments
+    - Can I disable [non toxic]{"entity": "filter_name"} nodes option
+    - Uncheck [least toxic]{"entity": "filter_name"} comments from the check list
+    - May you turn off [toxicity 0]{"entity": "filter_name"} comment filter
+    - I want to reset [toxicity level 0]{"entity": "filter_name"} node filter option
     - I was hoping you could switch off [level 0 toxic]{"entity": "filter_name"} nodes filter
-    - I was wondering if you could deactivate [non toxic]{"entity": "filter_name"} nodes filtering
-    - Would you be able to untick [least toxic]{"entity": "filter_name"} nodes
-    - Could you possibly clear [non toxic]{"entity": "filter_name"} filtering
-    - Clear off [level 0 toxic]{"entity": "filter_name"} comment filter
-    - May you remove [least toxic]{"entity": "filter_name"} comment filtering
-    - Would it be possible for you to unmark comments labelled [non toxic]{"entity": "filter_name"} 
-    - Unselect [non toxic]{"entity": "filter_name"} tag
-    - Get rid of [least toxic]{"entity": "filter_name"} label
-    - Would I be able to take [level 0 toxic]{"entity": "filter_name"} off
 
-    - Can I disable [toxicity level 3]{"entity": "filter_name"} option 
-    - Uncheck [toxicity level 3]{"entity": "filter_name"} from the check list
-    - May you turn off [toxicity level 3]{"entity": "filter_name"} filter
-    - I want to reset [toxicity level 3]{"entity": "filter_name"} filter option
-    - I would like to switch off [most toxic]{"entity": "filter_name"} filtering option
-    - Deselect [toxicity level 3]{"entity": "filter_name"} filter selection
-    - Could you hide [level 3 toxic]{"entity": "filter_name"} comments
+    - Deselect [most toxic]{"entity": "filter_name"} nodes filter selection
+    - Could you hide [toxicity level 3]{"entity": "filter_name"} comments
     - I was hoping you could switch off [level 3 toxic]{"entity": "filter_name"} nodes filter
     - I was wondering if you could deactivate [very toxic]{"entity": "filter_name"} nodes filtering
     - Would you be able to untick [highest toxicity]{"entity": "filter_name"} nodes
-    - Could you possibly clear [most toxic]{"entity": "filter_name"} filtering
-    - Clear off [level 3 toxic]{"entity": "filter_name"} comment filter
-    - May you remove [most toxic]{"entity": "filter_name"} comment filtering
-    - Would it be possible for you to unmark comments labelled [very toxic]{"entity": "filter_name"} 
-    - Unselect [very toxic]{"entity": "filter_name"} tag
-    - Get rid of [most toxic]{"entity": "filter_name"} label
-    - Would I be able to take [level 3 toxic]{"entity": "filter_name"} off
-      
-    - Can I disable [toxicity level 1]{"entity": "filter_name"} option 
-    - Uncheck [toxicity level 1]{"entity": "filter_name"} from the check list
-    - May you turn off [toxicity level 1]{"entity": "filter_name"} filter
-    - I want to reset [toxicity level 1]{"entity": "filter_name"} filter option
-    - I would like to switch off [slightly toxic]{"entity": "filter_name"} filtering option
-    - Deselect [mildly toxic]{"entity": "filter_name"} filter selection
-    - Could you hide [slightly toxic]{"entity": "filter_name"} comments
-    - I was hoping you could switch off [level 1 toxic]{"entity": "filter_name"} nodes filter
-    - I was wondering if you could deactivate [level 1 toxic]{"entity": "filter_name"} nodes filtering
-    - Would you be able to untick [mildly toxic]{"entity": "filter_name"} nodes
-    - Could you possibly clear [mildly toxic]{"entity": "filter_name"} filtering
+
+    - Could you possibly clear [mildly toxic]{"entity": "filter_name"} nodes filtering
     - Clear off [level 1 toxic]{"entity": "filter_name"} comment filter
     - May you remove [slightly toxic]{"entity": "filter_name"} comment filtering
     - Would it be possible for you to unmark comments labelled [level 1 toxicity]{"entity": "filter_name"} 
-    - Unselect [level 1 toxicity]{"entity": "filter_name"} tag
-    - Get rid of [toxicity level 1]{"entity": "filter_name"} label
-    - Would I be able to take [toxicity level 1]{"entity": "filter_name"} off
-    
-    - Can I disable [toxicity level 2]{"entity": "filter_name"} option 
-    - Uncheck [toxicity level 2]{"entity": "filter_name"} from the check list
-    - May you turn off [toxicity level 2]{"entity": "filter_name"} filter
-    - I want to reset [toxicity level 2]{"entity": "filter_name"} filter option
-    - I would like to switch off [toxic]{"entity": "filter_name"} filtering option
-    - Deselect [toxic]{"entity": "filter_name"} filter selection
-    - Could you hide [toxic]{"entity": "filter_name"} comments
-    - I was hoping you could switch off [toxic]{"entity": "filter_name"} nodes filter
-    - I was wondering if you could deactivate [level 2 toxic]{"entity": "filter_name"} nodes filtering
-    - Would you be able to untick [toxic]{"entity": "filter_name"} nodes
-    - Could you possibly clear [toxic level 2]{"entity": "filter_name"} filtering
-    - Clear off [level 2 toxic]{"entity": "filter_name"} comment filter
-    - May you remove [toxic]{"entity": "filter_name"} comment filtering
+
     - Would it be possible for you to unmark comments labelled [level 2 toxicity]{"entity": "filter_name"} 
-    - Unselect [level 2 toxicity]{"entity": "filter_name"} tag
-    - Get rid of [toxicity level 2]{"entity": "filter_name"} label
-    - Would I be able to take [toxicity level 2]{"entity": "filter_name"} off
+    - Unselect [toxicity level 2]{"entity": "filter_name"} node and edge tag
+    - Get rid of [toxic]{"entity": "filter_name"} nodes label
+    - Would I be able to take [toxicity level 2]{"entity": "filter_name"} nodes off
     
-    - Can I disable [positive stance]{"entity": "filter_name"} option 
-    - Uncheck [positive stance]{"entity": "filter_name"} from the check list
-    - May you turn off [positive stance]{"entity": "filter_name"} filter
-    - I want to reset [positive stance]{"entity": "filter_name"} filter option
-    - I would like to switch off [positive stance]{"entity": "filter_name"} filtering option
-    - Deselect [positive stance]{"entity": "filter_name"} filter selection
+    - Can I disable [positive stance]{"entity": "filter_name"} nodes option
+    - Uncheck [positive stance]{"entity": "filter_name"} comments from the check list
+    - May you turn off [positive stance]{"entity": "filter_name"}  comment filter
+    - I want to reset [positive stance]{"entity": "filter_name"} node filter option
+    - I would like to switch off [positive stance]{"entity": "filter_name"} nodes filtering option
+    - Deselect [positive stance]{"entity": "filter_name"} node and edge filter selection
     - Could you hide [positive stance]{"entity": "filter_name"} comments
     - I was hoping you could switch off [positive stance]{"entity": "filter_name"} edges filter
     - I was wondering if you could deactivate [positive stance]{"entity": "filter_name"} edges filtering
@@ -1292,54 +927,54 @@ nlu:
     - Clear off [positive stance]{"entity": "filter_name"} comment filter
     - May you remove [positive stance]{"entity": "filter_name"} comment filtering
     - Would it be possible for you to unmark edges labelled [positive stance]{"entity": "filter_name"} 
-    - Unselect [positive stance]{"entity": "filter_name"} tag
-    - Get rid of [positive stance]{"entity": "filter_name"} label
+    - Unselect [positive stance]{"entity": "filter_name"} node tag
+    - Get rid of [positive stance]{"entity": "filter_name"} comment label
     - Would I be able to take [positive stance]{"entity": "filter_name"} node and edge filter off
 
-    - Disable [negative stance]{"entity": "filter_name"} option
+    - Disable [negative stance]{"entity": "filter_name"} edge option
     - Hide [negative]{"entity": "filter_name"} nodes
-    - Uncheck [negative stance]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
+    - Uncheck [negative stance]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} nodes filters
     
-    - Disable [neutral stance]{"entity": "filter_name"} and [targets all]{"entity": "filter_name"} option
+    - Disable [neutral stance]{"entity": "filter_name"} and [targets all]{"entity": "filter_name"} nodes option
     - Hide [neutral]{"entity": "filter_name"} comments
-    - Uncheck [neutral stance]{"entity": "filter_name"} filter
+    - Uncheck [neutral stance]{"entity": "filter_name"} comments filter
     
-    - Disable [both stances]{"entity": "filter_name"}
-    - Hide [both stances]{"entity": "filter_name"}
-    - Uncheck [both stances]{"entity": "filter_name"}
+    - Disable [both stances]{"entity": "filter_name"} comments
+    - Hide [both stances]{"entity": "filter_name"} nodes
+    - Uncheck [both stances]{"entity": "filter_name"} node and edge
     
-    - Disable [target person]{"entity": "filter_name"} option
+    - Disable [target person]{"entity": "filter_name"} node and edge option
     - Hide [person]{"entity": "filter_name"} nodes
-    - Uncheck [target person]{"entity": "filter_name"} filter
+    - Uncheck [target person]{"entity": "filter_name"} comments filter
     
-    - Disable [target group]{"entity": "filter_name"} option
+    - Disable [target group]{"entity": "filter_name"} nodes option
     - Hide [group]{"entity": "filter_name"} comments
-    - Uncheck [target group]{"entity": "filter_name"} filter
+    - Uncheck [target group]{"entity": "filter_name"} node and edge filter
     
-    - Disable [stereotype]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} options
+    - Disable [stereotype]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} comments options
     - Hide [stereotype]{"entity": "filter_name"} nodes
-    - Uncheck [stereotype]{"entity": "filter_name"} filter
+    - Uncheck [stereotype]{"entity": "filter_name"} nodes filter
     
-    - Disable [targets all]{"entity": "filter_name"} option
+    - Disable [targets all]{"entity": "filter_name"} node and edge option
     - Hide [all targets]{"entity": "filter_name"} comments
-    - Uncheck [all targets]{"entity": "filter_name"} filter
+    - Uncheck [all targets]{"entity": "filter_name"} nodes filter
     - Uncheck [all targets]{"entity": "filter_name"} nodes
 
-    - Disable [constructiveness]{"entity": "filter_name"} option
+    - Disable [constructiveness]{"entity": "filter_name"} comments option
     - Hide [constructive]{"entity": "filter_name"} nodes
-    - Uncheck [constructiveness]{"entity": "filter_name"} filter
+    - Uncheck [constructiveness]{"entity": "filter_name"} node and edge filter
 
-    - Disable [argumentation]{"entity": "filter_name"} option
-    - Hide [argumentation]{"entity": "filter_name"} comments
-    - Uncheck [argumentation]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
+    - Disable [argumentation]{"entity": "filter_name"} nodes option
+    - Hide [argument]{"entity": "filter_name"} comments
+    - Uncheck [argumentation]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} comments filters
 
-    - Disable [sarcasm]{"entity": "filter_name"} option
+    - Disable [sarcasm]{"entity": "filter_name"} comment option
     - Hide [sarcastic]{"entity": "filter_name"} nodes
-    - Uncheck [sarcasm]{"entity": "filter_name"} filter
+    - Uncheck [sarcasm]{"entity": "filter_name"} node and edge filter
 
-    - Disable [mockery]{"entity": "filter_name"} option
+    - Disable [mockery]{"entity": "filter_name"} node option
     - Hide [mockery]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} comments
-    - Uncheck [mockery]{"entity": "filter_name"} filter
+    - Uncheck [mockery]{"entity": "filter_name"} nodes filter
 
     - Disable [intolerance]{"entity": "filter_name"} node option
     - Hide [intolerance]{"entity": "filter_name"} node
@@ -1352,29 +987,29 @@ nlu:
     - I would like to remove [intolerance]{"entity": "filter_name"} node
     - Can you turn off [intolerance]{"entity": "filter_name"} nodes filter
 
-    - Disable [improper language]{"entity": "filter_name"} option
+    - Disable [improper language]{"entity": "filter_name"} nodes option
     - Hide [improper language]{"entity": "filter_name"} comments
-    - Uncheck [improper language]{"entity": "filter_name"} filter
+    - Uncheck [improper language]{"entity": "filter_name"} npdes filter
 
-    - Disable [insult]{"entity": "filter_name"} option
+    - Disable [insult]{"entity": "filter_name"} comments option
     - Hide [insult]{"entity": "filter_name"} nodes
-    - Uncheck [insult]{"entity": "filter_name"} filter
+    - Uncheck [insult]{"entity": "filter_name"} node and eddge filter
 
-    - Disable [aggressiveness]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} options
+    - Disable [aggressiveness]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} node options
     - Hide [aggressive]{"entity": "filter_name"} comments
-    - Uncheck [aggressiveness]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
+    - Uncheck [aggressiveness]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} comments filters
 
-    - Disable [features all]{"entity": "filter_name"} option
+    - Disable [features all]{"entity": "filter_name"} nodes option
     - Hide [all features]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} comments
     - Uncheck [all features]{"entity": "filter_name"} nodes and [all targets]{"entity": "filter_name"} filters
 
-    - Disable [all levels of toxicity]{"entity": "filter_name"}
+    - Disable [all levels of toxicity]{"entity": "filter_name"} comments
     - Hide [all levels of toxicity]{"entity": "filter_name"} nodes
-    - Uncheck [all levels of toxicity]{"entity": "filter_name"}
+    - Uncheck [all levels of toxicity]{"entity": "filter_name"} node and edge
 
-    - Disable [all stances]{"entity": "filter_name"}
+    - Disable [all stances]{"entity": "filter_name"} comments
     - Hide [all stances]{"entity": "filter_name"} nodes
-    - Uncheck [all stances]{"entity": "filter_name"}
+    - Uncheck [all stances]{"entity": "filter_name"} node and edge
 
 - intent: highlight_switch_last
   examples: |
@@ -3033,21 +2668,33 @@ nlu:
 
 - intent: filters_all_features_uncheck
   examples: |
-    - I want to deselect all colour features
-    - Could you remove all colour glyphs
-    - I was hoping you could reset all selected colour features
-    - Would you be able to undo all selected colour glyphs
-    - Could you possibly disable all selected colours
-    - I would like you to turn off all colour filters
-    - Take off all selected colours filtering
-    - Would it be possible for you to clear off colour filtering
-    - Switch off glyphs
-    - Can you uncheck all colour filters
-    - Reset all colours
-    - I was wondering if you could turn off all glyphs
-    - Get rid of all glyphs
-    - Could you deselect the selected glyphs
-    - Turn off all colours
+    - I want to deselect all features
+    - Could you remove all features
+    - I was hoping you could reset all selected features
+    - Would you be able to undo all features
+    - Could you possibly disable all features
+    - I would like you to turn off all features
+    - Take off all selected features filters
+    - Would it be possible for you to clear off all features filtering
+    - Switch off all features
+    - Can you uncheck all feature filters
+    - Reset all features
+    - I was wondering if you could turn off all features
+    - Get rid of all featyres
+    - Could you deselect all features
+    - Turn off all features
+#    - Would it be possible for you to go back to the original display
+#    - Clear the interface filters
+#    - Go back to the beginning
+#    - Switch off filters
+#    - Uncheck all selected filters
+#    - Reset all
+#COMPROBAR
+# Would I be able to get rid of the selected filters- no
+# reset all- yes
+# reset everything -yes
+# Would it be possible for you to go back to the original display-yes
+
 
 
 - intent: filters_all_targets_uncheck
@@ -3406,6 +3053,7 @@ nlu:
   # sections of the layout
   # sections of the display
 
+
 - intent: ask_tutorial
   examples: |
     - I want a tutorial
@@ -3422,4 +3070,5 @@ nlu:
     - Tell me everything I can do 
     - Could you possibly run through all the functions of this site
   
+
 

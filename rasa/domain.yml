@@ -122,7 +122,7 @@ intents:
   - uncheck_all_colour_features
   - show_colour_feature
   - two_actions
-  - ask_tutorial
+#  - ask_tutorial
   - filter_test:
       use_entities:
       - filter_name
@@ -219,7 +219,7 @@ actions:
   - action_save_chat_logs
   - validate_filter_selection_form
   - filter_selection_form
-  - utter_tutorial_mode
+
 
 
 
@@ -337,13 +337,6 @@ responses:
     - text: "No problem, I am here if you need any help"
     - text: "That's okay, don't hesitate to ask me for help if you need it"
 
-#    - text: "That's okay, I am here if you need any help"
-#    - text: "Okay, let me know if you need anything"
-#    - text: "No problem, let me know if you need anything"
-#    - text: "That's okay, let me know if you need anything"
-#    - text: "All right, don't hesitate to ask me for help if you need it"
-#    - text: "All right, I am here if you need any help?"
-#    - text: "All right, let me know if you need anything"
 
   utter_goodbye:
   - text: "Bye!"
@@ -363,9 +356,8 @@ responses:
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
-  - text: "I'm a bot, powered by Rasa."
   - text: "I am a chatbot, powered by Rasa."
-  - text: "I'm a chatbot, powered by Rasa."
+
 
   utter_logout_confirmation:
   - text: "Sure you want to log out?"
@@ -381,45 +373,15 @@ responses:
   - text: "No problem! I will not log you out"
   - text: "No problem! I will keep you logged in"
 
-#  - text: "No problem! You are still logged in"
-#  - text: "That's fine! I will not log you out"
-#  - text: "That's fine! I will keep you logged in"
-#  - text: "That's fine! You are still logged in"
-#  - text: "Okay! I haven't logged you out"
-#  - text: "No problem! I haven't logged you out"
-#  - text: "That's fine! I haven't logged you out"
-#  - text: "Okay! I won't log you out"
-#  - text: "No problem! I won't log you out"
-#  - text: "That's fine! I won't log you out"
 
   utter_logout_to_login:
   - text: "You are already logged in, do you want me to log you out to start a new session?"
   - text: "You are already logged in, do you want me to log you out and start a new session?"
-  - text: "You are already logged in, would you like to log out to start a new session?"
-  - text: "You are already logged in, would you like to log out and start a new session?"
-  - text: "You are already logged in, would you like me to log you out to start a new session?"
-  - text: "You are already logged in, would you like me to log you out and start a new session?"
 
-#  - text: "You are already logged in, do you want me to log you out and start a new session?"
-#  - text: "You're already logged in, do you want me to log you out to start a new session?"
-#  - text: "You're already logged in, do you want me to log you out and start a new session?"
-#  - text: "You're already logged in, would you like to log out to start a new session?"
-#  - text: "You're already logged in, would you like to log out and start a new session?"
-#  - text: "You're already logged in, would you like me to log you out to start a new session?"
-#  - text: "You're already logged in, would you like me to log you out and start a new session?"
-#  - text: "You're already logged in, do you want me to log you out to start a new session?"
-#  - text: "You're already logged in, do you want me to log you out and start a new session?"
-#  - text: "You are already logged in, do you want to sign out to start a new session?"
-#  - text: "You are already logged in, do you want to sign out and start a new session?"
-#  - text: "You are already logged in, do you want me to sign you out to start a new session?"
-#  - text: "You are already logged in, do you want me to sign you out and start a new session?"
 
   utter_logout_to_signup:
   - text: "I need to close your current session in order to register the new user, is that okay?"
   - text: "I'll have to close your current session in order to register the new user, is that okay?"
-  - text: "I need to log out of your current session in order to register the new user, is that okay?"
-  - text: "I need to close your current session to be able to register the new user, is that okay?"
-  - text: "I need to sign out of this session so that I can register a new user, is that all right with you?"
 
   utter_ask_username:
   - text: "What is your username?"
@@ -469,108 +431,16 @@ responses:
         payload: '/change_layout_circle{{"object_requested":"layout","layout_requested":"circle"}}'
 
   utter_change_layout_tree:
-  - text: "intent_change_layout,tree_layout_button,I have changed the layout to Tree Layout"
-  - text: "intent_change_layout,tree_layout_button,The layout has been changed to Tree"
-  - text: "intent_change_layout,tree_layout_button,Your data is now being visualised in the Tree layout"
-  - text: "intent_change_layout,tree_layout_button,Your data is now being shown in the Tree Layout"
-  - text: "intent_change_layout,tree_layout_button,Your data is now being visualised in the Tree Layout"
-
-#  - text: "intent_change_layout,tree_layout_button,You data is now being displayed in the Tree Layout"
-#  - text: "intent_change_layout,tree_layout_button,You are now visualising your data in the Tree Layout"
-#  - text: "intent_change_layout,tree_layout_button,You are now displaying your data in the Tree Layout"
-#  - text: "intent_change_layout,tree_layout_button,You're now visualising your data in the Tree Layout"
-#  - text: "intent_change_layout,tree_layout_button,You're now displaying your data in the Tree Layout "
-#  - text: "intent_change_layout,tree_layout_button,I've changed the layout to Tree"
-#  - text: "intent_change_layout,tree_layout_button,The layout is now Tree"
-#  - text: "intent_change_layout,tree_layout_button,I have set the display to Tree Layout"
-#  - text: "intent_change_layout,tree_layout_button,Now displaying as a Tree layout"
-#  - text: "intent_change_layout,tree_layout_button,Now visualising as a Tree layout"
-#  - text: "intent_change_layout,tree_layout_button,Now showing as a Tree Layout"
-#  - text: "intent_change_layout,tree_layout_button,Now using Tree Layout"
-#  - text: "intent_change_layout,tree_layout_button, I have switched the layout to Tree"
-#  - text: "intent_change_layout,tree_layout_button, I've switched the layout to Tree"
-#  - text: "intent_change_layout,tree_layout_button,The layout has been switched to Tree"
-#  - text: "intent_change_layout,tree_layout_button, I have adjusted the layout to Tree"
-#  - text: "intent_change_layout,tree_layout_button, I've adjusted the layout to Tree"
-#  - text: "intent_change_layout,tree_layout_button,The layout has been adjusted to Tree"
+  - text: "intent_change_layout;tree_layout_button;I have changed the layout to Tree Layout"
 
   utter_change_layout_force:
-  - text: "intent_change_layout,force_layout_button,I have changed the layout to Force"
-  - text: "intent_change_layout,force_layout_button,The layout has been changed to Force"
-  - text: "intent_change_layout,force_layout_button,Your data is now being visualised in the Force layout"
-  - text: "intent_change_layout,force_layout_button,Your data is now being shown in the Force Layout"
-
-#  - text: "intent_change_layout,force_layout_button,Your data is now being visualised in the Force Layout"
-#  - text: "intent_change_layout,force_layout_button,You data is now being displayed in the Force Layout"
-#  - text: "intent_change_layout,force_layout_button,You are now visualising your data in the Force Layout"
-#  - text: "intent_change_layout,force_layout_button,You are now displaying your data in the Force Layout"
-#  - text: "intent_change_layout,force_layout_button,You're now visualising your data in the Force Layout"
-#  - text: "intent_change_layout,force_layout_button,You're now displaying your data in the Force Layout "
-#  - text: "intent_change_layout,force_layout_button,I've changed the layout to Force"
-#  - text: "intent_change_layout,force_layout_button,The layout is now Force"
-#  - text: "intent_change_layout,force_layout_button,I have set the display to Force Layout"
-#  - text: "intent_change_layout,force_layout_button,Now displaying as a Force Layout"
-#  - text: "intent_change_layout,force_layout_button,Now visualising as a Force Layout"
-#  - text: "intent_change_layout,force_layout_button,Now showing as a Force Layout"
-#  - text: "intent_change_layout,force_layout_button,Now using Force Layout"
-#  - text: "intent_change_layout,force_layout_button,I have switched the layout to Force"
-#  - text: "intent_change_layout,force_layout_button,I've switched the layout to Force"
-#  - text: "intent_change_layout,force_layout_button,The layout has been switched to Force"
-#  - text: "intent_change_layout,force_layout_button,I have adjusted the layout to Force"
-#  - text: "intent_change_layout,force_layout_button,I've adjusted the layout to Force"
-#  - text: "intent_change_layout,force_layout_button,The layout has been adjusted to Force"
+  - text: "intent_change_layout;force_layout_button;I have changed the layout to Force"
 
   utter_change_layout_radial:
-  - text: "intent_change_layout,radial_layout_button,I have changed the layout to Radial"
-  - text: "intent_change_layout,radial_layout_button,The layout has been changed to Radial"
-  - text: "intent_change_layout,radial_layout_button,Your data is now being visualised in the Radial layout"
-  - text: "intent_change_layout,radial_layout_button,Your data is now being shown in the Radial Layout"
-
-#  - text: "intent_change_layout,radial_layout_button,Your data is now being visualised in the Radial Layout"
-#  - text: "intent_change_layout,radial_layout_button,You data is now being displayed in the Radial Layout"
-#  - text: "intent_change_layout,radial_layout_button,You are now visualising your data in the Radial Layout"
-#  - text: "intent_change_layout,radial_layout_button,You are now displaying your data in the Radial Layout"
-#  - text: "intent_change_layout,radial_layout_button,You're now visualising your data in the Radial Layout"
-#  - text: "intent_change_layout,radial_layout_button,You're now displaying your data in the Radial Layout "
-#  - text: "intent_change_layout,radial_layout_button,I've changed the layout to Radial"
-#  - text: "intent_change_layout,radial_layout_button,The layout is now Radial"
-#  - text: "intent_change_layout,radial_layout_button,I have set the display to Radial Layout"
-#  - text: "intent_change_layout,radial_layout_button,Now displaying as a Radial Layout"
-#  - text: "intent_change_layout,radial_layout_button,Now visualising as a Radial Layout"
-#  - text: "intent_change_layout,radial_layout_button,Now showing as a Radial Layout"
-#  - text: "intent_change_layout,radial_layout_button,Now using Radial Layout"
-#  - text: "intent_change_layout,radial_layout_button, I have switched the layout to Radial"
-#  - text: "intent_change_layout,radial_layout_button, I've switched the layout to Radial"
-#  - text: "intent_change_layout,radial_layout_button,The layout has been switched to Radial"
-#  - text: "intent_change_layout,radial_layout_button, I have adjusted the layout to Radial"
-#  - text: "intent_change_layout,radial_layout_button, I've adjusted the layout to Radial"
-#  - text: "intent_change_layout,radial_layout_button,The layout has been adjusted to Radial"
+  - text: "intent_change_layout;radial_layout_button;I have changed the layout to Radial"
 
   utter_change_layout_circle:
-  - text: "intent_change_layout,circle_layout_button,I have changed the layout to Circle"
-  - text: "intent_change_layout,circle_layout_button,The layout has been changed to Circle"
-  - text: "intent_change_layout,circle_layout_button,Your data is now being visualised as Circle Packing"
-
-#  - text: "intent_change_layout,circle_layout_button,Your data is now being shown in as Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button,Your data is now being visualised as Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button,You data is now being displayed in Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button,You are now visualising your data in Circle Packing "
-#  - text: "intent_change_layout,circle_layout_button,You are now displaying your data in Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button,You're now visualising your data in Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button,You're now displaying your data in Circle Packing "
-#  - text: "intent_change_layout,circle_layout_button,I've changed the layout to Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button,The layout is now Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button,I have set the display to Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button,Now displaying as Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button,Now visualising as Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button,Now showing as Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button,Now using Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button, I have switched the layout to Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button, I've switched the layout to Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button,The layout has been switched to Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button, I have adjusted the layout to Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button, I've adjusted the layout to Circle Packing"
-#  - text: "intent_change_layout,circle_layout_button,The layout has been adjusted to Circle Packing"
+  - text: "intent_change_layout;circle_layout_button;I have changed the layout to Circle"
 
   utter_ask_document_selection_form_document_requested:
   - text: "What file do you want to open?"
@@ -581,13 +451,13 @@ responses:
 
 #  Glyphs
   utter_change_to_dots:
-  - text: "intent_change_glyphs,dots_icon_button,Glyph has been changed to Dots"
+  - text: "intent_change_glyphs;dots_icon_button;Glyph has been changed to Dots"
 
   utter_change_to_circular:
-  - text: "intent_change_glyphs,glyphs_icon_button,Glyph has been changed to Circular"
+  - text: "intent_change_glyphs;glyphs_icon_button;Glyph has been changed to Circular"
 
   utter_change_to_trivial:
-  - text: "intent_change_glyphs,trivial_icon_button,Glyph has been changed to Trivial Cheese"
+  - text: "intent_change_glyphs;trivial_icon_button;Glyph has been changed to Trivial Cheese"
 
   utter_change_glyphs:
    - text: "Which glyph do you want to change to?"
@@ -602,104 +472,59 @@ responses:
   # Filters
   # Change to OR / AND
   utter_switch_or:
-  - text: "intent_switch_or_and,or_button,Highlighting options have been changed to OR"
-  - text: "intent_switch_or_and,or_button,OR has been selected as your Highlighting option"
-  - text: "intent_switch_or_and,or_button,OR has been chosen as your Highlighting option"
-  - text: "intent_switch_or_and,or_button,OR is now your Highlighting option"
-
-#  - text: "intent_switch_or_and,or_button,I have changed the Highlighting option to OR"
-#  - text: "intent_switch_or_and,or_button,I have changed the Highlighting option to OR"
-#  - text: "intent_switch_or_and,or_button,I have switched the Highlighting options to OR"
-#  - text: "intent_switch_or_and,or_button,Highlighting options have been switched to OR"
-#  - text: "intent_switch_or_and,or_button,Highlighting options have been set to OR"
-#  - text: "intent_switch_or_and,or_button,I have set the Highlighting options to OR"
-#  - text: "intent_switch_or_and,or_button, I have made the Highlighting option OR"
+  - text: "intent_switch_or_and;or_button;Highlighting options have been changed to OR"
 
   utter_switch_and:
-  - text: "intent_switch_or_and,and_button,Highlighting options have been changed to AND"
-  - text: "intent_switch_or_and,and_button,AND has been selected as your Highlighting option"
-  - text: "intent_switch_or_and,and_button,AND has been chosen as your Highlighting option"
-  - text: "intent_switch_or_and,and_button,AND is now your Highlighting option"
-
-#  - text: "intent_switch_or_and,and_button,I have changed the Highlighting option to AND"
-#  - text: "intent_switch_or_and,and_button,I have changed the Highlighting option to AND"
-#  - text: "intent_switch_or_and,and_button,I have switched the Highlighting options to AND"
-#  - text: "intent_switch_or_and,and_button,Highlighting options have been switched to AND"
-#  - text: "intent_switch_or_and,and_button,Highlighting options have been set to AND"
-#  - text: "intent_switch_or_and,and_button,I have set the Highlighting options to AND"
-#  - text: "intent_switch_or_and,and_button, I have made the Highlighting option AND"
+  - text: "intent_switch_or_and;and_button;Highlighting options have been changed to AND"
 
   utter_highlight_uncheck_all:
-  - text: "intent_highlight_uncheck_all,All nodes and edges have been unchecked"
+  - text: "intent_highlight_uncheck_all;All nodes and edges have been unchecked"
 
   # complex intent responses
 
   # longest, largest, widest, most toxic
   utter_longest_thread:
-  - text: "intent_event,longest_thread,I've extracted the longest thread"
+  - text: "intent_event;longest_thread;I've extracted the longest thread"
 
   utter_widest_level:
-  - text: "intent_event,widest_level,I've highlighted the widest level"
+  - text: "intent_event;widest_level;I've highlighted the widest level"
 
   utter_largest_thread:
-  - text: "intent_event,largest_thread,Here you have the largest subtree"
+  - text: "intent_event;largest_thread;Here you have the largest subtree"
 
   utter_most_toxic_thread:
-    - text: "intent_event,most_toxic_thread,Here is the most toxic thread"
+    - text: "intent_event;most_toxic_thread;Here is the most toxic thread"
 
   utter_most_toxic_subtree:
-    - text: "intent_event,most_toxic_subtree,Here is the most toxic subtree"
-    - text: "intent_event,most_toxic_subtree,Here you have the most toxic subtree"
+    - text: "intent_event;most_toxic_subtree;Here is the most toxic subtree"
+    - text: "intent_event;most_toxic_subtree;Here you have the most toxic subtree"
 
   utter_statistics_features_tree:
-    - text: "intent_event,statistics_all_features_tree,I've shown you the statistics for the current visualisation in the pop-up window\ \n
+    - text: "intent_event;statistics_all_features_tree;I've shown you the statistics for the current visualisation in the pop-up window\ \n
     
     You can change the variables and graph type using the drop down menus"
 
   utter_statistics_features_subtrees:
-    - text: "intent_event,statistics_all_features_subtrees,I've shown you the statistics for level one comments in the pop-up window \ \n
+    - text: "intent_event;statistics_all_features_subtrees;I've shown you the statistics for level one comments in the pop-up window \ \n
     
     You can change the variables and graph type using the drop down menus"
 
   utter_most_tagged_features:
-    - text: "intent_event,most_tagged_features,Here you have it"
+    - text: "intent_event;most_tagged_features;Here you have it"
 
   utter_asking_about_barchart:
     - text: "Do you want to see a bar chart comparing values of features?"
 
 # help
-
-#  utter_help_glyphs:
-#    - text: "You can directly see which features are tagged to which comments by using glyphs.  \ \n
-#
-#  Check-all the features on the left column under Features to see the glyphs"
-#      image: "https://ecemkavaz.github.io/imagesRasa/features2.png"
-
-#  utter_help_bar_chart_pop_up:
-#    - text: "You can change features to:  \ \n
-#            - Targets  \ \n
-#            - Stances   \ \n
-#            - Level of Toxicity  \ \n
-#
-#             Also, you can change the visualisation to:  \ \n
-#              - Horizontal Bar   \ \n
-#              - Pie  "
-#
-
   utter_explain_glyphs_one:
-    - text: "intent_glyphs_blinking,glyphs-radio-buttons,Glyphs let us see features that each comment is tagged with."
+    - text: "intent_glyphs_blinking;glyphs-radio-buttons;Glyphs let us see features that each comment is tagged with."
 
 #  utter_explain_glyphs_three:
 #    - text: "Circular Glyph"
 #      image: "https://ecemkavaz.github.io/imagesRasa/glyph.svg"
-#
-#  utter_explain_glyphs_four:
-#    - text: "Trivial Cheese"
-#      image: "https://ecemkavaz.github.io/imagesRasa/trivial.svg"
 
   utter_explain_glyphs_two:
     - text: "Use the Highlight Colour Features menu to activate/deactivate the features. "
-
 
   utter_explain_glyphs_three:
     - text: "You can highlight features: \ \n
@@ -714,7 +539,7 @@ responses:
             payload: '/change_glyph_trivial{{"object_requested":"glyph","glyph_requested":"trivial"}}'
 
   utter_explain_targets_one:
-     - text: "intent_targets_signal,targets_accordion_button,All comments are tagged with the targets that they are directed at: 
+     - text: "intent_targets_signal;targets_accordion_button;All comments are tagged with the targets that they are directed at:
      
      - Target group \ \n
      - Target person \ \n
@@ -728,14 +553,14 @@ responses:
                      - Asking me"
 
   utter_explain_features_tab:
-    - text: "intent_features_signal,features_accordion_button,All the comments are tagged with features that they have. \ \n
+    - text: "intent_features_signal;features_accordion_button;All the comments are tagged with features that they have. \ \n
 
         Activate/deactivate features: \ \n
         - From the left bar \ \n
         - Asking me \ \n"
 
   utter_help_layouts_one:
-    - text: "intent_layouts_signal,layouts-radio-buttons,I automatically select 
+    - text: "intent_layouts_signal;layouts-radio-buttons;I automatically select
     the layout that best fits your data. \ \n
     
     Read more about selecting the best layout for data [here](https://dspace5.zcu.cz/handle/11025/45010)"
@@ -759,7 +584,7 @@ responses:
 
 
   utter_help_select_node_edge:
-    - text: "intent_node_edge_signal,highlight_accordion_button,Select node and edge will show comment with selected tags.
+    - text: "intent_node_edge_signal;highlight_accordion_button;Select node and edge will show comment with selected tags.
     \ \n
 
       Select node and edge by: \ \n
@@ -767,23 +592,23 @@ responses:
       - Asking me"
 
   utter_help_AND:
-    - text: "intent_and_or_signal,With AND option,
+    - text: "intent_and_or_signal;With AND option,
     you will see the comments that are tagged with all the features you have selected"
       image: "https://ecemkavaz.github.io/imagesRasa/AndOr3.png"
 
   utter_help_OR:
-    - text: "intent_and_or_signal,With OR option,
+    - text: "intent_and_or_signal;With OR option,
     you will see the comments that are tagged with at least one of the features you have selected"
       image: "https://ecemkavaz.github.io/imagesRasa/AndOr3.png"
 
   utter_help_AND_OR:
-    - text: "intent_and_or_signal,With AND option,
+    - text: "intent_and_or_signal;With AND option,
       you will see the comments that are tagged with all the selected features. With OR option
       you will see the comments that are tagged with at least one of the selected features"
       image: "https://ecemkavaz.github.io/imagesRasa/AndOr3.png"
 
   utter_help_summary:
-    - text: "intent_summary_signal,Summary tells us how many comments are labelled with different levels of toxicity and their targets.   \ \n
+    - text: "intent_summary_signal;Summary tells us how many comments are labelled with different levels of toxicity and their targets.   \ \n
 
            It reflects data in the current visualisation. \ \n 
       
@@ -792,7 +617,7 @@ responses:
 
 
   utter_help_main_bar_one:
-    - text: "intent_signal_additional_graphs,chart_main_button,statistics_all_features_tree,Selected Comments shows you the statistics of the current visualisation of the main interface. \ \n
+    - text: "intent_signal_additional_graphs;chart_main_button;statistics_all_features_tree;Selected Comments shows you the statistics of the current visualisation of the main interface. \ \n
     
     You can change the variables and graph type using the drop down menus. \ \n 
 
@@ -807,7 +632,7 @@ responses:
           payload: '/statistics_help'
 
   utter_help_main_bar_three:
-    - text: "intent_summary_signal,There are two statistics options: \ \n
+    - text: "intent_summary_signal;There are two statistics options: \ \n
     
     - Selected Comments \ \n
     
@@ -820,7 +645,7 @@ responses:
     Read more about Interactive Graphs [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_help_subtree_bar:
-    - text: "intent_signal_additional_graphs,chart_sub_button,statistics_all_features_subtrees, Comment level 1 indicates that the comment was posted directly under the news article \ \n
+    - text: "intent_signal_additional_graphs;chart_sub_button;statistics_all_features_subtrees;Comment level 1 indicates that the comment was posted directly under the news article \ \n
     
     Level One Comments Statistics is a feature that allows you to analyse the statistics of comments tagged as level one. \ \n
 
@@ -894,86 +719,86 @@ responses:
 # check colour features
 
   utter_colour_feature_constructive:
-    - text: "intent_show_colour_features,constructiveness,Colour feature has been checked"
+    - text: "intent_show_colour_features;constructiveness;Colour feature has been checked"
 
   utter_colour_feature_argumentation:
-    - text: "intent_show_colour_features,argumentation,Colour feature has been checked"
+    - text: "intent_show_colour_features;argumentation;Colour feature has been checked"
 
   utter_colour_feature_sarcasm:
-    - text: "intent_show_colour_features,sarcasm,Colour feature has been checked"
+    - text: "intent_show_colour_features;sarcasm;Colour feature has been checked"
 
   utter_colour_feature_mockery:
-    - text: "intent_show_colour_features,mockery,Colour feature has been checked"
+    - text: "intent_show_colour_features;mockery;Colour feature has been checked"
 
   utter_colour_feature_intolerance:
-    - text: "intent_show_colour_features,intolerance,Colour feature has been checked"
+    - text: "intent_show_colour_features;intolerance;Colour feature has been checked"
 
   utter_colour_feature_improper:
-    - text: "intent_show_colour_features,improper_language,Colour feature has been checked"
+    - text: "intent_show_colour_features;improper_language;Colour feature has been checked"
 
   utter_colour_feature_insult:
-    - text: "intent_show_colour_features,insult,Colour feature has been checked"
+    - text: "intent_show_colour_features;insult;Colour feature has been checked"
 
   utter_colour_feature_aggressiveness:
-    - text: "intent_show_colour_features,aggressiveness,Colour feature has been checked"
+    - text: "intent_show_colour_features;aggressiveness;Colour feature has been checked"
 
   utter_check_all_colour_features:
-    - text: "intent_show_colour_features,check_button_features,All colour features have been checked"
+    - text: "intent_show_colour_features;check_button_features;All colour features have been checked"
 
   utter_uncheck_all_colour_features:
-    - text: "intent_show_colour_features,uncheck_button_features,All colour features have been unchecked"
+    - text: "intent_show_colour_features;uncheck_button_features;All colour features have been unchecked"
 
   utter_colour_feature_stereotype:
-    - text: "intent_show_colour_features,target-stereotype,Colour feature has been checked"
+    - text: "intent_show_colour_features;target-stereotype;Colour feature has been checked"
 
 # uncheck colour features
 
   utter_colour_feature_constructive_uncheck:
-    - text: "intent_uncheck_colour_features,constructiveness,Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;constructiveness;Colour feature has been unchecked"
 
   utter_colour_feature_argumentation_uncheck:
-    - text: "intent_uncheck_colour_features,argumentation,Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;argumentation;Colour feature has been unchecked"
 
   utter_colour_feature_sarcasm_uncheck:
-    - text: "intent_uncheck_colour_features,sarcasm,Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;sarcasm;Colour feature has been unchecked"
 
   utter_colour_feature_mockery_uncheck:
-    - text: "intent_uncheck_colour_features,mockery,Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;mockery;Colour feature has been unchecked"
 
   utter_colour_feature_intolerance_uncheck:
-    - text: "intent_uncheck_colour_features,intolerance,Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;intolerance;Colour feature has been unchecked"
 
   utter_colour_feature_improper_uncheck:
-    - text: "intent_uncheck_colour_features,improper_language,Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;improper_language;Colour feature has been unchecked"
 
   utter_colour_feature_insult_uncheck:
-    - text: "intent_uncheck_colour_features,insult,Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;insult;Colour feature has been unchecked"
 
   utter_colour_feature_aggressiveness_uncheck:
-    - text: "intent_uncheck_colour_features,aggressiveness,Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;aggressiveness;Colour feature has been unchecked"
 
   utter_colour_feature_stereotype_uncheck:
-    - text: "intent_uncheck_colour_features,target-stereotype,Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;target-stereotype;Colour feature has been unchecked"
 
   # check targets
   utter_icon_feature_person:
-    - text: "intent_show_targets,target-person,Target Person has been checked"
+    - text: "intent_show_targets;target-person;Target Person has been checked"
 
   utter_icon_feature_group:
-    - text: "intent_show_targets,target-group,Target Group has been checked"
+    - text: "intent_show_targets;target-group;Target Group has been checked"
 
   utter_icon_feature_checkall:
-    - text: "intent_show_targets,check_button_targets,All targets have been checked"
+    - text: "intent_show_targets;check_button_targets;All targets have been checked"
 
   utter_icon_feature_uncheckall:
-    - text: "intent_show_targets,uncheck_button_targets,All targets have been unchecked"
+    - text: "intent_show_targets;uncheck_button_targets;All targets have been unchecked"
 
 # uncheck targets
   utter_uncheck_person:
-    - text: "intent_uncheck_targets,target-person"
+    - text: "intent_uncheck_targets;target-person"
 
   utter_uncheck_group:
-    - text: "intent_uncheck_targets,target-group"
+    - text: "intent_uncheck_targets;target-group"
 
 # response to show me colour feature
   utter_which_colour_feature:
@@ -1230,54 +1055,54 @@ responses:
 # Definitions of features
 
   utter_sarcasm_definition:
-    - text: "intent_features_definition_signals,A comment is sarcastic when the content is ironic, that is, when the writer uses words
+    - text: "intent_features_definition_signals;A comment is sarcastic when the content is ironic, that is, when the writer uses words
     that mean the opposite of what he really wants to say and when it is accompanied by a harsh,
     sharp and negative criticism and made in bad faith. \ \n"
 
   utter_mockery_definition:
-    - text: "intent_features_definition_signals,This category indicates that the comment ridicules, humiliates or mocks a person or group."
+    - text: "intent_features_definition_signals;This category indicates that the comment ridicules, humiliates or mocks a person or group."
 
   utter_insult_definition:
-    - text: "intent_features_definition_signals,This category indicates that the comment contains one or more
+    - text: "intent_features_definition_signals;This category indicates that the comment contains one or more
     explicit insults or slurs with the intention to offend a person or group.
     This attribute correlates with the improper language category, which means that if the comment contains insults,
     it is also annotated as improper language, but not the other way around (i.e. improper language does not necessarily imply insults or slurs)."
 
   utter_intolerance_definition:
-    - text: "intent_features_definition_signals,This category indicates the intolerant attitude of the writer of the comment.
+    - text: "intent_features_definition_signals;This category indicates the intolerant attitude of the writer of the comment.
     That means when he or she expresses intransigence or non-acceptance or 
   rejection of the difference of the ‘other’ or ‘others’, such as different traditions, customs, beliefs, 
   religions, skin color, sexual orientation or gender, both when they are addressed to an individual and a group."
 
   utter_improper_language_definition:
-    - text: "intent_features_definition_signals,The category Improper language indicates
+    - text: "intent_features_definition_signals;The category Improper language indicates
     that the comment contains language not consider to be proper or that
     is vulgar and impolite and/or which includes rude words.
     However, we may find comments that include insults or improper language used
     with a humoristic or positive intentionality."
 
   utter_aggressiveness_definition:
-    - text: "intent_features_definition_signals,A comment contains aggressive language when it expresses
+    - text: "intent_features_definition_signals;A comment contains aggressive language when it expresses
   violence or a desire to exercise it in a deliberate and conscious or unconscious way, without necessarily including sarcasm,
   mockery or insults. This aggressiveness can be expressed in a passive manner,
   by justifying or empathizing with an aggressive action, or in an active way, by promoting and encouraging or inciting violence"
 
   utter_stereotype_definition:
-    - text: "intent_features_definition_signals,Stereotypes are defined as beliefs and ideas widely attributed to a group,
+    - text: "intent_features_definition_signals;Stereotypes are defined as beliefs and ideas widely attributed to a group,
   by which the individuals in this group are characterised in an undifferentiated and simplified way based on
   the magnification or exaggeration of an individual characteristic (race, ethnicity, religion, gender,
   sexual orientation and age, among others)"
 
   utter_stance_definition:
     - text: "
-    intent_node_edge_signal,highlight_accordion_button,Stance indicates the author's attitude towards a topic of discussion. \ \n
+    intent_node_edge_signal;highlight_accordion_button;Stance indicates the author's attitude towards a topic of discussion. \ \n
 
     There are 4 Stances, each assigned a colour: \ \n
 
-    - Positive Stance \ \n
-    - Negative Stance \ \n
-    -  Neutral Stance \ \n
-    - Both Positive and \ \n
+    - Positive Stance
+    - Negative Stance
+    - Neutral Stance
+    - Both Positive and
     - Negative stance \ \n
 
     You can activate/deactivate Stance: \ \n
@@ -1287,7 +1112,7 @@ responses:
     - Asking me"
 
   utter_toxic_definition:
-    - text: "A comment's toxicity is determined by the number and combination of features that appear in it \ \n
+    - text: "intent_node_edge_signal;highlight_accordion_button;A comment's toxicity is determined by the number and combination of features that appear in it \ \n
 
         There are 4 possible levels of toxicity, each assigned a colour: \ \n
 
@@ -1304,6 +1129,7 @@ responses:
 
   utter_comment_id_definition:
     - text: "Comment ID is a number that indicates the chronological order in which the comment was posted in the time thread on the website."
+      image: "https://ecemkavaz.github.io/imagesRasa/CommentID5.png"
 
   utter_argumentation_definition:
     - text: "intent_features_definition_signals,Argumentation indicates that the comment gives arguments or reasoned explanations or grounds opinions with evidences. \ \n
@@ -1311,7 +1137,7 @@ responses:
     Read more about Argumentation [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_constructiveness_definition:
-    - text: "intent_features_definition_signals,A comment is constructive when it is respectful and polite
+    - text: "intent_features_definition_signals;A comment is constructive when it is respectful and polite
     (regardless of whether it is in favour or against the content of the article or of another comment), 
     when it intends to create an enriching and useful dialogue, when it contributes with new knowledge, ideas and proposals and 
     offers new perspectives and insights to approach the subject \ \n
@@ -1319,7 +1145,7 @@ responses:
      Read more about Constructiveness [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_target_group_definition:
-    - text: "intent_targets_signal,targets_accordion_button,All comments are tagged with the targets that they are directed at. Target Group refers to comments targeting a group. \ \n
+    - text: "intent_targets_signal;targets_accordion_button;All comments are tagged with the targets that they are directed at. Target Group refers to comments targeting a group. \ \n
      
          You can activate/deactivate targets: \ \n
 
@@ -1329,7 +1155,7 @@ responses:
           Summary will also tell you how many targets there are in the current visualisation"
 
   utter_target_person_definition:
-    - text: "intent_targets_signal,targets_accordion_button,All comments are tagged with the targets that they are directed at. Target Person refers to comments targeting a person. \ \n
+    - text: "intent_targets_signal;targets_accordion_button;All comments are tagged with the targets that they are directed at. Target Person refers to comments targeting a person. \ \n
 
          You can activate/deactivate targets: \ \n
 
@@ -1339,17 +1165,18 @@ responses:
           Summary will also tell you how many targets there are in the current visualisation \ \n"
 
   utter_comment_level_definition:
-  - text: "Comment levels refers to the relationship of the news article with its' comments. \ \n
+    - text: "intent_signal_level_one_button;chart_sub_button;Comment levels refers to the relationship of the news article with its' comments. \ \n
 
-  Comment level 1 indicates that the comment was posted directly under the news article. \ \n
+      Comment level 1 indicates that the comment was posted directly under the news article. \ \n
 
-  Comment level 2 indicates that the comment originates from another comment. \ \n
+      Comment level 2 indicates that the comment originates from another comment. \ \n
 
-  To access this information, you can hover over each node. \ \n
+      To access this information, you can hover over each node. \ \n
 
-  To display statistics for Level One Comments, click the Level One Comments button. \ \n
+      To display statistics for Level One Comments, click the Level One Comments button. \ \n
 
-  Read more about Comment Level [here](https://dspace5.zcu.cz/handle/11025/45010)"
+      Read more about Comment Level [here](https://dspace5.zcu.cz/handle/11025/45010)"
+      image: "https://ecemkavaz.github.io/imagesRasa/CommentLevel4.png"
 
   utter_comment_depth_definition:
     - text: "Comment depth indicates a node's position in a thread. \ \n
@@ -1357,19 +1184,21 @@ responses:
     To access this information, you can hover over each node. \ \n
 
     Read more about Comment Depth [here](https://dspace5.zcu.cz/handle/11025/45010)"
+      image: "https://ecemkavaz.github.io/imagesRasa/CommentDepth8.png"
 
   utter_direct_comment_definition:
-    - text: "Direct comments is a number indicating how many comments were posted directly under the news article (Comment Level 1). \ \n
+    - text: "intent_signal_level_one_button;chart_sub_button;Direct comments is a number indicating how many comments were posted directly under the news article (Comment Level 1). \ \n
     
     To access this information, you can hover over each node. \ \n
     
     To display statistics for Level One Comments, click the Level One Comments button. \ \n
 
      Read more about Comment Level [here](https://dspace5.zcu.cz/handle/11025/45010)"
+      image: "https://ecemkavaz.github.io/imagesRasa/DirectComments3.png"
 
 
   utter_subtrees_definition:
-    - text: "Subtrees function allows you to extract threads and levels with certain characteristics and shows them in a pop-up window. \ \n
+    - text: "intent_subtrees_signal;Subtrees function allows you to extract threads and levels with certain characteristics and shows them in a pop-up window. \ \n
     
     You can save them by giving them a name and clicking save so that you can access them again once you have closed the pop-up window  \ \n
     
@@ -1379,6 +1208,7 @@ responses:
     - the longest thread \ \n
     - the most toxic thread  \ \n
     - the widest level "
+
 
   utter_tutorial_mode:
     - text: "With this interface you can:
@@ -1437,6 +1267,9 @@ responses:
    Remember, I’m here to carry out any of the functions on the interface, show you subtrees and help you when you when you need it 😄. 
    Use this window or your microphone to talk to me! \ \n"
 
+
+  utter_which_node_and_edge:
+    - text: "Please state a node and edge feature name."
 
 
 

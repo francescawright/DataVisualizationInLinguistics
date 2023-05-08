@@ -236,6 +236,15 @@ stories:
   - action: action_highlight_check
 
 
+- story: Highlight a filter without filter name
+  steps:
+  - intent: show_node_and_edge
+  - action: utter_which_node_and_edge
+  - intent: highlight_check
+    entities:
+      - filter_name: "positive stance"
+  - action: action_highlight_check
+
 
 
 
