@@ -271,24 +271,21 @@ nlu:
     - Switch the [visualisation type]{"entity": "object_requested", "value": "layout"} format
     - Change [layout]{"entity": "object_requested", "value": "layout"}
 
-    
-
+   
 
 - intent: change_layout_tree
   examples: |
-    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [first visualisation]{"entity": "layout_requested", "value": "tree"}
-    - Can you swap the [force]{"entity": "layout_requested", "value": "force"} to [1st visualization]{"entity": "layout_requested", "value": "tree"} layout
-    - Can you swap the [radial layout]{"entity": "layout_requested", "value": "radial"} to [tree]{"entity": "layout_requested", "value": "tree"} design
-    - Can you swap from [circle packing] {"entity": "layout_requested", "value": "circle"} to [tree]{"entity": "layout_requested", "value": "tree"} visualisation
+    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [tree layout]{"entity": "layout_requested", "value": "tree"}
+    - Can you swap the [layout]{"entity": "object_requested", "value": "layout"} to [1st visualization]{"entity": "layout_requested", "value": "tree"} layout
     - I was hoping you could bring up [tree layout]{"entity": "layout_requested", "value": "tree"} style
     - Could I possibly choose to [tree visualization]{"entity": "layout_requested", "value": "tree"} type
     - Would you be able to use to [visualisation 1]{"entity": "layout_requested", "value": "tree"} option
-    - Could you possibly show me [tree layout]{"entity": "layout_requested", "value": "tree"} format
+    - Could you possibly show me [first visualisation]{"entity": "layout_requested", "value": "tree"} format
     - Would it be possible for you to display features with [1st layout]{"entity": "layout_requested", "value": "tree"} display
-    - Show me [tree layout]{"entity": "layout_requested", "value": "tree"}
+    - Show me [layout one]{"entity": "layout_requested", "value": "tree"}
     - Would you visualise the current display as [tree layout]{"entity": "layout_requested", "value": "tree"} 
     - I was wondering if I could select [first layout]{"entity": "layout_requested", "value": "tree"} display
-    - Let me choose [tree]{"entity": "glyph_requested", "value": "dots"} option
+    - Let me choose [tree]{"entity": "layout_requested", "value": "tree"} option
     - Let's visualise the selected features in [visualisation one]{"entity": "layout_requested", "value": "tree"} format
     - Change layout to [tree]{"entity": "layout_requested", "value": "tree"} design
 
@@ -296,55 +293,66 @@ nlu:
 - intent: change_layout_force
   examples: |
     - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [force]{"entity": "layout_requested", "value": "force"} design
-    - Can you swap the [tree layout]{"entity": "layout_requested", "value": "tree"} to [force]{"entity": "layout_requested", "value": "force"} display
-    - Can you swap the [radial layout]{"entity": "layout_requested", "value": "radial"} to [force]{"entity": "layout_requested", "value": "force"} visualisation
-    - Can you swap from [circle packing] {"entity": "layout_requested", "value": "circle"} to [force]{"entity": "layout_requested", "value": "force"} design
+    - Can you swap the [layout]{"entity": "object_requested", "value": "layout"} to the [second layout]{"entity": "layout_requested", "value": "force"} layout
     - I was hoping you could bring up [force layout]{"entity": "layout_requested", "value": "force"} style
     - Could I possibly choose to [second layout]{"entity": "layout_requested", "value": "force"} type
     - Would you be able to use to [second visualisation]{"entity": "layout_requested", "value": "force"} option
     - Could you possibly show me [force visualization]{"entity": "layout_requested", "value": "force"} format
     - Would it be possible for you to display features with [force]{"entity": "layout_requested", "value": "force"} display
     - Show me [second visualization]{"entity": "layout_requested", "value": "force"}
-    - Would you visualise the current display as [force]{"entity": "layout_requested", "value": "force"}
+    - Would you visualise the current display as [layout two]{"entity": "layout_requested", "value": "force"}
     - I was wondering if I could select [second layout]{"entity": "layout_requested", "value": "force"} display
     - Let me choose [second layout]{"entity": "layout_requested", "value": "force"} option
     - Let's visualise the selected features in [2nd layout]{"entity": "layout_requested", "value": "force"} format
+    - Can you show me [visualisation two]{"entity": "layout_requested", "value": "force"} display
+    - Select [layout 2]{"entity": "layout_requested", "value": "force"} display
+    - Let me choose [2nd visualisation]{"entity": "layout_requested", "value": "force"} option
+    - Let's visualise the selected features in [force layout]{"entity": "layout_requested", "value": "force"} format
+    - Change layout to [force layout]{"entity": "layout_requested", "value": "force"} design
+    - Can I look at features in [visualisation 2]{"entity": "layout_requested", "value": "force"}
 
 - intent: change_layout_radial
   examples: |
-    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [radial]{"entity": "layout_requested", "value": "radial"} design
-    - Can you swap the [tree layout]{"entity": "layout_requested", "value": "tree"} to [radial visualisation]{"entity": "layout_requested", "value": "radial"}
-    - Can you swap the [force layout]{"entity": "layout_requested", "value": "force"} to [radial visualization]{"entity": "layout_requested", "value": "radial"}
-    - Can you swap from [circle packing] {"entity": "layout_requested", "value": "circle"} to [radial]{"entity": "layout_requested", "value": "radial"} display
-    - I was hoping you could bring up [radial]{"entity": "layout_requested", "value": "radial"} style
-    - Could I possibly choose to [radial]{"entity": "layout_requested", "value": "radial"} type
-    - Would you be able to use to [radial]{"entity": "layout_requested", "value": "radial"} option
-    - Could you possibly show me [radial]{"entity": "layout_requested", "value": "radial"} format
-    - Would it be possible for you to display features with [radial]{"entity": "layout_requested", "value": "radial"} display
-    - Show me [third visualisation]{"entity": "layout_requested", "value": "radial"}
-    - Would you visualise the current display as [radial]{"entity": "layout_requested", "value": "radial"}
-    - I was wondering if I could select the [third layout]{"entity": "layout_requested", "value": "radial"} display
-    - Let me choose [3rd layout]{"entity": "layout_requested", "value": "radial"} option
-    - Let's visualise the selected features in [third visualization]{"entity": "layout_requested", "value": "radial"} format
-
+    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [radial]{"entity": "layout_requested", "value": "radial"}
+    - Can you swap the [layout]{"entity": "object_requested", "value": "layout"} to the [3rd visualisation]{"entity": "layout_requested", "value": "radial"} layout
+    - I was hoping you could bring up [3rd layout]{"entity": "layout_requested", "value": "radial"} style
+    - Could I possibly choose to [visualisation 3]{"entity": "layout_requested", "value": "radial"} type
+    - Would you be able to use to [layout 3]{"entity": "layout_requested", "value": "radial"} option
+    - Could you possibly show me [visualisation three]{"entity": "layout_requested", "value": "radial"} format
+    - Would it be possible for you to display features with [layout three]{"entity": "layout_requested", "value": "radial"} display
+    - Show me [radial]{"entity": "layout_requested", "value": "radial"}
+    - Would you visualise the current display as [radial layout]{"entity": "layout_requested", "value": "radial"} 
+    - I was wondering if I could select [radial layout]{"entity": "layout_requested", "value": "radial"} display
+    - Let me choose [radial]{"entity": "layout_requested", "value": "radial"} option
+    - Let's visualise the selected features in [3rd layout]{"entity": "layout_requested", "value": "radial"} format
+    - Change layout to [third visualisation]{"entity": "layout_requested", "value": "radial"} design
+    - Can I look at features in [third layout]{"entity": "layout_requested", "value": "radial"}
+   
 
 - intent: change_layout_circle
-  examples: |
+  examples: |    
     - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [circle visualization]{"entity": "layout_requested", "value": "circle"}
-    - Can you swap the [tree layout]{"entity": "layout_requested", "value": "tree"} to [circle visualisation]{"entity": "layout_requested", "value": "circle"}
-    - Can you swap the [force layout]{"entity": "layout_requested", "value": "force"} to [circle packing]{"entity": "layout_requested", "value": "circle"} visualisation
-    - Can you swap from [radial layout] {"entity": "layout_requested", "value": "radial"} to [circle packing]{"entity": "layout_requested", "value": "circle"} visualization
-    - I was hoping you could bring up [circle layout]{"entity": "layout_requested", "value": "circle"} style
-    - Could I possibly choose to [circle]{"entity": "layout_requested", "value": "circle"} type
+    - Can you swap the [layout]{"entity": "object_requested", "value": "layout"} to the [fourth layout]{"entity": "layout_requested", "value": "circle"} layout
+    - I was hoping you could bring up [fourth visualisation]{"entity": "layout_requested", "value": "circle"} style
+    - Could I possibly choose to [4th layout]{"entity": "layout_requested", "value": "circle"} type
+    - Would you be able to use to [4th visualisation]{"entity": "layout_requested", "value": "circle"} option
+    - Could you possibly show me [visualisation four]{"entity": "layout_requested", "value": "circle"} format
+    - Would it be possible for you to display features with [layout four]{"entity": "layout_requested", "value": "circle"} display
+    - Show me [circle]{"entity": "layout_requested", "value": "circle"}
+    - Would you visualise the current display as [visualisation 4]{"entity": "layout_requested", "value": "circle"} 
+    - I was wondering if I could select [layout 4]{"entity": "layout_requested", "value": "circle"} display
+    - Let me choose the [last layout]{"entity": "layout_requested", "value": "circle"} option
+    - Let's visualise the selected features in the [last visualisation]{"entity": "layout_requested", "value": "circle"} format
+    - Change layout to [last]{"entity": "layout_requested", "value": "circle"} design
+    - Can I look at features in [last layout]{"entity": "layout_requested", "value": "circle"}
+    - Visualise me [circle layout]{"entity": "layout_requested", "value": "circle"} style
     - Would you be able to use to [last visualization]{"entity": "layout_requested", "value": "circle"} option
     - Could you possibly show me [circle visualization]{"entity": "layout_requested", "value": "circle"} format
-    - Would it be possible for you to display features with [circle]{"entity": "layout_requested", "value": "circle"} display
     - Show me [circle packing]{"entity": "layout_requested", "value": "circle"} design
-    - Would you visualise the current display as [fourth visualisation]{"entity": "layout_requested", "value": "circle"}
-    - I was wondering if I could select the [4th layout]{"entity": "layout_requested", "value": "circle"} display
-    - Let me choose the [last layout]{"entity": "layout_requested", "value": "circle"} option
+    - Let me see the [last layout]{"entity": "layout_requested", "value": "circle"} option
     - Let's visualise the selected features in [fourth visualization]{"entity": "layout_requested", "value": "circle"} format
     - Display the data in the [last visualisation]{"entity": "layout_requested", "value": "circle"}
+
 
 # glyph change
 
@@ -426,38 +434,35 @@ nlu:
 - intent: select_document
   examples: |
     - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - Open [Compact_200]{"entity": "document_requested"}
-    - Open [document]{"entity": "object_requested", "value": "document"}
-    - Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
-    - Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
-    - Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - I want to open a [file]{"entity": "object_requested", "value": "document"}
-    - I want to open [wide]{"entity": "document_requested"}
-    - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
-    - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
+    - I want you to open [Compact_200]{"entity": "document_requested"}
+    - I would like you to show me the [20190519_SO]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} 
+    - Can you open for me [531_MI]{"entity": "document_requested"}
+    - I was hoping you could bring up [test2]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} for me
+    - Would you be able to select [test4-Com]{"entity": "document_requested"}
+    - Would it be possible for you to choose [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - I'd like to analyse [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Begin analysis of  [20190519_SO]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - May I look at [test]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Would I be able to start the analysis of [20170819_CR]{"entity": "document_requested"}
+    - Could you possibly start with [531_MI]{"entity": "document_requested"}
+    - Let me see [test]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Choose [20170819]{"entity": "document_requested"} to analyse first
 
-
-#    - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-#    - I want you to open [Compact_200]{"entity": "document_requested"}
-#    - I would like you to show me the [file]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
-#    - Can you open for me [531_MI]{"entity": "document_requested"}
-#    - I was hoping you could bring up [test2]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} for me
-#    - Would you be able to select [test4-Com]{"entity": "document_requested"}
-#    - Would it be possible for you to choose [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-#    - I'd like to analyse [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-#    - Begin analysis of [file]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
-#    - May I look at [file]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
-#    - Would I be able to start the analysis of [20170819_CR]{"entity": "document_requested"}
-#    - Could you possibly start with [531_MI]{"entity": "document_requested"}
-#    - Let me see [file]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
-#    - Choose [20170819]{"entity": "document_requested"} to analyse first
-##start with X
+  #- Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+  #- Open [Compact_200]{"entity": "document_requested"}
+  #- Open [document]{"entity": "object_requested", "value": "document"}
+  #- Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
+  #- Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
+  #- Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+  #- I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+  #- I want to open a [file]{"entity": "object_requested", "value": "document"}
+  #- I want to open [wide]{"entity": "document_requested"}
+  #- I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
+  #- I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
+  
   #Let's analyse 20200608_SO- yes
 # bring up file 20200608_SO- yes
 # let's begin with file 20200608_SO - yes
-
-
 
 # Ask bot to change to OR / AND
 - intent: switch_or
@@ -883,7 +888,7 @@ nlu:
 #reset
 #go back to the beginning
 
-
+#unchecking select node and edge menus
 - intent: highlight_uncheck
   examples: | 
     - Can I disable [non toxic]{"entity": "filter_name"} nodes option
@@ -1450,6 +1455,27 @@ nlu:
     - What are the functions of this tool?
     - How can I use this tool?
     - Tell me about how to use this tool?
+    - Can you remind me what I can do?
+    - I need you to remind me how to use the interface
+    - Could you possibly tell me again what you can do?
+    - I'd like you to recap 
+    - What is this tool for?
+    - How can I use this interface?
+    - I don't know what to do
+    - Can you help me
+    - Could you give me suggestions on what to do next
+    - I would like you to help me 
+    - What can I do now?
+    - Would you be able to give me help on what to do next?
+    - Would it be possible for you to give me a summary of what I can do
+
+#synonym: reminder
+#examples: |
+# remind
+# a reminder
+# recap
+# summary help
+# *again
 
 - intent: help_AND
   examples: |
@@ -1539,15 +1565,30 @@ nlu:
 
 - intent: reminder_highlevel_questions
   examples: |
-    - What can you do?
-    - What can I ask you?
-    - How can you help me?
-
-- intent: what_can_do_after_glyphs
-  examples: |
-    - What can I do now after viewing glyphs?
-    - What more I can do now?
-
+    - What are the subtrees you can show me
+    - Could you remind me of the subtree choices
+    - What are the subtree options again?
+    - What statistics questions are there?
+    - What are more complex questions I can ask you?
+    - Would you be able to tell me more about subtrees
+    - I would like to know about the basic statistics questions I can ask you
+    - What are the basic statistic questions you can answer?
+    - Would you possibly remind me of the basic statistics options
+    - What are the questions I can only ask you?
+    - How can I see subtrees?
+    - How can I find out the subtrees choices again?
+    - I want to know the basic statistics questions
+    - I'd like you to remind me of the basic statistics questions
+    - Can you tell me what other questions i can ask you
+    - What are the different subtrees you can show me
+    - What are the sub structure options?
+    - What are the sub regions you can highlight?
+    - Would you be able to tell me the sub regions again?
+    - Is it possible to analyse a smaller part of the visualisation?
+    - Can I analyse a small section of my data?
+     - Is it possible to look at smaller regions of my data?
+#could you remind me of the basic statistics options- yes
+#what were the questions i can ask you- yes
 
 - intent: help_colour_features
   examples: |
@@ -1583,15 +1624,15 @@ nlu:
     - What's the difference between target person and target group?
 #COMPROBAR target person and group intents new combos to be checked
 
-- intent: sub_structure_options
-  examples: |
-    - What are the sub structure options?
-    - Can you remind of me the sub tree options?
-    - What are the sub regions you can highlight?
-    - Would you be able to tell me the sub regions again?
-    - Is it possible to analyse a smaller part of the visualisation?
-    - Can I analyse a small section of my data?
-    - Is it possible to look at smaller regions of my data?
+#- intent: sub_structure_options
+# examples: |
+#    - What are the sub structure options?
+#    - Can you remind of me the sub tree options?
+#    - What are the sub regions you can highlight?
+ #   - Would you be able to tell me the sub regions again?
+ #   - Is it possible to analyse a smaller part of the visualisation?
+#    - Can I analyse a small section of my data?
+ #   - Is it possible to look at smaller regions of my data?
 #IMPROVE
 
 - intent: statistics_help
@@ -1612,6 +1653,7 @@ nlu:
     - How can I analyse my data?
     - Is there a way to compare the features
     - Would I be able to see if there is a relationship between features?
+    - How can I see the relationships between features?
 #what statistics options are there- yes
 #May you inform me on statistics graphs-yes
 #compare the relationships of the features-yes
@@ -2459,16 +2501,35 @@ nlu:
 # asking to hide filters without specifying which method
 
 - intent: filters_constructive_hide
-  examples: |
-    - Uncheck [constructiveness]{"entity": "filter_name"}
-    - Hide [constructive]{"entity": "filter_name" }
-    - Deselect [constructive]{"entity": "filter_name" }
+  examples: |    
+    - Can I [constructiveness]{"entity": "filter_name"}
+    - Uncheck [constructiveness]{"entity": "filter_name"} features
+    - May you turn off [constructiveness]{"entity": "filter_name"} filters
+    - I want to reset [constructiveness]{"entity": "filter_name"} features
+    - I would like to switch off [constructiveness]{"entity": "filter_name"} features
+    - Deselect [constructiveness]{"entity": "filter_name"} filtering
+    - Could you hide [constructiveness]{"entity": "filter_name"} features
+    - I was hoping you could switch off [constructiveness]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [constructiveness]{"entity": "filter_name"}
+    - Would you be able to untick [constructiveness]{"entity": "filter_name"} filters
+    - Could you possibly clear [constructiveness]{"entity": "filter_name"} filtering
+    - Clear off [constructiveness]{"entity": "filter_name"} filters
+    - May you remove [constructiveness]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [constructiveness]{"entity": "filter_name"} filters
+    - Unselect [constructiveness]{"entity": "filter_name"} filtering
+    - Get rid of [constructiveness]{"entity": "filter_name"} features
+    - Would I be able to take [constructiveness]{"entity": "filter_name"} off
+    - I'd like to clear off [constructiveness]{"entity": "filter_name"}
+
+
 
 - intent: filters_argument_hide
   examples: |
     - Hide [argumentation]{"entity": "filter_name"}
     - Deselect [argument]{"entity": "filter_name" }
     - Uncheck  [argumentation]{"entity": "filter_name" }
+    
+    
 
 
 - intent: filters_sarcasm_hide
@@ -2633,6 +2694,7 @@ nlu:
 # reset all- yes
 # reset everything -yes
 # Would it be possible for you to go back to the original display-yes
+
 
 
 - intent: filters_all_targets_uncheck
@@ -2867,7 +2929,7 @@ nlu:
     - Could you explain to me what target group refers to?
     - I would like you to explain what target group is
     - Would you be able to give me a tutorial for target group?
-    - I want you to give me an explanation about target group
+    - I want you to give me an explanation for target group
     - I was hoping you could help me understand target group
     - I'd like you to define target group
     - Would it be possible to have a tutorial for target group?
@@ -2883,7 +2945,7 @@ nlu:
     - Could you explain to me what target person refers to?
     - I would like you to explain what target person is
     - Would you be able to give me a tutorial for target person?
-    - I want you to give me an explanation about target person
+    - I want you to give me an explanation for target person
     - I was hoping you could help me understand target person
     - I'd like you to define target person
     - Would it be possible to have a tutorial for target person?
@@ -2900,7 +2962,7 @@ nlu:
     - Could you explain to me what the level of the comment refers to?
     - I would like you to explain what comment level is
     - Would you be able to give me a tutorial for comment level?
-    - I want you to give me an explanation about comment level
+    - I want you to give me an explanation for comment level
     - I was hoping you could help me understand comment level
     - I'd like you to define comment level
     - Would it be possible to have a tutorial for comment level?
@@ -2916,7 +2978,7 @@ nlu:
     - Could you explain to me what the depth of the comment refers to?
     - I would like you to explain what comment depth is
     - Would you be able to give me a tutorial for comment depth?
-    - I want you to give me an explanation about comment depth
+    - I want you to give me an explanation for comment depth
     - I was hoping you could help me understand comment depth
     - I'd like you to define comment depth
     - Would it be possible to have a tutorial for comment depth?
@@ -2924,6 +2986,8 @@ nlu:
     - Give me help on comment depth
     - Guide for comment depth
     - May you inform me on comment depth
+    
+
 #- Tutorial for comment depth- yes
 #- What is the definition of comment depth?- yes
 #- What does comment depth mean?-yes
@@ -2945,7 +3009,7 @@ nlu:
     - Could you explain to me what direct comments refers to?
     - I would like you to explain what direct comments is
     - Would you be able to give me a tutorial for direct comments?
-    - I want you to give me an explanation about direct comments
+    - I want you to give me an explanation for direct comments
     - I was hoping you could help me understand direct comments
     - I'd like you to define direct comments
     - Could you possibly go into more detail about what direct comments is for?
@@ -2978,6 +3042,7 @@ nlu:
  # examples: |
   #  - subregion
   # - sub section
+  # substructure
   # parts of the visualisation
   # parts of the layout
   # parts of the display
@@ -2987,9 +3052,23 @@ nlu:
   # sections of the visualisation
   # sections of the layout
   # sections of the display
-#
-#- intent: ask_tutorial
-#  examples: |
-#    - I want a tutorial
-#    - I need a tutorial
+
+
+- intent: ask_tutorial
+  examples: |
+    - I want a tutorial
+    - I need a tutorial
+    - I was wondering if you could explain everything again
+    - Give me a tutorial on everything
+    - I was hoping you could tell me everything you can do again
+    - I'd like you to tell me everything I can do
+    - Explain to me how to use this tool
+    - I would like a tutorial
+    - Would you be able to give me a tutorial
+    - Can I have a full tutorial
+    - Would it be possible to have a tutorial for every function
+    - Tell me everything I can do 
+    - Could you possibly run through all the functions of this site
+  
+
 
