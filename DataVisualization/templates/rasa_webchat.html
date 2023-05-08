@@ -41,12 +41,23 @@
 <!-- Rasa WebChat Style -->
 
 <style>
-{#.rw-widget-container .rw-launcher {#}
-{#  border: #007bff solid 2px;#}
-{#  box-shadow: 0px 0px 10px rgb(68, 221, 13); /* add your preferred shadow values here */#}
-  {#animation: pulse 2s ease-in-out infinite;#}
-{##}
-{#}#}
+
+@keyframes pulse-bot {
+	0% {
+		transform: scale(0.95);
+		box-shadow: 0px 0px 40px rgb(252, 0, 0);
+	}
+
+	70% {
+		transform: scale(1);
+		box-shadow: 0px 0px 40px rgb(255, 0, 0);
+	}
+
+	100% {
+		transform: scale(0.95);
+		box-shadow: 0px 0px 40px rgb(255, 0, 0);
+	}
+}
 
 .rw-conversation-container .rw-image-details .rw-image-frame{
     height: 300px;
@@ -61,7 +72,7 @@
 }
 
 .rw-conversation-container .rw-replies .rw-reply{
-    background-color:  #fa7070;
+    background-color: #fa7070;
     font-size: 20px;
     border-color: #fa7070;
     justify-content: center;
@@ -95,7 +106,8 @@
 }
 @media screen and (min-width: 800px) {
     .rw-messages-container {
-        max-height: 37vh;
+        max-height: 39vh;
+
     }
 }
 .rw-launcher {
@@ -269,12 +281,21 @@
     }
 }
 
+.not-logged-in .rw-widget-container .rw-launcher {
+  animation: pulse-bot 1.5s ease-in-out 5;
+}
+
 
 </style>
 
 <head>
     {% load static %}
 </head>
+
+<body class="{% if not user.is_authenticated %}not-logged-in{% endif %}">
+
+</body>
+
 
 <script>
     // Initializes the necessary variables for speech-to-text and text-to-speech functions
@@ -418,6 +439,8 @@
         }, 400);
     }
 
+
+
     // Enables the chat send button in case it is disabled
     function setUpChatSendButton() {
         if (!document.querySelector('textarea.rw-new-message').value){
@@ -479,8 +502,39 @@
         sessionStorage.clear();
     }
 
+
+
+{#    function saveConversationToFile() {#}
+{#        // Convert the conversation string to a Blob object#}
+{#        const conversationBlob = new Blob([conversation], {type: 'text/plain'});#}
+{##}
+{#        // Create a URL for the Blob object#}
+{#        const conversationUrl = URL.createObjectURL(conversationBlob);#}
+{##}
+{#        // Create a link to download the conversation as a file#}
+{#        const downloadLink = document.createElement('a');#}
+{#        downloadLink.href = conversationUrl;#}
+{#        downloadLink.download = 'conversation.txt';#}
+{##}
+{#        // Click the link to download the conversation as a file#}
+{#        downloadLink.click();#}
+{##}
+{#        // Add event listeners to the input and button elements#}
+{##}
+{#}#}
+{#    let conversation = ''; // Initialize an empty string to store the conversation#}
+{##}
+{#    function userMessageEvent(e) {#}
+{#        console.log('the user said something: ' + e.text);#}
+{#        conversation += `User: ${e.text}\n`;#}
+{##}
+{##}
+{#    }#}
+
     function botMessageEvent(e) {
         console.log('the bot said something: ' + e.text);
+        conversation += `Bot: ${e.text}\n`;
+
         if (e.text) {
 
             // Get the existing sessionStorage data
@@ -1471,9 +1525,7 @@
                 },
                 onSocketEvent: {
                     'bot_uttered': botMessageEvent,
-                    'user_uttered': function (e) {
-                        console.log("User message: ", e.message.text);
-                    },
+                    {#'user_uttered': userMessageEvent,#}
                     'connect': function() {
                         console.log('connection established');
                         addNewFeatures();
@@ -1521,27 +1573,6 @@
 
 
 </script>
-
-
-<script>
-
-
-
-</script>
-
-{#<script>#}
-{##}
-{#    $(document).ready(function () {#}
-{#        $("#glyphs-radio-buttons").click(function () {#}
-{#            if ($("#glyphs-radio-buttons").css("border-style") === "dotted") {#}
-{#                $("#glyphs-radio-buttons").css("border-style", "none");#}
-{#            } else {#}
-{#                $("#glyphs-radio-buttons").css("border-style", "dotted");#}
-{#            }#}
-{#        });#}
-{#     });#}
-{##}
-{#</script>#}
 
 {#<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.js"></script>#}
 {#<script>#}

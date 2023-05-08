@@ -1214,6 +1214,9 @@ responses:
     - the most toxic thread  \ \n
     - the widest level "
 
+  utter_which_node_and_edge:
+    - text: "Please state a node and edge feature name."
+
 #  utter_tutorial_mode:
 #    - text: "With this interface you can:
 #

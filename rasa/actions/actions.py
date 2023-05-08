@@ -257,7 +257,7 @@ class ActionLogin(Action):
         else:
             key = b'ZeuY3kEaYn2XkyPQPQKgDmDeDRJfKYM3-tTx_5NmMm4='
             dispatcher.utter_message(
-                text='intent_login;' + encrypt(tracker.get_slot("username").encode(), key).decode() + ',' + encrypt(
+                text='intent_login;' + encrypt(tracker.get_slot("username").encode(), key).decode() + ';' + encrypt(
                     tracker.get_slot("password").encode(), key).decode())
             return [SlotSet("username", None), SlotSet("password", None)]
 
@@ -304,8 +304,8 @@ class ActionSignup(Action):
             key = b'JlgbJKpxVhwF3NXJf_n-lt4c4AvdCATnuXYDK4xivPY='
             dispatcher.utter_message(
                 text='intent_signup;' + encrypt(tracker.get_slot("username").encode(), key).decode()
-                     + ',' + encrypt(tracker.get_slot("password").encode(), key).decode()
-                     + ',' + encrypt(tracker.get_slot("password_confirmation").encode(), key).decode())
+                     + ';' + encrypt(tracker.get_slot("password").encode(), key).decode()
+                     + ';' + encrypt(tracker.get_slot("password_confirmation").encode(), key).decode())
             return [SlotSet("username", None), SlotSet("password", None), SlotSet("password_confirmation", None)]
 
 
