@@ -294,75 +294,71 @@ nlu:
 
 - intent: change_layout_tree
   examples: |
-    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [first visualisation]{"entity": "layout_requested", "value": "tree"}
-    - Can you swap the [force]{"entity": "layout_requested", "value": "force"} to [1st visualization]{"entity": "layout_requested", "value": "tree"} layout
-    - Can you swap the [radial layout]{"entity": "layout_requested", "value": "radial"} to [tree]{"entity": "layout_requested", "value": "tree"} design
-    - Can you swap from [circle packing] {"entity": "layout_requested", "value": "circle"} to [tree]{"entity": "layout_requested", "value": "tree"} visualisation
+    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [tree layout]{"entity": "layout_requested", "value": "tree"}
+    - Can you swap the [layout]{"entity": "object_requested", "value": "layout"} to [1st visualization]{"entity": "layout_requested", "value": "tree"} layout
     - I was hoping you could bring up [tree layout]{"entity": "layout_requested", "value": "tree"} style
     - Could I possibly choose to [tree visualization]{"entity": "layout_requested", "value": "tree"} type
     - Would you be able to use to [visualisation 1]{"entity": "layout_requested", "value": "tree"} option
-    - Could you possibly show me [tree layout]{"entity": "layout_requested", "value": "tree"} format
-    - Would it be possible for you to display features with [1st layout]{"entity": "layout_requested", "value": "tree"} display
+    - Could you possibly show me [first visualisation]{"entity": "layout_requested", "value": "tree"} format
+    - Would it be possible for you to display features with [1st layout]{"entity": "layout_requested", "value": "tree"}
     - Show me [layout one]{"entity": "layout_requested", "value": "tree"}
-    - Would you visualise the current display as [tree layout]{"entity": "layout_requested", "value": "tree"} 
-    - I was wondering if I could select [first layout]{"entity": "layout_requested", "value": "tree"} display
-    - Let me choose [tree]{"entity": "glyph_requested", "value": "dots"} option
+    - Would you visualise the current display as [first layout]{"entity": "layout_requested", "value": "tree"} 
+    - I was wondering if I could select [tree layout]{"entity": "layout_requested", "value": "tree"} display
+    - Let me choose [tree]{"entity": "layout_requested", "value": "tree"} option
     - Let's visualise the selected features in [visualisation one]{"entity": "layout_requested", "value": "tree"} format
     - Change layout to [tree]{"entity": "layout_requested", "value": "tree"} design
-
+    - Can I look at features in [layout one]{"entity": "layout_requested", "value": "tree"}
 
 - intent: change_layout_force
   examples: |
     - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [force]{"entity": "layout_requested", "value": "force"}
-    - Can you swap the [tree layout]{"entity": "layout_requested", "value": "tree"} to [force]{"entity": "layout_requested", "value": "force"}
-    - Can you swap the [radial layout]{"entity": "layout_requested", "value": "radial"} to [force]{"entity": "layout_requested", "value": "force"}
-    - Can you swap from [circle packing] {"entity": "layout_requested", "value": "circle"} to [force]{"entity": "layout_requested", "value": "force"}
-    - I was hoping you could bring up [force]{"entity": "layout_requested", "value": "force"} style
-    - Could I possibly choose to [force]{"entity": "layout_requested", "value": "force"} type
-    - Would you be able to use to [force]{"entity": "layout_requested", "value": "force"} option
-    - Could you possibly show me [force]{"entity": "layout_requested", "value": "force"} format
-    - Would it be possible for you to display features with [force]{"entity": "layout_requested", "value": "force"} display
-    - Show me [force]{"entity": "layout_requested", "value": "force"}
-    - Would you visualise the current display as [force]{"entity": "layout_requested", "value": "force"}
-    - I was wondering if I could select [second layout]{"entity": "layout_requested", "value": "force"} display
-    - Let me choose [second layout]{"entity": "layout_requested", "value": "force"} option
-    - Let's visualise the selected features in [second layout]{"entity": "layout_requested", "value": "force"} format
+    - Can you swap the [layout]{"entity": "object_requested", "value": "layout"} to the [second layout]{"entity": "layout_requested", "value": "force"} layout
+    - I was hoping you could bring up [second visualisation]{"entity": "layout_requested", "value": "force"} style
+    - Could I possibly choose to [force layout]{"entity": "layout_requested", "value": "force"} type
+    - Would you be able to use to [layout two]{"entity": "layout_requested", "value": "force"} option
+    - Could you possibly show me [second visualisation]{"entity": "layout_requested", "value": "force"} format
+    - Would it be possible for you to display features with [visualisation two]{"entity": "layout_requested", "value": "force"} display
+    - Show me [force layout]{"entity": "layout_requested", "value": "force"}
+    - Would you visualise the current display as [2nd layout]{"entity": "layout_requested", "value": "force"} 
+    - I was wondering if I could select [layout 2]{"entity": "layout_requested", "value": "force"} display
+    - Let me choose [2nd visualisation]{"entity": "layout_requested", "value": "force"} option
+    - Let's visualise the selected features in [force layout]{"entity": "layout_requested", "value": "force"} format
+    - Change layout to [force layout]{"entity": "layout_requested", "value": "force"} design
+    - Can I look at features in [visualisation 2]{"entity": "layout_requested", "value": "force"}
 
 - intent: change_layout_radial
   examples: |
     - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [radial]{"entity": "layout_requested", "value": "radial"}
-    - Can you swap the [tree layout]{"entity": "layout_requested", "value": "tree"} to [radial visualisation]{"entity": "layout_requested", "value": "radial"}
-    - Can you swap the [force layout]{"entity": "layout_requested", "value": "force"} to [radial visualisation]{"entity": "layout_requested", "value": "radial"}
-    - Can you swap from [circle packing] {"entity": "layout_requested", "value": "circle"} to [radial]{"entity": "layout_requested", "value": "radial"}
-    - I was hoping you could bring up [radial]{"entity": "layout_requested", "value": "radial"} style
-    - Could I possibly choose to [radial]{"entity": "layout_requested", "value": "radial"} type
-    - Would you be able to use to [radial]{"entity": "layout_requested", "value": "radial"} option
-    - Could you possibly show me [radial]{"entity": "layout_requested", "value": "radial"} format
-    - Would it be possible for you to display features with [radial]{"entity": "layout_requested", "value": "radial"} display
+    - Can you swap the [layout]{"entity": "object_requested", "value": "layout"} to the [3rd visualisation]{"entity": "layout_requested", "value": "radial"} layout
+    - I was hoping you could bring up [3rd layout]{"entity": "layout_requested", "value": "radial"} style
+    - Could I possibly choose to [visualisation 3]{"entity": "layout_requested", "value": "radial"} type
+    - Would you be able to use to [layout 3]{"entity": "layout_requested", "value": "radial"} option
+    - Could you possibly show me [visualisation three]{"entity": "layout_requested", "value": "radial"} format
+    - Would it be possible for you to display features with [layout three]{"entity": "layout_requested", "value": "radial"} display
     - Show me [radial]{"entity": "layout_requested", "value": "radial"}
-    - Would you visualise the current display as [radial]{"entity": "layout_requested", "value": "radial"}
-    - I was wondering if I could select the [third layout]{"entity": "layout_requested", "value": "radial"} display
-    - Let me choose [third layout]{"entity": "layout_requested", "value": "radial"} option
-    - Let's visualise the selected features in [third visualization]{"entity": "layout_requested", "value": "radial"} format
-
+    - Would you visualise the current display as [radial layout]{"entity": "layout_requested", "value": "radial"} 
+    - I was wondering if I could select [radial layout]{"entity": "layout_requested", "value": "radial"} display
+    - Let me choose [radial]{"entity": "layout_requested", "value": "radial"} option
+    - Let's visualise the selected features in [3rd layout]{"entity": "layout_requested", "value": "radial"} format
+    - Change layout to [third visualisation]{"entity": "layout_requested", "value": "radial"} design
+    - Can I look at features in [third layout]{"entity": "layout_requested", "value": "radial"}
 
 - intent: change_layout_circle
-  examples: |
+  examples: |    
     - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [circle visualization]{"entity": "layout_requested", "value": "circle"}
-    - Can you swap the [tree layout]{"entity": "layout_requested", "value": "tree"} to [circle visualization]{"entity": "layout_requested", "value": "circle"}
-    - Can you swap the [force layout]{"entity": "layout_requested", "value": "force"} to [circle visualization]{"entity": "layout_requested", "value": "circle"}
-    - Can you swap from [radial layout] {"entity": "layout_requested", "value": "radial"} to [circle]{"entity": "layout_requested", "value": "circle"}
-    - I was hoping you could bring up [circle visualization]{"entity": "layout_requested", "value": "circle"} style
-    - Could I possibly choose to [circle visualization]{"entity": "layout_requested", "value": "circle"} type
-    - Would you be able to use to [circle visualization]{"entity": "layout_requested", "value": "circle"} option
-    - Could you possibly show me [circle visualization]{"entity": "layout_requested", "value": "circle"} format
-    - Would it be possible for you to display features with [circle visualization]{"entity": "layout_requested", "value": "circle"} display
-    - Show me [circle visualization]{"entity": "layout_requested", "value": "circle"}
-    - Would you visualise the current display as [circle visualization]{"entity": "layout_requested", "value": "circle"}
-    - I was wondering if I could select the [fourth layout]{"entity": "layout_requested", "value": "circle"} display
+    - Can you swap the [layout]{"entity": "object_requested", "value": "layout"} to the [fourth layout]{"entity": "layout_requested", "value": "circle"} layout
+    - I was hoping you could bring up [fourth visualisation]{"entity": "layout_requested", "value": "circle"} style
+    - Could I possibly choose to [4th layout]{"entity": "layout_requested", "value": "circle"} type
+    - Would you be able to use to [4th visualisation]{"entity": "layout_requested", "value": "circle"} option
+    - Could you possibly show me [visualisation four]{"entity": "layout_requested", "value": "circle"} format
+    - Would it be possible for you to display features with [layout four]{"entity": "layout_requested", "value": "circle"} display
+    - Show me [circle]{"entity": "layout_requested", "value": "circle"}
+    - Would you visualise the current display as [visualisation 4]{"entity": "layout_requested", "value": "circle"} 
+    - I was wondering if I could select [layout 4]{"entity": "layout_requested", "value": "circle"} display
     - Let me choose the [last layout]{"entity": "layout_requested", "value": "circle"} option
-    - Let's visualise the selected features in [fourth visualization]{"entity": "layout_requested", "value": "circle"} format
-    - Display the data in the [last design]{"entity": "layout_requested", "value": "circle"}
+    - Let's visualise the selected features in the [last visualisation]{"entity": "layout_requested", "value": "circle"} format
+    - Change layout to [last]{"entity": "layout_requested", "value": "circle"} design
+    - Can I look at features in [last layout]{"entity": "layout_requested", "value": "circle"}
 
 # glyph change
 
