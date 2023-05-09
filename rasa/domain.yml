@@ -1374,7 +1374,7 @@ responses:
 
 
   utter_which_node_and_edge:
-    - text: "Please state a node and edge feature name."
+    - text: "intent_node_edge_signal;highlight_accordion_button;Please choose a feature you want to highlight"
 
 
 
