@@ -651,9 +651,66 @@ rules:
     - intent: define_subtrees
     - action: utter_subtrees_definition
 
-#- rule: user asks for tutorial
-#  steps:
-#    - intent: ask_tutorial
-#    - action: utter_tutorial_mode
-#
-#
+- rule: user asks for tutorial
+  steps:
+    - intent: ask_tutorial
+    - action: utter_tutorial_mode
+
+
+- rule: tutorial layout
+  steps:
+    - intent: tutorial_layouts
+    - action: utter_tutorial_mode_layouts
+
+
+- rule: tutorial glyphs
+  steps:
+    - intent: tutorial_glyphs
+    - action: utter_tutorial_mode_glyphs
+
+- rule: tutorial targets
+  steps:
+    - intent: tutorial_targets
+    - action: utter_tutorial_mode_targets
+
+
+- rule: tutorial select node and edge
+  steps:
+    - intent: tutorial_node_and_edge
+    - action: utter_tutorial_mode_select_node_edge
+
+
+- rule: tutorial statistics
+  steps:
+    - intent: tutorial_statistics
+    - action: utter_tutorial_mode_statistics
+
+
+- rule: tutorial most tagged features
+  steps:
+    - intent: tutorial_most_tagged_features
+    - action: utter_tutorial_mode_most_tagged_features
+
+
+- rule: tutorial high level
+  steps:
+    - intent: tutorial_high_level
+    - action: utter_tutorial_mode_high_level
+
+
+- rule: tutorial sub trees
+  steps:
+    - intent: tutorial_subtrees
+    - action: utter_tutorial_mode_subtrees
+
+- rule: tutorial chatbot
+  steps:
+    - intent: tutorial_chatbot
+    - action: utter_tutorial_mode_chatbot
+
+
+
+
+
+
+
