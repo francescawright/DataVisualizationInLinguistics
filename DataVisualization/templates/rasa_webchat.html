@@ -504,32 +504,32 @@
 
 
 
-{#    function saveConversationToFile() {#}
-{#        // Convert the conversation string to a Blob object#}
-{#        const conversationBlob = new Blob([conversation], {type: 'text/plain'});#}
-{##}
-{#        // Create a URL for the Blob object#}
-{#        const conversationUrl = URL.createObjectURL(conversationBlob);#}
-{##}
-{#        // Create a link to download the conversation as a file#}
-{#        const downloadLink = document.createElement('a');#}
-{#        downloadLink.href = conversationUrl;#}
-{#        downloadLink.download = 'conversation.txt';#}
-{##}
-{#        // Click the link to download the conversation as a file#}
-{#        downloadLink.click();#}
-{##}
-{#        // Add event listeners to the input and button elements#}
-{##}
-{#}#}
-{#    let conversation = ''; // Initialize an empty string to store the conversation#}
-{##}
-{#    function userMessageEvent(e) {#}
-{#        console.log('the user said something: ' + e.text);#}
-{#        conversation += `User: ${e.text}\n`;#}
-{##}
-{##}
-{#    }#}
+    function saveConversationToFile() {
+        // Convert the conversation string to a Blob object
+        const conversationBlob = new Blob([conversation], {type: 'text/plain'});
+
+        // Create a URL for the Blob object
+        const conversationUrl = URL.createObjectURL(conversationBlob);
+
+        // Create a link to download the conversation as a file
+        const downloadLink = document.createElement('a');
+        downloadLink.href = conversationUrl;
+        downloadLink.download = 'conversation.txt';
+
+        // Click the link to download the conversation as a file
+        downloadLink.click();
+
+        // Add event listeners to the input and button elements
+
+}
+    let conversation = ''; // Initialize an empty string to store the conversation
+
+    function userMessageEvent(e) {
+        console.log('the user said something: ' + e.text);
+        conversation += `User: ${e.text}\n`;
+
+
+    }
 
     function botMessageEvent(e) {
         console.log('the bot said something: ' + e.text);
@@ -1525,7 +1525,7 @@
                 },
                 onSocketEvent: {
                     'bot_uttered': botMessageEvent,
-                    {#'user_uttered': userMessageEvent,#}
+                    'user_uttered': userMessageEvent,
                     'connect': function() {
                         console.log('connection established');
                         addNewFeatures();

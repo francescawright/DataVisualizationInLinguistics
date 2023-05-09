@@ -102,7 +102,7 @@ intents:
   - help_AND
   - help_OR
   - help_AND_OR
-  - reminder_highlevel_questions
+  - reminder_high_level_questions
   - what_can_do_after_glyphs
   - help_colour_features
   - targets_help
@@ -122,7 +122,7 @@ intents:
   - uncheck_all_colour_features
   - show_colour_feature
   - two_actions
-#  - ask_tutorial
+  - ask_tutorial
   - filter_test:
       use_entities:
       - filter_name
@@ -189,6 +189,15 @@ intents:
   - define_directcomment
   - define_subtrees
   - tag_comment_id
+  - tutorial_layouts
+  - tutorial_glyphs
+  - tutorial_targets
+  - tutorial_node_and_edge
+  - tutorial_statistics
+  - tutorial_most_tagged_features
+  - tutorial_high_level
+  - tutorial_subtrees
+  - tutorial_chatbot
 
 
 actions:
@@ -675,7 +684,7 @@ responses:
         - title: "Level One Comments"
           payload: '/help_subtree_barchart'
         - title: "High-level questions"
-          payload: '/reminder_highlevel_questions'
+          payload: '/reminder_high_level_questions'
 
 
 #utter_sub_structure_options:
@@ -691,10 +700,10 @@ responses:
  #         payload: '/widest_level'
 
 
-  utter_reminder_highlevel_questions_one:
+  utter_reminder_high_level_questions_one:
     - text: "You can ask me basic statistic questions or to visualise subtrees"
 
-  utter_reminder_highlevel_questions_two:
+  utter_reminder_high_level_questions_two:
     - text: "Here are the options:"
       buttons:
         - title: "The most tagged features"
@@ -1209,63 +1218,159 @@ responses:
     - the most toxic thread  \ \n
     - the widest level "
 
-
   utter_tutorial_mode:
     - text: "With this interface you can:
-    
-  - Visualise features \ \n
-  - Carry out statistical analysis \ \n
-  - Answer basic statistics questions and visualise subtrees \ \n
- 
-  First, I automatically select the layout that best fits your data, but you can select a different layout from the menu. \ \n
-   
-  Glyphs let us see features that each comment is tagged with.  Use the Highlight Colour Features menu to activate/deactivate the features. \ \n
-   
-  All comments are tagged with the targets that they are directed at: 
-  
-  - Target group \ \n
-  - Target person \ \n
-  - None \ \n
-  
-  Use the targets menu to activate/deactivate targets. \ \n
-  
-  Summary tells us how many comments are labelled with different levels of toxicity and their targets. It reflects data in the current visualisation \ \n
-  
-  Select node and edge will show comment with selected tags. Use the Select node and edge menu to activate/deactivate the features \ \n
-   
-   Then, you can carry out a statistical analysis.  \ \n
-   
-   You can see the same data displayed in a graph using the Selected Comments Statistics feature. \ \n
-   
-   There is also the Level One Comments statistics feature. This shows you the statistics of comments tagged as level one. \ \n
-   
-   In both Statistics features you can change the variables and graph type using the two drop-down menus. 
-   The graphs are also interactive, meaning if you click 
-   variables on your graph, they will also be activated on the main interface \ \n
-  
-    I can also answer basic statistics questions like: \ \n
-    - What is the most tagged feature? \ \n
-    
-    My answer will also change depending on your current visualisation \ \n
-  
-    Then, to visualise a subtree, you must ask me to show you:
-    
-    - the largest thread \ \n
-    - the longest thread \ \n
-    - the most toxic thread \ \n
-    - the most toxic subtree \ \n
-    - the widest level \ \n
-  
-   You can visualise features exclusively in the subtree  \ \n
-  
-   To save these sub trees using the button in the pop-up window \ \n
-   
-   You can change files using the drop down menu \ \n
-   
-   And the final part of this interface is me! \ \n
-    
-   Remember, I’m here to carry out any of the functions on the interface, show you subtrees and help you when you when you need it 😄. 
-   Use this window or your microphone to talk to me! \ \n"
+
+               - Visualise features \ \n
+               - Carry out statistical analysis \ \n
+               - Answer basic statistics questions and visualise subtrees"
+      buttons:
+        - title: "Next"
+          payload: '/tutorial_layouts'
+
+  utter_tutorial_mode_layouts:
+    - text: "intent_layouts_signal;layouts-radio-buttons;First, I automatically select the layout that best fits your data, but you can select a different layout from the menu."
+      buttons:
+        - title: "Next"
+          payload: '/tutorial_glyphs'
+
+  utter_tutorial_mode_glyphs:
+    - text: "intent_glyphs_blinking;glyphs-radio-buttons;Glyphs let us see features that each comment is tagged with. Use the Highlight Colour Features menu to activate/deactivate the features."
+      buttons:
+        - title: "Next"
+          payload: '/tutorial_targets'
+
+  utter_tutorial_mode_targets:
+    - text: "intent_targets_signal;targets_accordion_button;All comments are tagged with the targets that they are directed at:
+
+                         - Target group \ \n
+                         - Target person \ \n
+                         - None \ \n
+
+                         Use the targets menu to activate/deactivate targets. \ \n
+
+                         Summary tells us how many comments are labelled with different levels of toxicity and their targets. It reflects data in the current visualisation "
+      buttons:
+        - title: "Next"
+          payload: '/tutorial_node_and_edge'
+
+  utter_tutorial_mode_select_node_edge:
+    - text: "intent_node_edge_signal;highlight_accordion_button;Select node and edge will show comment with selected tags. Use the Select node and edge menu to activate/deactivate the features \ \n
+
+                Then, you can carry out a statistical analysis.  "
+      buttons:
+        - title: "Next"
+          payload: '/tutorial_statistics'
+
+  utter_tutorial_mode_statistics:
+    - text: "You can see the same data displayed in a graph using the Selected Comments Statistics feature. \ \n
+
+               There is also the Level One Comments statistics feature. This shows you the statistics of comments tagged as level one. \ \n
+
+               In both Statistics features you can change the variables and graph type using the two drop-down menus.
+               The graphs are also interactive, meaning if you click
+               variables on your graph, they will also be activated on the main interface
+"
+      buttons:
+        - title: "Next"
+          payload: '/tutorial_most_tagged_features'
+
+  utter_tutorial_mode_most_tagged_features:
+    - text: "I can also answer basic statistics questions like: \ \n
+                 - What is the most tagged feature? \ \n
+
+                 My answer will also change depending on your current visualisation"
+      buttons:
+        - title: "Next"
+          payload: '/tutorial_high_level'
+
+  utter_tutorial_mode_high_level:
+    - text: "Then, to visualise a subtree, you must ask me to show you:
+
+                - the largest thread \ \n
+                - the longest thread \ \n
+                - the most toxic thread \ \n
+                - the most toxic subtree \ \n
+                - the widest level "
+      buttons:
+        - title: "Next"
+          payload: '/tutorial_subtrees'
+
+  utter_tutorial_mode_subtrees:
+    - text: "intent_subtrees_signal;You can visualise features exclusively in the subtree  \ \n
+
+                 To save these sub trees using the button in the pop-up window \ \n
+
+                 You can change files using the drop down menu "
+      buttons:
+        - title: "Next"
+          payload: '/tutorial_chatbot'
+
+  utter_tutorial_mode_chatbot:
+    - text: "And the final part of this interface is me! \ \n
+
+                  Remember, I’m here to carry out any of the functions on the interface, show you subtrees and help you when you when you need it 😄.
+                  Use this window or your microphone to talk to me! "
+
+
+
+
+#  utter_tutorial_mode:
+#    - text: "With this interface you can:
+#
+#  - Visualise features \ \n
+#  - Carry out statistical analysis \ \n
+#  - Answer basic statistics questions and visualise subtrees \ \n
+#
+#  First, I automatically select the layout that best fits your data, but you can select a different layout from the menu. \ \n
+#
+#  Glyphs let us see features that each comment is tagged with.  Use the Highlight Colour Features menu to activate/deactivate the features. \ \n
+#
+#  All comments are tagged with the targets that they are directed at:
+#
+#  - Target group \ \n
+#  - Target person \ \n
+#  - None \ \n
+#
+#  Use the targets menu to activate/deactivate targets. \ \n
+#
+#  Summary tells us how many comments are labelled with different levels of toxicity and their targets. It reflects data in the current visualisation \ \n
+#
+#  Select node and edge will show comment with selected tags. Use the Select node and edge menu to activate/deactivate the features \ \n
+#
+#   Then, you can carry out a statistical analysis.  \ \n
+#
+#   You can see the same data displayed in a graph using the Selected Comments Statistics feature. \ \n
+#
+#   There is also the Level One Comments statistics feature. This shows you the statistics of comments tagged as level one. \ \n
+#
+#   In both Statistics features you can change the variables and graph type using the two drop-down menus.
+#   The graphs are also interactive, meaning if you click
+#   variables on your graph, they will also be activated on the main interface \ \n
+#
+#    I can also answer basic statistics questions like: \ \n
+#    - What is the most tagged feature? \ \n
+#
+#    My answer will also change depending on your current visualisation \ \n
+#
+#    Then, to visualise a subtree, you must ask me to show you:
+#
+#    - the largest thread \ \n
+#    - the longest thread \ \n
+#    - the most toxic thread \ \n
+#    - the most toxic subtree \ \n
+#    - the widest level \ \n
+#
+#   You can visualise features exclusively in the subtree  \ \n
+#
+#   To save these sub trees using the button in the pop-up window \ \n
+#
+#   You can change files using the drop down menu \ \n
+#
+#   And the final part of this interface is me! \ \n
+#
+#   Remember, I’m here to carry out any of the functions on the interface, show you subtrees and help you when you when you need it 😄.
+#   Use this window or your microphone to talk to me! \ \n"
 
 
   utter_which_node_and_edge:

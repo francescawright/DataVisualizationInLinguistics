@@ -1563,7 +1563,7 @@ nlu:
 #    - left menu
 #    - menu on left
 
-- intent: reminder_highlevel_questions
+- intent: reminder_high_level_questions
   examples: |
     - What are the subtrees you can show me
     - Could you remind me of the subtree choices
@@ -1586,7 +1586,7 @@ nlu:
     - Would you be able to tell me the sub regions again?
     - Is it possible to analyse a smaller part of the visualisation?
     - Can I analyse a small section of my data?
-     - Is it possible to look at smaller regions of my data?
+    - Is it possible to look at smaller regions of my data?
 #could you remind me of the basic statistics options- yes
 #what were the questions i can ask you- yes
 
@@ -3070,5 +3070,54 @@ nlu:
     - Tell me everything I can do 
     - Could you possibly run through all the functions of this site
   
+
+- intent: tutorial_layouts
+  examples: |
+    - Tutorial for layouts
+    - Show me tutorial for layouts
+
+
+- intent: tutorial_glyphs
+  examples: |
+    - Tutorial for glyphs
+    - Show me tutorial for glyphs
+
+- intent: tutorial_targets
+  examples: |
+    - Tutorial for targets
+    - Show me tutorial for targets
+
+- intent: tutorial_node_and_edge
+  examples: |
+    - Tutorial for node and edge
+    - Show me tutorial for node and edge
+
+- intent: tutorial_statistics
+  examples: |
+    - Tutorial for statistics
+    - Show me tutorial for statistics
+
+- intent: tutorial_most_tagged_features
+  examples: |
+    - Tutorial for most tagged features
+    - Show me tutorial for most tagged features
+
+- intent: tutorial_high_level
+  examples: |
+    - Tutorial for high level questions
+    - Show me tutorial for high level questions
+
+
+- intent: tutorial_subtrees
+  examples: |
+    - Tutorial for subtrees
+    - Show me tutorial for subtrees
+
+
+- intent: tutorial_chatbot
+  examples: |
+    - Tutorial for chatbot
+    - Show me tutorial for chatbot
+
 
 
