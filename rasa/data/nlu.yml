@@ -547,6 +547,7 @@ nlu:
 
 #
 ## synonyms for verbs check, uncheck, visualise, switch
+
 #- synonym: check
 #  examples: |
 #    - highlight
@@ -651,6 +652,7 @@ nlu:
  #   - filtering
 
 # Synonym for "formalities" request starter I want to
+
 #- synonym: I want to
 #  examples: |
  #   - I want to
@@ -673,6 +675,22 @@ nlu:
 #    - Could you possibly
 #    - How about you
 
+#- synonym: colour feature
+#  examples: |
+#   - colour
+#   - glyph
+#   - colour glyph
+#   - colour filter
+#   - colour filtering
+#   - colour feature filter
+#   - colour feature filtering
+#   - colour glyph filter
+#   - colour glyph filtering
+#   - glyph filter
+#   - glyph filtering
+#   - glyph feature
+#   - glyph feature filter
+#   - glyph feature filtering
 
 # highlight options
 - intent: highlight_check

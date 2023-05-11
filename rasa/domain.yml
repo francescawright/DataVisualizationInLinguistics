@@ -533,12 +533,16 @@ responses:
 #      image: "https://ecemkavaz.github.io/imagesRasa/glyph.svg"
 
   utter_explain_glyphs_two:
-    - text: "Use the Highlight Colour Features menu to activate/deactivate the features. "
+    - text: "You can Highlight Colour Features: \ \n
+          - Using the Highlight Colour features menu \ \n
+          - Asking me"
 
   utter_explain_glyphs_three:
-    - text: "You can highlight features: \ \n
+    - text: "You can highlight colour features: \ \n
               - one-by-one \ \n
-               - all at once "
+               - all at once \ \n
+               
+               Choose a glyph style: "
       buttons:
           - title: "Dots"
             payload: '/change_glyph_dots{{"object_requested":"glyph","glyph_requested":"dots"}}'
@@ -548,17 +552,18 @@ responses:
             payload: '/change_glyph_trivial{{"object_requested":"glyph","glyph_requested":"trivial"}}'
 
   utter_explain_targets_one:
-     - text: "intent_targets_signal;targets_accordion_button;All comments are tagged with the targets that they are directed at:
+     - text: "intent_targets_signal;targets_accordion_button;intent_node_edge_signal;All comments are tagged with the targets that they are directed at:
      
      - Target group \ \n
      - Target person \ \n
-     - None
+     - None \ \n
      
      Summary will also tell you how many targets there are in the current visualisation"
 
   utter_explain_targets_two:
-    - text: "You can activate/deactivate targets: \ \n
-                     - From the Targets menu on the left \ \n
+    - text: "intent_targets_signal;targets_accordion_button;intent_node_edge_signal; You can activate/deactivate targets: \ \n
+                     - From the Targets menu \ \n
+                     - From the Select Node and Edge menu \ \n
                      - Asking me"
 
   utter_explain_features_tab:
@@ -569,18 +574,20 @@ responses:
         - Asking me \ \n"
 
   utter_help_layouts_one:
-    - text: "intent_layouts_signal;layouts-radio-buttons;I automatically select
-    the layout that best fits your data. \ \n
+    - text: "intent_layouts_signal;layouts-radio-buttons;Layouts are the different ways you can visualise your data. \ \n
     
-    Read more about selecting the best layout for data [here](https://dspace5.zcu.cz/handle/11025/45010)"
+    I automatically select the layout that best fits your data. [Read more](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_help_layouts_two:
     - text: "
-              Select layouts:
+              You can change the layout:
                \ \n
-              - From the menu
+              - Using the menu
                \ \n
-             - Asking me"
+             - Asking me \ \n
+             
+             Choose a layout: "
+
       buttons:
        - title: "Tree"
          payload: '/change_layout_tree{{"object_requested":"layout","layout_requested":"tree"}}'
@@ -593,10 +600,10 @@ responses:
 
 
   utter_help_select_node_edge:
-    - text: "intent_node_edge_signal;highlight_accordion_button;Select node and edge will show comment with selected tags.
+    - text: "intent_node_edge_signal;highlight_accordion_button;Select node and edge will show comments with features you have selected.
     \ \n
 
-      Select node and edge by: \ \n
+      Select nodes and edges by: \ \n
       - Using the Select node and edge menu \ \n
       - Asking me"
 
@@ -665,7 +672,7 @@ responses:
     Read more about Interactive Graphs [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_reminder_help:
-    - text: "I can help you to understand more about: "
+    - text: "I can help you learn about: "
       buttons:
         - title: "Layouts"
           payload: '/help_layouts'
@@ -683,7 +690,7 @@ responses:
           payload: '/help_main_graph_barchart'
         - title: "Level One Comments"
           payload: '/help_subtree_barchart'
-        - title: "High-level questions"
+        - title: "Basic Statistics and Subtrees"
           payload: '/reminder_high_level_questions'
 
 
@@ -728,73 +735,73 @@ responses:
 # check colour features
 
   utter_colour_feature_constructive:
-    - text: "intent_show_colour_features;constructiveness;Colour feature has been checked"
+    - text: "intent_show_colour_features;constructiveness;I've checked the constructiveness colour feature"
 
   utter_colour_feature_argumentation:
-    - text: "intent_show_colour_features;argumentation;Colour feature has been checked"
+    - text: "intent_show_colour_features;argumentation;I've checked the argumentation colour feature"
 
   utter_colour_feature_sarcasm:
-    - text: "intent_show_colour_features;sarcasm;Colour feature has been checked"
+    - text: "intent_show_colour_features;sarcasm;I've checked the sarcasm colour feature"
 
   utter_colour_feature_mockery:
-    - text: "intent_show_colour_features;mockery;Colour feature has been checked"
+    - text: "intent_show_colour_features;mockery;I've checked the mockery colour feature"
 
   utter_colour_feature_intolerance:
-    - text: "intent_show_colour_features;intolerance;Colour feature has been checked"
+    - text: "intent_show_colour_features;intolerance;I've checked the intolerance colour feature"
 
   utter_colour_feature_improper:
-    - text: "intent_show_colour_features;improper_language;Colour feature has been checked"
+    - text: "intent_show_colour_features;improper_language;I've checked the improper language colour feature"
 
   utter_colour_feature_insult:
-    - text: "intent_show_colour_features;insult;Colour feature has been checked"
+    - text: "intent_show_colour_features;insult;I've checked the insult colour feature"
 
   utter_colour_feature_aggressiveness:
-    - text: "intent_show_colour_features;aggressiveness;Colour feature has been checked"
+    - text: "intent_show_colour_features;aggressiveness;I've checked the aggressiveness colour feature"
 
   utter_check_all_colour_features:
-    - text: "intent_show_colour_features;check_button_features;All colour features have been checked"
+    - text: "intent_show_colour_features;check_button_features;I've checked all colour features"
 
   utter_uncheck_all_colour_features:
-    - text: "intent_show_colour_features;uncheck_button_features;All colour features have been unchecked"
+    - text: "intent_show_colour_features;uncheck_button_features;I've unchecked all colour features"
 
   utter_colour_feature_stereotype:
-    - text: "intent_show_colour_features;target-stereotype;Colour feature has been checked"
+    - text: "intent_show_colour_features;target-stereotype;I've checked the stereotype colour feature"
 
 # uncheck colour features
 
   utter_colour_feature_constructive_uncheck:
-    - text: "intent_uncheck_colour_features;constructiveness;Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;constructiveness;I've unchecked the constructiveness colour feature"
 
   utter_colour_feature_argumentation_uncheck:
-    - text: "intent_uncheck_colour_features;argumentation;Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;argumentation;I've unchecked the argumentation colour feature"
 
   utter_colour_feature_sarcasm_uncheck:
-    - text: "intent_uncheck_colour_features;sarcasm;Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;sarcasm;I've unchecked the sarcasm colour feature"
 
   utter_colour_feature_mockery_uncheck:
-    - text: "intent_uncheck_colour_features;mockery;Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;mockery;I've unchecked the mockery colour feature"
 
   utter_colour_feature_intolerance_uncheck:
-    - text: "intent_uncheck_colour_features;intolerance;Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;intolerance;I've unchecked the intolerance colour feature"
 
   utter_colour_feature_improper_uncheck:
-    - text: "intent_uncheck_colour_features;improper_language;Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;improper_language;I've unchecked the improper language colour feature"
 
   utter_colour_feature_insult_uncheck:
-    - text: "intent_uncheck_colour_features;insult;Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;insult;I've unchecked the insult colour feature"
 
   utter_colour_feature_aggressiveness_uncheck:
-    - text: "intent_uncheck_colour_features;aggressiveness;Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;aggressiveness;I've unchecked the aggressiveness colour feature"
 
   utter_colour_feature_stereotype_uncheck:
-    - text: "intent_uncheck_colour_features;target-stereotype;Colour feature has been unchecked"
+    - text: "intent_uncheck_colour_features;target-stereotype;I've unchecked the stereotype colour feature"
 
   # check targets
   utter_icon_feature_person:
-    - text: "intent_show_targets;target-person;Target Person has been checked"
+    - text: "intent_show_targets;target-person;I have checked Target Person"
 
   utter_icon_feature_group:
-    - text: "intent_show_targets;target-group;Target Group has been checked"
+    - text: "intent_show_targets;target-group;I have checked Target Group"
 
   utter_icon_feature_checkall:
     - text: "intent_show_targets;check_button_targets;All targets have been checked"
@@ -1108,11 +1115,10 @@ responses:
 
     There are 4 Stances, each assigned a colour: \ \n
 
-    - Positive Stance
-    - Negative Stance
-    - Neutral Stance
-    - Both Positive and
-    - Negative stance \ \n
+    - Positive Stance \ \n
+    - Negative Stance \ \n
+    - Neutral Stance \ \n
+    - Both Positive and Negative stance \ \n
 
     You can activate/deactivate Stance: \ \n
 
@@ -1137,13 +1143,14 @@ responses:
     - Asking me"
 
   utter_comment_id_definition:
-    - text: "Comment ID is a number that indicates the chronological order in which the comment was posted in the time thread on the website."
+    - text: "Comment ID is a number that indicates the chronological order in which the comment was posted in the time thread on the website. \ \n
+    You can see this information by hovering over nodes \ \n"
       image: "https://ecemkavaz.github.io/imagesRasa/CommentID5.png"
 
   utter_argumentation_definition:
     - text: "intent_features_definition_signals,Argumentation indicates that the comment gives arguments or reasoned explanations or grounds opinions with evidences. \ \n
     
-    Read more about Argumentation [here](https://dspace5.zcu.cz/handle/11025/45010)"
+    [Read more](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_constructiveness_definition:
     - text: "intent_features_definition_signals;A comment is constructive when it is respectful and polite
@@ -1151,27 +1158,31 @@ responses:
     when it intends to create an enriching and useful dialogue, when it contributes with new knowledge, ideas and proposals and 
     offers new perspectives and insights to approach the subject \ \n
 
-     Read more about Constructiveness [here](https://dspace5.zcu.cz/handle/11025/45010)"
+     [Read more](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_target_group_definition:
-    - text: "intent_targets_signal;targets_accordion_button;All comments are tagged with the targets that they are directed at. Target Group refers to comments targeting a group. \ \n
+    - text: "intent_targets_signal;targets_accordion_button;intent_node_edge_signal;highlight_accordion_button;All comments are tagged with the targets that they are directed at. Target Group refers to comments targeting a group. \ \n
      
          You can activate/deactivate targets: \ \n
 
-          - From the Targets menu on the left \ \n
+          - From the Targets menu \ \n
+          - From the Select Node and Edge menu \ \n
           - Asking me \ \n
           
-          Summary will also tell you how many targets there are in the current visualisation"
+          Statistics summary will also tell you how many targets there are in the current visualisation \ \n
+          You can also use the Selected Comments and Level One statistics options to look at targets"
 
   utter_target_person_definition:
-    - text: "intent_targets_signal;targets_accordion_button;All comments are tagged with the targets that they are directed at. Target Person refers to comments targeting a person. \ \n
+    - text: "intent_targets_signal;targets_accordion_button;intent_node_edge_signal;highlight_accordion_button; All comments are tagged with the targets that they are directed at. Target Person refers to comments targeting a person. \ \n
 
          You can activate/deactivate targets: \ \n
 
           - From the Targets menu on the left \ \n
+          - From the Select Node and Edge menu \ \n
           - Asking me \ \n
           
-          Summary will also tell you how many targets there are in the current visualisation \ \n"
+          Statistics summary will also tell you how many targets there are in the current visualisation \ \n
+          You can also use the Selected Comments and Level One statistics options to look at targets"
 
   utter_comment_level_definition:
     - text: "intent_signal_level_one_button;chart_sub_button;Comment levels refers to the relationship of the news article with its' comments. \ \n
