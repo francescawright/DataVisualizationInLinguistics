@@ -447,18 +447,18 @@ nlu:
     - Could you possibly start with [531_MI]{"entity": "document_requested"}
     - Let me see [test]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
     - Choose [20170819]{"entity": "document_requested"} to analyse first
+    - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Open [Compact_200]{"entity": "document_requested"}
+    - Open [document]{"entity": "object_requested", "value": "document"}
+    - Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
+    - Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - I want to open a [file]{"entity": "object_requested", "value": "document"}
+    - I want to open [wide]{"entity": "document_requested"}
+    - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
 
-  #- Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-  #- Open [Compact_200]{"entity": "document_requested"}
-  #- Open [document]{"entity": "object_requested", "value": "document"}
-  #- Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
-  #- Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
-  #- Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-  #- I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-  #- I want to open a [file]{"entity": "object_requested", "value": "document"}
-  #- I want to open [wide]{"entity": "document_requested"}
-  #- I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
-  #- I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
+#- Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
+#   - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
   
   #Let's analyse 20200608_SO- yes
 # bring up file 20200608_SO- yes
@@ -1342,6 +1342,7 @@ nlu:
   examples: |
     - What are the most tagged features
     - Which features are tagged the most
+    -
 
 #help
 
@@ -1363,6 +1364,7 @@ nlu:
     - What do glyphs do
     - Why should I use glyphs in the top menu
     - What are dots, circular glyph and trivial cheese?
+    - How can I use glyphs?
 
 - intent: help_layouts
   examples: |
