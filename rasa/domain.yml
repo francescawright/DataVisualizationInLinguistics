@@ -528,10 +528,6 @@ responses:
   utter_explain_glyphs_one:
     - text: "intent_glyphs_blinking;glyphs-radio-buttons;Glyphs let us see features that each comment is tagged with."
 
-#  utter_explain_glyphs_three:
-#    - text: "Circular Glyph"
-#      image: "https://ecemkavaz.github.io/imagesRasa/glyph.svg"
-
   utter_explain_glyphs_two:
     - text: "You can Highlight Colour Features: \ \n
           - Using the Highlight Colour features menu \ \n
@@ -1074,7 +1070,7 @@ responses:
   utter_sarcasm_definition:
     - text: "intent_features_definition_signals;A comment is sarcastic when the content is ironic, that is, when the writer uses words
     that mean the opposite of what he really wants to say and when it is accompanied by a harsh,
-    sharp and negative criticism and made in bad faith. \ \n"
+    sharp and negative criticism and made in bad faith."
 
   utter_mockery_definition:
     - text: "intent_features_definition_signals;This category indicates that the comment ridicules, humiliates or mocks a person or group."
@@ -1111,8 +1107,7 @@ responses:
   sexual orientation and age, among others)"
 
   utter_stance_definition:
-    - text: "
-    intent_node_edge_signal;highlight_accordion_button;Stance indicates the author's attitude towards a topic of discussion. \ \n
+    - text: "intent_node_edge_signal;highlight_accordion_button;Stance indicates the author's attitude towards a topic of discussion. \ \n
 
     There are 4 Stances, each assigned a colour: \ \n
 
@@ -1162,7 +1157,7 @@ responses:
      [Read more](https://dspace5.zcu.cz/handle/11025/45010)"
 
   utter_target_group_definition:
-    - text: "intent_targets_signal;targets_accordion_button;intent_node_edge_signal;highlight_accordion_button;All comments are tagged with the targets that they are directed at. Target Group refers to comments targeting a group. \ \n
+    - text: "intent_targets_signal;targets_accordion_button;All comments are tagged with the targets that they are directed at. Target Group refers to comments targeting a group. \ \n
      
          You can activate/deactivate targets: \ \n
 
@@ -1223,12 +1218,19 @@ responses:
     
     You can save them by giving them a name and clicking save so that you can access them again once you have closed the pop-up window  \ \n
     
-    You can ask me to show you the following: \ \n
-    
-    - the largest thread \ \n
-    - the longest thread \ \n
-    - the most toxic thread  \ \n
-    - the widest level "
+    You can ask me to show you the following: \ \n"
+      buttons:
+        - title: "The largest thread"
+          payload: '/largest_thread'
+        - title: "The longest thread"
+          payload: '/longest_thread'
+        - title: "The most toxic thread"
+          payload: '/most_toxic_thread'
+        - title: "The most toxic subtree"
+          payload: '/most_toxic_subtree'
+        - title: "The widest level"
+          payload: '/widest_level'
+
 
   utter_tutorial_mode:
     - text: "With this interface you can:
@@ -1259,7 +1261,7 @@ responses:
                          - Target person \ \n
                          - None \ \n
 
-                         Use the targets menu to activate/deactivate targets. \ \n
+                         Use the targets menu or the select node and edge menu to activate/deactivate targets. \ \n
 
                          Summary tells us how many comments are labelled with different levels of toxicity and their targets. It reflects data in the current visualisation "
       buttons:
@@ -1267,22 +1269,24 @@ responses:
           payload: '/tutorial_node_and_edge'
 
   utter_tutorial_mode_select_node_edge:
-    - text: "intent_node_edge_signal;highlight_accordion_button;Select node and edge will show comment with selected tags. Use the Select node and edge menu to activate/deactivate the features \ \n
+    - text: "intent_node_edge_signal;highlight_accordion_button;Select node and edge will show comment with selected tags. \ \n
 
-                Then, you can carry out a statistical analysis.  "
+    Use the Select node and edge menu to activate/deactivate the features \ \n"
       buttons:
         - title: "Next"
           payload: '/tutorial_statistics'
 
   utter_tutorial_mode_statistics:
-    - text: "You can see the same data displayed in a graph using the Selected Comments Statistics feature. \ \n
+    - text: "intent_tutorial_statistics_charts_signal;statistics_all_features_subtrees;The summary gives you a breakdown of the levels of toxicity and targets in the current visualisation. \ \n
 
-               There is also the Level One Comments statistics feature. This shows you the statistics of comments tagged as level one. \ \n
+              Selected Comments Statistics shows you the statistics for the filters you have selected. \ \n
 
-               In both Statistics features you can change the variables and graph type using the two drop-down menus.
+               Level One Comments statistics feature shows you the statistics of comments at level one. \ \n
+
+               You can change the variables and graph type using the two drop-down menus. \ \n
                The graphs are also interactive, meaning if you click
-               variables on your graph, they will also be activated on the main interface
-"
+               variables on your graph, they will also be activated on the main interface"
+
       buttons:
         - title: "Next"
           payload: '/tutorial_most_tagged_features'
