@@ -1218,6 +1218,8 @@ responses:
   utter_subtrees_definition:
     - text: "intent_subtrees_signal;Subtrees function allows you to extract threads and levels with certain characteristics and shows them in a pop-up window. \ \n
     
+    I can also highlight features of that subtree \ \n
+    
     You can save them by giving them a name and clicking save so that you can access them again once you have closed the pop-up window  \ \n
     
     You can ask me to show you the following: \ \n"
@@ -1296,7 +1298,7 @@ responses:
           payload: '/tutorial_most_tagged_features'
 
   utter_tutorial_mode_most_tagged_features:
-    - text: "I can also answer basic statistics questions like: \ \n
+    - text: "You can ask me to answer basic statistics questions like: \ \n
                  - What is the most tagged feature? \ \n
 
                  My answer will also change depending on your current visualisation"
@@ -1305,7 +1307,7 @@ responses:
           payload: '/tutorial_high_level'
 
   utter_tutorial_mode_high_level:
-    - text: "Then, to visualise a subtree, you must ask me to show you:
+    - text: "To visualise subtrees, you must ask me to show you:
 
                 - the largest thread \ \n
                 - the longest thread \ \n
@@ -1317,9 +1319,9 @@ responses:
           payload: '/tutorial_subtrees'
 
   utter_tutorial_mode_subtrees:
-    - text: "intent_subtrees_signal;You can visualise features exclusively in the subtree  \ \n
+    - text: "intent_subtrees_signal;I can also highlight features of that subtree  \ \n
 
-                 To save these sub trees using the button in the pop-up window \ \n
+                 To save these subtrees use the button in the pop-up window \ \n
 
                 "
 
