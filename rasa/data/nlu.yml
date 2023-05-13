@@ -1411,7 +1411,7 @@ nlu:
 
 
 - intent: help__statistics_summary
-   examples: |
+  examples: |
     - Can you tell me what is meant by statistics information?
     - I was wondering if you could explain statistics of file to me?    
     - Could you explain to me what statistics details refers to?
