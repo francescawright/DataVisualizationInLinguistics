@@ -597,7 +597,7 @@ responses:
 
 
   utter_help_select_node_edge:
-    - text: "intent_node_edge_signal;highlight_accordion_button;Select node and edge will show comments with features you have selected.
+    - text: "intent_node_edge_signal;highlight_accordion_button;Select node and edge will show comments with features you have selected
     \ \n
 
       Select nodes and edges by: \ \n
@@ -620,12 +620,14 @@ responses:
       you will see the comments that are tagged with at least one of the selected features"
       image: "https://ecemkavaz.github.io/imagesRasa/AndOr3.png"
 
-  utter_help_summary:
-    - text: "intent_summary_signal;Summary tells us how many comments are labelled with different levels of toxicity and their targets.   \ \n
+  utter_help_statistics_summary:
+    - text: "intent_summary_signal;Statistics Summary tells us how many comments are labelled with different levels of toxicity and their targets.   \ \n
 
            It reflects data in the current visualisation. \ \n 
       
-           You can also see this data displayed as a graph in Selected Comments Statistics"
+           You can also see this data displayed as a graph in Selected Comments Statistics \ \n
+           
+           Level One Comments Statistics is another graph type that allows you to analyse the statistics of comments at level one"
 
 
 
@@ -681,8 +683,8 @@ responses:
           payload: '/help_colour_features'
         - title: "Select node & edge"
           payload: "help_select_node_edge"
-        - title: "Summary"
-          payload: '/help_summary'
+        - title: "Statistics summary"
+          payload: '/help_statistics_summary'
         - title: "Selected Comments"
           payload: '/help_main_graph_barchart'
         - title: "Level One Comments"
@@ -1189,7 +1191,7 @@ responses:
 
       To access this information, you can hover over each node. \ \n
 
-      To display statistics for Level One Comments, click the Level One Comments button. \ \n
+      To display statistics for Level One Comments, click the Level One Comments button or ask me. \ \n
 
       Read more about Comment Level [here](https://dspace5.zcu.cz/handle/11025/45010)"
       image: "https://ecemkavaz.github.io/imagesRasa/CommentLevel4.png"
@@ -1207,7 +1209,7 @@ responses:
     
     To access this information, you can hover over each node. \ \n
     
-    To display statistics for Level One Comments, click the Level One Comments button. \ \n
+    To display statistics for Level One Comments, click the Level One Comments button or ask me. \ \n
 
      Read more about Comment Level [here](https://dspace5.zcu.cz/handle/11025/45010)"
       image: "https://ecemkavaz.github.io/imagesRasa/DirectComments3.png"
@@ -1249,7 +1251,9 @@ responses:
           payload: '/tutorial_glyphs'
 
   utter_tutorial_mode_glyphs:
-    - text: "intent_glyphs_blinking;glyphs-radio-buttons;Glyphs let us see features that each comment is tagged with. Use the Highlight Colour Features menu to activate/deactivate the features."
+    - text: "intent_glyphs_blinking;glyphs-radio-buttons;Glyphs let us see features that each comment is tagged with. \ \n
+    
+    Use the Highlight Colour Features menu to activate/deactivate the features."
       buttons:
         - title: "Next"
           payload: '/tutorial_targets'
@@ -1261,15 +1265,15 @@ responses:
                          - Target person \ \n
                          - None \ \n
 
-                         Use the targets menu or the select node and edge menu to activate/deactivate targets. \ \n
+                         Use the targets menu or the select node and edge menu to activate/deactivate targets \ \n
 
-                         Summary tells us how many comments are labelled with different levels of toxicity and their targets. It reflects data in the current visualisation "
+                         Statistics summary tells us how many comments are labelled with different levels of toxicity and their targets. It reflects data in the current visualisation "
       buttons:
         - title: "Next"
           payload: '/tutorial_node_and_edge'
 
   utter_tutorial_mode_select_node_edge:
-    - text: "intent_node_edge_signal;highlight_accordion_button;Select node and edge will show comment with selected tags. \ \n
+    - text: "intent_node_edge_signal;highlight_accordion_button;Select node and edge will show comments with features you have selected \ \n
 
     Use the Select node and edge menu to activate/deactivate the features \ \n"
       buttons:
@@ -1277,7 +1281,7 @@ responses:
           payload: '/tutorial_statistics'
 
   utter_tutorial_mode_statistics:
-    - text: "intent_tutorial_statistics_charts_signal;statistics_all_features_subtrees;The summary gives you a breakdown of the levels of toxicity and targets in the current visualisation. \ \n
+    - text: "intent_tutorial_statistics_charts_signal;statistics_all_features_subtrees;The Statistics summary gives you a breakdown of the levels of toxicity and targets in the current visualisation. \ \n
 
               Selected Comments Statistics shows you the statistics for the filters you have selected. \ \n
 

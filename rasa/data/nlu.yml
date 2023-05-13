@@ -1310,6 +1310,7 @@ nlu:
     - Could I possibly analyse what I have chosen?
     - Is there a way I can look at the data for the visualisation?
     - Would I be able to analyse what I have highlighted
+    - Open selected comments statistics
   # is it possible to compare features of the visualisation- yes
     
 
@@ -1333,6 +1334,7 @@ nlu:
     - Can I see the statistics of comments directly connected to the news article
     - May you draw up the stats of the comments directly from the main node
     - Compare features at level one
+    - Open level one comments statistics
 #show me the data for level one-yes
 #bring up level one charts-yes
 # bring up level one comment data chart-yes
@@ -1408,22 +1410,22 @@ nlu:
     - Tell me about nodes and edges
 
 
-- intent: help_summary
-  examples: |
-    - Can you tell me what is meant by summary information?
-    - I was wondering if you could explain summary of file to me?    
-    - Could you explain to me what summary details refers to?
-    - I would like you to explain what summary is
-    - Would you be able to give me a tutorial for summary?
-    - I want you to give me an explanation about summary
-    - I was hoping you could help me understand summary feature
-    - I'd like you to define summary feature
-    - Would it be possible to have a tutorial for summary?
-    - Could you possibly go into more detail about what summary?
-    - Give me help on summary
-    - Guide for comment selected summary
-    - May you inform me on summary
-#tell me about summary-yes
+- intent: help__statistics_summary
+   examples: |
+    - Can you tell me what is meant by statistics information?
+    - I was wondering if you could explain statistics of file to me?    
+    - Could you explain to me what statistics details refers to?
+    - I would like you to explain what statistics is
+    - Would you be able to give me a tutorial for statistics?
+    - I want you to give me an explanation about statistics
+    - I was hoping you could help me understand statistics feature
+    - I'd like you to define statistics feature
+    - Would it be possible to have a tutorial for statistics?
+    - Could you possibly go into more detail about what statistics does?
+    - Give me help on statistics
+    - Guide for statistic summary
+    - May you inform me on statistic breakdown
+
 
 - intent: help_main_graph_barchart
   examples: |
@@ -3124,20 +3126,20 @@ nlu:
 
 - intent: tutorial_high_level
   examples: |
-    - Tutorial for high level questions
-    - Show me tutorial for high level questions
+    - null high level questions null 
+    - no value high level questions no value
 
 
 - intent: tutorial_subtrees
   examples: |
-    - Tutorial for subtrees
-    - Show me tutorial for subtrees
+    - null subtrees null 
+    - no value subtrees no value
 
 
 - intent: tutorial_chatbot
   examples: |
-    - null 
-    - no value 
+    - null chatbot null 
+    - no value chatbot no value
 
 
 - intent: tutorial_change_file

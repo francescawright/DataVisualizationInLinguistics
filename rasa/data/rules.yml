@@ -242,10 +242,10 @@ rules:
     - action: utter_help_select_node_edge
 
 
-- rule: User want to know about what summary does
+- rule: User want to know about what statistics summary shows
   steps:
-    - intent: help_summary
-    - action: utter_help_summary
+    - intent: help_statistics_summary
+    - action: utter_help_statistics_summary
 
 
 - rule: User wants to know about AND
