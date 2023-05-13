@@ -1101,7 +1101,7 @@
                             "height": "210px",
                             "padding-right": "25px",
                             "animation": "pulse-green-side-bar 1.3s infinite"
-                        });
+                         });
                         setTimeout(function () {
                             $("#statistics-bar").css({
                                 "border": "",
@@ -1111,25 +1111,25 @@
                                 "padding-right": "",
                                 "animation": ""
                             });
-                        }, 6000);
-                        $("#chart_main_button").css({
-                            "width": "130px",
-                            "height": "calc(100% + -10px)",
-                            "border": "10px solid #33FF66",
-                            "border-radius": "10px",
-                            "box-shadow": "5px -5px 10px 5px rgba(51, 217, 178, 1)",
-                            "animation": "pulse-green-side-bar 1.3s infinite"
-                        });
-                        setTimeout(function () {
-                            $("#chart_main_button").css({
-                                "width": "",
-                                "height": "",
-                                "border": "",
-                                "border-radius": "",
-                                "box-shadow": "",
-                                "animation": ""
-                            });
-                        }, 6000);
+                         }, 6000);
+                        {#$("#chart_main_button").css({#}
+                        {#    "width": "130px",#}
+                        {#    "height": "calc(100% + -10px)",#}
+                        {#    "border": "10px solid #33FF66",#}
+                        {#    "border-radius": "10px",#}
+                        {#    "box-shadow": "5px -5px 10px 5px rgba(51, 217, 178, 1)",#}
+                        {#    "animation": "pulse-green-side-bar 1.3s infinite"#}
+                        {# });#}
+                        {#setTimeout(function () {#}
+                        {#    $("#chart_main_button").css({#}
+                        {#        "width": "",#}
+                        {#        "height": "",#}
+                        {#        "border": "",#}
+                        {#        "border-radius": "",#}
+                        {#        "box-shadow": "",#}
+                        {#        "animation": ""#}
+                        {#    });#}
+                        {# }, 6000);#}
                         $(window).trigger(messageList[1]);
                         $("#select-chart-data-modal, #select-chart-type-modal").css({
                             "width": "auto",
@@ -1149,26 +1149,27 @@
                                 "animation": ""
                             });
                         }, 6000);
-                        $("#chart_sub_button").css({
-                            "width": "130px",
-                            "height": "calc(100% + -10px)",
-                            "border": "10px solid #33FF66",
-                            "border-radius": "10px",
-                            "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
-                            "animation": "pulse-green-side-bar 1.3s infinite"
-                        });
-                        setTimeout(function () {
-                            $("#chart_sub_button").css({
-                                "width": "",
-                                "height": "",
-                                "border": "",
-                                "border-radius": "",
-                                "box-shadow": "",
-                                "animation": ""
-                            });
-                        }, 6000);
+                        {#$("#chart_sub_button").css({#}
+                        {#    "width": "130px",#}
+                        {#    "height": "calc(100% + -10px)",#}
+                        {#    "border": "10px solid #33FF66",#}
+                        {#    "border-radius": "10px",#}
+                        {#    "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",#}
+                        {#    "animation": "pulse-green-side-bar 1.3s infinite"#}
+                        {# });#}
+                        {#setTimeout(function () {#}
+                        {#    $("#chart_sub_button").css({#}
+                        {#        "width": "",#}
+                        {#        "height": "",#}
+                        {#        "border": "",#}
+                        {#        "border-radius": "",#}
+                        {#        "box-shadow": "",#}
+                        {#        "animation": ""#}
+                        {#    });#}
+                        {# }, 6000);#}
                         e.text = messageList[2]
                     }
+                     break;
                 case "intent_switch_or_and":
                     if ('{{ selected_item }}') {
                         if (messageList[1] === "or_button" && document.getElementById("or_label").classList.contains("active")) {
