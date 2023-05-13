@@ -1317,7 +1317,15 @@ responses:
 
                  To save these sub trees using the button in the pop-up window \ \n
 
-                 You can change files using the drop down menu "
+                "
+
+      buttons:
+        - title: "Next"
+          payload: '/tutorial_change_file'
+
+  utter_tutorial_mode_change_file:
+    - text: "intent_change_file_signal;You can change files using the drop down menu "
+
       buttons:
         - title: "Next"
           payload: '/tutorial_chatbot'

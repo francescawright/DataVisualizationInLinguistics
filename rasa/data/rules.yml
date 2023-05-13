@@ -708,7 +708,10 @@ rules:
     - intent: tutorial_chatbot
     - action: utter_tutorial_mode_chatbot
 
-
+- rule: tutorial change file
+  steps:
+    - intent: tutorial_change_file
+    - action: utter_tutorial_mode_change_file
 
 
 

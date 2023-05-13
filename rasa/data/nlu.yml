@@ -3136,8 +3136,12 @@ nlu:
 
 - intent: tutorial_chatbot
   examples: |
-    - Tutorial for chatbot
-    - Show me tutorial for chatbot
+    - null 
+    - no value 
 
 
+- intent: tutorial_change_file
+  examples: |
+    - null change file null 
+    - no value change file no value
 
