@@ -986,6 +986,27 @@
 
                     }
                     break;
+                case "intent_change_file_signal":
+                    if ('{{ selected_item }}'){
+                            $("#dataset_dropdown").css({
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "box-shadow": "0px 0px 10px 10px rgba(51, 217, 178, 1)",
+                                "animation": "pulse-green 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#dataset_dropdown").css({
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "animation": ""
+                                });
+                            }, 6000);
+                            e.text =  messageList[1];
+
+
+                    }
+                    break;
                 case "intent_features_definition_signals":
                     if ('{{ selected_item }}') {
                         $("#highlight_accordion_button").css({
