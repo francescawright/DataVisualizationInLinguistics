@@ -1410,7 +1410,7 @@ nlu:
     - Tell me about nodes and edges
 
 
-- intent: help__statistics_summary
+- intent: help_statistics_summary
   examples: |
     - Can you tell me what is meant by statistics information?
     - I was wondering if you could explain statistics of file to me?    
@@ -1669,7 +1669,6 @@ nlu:
     - I'd like you to define stats buttons
     - Would it be possible to have a tutorial for statistics option?
     - Could you possibly go into more detail about what stats options is for?
-    - Give me help on statistics
     - Guide for stats
     - May you inform me on statistics graphs
     - How can I analyse my data?

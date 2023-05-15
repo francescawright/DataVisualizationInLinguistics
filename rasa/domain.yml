@@ -198,6 +198,8 @@ intents:
   - tutorial_high_level
   - tutorial_subtrees
   - tutorial_chatbot
+  - help_statistics_summary
+  - tutorial_change_file
 
 
 actions:

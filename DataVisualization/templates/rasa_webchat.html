@@ -990,7 +990,7 @@
                     if ('{{ selected_item }}'){
                             $("#dataset_dropdown").css({
                                 "border": "10px solid #33FF66",
-                                "border-radius": "10px",
+                                "border-radius": "5px",
                                 "box-shadow": "0px 0px 10px 10px rgba(51, 217, 178, 1)",
                                 "animation": "pulse-green 1.3s infinite"
                             });
@@ -1003,8 +1003,6 @@
                                 });
                             }, 6000);
                             e.text =  messageList[1];
-
-
                     }
                     break;
                 case "intent_features_definition_signals":
@@ -1027,8 +1025,6 @@
                                 "animation": ""
                             });
                         }, 6000);
-
-
                         $("#features_accordion_button").css({
                             "width": "calc(100% + 5px)",
                             "height": "calc(100% + -18px)",
@@ -1133,26 +1129,8 @@
                                 "animation": ""
                             });
                          }, 6000);
-                        {#$("#chart_main_button").css({#}
-                        {#    "width": "130px",#}
-                        {#    "height": "calc(100% + -10px)",#}
-                        {#    "border": "10px solid #33FF66",#}
-                        {#    "border-radius": "10px",#}
-                        {#    "box-shadow": "5px -5px 10px 5px rgba(51, 217, 178, 1)",#}
-                        {#    "animation": "pulse-green-side-bar 1.3s infinite"#}
-                        {# });#}
-                        {#setTimeout(function () {#}
-                        {#    $("#chart_main_button").css({#}
-                        {#        "width": "",#}
-                        {#        "height": "",#}
-                        {#        "border": "",#}
-                        {#        "border-radius": "",#}
-                        {#        "box-shadow": "",#}
-                        {#        "animation": ""#}
-                        {#    });#}
-                        {# }, 6000);#}
                         $(window).trigger(messageList[1]);
-                        $("#select-chart-data-modal, #select-chart-type-modal").css({
+                        $("#select-chart-sub-data-modal, #select-chart-sub-type-modal").css({
                             "width": "auto",
                             "height": "calc(100%)",
                             "border": "10px solid #33FF66",
@@ -1161,7 +1139,7 @@
                             "animation": "pulse-green-side-bar 1.2s infinite"
                         });
                         setTimeout(function () {
-                            $("#select-chart-data-modal, #select-chart-type-modal").css({
+                            $("#select-chart-sub-data-modal, #select-chart-sub-type-modal").css({
                                 "width": "",
                                 "height": "",
                                 "border": "",
@@ -1170,24 +1148,26 @@
                                 "animation": ""
                             });
                         }, 6000);
-                        {#$("#chart_sub_button").css({#}
-                        {#    "width": "130px",#}
-                        {#    "height": "calc(100% + -10px)",#}
-                        {#    "border": "10px solid #33FF66",#}
-                        {#    "border-radius": "10px",#}
-                        {#    "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",#}
-                        {#    "animation": "pulse-green-side-bar 1.3s infinite"#}
-                        {# });#}
-                        {#setTimeout(function () {#}
-                        {#    $("#chart_sub_button").css({#}
-                        {#        "width": "",#}
-                        {#        "height": "",#}
-                        {#        "border": "",#}
-                        {#        "border-radius": "",#}
-                        {#        "box-shadow": "",#}
-                        {#        "animation": ""#}
-                        {#    });#}
-                        {# }, 6000);#}
+                        $("#chart_main_button").css({
+                            "height": "auto",
+                            "border": "5px solid #33FF66",
+                        });
+                        setTimeout(function () {
+                            $("#chart_main_button").css({
+                                "height": "",
+                                "border": "",
+                            });
+                        }, 6000);
+                        $("#chart_sub_button").css({
+                            "height": "auto",
+                            "border": "5px solid #33FF66",
+                         });
+                        setTimeout(function () {
+                            $("#chart_sub_button").css({
+                                "height": "",
+                                "border": ""
+                            });
+                         }, 6000);
                         e.text = messageList[2]
                     }
                      break;
