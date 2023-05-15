@@ -109,10 +109,10 @@ rules:
   - intent: generate_response_message
   - action: action_generate_response_message
 
-- rule: Displays in the chat the utter_help_glyphs message
-  steps:
-  - intent: generate_help_glyphs_message
-  - action: utter_help_glyphs
+#- rule: Displays in the chat the utter_help_glyphs message
+#  steps:
+#  - intent: generate_help_glyphs_message
+#  - action: utter_help_glyphs
 
 - rule: Automatically fills slots with values passed as entities
   steps:
@@ -140,10 +140,10 @@ rules:
   - intent: highlight_uncheck
   - action: action_highlight_uncheck
 
-- rule: User wants to check one or more filters
-  steps:
-  - intent: highlight_check
-  - action: action_highlight_check
+#- rule: User wants to check one or more filters
+#  steps:
+#  - intent: highlight_check
+#  - action: action_highlight_check
 
 - rule: User wants to switch one or more filters
   steps:
@@ -231,26 +231,23 @@ rules:
 
 # help
 
-- rule: User wants to know about highlights
-  steps:
-    - intent: help_highlight
-    - action: utter_help_highlight
+#- rule: User wants to know about highlights
+#  steps:
+#    - intent: help_highlight
+#    - action: utter_help_highlight
 
-- rule: User want to know about what summary does
+- rule: User wants to know about select node and edge
   steps:
-    - intent: help_summary
-    - action: utter_help_summary
+    - intent: help_select_node_edge
+    - action: utter_help_select_node_edge
 
 
-- rule: User wants to know about main graph button
+- rule: User want to know about what statistics summary shows
   steps:
-    - intent: help_main_graph_barchart
-    - action: utter_help_main_bar
+    - intent: help_statistics_summary
+    - action: utter_help_statistics_summary
 
-- rule: User wants to know about sub graphs button
-  steps:
-    - intent: help_subtree_barchart
-    - action: utter_help_subtree_bar
+
 
 - rule: User wants to know about AND
   steps:
@@ -272,7 +269,7 @@ rules:
 - rule: check colour feature const
   steps:
     - intent: colour_feature_constructiveness
-    - action: utter_colour_feature_constractive
+    - action: utter_colour_feature_constructive
 
 - rule: check colour feature argumentation
   steps:
@@ -328,7 +325,7 @@ rules:
 - rule: uncheck constructiveness colour feature
   steps:
     - intent: colour_feature_constructiveness_uncheck
-    - action: utter_colour_feature_constractive_uncheck
+    - action: utter_colour_feature_constructive_uncheck
 
 - rule: uncheck argumentation colour feature
   steps:
@@ -482,10 +479,242 @@ rules:
     - intent: reset_all_filters
     - action: utter_reset_all_filters
 
+- rule: check all features which one
+  steps:
+    - intent: filters_all_features
+    - action: utter_filters_all_features
+
+- rule: check all targets which one
+  steps:
+    - intent: filters_all_targets
+    - action: utter_filters_all_targets
+
+- rule: uncheck all features which one
+  steps:
+    - intent: filters_all_features_uncheck
+    - action: utter_filters_all_features_uncheck
+
+- rule: uncheck all targets which one
+  steps:
+    - intent: filters_all_targets_uncheck
+    - action: utter_filters_all_targets_uncheck
+
+
+# asking to hide feature without specifying which method
+
+- rule: uncheck constructive which one
+  steps:
+    - intent: filters_constructive_hide
+    - action: utter_filters_constructive_uncheck
+
+- rule: uncheck argument which one
+  steps:
+    - intent: filters_argument_hide
+    - action: utter_filters_argumentation_uncheck
+
+- rule: uncheck sarcasm which one
+  steps:
+    - intent: filters_sarcasm_hide
+    - action: utter_filters_sarcasm_uncheck
+
+- rule: uncheck mockery which one
+  steps:
+    - intent: filters_mockery_hide
+    - action: utter_filters_mockery_uncheck
+
+- rule: uncheck intolerance which one
+  steps:
+    - intent: filters_intolerance_hide
+    - action: utter_filters_intolerance_uncheck
+
+- rule: uncheck improper which one
+  steps:
+    - intent: filters_improper_hide
+    - action: utter_filters_improper_uncheck
+
+- rule: uncheck insult which one
+  steps:
+    - intent: filters_insult_hide
+    - action: utter_filters_insult_uncheck
+
+- rule: uncheck aggressiveness which one
+  steps:
+    - intent: filters_aggressiveness_hide
+    - action: utter_filters_aggressiveness_uncheck
+
+- rule: uncheck stereotype which one
+  steps:
+    - intent: filters_stereotype_hide
+    - action: utter_filters_stereotype_uncheck
+
+- rule: uncheck target person which one
+  steps:
+    - intent: filters_person_hide
+    - action: utter_filters_target_person_uncheck
+
+- rule: uncheck target group which one
+  steps:
+    - intent: filters_group_hide
+    - action: utter_filters_target_group_uncheck
+
+- rule: user asks for definition of sarcasm
+  steps:
+    - intent: define_sarcasm
+    - action: utter_sarcasm_definition
+
+- rule: user asks for definition of mockery
+  steps:
+    - intent: define_mockery
+    - action: utter_mockery_definition
+
+- rule: user asks for definition of insult
+  steps:
+    - intent: define_insult
+    - action: utter_insult_definition
+
+- rule: user asks for definition of intolerance
+  steps:
+    - intent: define_intolerance
+    - action: utter_intolerance_definition
+
+- rule: user asks for definition of improper language
+  steps:
+    - intent: define_improper_language
+    - action: utter_improper_language_definition
+
+- rule: user asks for definition of aggressiveness
+  steps:
+    - intent: define_aggressiveness
+    - action: utter_aggressiveness_definition
+
+- rule: user asks for definition of stereotypes
+  steps:
+    - intent: define_stereotype
+    - action: utter_stereotype_definition
+
+- rule: user asks for definition of stance
+  steps:
+    - intent: define_stance
+    - action: utter_stance_definition
+
+- rule: user asks for definition of toxic
+  steps:
+    - intent: define_toxic
+    - action: utter_toxic_definition
+
+- rule: user asks for definition of comment id
+  steps:
+    - intent: define_commentid
+    - action: utter_comment_id_definition
+
+- rule: user asks for definition of argumentation
+  steps:
+    - intent: define_argumentation
+    - action: utter_argumentation_definition
+
+- rule: user asks for definition of constructiveness
+  steps:
+    - intent: define_constructiveness
+    - action: utter_constructiveness_definition
+
+- rule: user asks for definition of target person
+  steps:
+    - intent: define_targetperson
+    - action: utter_target_person_definition
+
+- rule: user asks for definition of target group
+  steps:
+    - intent: define_targetgroup
+    - action: utter_target_group_definition
+
+- rule: user asks for definition of comment level
+  steps:
+    - intent: define_commentlevel
+    - action: utter_comment_level_definition
+
+- rule: user asks for definition of direct comments
+  steps:
+    - intent: define_directcomment
+    - action: utter_direct_comment_definition
+
+- rule: user asks for definition of comment depth
+  steps:
+    - intent: define_commentdepth
+    - action: utter_comment_depth_definition
 
 #- rule: user wants to know what bot can do
 #  steps:
 #    - intent: help_what_can_you_do
 #    - action: utter_help_what_can_you_do
+
+- rule: user asks for definition of subtrees
+  steps:
+    - intent: define_subtrees
+    - action: utter_subtrees_definition
+
+- rule: user asks for tutorial
+  steps:
+    - intent: ask_tutorial
+    - action: utter_tutorial_mode
+
+
+- rule: tutorial layout
+  steps:
+    - intent: tutorial_layouts
+    - action: utter_tutorial_mode_layouts
+
+
+- rule: tutorial glyphs
+  steps:
+    - intent: tutorial_glyphs
+    - action: utter_tutorial_mode_glyphs
+
+- rule: tutorial targets
+  steps:
+    - intent: tutorial_targets
+    - action: utter_tutorial_mode_targets
+
+
+- rule: tutorial select node and edge
+  steps:
+    - intent: tutorial_node_and_edge
+    - action: utter_tutorial_mode_select_node_edge
+
+
+- rule: tutorial statistics
+  steps:
+    - intent: tutorial_statistics
+    - action: utter_tutorial_mode_statistics
+
+
+- rule: tutorial most tagged features
+  steps:
+    - intent: tutorial_most_tagged_features
+    - action: utter_tutorial_mode_most_tagged_features
+
+
+- rule: tutorial high level
+  steps:
+    - intent: tutorial_high_level
+    - action: utter_tutorial_mode_high_level
+
+
+- rule: tutorial sub trees
+  steps:
+    - intent: tutorial_subtrees
+    - action: utter_tutorial_mode_subtrees
+
+- rule: tutorial chatbot
+  steps:
+    - intent: tutorial_chatbot
+    - action: utter_tutorial_mode_chatbot
+
+- rule: tutorial change file
+  steps:
+    - intent: tutorial_change_file
+    - action: utter_tutorial_mode_change_file
+
+
+
 
 

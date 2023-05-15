@@ -31,7 +31,7 @@ var colorFeature = ["#90F6B2", "#1B8055",
     "#97CFFF", "#1795FF", "#0B5696",
     "#E3B7E8", "#A313B3", "#5E1566"
 ];
-var colourBothStances = "#FFA500",
+var colourBothStances = "#FFDD1F",
     colourPositiveStance = "#77dd77",
     colourNegativeStance = "#ff6961",
     colourNeutralStance = "#2b2727";
@@ -293,6 +293,14 @@ function highlightStanceOR(node, enabledHighlight) {
         }).style("opacity", 1);
     }
 
+    //Positive + Negative stance CB is checked
+    if (enabledHighlight.indexOf("highlight-stance-both") > -1) {
+        node.filter(function (d) {
+            if (d.negative_stance && d.positive_stance) d.highlighted = 1;
+            return ((d.negative_stance && d.positive_stance));
+        }).style("opacity", 1);
+    }
+
 }
 
 function highlightStanceAND(node, enabledHighlight, opacityValue = 0.1) {
@@ -325,6 +333,17 @@ function highlightStanceAND(node, enabledHighlight, opacityValue = 0.1) {
             if (!d.negative_stance) d.highlighted = 0;
             return (!d.negative_stance);
         })//.select("circle.nodeCircle")
+            .style("position", "relative")
+            .style("z-index", 1)
+            .style("opacity", opacityValue);
+    }
+
+    //Positive + Negative stance CB is checked
+    if (enabledHighlight.indexOf("highlight-stance-both") > -1) {
+        node.filter(function (d) {
+            if (!(d.negative_stance && d.positive_stance)) d.highlighted = 0;
+            return (!(d.negative_stance && d.positive_stance));
+        }) //.select("circle.nodeCircle")
             .style("position", "relative")
             .style("z-index", 1)
             .style("opacity", opacityValue);
@@ -2195,6 +2214,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         // If any stance checkboxes are checked, highlight the link from which it originates
         if (enabledHighlight.indexOf("highlight-stance-negative") > -1 ||
             enabledHighlight.indexOf("highlight-stance-positive") > -1 ||
+            enabledHighlight.indexOf("highlight-stance-both") > -1 ||
             enabledHighlight.indexOf("highlight-stance-neutral") > -1) {
             link.style("opacity", function (d) {
                 return d.target.highlighted ? 1 : opacityValue;
@@ -2224,6 +2244,7 @@ treeJSON = d3.json(dataset, function (error, json) {
         // If any stance checkboxes are checked, highlight the link from which it originates
         if (enabledHighlight.indexOf("highlight-stance-negative") > -1 ||
             enabledHighlight.indexOf("highlight-stance-positive") > -1 ||
+            enabledHighlight.indexOf("highlight-stance-both") > -1 ||
             enabledHighlight.indexOf("highlight-stance-neutral") > -1) {
             link.style("opacity", function (d) {
                 return d.target.highlighted ? 1 : opacityValue;

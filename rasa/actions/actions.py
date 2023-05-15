@@ -7,7 +7,7 @@
 
 # This is a simple example for a custom action which utters "Hello World!"
 
-from typing import Any, Text, Dict, List
+from typing import Any, Text, Dict, List, Union
 
 from rasa_sdk.events import SlotSet, FollowupAction, UserUtteranceReverted
 from rasa_sdk import Action, Tracker, FormValidationAction
@@ -147,7 +147,7 @@ class ActionLogoutToSignupCancellation(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        dispatcher.utter_message(text="Okey! I will not log you out")
+        dispatcher.utter_message(text="Okay! I will not log you out")
         return [SlotSet("username", None), SlotSet("password", None), SlotSet("password_confirmation", None)]
 
 
@@ -257,7 +257,7 @@ class ActionLogin(Action):
         else:
             key = b'ZeuY3kEaYn2XkyPQPQKgDmDeDRJfKYM3-tTx_5NmMm4='
             dispatcher.utter_message(
-                text='intent_login,' + encrypt(tracker.get_slot("username").encode(), key).decode() + ',' + encrypt(
+                text='intent_login;' + encrypt(tracker.get_slot("username").encode(), key).decode() + ';' + encrypt(
                     tracker.get_slot("password").encode(), key).decode())
             return [SlotSet("username", None), SlotSet("password", None)]
 
@@ -303,9 +303,9 @@ class ActionSignup(Action):
         else:
             key = b'JlgbJKpxVhwF3NXJf_n-lt4c4AvdCATnuXYDK4xivPY='
             dispatcher.utter_message(
-                text='intent_signup,' + encrypt(tracker.get_slot("username").encode(), key).decode()
-                     + ',' + encrypt(tracker.get_slot("password").encode(), key).decode()
-                     + ',' + encrypt(tracker.get_slot("password_confirmation").encode(), key).decode())
+                text='intent_signup;' + encrypt(tracker.get_slot("username").encode(), key).decode()
+                     + ';' + encrypt(tracker.get_slot("password").encode(), key).decode()
+                     + ';' + encrypt(tracker.get_slot("password_confirmation").encode(), key).decode())
             return [SlotSet("username", None), SlotSet("password", None), SlotSet("password_confirmation", None)]
 
 
@@ -414,7 +414,7 @@ class ActionOpenDocument(Action):
                 if e['entity'] == 'document_requested':
                     document_requested_value = e['value']
 
-            dispatcher.utter_message(text='intent_open_document,' + document_requested_value)
+            dispatcher.utter_message(text='intent_open_document;' + document_requested_value)
             return [SlotSet("document_requested", None)]
 
 
@@ -451,20 +451,20 @@ class ActionGreet(Action):
             elif e['entity'] == 'first_login':
                 first_login_value = e['value'] == "True"
 
-        messages_not_logged = ["Hey! Nice to see you here, I am a Chatbot here to help you. Sign up or Login to start 😄",
-                               "Hello! I'm a Chatbot here to help if you need me. Sign up or Login to start 😄",
-                               "Hi, I am a Chatbot here to guide you. Sign up or Login to start 😄",
-                               "Hello there, I am a Chatbot here to help you. Sign up or Login to start😄"] if not greet_again_value else [
-            "How else can I help you? 😉",
-            "What else can I do for you? 😉"]
+        messages_not_logged = ["Hey! Nice to see you here. I am a Chatbot here to help you carry out actions, explain the interface and give you tips. Ask me to Sign up or Login, or click the buttons 😄",
+                               "Hello! I'm a Chatbot here to help you carry out actions and explain the interface and give you tips. Ask me to Sign up or Login, or click the buttons 😄",
+                               "Hi, I'm a Chatbot here to help you carry out actions and explain the interface and give you tips. Ask me to Sign up or Login, or click the buttons 😄",
+                               "Hello there, I'm a Chatbot here to help you carry out actions and explain the interface and give you tips. Ask me to Sign up or Login, or click the buttons 😄"] if not greet_again_value else [
+            "How else can I help you? 😄",
+            "What else can I do for you? 😄"]
 
         if tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None":
             if nickname_value:
                 messages = ["Hey, " + nickname_value + ". Nice to see you! 😄",
                             "Hi, " + nickname_value + ". How are you? 😄",
                             "Hello, " + nickname_value + ". I'm here if you need me 😄"] if not greet_again_value else \
-                    ["Hey, " + nickname_value + ". How else can I help you? 😉",
-                     "Hi, " + nickname_value + ". What else can I do for you? 😉"]
+                    ["Hey, " + nickname_value + ". How else can I help you? 😄",
+                     "Hi, " + nickname_value + ". What else can I do for you? 😄"]
                 dispatcher.utter_message(text=random.choice(messages))
 
                 if first_login_value:
@@ -531,12 +531,12 @@ filters_ids = {
     "intolerance": "highlight-features-intolerance", "improper language": "highlight-features-improper-language",
     "insult": "highlight-features-insult", "aggressiveness": "highlight-features-aggressiveness",
     "all features": "selectAll-features", "all stances": "selectAll-stance",
-    "all levels of toxicity": "selectAll-toxicity"
+    "all levels of toxicity": "selectAll-toxicity", "both stances": "highlight-stance-both"
 }
 choices = ["not toxic", "non toxic", "very toxic", "mildly toxic", "toxic", "positive stance", "negative stance",
            "neutral stance", "target person", "target group", "stereotype", "all targets", "constructiveness",
            "argumentation", "sarcasm", "mockery", "intolerance", "improper language", "insult", "aggressiveness",
-           "all features", "all levels of toxicity", "all stances"]
+           "all features", "all levels of toxicity", "all stances", "both stances"]
 threshold = 60
 
 
@@ -559,7 +559,7 @@ class ActionHighlightCheck(Action):
                     values.append(filters_ids[result])
         if previous_filters is None:
             # Send the message for the first time
-            dispatcher.utter_message(text="intent_filter," + ';'.join(values))
+            dispatcher.utter_message(text="intent_filter;" + ';'.join(values))
             dispatcher.utter_message(text="I have automatically selected AND. You can also change to OR.",
                                      buttons=[
                                          {"title": "Read more here", "payload": "/help_AND_OR"}
@@ -568,7 +568,7 @@ class ActionHighlightCheck(Action):
             return [SlotSet("previous_filters", values)]
 
         else:
-            dispatcher.utter_message(text="intent_filter," + ';'.join(values))
+            dispatcher.utter_message(text="intent_filter;" + ';'.join(values))
             return [SlotSet("previous_filters", values)]
 
 
@@ -584,7 +584,7 @@ class ActionHighlightCheckLast(Action):
         if not tracker.get_slot("previous_filters"):
             dispatcher.utter_message(text="You have not interacted with any filter through the chat yet")
         else:
-            dispatcher.utter_message(text="intent_filter," + ';'.join(tracker.get_slot("previous_filters")))
+            dispatcher.utter_message(text="intent_filter;" + ';'.join(tracker.get_slot("previous_filters")))
         return []
 
 
@@ -603,7 +603,7 @@ class ActionHighlightSwitch(Action):
                 result, confidence = process.extractOne(e['value'], choices)
                 if confidence >= threshold:
                     values.append(filters_ids[result])
-        dispatcher.utter_message(text="intent_filter_switch," + ';'.join(values))
+        dispatcher.utter_message(text="intent_filter_switch;" + ';'.join(values))
 
         return [SlotSet("previous_filters", values)]
 
@@ -620,7 +620,7 @@ class ActionHighlightSwitchLast(Action):
         if not tracker.get_slot("previous_filters"):
             dispatcher.utter_message(text="You have not interacted with any filter through the chat yet")
         else:
-            dispatcher.utter_message(text="intent_filter_switch," + ';'.join(tracker.get_slot("previous_filters")))
+            dispatcher.utter_message(text="intent_filter_switch;" + ';'.join(tracker.get_slot("previous_filters")))
         return []
 
 
@@ -639,7 +639,7 @@ class ActionHighlightUncheck(Action):
                 result, confidence = process.extractOne(e['value'], choices)
                 if confidence >= threshold:
                     values.append(filters_ids[result])
-        dispatcher.utter_message(text="intent_filter_uncheck," + ';'.join(values))
+        dispatcher.utter_message(text="intent_filter_uncheck;" + ';'.join(values))
 
         return [SlotSet("previous_filters", values)]
 
@@ -656,8 +656,9 @@ class ActionHighlightUncheckLast(Action):
         if not tracker.get_slot("previous_filters"):
             dispatcher.utter_message(text="You have not interacted with any filter through the chat yet")
         else:
-            dispatcher.utter_message(text="intent_filter_uncheck," + ';'.join(tracker.get_slot("previous_filters")))
+            dispatcher.utter_message(text="intent_filter_uncheck;" + ';'.join(tracker.get_slot("previous_filters")))
         return []
+
 
 
 # class Options(Action):

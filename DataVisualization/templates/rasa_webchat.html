@@ -42,9 +42,28 @@
 
 <style>
 
+@keyframes pulse-bot {
+	0% {
+		transform: scale(0.95);
+		box-shadow: 0px 0px 40px rgb(252, 0, 0);
+	}
+
+	70% {
+		transform: scale(1);
+		box-shadow: 0px 0px 40px rgb(255, 0, 0);
+	}
+
+	100% {
+		transform: scale(0.95);
+		box-shadow: 0px 0px 40px rgb(255, 0, 0);
+	}
+}
+
 .rw-conversation-container .rw-image-details .rw-image-frame{
-    height: 110px;
-    width: auto;
+    height: 300px;
+    width: 300px;
+    {#width: auto;#}
+    {#height: auto;#}
 }
 .rw-conversation-container .rw-replies{
    display:block;
@@ -53,7 +72,7 @@
 }
 
 .rw-conversation-container .rw-replies .rw-reply{
-    background-color:  #fa7070;
+    background-color: #fa7070;
     font-size: 20px;
     border-color: #fa7070;
     justify-content: center;
@@ -87,7 +106,8 @@
 }
 @media screen and (min-width: 800px) {
     .rw-messages-container {
-        max-height: 37vh;
+        max-height: 39vh;
+
     }
 }
 .rw-launcher {
@@ -259,11 +279,23 @@
         width: 25px;
     }
 }
+
+.not-logged-in .rw-widget-container .rw-launcher {
+  animation: pulse-bot 1.5s ease-in-out 5;
+}
+
+
 </style>
 
 <head>
     {% load static %}
+{#    <script src="{% static 'js/console_override.js' %}"></script>#}
 </head>
+
+
+<body class="{% if not user.is_authenticated %}not-logged-in{% endif %}">
+
+</body>
 
 <script>
     // Initializes the necessary variables for speech-to-text and text-to-speech functions
@@ -407,6 +439,8 @@
         }, 400);
     }
 
+
+
     // Enables the chat send button in case it is disabled
     function setUpChatSendButton() {
         if (!document.querySelector('textarea.rw-new-message').value){
@@ -468,6 +502,12 @@
         sessionStorage.clear();
     }
 
+
+    function userMessageEvent(e) {
+        console.log('the user said something: ' + e.message, ' | [Date]', Date.now());
+
+    }
+
     function botMessageEvent(e) {
         console.log('the bot said something: ' + e.text);
         if (e.text) {
@@ -478,7 +518,7 @@
             // Otherwise, convert the sessionStorage string to an array
             existingStorage = existingStorage ? JSON.parse(existingStorage) : {};
 
-            let messageList = e.text.split(",");
+            let messageList = e.text.split(";");
             switch (messageList[0]) {
                 case "intent_logout":
                     e.hidden = true;
@@ -608,16 +648,49 @@
                         processData: false,
                     })
                     break;
+                {#case "intent_change_layout_and_glyphs":#}
+                {#    if ('{{ selected_item }}') {#}
+                {#        if (messageList[1] === "tree_layout_button" && document.getElementById("tree_label").classList.contains("active")) {#}
+                {#            e.text = "Already in the layout Tree";#}
+                {#        } else if (messageList[1] === "force_layout_button" && document.getElementById("force_label").classList.contains("active")) {#}
+                {#            e.text = "Already in the layout Force";#}
+                {#        } else if (messageList[1] === "radial_layout_button" && document.getElementById("radial_label").classList.contains("active")) {#}
+                {#            e.text = "Already in the layout Radial";#}
+                {#        } else if (messageList[1] === "circle_layout_button" && document.getElementById("circle_label").classList.contains("active")) {#}
+                {#            e.text = "Already in the layout Circle Packing";#}
+                {#        } else {#}
+                {#            e.hidden = true;#}
+                {#            document.getElementById(messageList[1]).from_chat = true;#}
+                {#            document.getElementById(messageList[1]).from_chat_msg = messageList[2];#}
+                {#            document.getElementById(messageList[1]).click();#}
+                {#        }#}
+                {##}
+                {#        if (messageList[3] === "dots_icon_button" && document.getElementById("dots_label").classList.contains("active")) {#}
+                {#            e.text += " Already in the Dots";#}
+                {#        } else if (messageList[3] === "glyphs_icon_button" && document.getElementById("glyphs_label").classList.contains("active")) {#}
+                {#            e.text += " Already in the Circular Glyph";#}
+                {#        } else if (messageList[3] === "trivial_icon_button" && document.getElementById("trivial_label").classList.contains("active")) {#}
+                {#            e.text += " Already in the Trivial Cheese";#}
+                {#        } else if (document.getElementById("circle_label").classList.contains("active")) {#}
+                {#            e.text += " Glyphs cannot be visualised when using circle packing";#}
+                {#        } else {#}
+                {#            e.text += " " + messageList[4];#}
+                {#            document.getElementById(messageList[3]).click();#}
+                {#        }#}
+                {#    } else {#}
+                {#        e.text = "Open a file first, in order to perform this action";#}
+                {#    }#}
+                {#    break;#}
                 case "intent_change_layout":
                     if ('{{ selected_item }}') {
                         if (messageList[1] === "tree_layout_button" && document.getElementById("tree_label").classList.contains("active")) {
-                            e.text = "Already in the layout Tree";
+                            e.text = "You have already chosen Tree Layout";
                         } else if (messageList[1] === "force_layout_button" && document.getElementById("force_label").classList.contains("active")) {
-                            e.text = "Already in the layout Force";
+                            e.text = "You have already chosen Force Layout";
                         } else if (messageList[1] === "radial_layout_button" && document.getElementById("radial_label").classList.contains("active")) {
-                            e.text = "Already in the layout Radial";
+                            e.text = "You have already chosen Radial Layout";
                         } else if (messageList[1] === "circle_layout_button" && document.getElementById("circle_label").classList.contains("active")) {
-                            e.text = "Already in the layout Circle Packing";
+                            e.text = "You have already chosen Circle Packing Layout";
                         } else {
                             e.hidden = true;
                             document.getElementById(messageList[1]).from_chat = true;
@@ -631,13 +704,12 @@
                 case "intent_change_glyphs":
                     if ('{{ selected_item }}') {
                         if (messageList[1] === "dots_icon_button" && document.getElementById("dots_label").classList.contains("active")) {
-                            e.text = "Already in the Dots";
+                            e.text = "You have already chosen Dots";
                         } else if (messageList[1] === "glyphs_icon_button" && document.getElementById("glyphs_label").classList.contains("active")) {
-                            e.text = "Already in the Circular Glyph";
+                            e.text = "You have already chosen Circular Glyph";
                         } else if (messageList[1] === "trivial_icon_button" && document.getElementById("trivial_label").classList.contains("active")) {
-                            e.text = "Already in the Trivial Cheese";
-                        }
-                        else if (document.getElementById("circle_label").classList.contains("active")) {
+                            e.text = "You have already chosen Trivial Cheese";
+                        } else if (document.getElementById("circle_label").classList.contains("active")) {
                             e.text = "Glyphs cannot be visualised when using circle packing";
                         }
                         else {
@@ -727,8 +799,8 @@
                     }
                     break;
                 case "intent_glyphs_blinking":
-                    if ('{{ selected_item }}'){
-                        if (messageList[1]==="glyphs-radio-buttons"){
+                    if ('{{ selected_item }}') {
+                        if (messageList[1] === "glyphs-radio-buttons") {
                             $("#glyphs-radio-buttons .border").css({
                                 "border-style": "solid",
                                 "box-shadow": "0 0 20px 5px rgba(51, 217, 178, 1)",
@@ -743,9 +815,27 @@
                                     "animation": ""
 
                                 });
-                            }, 10000);
-                            e.text =  messageList[2];
+                            }, 8000);
+                            e.text = messageList[2];
 
+                            $("#features_accordion_button").css({
+                                "width": "calc(100% + 5px)",
+                                "height": "calc(100% + -18px)",
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                                "animation": "pulse-green-side-bar 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#features_accordion_button").css({
+                                    "width": "",
+                                    "height": "",
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "animation": ""
+                                });
+                            }, 8000);
 
                         }
 
@@ -775,6 +865,311 @@
 
                     }
                     break;
+                case "intent_targets_signal":
+                    if ('{{ selected_item }}'){
+                        if (messageList[1]==="targets_accordion_button"){
+                            $("#targets_accordion_button").css({
+                                "width": "calc(100% + 5px)",
+                                "height": "calc(100% + -18px)",
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                                "animation": "pulse-green-side-bar 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#targets_accordion_button").css({
+                                    "width": "",
+                                    "height": "",
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "animation": ""
+                                });
+                            }, 6000);
+
+                            $("#highlight_accordion_button").css({
+                                "width": "calc(100% + 5px)",
+                                "height": "calc(100% + -18px)",
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                                "animation": "pulse-green-side-bar 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#highlight_accordion_button").css({
+                                    "width": "",
+                                    "height": "",
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "animation": ""
+                                });
+                            }, 6000);
+
+                            $("#statistics-bar").css({
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "height": "210px",
+                                "padding-right": "25px",
+                                "animation": "pulse-green-side-bar 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#statistics-bar").css({
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "height": "",
+                                    "padding-right": "",
+                                    "animation": ""
+                                });
+                            }, 6000);
+                            e.text = messageList[2];
+
+
+                        }
+
+                    }
+                    break;
+                case "intent_features_signal":
+                    if ('{{ selected_item }}'){
+                        if (messageList[1]==="features_accordion_button"){
+                            $("#features_accordion_button").css({
+                                "width": "calc(100% + 5px)",
+                                "height": "calc(100% + -18px)",
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                                "animation": "pulse-green-side-bar 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#features_accordion_button").css({
+                                    "width": "",
+                                    "height": "",
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "animation": ""
+                                });
+                            }, 6000);
+                            e.text =  messageList[2];
+
+                        }
+
+                    }
+                    break;
+                case "intent_node_edge_signal":
+                    if ('{{ selected_item }}'){
+                        if (messageList[1]==="highlight_accordion_button"){
+                            $("#highlight_accordion_button").css({
+                                "width": "calc(100% + 5px)",
+                                "height": "calc(100% + -18px)",
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                                "animation": "pulse-green-side-bar 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#highlight_accordion_button").css({
+                                    "width": "",
+                                    "height": "",
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "animation": ""
+                                });
+                            }, 6000);
+                            e.text =  messageList[2];
+
+
+                        }
+
+                    }
+                    break;
+                case "intent_change_file_signal":
+                    if ('{{ selected_item }}'){
+                            $("#dataset_dropdown").css({
+                                "border": "10px solid #33FF66",
+                                "border-radius": "5px",
+                                "box-shadow": "0px 0px 10px 10px rgba(51, 217, 178, 1)",
+                                "animation": "pulse-green 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#dataset_dropdown").css({
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "animation": ""
+                                });
+                            }, 6000);
+                            e.text =  messageList[1];
+                    }
+                    break;
+                case "intent_features_definition_signals":
+                    if ('{{ selected_item }}') {
+                        $("#highlight_accordion_button").css({
+                            "width": "calc(100% + 5px)",
+                            "height": "calc(100% + -18px)",
+                            "border": "10px solid #33FF66",
+                            "border-radius": "10px",
+                            "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                            "animation": "pulse-green-side-bar 1.3s infinite"
+                        });
+                        setTimeout(function () {
+                            $("#highlight_accordion_button").css({
+                                "width": "",
+                                "height": "",
+                                "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
+                                "animation": ""
+                            });
+                        }, 6000);
+                        $("#features_accordion_button").css({
+                            "width": "calc(100% + 5px)",
+                            "height": "calc(100% + -18px)",
+                            "border": "10px solid #33FF66",
+                            "border-radius": "10px",
+                            "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                            "animation": "pulse-green-side-bar 1.3s infinite"
+                        });
+                        setTimeout(function () {
+                            $("#features_accordion_button").css({
+                                "width": "",
+                                "height": "",
+                                "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
+                                "animation": ""
+                            });
+                        }, 6000);
+
+                        e.text = messageList[1];
+                    }
+                    break;
+                case "intent_and_or_signal":
+                    if ('{{ selected_item }}') {
+                        $("#and_or_signal").css({
+                            "border": "10px solid #33FF66",
+                            "border-radius": "10px",
+                            "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                            "animation": "pulse-green-side-bar 1.3s infinite"
+                        });
+                        setTimeout(function () {
+                            $("#and_or_signal").css({
+                                "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
+                                "animation": ""
+                            });
+                        }, 6000);
+                        e.text = messageList[1]
+                        {#e.text = messageList[1] + "," +  " " + messageList[2]#}
+
+
+                    }
+                    break;
+                case "intent_summary_signal":
+                    if ('{{ selected_item }}') {
+                        $("#statistics-bar").css({
+                            "border": "10px solid #33FF66",
+                            "border-radius": "10px",
+                            "height": "210px",
+                            "padding-right": "25px",
+                            "animation": "pulse-green-side-bar 1.3s infinite"
+                        });
+                        setTimeout(function () {
+                            $("#statistics-bar").css({
+                                "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
+                                "height": "",
+                                "padding-right": "",
+                                "animation": ""
+                            });
+                        }, 6000);
+                        e.text = messageList[1]
+                    }
+                    break;
+                case "intent_subtrees_signal":
+                    if ('{{ selected_item }}') {
+                        $("#subtrees-btn").css({
+                            "border": "6px solid #33FF66",
+                            {#"border-radius": "10px",#}
+                            "box-shadow": "0px 0px 10px 10px rgba(51, 255, 102, 0.8)",
+                            "animation": "pulse-green 1.3s infinite"
+                        });
+                        setTimeout(function () {
+                            $("#subtrees-btn").css({
+                                "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
+                                "animation": ""
+                            });
+                        }, 6000);
+                        e.text = messageList[1]
+                    }
+                    break;
+                case "intent_tutorial_statistics_charts_signal":
+                    if ('{{ selected_item }}') {
+                        $("#statistics-bar").css({
+                            "border": "10px solid #33FF66",
+                            "border-radius": "10px",
+                            "height": "210px",
+                            "padding-right": "25px",
+                            "animation": "pulse-green-side-bar 1.3s infinite"
+                         });
+                        setTimeout(function () {
+                            $("#statistics-bar").css({
+                                "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
+                                "height": "",
+                                "padding-right": "",
+                                "animation": ""
+                            });
+                         }, 6000);
+                        $(window).trigger(messageList[1]);
+                        $("#select-chart-sub-data-modal, #select-chart-sub-type-modal").css({
+                            "width": "auto",
+                            "height": "calc(100%)",
+                            "border": "10px solid #33FF66",
+                            "border-radius": "10px",
+                            "box-shadow": "5px -5px 10px 5px rgba(51, 217, 178, 1)",
+                            "animation": "pulse-green-side-bar 1.2s infinite"
+                        });
+                        setTimeout(function () {
+                            $("#select-chart-sub-data-modal, #select-chart-sub-type-modal").css({
+                                "width": "",
+                                "height": "",
+                                "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
+                                "animation": ""
+                            });
+                        }, 6000);
+                        $("#chart_main_button").css({
+                            "height": "auto",
+                            "border": "5px solid #33FF66",
+                        });
+                        setTimeout(function () {
+                            $("#chart_main_button").css({
+                                "height": "",
+                                "border": "",
+                            });
+                        }, 6000);
+                        $("#chart_sub_button").css({
+                            "height": "auto",
+                            "border": "5px solid #33FF66",
+                         });
+                        setTimeout(function () {
+                            $("#chart_sub_button").css({
+                                "height": "",
+                                "border": ""
+                            });
+                         }, 6000);
+                        e.text = messageList[2]
+                    }
+                     break;
                 case "intent_switch_or_and":
                     if ('{{ selected_item }}') {
                         if (messageList[1] === "or_button" && document.getElementById("or_label").classList.contains("active")) {
@@ -928,6 +1323,119 @@
                         e.text = "Open a file first, in order to perform this action";
                     }
                     break;
+                case "intent_signal_additional_graphs":
+                    if ('{{ selected_item }}') {
+                        if (messageList[1] === "chart_main_button") {
+                            $("#chart_main_button").css({
+                                "width": "130px",
+                                "height": "calc(100% + -10px)",
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "box-shadow": "5px -5px 10px 5px rgba(51, 217, 178, 1)",
+                                "animation": "pulse-green-side-bar 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#chart_main_button").css({
+                                    "width": "",
+                                    "height": "",
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "animation": ""
+                                });
+                            }, 6000);
+                            $(window).trigger(messageList[2]);
+                            $("#select-chart-data-modal, #select-chart-type-modal").css({
+                                "width": "auto",
+                                "height": "calc(100%)",
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "box-shadow": "5px -5px 10px 5px rgba(51, 217, 178, 1)",
+                                "animation": "pulse-green-side-bar 1.2s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#select-chart-data-modal, #select-chart-type-modal").css({
+                                    "width": "",
+                                    "height": "",
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "animation": ""
+                                });
+                            }, 6000);
+                            e.text = messageList[3]
+                        }
+
+                        else if (messageList[1] === "chart_sub_button"){
+                            $("#chart_sub_button").css({
+                                "width": "130px",
+                                "height": "calc(100% + -10px)",
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                                "animation": "pulse-green-side-bar 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#chart_sub_button").css({
+                                    "width": "",
+                                    "height": "",
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "animation": ""
+                                });
+                            }, 6000);
+                            $(window).trigger(messageList[2]);
+                            $("#select-chart-sub-data-modal, #select-chart-sub-type-modal").css({
+                                "width": "auto",
+                                "height": "calc(100%)",
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "box-shadow": "5px -5px 10px 5px rgba(51, 217, 178, 1)",
+                                "animation": "pulse-green-side-bar 1.2s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#select-chart-sub-data-modal, #select-chart-sub-type-modal").css({
+                                    "width": "",
+                                    "height": "",
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "animation": ""
+                                });
+                            }, 6000);
+
+                            e.text = messageList[3]
+
+                        }
+                    }
+                    break;
+                case "intent_signal_level_one_button":
+                    if ('{{ selected_item }}') {
+                        if (messageList[1] === "chart_sub_button"){
+                            $("#chart_sub_button").css({
+                                "width": "130px",
+                                "height": "calc(100% + -10px)",
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                                "animation": "pulse-green-side-bar 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#chart_sub_button").css({
+                                    "width": "",
+                                    "height": "",
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "animation": ""
+                                });
+                            }, 10000);
+                            e.text = messageList[2]
+
+                        }
+                    }
+                    break;
                 case "intent_event":
                     if ('{{ selected_item }}') {
                         e.text = messageList[2];
@@ -1045,11 +1553,6 @@
 
 <script>
 
-
-
-</script>
-
-<script>
     // Returns the value of the delay time according to the message provided
     // It depends on the length of the message
     function getDelayChatMsg(message) {
@@ -1094,9 +1597,7 @@
                 },
                 onSocketEvent: {
                     'bot_uttered': botMessageEvent,
-                    'user_uttered': function (e) {
-                        console.log("User message: ", e.message.text);
-                    },
+                    'user_uttered': userMessageEvent,
                     'connect': function() {
                         console.log('connection established');
                         addNewFeatures();
@@ -1139,6 +1640,8 @@
         }),
         t.insertBefore(e, t.firstChild);
     })();
+
+
 </script>
 
 
@@ -1148,21 +1651,8 @@
 
 
 
-</script>
 
-{#<script>#}
-{##}
-{#    $(document).ready(function () {#}
-{#        $("#glyphs-radio-buttons").click(function () {#}
-{#            if ($("#glyphs-radio-buttons").css("border-style") === "dotted") {#}
-{#                $("#glyphs-radio-buttons").css("border-style", "none");#}
-{#            } else {#}
-{#                $("#glyphs-radio-buttons").css("border-style", "dotted");#}
-{#            }#}
-{#        });#}
-{#     });#}
-{##}
-{#</script>#}
+</script>
 
 {#<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.js"></script>#}
 {#<script>#}

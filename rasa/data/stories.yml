@@ -226,6 +226,28 @@ stories:
     - active_loop: null
     - action: action_open_document
 
+
+
+- story: Highlight a filter with filter name
+  steps:
+  - intent: highlight_check
+    entities:
+      - filter_name: "positive stance"
+  - action: action_highlight_check
+
+
+- story: Highlight a filter without filter name
+  steps:
+  - intent: show_node_and_edge
+  - action: utter_which_node_and_edge
+  - intent: highlight_check
+    entities:
+      - filter_name: "positive stance"
+  - action: action_highlight_check
+
+
+
+
 - story: User says start analysis
   steps:
   - intent: greet
@@ -234,22 +256,19 @@ stories:
   - action: utter_start_analysis
 
 
-
 - story: start analysis
   steps:
     - intent: start_analysis
     - action: utter_start_analysis
 
 
-
 - story: New scenario with guidance without affirm/deny 1
   steps:
     - intent: greet
     - action: utter_offers_help
-    - intent: help_what_can_you_do
-    - action: utter_help_what_can_you_do_one
-    - action: utter_help_what_can_you_do_two
-    - action: utter_help_what_can_you_do_three
+    - intent: reminder_high_level_questions
+    - action: utter_reminder_high_level_questions_one
+    - action: utter_reminder_high_level_questions_two
     - intent: most_toxic_thread
     - action: utter_most_toxic_thread
     - intent: most_tagged_features
@@ -258,8 +277,6 @@ stories:
     - action: utter_explain_glyphs_one
     - action: utter_explain_glyphs_two
     - action: utter_explain_glyphs_three
-    - intent: what_can_do_after_glyphs
-    - action: utter_guide_bar_charts
     - intent: statistics_features_subtrees
     - action: utter_statistics_features_subtrees
     - action: utter_help_bar_chart_pop_up
@@ -269,10 +286,9 @@ stories:
   steps:
     - intent: greet
     - action: utter_offers_help
-    - intent: help_what_can_you_do
-    - action: utter_help_what_can_you_do_one
-    - action: utter_help_what_can_you_do_two
-    - action: utter_help_what_can_you_do_three
+    - intent: reminder_high_level_questions
+    - action: utter_reminder_high_level_questions_one
+    - action: utter_reminder_high_level_questions_two
     - intent: largest_thread
     - action: utter_largest_thread
     - intent: longest_thread
@@ -288,8 +304,6 @@ stories:
     - action: utter_explain_glyphs_three
 
 
-
-
 - story: explaining glyphs with multiple steps
   steps:
     - intent: help_glyphs
@@ -298,71 +312,23 @@ stories:
     - action: utter_explain_glyphs_three
 
 
-
 - story: left bar help
   steps:
-    - intent: features_on_the_left
+    - intent: help_colour_features
     - action: utter_explain_features_tab
     - intent: targets_help
     - action: utter_explain_targets_one
     - action: utter_explain_targets_two
-    - action: utter_explain_targets_three
-    - action: utter_explain_targets_four
-    - action: utter_explain_targets_five
     - intent: thanks
     - action: utter_you_are_welcome
+
 
 - story: target
   steps:
     - intent: targets_help
     - action: utter_explain_targets_one
     - action: utter_explain_targets_two
-    - action: utter_explain_targets_three
-    - action: utter_explain_targets_four
-    - action: utter_explain_targets_five
 
-
-
-
-#- story: Analysis scenario 1 positive
-#  steps:
-#    - intent: greet
-#    - action: utter_offers_help
-#    - intent: most_toxic_thread
-#    - action: utter_most_toxic_thread
-#    - intent: most_tagged_features
-#    - action: utter_most_tagged_features
-#    - intent: affirm
-#    - action: utter_statistics_features_subtrees
-#    - action: utter_help_glyphs
-#    - intent: statistics_features_tree
-#    - action: utter_statistics_features_tree
-#    - action: utter_help_bar_chart_pop_up
-
-
-#- story: Analysis scenario 1 negative
-#  steps:
-#    - intent: greet
-#    - action: utter_offers_help
-#    - intent: most_toxic_thread
-#    - action: utter_most_toxic_thread
-#    - intent: most_tagged_features
-#    - action: utter_most_tagged_features
-#    - intent: deny
-#    - action: utter_user_deny_help
-
-
-#- story: Analysis scenario 2 positive
-#  steps:
-#    - intent: greet
-#    - action: utter_offers_help
-#    - intent: highlight_check
-#    - action: action_highlight_check
-#    - intent: most_tagged_features
-#    - action: utter_most_tagged_features
-#    - intent: affirm
-#    - action: utter_statistics_features_subtrees
-#    - action: utter_help_glyphs
 
 - story: Analysis scenario 3
   steps:
@@ -374,20 +340,19 @@ stories:
     - action: utter_longest_thread
 
 
-
-
 - story: Help Scenario
   steps:
     - intent: greet
     - action: utter_offers_help
-    - intent: tool_help
-    - action: utter_general_help
-    - intent: help_sub_structure
-    - action: utter_help_sub_structure
+    - intent: reminder_help
+    - action: utter_reminder_help
+    - intent: reminder_high_level_questions
+    - action: utter_reminder_high_level_questions_one
+    - action: utter_reminder_high_level_questions_two
     - intent: thanks
     - action: utter_you_are_welcome
     - intent: help_main_graph_barchart
-    - action: utter_help_main_bar
+    - action: utter_help_main_bar_one
     - intent: statistics_help
     - action: utter_help_main_bar_three
     - intent: help_layouts
@@ -404,75 +369,32 @@ stories:
     - action: utter_help_layouts_two
 
 
-
 - story: User wants to know about statistics
   steps:
     - intent: help_main_graph_barchart
-    - action: utter_help_main_bar
+    - action: utter_help_main_bar_one
     - intent: statistics_help
     - action: utter_help_main_bar_three
+
 
 - story: User wants to know about sub graphs button
   steps:
     - intent: help_subtree_barchart
     - action: utter_help_subtree_bar
 
-#- story: button image test
-#  steps:
-#    - intent: test_in
-#    - action: action_image_test
-#    - action: utter_test
-
-
-#- story: showing the features of our system 1
-#  steps:
-#    - intent: greet
-#    - action: utter_offers_help
-#    - intent: help_what_can_you_do
-#    - action: utter_help_what_can_you_do
-#    - intent: largest_thread
-#    - action: utter_largest_thread
-#    - intent: statistics_features_subtrees
-#    - action: utter_statistics_features_subtrees
-#    - intent: help_glyphs
-#    - action: utter_explain_glyphs
-#    - intent: change_layout_tree
-#    - action: utter_change_layout_tree
-
 
 - story: showing the features of our system 2
   steps:
     - intent: greet
     - action: utter_offers_help
-    - intent: help_what_can_you_do
-    - action: utter_help_what_can_you_do_one
-    - action: utter_help_what_can_you_do_two
-    - action: utter_help_what_can_you_do_three
+    - intent: reminder_high_level_questions
+    - action: utter_reminder_high_level_questions_one
+    - action: utter_reminder_high_level_questions_two
     - intent: widest_level
     - action: utter_widest_level
-    - intent: highlight_check
-    - action: action_highlight_check
     - intent: statistics_features_subtrees
     - action: utter_statistics_features_subtrees
     - action: utter_help_bar_chart_pop_up
-
-#
-#- story: showing the features of our system 3
-#  steps:
-#    - intent: greet
-#    - action: utter_offers_help
-#    - intent: help_what_can_you_do
-#
-#    - intent: longest_thread
-#    - action: utter_longest_thread
-#    - intent: help_main_graph_barchart
-#    - action: utter_help_main_bar
-#    - action: utter_asking_about_barchart
-#    - intent: affirm
-#    - action: utter_statistics_features_tree
-#    - action: utter_help_bar_chart_pop_up
-
-
 
 
 #- story: interactive_story_1

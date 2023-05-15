@@ -23,6 +23,7 @@
     <script src="https://cdn.jsdelivr.net/npm/d3-hierarchy@3"></script>
     <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.min.js" integrity="sha512-tQYZBKe34uzoeOjY9jr3MX7R/mo7n25vnqbnrkskGr4D6YOoPYSpyafUAzQVjV6xAozAqUFIEFsCO4z8mnVBXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.umd.js" integrity="sha512-gQhCDsnnnUfaRzD8k1L5llCCV6O9HN09zClIzzeJ8OJ9MpGmIlCxm+pdCkqTwqJ4JcjbojFr79rl2F1mzcoLMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static 'js/console_override.js' %}"></script>
     <script src="{% static 'js/shared_functions.js' %}"></script>
 </head>
 
@@ -47,6 +48,21 @@
         {#animation: pulse-green 2s infinite#}
 
     }
+
+   
+
+    {##subtrees-btn{#}
+        {#position: absolute;#}
+        {#width: calc(100% + 5px); /* extend the width of the border to cover the entire box */#}
+        {#height: calc(100% + -18px); /* extend the height of the border to cover the entire box */#}
+    {#    border: 10px solid #33FF66; /* set the border style */#}
+    {#    border-radius: 10px; /* set the border radius */#}
+        {#opacity: 1;#}
+    {#    box-shadow: 0px 0px 10px 10px rgba(51, 255, 102, 0.8); /* set the box shadow */#}
+    {#    animation: pulse-green 2s infinite#}
+    {##}
+    {#}#}
+
 
 
 @keyframes pulse-green-layout {
@@ -370,6 +386,9 @@
             <img class="navbar-glyphs-radio-img" src="{% static 'images/nav_bar/trivial.svg' %}" style="width: 60px;">
         </label>
     </div>
+
+{#        <button onclick="saveConsoleOutput()">Save Console Output</button>#}
+
 
 </div>
 

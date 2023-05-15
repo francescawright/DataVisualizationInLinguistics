@@ -9,7 +9,6 @@ nlu:
     - hello there
     - good morning
     - good evening
-    - moin
     - hey there
     - let's go
     - hey dude
@@ -23,13 +22,14 @@ nlu:
     - thanks
     - thank you very much
     - thanks a lot
+    - thank you so much
+    - ty
 
 - intent: goodbye
   examples: |
-    - good afternoon
     - cu
-    - good by
-    - cee you later
+    - good bye
+    - see you later
     - good night
     - bye
     - goodbye
@@ -56,8 +56,8 @@ nlu:
     - yeah
     - yep
     - all right
+    - alright
     - aye
-    - beyond a doubt
     - by all means
     - certainly
     - definitely
@@ -84,7 +84,7 @@ nlu:
     - nop
     - nope
     - I don't think so
-    - don't like that
+    - not like that
     - no way
     - not really
     - negative
@@ -102,10 +102,10 @@ nlu:
     - cancel form
     - exit the form
     - skip form
-    - I do not want to open a document
+    - I do not want to open a file
     - cancel document opening
-    - cancel the opening of the document
-    - do not open a document
+    - cancel the opening of the file
+    - do not open a file
     - I do not want to create a user
     - I do not want to log in
     - I've changed my mind
@@ -118,6 +118,8 @@ nlu:
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+    - what are you?
+    - who are you?
 
 - synonym: logout
   examples: |
@@ -127,6 +129,10 @@ nlu:
     - close
     - exit
     - leave
+    - sign out
+    - sign-out
+    - sign off
+    - quit
 
 - intent: logout
   examples: |
@@ -134,9 +140,13 @@ nlu:
     - I want to [exit]{"entity": "action_requested", "value": "logout"} the session
     - I want to [close]{"entity": "action_requested", "value": "logout"} my session
     - log me out
+    - sign me out
+    - sign me off
+    - I want to log out of the session
     - [logout]{"entity": "action_requested", "value": "logout"}
     - [leave]{"entity": "action_requested", "value": "logout"} the session
     - [log-out]{"entity": "action_requested", "value": "logout"} my session
+#HACER
 
 - synonym: login
   examples: |
@@ -146,8 +156,10 @@ nlu:
     - access
     - log on
     - sign in
-    - open
-    - start
+    - log-on
+    - login
+    - open session
+  
 
 - intent: login
   examples: |
@@ -169,6 +181,7 @@ nlu:
     - sign up
     - sign-up
     - register
+    - make an account
 
 - intent: signup
   examples: |
@@ -179,173 +192,236 @@ nlu:
     - sign me up
     - [register]{"entity": "action_requested", "value": "signup"} me
     - [signup]{"entity": "action_requested", "value": "signup"}
+
 # layouts
 - synonym: layout
   examples: |
+    - visualisation layout
     - visualization layout
-    - display layout
-    - design
-    - visualization design
-    - display design
+    - visualisation design
+    - visualisation type
+    - visualisation
+    
 
 - synonym: tree
   examples: |
     - tree layout
-    - tree visualization
-    - tree design
     - first visualization
-    - first design
+    - 1st visualization
+    - 1 visualization
+    - visualization 1
+    - visualization one
+    - 1st visualisation
+    - 1 visualisation
+    - visualisation 1
+    - visualisation one
     - first layout
+
 
 - synonym: force
   examples: |
     - force layout
     - force visualization
-    - force design
+    - force visualisation
     - second visualization
-    - second design
+    - second visualisation
     - second layout
+    - 2nd layout
+
 
 - synonym: radial
   examples: |
     - radial layout
     - radial visualization
-    - radial design
+    - radial visualisation
     - third visualization
-    - third design
+    - third visualisation
     - third layout
+    - 3rd layout
+
 
 - synonym: circle
   examples: |
-    - circle
     - circle layout
     - circle visualization
-    - circle design
+    - circle visualisation
     - circle packing
-    - circle packing visualization
-    - circle packing design
     - fourth visualization
-    - fourth design
+    - fourth visualisation
     - fourth layout
     - last visualization
-    - last design
-    - last layout
+    - last visualisation
+    - 4th layout
+
 
 - intent: change_layout
-  examples: |
+  examples: |   
     - I want to change the [visualization layout]{"entity": "object_requested", "value": "layout"}
-    - I want to change the [display layout]{"entity": "object_requested", "value": "layout"}
-    - Change [design]{"entity": "object_requested", "value": "layout"}
-    - I want to see another [display design]{"entity": "object_requested", "value": "layout"}
-    - I would like to see another [visualization design]{"entity": "object_requested", "value": "layout"}
-    - Other [layout]{"entity": "object_requested", "value": "layout"}
+    - Can you swap the [layout]{"entity": "object_requested", "value": "layout"} display
+    - I was hoping you could show me another [layout]{"entity": "object_requested", "value": "layout"} design
+    - Could I possibly choose another [visualisation type]{"entity": "object_requested", "value": "layout"}
+    - Would you be able to use a different [layout]{"entity": "object_requested", "value": "layout"} option
+    - Could you possibly show me other [visualisation]{"entity": "object_requested", "value": "layout"}
+    - Would it be possible for you to display features with another [visualization layout]{"entity": "object_requested", "value": "layout"} style
+    - Show me other [visualization layout]{"entity": "object_requested", "value": "layout"} types
+    - Would you visualise the features in [layout]{"entity": "object_requested", "value": "layout"}
+    - I was wondering if I could select another [visualisation layout]{"entity": "object_requested", "value": "layout"} option
+    - What are the other [visualization layout]{"entity": "object_requested", "value": "layout"} choices
+    - Are there any other [visualization]{"entity": "object_requested", "value": "layout"} I can use
+    - Switch the [visualisation type]{"entity": "object_requested", "value": "layout"} format
+    - Change [layout]{"entity": "object_requested", "value": "layout"}
+
+   
 
 - intent: change_layout_tree
   examples: |
-    - Change the [layout]{"entity": "object_requested", "value": "layout"} to [tree]{"entity": "layout_requested", "value": "tree"}
-    - Change [design]{"entity": "object_requested", "value": "layout"} to [tree visualization]{"entity": "layout_requested", "value": "tree"}
-    - Set the [tree design]{"entity": "layout_requested", "value": "tree"}
-    - Set [tree layout]{"entity": "layout_requested", "value": "tree"}
-    - Set the [design]{"entity": "object_requested", "value": "layout"} to the [tree visualization]{"entity": "layout_requested", "value": "tree"}
-    - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [tree]{"entity": "layout_requested", "value": "tree"}
-    - Displays the [tree layout]{"entity": "layout_requested", "value": "tree"}
-    - Displays [tree visualization]{"entity": "layout_requested", "value": "tree"}
-    - I want to see the [tree design]{"entity": "layout_requested", "value": "tree"}
-    - I would like to see the [tree]{"entity": "layout_requested", "value": "tree"}
-    - Show me the [tree layout]{"entity": "layout_requested", "value": "tree"}
-    - [tree]{"entity": "layout_requested", "value": "tree"}
+    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [tree layout]{"entity": "layout_requested", "value": "tree"}
+    - Can you swap the [layout]{"entity": "object_requested", "value": "layout"} to [1st visualization]{"entity": "layout_requested", "value": "tree"} layout
+    - I was hoping you could bring up [tree layout]{"entity": "layout_requested", "value": "tree"} style
+    - Could I possibly choose to [tree visualization]{"entity": "layout_requested", "value": "tree"} type
+    - Would you be able to use to [visualisation 1]{"entity": "layout_requested", "value": "tree"} option
+    - Could you possibly show me [first visualisation]{"entity": "layout_requested", "value": "tree"} format
+    - Would it be possible for you to display features with [1st layout]{"entity": "layout_requested", "value": "tree"} display
+    - Show me [layout one]{"entity": "layout_requested", "value": "tree"}
+    - Would you visualise the current display as [tree layout]{"entity": "layout_requested", "value": "tree"} 
+    - I was wondering if I could select [first layout]{"entity": "layout_requested", "value": "tree"} display
+    - Let me choose [tree]{"entity": "layout_requested", "value": "tree"} option
+    - Let's visualise the selected features in [visualisation one]{"entity": "layout_requested", "value": "tree"} format
+    - Change layout to [tree]{"entity": "layout_requested", "value": "tree"} design
+
 
 - intent: change_layout_force
   examples: |
-    - Change the [layout]{"entity": "object_requested", "value": "layout"} to [force]{"entity": "layout_requested", "value": "force"}
-    - Change [design]{"entity": "object_requested", "value": "layout"} to [force visualization]{"entity": "layout_requested", "value": "force"}
-    - Set the [force design]{"entity": "layout_requested", "value": "force"}
-    - Set [force layout]{"entity": "layout_requested", "value": "force"}
-    - Set the [design]{"entity": "object_requested", "value": "layout"} to the [force visualization]{"entity": "layout_requested", "value": "force"}
-    - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [force]{"entity": "layout_requested", "value": "force"}
-    - Displays the [force layout]{"entity": "layout_requested", "value": "force"}
-    - Displays [force visualization]{"entity": "layout_requested", "value": "force"}
-    - I want to see the [force design]{"entity": "layout_requested", "value": "force"}
-    - I would like to see the [force]{"entity": "layout_requested", "value": "force"}
-    - Show me the [force layout]{"entity": "layout_requested", "value": "force"}
-    - [force]{"entity": "layout_requested", "value": "force"}
+    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [force]{"entity": "layout_requested", "value": "force"} design
+    - Can you swap the [layout]{"entity": "object_requested", "value": "layout"} to the [second layout]{"entity": "layout_requested", "value": "force"} layout
+    - I was hoping you could bring up [force layout]{"entity": "layout_requested", "value": "force"} style
+    - Could I possibly choose to [second layout]{"entity": "layout_requested", "value": "force"} type
+    - Would you be able to use to [second visualisation]{"entity": "layout_requested", "value": "force"} option
+    - Could you possibly show me [force visualization]{"entity": "layout_requested", "value": "force"} format
+    - Would it be possible for you to display features with [force]{"entity": "layout_requested", "value": "force"} display
+    - Show me [second visualization]{"entity": "layout_requested", "value": "force"}
+    - Would you visualise the current display as [layout two]{"entity": "layout_requested", "value": "force"}
+    - I was wondering if I could select [second layout]{"entity": "layout_requested", "value": "force"} display
+    - Let me choose [second layout]{"entity": "layout_requested", "value": "force"} option
+    - Let's visualise the selected features in [2nd layout]{"entity": "layout_requested", "value": "force"} format
+    - Can you show me [visualisation two]{"entity": "layout_requested", "value": "force"} display
+    - Select [layout 2]{"entity": "layout_requested", "value": "force"} display
+    - Let me choose [2nd visualisation]{"entity": "layout_requested", "value": "force"} option
+    - Let's visualise the selected features in [force layout]{"entity": "layout_requested", "value": "force"} format
+    - Change layout to [force layout]{"entity": "layout_requested", "value": "force"} design
+    - Can I look at features in [visualisation 2]{"entity": "layout_requested", "value": "force"}
 
 - intent: change_layout_radial
   examples: |
-    - Change the [layout]{"entity": "object_requested", "value": "layout"} to [radial]{"entity": "layout_requested", "value": "radial"}
-    - Change [design]{"entity": "object_requested", "value": "layout"} to [radial visualization]{"entity": "layout_requested", "value": "radial"}
-    - Set the [radial design]{"entity": "layout_requested", "value": "radial"}
-    - Set [radial layout]{"entity": "layout_requested", "value": "radial"}
-    - Set the [design]{"entity": "object_requested", "value": "layout"} to the [radial visualization]{"entity": "layout_requested", "value": "radial"}
-    - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [radial]{"entity": "layout_requested", "value": "radial"}
-    - Displays the [radial layout]{"entity": "layout_requested", "value": "radial"}
-    - Displays [radial visualization]{"entity": "layout_requested", "value": "radial"}
-    - I want to see the [radial design]{"entity": "layout_requested", "value": "radial"}
-    - I would like to see the [radial]{"entity": "layout_requested", "value": "radial"}
-    - Show me the [radial layout]{"entity": "layout_requested", "value": "radial"}
-    - [radial]{"entity": "layout_requested", "value": "radial"}
+    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [radial]{"entity": "layout_requested", "value": "radial"}
+    - Can you swap the [layout]{"entity": "object_requested", "value": "layout"} to the [3rd visualisation]{"entity": "layout_requested", "value": "radial"} layout
+    - I was hoping you could bring up [3rd layout]{"entity": "layout_requested", "value": "radial"} style
+    - Could I possibly choose to [visualisation 3]{"entity": "layout_requested", "value": "radial"} type
+    - Would you be able to use to [layout 3]{"entity": "layout_requested", "value": "radial"} option
+    - Could you possibly show me [visualisation three]{"entity": "layout_requested", "value": "radial"} format
+    - Would it be possible for you to display features with [layout three]{"entity": "layout_requested", "value": "radial"} display
+    - Show me [radial]{"entity": "layout_requested", "value": "radial"}
+    - Would you visualise the current display as [radial layout]{"entity": "layout_requested", "value": "radial"} 
+    - I was wondering if I could select [radial layout]{"entity": "layout_requested", "value": "radial"} display
+    - Let me choose [radial]{"entity": "layout_requested", "value": "radial"} option
+    - Let's visualise the selected features in [3rd layout]{"entity": "layout_requested", "value": "radial"} format
+    - Change layout to [third visualisation]{"entity": "layout_requested", "value": "radial"} design
+    - Can I look at features in [third layout]{"entity": "layout_requested", "value": "radial"}
+   
 
 - intent: change_layout_circle
-  examples: |
-    - Change the [layout]{"entity": "object_requested", "value": "layout"} to [circle]{"entity": "layout_requested", "value": "circle"}
-    - Change [design]{"entity": "object_requested", "value": "layout"} to [circle visualization]{"entity": "layout_requested", "value": "circle"}
-    - Set the [circle design]{"entity": "layout_requested", "value": "circle"}
-    - Set [circle layout]{"entity": "layout_requested", "value": "circle"}
-    - Set the [design]{"entity": "object_requested", "value": "layout"} to the [circle visualization]{"entity": "layout_requested", "value": "circle"}
-    - Set [visualization layout]{"entity": "object_requested", "value": "layout"} to [circle packing]{"entity": "layout_requested", "value": "circle"}
-    - Displays the [circle layout]{"entity": "layout_requested", "value": "circle"}
-    - Displays [circle packing visualization]{"entity": "layout_requested", "value": "circle"}
-    - I want to see the [circle packing design]{"entity": "layout_requested", "value": "circle"}
-    - I would like to see the [circle]{"entity": "layout_requested", "value": "circle"}
-    - Show me the [circle layout]{"entity": "layout_requested", "value": "circle"}
-    - [circle packing]{"entity": "layout_requested", "value": "circle"}
+  examples: |    
+    - I want to change the [layout]{"entity": "object_requested", "value": "layout"} to [circle visualization]{"entity": "layout_requested", "value": "circle"}
+    - Can you swap the [layout]{"entity": "object_requested", "value": "layout"} to the [fourth layout]{"entity": "layout_requested", "value": "circle"} layout
+    - I was hoping you could bring up [fourth visualisation]{"entity": "layout_requested", "value": "circle"} style
+    - Could I possibly choose to [4th layout]{"entity": "layout_requested", "value": "circle"} type
+    - Would you be able to use to [4th visualisation]{"entity": "layout_requested", "value": "circle"} option
+    - Could you possibly show me [visualisation four]{"entity": "layout_requested", "value": "circle"} format
+    - Would it be possible for you to display features with [layout four]{"entity": "layout_requested", "value": "circle"} display
+    - Show me [circle]{"entity": "layout_requested", "value": "circle"}
+    - Would you visualise the current display as [visualisation 4]{"entity": "layout_requested", "value": "circle"} 
+    - I was wondering if I could select [layout 4]{"entity": "layout_requested", "value": "circle"} display
+    - Let me choose the [last layout]{"entity": "layout_requested", "value": "circle"} option
+    - Let's visualise the selected features in the [last visualisation]{"entity": "layout_requested", "value": "circle"} format
+    - Change layout to [last]{"entity": "layout_requested", "value": "circle"} design
+    - Can I look at features in [last layout]{"entity": "layout_requested", "value": "circle"}
+    - Visualise me [circle layout]{"entity": "layout_requested", "value": "circle"} style
+    - Would you be able to use to [last visualization]{"entity": "layout_requested", "value": "circle"} option
+    - Could you possibly show me [circle visualization]{"entity": "layout_requested", "value": "circle"} format
+    - Show me [circle packing]{"entity": "layout_requested", "value": "circle"} design
+    - Let me see the [last layout]{"entity": "layout_requested", "value": "circle"} option
+    - Let's visualise the selected features in [fourth visualization]{"entity": "layout_requested", "value": "circle"} format
+    - Display the data in the [last visualisation]{"entity": "layout_requested", "value": "circle"}
+
 
 # glyph change
 
 - intent: change_glyph_dots
   examples: |
-    - Change the [glyph]{"entity": "object_requested", "value": "glyph"} to [dots]{"entity": "glyph_requested", "value": "dots"}
-    - Set the [dots]{"entity": "glyph_requested", "value": "dots"}
-    - Display the [dots]{"entity": "glyph_requested", "value": "dots"}
-    - I want to see the [dots]{"entity": "glyph_requested", "value": "dots"} as glyph
-    - I would like to see the [dots]{"entity": "glyph_requested", "value": "dots"} as glyph
-    - Show me the [dots]{"entity": "glyph_requested", "value": "dots"}
-    - [dots]{"entity": "glyph_requested", "value": "dots"}
-    - Show [dots]{"entity": "glyph_requested", "value": "dots"}
-    - Chnage to [dots]{"entity": "glyph_requested", "value": "dots"}
+    - I want to change the [glyph]{"entity": "object_requested", "value": "glyph"} to [dots]{"entity": "glyph_requested", "value": "dots"}
+    - Can you swap the [glyph]{"entity": "object_requested", "value": "glyph"} to [dots]{"entity": "glyph_requested", "value": "dots"}
+    - I was hoping you could bring up [dots]{"entity": "glyph_requested", "value": "dots"} style glyph
+    - Could I possibly choose to [dots]{"entity": "glyph_requested", "value": "dots"} glyph type
+    - Would you be able to use to [dots]{"entity": "glyph_requested", "value": "dots"} glyph
+    - Could you possibly show me [dots]{"entity": "glyph_requested", "value": "dots"} glyph format
+    - Would it be possible for you to display features with to [dots]{"entity": "glyph_requested", "value": "dots"} style glyph
+    - Show me [dots]{"entity": "glyph_requested", "value": "dots"} style
+    - Would you visualise the colour features as [dots]{"entity": "glyph_requested", "value": "dots"} glyphs
+    - I was wondering if I could select [dots]{"entity": "glyph_requested", "value": "dots"} display
+    - Let me choose [dots]{"entity": "glyph_requested", "value": "dots"} option
+    - Let's visualise the selected features in [dots]{"entity": "glyph_requested", "value": "dots"} glyphs
 
 - intent: change_glyph_circular
   examples: |
-    - Change the [glyph]{"entity": "object_requested", "value": "glyph"} to [circular]{"entity": "glyph_requested", "value": "circular"}
-    - Set the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - Display the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - I want to see the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - I would like to see the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - Show me the [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - Show [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-    - Chnage to [circular]{"entity": "glyph_requested", "value": "circular"} glyph
-
+    - I want to change the [glyph]{"entity": "object_requested", "value": "glyph"} to [circular]{"entity": "glyph_requested", "value": "circular"}
+    - Can you swap the [glyph]{"entity": "object_requested", "value": "glyph"} to [circular]{"entity": "glyph_requested", "value": "circular"}
+    - I was hoping you could bring up [circular]{"entity": "glyph_requested", "value": "circular"} style glyph
+    - Could I possibly choose to [circular]{"entity": "glyph_requested", "value": "circular"} glyph type
+    - Would you be able to use to [circular]{"entity": "glyph_requested", "value": "circular"} glyph
+    - Could you possibly show me [circular]{"entity": "glyph_requested", "value": "circular"} glyph format
+    - Would it be possible for you to display features with to [circular]{"entity": "glyph_requested", "value": "circular"} style glyph
+    - Show me [circular]{"entity": "glyph_requested", "value": "circular"} style
+    - Would you visualise the colour features as [circular]{"entity": "glyph_requested", "value": "circular"} glyphs
+    - I was wondering if I could select [circular]{"entity": "glyph_requested", "value": "circular"} display
+    - Let me choose [circular]{"entity": "glyph_requested", "value": "circular"} option
+    - Let's visualise the selected features in [circular]{"entity": "glyph_requested", "value": "circular"} glyphs
 
 - intent: change_glyph_trivial
-  examples: |
-    - Change the [glyph]{"entity": "object_requested", "value": "glyph"} to [trivial]{"entity": "glyph_requested", "value": "trivial"}
-    - Set the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - Display the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - I want to see the [trivial]{"entity": "glyph_requested", "value": "trivial"}
-    - I would like to see the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - Show me the [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - Show [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
-    - Chnage to [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese
+  examples: |    
+    - I want to change the [glyph]{"entity": "object_requested", "value": "glyph"} to [trivial]{"entity": "glyph_requested", "value": "trivial"}
+    - Can you swap the [glyph]{"entity": "object_requested", "value": "glyph"} to [trivial]{"entity": "glyph_requested", "value": "trivial"}
+    - I was hoping you could bring up [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese style glyph
+    - Could I possibly choose to [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese glyph type
+    - Would you be able to use to [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese glyph
+    - Could you possibly show me  [trivial]{"entity": "glyph_requested", "value": "trivial"} glyph format
+    - Would it be possible for you to display features with to [trivial]{"entity": "glyph_requested", "value": "trivial"} style glyph
+    - Show me [trivial]{"entity": "glyph_requested", "value": "trivial"} style
+    - Would you visualise the colour features as [trivial]{"entity": "glyph_requested", "value": "trivial"} glyphs
+    - I was wondering if I could select [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese display
+    - Let me choose [trivial]{"entity": "glyph_requested", "value": "trivial"} option
+    - Let's visualise the selected features in [trivial]{"entity": "glyph_requested", "value": "trivial"} cheese glyphs
 
 - intent: change_glyphs
   examples: |
     - I want to change the [glyph]{"entity": "object_requested", "value": "glyph"}
-    - Change [glyph]{"entity": "object_requested", "value": "glyph"}
-    - I want to see another [glyph]{"entity": "object_requested", "value": "glyph"}
-    - I would like to see another [glyph]{"entity": "object_requested", "value": "glyph"}
-    - Other [glyph]{"entity": "object_requested", "value": "glyph"}
+    - Can you swap the [glyph]{"entity": "object_requested", "value": "glyph"}
+    - I was hoping you could show me another [glyph]{"entity": "object_requested", "value": "glyph"}
+    - Could I possibly choose another [glyph]{"entity": "object_requested", "value": "glyph"} type
+    - Would you be able to use a different [glyph]{"entity": "object_requested", "value": "glyph"}
+    - Could you possibly show me other [glyph]{"entity": "object_requested", "value": "glyph"} options
+    - Would it be possible for you to display features with another [glyph]{"entity": "object_requested", "value": "glyph"} style
+    - Show me other [glyph]{"entity": "object_requested", "value": "glyph"}
+    - Would you visualise the colour features as [glyph]{"entity": "object_requested", "value": "glyph"}
+    - I was wondering if I could select another [glyph]{"entity": "object_requested", "value": "glyph"} display
+    - What are the other [glyph]{"entity": "object_requested", "value": "glyph"} choices
+    - Are there any other [glyph]{"entity": "object_requested", "value": "glyph"} I can use
+    - Switch the [glyph]{"entity": "object_requested", "value": "glyph"} format
+# would i be able to see the other glyph options that I can use?- yes
+# what are the available glyph options?- yes
+# change to glyph-yes
+# display the features in glyphs-yes
+# other glyphs- yes
+# set the glyphs- yes
 
 #- regex: document_requested
 #  examples: |
@@ -358,51 +434,64 @@ nlu:
 - intent: select_document
   examples: |
     - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - I want you to open [Compact_200]{"entity": "document_requested"}
+    - I would like you to show me the [20190519_SO]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} 
+    - Can you open for me [531_MI]{"entity": "document_requested"}
+    - I was hoping you could bring up [test2]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} for me
+    - Would you be able to select [test4-Com]{"entity": "document_requested"}
+    - Would it be possible for you to choose [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - I'd like to analyse [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Begin analysis of  [20190519_SO]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - May I look at [test]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Would I be able to start the analysis of [20170819_CR]{"entity": "document_requested"}
+    - Could you possibly start with [531_MI]{"entity": "document_requested"}
+    - Let me see [test]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Choose [20170819]{"entity": "document_requested"} to analyse first
+    - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
     - Open [Compact_200]{"entity": "document_requested"}
     - Open [document]{"entity": "object_requested", "value": "document"}
-    - Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
     - Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
     - Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
     - I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
     - I want to open a [file]{"entity": "object_requested", "value": "document"}
     - I want to open [wide]{"entity": "document_requested"}
     - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
-    - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
+
+#- Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
+#   - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
+  
+  #Let's analyse 20200608_SO- yes
+# bring up file 20200608_SO- yes
+# let's begin with file 20200608_SO - yes
 
 # Ask bot to change to OR / AND
 - intent: switch_or
   examples: |
-    - Change to or
-    - Switch to OR
-    - I want to switch to OR
     - I want to change to or
-    - I would like to switch to or
-    - I would like to change to RO
-    - I want to change the highlights to RO
-    - I want to change highlights to or
-    - I want to switch the highlights to or
-    - I want to switch highlights to OR
-    - Change the highlight to OR
-    - Change highlight to or
-    - Switch the highlight to or
-    - Switch highlight to OR
+    - I would like to switch to OR
+    - Can you to adjust to OR
+    - Could I want to change to and to or
+    - I was hoping you could switch and for or
+    - I was wondering if you could exchange and for or
+    - Would it be possible to change the highlight from and to or
+    - Would you be able to adjust highlighting to or
+    - Could you possibly select or 
+    - May you change the visualising options to OR
+# Put the select type as OR- yes
+
 
 - intent: switch_and
   examples: |
-    - Change to and
-    - Switch to AND
-    - I want to switch to AND
     - I want to change to and
-    - I would like to switch to and
-    - I would like to change to AND
-    - I want to change the highlights to AND
-    - I want to change highlights to and
-    - I want to switch the highlights to and
-    - I want to switch highlights to AND
-    - Change the highlight to AND
-    - Change highlight to and
-    - Switch the highlight to and
-    - Switch highlight to AND
+    - I would like to switch to AND
+    - Can you to adjust to AND
+    - Could I want to change to or to AND
+    - I was hoping you could switch or for and
+    - I was wondering if you could exchange or for and
+    - Would it be possible to change the highlight from or to and
+    - Would you be able to adjust highlighting to and
+    - Could you possibly select and 
+    - May you change the visualising options to AND
 
 # toxicity--> not toxic, mildly toxic, toxic, very toxic
 
@@ -455,412 +544,340 @@ nlu:
     - Switch [toxic level 1]{"entity": "filter_name"}, [least toxic]{"entity": "filter_name"} and [toxic]{"entity": "filter_name"} filters
     - Switch [most toxic]{"entity": "filter_name"} and [least toxic]{"entity": "filter_name"} filters
 
-# select node & edge
 
+#
+## synonyms for verbs check, uncheck, visualise, switch
+
+#- synonym: check
+#  examples: |
+#    - highlight
+#    - select
+#    - choose
+#    - activate
+#    - enable
+#    - turn on
+#    - switch on
+#    - tick
+#    - tick off
+#    - mark
+#    - mark off
+
+#- synonym: uncheck
+#  examples: |
+#    - deselect
+#    - unselect
+#    - turn off
+#    - disable
+#    - hide
+#    - switch off
+#    - deactivate
+#    - untick
+#    - clear
+#    - clear off
+#    - reset
+#    - remove
+#    - unmark
+#    - get rid of
+#    - take off
+
+#- synonym: visualise
+ # examples: |
+  #  - show
+  #  - display
+
+
+#- synonym: switch
+ # examples: |
+#    - change
+ #   - exchange
+ #   - adjust
+
+ #Synonyms for menus: select node and edge menu, highlight colour feature menu, **target menu- to be completed**
+
+#- synonym: select node and edge menu
+#  examples: |
+#    - select node and edge menu
+#    - select node and edge bar
+#    - select nodes and edges menu
+#    - select nodes and edges bar
+#    - node and edge menu
+ #   - node and edge bar
+
+#- synonym: highlight colour feature menu
+#  examples: |
+#    - colour features menu
+#    - colour feature menu
+#    - color features menu
+#    - color features menu
+#    - colour menu
+ #   - colours menu
+#    - color menu
+ #   - colors menu
+ #   - colour bar
+ #   - colours bar
+ #   - color bar
+ #   - colours bar
+#    - glyph feature menu
+#    - glyph feature bar
+#    - highlight colour feature menu
+#    - highlight colour features menu
+#    - highlight color feature menu
+ #   - highlight color features menu
+#    - highlight colour feature bar
+#    - highlight colour features bar
+#    - highlight color feature bar
+ #   - highlight color features bar
+ #   - highlight colour menu
+#    - highlight color menu
+#    - highlight colour bar
+#    - highlight colour bar
+ #   - highlight menu
+#    - highlight bar
+#    - colour glyph feature menu
+#    - color glyph feature menu
+#    - colour glyph features menu
+#    - color glyph features menu
+#    - colour glyph feature bar
+#    - colour glyph feature bar
+
+# Synonyms nodes and edges and filter
+#- synonym: nodes
+ # examples: |
+ #   - node
+ #   - comment
+ #   - comment nodes
+
+#- synonym: filter
+#  examples: |
+ #   - filtering
+
+# Synonym for "formalities" request starter I want to
+
+#- synonym: I want to
+#  examples: |
+ #   - I want to
+ #   - I would like to
+ #   - I'd like to
+#    - Can you
+#    - Can I
+#    - May you
+ #   - May I
+#    - Could you
+#    - Could I
+#    - I want you to
+#    - I would like you to
+#    - I'd like you to
+#    - I was hoping you could
+#    - I was wondering if you could
+#    - Would I able to
+#    - Would you be able to
+#    - Would it be possible for you to
+#    - Could you possibly
+#    - How about you
+
+#- synonym: colour feature
+#  examples: |
+#   - colour
+#   - glyph
+#   - colour glyph
+#   - colour filter
+#   - colour filtering
+#   - colour feature filter
+#   - colour feature filtering
+#   - colour glyph filter
+#   - colour glyph filtering
+#   - glyph filter
+#   - glyph filtering
+#   - glyph feature
+#   - glyph feature filter
+#   - glyph feature filtering
+
+# highlight options
 - intent: highlight_check
   examples: |
-    - I want to see [non toxic]{"entity": "filter_name", "value": "non toxic"} comments
-    - I want to see [not toxic]{"entity": "filter_name", "value": "non toxic"}
-    - I want to see [not toxic]{"entity": "filter_name", "value": "non toxic"} nodes
-    - highlight [level 0 toxicity]{"entity": "filter_name", "value": "non toxic"} nodes
-    - highlight [not toxic]{"entity": "filter_name", "value": "non toxic"}
-    - highlight [toxic level 0]{"entity": "filter_name", "value": "non toxic"} comments
-    - show me [not toxic]{"entity": "filter_name", "value": "non toxic"} nodes
-    - show me [not toxic]{"entity": "filter_name", "value": "non toxic"}
-    - show me [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes
-    - show [least toxic]{"entity": "filter_name", "value": "non toxic"} nodes
-    - show [least toxicity]{"entity": "filter_name", "value": "non toxic"} nodes
-    - Which nodes have the [least toxicity]{"entity": "filter_name", "value": "non toxic"}?
+    - Highlight [non toxic]{"entity": "filter_name", "value": "non toxic"} comments
+    - Can I highlight [not toxic]{"entity": "filter_name", "value": "non toxic"} nodes
+    - Check [not toxic]{"entity": "filter_name", "value": "non toxic"} nodes
+    - Show me [level 0 toxicity]{"entity": "filter_name", "value": "non toxic"} nodes
+    - May you tick [not toxic]{"entity": "filter_name", "value": "non toxic"} comments
+    - Check [toxic level 0]{"entity": "filter_name", "value": "non toxic"} comments
+    - Show me [not toxic]{"entity": "filter_name", "value": "non toxic"} nodes
+    - I want to see [not toxic]{"entity": "filter_name", "value": "non toxic"} node and edge
+    - I would like to visualise [non toxic]{"entity": "filter_name", "value": "non toxic"} comments
+    - Could you switch on  [least toxic]{"entity": "filter_name", "value": "non toxic"} nodes
+    - Could you select [least toxicity]{"entity": "filter_name", "value": "non toxic"} nodes
+    - Which nodes have the [least toxicity]{"entity": "filter_name", "value": "non toxic"} label?
     - Which comments are the [least toxic]{"entity": "filter_name", "value": "non toxic"}?
     - Which nodes are [non toxic]{"entity": "filter_name", "value": "non toxic"}?
-    - Can you show me the [least toxic]{"entity": "filter_name", "value": "non toxic"} comments?
-    - Activate the [non toxic]{"entity": "filter_name", "value": "non toxic"} filter
-    - Check the [non toxic]{"entity": "filter_name", "value": "non toxic"} filter
+    - Choose [least toxic]{"entity": "filter_name", "value": "non toxic"} comments?
     - Activate the [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes filter
-    - Enable [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes filtering
-    - Enable the [non toxic]{"entity": "filter_name", "value": "non toxic"} and [very toxic]{"entity": "filter_name"} filters
-    - Enable the filter [non toxic]{"entity": "filter_name", "value": "non toxic"}
+    - Check the [non toxic]{"entity": "filter_name", "value": "non toxic"} comments filter
+    - Tick off [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes filter
+    - I was hoping you could check [non toxic]{"entity": "filter_name", "value": "non toxic"} nodes filtering
+    - I was wondering if you could turn [non toxic]{"entity": "filter_name", "value": "non toxic"} and [very toxic]{"entity": "filter_name"} filters on
+    - Could you possibly bring up [non toxic]{"entity": "filter_name", "value": "non toxic"} comments for me
 
-    - I want to see [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
-    - I want to see [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"}
-    - I want to see [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} and [least toxic]{"entity": "filter_name"} nodes
-    - highlight [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
-    - highlight [midly toxic]{"entity": "filter_name", "value": "mildly toxic"}
-    - highlight [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
-    - show me [level 1 toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
-    - show me [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"}
-    - show me [level 1 toxicity]{"entity": "filter_name", "value": "mildly toxic"} , [least toxic]{"entity": "filter_name"} and [toxic]{"entity": "filter_name"} comments
-    - show [toxicity level 1]{"entity": "filter_name", "value": "mildly toxic"} nodes
-    - show [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
-    - Which nodes are [toxic level 1]{"entity": "filter_name", "value": "mildly toxic"}?
-    - Can you show me [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes?
-    - Activate the [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} filter
-    - Check the [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} filter
-    - Activate the [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments filter
-    - Enable [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes filtering
-    - Enable the [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} filter
-    - Enable the filter [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"}
+    - Highlight [mildly toxic]{"entity": "filter_name", "value": "mildly toxic"} comments
+    - Can I highlight [slightly toxic]{"entity": "filter_name", "value": "mildly toxic"} nodes
+    - Check [level 1 toxicity]{"entity": "filter_name", "value": "mildly toxic"} nodes and [least toxic]{"entity": "filter_name"} nodes
+    - May you tick [toxicity level 1]{"entity": "filter_name", "value": "mildly toxic"} comments
 
-    - I want to see [toxic]{"entity": "filter_name", "value": "toxic"} comments
-    - I want to see [toxic]{"entity": "filter_name", "value": "toxic"}
-    - I want to see [toxic]{"entity": "filter_name", "value": "toxic"} nodes
-    - highlight [level 2 toxic]{"entity": "filter_name", "value": "toxic"} comments
-    - highlight [toxic]{"entity": "filter_name", "value": "toxic"}
-    - highlight [toxic]{"entity": "filter_name", "value": "toxic"} nodes
-    - show me [toxic]{"entity": "filter_name", "value": "toxic"} comments
-    - show me [toxic]{"entity": "filter_name", "value": "toxic"}
-    - show me [level 2 toxicity]{"entity": "filter_name", "value": "toxic"} comments
-    - show [toxicity level 2]{"entity": "filter_name", "value": "toxic"} nodes
-    - show [toxic]{"entity": "filter_name", "value": "toxic"} nodes
-    - Which comments are [toxic level 2]{"entity": "filter_name", "value": "toxic"}?
-    - Can you show me [toxic]{"entity": "filter_name", "value": "toxic"} comments?
-    - Activate the [toxic]{"entity": "filter_name", "value": "toxic"} filter
-    - Check the [toxic]{"entity": "filter_name", "value": "toxic"} filter
-    - Activate the [toxic]{"entity": "filter_name", "value": "toxic"} nodes filter
-    - Enable [toxic]{"entity": "filter_name", "value": "toxic"} comments filtering
-    - Enable the [toxic]{"entity": "filter_name", "value": "toxic"} filter
-    - Enable the filter [toxic]{"entity": "filter_name", "value": "toxic"}
+    - Highlight [toxic]{"entity": "filter_name", "value": "toxic"} comments
+    - Show me [level 2 toxic]{"entity": "filter_name", "value": "toxic" } nodes
+    - I want to see [level 2 toxicity]{"entity": "filter_name", "value": "toxic"} comments
 
-    - I want to see [very toxic]{"entity": "filter_name", "value": "very toxic"} comments
-    - I want to see [level 3 toxic]{"entity": "filter_name", "value": "very toxic"}
-    - I want to see [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes
-    - highlight [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes
-    - highlight [very toxic]{"entity": "filter_name", "value": "very toxic"}
-    - highlight [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes
-    - show me [level 3 toxicity]{"entity": "filter_name", "value": "very toxic"} comments
-    - show me [very toxic]{"entity": "filter_name", "value": "very toxic"}
-    - show me [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes
-    - show [very toxic]{"entity": "filter_name", "value": "very toxic"} comments
-    - show [very toxic]{"entity": "filter_name", "value": "very toxic"}
-    - show [toxicity level 3]{"entity": "filter_name", "value": "very toxic"} nodes
-    - Which nodes have the [highest toxicity]{"entity": "filter_name", "value": "very toxic"}?
-    - Which comments are [toxic level 3]{"entity": "filter_name", "value": "very toxic"}?
-    - Which nodes are the [most toxic]{"entity": "filter_name", "value": "very toxic"}?
-    - Can you show me [very toxic]{"entity": "filter_name", "value": "very toxic"} comments?
-    - Activate the [very toxic]{"entity": "filter_name", "value": "very toxic"} filter
-    - Check the [very toxic]{"entity": "filter_name", "value": "very toxic"} filter
-    - Activate the [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes filter
-    - Enable [very toxic]{"entity": "filter_name", "value": "very toxic"} nodes filtering
-    - Enable the [very toxic]{"entity": "filter_name", "value": "very toxic"} filter
-    - Enable the filter [very toxic]{"entity": "filter_name", "value": "very toxic"}
+    - Highlight [very toxic]{"entity": "filter_name", "value": "very toxic"} comments
+    - Can I highlight [level 3 toxicity]{"entity": "filter_name", "value": "very toxic"} node and edge
+    - Check [level 3 toxic]{"entity": "filter_name", "value": "very toxic"} nodes
+    - Show me [the most toxic]{"entity": "filter_name", "value": "very toxic"} nodes
 
+    ##which comments are tagged with non toxic- yes
+    ## which comments have the none toxic label- yes
+    
     # positive, negative, neutral stance
 
-    - I want to see [positive]{"entity": "filter_name"} comments
-    - Show me nodes with [positive stance]{"entity": "filter_name"}
-    - Highlight nodes with [positive stance]{"entity": "filter_name"}
-    - Show comments with [positive stance]{"entity": "filter_name"}
-    - Activate the [positive stance]{"entity": "filter_name"} filter
-    - Check the [positive stance]{"entity": "filter_name"} filter
-    - Activate the [positive stance]{"entity": "filter_name"} comments filter
-    - Enable [positive stance]{"entity": "filter_name"} nodes filtering
-    - Enable the [positive stance]{"entity": "filter_name"} filter
-    - Enable the filter [positive stance]{"entity": "filter_name"}
+    - May you tick [positive]{"entity": "filter_name"} nodes
+    - Check [positive stance]{"entity": "filter_name"}  comments
+    - Show me [positive]{"entity": "filter_name"} edges filtering
+    - I want to see [positive stance]{"entity": "filter_name"} comments
+    - Which edges have the [positive stance]{"entity": "filter_name"} label?
+    - Which comments are [positive stance]{"entity": "filter_name"} ?
+    - Which nodes are [positive]{"entity": "filter_name"} ?
 
-    - I want to see nodes with [negative stance]{"entity": "filter_name"}
-    - Show me [negative]{"entity": "filter_name"} nodes
-    - Highlight comments with [negative stance]{"entity": "filter_name"}
-    - Show nodes with [negative stance]{"entity": "filter_name"}
-    - Activate the [negative stance]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
-    - Check the [negative stance]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
-    - Activate the [negative stance]{"entity": "filter_name"} comments filter
-    - Enable [negative stance]{"entity": "filter_name"} nodes filtering
-    - Enable the [negative stance]{"entity": "filter_name"} filter
-    - Enable the filter [negative stance]{"entity": "filter_name"}
+    - Highlight [negative]{"entity": "filter_name" }  comments
+    - Can I highlight [negative stance]{"entity": "filter_name"} nodes
+    - Check [negative]{"entity": "filter_name"} edges
+    - Show me [negative stance]{"entity": "filter_name"} edges filter
 
-    - I want to see nodes with [neutral stance]{"entity": "filter_name"}
-    - Show me comments with [neutral stance]{"entity": "filter_name"}
     - Highlight [neutral]{"entity": "filter_name"} comments
-    - Show nodes with [neutral stance]{"entity": "filter_name"}
-    - Activate the [neutral stance]{"entity": "filter_name"} filter
-    - Check the [neutral stance]{"entity": "filter_name"} filter
-    - Activate the [neutral stance]{"entity": "filter_name"} comments filter
-    - Enable [neutral stance]{"entity": "filter_name"} nodes filtering
-    - Enable the [neutral stance]{"entity": "filter_name"} and [targets all]{"entity": "filter_name"} filters
-    - Enable the filter [neutral stance]{"entity": "filter_name"}
+    - Can I highlight [neutral stance]{"entity": "filter_name"} nodes
+    - Check [neutral]{"entity": "filter_name"} edges
+    - Show me [neutral stance]{"entity": "filter_name"} edges filter
+
+    - Tick off [both stances]{"entity": "filter_name"}  nodes filtering
+    - I was hoping you could check [both stances]{"entity": "filter_name"} nodes filtering
+    - I was wondering if you could turn on [both stances]{"entity": "filter_name"} comments filter
+    - Could you possibly bring up [both stances]{"entity": "filter_name"} comments for me?
 
     # targets --> target person, target group, stereotype
 
-    - I want to see comments with [target person]{"entity": "filter_name"}
-    - Show me nodes with [target person]{"entity": "filter_name"}
-    - Highlight comments with [target person]{"entity": "filter_name"}
-    - Show nodes with [target person]{"entity": "filter_name"}
+    - May you tick [target person]{"entity": "filter_name"} nodes and edges filter
+    - Check [target person]{"entity": "filter_name"}  comments
+    - Show me [target person]{"entity": "filter_name"} edges filtering
+    - I want to see [target person]{"entity": "filter_name"} nodes and edges filtering
+    - I would like to visualise [target person]{"entity": "filter_name"} comments
+    - Could you switch on [target person]{"entity": "filter_name"} comments filter
+    - Could you select [target person]{"entity": "filter_name"} comments filtering
+    - Which nodes and edges have the [target person]{"entity": "filter_name"} label?
+    - Which comments are [target person]{"entity": "filter_name"} ?
+    - Which nodes are [target person]{"entity": "filter_name"} ?
+    - Choose [target person]{"entity": "filter_name"} node comments
     - Activate the [target person]{"entity": "filter_name"} nodes
-    - Check the [target person]{"entity": "filter_name"} filter
-    - Activate the [target person]{"entity": "filter_name"} comments
-    - Enable [target person]{"entity": "filter_name"} nodes
-    - Enable the [target person]{"entity": "filter_name"} nodes
-    - Enable nodes with [target person]{"entity": "filter_name"}
-    - Check [target person]{"entity": "filter_name"} node and edge
-    - Highlight [target person]{"entity": "filter_name"} node and edge
-    - Highlight [target person]{"entity": "filter_name"} nodes
-    - Turn on [target person]{"entity": "filter_name"} node and edge
-    - Turn on [target person]{"entity": "filter_name"} nodes
-    - Select [target person]{"entity": "filter_name"} nodes
+    - Check the [target person]{"entity": "filter_name"} nodes filter
+    - Tick off [target person]{"entity": "filter_name"}  nodes filtering
+    - I was hoping you could check [target person]{"entity": "filter_name"} nodes filtering
+    - I was wondering if you could turn on [target person]{"entity": "filter_name"} comments filter
+    - Could you possibly bring up [target person]{"entity": "filter_name"}  comments for me?
 
-    - I want to see comments with [target group]{"entity": "filter_name"}
-    - Show me nodes with [target group]{"entity": "filter_name"}
-    - Highlight comments with [target group]{"entity": "filter_name"}
-    - Show nodes with [target group]{"entity": "filter_name"}
-    - Activate the [target group]{"entity": "filter_name"} filter
-    - Check the [target group]{"entity": "filter_name"} filter
-    - Activate the [target group]{"entity": "filter_name"} comments filter
-    - Enable [target group]{"entity": "filter_name"} nodes filtering
-    - Enable the [target group]{"entity": "filter_name"} filter
-    - Enable the filter [target group]{"entity": "filter_name"}
-    - Check [target group]{"entity": "filter_name"} node and edge
-    - Highlight [target group]{"entity": "filter_name"} node and edge
-    - Highlight [target group]{"entity": "filter_name"} nodes
-    - Turn on [target group]{"entity": "filter_name"} node and edge
-    - Turn on [target group]{"entity": "filter_name"} nodes
-    - Select [target group]{"entity": "filter_name"} nodes
+    - Highlight [target group]{"entity": "filter_name"} comments
+    - Can I highlight [target group]{"entity": "filter_name"} nodes and edges
+    - Check [target group]{"entity": "filter_name"} edges
+    - Show me [target group]{"entity": "filter_name"} edges filter
 
-    - I want to see comments with [stereotype]{"entity": "filter_name"}
-    - Show me nodes with [stereotype]{"entity": "filter_name"}
-    - Highlight nodes with [stereotype]{"entity": "filter_name"}
-    - Show comments with [stereotype]{"entity": "filter_name"}
-    - Activate the [stereotype]{"entity": "filter_name"} [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} filters
-    - Check the [stereotype]{"entity": "filter_name"} [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} filters
-    - Activate the [stereotype]{"entity": "filter_name"} comments filter
-    - Enable [stereotype]{"entity": "filter_name"} nodes filtering
-    - Enable the [stereotype]{"entity": "filter_name"} filter
-    - Enable the filter [stereotype]{"entity": "filter_name"}
-    - Check [stereotype]{"entity": "filter_name"} node and edge
-    - Highlight [stereotype]{"entity": "filter_name"} node and edge
-    - Highlight [stereotype]{"entity": "filter_name"} nodes
-    - Turn on [stereotype]{"entity": "filter_name"} node and edge
-    - Turn on [stereotype]{"entity": "filter_name"} nodes
-    - Select [stereotype]{"entity": "filter_name"} nodes
+    - Highlight [stereotype]{"entity": "filter_name"} comments
+    - Can I highlight [stereotype]{"entity": "filter_name"} nodes and edges
+    - Check [stereotype]{"entity": "filter_name"} edges
+    - Show me [stereotype]{"entity": "filter_name"} edges filter
+
 
     # targets select all
 
-    - I want to select [all targets]{"entity": "filter_name"}
-    - Select [all targets]{"entity": "filter_name"}
-    - I want to select [all targets]{"entity": "filter_name"} checkbox
-    - Select [all targets]{"entity": "filter_name"} checkbox
-    - I want to select [all targets]{"entity": "filter_name"} option
-    - Select [all targets]{"entity": "filter_name"} option
-    - I want to see nodes with [all targets]{"entity": "filter_name"}
-    - Show me nodes with [all targets]{"entity": "filter_name"}
     - Highlight comments with [all targets]{"entity": "filter_name"}
-    - Show comments with [all targets]{"entity": "filter_name"}
-    - Activate the select [all targets]{"entity": "filter_name"} filter
-    - Check the select [all targets]{"entity": "filter_name"} filter
-    - Activate the select [all targets]{"entity": "filter_name"} comments filter
-    - Enable select [all targets]{"entity": "filter_name"} nodes filtering
-    - Enable the select [all targets]{"entity": "filter_name"} filter
-    - Enable the filter select [all targets]{"entity": "filter_name"}
+    - Can I highlight [both targets]{"entity": "filter_name"} nodes and edges
+    - Check [all targets]{"entity": "filter_name"} edges
+    - Show me nodes and edges with [both targets]{"entity": "filter_name"}
+
 
     # features--> constructiveness, argumentation
 
     - I want to see nodes with [constructiveness]{"entity": "filter_name"}
     - Show me comments with [constructiveness]{"entity": "filter_name"}
-    - Show nodes with [constructiveness]{"entity": "filter_name"}
-    - I want to see [constructive]{"entity": "filter_name"} nodes
-    - Show me [constructive]{"entity": "filter_name"} nodes
-    - Show [constructive]{"entity": "filter_name"} nodes
-    - Activate the [constructiveness]{"entity": "filter_name"} filter
-    - Activate the [constructive]{"entity": "filter_name"} comments filter
     - Enable [constructive]{"entity": "filter_name"} nodes filtering
-    - Enable the [constructive]{"entity": "filter_name"} node and edge
-    - Enable node and edge [constructiveness]{"entity": "filter_name"}
-    - Select node and edge [constructiveness]{"entity": "filter_name"}
-    - Select [constructive]{"entity": "filter_name"} nodes
-    - Select [constructive]{"entity": "filter_name"} node and edge
-    - Check  [constructive]{"entity": "filter_name"} node and edge
-    - Highlight [constructive]{"entity": "filter_name"} node and edge
-    - Highlight [constructive]{"entity": "filter_name"} nodes
-    - Turn on [constructive]{"entity": "filter_name"} node and edge
     - Turn on [constructive]{"entity": "filter_name"} nodes
 
-
-    - I want to see comments with [argumentation]{"entity": "filter_name"}
+    - I want to see comments with [argument]{"entity": "filter_name"}
     - Show me comments with [argumentation]{"entity": "filter_name"}
-    - Show comments with [argumentation]{"entity": "filter_name"}
-    - I want to see [argumentation]{"entity": "filter_name"} nodes
-    - Show me [argumentative]{"entity": "filter_name"} nodes
-    - Show [argumentative]{"entity": "filter_name"} comments
-    - Activate the [argumentation]{"entity": "filter_name"} filter
-    - Activate the [argumentation]{"entity": "filter_name"} nodes filter
-    - Enable [argumentation]{"entity": "filter_name"} nodes filtering
-    - Enable the [argumentation]{"entity": "filter_name"} , [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} nodes
-    - Enable the filter [argumentation]{"entity": "filter_name"}
-    - Select the filter [argumentation]{"entity": "filter_name"}
-    - Select [argumentation]{"entity": "filter_name"} nodes
-    - Select [argumentation]{"entity": "filter_name"} node and edge
     - Check  [argumentation]{"entity": "filter_name"} node and edge
     - Highlight [argumentation]{"entity": "filter_name"} node and edge
-    - Highlight [argumentation]{"entity": "filter_name"} nodes
-    - Turn on [argumentation]{"entity": "filter_name"} node and edge
-    - Turn on [argumentation]{"entity": "filter_name"} nodes
+
 
     # features--> sarcasm, mockery, intolerance
 
     - I want to see nodes with [sarcasm]{"entity": "filter_name"}
-    - Show me comments with [sarcasm]{"entity": "filter_name"}
-    - Show nodes with [sarcasm]{"entity": "filter_name"}
     - I want to see [sarcastic]{"entity": "filter_name"} nodes
-    - Show me [sarcastic]{"entity": "filter_name"} nodes
-    - Show [sarcastic]{"entity": "filter_name"} nodes
-    - Activate the [sarcasm]{"entity": "filter_name"} filter
-    - Activate the [sarcastic]{"entity": "filter_name"} nodes filter
-    - Enable [sarcastic]{"entity": "filter_name"} nodes filtering
-    - Enable the [sarcasm]{"entity": "filter_name"} filter
-    - Enable the filter [sarcasm]{"entity": "filter_name"}
-    - Select the filter [sarcasm]{"entity": "filter_name"}
-    - Select [sarcasm]{"entity": "filter_name"} filter
-    - Select [sarcasm]{"entity": "filter_name"} node and edge
     - Check  [sarcasm]{"entity": "filter_name"} node and edge
-    - Highlight [sarcasm]{"entity": "filter_name"} node and edge
-    - Highlight [sarcasm]{"entity": "filter_name"} nodes
-    - Turn on [sarcasm]{"entity": "filter_name"} node and edge
-    - Turn on [sarcasm]{"entity": "filter_name"} nodes
+    - Highlight [sarcastic]{"entity": "filter_name"} node and edge
 
-    - I want to see nodes with [mockery]{"entity": "filter_name"}
-    - Show me comments with [mockery]{"entity": "filter_name"}
-    - Show comments with [mockery]{"entity": "filter_name"}
-    - I want to see [mockery]{"entity": "filter_name"} nodes
-    - Show me [mockery]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} nodes
-    - Show [mockery]{"entity": "filter_name"} comments
-    - Activate the [mockery]{"entity": "filter_name"} filter
-    - Activate the [mockery]{"entity": "filter_name"} nodes filter
-    - Enable [mockery]{"entity": "filter_name"} nodes filtering
-    - Enable the [mockery]{"entity": "filter_name"} filter
-    - Enable the filter [mockery]{"entity": "filter_name"}
-    - Select the filter [mockery]{"entity": "filter_name"}
-    - Select [mockery]{"entity": "filter_name"} filter
     - Select [mockery]{"entity": "filter_name"} node and edge
     - Check  [mockery]{"entity": "filter_name"} node and edge
-    - Highlight [mockery]{"entity": "filter_name"} node and edge
     - Highlight [mockery]{"entity": "filter_name"} nodes
     - Turn on [mockery]{"entity": "filter_name"} node and edge
-    - Turn on [mockery]{"entity": "filter_name"} nodes
 
     - I want to see nodes with [intolerance]{"entity": "filter_name"}
     - Show me comments with [intolerance]{"entity": "filter_name"}
     - Show comments with [intolerance]{"entity": "filter_name"}
-    - I want to see [intolerance]{"entity": "filter_name"} nodes
-    - Show me [intolerance]{"entity": "filter_name"} nodes
-    - Show [intolerance]{"entity": "filter_name"} comments
-    - Activate the [intolerance]{"entity": "filter_name"} filter
+    - I would like to see [intolerance]{"entity": "filter_name"} nodes
+    - Show me [intolerance]{"entity": "filter_name"} comments
+    - Show [intolerance]{"entity": "filter_name"} comments filtering
     - Activate the [intolerance]{"entity": "filter_name"} nodes filter
-    - Enable [intolerance]{"entity": "filter_name"} nodes filtering
-    - Enable the [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} filters
-    - Enable the filter [intolerance]{"entity": "filter_name"}
-    - Select the filter [intolerance]{"entity": "filter_name"}
-    - Select [intolerance]{"entity": "filter_name"} filter
-    - Select [intolerance]{"entity": "filter_name"} node and edge
-    - Check  [intolerance]{"entity": "filter_name"} node and edge
-    - Highlight [intolerance]{"entity": "filter_name"} node and edge
+    - May you enable [intolerance]{"entity": "filter_name"} nodes filtering
+    - Can you enable the [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} filters
+    - Enable the select filter [intolerance]{"entity": "filter_name"}
+    - Select the node and edge filter [intolerance]{"entity": "filter_name"}
+    - Choose [intolerance]{"entity": "filter_name"} node and edge
+    - Check [intolerance]{"entity": "filter_name"} node and edge
+    - Tick [intolerance]{"entity": "filter_name"} node and edge
     - Highlight [intolerance]{"entity": "filter_name"} nodes
-    - Turn on [intolerance]{"entity": "filter_name"} node and edge
+    - Switch on [intolerance]{"entity": "filter_name"} node and edge
     - Turn on [intolerance]{"entity": "filter_name"} nodes
+    - Tick off [intolerance]{"entity": "filter_name"} nodes
+    - I was hoping you could check turn on [intolerance]{"entity": "filter_name"} nodes
+    - I was wondering if you could [intolerance]{"entity": "filter_name"} nodes
+
 
     # features--> improper language, insult, aggressiveness - ?
 
-    - I want to see nodes with [improper language]{"entity": "filter_name"}
-    - Show me nodes with [improper language]{"entity": "filter_name"}
-    - Show nodes with [improper language]{"entity": "filter_name"}
-    - I want to see [improper language]{"entity": "filter_name"} comments
     - Show me [improper language]{"entity": "filter_name"} nodes
     - Show [improper language]{"entity": "filter_name"} nodes
-    - Activate the [improper language]{"entity": "filter_name"} filter
     - Activate the [improper language]{"entity": "filter_name"} nodes filter
     - Enable [improper language]{"entity": "filter_name"} nodes filtering
-    - Enable the [improper language]{"entity": "filter_name"} filter
-    - Enable the filter [improper language]{"entity": "filter_name"}
-    - Select the filter [improper language]{"entity": "filter_name"}
-    - Select [improper language]{"entity": "filter_name"} filter
-    - Select [improper language]{"entity": "filter_name"} node and edge
-    - Check  [improper language]{"entity": "filter_name"} node and edge
-    - Highlight [improper language]{"entity": "filter_name"} node and edge
-    - Highlight [improper language]{"entity": "filter_name"} nodes
-    - Turn on [improper language]{"entity": "filter_name"} node and edge
-    - Turn on [improper language]{"entity": "filter_name"} nodes
 
-    - I want to see nodes with [insult]{"entity": "filter_name"}
-    - Show me comments with [insult]{"entity": "filter_name"}
-    - Show nodes with [insult]{"entity": "filter_name"}
-    - I want to see [insult]{"entity": "filter_name"} nodes
-    - Show me [insult]{"entity": "filter_name"} nodes
     - Show [insult]{"entity": "filter_name"} comments
-    - Activate the [insult]{"entity": "filter_name"} filter
     - Activate the [insult]{"entity": "filter_name"} nodes filter
     - Enable [insult]{"entity": "filter_name"} nodes filtering
-    - Enable the [insult]{"entity": "filter_name"} filter
-    - Enable the filter [insult]{"entity": "filter_name"}
-    - Select the filter [insult]{"entity": "filter_name"}
-    - Select [insult]{"entity": "filter_name"} filter
-    - Select [insult]{"entity": "filter_name"} node and edge
-    - Check  [insult]{"entity": "filter_name"} node and edge
-    - Highlight [insult]{"entity": "filter_name"} node and edge
-    - Highlight [insult]{"entity": "filter_name"} nodes
-    - Turn on [insult]{"entity": "filter_name"} node and edge
-    - Turn on [insult]{"entity": "filter_name"} nodes
+    - Enable the select filter [insult]{"entity": "filter_name"}
 
     - I want to see comments with [aggressiveness]{"entity": "filter_name"}
-    - Show me comments with [aggressiveness]{"entity": "filter_name"}
-    - Show comments with [aggressiveness]{"entity": "filter_name"}
-    - I want to see [aggressive]{"entity": "filter_name"} nodes
-    - Show me [aggressive]{"entity": "filter_name"} nodes
-    - Show [aggressive]{"entity": "filter_name"} nodes
     - Activate the [aggressiveness]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} filters
-    - Activate the [aggressive]{"entity": "filter_name"} nodes filter
-    - Enable [aggressive]{"entity": "filter_name"} nodes filtering
     - Enable the [aggressiveness]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
-    - Enable the filter [aggressiveness]{"entity": "filter_name"}
-    - Select the filter [aggressiveness]{"entity": "filter_name"}
-    - Select [aggressiveness]{"entity": "filter_name"} filter
+    - Enable the select filter [aggressiveness]{"entity": "filter_name"}
     - Select [aggressiveness]{"entity": "filter_name"} node and edge
-    - Check [aggressiveness]{"entity": "filter_name"} node and edge
-    - Highlight [aggressiveness]{"entity": "filter_name"} node and edge
-    - Highlight [aggressiveness]{"entity": "filter_name"} nodes
-    - Turn on [aggressiveness]{"entity": "filter_name"} node and edge
-    - Turn on [aggressiveness]{"entity": "filter_name"} nodes
 
 
     # features select all
 
-    - I want to select [all features]{"entity": "filter_name"}
-    - Select [all features]{"entity": "filter_name"}
+    - I want to select [all features]{"entity": "filter_name"} nodes
+    - Select [all features]{"entity": "filter_name"} node and edge
     - I want to select [all features]{"entity": "filter_name"} checkbox
-    - Select [all features]{"entity": "filter_name"} checkbox
-    - I want to select [all features]{"entity": "filter_name"} option
+    - Select [all features]{"entity": "filter_name"} checkbox node and edge
+    - I want to select [all features]{"entity": "filter_name"} option in node and edge
     - Select [all features]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} options
-    - I want to see comments with [all features]{"entity": "filter_name"}
-    - Show me nodes with [all features]{"entity": "filter_name"}
-    - Show nodes with [all features]{"entity": "filter_name"}
-    - Activate the select [all features]{"entity": "filter_name"} filter
-    - Activate the select [all features]{"entity": "filter_name"} comments filter
-    - Enable select [all features]{"entity": "filter_name"} nodes filtering
-    - Enable the select [all features]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
-    - Enable the filter select [all features]{"entity": "filter_name"}
 
-    - I want to select [all levels of toxicity]{"entity": "filter_name"}
-    - Select [all levels of toxicity]{"entity": "filter_name"}
-    - I want to select [all levels of toxicity]{"entity": "filter_name"} checkbox
-    - Select [all levels of toxicity]{"entity": "filter_name"} checkbox
-    - I want to select [all levels of toxicity]{"entity": "filter_name"} option
-    - Select [all levels of toxicity]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} options
     - I want to see comments with [all levels of toxicity]{"entity": "filter_name"}
     - Show me nodes with [all levels of toxicity]{"entity": "filter_name"}
     - Show nodes with [all levels of toxicity]{"entity": "filter_name"}
     - Activate the select [all levels of toxicity]{"entity": "filter_name"} filter
-    - Activate the select [all levels of toxicity]{"entity": "filter_name"} comments filter
-    - Enable select [all levels of toxicity]{"entity": "filter_name"} nodes filtering
-    - Enable the select [all levels of toxicity]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
-    - Enable the filter select [all levels of toxicity]{"entity": "filter_name"}
 
-    - I want to select [all stances]{"entity": "filter_name"}
-    - Select [all stances]{"entity": "filter_name"}
-    - I want to select [all stances]{"entity": "filter_name"} checkbox
-    - Select [all stances]{"entity": "filter_name"} checkbox
-    - I want to select [all stances]{"entity": "filter_name"} option
-    - Select [all stances]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} options
-    - I want to see comments with [all stances]{"entity": "filter_name"}
-    - Show me nodes with [all stances]{"entity": "filter_name"}
-    - Show nodes with [all stances]{"entity": "filter_name"}
-    - Activate the select [all stances]{"entity": "filter_name"} filter
     - Activate the select [all stances]{"entity": "filter_name"} comments filter
     - Enable select [all stances]{"entity": "filter_name"} nodes filtering
     - Enable the select [all stances]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
@@ -871,117 +888,146 @@ nlu:
   # highlight uncheck all
 - intent: highlight_uncheck_all
   examples: |
-    - I want to deselect all select node and edge filters
-    - Desselect all select node and edge filters
-    - Reset the select node and edge filters
-    - Undo all select node and edge filters
-    - Undo all select node and edge
-    - Disable all select node and edge
-    - Remove all node and edge filters
-    - Reset select node and edge
+    - I want to deselect all node and edge filters
+    - Could you remove all the selected nodes and edges
+    - I was hoping you could reset all nodes and edges selected
+    - Would you be able to undo all nodes filters
+    - Could you possibly disable edges filters
+    - I would like you to turn off all nodes filtering
+    - Take off all edges filtering
+    - Would it be possible for you to get rid of nodes filters 
+    - Clear the edges filters
+    - Switch off nodes and edges
+    - Uncheck all node and edge filters
+    - Hide all filters in node and edge
 
+#- Would I be able to get rid of the nodes and edges filters- yes
+#turn off all node and edges checkboxes
+#reset
+#go back to the beginning
+
+#unchecking select node and edge menus
 - intent: highlight_uncheck
-  examples: |
-    - Disable [non toxic]{"entity": "filter_name"} option
-    - Hide [least toxic]{"entity": "filter_name"} comments
-    - Uncheck [not toxic]{"entity": "filter_name"} filter
-    - Disable [least toxicity]{"entity": "filter_name"} option
-    - Hide [toxic level 0]{"entity": "filter_name"} nodes
-    - Uncheck [level 0 toxic]{"entity": "filter_name"} filter
-    - Disable [level 0 toxicity]{"entity": "filter_name"} and [very toxic]{"entity": "filter_name"} options
+  examples: | 
+    - Can I disable [non toxic]{"entity": "filter_name"} nodes option
+    - Uncheck [least toxic]{"entity": "filter_name"} comments from the check list
+    - May you turn off [toxicity 0]{"entity": "filter_name"} comment filter
+    - I want to reset [toxicity level 0]{"entity": "filter_name"} node filter option
+    - I was hoping you could switch off [level 0 toxic]{"entity": "filter_name"} nodes filter
 
-    - Disable [toxicity level 3]{"entity": "filter_name"} option
-    - Hide [most toxic]{"entity": "filter_name"} and [least toxic]{"entity": "filter_name"} nodes
-    - Uncheck [very toxic]{"entity": "filter_name"} filter
-    - Disable [highest toxicity]{"entity": "filter_name"} option
-    - Hide [toxic level 3]{"entity": "filter_name"} comments
-    - Uncheck [level 3 toxic]{"entity": "filter_name"} filter
-    - Disable [level 3 toxicity]{"entity": "filter_name"} option
+    - Deselect [most toxic]{"entity": "filter_name"} nodes filter selection
+    - Could you hide [toxicity level 3]{"entity": "filter_name"} comments
+    - I was hoping you could switch off [level 3 toxic]{"entity": "filter_name"} nodes filter
+    - I was wondering if you could deactivate [very toxic]{"entity": "filter_name"} nodes filtering
+    - Would you be able to untick [highest toxicity]{"entity": "filter_name"} nodes
 
-    - Disable [toxicity level 1]{"entity": "filter_name"} option
-    - Hide [slightly toxic]{"entity": "filter_name"} comments
-    - Uncheck [mildly toxic]{"entity": "filter_name"} filter
-    - Hide [toxic level 1]{"entity": "filter_name"}, [least toxic]{"entity": "filter_name"} and [toxic]{"entity": "filter_name"} nodes
-    - Uncheck [level 1 toxic]{"entity": "filter_name"} filter
-    - Disable [level 1 toxicity]{"entity": "filter_name"} option
+    - Could you possibly clear [mildly toxic]{"entity": "filter_name"} nodes filtering
+    - Clear off [level 1 toxic]{"entity": "filter_name"} comment filter
+    - May you remove [slightly toxic]{"entity": "filter_name"} comment filtering
+    - Would it be possible for you to unmark comments labelled [level 1 toxicity]{"entity": "filter_name"} 
 
-    - Disable [toxic level 2]{"entity": "filter_name"} option
-    - Uncheck [toxic]{"entity": "filter_name"} filter
-    - Hide [toxicity level 2]{"entity": "filter_name"} comments
-    - Uncheck [level 2 toxic]{"entity": "filter_name"} filter
-    - Disable [level 2 toxicity]{"entity": "filter_name"} option
+    - Would it be possible for you to unmark comments labelled [level 2 toxicity]{"entity": "filter_name"} 
+    - Unselect [toxicity level 2]{"entity": "filter_name"} node and edge tag
+    - Get rid of [toxic]{"entity": "filter_name"} nodes label
+    - Would I be able to take [toxicity level 2]{"entity": "filter_name"} nodes off
+    
+    - Can I disable [positive stance]{"entity": "filter_name"} nodes option
+    - Uncheck [positive stance]{"entity": "filter_name"} comments from the check list
+    - May you turn off [positive stance]{"entity": "filter_name"}  comment filter
+    - I want to reset [positive stance]{"entity": "filter_name"} node filter option
+    - I would like to switch off [positive stance]{"entity": "filter_name"} nodes filtering option
+    - Deselect [positive stance]{"entity": "filter_name"} node and edge filter selection
+    - Could you hide [positive stance]{"entity": "filter_name"} comments
+    - I was hoping you could switch off [positive stance]{"entity": "filter_name"} edges filter
+    - I was wondering if you could deactivate [positive stance]{"entity": "filter_name"} edges filtering
+    - Would you be able to untick [positive stance]{"entity": "filter_name"} node and edge
+    - Could you possibly clear [positive stance]{"entity": "filter_name"} node and edge filtering
+    - Clear off [positive stance]{"entity": "filter_name"} comment filter
+    - May you remove [positive stance]{"entity": "filter_name"} comment filtering
+    - Would it be possible for you to unmark edges labelled [positive stance]{"entity": "filter_name"} 
+    - Unselect [positive stance]{"entity": "filter_name"} node tag
+    - Get rid of [positive stance]{"entity": "filter_name"} comment label
+    - Would I be able to take [positive stance]{"entity": "filter_name"} node and edge filter off
 
-    - Disable [positive stance]{"entity": "filter_name"} option
-    - Hide [positive]{"entity": "filter_name"} comments
-    - Uncheck [positive stance]{"entity": "filter_name"} filter
-
-    - Disable [negative stance]{"entity": "filter_name"} option
+    - Disable [negative stance]{"entity": "filter_name"} edge option
     - Hide [negative]{"entity": "filter_name"} nodes
-    - Uncheck [negative stance]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
-
-    - Disable [neutral stance]{"entity": "filter_name"} and [targets all]{"entity": "filter_name"} option
+    - Uncheck [negative stance]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} nodes filters
+    
+    - Disable [neutral stance]{"entity": "filter_name"} and [targets all]{"entity": "filter_name"} nodes option
     - Hide [neutral]{"entity": "filter_name"} comments
-    - Uncheck [neutral stance]{"entity": "filter_name"} filter
-
-    - Disable [target person]{"entity": "filter_name"} option
+    - Uncheck [neutral stance]{"entity": "filter_name"} comments filter
+    
+    - Disable [both stances]{"entity": "filter_name"} comments
+    - Hide [both stances]{"entity": "filter_name"} nodes
+    - Uncheck [both stances]{"entity": "filter_name"} node and edge
+    
+    - Disable [target person]{"entity": "filter_name"} node and edge option
     - Hide [person]{"entity": "filter_name"} nodes
-    - Uncheck [target person]{"entity": "filter_name"} filter
-
-    - Disable [target group]{"entity": "filter_name"} option
+    - Uncheck [target person]{"entity": "filter_name"} comments filter
+    
+    - Disable [target group]{"entity": "filter_name"} nodes option
     - Hide [group]{"entity": "filter_name"} comments
-    - Uncheck [target group]{"entity": "filter_name"} filter
-
-    - Disable [stereotype]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} options
+    - Uncheck [target group]{"entity": "filter_name"} node and edge filter
+    
+    - Disable [stereotype]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} comments options
     - Hide [stereotype]{"entity": "filter_name"} nodes
-    - Uncheck [stereotype]{"entity": "filter_name"} filter
-
-    - Disable [targets all]{"entity": "filter_name"} option
+    - Uncheck [stereotype]{"entity": "filter_name"} nodes filter
+    
+    - Disable [targets all]{"entity": "filter_name"} node and edge option
     - Hide [all targets]{"entity": "filter_name"} comments
-    - Uncheck [all targets]{"entity": "filter_name"} filter
+    - Uncheck [all targets]{"entity": "filter_name"} nodes filter
+    - Uncheck [all targets]{"entity": "filter_name"} nodes
 
-    - Disable [constructiveness]{"entity": "filter_name"} option
+    - Disable [constructiveness]{"entity": "filter_name"} comments option
     - Hide [constructive]{"entity": "filter_name"} nodes
-    - Uncheck [constructiveness]{"entity": "filter_name"} filter
+    - Uncheck [constructiveness]{"entity": "filter_name"} node and edge filter
 
-    - Disable [argumentation]{"entity": "filter_name"} option
-    - Hide [argumentation]{"entity": "filter_name"} comments
-    - Uncheck [argumentation]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
+    - Disable [argumentation]{"entity": "filter_name"} nodes option
+    - Hide [argument]{"entity": "filter_name"} comments
+    - Uncheck [argumentation]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} comments filters
 
-    - Disable [sarcasm]{"entity": "filter_name"} option
+    - Disable [sarcasm]{"entity": "filter_name"} comment option
     - Hide [sarcastic]{"entity": "filter_name"} nodes
-    - Uncheck [sarcasm]{"entity": "filter_name"} filter
+    - Uncheck [sarcasm]{"entity": "filter_name"} node and edge filter
 
-    - Disable [mockery]{"entity": "filter_name"} option
+    - Disable [mockery]{"entity": "filter_name"} node option
     - Hide [mockery]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} comments
-    - Uncheck [mockery]{"entity": "filter_name"} filter
+    - Uncheck [mockery]{"entity": "filter_name"} nodes filter
 
-    - Disable [intolerance]{"entity": "filter_name"} option
-    - Hide [intolerance]{"entity": "filter_name"} nodes
-    - Uncheck [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} filter
+    - Disable [intolerance]{"entity": "filter_name"} node option
+    - Hide [intolerance]{"entity": "filter_name"} node
+    - Uncheck [intolerance]{"entity": "filter_name"}, [positive stance]{"entity": "filter_name"}, [target group]{"entity": "filter_name"} nodes filter
+    - May you switch off [intolerance]{"entity": "filter_name"} comment nodes
+    - I was hoping you could deactivate [intolerance]{"entity": "filter_name"} nodes filtering
+    - Untick [intolerance]{"entity": "filter_name"} node and edge
+    - Clear [intolerance]{"entity": "filter_name"} node filter option
+    - I want to reset [intolerance]{"entity": "filter_name"} node option
+    - I would like to remove [intolerance]{"entity": "filter_name"} node
+    - Can you turn off [intolerance]{"entity": "filter_name"} nodes filter
 
-    - Disable [improper language]{"entity": "filter_name"} option
+    - Disable [improper language]{"entity": "filter_name"} nodes option
     - Hide [improper language]{"entity": "filter_name"} comments
-    - Uncheck [improper language]{"entity": "filter_name"} filter
+    - Uncheck [improper language]{"entity": "filter_name"} npdes filter
 
-    - Disable [insult]{"entity": "filter_name"} option
+    - Disable [insult]{"entity": "filter_name"} comments option
     - Hide [insult]{"entity": "filter_name"} nodes
-    - Uncheck [insult]{"entity": "filter_name"} filter
+    - Uncheck [insult]{"entity": "filter_name"} node and eddge filter
 
-    - Disable [aggressiveness]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} options
+    - Disable [aggressiveness]{"entity": "filter_name"}, [negative stance]{"entity": "filter_name"}, [neutral stance]{"entity": "filter_name"}, [target person]{"entity": "filter_name"} node options
     - Hide [aggressive]{"entity": "filter_name"} comments
-    - Uncheck [aggressiveness]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} filters
+    - Uncheck [aggressiveness]{"entity": "filter_name"}, [insult]{"entity": "filter_name"}, [improper language]{"entity": "filter_name"}, [mockery]{"entity": "filter_name"}, [intolerance]{"entity": "filter_name"} and [sarcasm]{"entity": "filter_name"} comments filters
 
-    - Disable [features all]{"entity": "filter_name"} option
+    - Disable [features all]{"entity": "filter_name"} nodes option
     - Hide [all features]{"entity": "filter_name"}, [person]{"entity": "filter_name"} and [neutral stance]{"entity": "filter_name"} comments
-    - Uncheck [all features]{"entity": "filter_name"} and [all targets]{"entity": "filter_name"} filters
+    - Uncheck [all features]{"entity": "filter_name"} nodes and [all targets]{"entity": "filter_name"} filters
 
-    - Disable [all levels of toxicity]{"entity": "filter_name"}
+    - Disable [all levels of toxicity]{"entity": "filter_name"} comments
     - Hide [all levels of toxicity]{"entity": "filter_name"} nodes
-    - Uncheck [all levels of toxicity]{"entity": "filter_name"}
+    - Uncheck [all levels of toxicity]{"entity": "filter_name"} node and edge
 
-    - Disable [all stances]{"entity": "filter_name"}
+    - Disable [all stances]{"entity": "filter_name"} comments
     - Hide [all stances]{"entity": "filter_name"} nodes
-    - Uncheck [all stances]{"entity": "filter_name"}
+    - Uncheck [all stances]{"entity": "filter_name"} node and edge
 
 - intent: highlight_switch_last
   examples: |
@@ -1088,42 +1134,45 @@ nlu:
 # related to depth
 - intent: longest_thread
   examples: |
-    - Show me the longest thread
     - I want to see the longest thread
-    - Which thread is the longest
     - Can you show me the longest thread
-    - Which thread is the deepest
-    - Can you show me the deepest thread
-    - Show me the deepest thread
-    - I want to see deepest thread
+    - Which thread is the longest?
+    - I was wondering if could you highlight the longest thread for me
+    - Which thread is the deepest?
+    - I was hoping you could show me the deepest thread
+    - Would you be able to bring up the deepest thread
+    - What is the deepest thread?
+    - What thread is the longest?
     - I would like to see deepest thread
-    - I would like to see the longest thread
-    - Display the longest thread
-    - Display the deepest thread
-    - Show the longest thread
-    - Display the longest thread
-    - deepest thread
-    - longest thread
+    - I would like to display the longest thread
+#extract the longest/deepest thread- yes
+#COMPROBADO
+#however could improve for circle packing
+
 
 # related to the wideness
 - intent: widest_level
   examples: |
-    - Show me the widest level
     - I want to see the widest level
+    - Can you show me the widest width thread
     - Which level is the widest?
-    - Can you show me the widest level?
-    - I would like to see the widest level
-    - Display the widest level
-    - Show the widest level
-    - Show me the widest depth
-    - I want to see the widest depth
-    - Which depth is the widest?
-    - Can you show me the widest depth?
-    - I would like to see the widest depth
-    - Display the widest depth
-    - Show the widest depth
-    - widest level
-    - widest depth
+    - I was wondering if could you highlight the widest width for me
+    - Which level is the widest?
+    - I was hoping you could display me the widest width for me
+    - Would you be able to bring up the level with the widest width
+    - What is the widest level?
+    - At what depth is the widest level?
+    - At what level are there most comments?
+    - At what comment level are there more comments?
+    - How many comments are there at the widest level?
+    - What's the widest point of the visualisation?
+    - What's the widest part of my data?
+    - At what level can the most comments be seen?
+    - At what level is the visualisation the deepest?
+  #COMPROBAR
+  #how many nodes are there at the widest level-yes
+  #at what point are there most nodes-yes
+  #better BUT i think the questions can be improved for circle packing visualisation
 
 # related to the size
 # It can be referenced as thread or subtree.
@@ -1131,8 +1180,8 @@ nlu:
   examples: |
     - Show me the largest thread
     - I want to see the largest thread
-    - Which thread is the largest
-    - Can you show me the largest thread
+    - Which thread is the largest?
+    - Can you show me the largest thread?
     - I would like to see the largest thread
     - Display the largest thread
     - Show the largest thread
@@ -1144,21 +1193,19 @@ nlu:
     - I want to see the most crowded thread
     - I would like to see the most crowded thread
     - Show the most crowded thread
-    - Display the most crowded thread
-    - largest thread
-    - crowded thread
+    - Could you display the most crowded thread for me
     - Show me the largest subtree
     - I want to see the largest subtree
-    - Which subtree is the largest
+    - Which subtree is the largest?
     - Can you show me the largest subtree
-    - I would like to see the largest subtree
+    - I would like you to show me the largest subtree
     - Display the largest subtree
     - Show the largest subtree
     - Which subtree is the most crowded?
     - Which subtree has the most nodes?
     - Can you show me the most crowded subtree?
     - Can you show me the subtree with most nodes?
-    - Show me the most crowded subtree
+    - Would you be able to show me the most crowded subtree
     - I want to see the most crowded subtree
     - I would like to see the most crowded subtree
     - Show the most crowded subtree
@@ -1243,318 +1290,638 @@ nlu:
 
 - intent: statistics_features_tree
   examples: |
-    - Show me the statistics of the graph features
-    - Show me the graph features statistics
-    - Show me the statistics of the main graph features
-    - Show me the statistics of the main view graph features
-    - Compare the graph features
-    - Compare the main graph features
-    - Compare the main view graph features
-    - Display a chart of the statistics of the graph features
-    - Show me the graph features statistics in a chart
-    - Show me the statistics of the whole graph
+    - I want you to show me the statistics of selected comments
+    - Can you display for me the selected comments statistics
+    - I was wondering if you could visualise the statistics of the selected comments for me
+    - I was hoping you might bring up the statistics of selected comments
+    - Would you be able to open the selected comments statistics
+    - Would it be possible for you to show me the selected comments stats
+    - Could you possibly help me compare selected comments
+    - Compare the features of selected comments
+    - Analyse the current visualisation
+    - I'd like you to show me a chart for the current layout
+    - Could you possibly compare the nodes and edges of the main view 
+    - Display a chart of the statistics for the main layout
+    - Show me the selected comments in a chart
+    - Can I see the statistics of what is displayed right now
+    - May you draw up the stats of the main interface display
+    - Show me the statistics of features
+    - Show me the distribution of features
+    - Could I possibly analyse what I have chosen?
+    - Is there a way I can look at the data for the visualisation?
+    - Would I be able to analyse what I have highlighted
+    - Open selected comments statistics
+  # is it possible to compare features of the visualisation- yes
+    
+
+
 
 - intent: statistics_features_subtrees
   examples: |
-    - Compare the features of subtrees
-    - Compare the features of all subtrees
-    - Compare all subtrees features
-    - Compare the features of subgraphs
-    - Compare all subgraphs features
-    - Compare the subtrees features on a chart
-    - Show me the statistics of the subtrees features
-    - Show me the subtrees features statistics
-    - Show me the statistics of the subgraphs features
-    - Display the statistics of the subgraphs features in a chart
+    - I want you to show me the statistics of level one comments
+    - Can you display for me the level one comments statistics
+    - I was wondering if you could visualise the statistics of the level one comments for me
+    - I was hoping you might bring up the statistics of comment level one
+    - Would you be able to open the level one comments statistics
+    - Would it be possible for you to show me the level one comments stats
+    - Could you possibly help me compare level one comments
+    - Compare the features of level one comments
+    - Analyse level one comments
+    - I'd like you to show me a chart for comment level one 
+    - Could you possibly compare the colour features of comments in first position 
+    - Display a chart of the statistics for comments at level one
+    - Show me the level one comments in a chart
+    - Can I see the statistics of comments directly connected to the news article
+    - May you draw up the stats of the comments directly from the main node
+    - Compare features at level one
+    - Open level one comments statistics
+#show me the data for level one-yes
+#bring up level one charts-yes
+# bring up level one comment data chart-yes
+#show me the charts for level one-yes
 
 - intent: most_tagged_features
   examples: |
     - What are the most tagged features
     - Which features are tagged the most
+    -
 
 #help
 
 - intent: help_glyphs
   examples: |
-    - What are the glyphs?
-    - How can I use the glyphs?
+    - Can you tell me what is meant by glyphs
+    - I was wondering if you could explain glyphs to me?    
+    - Could you explain to me what glyphs refers to?
+    - I would like you to explain what glyphs there are
+    - Would you be able to give me a tutorial for glyph bar?
+    - I want you to give me an explanation about glyph menu
+    - I was hoping you could help me understand glyph
+    - I'd like you to define glyphs
+    - Would it be possible to have a tutorial for glyph visualisation?
+    - Could you possibly go into more detail about what glyph options there are?
+    - Give me help on glyph designs
+    - Guide for glyph choices
+    - May you inform me on glyph types
+    - What do glyphs do
+    - Why should I use glyphs in the top menu
     - What are dots, circular glyph and trivial cheese?
-    - Give me more information about glyphs
-    - Can you give me more information about glyphs?
-
+    - How can I use glyphs?
 
 - intent: help_layouts
   examples: |
-    - Why there are many layouts?
-    - What are the layouts?
-    - Give me more information about layouts
+    - Can you tell me what is meant by layouts?
+    - I was wondering if you could explain visualisation layouts to me?    
+    - Could you explain to me what display layouts refers to?
+    - I would like you to explain what designs there are
+    - Would you be able to give me a tutorial for layout options?
+    - I want you to give me an explanation about layout menu
+    - I was hoping you could help me understand visualisation options
+    - I'd like you to define layout bar
+    - Would it be possible to have a tutorial for layouts types?
+    - Could you possibly go into more detail about what display types there are?
+    - Give me help on display designs
+    - Guide for layout choices
+    - May you inform me on visualisation designs
+    - Tell me about what layout displays choices there are
+    - Help visualisation display
+    - Why is this the best layout
+    - How did you select this layout for me
+    - What are the tree layout, force layout, radial layout and circle packing in the top menu for?
+    - Why are there different layouts
 
-- intent: help_highlight
+- intent: help_select_node_edge
   examples: |
-    - How can use highlight on the left bar?
-    - What is highlight on the left bar?
-    - What is highlight?
-    - Give me more information about highlight
+    - Can you tell me what is meant by node and edge on left bar?
+    - I was wondering if you could explain node and edge on left menu to me?    
+    - Could you explain to me what node and edge refers to?
+    - I would like you to explain what node and edge is
+    - Would you be able to give me a tutorial for node and edge option?
+    - I want you to give me an explanation about node and edge menu
+    - I was hoping you could help me understand node and edge feature
+    - I'd like you to define node and edge bar
+    - Would it be possible to have a tutorial for node and edge?
+    - Could you possibly go into more detail about what node and edge is?
+    - Give me help on node and edge
+    - Guide for node and edge
+    - May you inform me on node and edge
+    - What is select node and edge
+    - What is select node and edge on left bar
+    - Tell me about nodes and edges
 
-- intent: help_summary
+
+- intent: help_statistics_summary
   examples: |
-    - What is summary?
-    - What does summary show?
-    - Give me information about summary
+    - Can you tell me what is meant by statistics information?
+    - I was wondering if you could explain statistics of file to me?    
+    - Could you explain to me what statistics details refers to?
+    - I would like you to explain what statistics is
+    - Would you be able to give me a tutorial for statistics?
+    - I want you to give me an explanation about statistics
+    - I was hoping you could help me understand statistics feature
+    - I'd like you to define statistics feature
+    - Would it be possible to have a tutorial for statistics?
+    - Could you possibly go into more detail about what statistics does?
+    - Give me help on statistics
+    - Guide for statistic summary
+    - May you inform me on statistic breakdown
+
 
 - intent: help_main_graph_barchart
   examples: |
-    - What is selected comments?
-    - What does first button on the right show?
-    - What is selected comments button?
-    - What does selected comments button do?
-    - What does selected comments do?
-
+    - Can you tell me what is meant by selected comments statistics?
+    - I was wondering if you could explain selected comments stats graph to me?    
+    - Could you explain to me what selected comments refers to?
+    - I would like you to explain what selected comments statistics button are
+    - Would you be able to give me a tutorial for selected comments button?
+    - I want you to give me an explanation about selected comments stats
+    - I was hoping you could help me understand selected comments statistics feature
+    - I'd like you to define selected comments stats feature
+    - Would it be possible to have a tutorial for selected comments graphs?
+    - Could you possibly go into more detail about what selected comments statistics graphs?
+    - Give me help on selected comments graph button
+    - Guide for comment selected comments statistics option
+    - May you inform me on selected comments graphs
+    - What are selected comments?
+    - How can I analyse selected comments data?
+    - How can I analyse what I have highlighted?
+    - How can I analyse what I have selected?
+  # how can i analyse what I have chosen- yes
+  #how can i analyse the comments i have selected - yes
+  #how can i know if my there are relationships between features- yes
+    
+  
 
 - intent: help_subtree_barchart
   examples: |
-    - What is sub graphs?
-    - What does second button on the right show?
-    - What is that button saying level one comments?
-    - What is level one comments button?
+    - Can you tell me what is meant by level one comment statistics?
+    - I was wondering if you could explain level one comments stats graph to me?
+    - Could you explain to me what level one comments refers to?
+    - I would like you to explain what level one statistics button are
+    - Would you be able to give me a tutorial for level one comments button?
+    - I want you to give me an explanation about level one comments stats
+    - I was hoping you could help me understand level one statistics feature
+    - I'd like you to define level one comments stats feature
+    - Would it be possible to have a tutorial for level one graphs?
+    - Could you possibly go into more detail about what level one statistics graphs?
+    - Give me help on level one comments graph button
+    - Guide for comment level one statistics option
+    - May you inform me on comment level one graph   
+    - How can I analyse level one comment data?
+    - How can I analyse comments at level one?
+    - What are level one comments?
+  #how can i analyse the features that appear at level one?- yes
 
-- intent: tool_help
+- intent: reminder_help
   examples: |
     - What are the functions of this tool?
     - How can I use this tool?
     - Tell me about how to use this tool?
+    - Can you remind me what I can do?
+    - I need you to remind me how to use the interface
+    - Could you possibly tell me again what you can do?
+    - I'd like you to recap 
+    - What is this tool for?
+    - How can I use this interface?
+    - I don't know what to do
+    - Can you help me
+    - Could you give me suggestions on what to do next
+    - I would like you to help me 
+    - What can I do now?
+    - Would you be able to give me help on what to do next?
+    - Would it be possible for you to give me a summary of what I can do
+
+#synonym: reminder
+#examples: |
+# remind
+# a reminder
+# recap
+# summary help
+# *again
 
 - intent: help_AND
   examples: |
-    - What is AND on the left bar
-    - What is AND
+    - Can you tell me what is meant by AND?
+    - I was wondering if you could explain AND button to me?
+    - Could you explain to me what AND filter refers to?
+    - I would like you to explain what AND filtering are
+    - Would you be able to give me a tutorial for AND filter button?
+    - I want you to give me an explanation about AND filtering button
+    - I was hoping you could help me understand AND filter type
+    - I'd like you to define AND filtering type
+    - Would it be possible to have a tutorial for AND option?
+    - Could you possibly go into more detail about what AND filter option?
+    - Give me help on AND filtering option
+    - Guide for AND option button
+    - May you inform me on AND on select node and edge menu
 
 - intent: help_OR
   examples: |
-    - What is OR on the left bar
-    - What is OR
+    - Can you tell me what is meant by OR?
+    - I was wondering if you could explain OR button to me?
+    - Could you explain to me what OR filter refers to?
+    - I would like you to explain what OR filtering are
+    - Would you be able to give me a tutorial for OR filter button?
+    - I want you to give me an explanation about OR filtering button
+    - I was hoping you could help me understand OR filter type
+    - I'd like you to define OR filtering type
+    - Would it be possible to have a tutorial for OR option?
+    - Could you possibly go into more detail about what OR filter option?
+    - Give me help on OR filtering option
+    - Guide for OR option button
+    - May you inform me on OR on select node and edge menu
 
 - intent: help_AND_OR
   examples: |
-    - What is the difference between AND and OR
-    - Why there are two options AND and OR
+    - What is the difference between AND and OR filter option?
+    - Why there are two options AND and OR filter
+    - What is the difference between OR and AND option?
+    - How can I use AND and OR button option?
+    - What will be different if I use AND or OR filter button?
+    - Can you show me how AND and OR filtering options differ?
+    - Would you be able to give me an example of how AND/OR button works?
+    - Can you tell me what is meant by AND and OR filtering types?
+    - I was wondering if you could explain AND and OR to me?
+    - Could you explain to me what OR and AND refers to?
+    - I would like you to explain what AND and OR buttons are
+    - Would you be able to give me a tutorial for OR/AND filtering buttons?
+    - I want you to give me an explanation about AND and OR
+    - I was hoping you could help me understand AND/OR
+    - I'd like you to define AND and OR
+    - Would it be possible to have a tutorial for AND or OR?
+    - Could you possibly go into more detail about what AND/OR is for?
+    - Give me help on AND and OR option
+    - Guide for OR/AND filter type
+    - May you inform me on AND/OR filtering options   
 
-- intent: help_what_can_you_do
+#- synonym: AND option
+#  examples: |
+#    - AND option
+#    - AND filter
+#    - AND button
+#    - AND function
+#    - AND choice
+#    - AND button
+#    - AND
+
+#- synonym: OR option
+#  examples: |
+#    - OR option
+#    - OR filter
+#    - OR button
+#    - OR function
+#    - OR choice
+#    - OR button
+#    - OR
+
+#- synonym: select node and edge menu
+#  examples: |
+#    - select node and edge menu
+#    - left hand bar
+#    - bar on left
+#    - select node and edge bar
+#    - left bar
+#    - left hand menu
+#    - left menu
+#    - menu on left
+
+- intent: reminder_high_level_questions
   examples: |
-    - What can you do?
-    - What can I ask you?
-    - How can you help me?
+    - What are the subtrees you can show me
+    - Could you remind me of the subtree choices
+    - What are the subtree options again?
+    - What statistics questions are there?
+    - What are more complex questions I can ask you?
+    - Would you be able to tell me more about subtrees
+    - I would like to know about the basic statistics questions I can ask you
+    - What are the basic statistic questions you can answer?
+    - Would you possibly remind me of the basic statistics options
+    - What are the questions I can only ask you?
+    - How can I see subtrees?
+    - How can I find out the subtrees choices again?
+    - I want to know the basic statistics questions
+    - I'd like you to remind me of the basic statistics questions
+    - Can you tell me what other questions i can ask you
+    - What are the different subtrees you can show me
+    - What are the sub structure options?
+    - What are the sub regions you can highlight?
+    - Would you be able to tell me the sub regions again?
+    - Is it possible to analyse a smaller part of the visualisation?
+    - Can I analyse a small section of my data?
+    - Is it possible to look at smaller regions of my data?
+#could you remind me of the basic statistics options- yes
+#what were the questions i can ask you- yes
 
-
-- intent: what_can_do_after_glyphs
+- intent: help_colour_features
   examples: |
-    - What can I do now after viewing glyphs?
-    - What more I can do now?
-
-
-- intent: features_on_the_left
-  examples: |
-    - What are features on the left bar?
-    - How can use features?
-    - What are features?
+    - Can you tell me what is meant by highlight colour features in left bar?
+    - I was wondering if you could explain colour features to me?
+    - Could you explain to me what highlight colour features refers to?
+    - I would like you to explain what colour features are
+    - Would you be able to give me a tutorial for highlight colour features?
+    - I want you to give me an explanation about highlight colour features in left menu
+    - I was hoping you could help me understand colour features
+    - I'd like you to define colour features
+    - Would it be possible to have a tutorial for highlight colour features?
+    - Could you possibly go into more detail about what highlight colour features is for?
+    - Give me help on highlight colour features
+    - Guide for colour features
+    - May you inform me on highlight colour features
 
 - intent: targets_help
   examples: |
-    - What are targets?
-    - What are targets on the left bar?
-    - How can I use targets?
+    - Can you tell me what is meant by targets in left bar?
+    - I was wondering if you could explain targets icons to me?
+    - Could you explain to me what targets refers to?
+    - I would like you to explain what targets is
+    - Would you be able to give me a tutorial for targets icons?
+    - I want you to give me an explanation about targets in left menu
+    - I was hoping you could help me understand targets
+    - I'd like you to define targets icons
+    - Would it be possible to have a tutorial for targets?
+    - Could you possibly go into more detail about what targets is for?
+    - Give me help on targets
+    - Guide for targets
+    - May you inform me on targets icons
+    - What's the difference between target person and target group?
+#COMPROBAR target person and group intents new combos to be checked
 
-
-- intent: help_sub_structure
-  examples: |
-    - what are sub structures?
-    - help me with sub structures?
-    - what are regions?
-    - can you visualise regions of the graph?
-
+#- intent: sub_structure_options
+# examples: |
+#    - What are the sub structure options?
+#    - Can you remind of me the sub tree options?
+#    - What are the sub regions you can highlight?
+ #   - Would you be able to tell me the sub regions again?
+ #   - Is it possible to analyse a smaller part of the visualisation?
+#    - Can I analyse a small section of my data?
+ #   - Is it possible to look at smaller regions of my data?
+#IMPROVE
 
 - intent: statistics_help
   examples: |
-    - can you tell me more about statistics?
-    - can give more information about statistics?
+    - Can you tell me what is meant by statistics?
+    - I was wondering if you could explain statistics graphs to me?
+    - Could you explain to me what statistics feature refers to?
+    - I would like you to explain what statistics buttons are
+    - Would you be able to give me a tutorial for stats?
+    - I want you to give me an explanation about stats graphs
+    - I was hoping you could help me understand stats feature
+    - I'd like you to define stats buttons
+    - Would it be possible to have a tutorial for statistics option?
+    - Could you possibly go into more detail about what stats options is for?
+    - Guide for stats
+    - May you inform me on statistics graphs
+    - How can I analyse my data?
+    - Is there a way to compare the features
+    - Would I be able to see if there is a relationship between features?
+    - How can I see the relationships between features?
+#what statistics options are there- yes
+#May you inform me on statistics graphs-yes
+#compare the relationships of the features-yes
+#what data options are there- yes
+#COMPROBADO
 
 - intent: start_analysis
   examples: |
-    - start analysis
-    - start
+    - I want to start analysis
+    - Can you start that analysis
+    - I would like to begin analysing
+#COMPROBADO
 
 - intent: two_actions
   examples: |
-    - Change layout to tree and glyph to dots
-    - Change layout to tree and glyph to circular
-    - Change layout to tree and glyoh to trivial cheese
-    - Change layout to radial and glyph to dots
-    - Change layout to radial and glyph to circular
-    - Change layout to radial and glyph to trivial cheese
-    - Change layout to force and glyph to dots
-    - Change layout to force and glyph to circular
-    - Change layout to force and glyph to trivial cheese
-
-
+    - I want to change layout to tree and glyph to dots
+    - I would like to change layout to tree and glyph to circular
+    - Could you change layout to tree and glyph to trivial cheese
+    - I want to change layout to radial and glyph to dots
+    - I would like to change layout to radial and glyph to circular
+    - Could you change layout to radial and glyph to trivial cheese
+    - I want to change layout to force and glyph to dots
+    - I would like to change layout to force and glyph to circular
+    - Could you change layout to force and glyph to trivial cheese
+    - I was hoping you could switch layout to tree and glyph to dots
+    - Would you be able to switch layout to tree and glyph to circular
+    - Could you possibly switch layout to tree and glyph to trivial cheese
+    - I was hoping you could switch layout to radial and glyph to dots
+    - Would you be able to switch layout to radial and glyph to circular
+    - Could you possibly switch layout to radial and glyph to trivial cheese
+    - I was hoping you could switch force to tree and glyph to dots
+    - Would you be able to switch force to tree and glyph to circular
+    - Could you possibly switch force to tree and glyph to trivial cheese
+    - Would it be possible to swap layout to tree and glyph to dots
+    - May you swap layout to tree and glyph to circular
+    - Select layout as tree and glyph as trivial cheese
+    - Would it be possible to swap layout to radial and glyph to dots
+    - May you swap layout to force and radial to circular
+    - Select layout as radial and glyph as trivial cheese
+    - Would it be possible to swap layout to force and glyph to dots
+    - May you swap layout to force and glyph to circular
+    - Select layout as force and glyph as trivial cheese
+ #COMPROBADO-> only for layouts and glyphs. Will ultimately need to be extended to all types of multiple actions
 
 #check colour features
 
 - intent: colour_feature_constructiveness
   examples: |
-    - Highlight constructiveness colour feature
-    - Highlight constructive glyph
-    - Check constructiveness colour
-    - Check constructiveness colour feature
-    - Show me constructiveness colour feature
+    - Highlight constructiveness colour feature filter
+    - Can you highlight constructive glyph
+    - Check constructiveness colour filtering
+    - Tick off constructive colour feature
+    - May you show me constructiveness colour feature
     - Show me constructive colour feature
-    - Check constructiveness colour
-    - I want to see constructiveness colour feature
+    - Could you check constructiveness colour
+    - I want to see constructiveness colour feature filter
     - I would like to see constructiveness colour feature
-    - Turn on constructiveness colour
-    - Turn on constructiveness colour feature
-    - Select constructiveness colour feature
-    - Select constructiveness colour
+    - Turn on constructive colour
+    - Switch on constructiveness colour feature
+    - Choose constructiveness colour feature
+    - Tick constructiveness colour filtering
     - Activate constructive colour feature
-    - Enable constructiveness colour feature
+    - Enable constructive colour feature filter
+    - I was hoping you could check constructiveness colour feature
+    - I was wondering if you could select constructiveness colour
+    - Would you be able to mark off constructivity colour glyph
+#would we be able to select constructiveness colour-yes
+#now can you enable constructivity colour glyph- yes
+# turn on constructivity glyph- yes
+#bring up constructivity colour filter- yes
 
 - intent: colour_feature_argumentation
   examples: |
     - Highlight argumentation colour feature
-    - Highlight argumentation glyph
-    - Check argumentation colour
-    - Check argumentation colour feature
+    - Can I highlight argumentation glyph
+    - Check argumentation colour filter
+    - Switch on argument colour feature
     - Show me argumentation colour feature
-    - Show me argument colour feature
-    - Check argumentation colour
+    - May you tick argument colour feature filtering
+    - Check argument colour
     - I want to see argumentation colour feature
     - I would like to see argumentation colour feature
-    - Turn on argumentation colour
-    - Turn on argumentation colour feature
-    - Select argument colour feature
-    - Select argumentation colour
+    - Turn on argumentation colour filtering
+    - Could you switch on argumentation colour feature
+    - Select argument colour feature filter
+    - Choose argumentation colour
     - Activate argumentation colour feature
     - Enable argumentation colour feature
+    - Tick off argument colour feature
+    - I was hoping you could check argumentation colour feature
+    - I was wondering if you could select argument colour filter
+    - Would you be able to mark off argumentation colour glyph
 
 - intent: colour_feature_sarcasm
   examples: |
     - Highlight sarcasm colour feature
-    - Highlight sarcasm glyph
-    - Check sarcasm colour
-    - Check sarcasm colour feature
+    - Can you highlight sarcasm glyph
+    - Check sarcastic colour filter
+    - Switch on sarcasm colour feature
     - Show me sarcasm colour feature
-    - Check sarcasm colour
+    - May I tick sarcasm colour feature filtering
+    - Check sarcastic colour
     - I want to see sarcasm colour feature
     - I would like to see sarcasm colour feature
-    - Turn on sarcasm colour
-    - Turn on sarcasm colour feature
-    - Select sarcasm colour feature
-    - Select sarcasm colour
+    - Turn on sarcastic colour filtering
+    - Could I switch on sarcasm colour feature
+    - Select sarcastic colour feature filter
+    - Choose sarcasm colour
     - Activate sarcasm colour feature
     - Enable sarcasm colour feature
+    - Tick off sarcasm colour feature
+    - I was hoping you could check sarcasm colour feature
+    - I was wondering if you could select sarcasm colour filter
+    - Would you be able to mark off sarcasm colour glyph
 
 - intent: colour_feature_mockery
   examples: |
     - Highlight mockery colour feature
-    - Highlight mockery glyph
-    - Check mockery colour
-    - Check mockery colour feature
+    - Can I highlight mockery glyph
+    - Check mockery colour filter
+    - Switch on mockery colour feature
     - Show me mockery colour feature
+    - May you tick mockery colour feature filtering
     - Check mockery colour
     - I want to see mockery colour feature
     - I would like to see mockery colour feature
-    - Turn on mockery colour
-    - Turn on mockery colour feature
-    - Select mockery colour feature
-    - Select mockery colour
+    - Turn on mockery colour filtering
+    - Could you switch on mockery colour feature
+    - Select mockery colour feature filter
+    - Choose mockery colour
     - Activate mockery colour feature
     - Enable mockery colour feature
+    - Tick off mockery colour feature
+    - I was hoping you could check mockery colour feature
+    - I was wondering if you could select mockery colour filter
+    - Would you be able to mark off mockery colour glyph
 
 - intent: colour_feature_intolerance
   examples: |
     - Highlight intolerance colour feature
-    - Highlight intolerance glyph
-    - Check intolerance colour
-    - Check intolerance colour feature
+    - Can you highlight intolerance glyph
+    - Check intolerance colour filter
+    - Switch on intolerance colour feature
     - Show me intolerance colour feature
+    - May I tick intolerance colour feature filtering
     - Check intolerance colour
     - I want to see intolerance colour feature
     - I would like to see intolerance colour feature
-    - Turn on intolerance colour
-    - Turn on intolerance colour feature
-    - Select intolerance colour feature
-    - Select intolerance colour
+    - Turn on intolerance colour filtering
+    - Could I switch on intolerance colour feature
+    - Select intolerance colour feature filter
+    - Choose intolerance colour
     - Activate intolerance colour feature
     - Enable intolerance colour feature
+    - Tick off intolerance colour feature
+    - I was hoping you could check intolerance colour feature
+    - I was wondering if you could select intolerance colour filter
+    - Would you be able to mark off intolerance colour glyph
 
 - intent: colour_feature_improper
   examples: |
-    - Highlight improper langauge colour feature
-    - Highlight improper langauge glyph
-    - Check improper langauge colour
-    - Check improper langauge colour feature
-    - Show me improper langauge colour feature
-    - Check improper langauge colour
-    - I want to see improper langauge colour feature
-    - I would like to see improper langauge colour feature
-    - Turn on improper langauge colour
-    - Turn on improper langauge colour feature
-    - Select improper language colour feature
-    - Select improper language  colour
-    - Activate improper language feature
-    - Enable improper language feature
+    - Highlight improper language colour feature
+    - Can I highlight improper language  glyph
+    - Check improper language  colour filter
+    - Switch on improper language  colour feature
+    - Show me improper language  colour feature
+    - May you tick improper language colour feature filtering
+    - Check improper language colour
+    - I want to see improper language colour feature
+    - I would like to see improper language colour feature
+    - Turn on improper language colour filtering
+    - Could you switch on improper language colour feature
+    - Select improper language colour feature filter
+    - Choose improper language colour
+    - Activate improper language colour feature
+    - Enable improper language colour feature
+    - Tick off improper language colour feature
+    - I was hoping you could check improper language colour feature
+    - I was wondering if you could select improper language colour filter
+    - Would you be able to mark off improper colour glyph
+#check improper-> PROBLEM 2 answers can be given, one is improper_language colour feature is already checked
 
 - intent: colour_feature_insult
   examples: |
-    - Highlight insult colour feature
-    - Highlight insult glyph
-    - Check insult colour
-    - Check insult colour feature
+    - Highlight insult colour feature filter
+    - Can you highlight insult glyph
+    - Check insult colour filtering
+    - Tick off insult colour feature
+    - May you show me insult colour feature
     - Show me insult colour feature
-    - Check insult colour
-    - I want to see insult colour feature
+    - Could you check insult colour
+    - I want to see insult colour feature filter
     - I would like to see insult colour feature
     - Turn on insult colour
-    - Turn on insult colour feature
-    - Select insult colour feature
-    - Select insult colour
+    - Switch on insult colour feature
+    - Choose insult colour feature
+    - Tick insult colour filtering
     - Activate insult colour feature
-    - Enable insult colour feature
+    - Enable insult colour feature filter
+    - I was hoping you could check insult colour feature
+    - I was wondering if you could select insult colour
+    - Would you be able to mark off insult colour glyph
 
 - intent: colour_feature_aggressiveness
   examples: |
     - Highlight aggressiveness colour feature
-    - Highlight aggressiveness glyph
-    - Check aggressiveness colour
-    - Check aggressiveness colour feature
+    - Can you highlight aggressiveness glyph
+    - Check aggressiveness colour filter
+    - Switch on aggressiveness colour feature
     - Show me aggressiveness colour feature
-    - Show me aggressiveness colour feature
+    - May I tick aggressiveness colour feature filtering
     - Check aggressiveness colour
     - I want to see aggressiveness colour feature
     - I would like to see aggressiveness colour feature
-    - Turn on aggressiveness colour
-    - Turn on aggressiveness colour feature
-    - Select aggressiveness colour feature
-    - Select aggressiveness colour
+    - Turn on aggressiveness colour filtering
+    - Could I switch on aggressiveness colour feature
+    - Select aggressiveness colour feature filter
+    - Choose aggressiveness colour
     - Activate aggressiveness colour feature
     - Enable aggressiveness colour feature
+    - Tick off aggressiveness colour feature
+    - I was hoping you could check aggressiveness colour feature
+    - I was wondering if you could select aggressiveness colour filter
+    - Would you be able to mark off aggressive colour glyph
+#check aggressive- yes
 
 - intent: colour_feature_stereotype
   examples: |
     - Highlight stereotype colour feature
-    - Highlight stereotype glyph
-    - Check stereotype colour
-    - Check stereotype colour feature
+    - Can I highlight stereotype glyph
+    - Check stereotype colour filter
+    - Switch on stereotype colour feature
     - Show me stereotype colour feature
-    - Show me stereotype colour feature
+    - May you tick stereotype colour feature filtering
     - Check stereotype colour
     - I want to see stereotype colour feature
     - I would like to see stereotype colour feature
-    - Turn on stereotype colour
-    - Turn on stereotype colour feature
-    - Select stereotype colour feature
-    - Select stereotype colour
+    - Turn on stereotype colour filtering
+    - Could you switch on stereotype colour feature
+    - Select stereotype colour feature filter
+    - Choose stereotype colour
     - Activate stereotype colour feature
     - Enable stereotype colour feature
+    - Tick off stereotype colour feature
+    - I was hoping you could check stereotype colour feature
+    - I was wondering if you could select stereotype colour filter
+    - Would you be able to mark off stereotype colour glyph
 
 # ask to check a colour feature without specifying one
 - intent: show_colour_feature
@@ -1568,336 +1935,1214 @@ nlu:
     - Select colour feature
     - Activate colour feature
     - Enable colour feature
+    - Can you switch on colour feature
+    - May you tick colour feature
+    - Could you check colour feature
+    - Choose colour feature
+    - Tick off colour feature
+    - I was hoping you could check colour feature
+    - I was wondering if you could select colour feature
+#could you possibly mark a colour feature-yes
+# would you be able to choose a colour feature- yes
 
 # check/uncheck all colour features
 
 - intent: check_all_colour_features
   examples: |
     - Highlight all colour features
-    - Check all colours
+    - Can I highlight all colour features
     - Check all colour features
+    - Switch on all colour features filters
     - Show me all colour features
-    - Check all features
+    - May you tick all colour features filtering
+    - Check all colours
     - I want to see all colour features
     - I would like to see all colour features
-    - Turn on all colours
-    - Turn on all colour features
+    - Turn on all colour features filtering
+    - Could you switch on all colour features
     - Select all colour features
+    - Choose all colours
     - Activate all colour features
-    - Enable all colour features
+    - Enable all colour features filters
+    - Tick off all colour features
+    - I was hoping you could check all colour features
+    - I was wondering if you could select all colour features
+#could you possibly mark all colour features-yes
+# would you be able to choose all colour features- yes
 
 - intent: uncheck_all_colour_features
   examples: |
-    - Disable all colour features
+    - Can I disable all colour features 
     - Uncheck all colours
-    - Uncheck all colour features
-    - Uncheck all features
-    - Turn off all colours
-    - Turn off all colour features
+    - May you turn off all colour features filters
+    - I want to reset all colour filters
+    - I would like to switch off all colour features filtering
+    - Deselect all colour filtering
+    - Could you hide all colour glyph features
+    - I was hoping you could switch off all colour glyphs
+    - I was wondering if you could deactivate all colour glyph filters
+    - Would you be able to untick all colour filtering
+    - Could you possibly clear every colour feature
+    - Clear off every colour feature filter
+    - May you remove every colour feature filtering
+    - Would it be possible for you to unmark every colour feature glyph
+    - Unselect every colour filter
+    - Get rid of every colour glyph feature
+    - Would I be able to take all colour highlights off
+#remove all colour highlighting-yes
 
 # uncheck colour features
 - intent: colour_feature_constructiveness_uncheck
   examples: |
-    - Uncheck constructiveness colour
-    - Uncheck constructiveness colour feature
-    - Turn off constructiveness colour
-    - Turn off constructiveness colour feature
-    - Disable constructiveness colour feature
-    - Disable constructiveness colour
+    - Can I disable constructiveness colour feature 
+    - Uncheck constructive colours
+    - May you turn off all constructivity colour filters
+    - I want to reset constructiveness colour filters
+    - I would like to switch off all constructiveness colour features filtering
+    - Deselect constructivity colour filtering
+    - Could you hide constructive colour glyph features
+    - I was hoping you could switch off all constructive colour glyphs
+    - I was wondering if you could deactivate constructiveness colour glyph filters
+    - Would you be able to untick all constructiveness colour filtering
+    - Could you possibly clear constructiveness colour feature
+    - Clear off all constructivity colour feature filters
+    - May you remove constructiveness colour filtering
+    - Would it be possible for you to unmark all constructiveness colour feature glyphs
+    - Unselect all constructiveness colour filter
+    - Get rid of all constructive colour features
+    - Would I be able to take constructivity colours off
+#COMPROBADO
 
 - intent: colour_feature_argumentation_uncheck
   examples: |
-    - Uncheck argumentation colour
-    - Uncheck argumentation colour feature
-    - Turn off argumentation colour
-    - Turn off argumentation colour feature
-    - Disable argumentation colour feature
-    - Disable argumentation colour
+    - Can I disable argumentation colour feature 
+    - Uncheck argument colours
+    - May you turn off argumentation colour filters
+    - I want to reset argumentation colour filters
+    - I would like to switch off argumentation colour features filtering
+    - Deselect argumentation colour filtering
+    - Could you hide argument colour glyph features
+    - I was hoping you could switch off argumentation colour glyphs
+    - I was wondering if you could deactivate argumentation colour glyph filters
+    - Would you be able to untick argument colour filtering
+    - Could you possibly clear argument colour feature
+    - Clear off all argumentation colour feature filters
+    - May you remove argumentation colour filtering
+    - Would it be possible for you to unmark argumentation colour feature glyphs
+    - Unselect argumentation colour filter
+    - Get rid of argumentation colour features
+    - Would I be able to take argumentation colours off
 
 - intent: colour_feature_sarcasm_uncheck
   examples: |
-    - Uncheck sarcasm colour
-    - Uncheck sarcasm colour feature
-    - Turn off sarcasm colour
-    - Turn off sarcasm colour feature
-    - Disable sarcasm colour feature
-    - Disable sarcasm colour
+    - Can I disable sarcasm colour feature 
+    - Uncheck sarcastic colours
+    - May you turn off sarcasm colour filters
+    - I want to reset sarcasm colour filters
+    - I would like to switch off sarcasm colour features filtering
+    - Deselect sarcastic colour filtering
+    - Could you hide sarcasm colour glyph features
+    - I was hoping you could switch off sarcasm colour glyphs
+    - I was wondering if you could deactivate sarcastic colour glyph filters
+    - Would you be able to untick sarcasm colour filtering
+    - Could you possibly clear sarcasm colour feature
+    - Clear off sarcastic colour feature filters
+    - May you remove sarcasm colour filtering
+    - Would it be possible for you to unmark sarcasm colour feature glyphs
+    - Unselect sarcasm colour filter
+    - Get rid of sarcastic colour features
+    - Would I be able to take sarcasm colours off
 
 - intent: colour_feature_mockery_uncheck
   examples: |
+    - Can I disable mockery colour feature 
     - Uncheck mockery colour
-    - Uncheck mockery colour feature
-    - Turn off mockery colour
-    - Turn off mockery colour feature
-    - Disable mockery colour feature
-    - Disable mockery colour
+    - May you turn off mockery colour filter
+    - I want to reset mockery colour filter
+    - I would like to switch off mockery colour feature filtering
+    - Deselect mockery colour filtering
+    - Could you hide mockery colour glyph feature
+    - I was hoping you could switch off mockery colour glyphs
+    - I was wondering if you could deactivate mockery colour glyph filters
+    - Would you be able to untick mockery colour filtering
+    - Could you possibly clear mockery colour feature
+    - Clear off mockery colour feature filter
+    - May you remove mockery colour filtering
+    - Would it be possible for you to unmark mockery colour feature glyphs
+    - Unselect mockery colour filter
+    - Get rid of mockery colour feature
+    - Would I be able to take mockery colours off
 
 - intent: colour_feature_intolerance_uncheck
   examples: |
+    - Can I disable intolerance colour feature 
     - Uncheck intolerance colour
-    - Uncheck intolerance colour feature
-    - Turn off intolerance colour
-    - Turn off intolerance colour feature
-    - Disable intolerance colour feature
-    - Disable intolerance colour
+    - May you turn off intolerant colour filter
+    - I want to reset intolerance colour filter
+    - I would like to switch off intolerant colour feature filtering
+    - Deselect intolerance colour filtering
+    - Could you hide intolerance colour glyph feature
+    - I was hoping you could switch off intolerance colour glyphs
+    - I was wondering if you could deactivate intolerant colour glyph filters
+    - Would you be able to untick intolerance colour filtering
+    - Could you possibly clear intolerance colour feature
+    - Clear off intolerance colour feature filter
+    - May you remove intolerant colour filtering
+    - Would it be possible for you to unmark intolerance colour feature glyphs
+    - Unselect intolerant colour filter
+    - Get rid of intolerance colour feature
+    - Would I be able to take intolerant colours off
 
 - intent: colour_feature_improper_uncheck
   examples: |
+    - Can I disable improper language colour feature 
     - Uncheck improper language colour
-    - Uncheck improper language colour feature
-    - Turn off improper language colour
-    - Turn off improper language colour feature
-    - Disable improper language colour feature
-    - Disable improper language colour
+    - May you turn off improper colour filter
+    - I want to reset improper language colour filter
+    - I would like to switch off improper colour feature filtering
+    - Deselect improper colour filtering
+    - Could you hide improper language colour glyph feature
+    - I was hoping you could switch off improper colour glyphs
+    - I was wondering if you could deactivate improper language colour glyph filters
+    - Would you be able to untick improper language colour filtering
+    - Could you possibly clear improper colour feature
+    - Clear off improper language colour feature filter
+    - May you remove improper colour filtering
+    - Would it be possible for you to unmark improper language colour feature glyphs
+    - Unselect improper language colour filter
+    - Get rid of improper colour feature
+    - Would I be able to take improper language colours off
 
 - intent: colour_feature_insult_uncheck
   examples: |
+    - Can I disable insult colour feature 
     - Uncheck insult colour
-    - Uncheck insult colour feature
-    - Turn off insult colour
-    - Turn off insult colour feature
-    - Disable insult colour feature
-    - Disable insult colour
+    - May you turn off insult colour filter
+    - I want to reset insult colour filter
+    - I would like to switch off insult colour feature filtering
+    - Deselect insult colour filtering
+    - Could you hide insult colour glyph feature
+    - I was hoping you could switch off insult colour glyphs
+    - I was wondering if you could deactivate insult colour glyph filters
+    - Would you be able to untick insult colour filtering
+    - Could you possibly clear insult colour feature
+    - Clear off insult colour feature filter
+    - May you remove insult colour filtering
+    - Would it be possible for you to unmark insult colour feature glyphs
+    - Unselect insult colour filter
+    - Get rid of insult colour feature
+    - Would I be able to take insult colours off
 
 - intent: colour_feature_aggressiveness_uncheck
   examples: |
+    - Can I disable aggressiveness colour feature 
     - Uncheck aggressiveness colour
-    - Uncheck aggressiveness colour feature
-    - Turn off aggressiveness colour
-    - Turn off aggressiveness colour feature
-    - Disable aggressiveness colour feature
-    - Disable aggressiveness colour
+    - May you turn off aggressive colour filter
+    - I want to reset aggressiveness colour filter
+    - I would like to switch off aggressive colour feature filtering
+    - Deselect aggressive colour filtering
+    - Could you hide aggressive colour glyph feature
+    - I was hoping you could switch off aggressiveness colour glyphs
+    - I was wondering if you could deactivate aggressiveness colour glyph filters
+    - Would you be able to untick aggressive colour filtering
+    - Could you possibly clear aggressiveness colour feature
+    - Clear off aggressive colour feature filter
+    - May you remove aggressiveness colour filtering
+    - Would it be possible for you to unmark aggressiveness colour feature glyphs
+    - Unselect aggressive colour filter
+    - Get rid of aggressiveness colour feature
+    - Would I be able to take aggressiveness colours off
 
 - intent: colour_feature_stereotype_uncheck
   examples: |
+    - Can I disable stereotype colour feature 
     - Uncheck stereotype colour
-    - Uncheck stereotype colour feature
-    - Turn off stereotype colour
-    - Turn off stereotype colour feature
-    - Disable stereotype colour feature
-    - Disable stereotype colour
+    - May you turn off stereotype colour filter
+    - I want to reset stereotype colour filter
+    - I would like to switch off stereotype colour feature filtering
+    - Deselect stereotype colour filtering
+    - Could you hide stereotype colour glyph feature
+    - I was hoping you could switch off stereotype colour glyphs
+    - I was wondering if you could deactivate stereotype colour glyph filters
+    - Would you be able to untick stereotype colour filtering
+    - Could you possibly clear stereotype colour feature
+    - Clear off stereotype colour feature filter
+    - May you remove stereotype colour filtering
+    - Would it be possible for you to unmark stereotype colour feature glyphs
+    - Unselect stereotype colour filter
+    - Get rid of stereotype colour feature
+    - Would I be able to take stereotype colours off
 
 # targets check
 - intent: icon_feature_person
   examples: |
-    - Highlight target person icon feature
-    - Highlight target person icon
-    - Check target person icon
-    - Check target person icon feature
+    - I want to display target person icon feature
+    - I want to visualise target person icon
+    - Can I highlight target person icon
+    - Check target person icon filter
+    - Switch on target person icon feature
     - Show me target person icon feature
-    - Show me target person icon feature
+    - May you tick target person icon feature filtering
     - Check target person icon
     - I want to see target person icon feature
     - I would like to see target person icon feature
-    - Turn on target person icon
-    - Turn on target person iconr feature
-    - Select target person icon feature
-    - Select target person icon
-    - Activate target person icon feature
+    - Turn on target person icon filtering
+    - Could you switch on target person icon feature
+    - Select target person icon filter
+    - Choose target person icon
+    - Activate target person icon
     - Enable target person icon feature
+    - Tick off target person icon feature
+    - I was hoping you could check target person icon feature
+    - I was wondering if you could select target person icon filter
+#- Would you be able to mark off target person icon filtering- yes
+# bring up target person icon- yes
+# switch target person icon on- yes
+
 
 - intent: icon_feature_group
   examples: |
-    - Highlight target group icon feature
-    - Highlight target group icon
-    - Check target group icon
-    - Check target group icon feature
+    - I want to display target group icon feature
+    - I want to visualise target group icon
+    - Can I highlight target group icon
+    - Check target group icon filter
+    - Switch on target group icon feature
     - Show me target group icon feature
-    - Show me target group icon feature
+    - May you tick target group icon feature filtering
     - Check target group icon
     - I want to see target group icon feature
     - I would like to see target group icon feature
-    - Turn on target group icon
-    - Turn on target group icon feature
-    - Select target group icon feature
-    - Select target group icon
-    - Activate target group icon feature
+    - Turn on target group icon filtering
+    - Could you switch on target group icon feature
+    - Select target group icon filter
+    - Choose target group icon
+    - Activate target group icon
     - Enable target group icon feature
+    - Tick off target group icon feature
+    - I was hoping you could check target group icon feature
+    - I was wondering if you could select target group icon filter
+#- Would you be able to mark off target group icon filtering-yes
+# bring up target group icon-yes
+# switch target group icon on-yes
 
 #check/uncheck all targets
 - intent: check_all_target_icons
   examples: |
     - Highlight all target icons
+    - Can I highlight all target icon features
+    - Check all target icon features
+    - Switch on all target icon filters
+    - Show me all target icon filtering
+    - May you tick all target icons
     - Check all target icons
-    - Show me all target icons
-    - I want to see all target icons
-    - I would like to see all target icons
-    - Turn on all target icons
+    - I want to see all target icon features
+    - I would like to see all target icons features
+    - Turn all target icon features filtering
+    - Could you switch on all target icon features
+    - Select all target icons
+    - Choose all target icon filtering
+    - Activate all target icons
+    - Enable all target icon filters
+    - Tick off all target icon features
+    - I was hoping you could check all target icons
+    - I was wondering if you could select all target icons
+#- Would you be able to mark off all target icon filtering-yes
+# bring up all target icons-yes
+# switch all target icons on-yes
+
 
 - intent: uncheck_all_target_icons
   examples: |
-    - Disable all target icons
-    - Uncheck all target icons
-    - Turn off all target icons
+    - Can I disable all target icons 
+    - Uncheck all target icons features
+    - May you turn off all target icons filters
+    - I want to reset all target icons features
+    - I would like to switch off all target icon features
+    - Deselect all target icons filtering
+    - Could you hide all target icon features
+    - I was hoping you could switch off all target icons
+    - I was wondering if you could deactivate all target icons features
+    - Would you be able to untick all target icon filters
+    - Could you possibly clear all target icon filtering
+    - Clear off all target icon feature filters
+    - May you remove both target icons
+    - Would it be possible for you to unmark both target icon filters
+    - Unselect both target icon filtering
+    - Get rid of both target icon features
+    - Would I be able to take both target icons off
+#COMPROBAR Ecem
+    
 
 # uncheck targets
 - intent: uncheck_target_person
   examples: |
-    - Uncheck target person icon
-    - Turn off target person icon
-    - Disable target person icon
+    - Can I disable target person icon 
+    - Uncheck target person icon features
+    - May you turn off target person icon filters
+    - I want to reset target person icon features
+    - I would like to switch off target person icon features
+    - Deselect target person icon filtering
+    - Could you hide target person icon features
+    - I was hoping you could switch off target person icon
+    - I was wondering if you could deactivate target person icon features
+    - Would you be able to untick target person icon filters
+    - Could you possibly clear target person icon filtering
+    - Clear off target person icon feature filters
+    - May you remove target person icon
+    - Would it be possible for you to unmark target person icon filters
+    - Unselect target person icon filtering
+    - Get rid of target person icon features
+    - Would I be able to take target person icon off
+#COMPROBAR Ecem
 
 - intent: uncheck_target_group
-  examples: |
-    - Uncheck target group icon
-    - Turn off target group icon
-    - Disable target group icon
+  examples: |  
+    - Can I disable target group icon 
+    - Uncheck target group icon features
+    - May you turn off target group icon filters
+    - I want to reset target group icon features
+    - I would like to switch off target group icon features
+    - Deselect target group icon filtering
+    - Could you hide target group icon features
+    - I was hoping you could switch off target group icon
+    - I was wondering if you could deactivate target group icon features
+    - Would you be able to untick target group icon filters
+    - Could you possibly clear target group icon filtering
+    - Clear off target group icon feature filters
+    - May you remove target group icon
+    - Would it be possible for you to unmark target group icon filters
+    - Unselect target group icon filtering
+    - Get rid of target group icon features
+    - Would I be able to take target group icon off
+#COMPROBAR Ecem
 
 
 # asking a filter without specifying which method
 
 - intent: filter_test
   examples: |
-    - Select [constructiveness]{"entity": "filter_name"}
-    - Select [constructive]{"entity": "filter_name" }
-    - Check  [constructive]{"entity": "filter_name" }
-    - Check  [constructiveness]{"entity": "filter_name"}
-    - Show me [constructiveness]{"entity": "filter_name"}
+    - Select [constructiveness]{"entity": "filter_name"} filter
+    - Choose [constructive]{"entity": "filter_name" }
+    - Can you tick [constructive]{"entity": "filter_name" } filtering
+    - May you check [constructiveness]{"entity": "filter_name"}
+    - Show me [constructiveness]{"entity": "filter_name"} filter
     - I want to see [constructiveness]{"entity": "filter_name"}
-    - Activate [constructiveness]{"entity": "filter_name"}
-    - Enable [constructiveness]{"entity": "filter_name"}
+    - I want you to select [constructiveness]{"entity": "filter_name"} filtering
+    - Could you activate [constructiveness]{"entity": "filter_name"}
+    - Enable [constructiveness]{"entity": "filter_name"} filter
     - Highlight [constructiveness]{"entity": "filter_name"}
-    - Turn on [constructiveness]{"entity": "filter_name"}
+    - Turn on [constructiveness]{"entity": "filter_name"} filtering
+    - Tick off [constructiveness]{"entity": "filter_name"}
+    - Switch on [constructiveness]{"entity": "filter_name"} filter
+    - I was hoping you could check [constructiveness]{"entity": "filter_name"}
+    - I was wondering if you could enable [constructiveness]{"entity": "filter_name"} filtering
 
 - intent: filters_argument
   examples: |
-    - Select [argumentation]{"entity": "filter_name"}
-    - Select [argument]{"entity": "filter_name" }
-    - Check  [argumentation]{"entity": "filter_name" }
-    - Check  [argument]{"entity": "filter_name"}
-    - Show me [argumentation]{"entity": "filter_name"}
-    - I want to see [argumenation]{"entity": "filter_name"}
-    - Activate [argumenation]{"entity": "filter_name"}
-    - Enable [argumenation]{"entity": "filter_name"}
-    - Highlight [argumenation]{"entity": "filter_name"}
-    - Turn on [argumenation]{"entity": "filter_name"}
+    - Select [argumentation]{"entity": "filter_name"} filter
+    - Choose [argument]{"entity": "filter_name" }
+    - Can you tick [argumentation]{"entity": "filter_name" } filtering
+    - May you check [argument]{"entity": "filter_name"}
+    - Show me [argumentation]{"entity": "filter_name"} filter
+    - I want to see [argumentation]{"entity": "filter_name"}
+    - I would like to select [argumentation]{"entity": "filter_name"}
+    - Could I activate [argumentation]{"entity": "filter_name"} filtering
+    - Enable [argumentation]{"entity": "filter_name"}
+    - Highlight [argumentation]{"entity": "filter_name"} filter
+    - Turn on [argumentation]{"entity": "filter_name"}
+    - Tick off [argumentation]{"entity": "filter_name"}
+    - Switch on [argumentation]{"entity": "filter_name"} filter
+    - I was hoping you could check [argumentation]{"entity": "filter_name"}
+    - I was wondering if you could enable [argumentation]{"entity": "filter_name"} filtering
 
 
 - intent: filters_sarcasm
   examples: |
-    - Select [sarcasm]{"entity": "filter_name"}
-    - Select [sarcastic]{"entity": "filter_name" }
-    - Check  [sarcasm]{"entity": "filter_name" }
-    - Check  [sarcastic]{"entity": "filter_name"}
+    - Select [sarcasm]{"entity": "filter_name"} filter
+    - Choose [sarcastic]{"entity": "filter_name" } filtering
+    - Can I check [sarcasm]{"entity": "filter_name" }
+    - May I tick [sarcastic]{"entity": "filter_name"} filter
     - Show me [sarcasm]{"entity": "filter_name"}
     - I want to see [sarcasm]{"entity": "filter_name"}
-    - Activate [sarcasm]{"entity": "filter_name"}
-    - Enable [sarcasm]{"entity": "filter_name"}
+    - I want you to select [sarcasm]{"entity": "filter_name"} filtering
+    - Could you activate [sarcasm]{"entity": "filter_name"}
+    - Enable [sarcasm]{"entity": "filter_name"} filter
     - Highlight [sarcasm]{"entity": "filter_name"}
-    - Turn on [sarcasm]{"entity": "filter_name"}
+    - Turn on [sarcasm]{"entity": "filter_name"} filtering
+    - Tick off [sarcasm]{"entity": "filter_name"}
+    - Switch on [sarcasm]{"entity": "filter_name"} filter
+    - I was hoping you could check [sarcasm]{"entity": "filter_name"}
+    - I was wondering if you could enable [sarcasm]{"entity": "filter_name"} filtering
 
 - intent: filters_mockery
   examples: |
-    - Select [mockery]{"entity": "filter_name"}
-    - Select [mockery]{"entity": "filter_name" }
-    - Check  [mockery]{"entity": "filter_name" }
-    - Check  [mockery]{"entity": "filter_name"}
-    - Show me [mockery]{"entity": "filter_name"}
+    - Can I select [mockery]{"entity": "filter_name"} filtering
+    - May I choose [mockery]{"entity": "filter_name" } filter
+    - Check [mockery]{"entity": "filter_name" }
+    - Tick [mockery]{"entity": "filter_name"} filtering
+    - Show me [mockery]{"entity": "filter_name"} filter
     - I want to see [mockery]{"entity": "filter_name"}
-    - Activate [mockery]{"entity": "filter_name"}
-    - Enable [mockery]{"entity": "filter_name"}
+    - I would like to see [mockery]{"entity": "filter_name"}
+    - Activate [mockery]{"entity": "filter_name"} filtering
+    - Could you enable [mockery]{"entity": "filter_name"} filter
     - Highlight [mockery]{"entity": "filter_name"}
-    - Turn on [mockery]{"entity": "filter_name"}
+    - Turn on [mockery]{"entity": "filter_name"} filtering
+    - Tick off [mockery]{"entity": "filter_name"}
+    - Switch on [mockery]{"entity": "filter_name"} filter
+    - I was hoping you could check [mockery]{"entity": "filter_name"}
+    - I was wondering if you could enable [mockery]{"entity": "filter_name"} filtering
 
 - intent: filters_intolerance
   examples: |
-    - Select [intolerance]{"entity": "filter_name"}
-    - Select [intolerance]{"entity": "filter_name" }
+    - Select [intolerance]{"entity": "filter_name"} filter
+    - Can I choose [intolerance]{"entity": "filter_name"} filtering
     - Check  [intolerance]{"entity": "filter_name" }
-    - Check  [intolerance]{"entity": "filter_name"}
+    - May you tick [intolerance]{"entity": "filter_name"} filter
     - Show me [intolerance]{"entity": "filter_name"}
-    - I want to see [intolerance]{"entity": "filter_name"}
+    - I want to see [intolerance]{"entity": "filter_name"} filtering
+    - I would like you to tick [intolerance]{"entity": "filter_name"}
     - Activate [intolerance]{"entity": "filter_name"}
-    - Enable [intolerance]{"entity": "filter_name"}
+    - Could I enable [intolerance]{"entity": "filter_name"} filter
     - Highlight [intolerance]{"entity": "filter_name"}
-    - Turn on [intolerance]{"entity": "filter_name"}
+    - Turn on [intolerance]{"entity": "filter_name"} filtering
+    - Tick off [intolerance]{"entity": "filter_name"}
+    - Switch on [intolerance]{"entity": "filter_name"} filter
+    - I was hoping you could check [intolerance]{"entity": "filter_name"}
+    - I was wondering if you could enable [intolerance]{"entity": "filter_name"} filtering
 
 - intent: filters_improper
   examples: |
-    - Select [improper language]{"entity": "filter_name"}
-    - Select [improper language]{"entity": "filter_name" }
-    - Check  [improper language]{"entity": "filter_name" }
-    - Check  [improper language]{"entity": "filter_name"}
-    - Show me [improper language]{"entity": "filter_name"}
+    - Can you select [improper language]{"entity": "filter_name"} filter
+    - Choose [improper language]{"entity": "filter_name" }
+    - Check [improper language]{"entity": "filter_name" } filtering
+    - May I tick [improper language]{"entity": "filter_name"}
+    - Show me [improper language]{"entity": "filter_name"} filter
     - I want to see [improper language]{"entity": "filter_name"}
+    - I would like to see [improper language]{"entity": "filter_name"} filtering
     - Activate [improper language]{"entity": "filter_name"}
-    - Enable [improper language]{"entity": "filter_name"}
+    - Enable [improper language]{"entity": "filter_name"} filter
     - Highlight [improper language]{"entity": "filter_name"}
-    - Turn on [improper language]{"entity": "filter_name"}
+    - Could you turn on [improper language]{"entity": "filter_name"} filtering
+    - Tick off [improper language]{"entity": "filter_name"}
+    - Switch on [improper language]{"entity": "filter_name"} filter
+    - I was hoping you could check [improper language]{"entity": "filter_name"}
+    - I was wondering if you could enable [improper language]{"entity": "filter_name"} filtering
 
 - intent: filters_insult
   examples: |
-    - Select [insult]{"entity": "filter_name"}
-    - Select [insult]{"entity": "filter_name" }
-    - Check  [insult]{"entity": "filter_name" }
-    - Check  [insult]{"entity": "filter_name"}
-    - Show me [insult]{"entity": "filter_name"}
+    - Choose [insult]{"entity": "filter_name"} filter
+    - May you select [insult]{"entity": "filter_name"}
+    - Tick [insult]{"entity": "filter_name" } filtering
+    - Can I check [insult]{"entity": "filter_name"}
+    - Show me [insult]{"entity": "filter_name"} filter
     - I want to see [insult]{"entity": "filter_name"}
+    - I'd like to see [insult]{"entity": "filter_name"} filtering
     - Activate [insult]{"entity": "filter_name"}
-    - Enable [insult]{"entity": "filter_name"}
-    - Highlight [insult]{"entity": "filter_name"}
-    - Turn on [insult]{"entity": "filter_name"}
+    - Enable [insult]{"entity": "filter_name"} filter
+    - Could you highlight [insult]{"entity": "filter_name"}
+    - Turn on [insult]{"entity": "filter_name"} filtering
+    - Tick off [insult]{"entity": "filter_name"}
+    - Switch on [insult]{"entity": "filter_name"} filter
+    - I was hoping you could check [insult]{"entity": "filter_name"}
+    - I was wondering if you could enable [insult]{"entity": "filter_name"} filtering
 
 - intent: filters_aggressiveness
   examples: |
-    - Select [aggressiveness]{"entity": "filter_name"}
+    - Choose [aggressiveness]{"entity": "filter_name"} filter
     - Select [aggressiveness]{"entity": "filter_name" }
-    - Check  [aggressiveness]{"entity": "filter_name" }
-    - Check  [aggressiveness]{"entity": "filter_name"}
-    - Show me [aggressiveness]{"entity": "filter_name"}
+    - Can you check [aggressiveness]{"entity": "filter_name" } filtering
+    - May you tick [aggressiveness]{"entity": "filter_name"}
+    - Show me [aggressiveness]{"entity": "filter_name"} filter
     - I want to see [aggressiveness]{"entity": "filter_name"}
-    - Activate [aggressiveness]{"entity": "filter_name"}
+    - I would like you to check [aggressiveness]{"entity": "filter_name"}
+    - Activate [aggressiveness]{"entity": "filter_name"} filtering
     - Enable [aggressiveness]{"entity": "filter_name"}
-    - Highlight [aggressiveness]{"entity": "filter_name"}
+    - Highlight [aggressiveness]{"entity": "filter_name"} filter
     - Turn on [aggressiveness]{"entity": "filter_name"}
+    - Could you tick off [aggressiveness]{"entity": "filter_name"} filtering
+    - Switch on [aggressiveness]{"entity": "filter_name"} filter
+    - I was hoping you could check [aggressiveness]{"entity": "filter_name"}
+    - I was wondering if you could enable [aggressiveness]{"entity": "filter_name"} filtering
 
 - intent: filters_stereotype
   examples: |
-    - Select [stereotype]{"entity": "filter_name"}
-    - Select [stereotype]{"entity": "filter_name" }
-    - Check  [stereotype]{"entity": "filter_name" }
-    - Check  [stereotype]{"entity": "filter_name"}
+    - Can I select [stereotype]{"entity": "filter_name"}
+    - Choose [stereotype]{"entity": "filter_name" }
+    - Check [stereotype]{"entity": "filter_name" }
+    - May you tick [stereotype]{"entity": "filter_name"}
     - Show me [stereotype]{"entity": "filter_name"}
     - I want to see [stereotype]{"entity": "filter_name"}
+    - I want you to check [stereotype]{"entity": "filter_name"}
     - Activate [stereotype]{"entity": "filter_name"}
     - Enable [stereotype]{"entity": "filter_name"}
     - Highlight [stereotype]{"entity": "filter_name"}
     - Turn on [stereotype]{"entity": "filter_name"}
+    - Could you tick off [stereotype]{"entity": "filter_name"} filtering
+    - Switch on [stereotype]{"entity": "filter_name"} filter
+    - I was hoping you could check [stereotype]{"entity": "filter_name"}
+    - I was wondering if you could enable [stereotype]{"entity": "filter_name"} filtering
 
 - intent: filters_person
   examples: |
-    - Select [target person]{"entity": "filter_name"}
-    - Select [target person]{"entity": "filter_name" }
+    - Can I select [target person]{"entity": "filter_name"}
+    - Choose [target person]{"entity": "filter_name" }
     - Check [target person]{"entity": "filter_name" }
-    - Check [target person]{"entity": "filter_name"}
+    - May you tick [target person]{"entity": "filter_name"}
     - Show me [target person]{"entity": "filter_name"}
     - I want to see [target person]{"entity": "filter_name"}
+    - I want you to check [target person]{"entity": "filter_name"}
     - Activate [target person]{"entity": "filter_name"}
     - Enable [target person]{"entity": "filter_name"}
     - Highlight [target person]{"entity": "filter_name"}
     - Turn on [target person]{"entity": "filter_name"}
+    - Could you tick off [target person]{"entity": "filter_name"} filtering
+    - Switch on [target person]{"entity": "filter_name"} filter
+    - I was hoping you could check [target person]{"entity": "filter_name"}
+    - I was wondering if you could enable [target person]{"entity": "filter_name"} filtering
 
 - intent: filters_group
   examples: |
-    - Select [target group]{"entity": "filter_name"}
-    - Select [target group]{"entity": "filter_name" }
+    - Can I select [target group]{"entity": "filter_name"}
+    - Choose [target group]{"entity": "filter_name" }
     - Check [target group]{"entity": "filter_name" }
-    - Check [target group]{"entity": "filter_name"}
+    - May you tick [target group]{"entity": "filter_name"}
     - Show me [target group]{"entity": "filter_name"}
     - I want to see [target group]{"entity": "filter_name"}
+    - I want you to check [target group]{"entity": "filter_name"}
     - Activate [target group]{"entity": "filter_name"}
     - Enable [target group]{"entity": "filter_name"}
     - Highlight [target group]{"entity": "filter_name"}
     - Turn on [target group]{"entity": "filter_name"}
+    - Could you tick off [target group]{"entity": "filter_name"} filtering
+    - Switch on [target group]{"entity": "filter_name"} filter
+    - I was hoping you could check [target group]{"entity": "filter_name"}
+    - I was wondering if you could enable [target group]{"entity": "filter_name"} filtering
+
+
+# asking to hide filters without specifying which method
+
+- intent: filters_constructive_hide
+  examples: |    
+    - Can I [constructiveness]{"entity": "filter_name"}
+    - Uncheck [constructiveness]{"entity": "filter_name"} features
+    - May you turn off [constructiveness]{"entity": "filter_name"} filters
+    - I want to reset [constructiveness]{"entity": "filter_name"} features
+    - I would like to switch off [constructiveness]{"entity": "filter_name"} features
+    - Deselect [constructiveness]{"entity": "filter_name"} filtering
+    - Could you hide [constructiveness]{"entity": "filter_name"} features
+    - I was hoping you could switch off [constructiveness]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [constructiveness]{"entity": "filter_name"}
+    - Would you be able to untick [constructiveness]{"entity": "filter_name"} filters
+    - Could you possibly clear [constructiveness]{"entity": "filter_name"} filtering
+    - Clear off [constructiveness]{"entity": "filter_name"} filters
+    - May you remove [constructiveness]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [constructiveness]{"entity": "filter_name"} filters
+    - Unselect [constructiveness]{"entity": "filter_name"} filtering
+    - Get rid of [constructiveness]{"entity": "filter_name"} features
+    - Would I be able to take [constructiveness]{"entity": "filter_name"} off
+    - I'd like to clear off [constructiveness]{"entity": "filter_name"}
+
+
+
+- intent: filters_argument_hide
+  examples: |
+    - Hide [argumentation]{"entity": "filter_name"}
+    - Deselect [argument]{"entity": "filter_name" }
+    - Uncheck  [argumentation]{"entity": "filter_name" }
+    
+    
+
+
+- intent: filters_sarcasm_hide
+  examples: |
+    - Deselect [sarcasm]{"entity": "filter_name"}
+    - Hide [sarcastic]{"entity": "filter_name" }
+    - Uncheck [sarcasm]{"entity": "filter_name" }
+
+
+- intent: filters_mockery_hide
+  examples: |
+    - Deselect [mockery]{"entity": "filter_name"}
+    - Hide [mockery]{"entity": "filter_name" }
+    - Uncheck  [mockery]{"entity": "filter_name"}
+
+- intent: filters_intolerance_hide
+  examples: |
+    - Deselect [intolerance]{"entity": "filter_name"}
+    - Hide [intolerance]{"entity": "filter_name" }
+    - Uncheck  [intolerance]{"entity": "filter_name" }
+
+
+- intent: filters_improper_hide
+  examples: |
+    - Deselect [improper language]{"entity": "filter_name"}
+    - Hide [improper language]{"entity": "filter_name" }
+    - Uncheck [improper language]{"entity": "filter_name" }
+
+- intent: filters_insult_hide
+  examples: |
+    - Deselect [insult]{"entity": "filter_name"}
+    - Hide [insult]{"entity": "filter_name" }
+    - Uncheck [insult]{"entity": "filter_name" }
+
+- intent: filters_aggressiveness_hide
+  examples: |
+    - Hide [aggressiveness]{"entity": "filter_name"}
+    - Deselect [aggressiveness]{"entity": "filter_name" }
+    - Uncheck  [aggressiveness]{"entity": "filter_name" }
+
+
+- intent: filters_stereotype_hide
+  examples: |
+    - Deselect [stereotype]{"entity": "filter_name"}
+    - Hide [stereotype]{"entity": "filter_name" }
+    - Uncheck  [stereotype]{"entity": "filter_name" }
+
+
+- intent: filters_person_hide
+  examples: |
+    - Deselect [target person]{"entity": "filter_name"}
+    - Hide [target person]{"entity": "filter_name" }
+    - Uncheck [target person]{"entity": "filter_name" }
+
+- intent: filters_group_hide
+  examples: |
+    - Deselect [target group]{"entity": "filter_name"}
+    - Hide [target group]{"entity": "filter_name" }
+    - Uncheck [target group]{"entity": "filter_name" }
 
 - intent: reset_all_filters
   examples: |
     - I want to deselect all filters
-    - Desselect all filters
-    - Reset all filters
-    - Undo all filters
-    - Disable all filters
-    - Remove all filters
+    - Could you remove all filters
+    - I was hoping you could reset all selected
+    - Would you be able to undo all filters
+    - Could you possibly disable all filters
+    - I would like you to turn off all filtering
+    - Take off all filtering
+    - Would it be possible for you to go back to the original display
+    - Clear the interface filters
+    - Would I be able to get rid of the selected filters
+    - Go back to the beginning
+    - Switch off filters
+    - Uncheck all filters
+#clear the filters off the interface- yes
+# take the filters off the interface- yes
+#i'd like you to deactivate all filtering- yes
+# get rid of filters- yes
+
+# ask to check node and edge without specifying one
+- intent: show_node_and_edge
+  examples: |
+    - Can I select node and edge
+    - Choose node and edge
+    - May you tick node and edge
+    - Show me node and edge
+    - I want to see node and edge
+    - I want you to check node and edge
+    - Activate node and edge
+    - Enable node and edge 
+    - Highlight node and edge
+    - Turn on node and edge
+    - Could you tick off node and edge filtering
+    - Switch on node and edge filter
+    - I was hoping you could check node and edge
+    - I was wondering if you could enable node and edge filtering
+    - Would you be able to activate node and edge
+#DOESN'T WORK
+
+- intent: filters_all_features
+  examples: |
+    - Can I select [all features]{"entity": "filter_name"}
+    - Choose [the features]{"entity": "filter_name"}
+    - May you tick [all features]{"entity": "filter_name"}
+    - Show me [all features]{"entity": "filter_name"}
+    - I want to see [all of the features]{"entity": "filter_name"}
+    - I want you to check [the features]{"entity": "filter_name"}
+    - Activate [all features]{"entity": "filter_name"}
+    - Enable [all of the features]{"entity": "filter_name"}
+    - Highlight [the features]{"entity": "filter_name"}
+    - Turn on [all features]{"entity": "filter_name"}
+    - Could you tick off [all of the features]{"entity": "filter_name"}
+    - Switch on [the features]{"entity": "filter_name"}
+    - I was hoping you could check [all features]{"entity": "filter_name"}
+    - I was wondering if you could enable [all features]{"entity": "filter_name"}
+#COMPROBADO
+
+- intent: filters_all_targets
+  examples: |
+    - Can I select [all targets]{"entity": "filter_name"}
+    - Choose [the targets]{"entity": "filter_name"}
+    - May you tick [all targets]{"entity": "filter_name"}
+    - Show me [all of the  targets]{"entity": "filter_name"}
+    - I want to see [the targets]{"entity": "filter_name"}
+    - I want you to check [all targets]{"entity": "filter_name"}
+    - Activate [all of the targets]{"entity": "filter_name"}
+    - Enable [the targets]{"entity": "filter_name"}
+    - Highlight [all targets]{"entity": "filter_name"}
+    - Turn on [all of the targets]{"entity": "filter_name"}
+    - Could you tick off [the targets]{"entity": "filter_name"}
+    - Switch on [all targets]{"entity": "filter_name"}
+    - I was hoping you could check [the targets]{"entity": "filter_name"}
+    - I was wondering if you could enable [all targets]{"entity": "filter_name"}
+#COMPROBADO
+
+- intent: filters_all_features_uncheck
+  examples: |
+    - I want to deselect all features
+    - Could you remove all features
+    - I was hoping you could reset all selected features
+    - Would you be able to undo all features
+    - Could you possibly disable all features
+    - I would like you to turn off all features
+    - Take off all selected features filters
+    - Would it be possible for you to clear off all features filtering
+    - Switch off all features
+    - Can you uncheck all feature filters
+    - Reset all features
+    - I was wondering if you could turn off all features
+    - Get rid of all featyres
+    - Could you deselect all features
+    - Turn off all features
+#    - Would it be possible for you to go back to the original display
+#    - Clear the interface filters
+#    - Go back to the beginning
+#    - Switch off filters
+#    - Uncheck all selected filters
+#    - Reset all
+#COMPROBAR
+# Would I be able to get rid of the selected filters- no
+# reset all- yes
+# reset everything -yes
+# Would it be possible for you to go back to the original display-yes
 
 
+
+- intent: filters_all_targets_uncheck
+  examples: |
+    - I want to deselect [all targets]{"entity": "filter_name"}
+    - Could you remove [the targets]{"entity": "filter_name"}
+    - I was hoping you could reset [all of the targets]{"entity": "filter_name"}
+    - Would you be able to undo [all targets]{"entity": "filter_name"}
+    - Could you possibly disable [the targets]{"entity": "filter_name"}
+    - I would like you to turn off [all of targets]{"entity": "filter_name"}
+    - Take off [all targets]{"entity": "filter_name"} filtering
+    - Would it be possible for you to get rid of [the targets]{"entity": "filter_name"}
+    - Clear off [all of the targets]{"entity": "filter_name"}
+    - Would I be able to get rid of the [selected targets]{"entity": "filter_name"}
+    - Switch off [selected targets]{"entity": "filter_name"}
+    - Uncheck all [all selected targets]{"entity": "filter_name"}
+#COMPROBADO
+
+# Definitions of features
+- intent: define_sarcasm
+  examples: | 
+    - Can you tell me what is meant by [sarcasm]{"entity": "filter_name"}?
+    - I was wondering if you could explain [sarcasm]{"entity": "filter_name"} to me?
+    - Could you explain to me what [sarcasm]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [sarcasm]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [sarcasm]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [sarcasm]{"entity": "filter_name"}
+    - I was hoping you could help me understand [sarcasm]{"entity": "filter_name"}
+    - I'd like you to define [sarcasm]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [sarcasm]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [sarcasm]{"entity": "filter_name"} is for?
+    - Give me help on [sarcasm]{"entity": "filter_name"}
+    - Guide for [sarcasm]{"entity": "filter_name"}
+    - May you inform me on [sarcasm]{"entity": "filter_name"}
+
+- intent: define_mockery
+  examples: |
+    - Can you tell me what is meant by [mockery]{"entity": "filter_name"}?
+    - I was wondering if you could explain [mockery]{"entity": "filter_name"} to me?
+    - Could you explain to me what [mockery]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [mockery]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [mockery]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [mockery]{"entity": "filter_name"}
+    - I was hoping you could help me understand [mockery]{"entity": "filter_name"}
+    - I'd like you to define [mockery]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [mockery]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [mockery]{"entity": "filter_name"} is for?
+    - Give me help on [mockery]{"entity": "filter_name"}
+    - Guide for [mockery]{"entity": "filter_name"}
+    - May you inform me on [mockery]{"entity": "filter_name"}
+
+- intent: define_intolerance
+  examples: | 
+    - Can you tell me what is meant by [intolerance]{"entity": "filter_name"}?
+    - I was wondering if you could explain [intolerance]{"entity": "filter_name"} to me?
+    - Could you explain to me what [intolerance]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [intolerance]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [intolerance]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [intolerance]{"entity": "filter_name"}
+    - I was hoping you could help me understand [intolerance]{"entity": "filter_name"}
+    - I'd like you to define [intolerance]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [intolerance]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [intolerance]{"entity": "filter_name"} is for?
+    - Give me help on [intolerance]{"entity": "filter_name"}
+    - Guide for [intolerance]{"entity": "filter_name"}
+    - May you inform me on [intolerance]{"entity": "filter_name"}
+
+- intent: define_insult
+  examples: |
+    - Can you tell me what is meant by [insult]{"entity": "filter_name"}?
+    - I was wondering if you could explain [insult]{"entity": "filter_name"} to me?
+    - Could you explain to me what [insult]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [insult]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [insult]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [insult]{"entity": "filter_name"}
+    - I was hoping you could help me understand [insult]{"entity": "filter_name"}
+    - I'd like you to define [insult]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [insult]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [insult]{"entity": "filter_name"} is for?
+    - Give me help on [insult]{"entity": "filter_name"}
+    - Guide for [insult]{"entity": "filter_name"}
+    - May you inform me on [insult]{"entity": "filter_name"}
+
+- intent: define_improper_language
+  examples: |
+    - Can you tell me what is meant by [improper language]{"entity": "filter_name"}?
+    - I was wondering if you could explain [improper language]{"entity": "filter_name"} to me?
+    - Could you explain to me what [improper language]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [improper language]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [improper language]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [improper language]{"entity": "filter_name"}
+    - I was hoping you could help me understand [improper language]{"entity": "filter_name"}
+    - I'd like you to define [improper language]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [improper language]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [improper language]{"entity": "filter_name"} is for?
+    - Give me help on [improper language]{"entity": "filter_name"}
+    - Guide for [improper language]{"entity": "filter_name"}
+    - May you inform me on [improper language]{"entity": "filter_name"}
+
+- intent: define_aggressiveness
+  examples: |
+    - Can you tell me what is meant by [aggressiveness]{"entity": "filter_name"}?
+    - I was wondering if you could explain [aggressiveness]{"entity": "filter_name"} to me?
+    - Could you explain to me what [aggressiveness]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [aggressiveness]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [aggressiveness]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [aggressiveness]{"entity": "filter_name"}
+    - I was hoping you could help me understand [aggressiveness]{"entity": "filter_name"}
+    - I'd like you to define [aggressiveness]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [aggressiveness]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [aggressiveness]{"entity": "filter_name"} is for?
+    - Give me help on [aggressiveness]{"entity": "filter_name"}
+    - Guide for [aggressiveness]{"entity": "filter_name"}
+    - May you inform me on [aggressiveness]{"entity": "filter_name"}
+
+- intent: define_stereotype
+  examples: |
+    - Can you tell me what is meant by [stereotype]{"entity": "filter_name"}?
+    - I was wondering if you could explain [stereotype]{"entity": "filter_name"} to me?
+    - Could you explain to me what [stereotype]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [stereotype]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [stereotype]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [stereotype]{"entity": "filter_name"}
+    - I was hoping you could help me understand [stereotype]{"entity": "filter_name"}
+    - I'd like you to define [stereotype]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [stereotype]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [stereotype]{"entity": "filter_name"} is for?
+    - Give me help on [stereotype]{"entity": "filter_name"}
+    - Guide for [stereotype]{"entity": "filter_name"}
+    - What is [stereotype]{"entity": "filter_name"}
+    - May you inform me on [stereotype]{"entity": "filter_name"}
+
+
+- intent: define_stance
+  examples: |
+    - Can you tell me what is meant by stance?
+    - I was wondering if you could explain stance to me?
+    - Could you explain to me what stance refers to?
+    - I would like you to explain what stance is
+    - Would you be able to give me a tutorial for stance?
+    - I want you to give me an explanation about stance
+    - I was hoping you could help me understand stance
+    - I'd like you to define stance
+    - Would it be possible to have a tutorial for stance?
+    - Could you possibly go into more detail about what stance is for?
+    - Give me help on stance
+    - Guide for stance
+    - May you inform me on stance
+    - What are stances
+    - What is stance
+
+- intent: define_toxic
+  examples: |
+    - Can you tell me what is meant by toxic?
+    - I was wondering if you could explain toxic to me?
+    - Could you explain to me what toxic refers to?
+    - I would like you to explain what toxic is
+    - Would you be able to give me a tutorial for toxic?
+    - I want you to give me an explanation about toxic
+    - I was hoping you could help me understand toxic
+    - I'd like you to define toxicity level
+    - Would it be possible to have a tutorial for toxic?
+    - Could you possibly go into more detail about what toxic is for?
+    - Give me help on toxic
+    - Guide for toxic
+    - May you inform me on toxic
+    - What is toxic?
+    - What does level of toxicity mean?
+#help me with toxicity
+
+- intent: define_commentid
+  examples: | 
+    - Can you tell me what is meant by [comment id]{"entity": "tag_comment_id"}? No.
+    - I was wondering if you could explain [comment id]{"entity": "tag_comment_id"} number to me?
+    - Could you explain to me what [id]{"entity": "tag_comment_id"} number refers to?
+    - I would like you to explain what [comment id]{"entity": "tag_comment_id"} is
+    - Would you be able to give me a tutorial for [comment id]{"entity": "tag_comment_id"}?
+    - I want you to give me an explanation about [commentid]{"entity": "tag_comment_id"} number
+    - I was hoping you could help me understand [commentid]{"entity": "tag_comment_id"} No.
+    - I'd like you to define [commentid]{"entity": "tag_comment_id"} No.
+    - Would it be possible to have a tutorial for [comment id]{"entity": "tag_comment_id"}?
+    - Could you possibly go into more detail about what [commentid]{"entity": "tag_comment_id"} No. is for?
+    - Give me help on [comment identification]{"entity": "tag_comment_id"} number
+    - Guide for [comment id]{"entity": "tag_comment_id"}
+    - May you inform me on [identification]{"entity": "tag_comment_id"} No.
+
+
+- synonym: comment id
+  examples: |
+    - commentid
+    - comment identification
+    - id
+    - identification
+
+
+- intent: define_argumentation
+  examples: |
+    - Can you tell me what is meant by [argumentation]{"entity": "filter_name"}?
+    - I was wondering if you could explain [argumentation]{"entity": "filter_name"} to me?
+    - Could you explain to me what [argumentation]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [argumentation]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [argumentation]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [argumentation]{"entity": "filter_name"}
+    - I was hoping you could help me understand [argumentation]{"entity": "filter_name"}
+    - I'd like you to define [argumentation]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [argumentation]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [argumentation]{"entity": "filter_name"} is for?
+    - Give me help on [argumentation]{"entity": "filter_name"}
+    - Guide for [argumentation]{"entity": "filter_name"}
+    - May you inform me on [argumentation]{"entity": "filter_name"}
+
+- intent: define_constructiveness
+  examples: |
+    - Can you tell me what is meant by [constructiveness]{"entity": "filter_name"}?
+    - I was wondering if you could explain [constructiveness]{"entity": "filter_name"} to me?
+    - Could you explain to me what [constructiveness]{"entity": "filter_name"} refers to?
+    - I would like you to explain what [constructiveness]{"entity": "filter_name"} is
+    - Would you be able to give me a tutorial for [constructiveness]{"entity": "filter_name"}?
+    - I want you to give me an explanation about [constructiveness]{"entity": "filter_name"}
+    - I was hoping you could help me understand [constructiveness]{"entity": "filter_name"}
+    - I'd like you to define [constructiveness]{"entity": "filter_name"}
+    - Would it be possible to have a tutorial for [constructiveness]{"entity": "filter_name"}?
+    - Could you possibly go into more detail about what [constructiveness]{"entity": "filter_name"} is for?
+    - Give me help on [constructiveness]{"entity": "filter_name"}
+    - Guide for [constructiveness]{"entity": "filter_name"}
+    - May you inform me on [constructiveness]{"entity": "filter_name"}
+
+- intent: define_targetgroup
+  examples: |
+    - Can you tell me what is meant by target group?
+    - I was wondering if you could explain target group to me?
+    - Could you explain to me what target group refers to?
+    - I would like you to explain what target group is
+    - Would you be able to give me a tutorial for target group?
+    - I want you to give me an explanation for target group
+    - I was hoping you could help me understand target group
+    - I'd like you to define target group
+    - Would it be possible to have a tutorial for target group?
+    - Could you possibly go into more detail about what target group is for?
+    - Give me help on target group
+    - Guide for target group
+    - May you inform me on target group
+
+- intent: define_targetperson
+  examples: |
+    - Can you tell me what is meant by target person?
+    - I was wondering if you could explain target person to me?
+    - Could you explain to me what target person refers to?
+    - I would like you to explain what target person is
+    - Would you be able to give me a tutorial for target person?
+    - I want you to give me an explanation for target person
+    - I was hoping you could help me understand target person
+    - I'd like you to define target person
+    - Would it be possible to have a tutorial for target person?
+    - Could you possibly go into more detail about what target person is for?
+    - Give me help on target person
+    - Guide for target person
+    - May you inform me on target person
+
+
+- intent: define_commentlevel
+  examples: |
+    - Can you tell me what is meant by comment level?
+    - I was wondering if you could explain comment level to me?
+    - Could you explain to me what the level of the comment refers to?
+    - I would like you to explain what comment level is
+    - Would you be able to give me a tutorial for comment level?
+    - I want you to give me an explanation for comment level
+    - I was hoping you could help me understand comment level
+    - I'd like you to define comment level
+    - Would it be possible to have a tutorial for comment level?
+    - Could you possibly go into more detail about what comment level is for?
+    - Give me help on comment level
+    - Guide for comment level
+    - May you inform me on comment level
+
+- intent: define_commentdepth
+  examples: |
+    - Can you tell me what is meant by comment depth?
+    - I was wondering if you could explain comment depth to me?
+    - Could you explain to me what the depth of the comment refers to?
+    - I would like you to explain what comment depth is
+    - Would you be able to give me a tutorial for comment depth?
+    - I want you to give me an explanation for comment depth
+    - I was hoping you could help me understand comment depth
+    - I'd like you to define comment depth
+    - Would it be possible to have a tutorial for comment depth?
+    - Could you possibly go into more detail about what comment depth is for?
+    - Give me help on comment depth
+    - Guide for comment depth
+    - May you inform me on comment depth
+    
+
+#- Tutorial for comment depth- yes
+#- What is the definition of comment depth?- yes
+#- What does comment depth mean?-yes
+# How do I use comment depth?- yes
+# I need an explanation on comment depth- yes
+# Help comment depth- yes
+#- How is comment depth defined?- yes
+#- May I know what comment depth is for?-yes
+#- What is comment depth?- yes
+# help define comment depth- yes
+# tell me about comment depth- yes
+# how can I use comment depth- yes
+# i was wondering if you could explain to me what comment depth indicates- yes
+
+- intent: define_directcomment
+  examples: |
+    - Can you tell me what is meant by direct comments?
+    - I was wondering if you could explain direct comments to me?
+    - Could you explain to me what direct comments refers to?
+    - I would like you to explain what direct comments is
+    - Would you be able to give me a tutorial for direct comments?
+    - I want you to give me an explanation for direct comments
+    - I was hoping you could help me understand direct comments
+    - I'd like you to define direct comments
+    - Could you possibly go into more detail about what direct comments is for?
+    - Give me help on direct comments
+    - Guide for direct comments
+    - May you inform me on direct comments
+#what are direct comments- yes
+#what is direct comments for- yes
+#what does direct comments mean- yes
+#could you possibly tell me more about direct comments- yes
+#- Would it be possible to have a tutorial for direct comments?
+
+- intent: define_subtrees
+  examples: |
+    - Can you tell me what is meant by subtrees?
+    - I was wondering if you could explain subtrees to me?
+    - Could you explain to me what subtrees refers to?
+    - I would like you to explain what subtrees are
+    - Would you be able to give me a tutorial for subtrees?
+    - I want you to give me an explanation about subtrees
+    - I was hoping you could help me understand subtrees
+    - I'd like you to define subtrees
+    - Would it be possible to have a tutorial for subtrees?
+    - Could you possibly go into more detail about what subtrees are for?
+    - Give me help on subtrees
+    - Guide for subtrees
+    - May you inform me on subtrees
+
+#synonym: subtree
+ # examples: |
+  #  - subregion
+  # - sub section
+  # substructure
+  # parts of the visualisation
+  # parts of the layout
+  # parts of the display
+  # regions of the visualisation
+  # regions of the display
+  # regions of the layout
+  # sections of the visualisation
+  # sections of the layout
+  # sections of the display
+
+
+- intent: ask_tutorial
+  examples: |
+    - I want a tutorial
+    - I need a tutorial
+    - I was wondering if you could explain everything again
+    - Give me a tutorial on everything
+    - I was hoping you could tell me everything you can do again
+    - I'd like you to tell me everything I can do
+    - Explain to me how to use this tool
+    - I would like a tutorial
+    - Would you be able to give me a tutorial
+    - Can I have a full tutorial
+    - Would it be possible to have a tutorial for every function
+    - Tell me everything I can do 
+    - Could you possibly run through all the functions of this site
+  
+
+- intent: tutorial_layouts
+  examples: |
+    - Tutorial for layouts
+    - Show me tutorial for layouts
+
+
+- intent: tutorial_glyphs
+  examples: |
+    - Tutorial for glyphs
+    - Show me tutorial for glyphs
+
+- intent: tutorial_targets
+  examples: |
+    - Tutorial for targets
+    - Show me tutorial for targets
+
+- intent: tutorial_node_and_edge
+  examples: |
+    - Tutorial for node and edge
+    - Show me tutorial for node and edge
+
+- intent: tutorial_statistics
+  examples: |
+    - Tutorial for statistics
+    - Show me tutorial for statistics
+
+- intent: tutorial_most_tagged_features
+  examples: |
+    - Tutorial for most tagged features
+    - Show me tutorial for most tagged features
+
+- intent: tutorial_high_level
+  examples: |
+    - null high level questions null 
+    - no value high level questions no value
+
+
+- intent: tutorial_subtrees
+  examples: |
+    - null subtrees null 
+    - no value subtrees no value
+
+
+- intent: tutorial_chatbot
+  examples: |
+    - null chatbot null 
+    - no value chatbot no value
+
+
+- intent: tutorial_change_file
+  examples: |
+    - null change file null 
+    - no value change file no value
 
