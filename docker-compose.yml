@@ -2,26 +2,26 @@ version: "3.9"
 
 services:
   rasa:
-    image: rasa-server:latest
+    image: rasa-server-okteto:latest
     build: .
     volumes:
     - ./rasa/data:/code/data
     - ./rasa/actions:/code/actions
-    command: bash -c "rm -rf .rasa/* && rasa train && rasa run -m models --enable-api --auth-token DataVisualizationInLinguisticsSecretToken --cors \"*\" -p 8000"
+    command: bash -c "rm -rf .rasa/* && rasa train && rasa run -m models --enable-api --auth-token DataVisualizationInLinguisticsSecretToken --cors \"*\" -p 8080"
+    working_dir: /code
     ports:
-      - "5005:5005"
-    public: true
+      - "5005:8080"
     networks:
       - all
   rasa-actions:
-    image: rasa-server:latest
+    image: rasa-server-okteto:latest
     build: .
     volumes:
       - ./rasa/actions:/code/actions
     command: bash -c "rasa run actions"
+    working_dir: /code
     ports:
       - "5055:5055"
-    public: true
     networks:
       - all
   db:
@@ -34,11 +34,11 @@ services:
       - ./DataVisualization/postgres-data:/var/lib/postgresql/data
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: bash -c "python manage.py makemigrations DataVisualization && python manage.py migrate && python manage.py runserver 0.0.0.0:8080"
     volumes:
       - .:/code
     ports:
-      - "8000:8000"
+      - "8080:8080"
     depends_on:
       - db
 networks:
