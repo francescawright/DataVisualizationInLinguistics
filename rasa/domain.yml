@@ -636,7 +636,8 @@ responses:
     
     You can change the variables and graph type using the drop down menus. \ \n 
 
-    The graphs are also interactive, meaning if you click variables on your graph, they will also be activated on the main interface \ \n
+    The graphs are also interactive, meaning if you click variables on your graph, they will also be activated on the main interface \ \n 
+
 
     Read more about Interactive Graphs [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
@@ -647,11 +648,11 @@ responses:
           payload: '/statistics_help'
 
   utter_help_main_bar_three:
-    - text: "intent_summary_signal;There are two statistics options: \ \n
+    - text: "intent_summary_signal;There are three statistics options: \ \n 
     
-    - Selected Comments \ \n
+    - Statistics summary shows you the breakdown of toxicity and targets in the current visualisation\ \n
     
-    - Level One comments \ \n
+    - Selected Comments and Level One comments are graphs \ \n
     
     You can change the variables and graph type using the drop down menus.  \ \n
   
