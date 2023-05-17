@@ -504,10 +504,10 @@
     }
 
 
-    function userMessageEvent(e) {
-        console.log('the user said something: ' + e.message, ' | [Date]', Date.now());
-
-    }
+    {#function userMessageEvent(e) {#}
+    {#    console.log('the user said something: ' + e.message, ' | [Date]', Date.now());#}
+    {##}
+    {#}#}
 
     function botMessageEvent(e) {
         console.log('the bot said something: ' + e.text);
@@ -1598,8 +1598,7 @@
                 },
                 onSocketEvent: {
                     'bot_uttered': botMessageEvent,
-                    'user_uttered': userMessageEvent,
-                    'connect': function() {
+                    'connect': function () {
                         console.log('connection established');
                         addNewFeatures();
                         if ('{{storage_clear}}' && '{{storage_clear}}' !== "nochat") {

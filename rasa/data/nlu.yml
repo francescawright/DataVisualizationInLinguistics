@@ -433,11 +433,13 @@ nlu:
 
 - intent: select_document
   examples: |
-    - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Open [20170819_CR]{"entity": "document_requested"} file
+    - Open [618_MI]{"entity": "document_requested"}
+    - Open [test]{"entity": "document_requested"}
     - I want you to open [Compact_200]{"entity": "document_requested"}
-    - I would like you to show me the [20190519_SO]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} 
+    - I would like you to show me the [20190519_SO]{"entity": "document_requested"} file
     - Can you open for me [531_MI]{"entity": "document_requested"}
-    - I was hoping you could bring up [test2]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} for me
+    - I was hoping you could bring up [test2]{"entity": "document_requested"} file for me
     - Would you be able to select [test4-Com]{"entity": "document_requested"}
     - Would it be possible for you to choose [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
     - I'd like to analyse [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
@@ -451,11 +453,11 @@ nlu:
     - Open [Compact_200]{"entity": "document_requested"}
     - Open [document]{"entity": "object_requested", "value": "document"}
     - Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
-    - Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Show me the [test4-Com]{"entity": "document_requested"} file
+    - I want to open [Task 4]{"entity": "document_requested"}
     - I want to open a [file]{"entity": "object_requested", "value": "document"}
     - I want to open [wide]{"entity": "document_requested"}
-    - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
+    - I want to see [531_MI]{"entity": "document_requested"} document
 
 #- Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
 #   - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
@@ -1211,25 +1213,8 @@ nlu:
     - Show the most crowded subtree
     - Display the most crowded subtree
     - largest subtree
-    - crowded subgraph
-    - Show me the largest subgraph
-    - I want to see the largest subgraph
-    - Which subgraph is the largest
-    - Can you show me the largest subgraph
-    - I would like to see the largest subgraph
-    - Display the largest subgraph
-    - Show the largest subgraph
-    - Which subgraph is the most crowded?
-    - Which subgraph has the most nodes?
-    - Can you show me the most crowded subgraph?
-    - Can you show me the subgraph with most nodes?
-    - Show me the most crowded subgraph
-    - I want to see the most crowded subgraph
-    - I would like to see the most crowded subgraph
-    - Show the most crowded subgraph
-    - Display the most crowded subgraph
-    - largest subgraph
-    - crowded subgraph
+    - crowded subtree
+
 
 # most toxic thread
 - intent: most_toxic_thread
@@ -1270,22 +1255,6 @@ nlu:
     - Display the subtree with most toxic nodes
     - most toxic subtree
     - subtree with most toxic nodes
-    - Show me the most toxic subgraph
-    - I want to see the most toxic subgraph
-    - Which subgraph is the most toxic?
-    - Can you show me the most toxic subgraph?
-    - I would like to see the most toxic subgraph
-    - Display the most toxic subgraph
-    - Show the most toxic subgraph
-    - Which subgraph has the most toxic nodes?
-    - Can you show me the subgraph with most toxic nodes?
-    - Show me the subgraph with most toxic nodes
-    - I want to see the subgraph with most toxic nodes
-    - I would like to see the subgraph with most toxic nodes
-    - Show the subgraph with most toxic nodes
-    - Display the subgraph with most toxic nodes
-    - most toxic subgraph
-    - subgraph with most toxic nodes
 
 
 - intent: statistics_features_tree
@@ -3145,4 +3114,9 @@ nlu:
   examples: |
     - null change file null 
     - no value change file no value
+
+- intent: tutorial_do_not_want
+  examples: |
+    - I do not want a tutorial
+    - I don't need a tutorial
 

@@ -200,6 +200,7 @@ intents:
   - tutorial_chatbot
   - help_statistics_summary
   - tutorial_change_file
+  - tutorial_do_not_want
 
 
 actions:
@@ -230,6 +231,7 @@ actions:
   - action_save_chat_logs
   - validate_filter_selection_form
   - filter_selection_form
+  - action_log_user_messages
 
 
 
@@ -1345,7 +1347,8 @@ responses:
                   Remember, I’m here to carry out any of the functions on the interface, show you subtrees and help you when you when you need it 😄.
                   Use this window or your microphone to talk to me! "
 
-
+  utter_tutorial_do_not_want:
+    - text: "Okay I am here if  need me 😊"
 
 
 #  utter_tutorial_mode:
