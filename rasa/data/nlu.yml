@@ -29,7 +29,6 @@ nlu:
   examples: |
     - cu
     - good bye
-    - see you later
     - good night
     - bye
     - goodbye
@@ -37,6 +36,10 @@ nlu:
     - see you around
     - bye bye
     - see you later
+    - see you soon
+    - see you next time
+    - I'm going now
+    - That's enough for today
 
 - intent: affirm
   examples: |
@@ -1211,27 +1214,10 @@ nlu:
     - Show the most crowded subtree
     - Display the most crowded subtree
     - largest subtree
-    - crowded subgraph
-    - Show me the largest subgraph
-    - I want to see the largest subgraph
-    - Which subgraph is the largest
-    - Can you show me the largest subgraph
-    - I would like to see the largest subgraph
-    - Display the largest subgraph
-    - Show the largest subgraph
-    - Which subgraph is the most crowded?
-    - Which subgraph has the most nodes?
-    - Can you show me the most crowded subgraph?
-    - Can you show me the subgraph with most nodes?
-    - Show me the most crowded subgraph
-    - I want to see the most crowded subgraph
-    - I would like to see the most crowded subgraph
-    - Show the most crowded subgraph
-    - Display the most crowded subgraph
-    - largest subgraph
-    - crowded subgraph
+    - crowded subtree
 
-# most toxic thread
+
+# most toxic thread -----ADD would you be able to etc
 - intent: most_toxic_thread
   examples: |
     - Show me the most toxic thread
@@ -1270,22 +1256,7 @@ nlu:
     - Display the subtree with most toxic nodes
     - most toxic subtree
     - subtree with most toxic nodes
-    - Show me the most toxic subgraph
-    - I want to see the most toxic subgraph
-    - Which subgraph is the most toxic?
-    - Can you show me the most toxic subgraph?
-    - I would like to see the most toxic subgraph
-    - Display the most toxic subgraph
-    - Show the most toxic subgraph
-    - Which subgraph has the most toxic nodes?
-    - Can you show me the subgraph with most toxic nodes?
-    - Show me the subgraph with most toxic nodes
-    - I want to see the subgraph with most toxic nodes
-    - I would like to see the subgraph with most toxic nodes
-    - Show the subgraph with most toxic nodes
-    - Display the subgraph with most toxic nodes
-    - most toxic subgraph
-    - subgraph with most toxic nodes
+  
 
 
 - intent: statistics_features_tree
@@ -1410,7 +1381,7 @@ nlu:
     - Tell me about nodes and edges
 
 
-- intent: help__statistics_summary
+- intent: help_statistics_summary
   examples: |
     - Can you tell me what is meant by statistics information?
     - I was wondering if you could explain statistics of file to me?    
@@ -1425,6 +1396,7 @@ nlu:
     - Give me help on statistics
     - Guide for statistic summary
     - May you inform me on statistic breakdown
+    - What are statistics?
 
 
 - intent: help_main_graph_barchart
@@ -1490,6 +1462,7 @@ nlu:
     - What can I do now?
     - Would you be able to give me help on what to do next?
     - Would it be possible for you to give me a summary of what I can do
+
 
 #synonym: reminder
 #examples: |
@@ -1676,6 +1649,8 @@ nlu:
     - Is there a way to compare the features
     - Would I be able to see if there is a relationship between features?
     - How can I see the relationships between features?
+    - What are statistics?
+    - Help statistics
 #what statistics options are there- yes
 #May you inform me on statistics graphs-yes
 #compare the relationships of the features-yes
