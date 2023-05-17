@@ -1364,11 +1364,11 @@ nlu:
 - intent: help_select_node_edge
   examples: |
     - Can you tell me what is meant by node and edge on left bar?
-    - I was wondering if you could explain node and edge on left menu to me?    
+    - I was wondering if you could explain select node and edge on left menu to me?    
     - Could you explain to me what node and edge refers to?
     - I would like you to explain what node and edge is
     - Would you be able to give me a tutorial for node and edge option?
-    - I want you to give me an explanation about node and edge menu
+    - I want you to give me an explanation about select node and edge menu
     - I was hoping you could help me understand node and edge feature
     - I'd like you to define node and edge bar
     - Would it be possible to have a tutorial for node and edge?
@@ -1379,6 +1379,7 @@ nlu:
     - What is select node and edge
     - What is select node and edge on left bar
     - Tell me about nodes and edges
+    - Help select node and edge
 
 
 - intent: help_statistics_summary
@@ -1651,6 +1652,7 @@ nlu:
     - How can I see the relationships between features?
     - What are statistics?
     - Help statistics
+    - What are the statistics options
 #what statistics options are there- yes
 #May you inform me on statistics graphs-yes
 #compare the relationships of the features-yes
