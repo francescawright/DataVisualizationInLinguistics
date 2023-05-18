@@ -21,7 +21,7 @@ import requests
 import random
 
 
-domainUrl = "https://web-ecemkavaz.cloud.okteto.net/"
+domainUrl = "http://localhost:5005"
 
 from cryptography.fernet import Fernet
 
@@ -461,10 +461,10 @@ class ActionGreet(Action):
         if tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None":
             if nickname_value:
                 messages = ["Hey, " + nickname_value + ". Nice to see you! 😄",
-                            "Hi, " + nickname_value + ". How are you? 😄",
+                            "Hi, " + nickname_value + ". Welcome back!  😄",
                             "Hello, " + nickname_value + ". I'm here if you need me 😄"] if not greet_again_value else \
-                    ["Hey, " + nickname_value + ". How else can I help you? 😄",
-                     "Hi, " + nickname_value + ". What else can I do for you? 😄"]
+                    ["Hey, " + nickname_value + ". How can I help you? 😄",
+                     "Hi, " + nickname_value + ". What can I do for you? 😄"]
                 dispatcher.utter_message(text=random.choice(messages))
 
                 if first_login_value or greet_again_value:
