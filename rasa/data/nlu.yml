@@ -436,11 +436,13 @@ nlu:
 
 - intent: select_document
   examples: |
-    - Open [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Open [20170819_CR]{"entity": "document_requested"} file
+    - Open [618_MI]{"entity": "document_requested"}
+    - Open [test]{"entity": "document_requested"}
     - I want you to open [Compact_200]{"entity": "document_requested"}
-    - I would like you to show me the [20190519_SO]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} 
+    - I would like you to show me the [20190519_SO]{"entity": "document_requested"} file
     - Can you open for me [531_MI]{"entity": "document_requested"}
-    - I was hoping you could bring up [test2]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"} for me
+    - I was hoping you could bring up [test2]{"entity": "document_requested"} file for me
     - Would you be able to select [test4-Com]{"entity": "document_requested"}
     - Would it be possible for you to choose [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
     - I'd like to analyse [20170819_CR]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
@@ -454,11 +456,12 @@ nlu:
     - Open [Compact_200]{"entity": "document_requested"}
     - Open [document]{"entity": "object_requested", "value": "document"}
     - Show me [document]{"entity": "object_requested", "value": "document"} [20190519_SO]{"entity": "document_requested"}
-    - Show me the [test4-Com]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
-    - I want to open [Task 4]{"entity": "document_requested"} [file]{"entity": "object_requested", "value": "document"}
+    - Show me the [test4-Com]{"entity": "document_requested"} file
+    - I want to open [Task 4]{"entity": "document_requested"}
     - I want to open a [file]{"entity": "object_requested", "value": "document"}
     - I want to open [wide]{"entity": "document_requested"}
-    - I want to see [531_MI]{"entity": "document_requested"} [document]{"entity": "object_requested", "value": "document"}
+    - I want to see [531_MI]{"entity": "document_requested"} document
+
 
 #- Open the [document]{"entity": "object_requested", "value": "document"} [test]{"entity": "document_requested"}
 #   - I want to see the [file]{"entity": "object_requested", "value": "document"} [test2]{"entity": "document_requested"}
@@ -1217,7 +1220,9 @@ nlu:
     - crowded subtree
 
 
+
 # most toxic thread -----ADD would you be able to etc
+# most toxic thread
 - intent: most_toxic_thread
   examples: |
     - Show me the most toxic thread
@@ -1260,6 +1265,7 @@ nlu:
     - Would it be possible to see the most toxic subtree?
     - Highlight the most toxic subtree
   
+
 
 
 - intent: statistics_features_tree
@@ -1644,7 +1650,6 @@ nlu:
     - I'd like you to define stats buttons
     - Would it be possible to have a tutorial for statistics option?
     - Could you possibly go into more detail about what stats options is for?
-    - Give me help on statistics
     - Guide for stats
     - May you inform me on statistics graphs
     - How can I analyse my data?
@@ -3127,4 +3132,9 @@ nlu:
   examples: |
     - null change file null 
     - no value change file no value
+
+- intent: tutorial_do_not_want
+  examples: |
+    - I do not want a tutorial
+    - I don't need a tutorial
 
