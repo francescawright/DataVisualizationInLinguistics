@@ -201,6 +201,7 @@ intents:
   - help_statistics_summary
   - tutorial_change_file
   - tutorial_do_not_want
+  - task_one_start
 
 
 
@@ -1253,7 +1254,7 @@ responses:
           payload: '/tutorial_layouts'
 
   utter_tutorial_mode_layouts:
-    - text: "intent_layouts_signal;layouts-radio-buttons;First, I automatically select the layout that best fits your data, but you can select a different layout from the menu."
+    - text: "intent_layouts_signal;layouts-radio-buttons;First, I automatically select the layout that best fits your data, but you can select a different layout from the menu or by asking me."
       buttons:
         - title: "Next"
           payload: '/tutorial_glyphs'
@@ -1261,7 +1262,7 @@ responses:
   utter_tutorial_mode_glyphs:
     - text: "intent_glyphs_blinking;glyphs-radio-buttons;Glyphs let us see features that each comment is tagged with. \ \n
     
-    Use the Highlight Colour Features menu to activate/deactivate the features."
+    Use the Highlight Colour Features menu to activate/deactivate the features and by asking me."
       buttons:
         - title: "Next"
           payload: '/tutorial_targets'
@@ -1273,7 +1274,7 @@ responses:
                          - Target person \ \n
                          - None \ \n
 
-                         Use the targets menu or the select node and edge menu to activate/deactivate targets \ \n
+                         Use the targets menu or the select node and edge menu to activate/deactivate targets or ask me \ \n
 
                          Statistics summary tells us how many comments are labelled with different levels of toxicity and their targets. It reflects data in the current visualisation "
       buttons:
@@ -1439,6 +1440,21 @@ responses:
 
   utter_which_node_and_edge:
     - text: "intent_node_edge_signal;highlight_accordion_button;Please choose a feature you want to highlight"
+
+  utter_task_one_guide_one:
+    - text: "To answer this question first you can ask to see toxic nodes"
+
+  utter_task_one_guide_two:
+    - text: "Now you can check out all colour features"
+
+  utter_task_one_guide_three:
+    - text: "If you can see statistics of features if you like"
+
+  utter_task_one_guide_four:
+    - text: "Now you can repeat this for very toxic nodes"
+
+  utter_task_one_guide_five:
+    - text: "If you want to see both toxic and very change to OR"
 
 
 

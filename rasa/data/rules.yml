@@ -195,11 +195,11 @@ rules:
 
 # statistical
 
-- rule: User wants to see the statistics of all the features of the tree
-  steps:
-    - intent: statistics_features_tree
-    - action: utter_statistics_features_tree
-  wait_for_user_input: false
+#- rule: User wants to see the statistics of all the features of the tree
+#  steps:
+#    - intent: statistics_features_tree
+#    - action: utter_statistics_features_tree
+#  wait_for_user_input: false
 
 - rule: User wants to compare the statistics of all the features of the subtrees
   steps:
@@ -310,10 +310,10 @@ rules:
     - intent: colour_feature_stereotype
     - action: utter_colour_feature_stereotype
 
-- rule: check all colour features
-  steps:
-    - intent: check_all_colour_features
-    - action: utter_check_all_colour_features
+#- rule: check all colour features
+#  steps:
+#    - intent: check_all_colour_features
+#    - action: utter_check_all_colour_features
 
 - rule: uncheck all colour features
   steps:

@@ -3121,3 +3121,9 @@ nlu:
     - I do not want a tutorial
     - I don't need a tutorial
 
+- intent: task_one_start
+  examples: |
+    - Start with task 1
+    - Can we start with task 1
+    - I am ready to start with task 1
+    - Let's go ahead with task one

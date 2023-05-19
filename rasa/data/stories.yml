@@ -228,22 +228,22 @@ stories:
 
 
 
-- story: Highlight a filter with filter name
-  steps:
-  - intent: highlight_check
-    entities:
-      - filter_name: "positive stance"
-  - action: action_highlight_check
+#- story: Highlight a filter with filter name
+#  steps:
+#  - intent: highlight_check
+#    entities:
+#      - filter_name: "positive stance"
+#  - action: action_highlight_check
 
 
-- story: Highlight a filter without filter name
-  steps:
-  - intent: show_node_and_edge
-  - action: utter_which_node_and_edge
-  - intent: highlight_check
-    entities:
-      - filter_name: "positive stance"
-  - action: action_highlight_check
+#- story: Highlight a filter without filter name
+#  steps:
+#  - intent: show_node_and_edge
+#  - action: utter_which_node_and_edge
+#  - intent: highlight_check
+#    entities:
+#      - filter_name: "positive stance"
+#  - action: action_highlight_check
 
 
 
@@ -282,26 +282,26 @@ stories:
     - action: utter_help_bar_chart_pop_up
 
 
-- story: New scenario with guidance without affirm/deny 2
-  steps:
-    - intent: greet
-    - action: utter_offers_help
-    - intent: reminder_high_level_questions
-    - action: utter_reminder_high_level_questions_one
-    - action: utter_reminder_high_level_questions_two
-    - intent: largest_thread
-    - action: utter_largest_thread
-    - intent: longest_thread
-    - action: utter_longest_thread
-    - intent: statistics_features_tree
-    - action: utter_statistics_features_tree
-    - action: utter_help_bar_chart_pop_up
-    - intent: most_tagged_features
-    - action: utter_most_tagged_features
-    - intent: help_glyphs
-    - action: utter_explain_glyphs_one
-    - action: utter_explain_glyphs_two
-    - action: utter_explain_glyphs_three
+#- story: New scenario with guidance without affirm/deny 2
+#  steps:
+#    - intent: greet
+#    - action: utter_offers_help
+#    - intent: reminder_high_level_questions
+#    - action: utter_reminder_high_level_questions_one
+#    - action: utter_reminder_high_level_questions_two
+#    - intent: largest_thread
+#    - action: utter_largest_thread
+#    - intent: longest_thread
+#    - action: utter_longest_thread
+#    - intent: statistics_features_tree
+#    - action: utter_statistics_features_tree
+#    - action: utter_help_bar_chart_pop_up
+#    - intent: most_tagged_features
+#    - action: utter_most_tagged_features
+#    - intent: help_glyphs
+#    - action: utter_explain_glyphs_one
+#    - action: utter_explain_glyphs_two
+#    - action: utter_explain_glyphs_three
 
 
 - story: explaining glyphs with multiple steps
@@ -396,8 +396,38 @@ stories:
     - action: utter_statistics_features_subtrees
     - action: utter_help_bar_chart_pop_up
 
+- story: guided Task 1
+  steps:
+    - intent: task_one_start
+    - action: utter_task_one_guide_one
+    - intent: highlight_check
+      entities:
+        - filter_name: "positive stance"
+    - action: action_highlight_check
+    - action: utter_task_one_guide_two
+    - intent: check_all_colour_features
+    - action: utter_check_all_colour_features
+    - action: utter_task_one_guide_three
+    - intent: statistics_features_tree
+    - action: utter_statistics_features_tree
+    - action: utter_task_one_guide_four
+    - checkpoint: check_asked_question
 
-#- story: tutorial story
+
+
+- story: handle user affirm
+  steps:
+  - checkpoint: check_asked_question
+  - intent: highlight_check
+    entities:
+      - filter_name: "very toxic"
+  - action: action_highlight_check
+  - intent:
+  - action: utter_task_one_guide_five
+
+
+
+#- story: guided story
 #  steps:
 #    - intent: select_document
 #      entities:

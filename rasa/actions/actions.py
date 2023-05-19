@@ -466,6 +466,9 @@ class ActionGreet(Action):
                     ["Hey, " + nickname_value + ". How can I help you? 😄",
                      "Hi, " + nickname_value + ". What can I do for you? 😄"]
                 dispatcher.utter_message(text=random.choice(messages))
+                dispatcher.utter_message(text="Let's start with task one. Please read the question and tell me to open dataset 618_MI and tell me to"
+                                              "'start with task one'")
+
 
                 if first_login_value or greet_again_value:
                     dispatcher.utter_message(text="Are you new? Would you like a tutorial?",
