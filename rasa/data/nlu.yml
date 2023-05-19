@@ -29,7 +29,6 @@ nlu:
   examples: |
     - cu
     - good bye
-    - see you later
     - good night
     - bye
     - goodbye
@@ -37,6 +36,10 @@ nlu:
     - see you around
     - bye bye
     - see you later
+    - see you soon
+    - see you next time
+    - I'm going now
+    - That's enough for today
 
 - intent: affirm
   examples: |
@@ -1217,6 +1220,8 @@ nlu:
     - crowded subtree
 
 
+
+# most toxic thread -----ADD would you be able to etc
 # most toxic thread
 - intent: most_toxic_thread
   examples: |
@@ -1256,6 +1261,11 @@ nlu:
     - Display the subtree with most toxic nodes
     - most toxic subtree
     - subtree with most toxic nodes
+    - Could you possibly show me the most toxic subtree?
+    - Would it be possible to see the most toxic subtree?
+    - Highlight the most toxic subtree
+  
+
 
 
 - intent: statistics_features_tree
@@ -1363,11 +1373,11 @@ nlu:
 - intent: help_select_node_edge
   examples: |
     - Can you tell me what is meant by node and edge on left bar?
-    - I was wondering if you could explain node and edge on left menu to me?    
+    - I was wondering if you could explain select node and edge on left menu to me?    
     - Could you explain to me what node and edge refers to?
     - I would like you to explain what node and edge is
     - Would you be able to give me a tutorial for node and edge option?
-    - I want you to give me an explanation about node and edge menu
+    - I want you to give me an explanation about select node and edge menu
     - I was hoping you could help me understand node and edge feature
     - I'd like you to define node and edge bar
     - Would it be possible to have a tutorial for node and edge?
@@ -1378,24 +1388,24 @@ nlu:
     - What is select node and edge
     - What is select node and edge on left bar
     - Tell me about nodes and edges
+    - Help select node and edge
 
 
 - intent: help_statistics_summary
   examples: |
-    - Can you tell me what is meant by statistics information?
-    - I was wondering if you could explain statistics of file to me?    
+    - Can you tell me what is meant by statistics breakdown?
+    - I was wondering if you could explain statistic breakdown of a file ?    
     - Could you explain to me what statistics details refers to?
-    - I would like you to explain what statistics is
-    - Would you be able to give me a tutorial for statistics?
-    - I want you to give me an explanation about statistics
-    - I was hoping you could help me understand statistics feature
-    - I'd like you to define statistics feature
-    - Would it be possible to have a tutorial for statistics?
-    - Could you possibly go into more detail about what statistics does?
-    - Give me help on statistics
+    - I would like you to explain what statistics summary is
+    - Would you be able to give me a tutorial for statistics breakdown?
+    - I want you to give me an explanation about statistics summary
+    - I was hoping you could help me understand statistics summary feature
+    - I'd like you to define statistic breakdown
+    - Would it be possible to have a tutorial for statistics summary?
+    - Could you possibly go into more detail about what statistics breakdown shows?
+    - Give me help on statistics summary
     - Guide for statistic summary
     - May you inform me on statistic breakdown
-
 
 - intent: help_main_graph_barchart
   examples: |
@@ -1460,6 +1470,7 @@ nlu:
     - What can I do now?
     - Would you be able to give me help on what to do next?
     - Would it be possible for you to give me a summary of what I can do
+
 
 #synonym: reminder
 #examples: |
@@ -1645,6 +1656,12 @@ nlu:
     - Is there a way to compare the features
     - Would I be able to see if there is a relationship between features?
     - How can I see the relationships between features?
+    - What are statistics?
+    - Help statistics?
+    - What are the statistics options?
+    - What does statistics mean?
+    - How can I use statistics?
+    - How many statistics choices are there?
 #what statistics options are there- yes
 #May you inform me on statistics graphs-yes
 #compare the relationships of the features-yes
