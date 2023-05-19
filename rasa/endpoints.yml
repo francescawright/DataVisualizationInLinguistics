@@ -19,7 +19,7 @@ action_endpoint:
 tracker_store:
   type: SQL
   dialect: "sqlite"
-  url: "sqlite:///./rasa.db"
+  url: "sqlite:////code/rasa.db"
   db: "rasa.db"
   username: # username used for authentication
   password:  # password used for authentication
