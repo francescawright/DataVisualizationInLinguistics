@@ -461,11 +461,18 @@ class ActionGreet(Action):
         if tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None":
             if nickname_value:
                 messages = ["Hey, " + nickname_value + ". Nice to see you! 😄",
-                            "Hi, " + nickname_value + ". How are you? 😄",
+                            "Hi, " + nickname_value + ". Welcome back!  😄",
                             "Hello, " + nickname_value + ". I'm here if you need me 😄"] if not greet_again_value else \
-                    ["Hey, " + nickname_value + ". How else can I help you? 😄",
-                     "Hi, " + nickname_value + ". What else can I do for you? 😄"]
+                    ["Hey, " + nickname_value + ". How can I help you? 😄",
+                     "Hi, " + nickname_value + ". What can I do for you? 😄"]
                 dispatcher.utter_message(text=random.choice(messages))
+
+                if first_login_value or greet_again_value:
+                    dispatcher.utter_message(text="Are you new? Would you like a tutorial?",
+                                             buttons=[
+                                                 {"title": "Yes", "payload": "/ask_tutorial"},
+                                                 {"title": "No", "payload": "/tutorial_do_not_want"}
+                                             ])
 
                 if first_login_value:
                     # Save in the database that the user has made his first chat connection
@@ -659,6 +666,113 @@ class ActionHighlightUncheckLast(Action):
             dispatcher.utter_message(text="intent_filter_uncheck;" + ';'.join(tracker.get_slot("previous_filters")))
         return []
 
+
+
+
+
+# import sqlite3
+# import json
+#
+# class LogUserMessagesAction(Action):
+#     def name(self) -> Text:
+#         return "action_log_user_messages"
+#
+#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#         # Open a connection to the SQLite database file
+#         connection = sqlite3.connect('/rasa/rasa.db')
+#
+#         # Create a cursor to execute SQL queries
+#         cursor = connection.cursor()
+#
+#         # Execute a query to retrieve user messages
+#         query = '''
+#             SELECT JSON_EXTRACT(data, '$.event') AS event_type,
+#                    JSON_EXTRACT(data, '$.timestamp') AS timestamp,
+#                    JSON_EXTRACT(data, '$.text') AS user_text
+#             FROM events
+#             WHERE JSON_EXTRACT(data, '$.event') = 'user';
+#
+#         '''
+#         cursor.execute(query)
+#
+#         # Fetch all user messages from the query result
+#         user_messages = cursor.fetchall()
+#
+#         # Extract and log user messages to console
+#         for message in user_messages:
+#             data = json.loads(message[0])
+#             if 'event' in data and data['event'] == 'user':
+#                 user_message = data.get('text')
+#                 if user_message:
+#                     print('User Message:', user_message)
+#
+#         # Close the cursor and the database connection
+#         cursor.close()
+#         connection.close()
+#
+#         return []
+
+
+# class LogUserMessagesAction(Action):
+#     def name(self) -> Text:
+#         return "action_log_user_messages"
+#
+#     def run(self, dispatcher: CollectingDispatcher,
+#             tracker: Tracker,
+#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#
+#         # Open a connection to the SQLite database file
+#         connection = sqlite3.connect('/rasa/rasa.db')
+#
+#         # Create a cursor to execute SQL queries
+#         cursor = connection.cursor()
+#
+#         # Execute a query to retrieve user messages
+#         query = '''
+#             SELECT data
+#             FROM events
+#             WHERE events.event_type = 'user'
+#         '''
+#         cursor.execute(query)
+#
+#         # Fetch all user messages from the query result
+#         user_messages = cursor.fetchall()
+#
+#         # Extract and log user messages to console
+#         for message in user_messages:
+#             data = json.loads(message[0])
+#             if 'event' in data and data['event'] == 'user':
+#                 user_message = data.get('text')
+#                 if user_message:
+#                     print('User Message:', user_message)
+#
+#         # Close the cursor and the database connection
+#         cursor.close()
+#         connection.close()
+#
+#         return []
+
+# from typing import Any, Text, Dict, List
+# from rasa_sdk import Action, Tracker
+# from rasa_sdk.executor import CollectingDispatcher
+#
+# class LogUserMessagesAction(Action):
+#     def name(self) -> Text:
+#         return "action_log_user_messages"
+#
+#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#         user_events = tracker.events.get("user")
+#         if user_events:
+#             for event in user_events:
+#                 event_type = event.get("event")
+#                 timestamp = event.get("timestamp")
+#                 text = event.get("text")
+#
+#                 print(f"Event Type: {event_type}")
+#                 print(f"Timestamp: {timestamp}")
+#                 print(f"User Text: {text}")
+#
+#         return []
 
 
 # class Options(Action):

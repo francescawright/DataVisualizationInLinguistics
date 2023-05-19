@@ -248,7 +248,6 @@ rules:
     - action: utter_help_statistics_summary
 
 
-
 - rule: User wants to know about AND
   steps:
     - intent: help_AND
@@ -713,6 +712,12 @@ rules:
   steps:
     - intent: tutorial_change_file
     - action: utter_tutorial_mode_change_file
+
+
+- rule: user don't want a tutorial
+  steps:
+    - intent: tutorial_do_not_want
+    - action: utter_tutorial_do_not_want
 
 
 

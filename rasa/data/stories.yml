@@ -397,6 +397,31 @@ stories:
     - action: utter_help_bar_chart_pop_up
 
 
+#- story: tutorial story
+#  steps:
+#    - intent: select_document
+#      entities:
+#        - document_requested: "test3"
+#    - slot_was_set:
+#        - document_requested: "test3"
+#    - action: action_open_document
+#    - action: utter_interactive_tutorial_one
+#    - action: utter_interactive_tutorial_two
+#    - intent: change_layout_radial
+#    - action: utter_change_layout_radial
+#    - action: utter_interactive_tutorial_three
+#    - intent: colour_feature_sarcasm
+#    - action: utter_colour_feature_sarcasm
+#    - action: utter_interactive_tutorial_four
+#    - intent: highlight_check
+#      entities:
+#        - filter_name: "sarcasm"
+#    - action: action_highlight_check
+#    - action: utter_interactive_tutorial_five
+#
+
+
+
 #- story: interactive_story_1
 #  steps:
 #  - intent: interactive_test_intent

@@ -7,6 +7,7 @@ services:
     volumes:
     - ./rasa/data:/code/data
     - ./rasa/actions:/code/actions
+    - ./rasa/rasa.db/code/rasa.db
     command: bash -c "rm -rf .rasa/* && rasa train && rasa run -m models --enable-api --auth-token DataVisualizationInLinguisticsSecretToken --cors \"*\" -p 8080"
     working_dir: /code
     ports:

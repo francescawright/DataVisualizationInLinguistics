@@ -200,6 +200,8 @@ intents:
   - tutorial_chatbot
   - help_statistics_summary
   - tutorial_change_file
+  - tutorial_do_not_want
+
 
 
 actions:
@@ -230,6 +232,7 @@ actions:
   - action_save_chat_logs
   - validate_filter_selection_form
   - filter_selection_form
+  - action_log_user_messages
 
 
 
@@ -638,7 +641,8 @@ responses:
     
     You can change the variables and graph type using the drop down menus. \ \n 
 
-    The graphs are also interactive, meaning if you click variables on your graph, they will also be activated on the main interface \ \n
+    The graphs are also interactive, meaning if you click variables on your graph, they will also be activated on the main interface \ \n 
+
 
     Read more about Interactive Graphs [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
@@ -649,11 +653,11 @@ responses:
           payload: '/statistics_help'
 
   utter_help_main_bar_three:
-    - text: "intent_summary_signal;There are two statistics options: \ \n
+    - text: "intent_summary_signal;There are three statistics options: \ \n 
     
-    - Selected Comments \ \n
+    - Statistics summary shows you the breakdown of toxicity and targets in the current visualisation\ \n
     
-    - Level One comments \ \n
+    - Selected Comments and Level One comments are graphs \ \n
     
     You can change the variables and graph type using the drop down menus.  \ \n
   
@@ -1345,10 +1349,38 @@ responses:
                   Remember, I’m here to carry out any of the functions on the interface, show you subtrees and help you when you when you need it 😄.
                   Use this window or your microphone to talk to me! "
 
+  utter_tutorial_do_not_want:
+    - text: "Okay I am here if  need me 😊"
 
 
+#  utter_interactive_tutorial_one:
+#    - text: "Here you have it in the main window. \ \n
+#
+#    Note the root is the news and the rest of nodes are comments to the news directly or comments to comments. "
+#
+#
+#  utter_interactive_tutorial_two:
+#    - text: "I automatically select the layout that best fits your data,
+#    but you can select a different layout from the menu or asking me. Try [change layout to Radial]"
+#
+#  utter_interactive_tutorial_three:
+#    - text: "Note the root is the news and the rest of nodes
+#             are comments to the news directly or comments to comments. \ \n
+#
+#             You can ask me either to show features next to each node using glyphs or select nodes and edge to visualise nodes with selected features. Try first [show sarcasm colour]"
+#
+#
+#  utter_interactive_tutorial_four:
+#   - text: "Note that nodes labelled as sarcasm show a coloured dot next to them.
+#  Glyphs let us see features that each comment is tagged with. \ \n
+#
+#  Try now “select sarcasm nodes” to see a different way of analysing sarcastic messages"
+#
+#  utter_interactive_tutorial_five:
+#   - text: "testing until here"
 
-#  utter_tutorial_mode:
+
+  #  utter_tutorial_mode:
 #    - text: "With this interface you can:
 #
 #  - Visualise features \ \n
