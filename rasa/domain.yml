@@ -203,6 +203,7 @@ intents:
   - tutorial_do_not_want
 
 
+
 actions:
   - action_check_session_login
   - action_check_session_signup
@@ -1351,7 +1352,34 @@ responses:
     - text: "Okay I am here if  need me 😊"
 
 
-#  utter_tutorial_mode:
+#  utter_interactive_tutorial_one:
+#    - text: "Here you have it in the main window. \ \n
+#
+#    Note the root is the news and the rest of nodes are comments to the news directly or comments to comments. "
+#
+#
+#  utter_interactive_tutorial_two:
+#    - text: "I automatically select the layout that best fits your data,
+#    but you can select a different layout from the menu or asking me. Try [change layout to Radial]"
+#
+#  utter_interactive_tutorial_three:
+#    - text: "Note the root is the news and the rest of nodes
+#             are comments to the news directly or comments to comments. \ \n
+#
+#             You can ask me either to show features next to each node using glyphs or select nodes and edge to visualise nodes with selected features. Try first [show sarcasm colour]"
+#
+#
+#  utter_interactive_tutorial_four:
+#   - text: "Note that nodes labelled as sarcasm show a coloured dot next to them.
+#  Glyphs let us see features that each comment is tagged with. \ \n
+#
+#  Try now “select sarcasm nodes” to see a different way of analysing sarcastic messages"
+#
+#  utter_interactive_tutorial_five:
+#   - text: "testing until here"
+
+
+  #  utter_tutorial_mode:
 #    - text: "With this interface you can:
 #
 #  - Visualise features \ \n
