@@ -21,7 +21,7 @@ import requests
 import random
 
 
-domainUrl = "http://localhost:5005"
+domainUrl = "https://web-ecemkavaz.cloud.okteto.net/"
 
 from cryptography.fernet import Fernet
 

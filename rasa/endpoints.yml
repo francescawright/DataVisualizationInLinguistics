@@ -12,7 +12,7 @@
 
 
 action_endpoint:
-  url: "http://localhost:5055/webhook"
+  url: "https://rasa-actions-ecemkavaz.cloud.okteto.net/webhook"
 #  action_names:
 #    - action_save_chat_logs
 
