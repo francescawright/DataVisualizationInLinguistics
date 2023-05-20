@@ -1439,6 +1439,7 @@
 	        case "download_user_interaction":
                     if ('{{ selected_item }}') {
                          document.getElementById("saveBtn").click();
+			 e.text = messageList[1]
                     }
                     break;
                 case "intent_event":
