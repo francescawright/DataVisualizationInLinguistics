@@ -5,15 +5,18 @@ services:
     image: rasa-server-okteto:latest
     build: .
     volumes:
-    - ./rasa/data:/code/data
-    - ./rasa/actions:/code/actions
-    - ./rasa/rasa.db:/code/rasa.db
+      - ./rasa/data:/code/data
+      - ./rasa/actions:/code/actions
+      - ./rasa/rasa.db:/code/rasa.db
     command: bash -c "rm -rf .rasa/* && rasa train && rasa run -m models --enable-api --auth-token DataVisualizationInLinguisticsSecretToken --cors \"*\" -p 8080"
     working_dir: /code
     ports:
       - "5005:8080"
     networks:
       - all
+    depends_on:
+      - sqlite-db
+
   rasa-actions:
     image: rasa-server-okteto:latest
     build: .
@@ -25,14 +28,27 @@ services:
       - "5055:5055"
     networks:
       - all
+    depends_on:
+      - sqlite-db
+
   db:
     image: postgres
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=tracker_db
+      - POSTGRES_USER=your_username
+      - POSTGRES_PASSWORD=your_password
     volumes:
       - ./DataVisualization/postgres-data:/var/lib/postgresql/data
+    networks:
+      - all
+
+  sqlite-db:
+    image: sqlite
+    volumes:
+      - ./rasa/rasa.db:/data/rasa.db
+    networks:
+      - all
+
   web:
     build: .
     command: bash -c "python manage.py makemigrations DataVisualization && python manage.py migrate && python manage.py runserver 0.0.0.0:8080"
@@ -42,6 +58,9 @@ services:
       - "8080:8080"
     depends_on:
       - db
+    networks:
+      - all
+
 networks:
   all:
     driver: bridge
