@@ -3137,4 +3137,11 @@ nlu:
   examples: |
     - I do not want a tutorial
     - I don't need a tutorial
+ 
+- intent: download_user_interaction
+  examples: |
+    - My analysis is done
+    - I completed my analysis
+    - Analysis done
+    - I finished the analysis
 
