@@ -1464,6 +1464,7 @@ nlu:
     - What can I do now?
     - Would you be able to give me help on what to do next?
     - Would it be possible for you to give me a summary of what I can do
+    - Learn more about this interface
 
 
 #synonym: reminder
@@ -1584,6 +1585,8 @@ nlu:
     - Is it possible to analyse a smaller part of the visualisation?
     - Can I analyse a small section of my data?
     - Is it possible to look at smaller regions of my data?
+    - Learn more statistics questions
+    - Learn more subtrees
 #could you remind me of the basic statistics options- yes
 #what were the questions i can ask you- yes
 
@@ -1602,6 +1605,7 @@ nlu:
     - Give me help on highlight colour features
     - Guide for colour features
     - May you inform me on highlight colour features
+    - Learn more colour features
 
 - intent: targets_help
   examples: |
@@ -1619,6 +1623,7 @@ nlu:
     - Guide for targets
     - May you inform me on targets icons
     - What's the difference between target person and target group?
+    - Learn more targets
 #COMPROBAR target person and group intents new combos to be checked
 
 #- intent: sub_structure_options
@@ -1657,6 +1662,7 @@ nlu:
     - What does statistics mean?
     - How can I use statistics?
     - How many statistics choices are there?
+    - Learn more statistics
 #what statistics options are there- yes
 #May you inform me on statistics graphs-yes
 #compare the relationships of the features-yes
@@ -2732,6 +2738,7 @@ nlu:
     - Give me help on [sarcasm]{"entity": "filter_name"}
     - Guide for [sarcasm]{"entity": "filter_name"}
     - May you inform me on [sarcasm]{"entity": "filter_name"}
+    - Learn more [sarcasm]{"entity": "filter_name"}
 
 - intent: define_mockery
   examples: |
@@ -2748,6 +2755,7 @@ nlu:
     - Give me help on [mockery]{"entity": "filter_name"}
     - Guide for [mockery]{"entity": "filter_name"}
     - May you inform me on [mockery]{"entity": "filter_name"}
+    - Learn more [mockery]{"entity": "filter_name"}
 
 - intent: define_intolerance
   examples: | 
@@ -2764,6 +2772,7 @@ nlu:
     - Give me help on [intolerance]{"entity": "filter_name"}
     - Guide for [intolerance]{"entity": "filter_name"}
     - May you inform me on [intolerance]{"entity": "filter_name"}
+    - Learn more [intolerance]{"entity": "filter_name"}
 
 - intent: define_insult
   examples: |
@@ -2780,6 +2789,7 @@ nlu:
     - Give me help on [insult]{"entity": "filter_name"}
     - Guide for [insult]{"entity": "filter_name"}
     - May you inform me on [insult]{"entity": "filter_name"}
+    - Learn more [insult]{"entity": "filter_name"}
 
 - intent: define_improper_language
   examples: |
@@ -2796,6 +2806,7 @@ nlu:
     - Give me help on [improper language]{"entity": "filter_name"}
     - Guide for [improper language]{"entity": "filter_name"}
     - May you inform me on [improper language]{"entity": "filter_name"}
+    - Learn more [improper language]{"entity": "filter_name"}
 
 - intent: define_aggressiveness
   examples: |
@@ -2812,6 +2823,7 @@ nlu:
     - Give me help on [aggressiveness]{"entity": "filter_name"}
     - Guide for [aggressiveness]{"entity": "filter_name"}
     - May you inform me on [aggressiveness]{"entity": "filter_name"}
+    - Learn more [aggressiveness]{"entity": "filter_name"}
 
 - intent: define_stereotype
   examples: |
@@ -2829,6 +2841,7 @@ nlu:
     - Guide for [stereotype]{"entity": "filter_name"}
     - What is [stereotype]{"entity": "filter_name"}
     - May you inform me on [stereotype]{"entity": "filter_name"}
+    - Learn more [stereotype]{"entity": "filter_name"}
 
 
 - intent: define_stance
@@ -2848,6 +2861,7 @@ nlu:
     - May you inform me on stance
     - What are stances
     - What is stance
+    - Learn more stance
 
 - intent: define_toxic
   examples: |
@@ -2866,6 +2880,7 @@ nlu:
     - May you inform me on toxic
     - What is toxic?
     - What does level of toxicity mean?
+    - Learn more toxicity
 #help me with toxicity
 
 - intent: define_commentid
@@ -2883,6 +2898,7 @@ nlu:
     - Give me help on [comment identification]{"entity": "tag_comment_id"} number
     - Guide for [comment id]{"entity": "tag_comment_id"}
     - May you inform me on [identification]{"entity": "tag_comment_id"} No.
+    - Learn more [comment id]{"entity": "tag_comment_id"}
 
 
 - synonym: comment id
@@ -2908,6 +2924,7 @@ nlu:
     - Give me help on [argumentation]{"entity": "filter_name"}
     - Guide for [argumentation]{"entity": "filter_name"}
     - May you inform me on [argumentation]{"entity": "filter_name"}
+    - Learn more [argumentation]{"entity": "filter_name"}
 
 - intent: define_constructiveness
   examples: |
@@ -2924,6 +2941,7 @@ nlu:
     - Give me help on [constructiveness]{"entity": "filter_name"}
     - Guide for [constructiveness]{"entity": "filter_name"}
     - May you inform me on [constructiveness]{"entity": "filter_name"}
+    - Learn more [constructiveness]{"entity": "filter_name"}
 
 - intent: define_targetgroup
   examples: |
@@ -2940,6 +2958,7 @@ nlu:
     - Give me help on target group
     - Guide for target group
     - May you inform me on target group
+    - Learn more target group
 
 - intent: define_targetperson
   examples: |
@@ -2956,6 +2975,7 @@ nlu:
     - Give me help on target person
     - Guide for target person
     - May you inform me on target person
+    - Learn more target person
 
 
 - intent: define_commentlevel
@@ -2973,6 +2993,7 @@ nlu:
     - Give me help on comment level
     - Guide for comment level
     - May you inform me on comment level
+    - Learn more comment level
 
 - intent: define_commentdepth
   examples: |
@@ -2989,6 +3010,7 @@ nlu:
     - Give me help on comment depth
     - Guide for comment depth
     - May you inform me on comment depth
+    - Learn more comment depth
     
 
 #- Tutorial for comment depth- yes
@@ -3019,6 +3041,7 @@ nlu:
     - Give me help on direct comments
     - Guide for direct comments
     - May you inform me on direct comments
+    - Learn more direct comments
 #what are direct comments- yes
 #what is direct comments for- yes
 #what does direct comments mean- yes
@@ -3040,6 +3063,7 @@ nlu:
     - Give me help on subtrees
     - Guide for subtrees
     - May you inform me on subtrees
+    - Learn more subtrees
 
 #synonym: subtree
  # examples: |
@@ -3076,34 +3100,34 @@ nlu:
 
 - intent: tutorial_layouts
   examples: |
-    - Tutorial for layouts
-    - Show me tutorial for layouts
+    - null Tutorial for layouts null
+    - no value Show me tutorial for layouts no value
 
 
 - intent: tutorial_glyphs
   examples: |
-    - Tutorial for glyphs
-    - Show me tutorial for glyphs
+    - null Tutorial for glyphs null
+    - no value Show me tutorial for glyphs no value
 
 - intent: tutorial_targets
   examples: |
-    - Tutorial for targets
-    - Show me tutorial for targets
+    - null Tutorial for targets null
+    - no value Show me tutorial for targets no value
 
 - intent: tutorial_node_and_edge
   examples: |
-    - Tutorial for node and edge
-    - Show me tutorial for node and edge
+    - null Tutorial for node and edge null
+    - no value Show me tutorial for node and edge no value
 
 - intent: tutorial_statistics
   examples: |
-    - Tutorial for statistics
-    - Show me tutorial for statistics
+    - null Tutorial for statistics null
+    - no value Show me tutorial for statistics no value
 
 - intent: tutorial_most_tagged_features
   examples: |
-    - Tutorial for most tagged features
-    - Show me tutorial for most tagged features
+    - null Tutorial for most tagged features null
+    - no value Show me tutorial for most tagged features no value
 
 - intent: tutorial_high_level
   examples: |
