@@ -201,6 +201,7 @@ intents:
   - help_statistics_summary
   - tutorial_change_file
   - tutorial_do_not_want
+  - download_user_interaction
 
 
 
@@ -1441,6 +1442,8 @@ responses:
   utter_which_node_and_edge:
     - text: "intent_node_edge_signal;highlight_accordion_button;Please choose a feature you want to highlight"
 
+  utter_download_user_interaction:
+    - text: "download_user_interaction;I downloaded your conversation please upload it to google forms"
 
 
 
