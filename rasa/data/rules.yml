@@ -720,6 +720,11 @@ rules:
     - action: utter_tutorial_do_not_want
 
 
+- rule: download user interaction
+  steps:
+    - intent: download_user_interaction
+    - action: utter_download_user_interaction
+
 
 
 
