@@ -509,7 +509,7 @@
     {#}#}
 
     function botMessageEvent(e) {
-        console.log('the bot said something: ' + e.text);
+        console.log('the bot said something: ' + e.text, '| [Date]', Date.now());
         if (e.text) {
 
             // Get the existing sessionStorage data
@@ -1434,6 +1434,11 @@
                             e.text = messageList[2]
 
                         }
+                    }
+                    break;
+	        case "download_user_interaction":
+                    if ('{{ selected_item }}') {
+                         document.getElementById("saveBtn").click();
                     }
                     break;
                 case "intent_event":
