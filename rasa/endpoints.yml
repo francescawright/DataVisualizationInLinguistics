@@ -18,9 +18,9 @@ action_endpoint:
 
 tracker_store:
   type: SQL
-  dialect: "sqlite"
-  url: "sqlite:////code/rasa.db"
-  db: "rasa.db"
+  dialect: "postgresql"
+  url: "postgresql://postgres:postgres@db:5432/rasa_tracker"
+  db: "rasa_tracker"
   username: # username used for authentication
   password:  # password used for authentication
   query: # optional dictionary to be added as a query string to the connection URL
