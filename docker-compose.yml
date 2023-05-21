@@ -27,7 +27,7 @@ services:
   db:
     image: postgres
     environment:
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=postgres, rasa_tracker
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
