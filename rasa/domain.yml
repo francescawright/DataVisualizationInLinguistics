@@ -201,6 +201,8 @@ intents:
   - help_statistics_summary
   - tutorial_change_file
   - tutorial_do_not_want
+  - download_user_interaction
+  - tutorial_statistics_introduction
 
 
 
@@ -321,6 +323,7 @@ slots:
   filter_name:
     type: text
     influence_conversation: false
+
 
 responses:
 
@@ -540,11 +543,7 @@ responses:
 
 
   utter_explain_glyphs_three:
-    - text: "You can highlight colour features: \ \n
-              - one-by-one \ \n
-               - all at once \ \n
-               
-               Choose a glyph style: "
+    - text: "Choose a glyph style: "
       buttons:
           - title: "Dots"
             payload: '/change_glyph_dots{{"object_requested":"glyph","glyph_requested":"dots"}}'
@@ -1301,6 +1300,12 @@ responses:
 
       buttons:
         - title: "Next"
+          payload: '/tutorial_statistics_introduction'
+
+  utter_tutorial_mode_statistics_introduction:
+    - text: "intent_tutorial_statistics_charts_signal;statistics_all_features_subtrees;After you have chosen the features you want to analyse, you can look at Statistics."
+      buttons:
+        - title: "Next"
           payload: '/tutorial_statistics'
 
   utter_tutorial_mode_statistics:
@@ -1457,6 +1462,9 @@ responses:
   utter_which_node_and_edge:
     - text: "intent_node_edge_signal;highlight_accordion_button;Please choose a feature you want to highlight"
 
+
+  utter_download_user_interaction:
+    - text: "download_user_interaction;I downloaded your conversation please upload it to google forms"
 
 
 

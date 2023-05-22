@@ -1432,7 +1432,7 @@ nlu:
     - Number of comments
     - How can I see the number of comments?
     - How can i know the number of comments with a certain feature
-    - Can I know what my comments are tagged with features
+    - Can I know what features my comments are tagged with
   # how can i analyse what I have chosen- yes
   #how can i analyse the comments i have selected - yes
   #how can i know if my there are relationships between features- yes
@@ -3132,6 +3132,11 @@ nlu:
     - null Tutorial for node and edge null
     - no value Show me tutorial for node and edge no value
 
+- intent: tutorial_statistics_introduction
+  examples: |
+    - null statistics introduction null
+    - no value statistics introduction no value
+
 - intent: tutorial_statistics
   examples: |
     - null Tutorial for statistics null
@@ -3170,3 +3175,9 @@ nlu:
     - I do not want a tutorial
     - I don't need a tutorial
 
+- intent: download_user_interaction
+  examples: |
+    - My analysis is done
+    - I completed my analysis
+    - Analysis done
+    - I finished the analysis
