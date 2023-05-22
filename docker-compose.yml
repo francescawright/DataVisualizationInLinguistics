@@ -24,10 +24,18 @@ services:
       - "5055:5055"
     networks:
       - all
+  rasa_db:
+    image: rasa_postgres:latest
+    environment:
+      - POSTGRES_DB=rasa
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./DataVisualization/postgres-data-rasa:/var/lib/postgresql/data
   db:
     image: postgres
     environment:
-      - POSTGRES_DB=postgres, rasa_tracker
+      - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
