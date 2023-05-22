@@ -50,7 +50,6 @@ nlu:
     - of course
     - that sounds good
     - correct
-    - affirmative
     - fine
     - good
     - okay
@@ -65,17 +64,19 @@ nlu:
     - certainly
     - definitely
     - exactly
-    - good enough
-    - granted
-    - indubitably
-    - most assuredly
-    - naturally
     - sure
-    - undoubtedly
-    - convinced
-    - positive
-    - decided
-    - doubtless
+
+  #- undoubtedly
+  #- convinced
+  #- positive
+  #- decided
+  #- doubtless
+  #- affirmative
+  #- good enough
+  #- granted
+  #- indubitably
+  #- most assuredly
+  #- naturally
 
 - intent: deny
   examples: |
@@ -1426,6 +1427,7 @@ nlu:
     - How can I analyse selected comments data?
     - How can I analyse what I have highlighted?
     - How can I analyse what I have selected?
+    - I want to know how many comments have the features I have selected
   # how can i analyse what I have chosen- yes
   #how can i analyse the comments i have selected - yes
   #how can i know if my there are relationships between features- yes
