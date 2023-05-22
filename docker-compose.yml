@@ -25,7 +25,7 @@ services:
     networks:
       - all
   rasa_db:
-    image: rasa_postgres:latest
+    image: postgres:latest
     environment:
       - POSTGRES_DB=rasa
       - POSTGRES_USER=postgres
