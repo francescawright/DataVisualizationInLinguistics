@@ -1428,6 +1428,11 @@ nlu:
     - How can I analyse what I have highlighted?
     - How can I analyse what I have selected?
     - I want to know how many comments have the features I have selected
+    - Can I know how many of comments are tagged
+    - Number of comments
+    - How can I see the number of comments?
+    - How can i know the number of comments with a certain feature
+    - Can I know what my comments are tagged with features
   # how can i analyse what I have chosen- yes
   #how can i analyse the comments i have selected - yes
   #how can i know if my there are relationships between features- yes
@@ -2888,6 +2893,7 @@ nlu:
     - What is toxic?
     - What does level of toxicity mean?
     - Learn more toxicity
+    - Show me the most common toxicity level
 #help me with toxicity
 
 - intent: define_commentid
