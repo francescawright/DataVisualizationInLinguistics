@@ -3126,6 +3126,11 @@ nlu:
     - null Tutorial for node and edge null
     - no value Show me tutorial for node and edge no value
 
+- intent: tutorial_statistics_introduction
+  examples: |
+    - null statistics introduction null
+    - no value statistics introduction no value
+
 - intent: tutorial_statistics
   examples: |
     - null Tutorial for statistics null
@@ -3164,3 +3169,9 @@ nlu:
     - I do not want a tutorial
     - I don't need a tutorial
 
+- intent: download_user_interaction
+  examples: |
+    - My analysis is done
+    - I completed my analysis
+    - Analysis done
+    - I finished the analysis

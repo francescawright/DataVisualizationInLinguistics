@@ -78,6 +78,8 @@ rules:
       - requested_slot: null
   - action: action_open_document
 
+
+
 # change the layout
 - rule: User wants to change the layout, without specifying to which one
   steps:
@@ -679,6 +681,10 @@ rules:
     - intent: tutorial_node_and_edge
     - action: utter_tutorial_mode_select_node_edge
 
+- rule: tutorial statistics introduction
+  steps:
+    - intent: tutorial_statistics_introduction
+    - action: utter_tutorial_mode_statistics_introduction
 
 - rule: tutorial statistics
   steps:
@@ -720,6 +726,8 @@ rules:
     - action: utter_tutorial_do_not_want
 
 
-
-
+- rule: download user interaction
+  steps:
+    - intent: download_user_interaction
+    - action: utter_download_user_interaction
 
