@@ -1305,6 +1305,7 @@ responses:
     - Use the Select node and edge menu \ \n
     - Ask me"
 
+
       buttons:
         - title: "Next"
           payload: '/tutorial_statistics_introduction'
