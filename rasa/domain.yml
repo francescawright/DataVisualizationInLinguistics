@@ -102,6 +102,7 @@ intents:
   - help_AND
   - help_OR
   - help_AND_OR
+  - help_highlight_select_menus
   - reminder_high_level_questions
   - what_can_do_after_glyphs
   - help_colour_features
@@ -199,6 +200,7 @@ intents:
   - tutorial_subtrees
   - tutorial_chatbot
   - help_statistics_summary
+  - tutorial_help_choices
   - tutorial_change_file
   - tutorial_do_not_want
   - download_user_interaction
@@ -534,7 +536,7 @@ responses:
 
 # help
   utter_explain_glyphs_one:
-    - text: "intent_glyphs_blinking;glyphs-radio-buttons;Glyphs let us see features that each comment is tagged with."
+    - text: "intent_glyphs_blinking;glyphs-radio-buttons;Glyphs are designs that show you features as a colour."
 
   utter_explain_glyphs_two:
     - text: "You can Highlight Colour Features: \ \n
@@ -568,10 +570,10 @@ responses:
                      - Asking me"
 
   utter_explain_features_tab:
-    - text: "intent_glyphs_blinking;glyphs-radio-buttons;All the comments are tagged with features that they have. \ \n
+    - text: "intent_features_signal;features_accordion_button;Highlight colour features shows tagged features different colours in Glyphs  \ \n
 
-        Activate/deactivate features: \ \n
-        - From the left bar \ \n
+        Activate/deactivate colour features: \ \n
+        - From the Highlight colour features menu \ \n
         - Asking me \ \n"
 
   utter_help_layouts_one:
@@ -601,11 +603,11 @@ responses:
 
 
   utter_help_select_node_edge:
-    - text: "intent_node_edge_signal;highlight_accordion_button;Select node and edge will show comments with features you have selected
+    - text: "intent_node_edge_signal;highlight_accordion_button;Select Node and Edge will show comments with features you have selected
     \ \n
 
       Select nodes and edges by: \ \n
-      - Using the Select node and edge menu \ \n
+      - Using the Select Node and Edge menu \ \n
       - Asking me"
 
   utter_help_AND:
@@ -636,11 +638,11 @@ responses:
 
 
   utter_help_main_bar_one:
-    - text: "intent_signal_additional_graphs;chart_main_button;statistics_all_features_tree;Selected Comments shows you how many comments are tagged with the features you've selected. \ \n
+    - text: "intent_signal_additional_graphs;chart_main_button;statistics_all_features_tree;Selected Comments Statistics shows you how many comments have the features selected in the Select Node and Edge menu. \ \n
     
     You can change the variables and graph type using the drop down menus. \ \n 
 
-    The graphs are also interactive, meaning if you click variables on your graph, they will also be activated on the main interface \ \n 
+     If you click variables on your graph, they will also be activated on the main interface \ \n 
 
 
     Read more about Interactive Graphs [here](https://dspace5.zcu.cz/handle/11025/45010)"
@@ -660,7 +662,7 @@ responses:
     
     You can change the variables and graph type using the drop down menus.  \ \n
   
-    The graphs are also interactive, meaning if you click variables on your graph, they will also be activated on the main interface \ \n
+    If you click variables on your graph, they will also be activated on the main interface \ \n
 
     Read more about Interactive Graphs [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
@@ -671,7 +673,7 @@ responses:
 
     You can change the variables and graph type using the two drop-down menus. \ \n
 
-    The graphs are also interactive, meaning if you click variables on your graph, they will also be activated on the main interface \ \n
+    If you click variables on your graph, they will also be activated on the main interface \ \n
 
     Read more about Interactive Graphs [here](https://dspace5.zcu.cz/handle/11025/45010)"
 
@@ -1243,19 +1245,24 @@ responses:
 
 
   utter_tutorial_mode:
-    - text: "With this interface you can:
+    - text: "Welcome to the tutorial, please don't interrupt! \ \n
+    
+     This tool helps you:
 
                - Visualise features \ \n
                - Carry out statistical analysis \ \n
-               - Answer basic statistics questions and visualise subtrees"
+               - Answer basic statistics questions and visualise subtrees \ \n
+               - Ask for help"
       buttons:
         - title: "Next"
           payload: '/tutorial_layouts'
 
   utter_tutorial_mode_layouts:
-    - text: "intent_layouts_signal;layouts-radio-buttons;First, I automatically select the layout that best fits your data. Change this: \ \n
-
-      - Using the menu
+    - text: "intent_layouts_signal;layouts-radio-buttons;I automatically select the layout that best fits your data. \ \n
+    
+        Change this: 
+    
+      - Using the menu \ \n
       - Asking me"
 
       buttons:
@@ -1263,10 +1270,10 @@ responses:
           payload: '/tutorial_glyphs'
 
   utter_tutorial_mode_glyphs:
-    - text: "intent_glyphs_blinking;glyphs-radio-buttons;Glyphs let us see features that each comment is tagged with. \ \n
+    - text: "intent_glyphs_blinking;glyphs-radio-buttons;Glyphs are designs that show you features as a colour. \ \n
     
-   To activate/deactivate the features: \ \n
-
+   To activate/deactivate the features:
+   
     - Use the Highlight Colour features menu \ \n
     - Ask me"
       buttons:
@@ -1274,50 +1281,50 @@ responses:
           payload: '/tutorial_targets'
 
   utter_tutorial_mode_targets:
-    - text: "intent_targets_signal;targets_accordion_button;All comments are tagged with the targets that they are directed at:
+    - text: "intent_targets_signal;targets_accordion_button;All comments are tagged with the targets that they're directed at:
 
                          - Target group \ \n
                          - Target person \ \n
                          - None \ \n
 
                          Activate/deactivate targets by: \ \n
-
+                         
                          - Using the Targets menu \ \n
                          - Using the Select Node and Edge menu \ \n
                          - Asking me \ \n
 
-                         Statistics summary tells us how many comments are labelled with different levels of toxicity and their targets. It reflects data in the current visualisation "
+                         You can also look at the breakdown of targets with Statistics. "
       buttons:
         - title: "Next"
           payload: '/tutorial_node_and_edge'
 
   utter_tutorial_mode_select_node_edge:
-    - text: "intent_node_edge_signal;highlight_accordion_button;Select node and edge will show comments with features you have selected \ \n
+    - text: "intent_node_edge_signal;highlight_accordion_button;Select Node and Edge will select comments with features you've selected \ \n
 
     To activate/deactivate the features \ \n
-        - Use the Select node and edge menu \ \n
-        - Ask me"
+    - Use the Select node and edge menu \ \n
+    - Ask me"
+
 
       buttons:
         - title: "Next"
           payload: '/tutorial_statistics_introduction'
 
   utter_tutorial_mode_statistics_introduction:
-    - text: "intent_tutorial_statistics_charts_signal;statistics_all_features_subtrees;After you have chosen the features you want to analyse, you can look at Statistics."
+    - text: "After you have chosen the features you want to analyse, you can look at Statistics. \ \n
+    
+    Statistics summary gives you a breakdown of the levels of toxicity and targets in the current visualisation. When you select filters, my answer changes"
       buttons:
         - title: "Next"
           payload: '/tutorial_statistics'
 
   utter_tutorial_mode_statistics:
-    - text: "- Statistics summary gives you a breakdown of the levels of toxicity and targets in the current visualisation. \ \n
+    - text: " intent_tutorial_statistics_charts_signal;statistics_all_features_subtrees;Selected Comments Statistics shows you how many comments have the features selected in the Select Node and Edge menu. \ \n
 
-             - Selected Comments Statistics shows you how many comments have the features you have selected. \ \n
+              Level One Comments Statistics allows you to analyse the features of comments at level one and the comments in their threads. \ \n
 
-             -  Level One Comments Statistics allows you to analyse the features of comments tagged as level one and the comments in their threads. \ \n
-
-              You can change the variables and graph type using the two drop-down menus. \ \n
-              The graphs are also interactive, meaning if you click
-              variables on your graph, they will also be activated on the main interface"
+               You can change the variables and graph type using the two drop-down menus. \ \n
+               When you click variables on your graph, they will also be activated on the main interface"
 
       buttons:
         - title: "Next"
@@ -1333,7 +1340,7 @@ responses:
           payload: '/tutorial_high_level'
 
   utter_tutorial_mode_high_level:
-    - text: "To visualise subtrees, you must ask me to show you:
+    - text: "To see subtrees, ask me to show you:
 
                 - the largest thread \ \n
                 - the longest thread \ \n
@@ -1345,18 +1352,28 @@ responses:
           payload: '/tutorial_subtrees'
 
   utter_tutorial_mode_subtrees:
-    - text: "intent_subtrees_signal;I can also highlight features of that subtree  \ \n
+    - text: "intent_subtrees_signal;I can also highlight features in subtrees  \ \n
 
-                 To save these subtrees use the button in the pop-up window \ \n
-
-                "
+                 To save them, use the button in the pop-up window \ \n "
 
       buttons:
         - title: "Next"
-          payload: '/tutorial_change_file'
+          payload: '/tutorial_help_choices'
+
+  utter_tutorial_help_choices:
+    - text: "The help I can offer is: \ \n
+      
+        - Tutorial \ \n
+        - Definitions of features \ \n
+        - Explanations of interface options \ \n
+        - 'Fast help'"
+
+      buttons:
+      - title: "Next"
+        payload: '/tutorial_change_file'
 
   utter_tutorial_mode_change_file:
-    - text: "intent_change_file_signal;You can change files using the drop down menu "
+    - text: "intent_change_file_signal;You can change files using the drop-down menu "
 
       buttons:
         - title: "Next"
@@ -1365,11 +1382,15 @@ responses:
   utter_tutorial_mode_chatbot:
     - text: "And the final part of this interface is me! \ \n
 
-                  Remember, I’m here to carry out any of the functions on the interface, show you subtrees and help you when you when you need it 😄.
-                  Use this window or your microphone to talk to me! "
+                  I’m here to: \ \n
+                  - Carry out actions \ \n
+                  - Show you subtrees and answer basic statistics questions \ \n
+                  - Offer you help  \ \n
+                  Use this window or your microphone to talk to me 😄"
+
 
   utter_tutorial_do_not_want:
-    - text: "Okay I am here if  need me 😊"
+    - text: "Okay, I am here if need me 😊"
 
 
 #  utter_interactive_tutorial_one:
@@ -1464,7 +1485,12 @@ responses:
   utter_download_user_interaction:
     - text: "download_user_interaction;I downloaded your conversation please upload it to google forms"
 
-
+  utter_help_highlight_select_menus:
+    - text: "Highlight colour features shows tagged features different colours in Glyphs \ \n
+    
+      Select Node and Edge will show comments with features you have selected \ \n
+      
+      After selecting features in the Select Node and Edge menu you can look at Statistics"
 
 session_config:
   session_expiration_time: 60
