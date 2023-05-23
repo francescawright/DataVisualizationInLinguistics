@@ -703,11 +703,15 @@ rules:
     - intent: tutorial_high_level
     - action: utter_tutorial_mode_high_level
 
-
 - rule: tutorial sub trees
   steps:
     - intent: tutorial_subtrees
     - action: utter_tutorial_mode_subtrees
+
+- rule: tutorial help options
+  steps:
+    - intent: tutorial_help_choices
+    - action: utter_tutorial_help_choices
 
 - rule: tutorial chatbot
   steps:
@@ -718,6 +722,8 @@ rules:
   steps:
     - intent: tutorial_change_file
     - action: utter_tutorial_mode_change_file
+
+
 
 
 - rule: user don't want a tutorial
@@ -731,3 +737,12 @@ rules:
     - intent: download_user_interaction
     - action: utter_download_user_interaction
 
+- rule:
+  steps:
+    - intent: help_highlight_select_menus
+    - action: utter_help_highlight_select_menus
+
+- rule:
+  steps:
+    - intent: reminder_help
+    - action: utter_reminder_help

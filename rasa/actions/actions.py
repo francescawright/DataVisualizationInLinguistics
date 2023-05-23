@@ -461,18 +461,18 @@ class ActionGreet(Action):
         if tracker.get_slot("sessionid") and tracker.get_slot("sessionid") != "None":
             if nickname_value:
                 messages = ["Hey, " + nickname_value + ". Nice to see you! 😄",
-                            "Hi, " + nickname_value + ". Welcome! How can I help you? 😄",
+                            "Hi, " + nickname_value + ". Welcome back!  😄",
                             "Hello, " + nickname_value + ". I'm here if you need me 😄"] if not greet_again_value else \
                     ["Hey, " + nickname_value + ". How can I help you? 😄",
                      "Hi, " + nickname_value + ". What can I do for you? 😄"]
                 dispatcher.utter_message(text=random.choice(messages))
 
-                # if first_login_value or greet_again_value:
-                dispatcher.utter_message(text="Are you new? Would you like a tutorial?",
-                                         buttons=[
-                                             {"title": "Yes", "payload": "/ask_tutorial"},
-                                             {"title": "No", "payload": "/tutorial_do_not_want"}
-                                         ])
+                if first_login_value or greet_again_value:
+                    dispatcher.utter_message(text="Are you new? Would you like a tutorial?",
+                                             buttons=[
+                                                 {"title": "Yes", "payload": "/ask_tutorial"},
+                                                 {"title": "No", "payload": "/tutorial_do_not_want"}
+                                             ])
 
                 if first_login_value:
                     # Save in the database that the user has made his first chat connection
