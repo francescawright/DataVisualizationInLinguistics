@@ -1428,11 +1428,11 @@ nlu:
     - How can I analyse what I have highlighted?
     - How can I analyse what I have selected?
     - I want to know how many comments have the features I have selected
-    - Can I know how many of comments are tagged
+    - Can I know how many of comments are tagged?
     - Number of comments
     - How can I see the number of comments?
     - How can i know the number of comments with a certain feature
-    - Can I know what features my comments are tagged with
+    - Can I know what features my comments are tagged with?
   # how can i analyse what I have chosen- yes
   #how can i analyse the comments i have selected - yes
   #how can i know if my there are relationships between features- yes
@@ -1461,6 +1461,15 @@ nlu:
 
 - intent: reminder_help
   examples: |
+    - Help me
+    - Give me some tips
+    - Could I have some ideas?
+    - I don't know how anything works
+    - Remind me how this tool works
+    - I need you to remind me how everything works
+    - Would you be able to tell me how to use 
+    - Fast help
+    - Quick help
     - What are the functions of this tool?
     - How can I use this tool?
     - Tell me about how to use this tool?
@@ -1478,6 +1487,7 @@ nlu:
     - Would you be able to give me help on what to do next?
     - Would it be possible for you to give me a summary of what I can do
     - Learn more about this interface
+
 
 
 #synonym: reminder
@@ -3164,11 +3174,15 @@ nlu:
     - null chatbot null 
     - no value chatbot no value
 
-
 - intent: tutorial_change_file
   examples: |
     - null change file null 
     - no value change file no value
+
+- intent: tutorial_help_choices
+  examples: |
+    - null null help choices null null
+    - no value no value help choices no value no value
 
 - intent: tutorial_do_not_want
   examples: |
@@ -3181,3 +3195,28 @@ nlu:
     - I completed my analysis
     - Analysis done
     - I finished the analysis
+
+- intent: help_highlight_select_menus
+  examples: |
+    - What is the difference between highlight colour features and select node and edge menus?
+    - Why there are two menus Highlight colour features and Select node and edge
+    - What is the difference between colour feature and node and edge filters?
+    - How can I use highlight colour features and select node and edge menu filters?
+    - What will be different if I highlight colour features or select nodes and edges?
+    - Can you show me how select node and edge and highlight colour features differ?
+    - Would you be able to give me an example of how highlight colour features/select nodes and edges menus work?
+    - Can you tell me what is meant by select node and edge and highlight colour features filtering types?
+    - I was wondering if you could explain select node and edge and highlight colour features menus to me?
+    - Could you explain to me what select node and edge and highlight colour feature refers to?
+    - I would like you to explain what highlight colour feature menu and select node and edge menus are
+    - Would you be able to give me a tutorial for highlight colour features and select node and edge filtering menus?
+    - I want you to give me an explanation about highlight colour feature and select node and edge menus?
+    - I was hoping you could help me understand highlight colour features/select node and edge
+    - I'd like you to define select node and edge and highlight colour features
+    - Would it be possible to have a tutorial for highlight colour features or select node and edge?
+    - Could you possibly go into more detail about what highlight colour features/select node and edge are for?
+    - Give me help on highlight colour feature menu and select node and edge menu
+    - Guide for select node and edge/highlight colour feature filters
+    - May you inform me on highlight colour features/select node and edge filtering options
+    - Highlight colour features vs select node and edge
+    - What are the differences between the feature menus?
