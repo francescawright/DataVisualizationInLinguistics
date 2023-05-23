@@ -24,7 +24,7 @@ services:
       - "5055:5055"
     networks:
       - all
-  rasa_db:
+  rasa-db:
     image: postgres:latest
     environment:
       - POSTGRES_DB=rasa
