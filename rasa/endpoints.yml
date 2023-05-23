@@ -19,7 +19,7 @@ action_endpoint:
 tracker_store:
   type: SQL
   dialect: "postgresql"
-  url: "postgresql://postgres:postgres@rasa_db:5432/rasa" 
+  url: "postgresql://postgres:postgres@rasadb:5432/rasa" 
   db: "rasa"
   username: # username used for authentication
   password:  # password used for authentication
