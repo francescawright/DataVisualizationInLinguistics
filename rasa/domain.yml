@@ -1396,7 +1396,11 @@ responses:
 
 
   utter_tutorial_do_not_want:
-    - text: "Okay, I am here if you need me 😊"
+    - text: "Okay, remember I can: \ \n
+
+                            - Change visualisation options / Select filters \ \n
+                            - Show you subtrees and answer basic statistics questions \ \n
+                            - Offer you help or a tutorial  \ \n"
 
 
 #  utter_interactive_tutorial_one:
