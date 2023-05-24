@@ -467,9 +467,9 @@ class ActionGreet(Action):
                      "Hi, " + nickname_value + ". What can I do for you? 😄"]
                 dispatcher.utter_message(text=random.choice(messages))
 
-                if first_login_value or greet_again_value:
-                    dispatcher.utter_message(text="Are you new? Would you like a tutorial?",
-                                             buttons=[
+                # if first_login_value or greet_again_value:
+                dispatcher.utter_message(text="Are you new? Would you like a tutorial?",
+                                         buttons=[
                                                  {"title": "Yes", "payload": "/ask_tutorial"},
                                                  {"title": "No", "payload": "/tutorial_do_not_want"}
                                              ])

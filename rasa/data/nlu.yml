@@ -50,7 +50,6 @@ nlu:
     - of course
     - that sounds good
     - correct
-    - affirmative
     - fine
     - good
     - okay
@@ -65,17 +64,19 @@ nlu:
     - certainly
     - definitely
     - exactly
-    - good enough
-    - granted
-    - indubitably
-    - most assuredly
-    - naturally
     - sure
-    - undoubtedly
-    - convinced
-    - positive
-    - decided
-    - doubtless
+
+  #- undoubtedly
+  #- convinced
+  #- positive
+  #- decided
+  #- doubtless
+  #- affirmative
+  #- good enough
+  #- granted
+  #- indubitably
+  #- most assuredly
+  #- naturally
 
 - intent: deny
   examples: |
@@ -1071,6 +1072,7 @@ nlu:
     - Turn them off
     - Deactivate them
     - Deactivate it
+    - Clear the filter
 
 - synonym: positive stance
   examples: |
@@ -1291,6 +1293,9 @@ nlu:
     - Is there a way I can look at the data for the visualisation?
     - Would I be able to analyse what I have highlighted
     - Open selected comments statistics
+    - Open selected comments
+    - Could you show me selected comments
+    - I would like to see selected comments
   # is it possible to compare features of the visualisation- yes
     
 
@@ -1426,6 +1431,12 @@ nlu:
     - How can I analyse selected comments data?
     - How can I analyse what I have highlighted?
     - How can I analyse what I have selected?
+    - I want to know how many comments have the features I have selected
+    - Can I know how many of comments are tagged?
+    - Number of comments
+    - How can I see the number of comments?
+    - How can i know the number of comments with a certain feature
+    - Can I know what features my comments are tagged with?
   # how can i analyse what I have chosen- yes
   #how can i analyse the comments i have selected - yes
   #how can i know if my there are relationships between features- yes
@@ -1454,6 +1465,15 @@ nlu:
 
 - intent: reminder_help
   examples: |
+    - Help me
+    - Give me some tips
+    - Could I have some ideas?
+    - I don't know how anything works
+    - Remind me how this tool works
+    - I need you to remind me how everything works
+    - Would you be able to tell me how to use 
+    - Fast help
+    - Quick help
     - What are the functions of this tool?
     - How can I use this tool?
     - Tell me about how to use this tool?
@@ -1470,6 +1490,8 @@ nlu:
     - What can I do now?
     - Would you be able to give me help on what to do next?
     - Would it be possible for you to give me a summary of what I can do
+    - Learn more about this interface
+
 
 
 #synonym: reminder
@@ -1590,6 +1612,8 @@ nlu:
     - Is it possible to analyse a smaller part of the visualisation?
     - Can I analyse a small section of my data?
     - Is it possible to look at smaller regions of my data?
+    - Learn more statistics questions
+
 #could you remind me of the basic statistics options- yes
 #what were the questions i can ask you- yes
 
@@ -1608,6 +1632,7 @@ nlu:
     - Give me help on highlight colour features
     - Guide for colour features
     - May you inform me on highlight colour features
+    - Learn more colour features
 
 - intent: targets_help
   examples: |
@@ -1625,6 +1650,7 @@ nlu:
     - Guide for targets
     - May you inform me on targets icons
     - What's the difference between target person and target group?
+    - Learn more targets
 #COMPROBAR target person and group intents new combos to be checked
 
 #- intent: sub_structure_options
@@ -1662,6 +1688,7 @@ nlu:
     - What does statistics mean?
     - How can I use statistics?
     - How many statistics choices are there?
+    - Learn more statistics
 #what statistics options are there- yes
 #May you inform me on statistics graphs-yes
 #compare the relationships of the features-yes
@@ -2533,70 +2560,216 @@ nlu:
 
 - intent: filters_argument_hide
   examples: |
-    - Hide [argumentation]{"entity": "filter_name"}
-    - Deselect [argument]{"entity": "filter_name" }
-    - Uncheck  [argumentation]{"entity": "filter_name" }
-    
+    - Can I [argumentation]{"entity": "filter_name"}
+    - Uncheck [argumentation]{"entity": "filter_name"} features
+    - May you turn off [argumentation]{"entity": "filter_name"} filters
+    - I want to reset [argumentation]{"entity": "filter_name"} features
+    - I would like to switch off [argumentation]{"entity": "filter_name"} features
+    - Deselect [argumentation]{"entity": "filter_name"} filtering
+    - Could you hide [argumentation]{"entity": "filter_name"} features
+    - I was hoping you could switch off [argumentation]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [argumentation]{"entity": "filter_name"}
+    - Would you be able to untick [argumentation]{"entity": "filter_name"} filters
+    - Could you possibly clear [argumentation]{"entity": "filter_name"} filtering
+    - Clear off [argumentation]{"entity": "filter_name"} filters
+    - May you remove [argumentation]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [argumentation]{"entity": "filter_name"} filters
+    - Unselect [argumentation]{"entity": "filter_name"} filtering
+    - Get rid of [argumentation]{"entity": "filter_name"} features
+    - Would I be able to take [argumentation]{"entity": "filter_name"} off
+    - I'd like to clear off [argumentation]{"entity": "filter_name"}
     
 
 
 - intent: filters_sarcasm_hide
   examples: |
-    - Deselect [sarcasm]{"entity": "filter_name"}
-    - Hide [sarcastic]{"entity": "filter_name" }
-    - Uncheck [sarcasm]{"entity": "filter_name" }
-
+    - Can I [sarcasm]{"entity": "filter_name"}
+    - Uncheck [sarcasm]{"entity": "filter_name"} features
+    - May you turn off [sarcasm]{"entity": "filter_name"} filters
+    - I want to reset [sarcasm]{"entity": "filter_name"} features
+    - I would like to switch off [sarcasm]{"entity": "filter_name"} features
+    - Deselect [sarcasm]{"entity": "filter_name"} filtering
+    - Could you hide [sarcasm]{"entity": "filter_name"} features
+    - I was hoping you could switch off [sarcasm]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [sarcasm]{"entity": "filter_name"}
+    - Would you be able to untick [sarcasm]{"entity": "filter_name"} filters
+    - Could you possibly clear [sarcasm]{"entity": "filter_name"} filtering
+    - Clear off [sarcasm]{"entity": "filter_name"} filters
+    - May you remove [sarcasm]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [sarcasm]{"entity": "filter_name"} filters
+    - Unselect [sarcasm]{"entity": "filter_name"} filtering
+    - Get rid of [sarcasm]{"entity": "filter_name"} features
+    - Would I be able to take [sarcasm]{"entity": "filter_name"} off
+    - I'd like to clear off [sarcasm]{"entity": "filter_name"}
 
 - intent: filters_mockery_hide
   examples: |
-    - Deselect [mockery]{"entity": "filter_name"}
-    - Hide [mockery]{"entity": "filter_name" }
-    - Uncheck  [mockery]{"entity": "filter_name"}
+    - Can I [mockery]{"entity": "filter_name"}
+    - Uncheck [mockery]{"entity": "filter_name"} features
+    - May you turn off [mockery]{"entity": "filter_name"} filters
+    - I want to reset [mockery]{"entity": "filter_name"} features
+    - I would like to switch off [mockery]{"entity": "filter_name"} features
+    - Deselect [mockery]{"entity": "filter_name"} filtering
+    - Could you hide [mockery]{"entity": "filter_name"} features
+    - I was hoping you could switch off [mockery]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [mockery]{"entity": "filter_name"}
+    - Would you be able to untick [mockery]{"entity": "filter_name"} filters
+    - Could you possibly clear [mockery]{"entity": "filter_name"} filtering
+    - Clear off [mockery]{"entity": "filter_name"} filters
+    - May you remove [mockery]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [mockery]{"entity": "filter_name"} filters
+    - Unselect [mockery]{"entity": "filter_name"} filtering
+    - Get rid of [mockery]{"entity": "filter_name"} features
+    - Would I be able to take [mockery]{"entity": "filter_name"} off
+    - I'd like to clear off [mockery]{"entity": "filter_name"}
 
 - intent: filters_intolerance_hide
   examples: |
-    - Deselect [intolerance]{"entity": "filter_name"}
-    - Hide [intolerance]{"entity": "filter_name" }
-    - Uncheck  [intolerance]{"entity": "filter_name" }
+    - Can I [intolerance]{"entity": "filter_name"}
+    - Uncheck [intolerance]{"entity": "filter_name"} features
+    - May you turn off [intolerance]{"entity": "filter_name"} filters
+    - I want to reset [intolerance]{"entity": "filter_name"} features
+    - I would like to switch off [intolerance]{"entity": "filter_name"} features
+    - Deselect [intolerance]{"entity": "filter_name"} filtering
+    - Could you hide [intolerance]{"entity": "filter_name"} features
+    - I was hoping you could switch off [intolerance]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [intolerance]{"entity": "filter_name"}
+    - Would you be able to untick [intolerance]{"entity": "filter_name"} filters
+    - Could you possibly clear [intolerance]{"entity": "filter_name"} filtering
+    - Clear off [intolerance]{"entity": "filter_name"} filters
+    - May you remove [intolerance]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [intolerance]{"entity": "filter_name"} filters
+    - Unselect [intolerance]{"entity": "filter_name"} filtering
+    - Get rid of [intolerance]{"entity": "filter_name"} features
+    - Would I be able to take [intolerance]{"entity": "filter_name"} off
+    - I'd like to clear off [intolerance]{"entity": "filter_name"}
 
 
 - intent: filters_improper_hide
   examples: |
-    - Deselect [improper language]{"entity": "filter_name"}
-    - Hide [improper language]{"entity": "filter_name" }
-    - Uncheck [improper language]{"entity": "filter_name" }
+    - Can I [improper language]{"entity": "filter_name"}
+    - Uncheck [improper language]{"entity": "filter_name"} features
+    - May you turn off [improper language]{"entity": "filter_name"} filters
+    - I want to reset [improper language]{"entity": "filter_name"} features
+    - I would like to switch off [improper language]{"entity": "filter_name"} features
+    - Deselect [improper language]{"entity": "filter_name"} filtering
+    - Could you hide [improper language]{"entity": "filter_name"} features
+    - I was hoping you could switch off [improper language]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [improper language]{"entity": "filter_name"}
+    - Would you be able to untick [improper language]{"entity": "filter_name"} filters
+    - Could you possibly clear [improper language]{"entity": "filter_name"} filtering
+    - Clear off [improper language]{"entity": "filter_name"} filters
+    - May you remove [improper language]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [improper language]{"entity": "filter_name"} filters
+    - Unselect [improper language]{"entity": "filter_name"} filtering
+    - Get rid of [improper language]{"entity": "filter_name"} features
+    - Would I be able to take [improper language]{"entity": "filter_name"} off
+    - I'd like to clear off [improper language]{"entity": "filter_name"}
 
 - intent: filters_insult_hide
-  examples: |
-    - Deselect [insult]{"entity": "filter_name"}
-    - Hide [insult]{"entity": "filter_name" }
-    - Uncheck [insult]{"entity": "filter_name" }
+  examples: | 
+    - Can I [insult]{"entity": "filter_name"}
+    - Uncheck [insult]{"entity": "filter_name"} features
+    - May you turn off [insult]{"entity": "filter_name"} filters
+    - I want to reset [insult]{"entity": "filter_name"} features
+    - I would like to switch off [insult]{"entity": "filter_name"} features
+    - Deselect [insult]{"entity": "filter_name"} filtering
+    - Could you hide [insult]{"entity": "filter_name"} features
+    - I was hoping you could switch off [insult]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [insult]{"entity": "filter_name"}
+    - Would you be able to untick [insult]{"entity": "filter_name"} filters
+    - Could you possibly clear [insult]{"entity": "filter_name"} filtering
+    - Clear off [insult]{"entity": "filter_name"} filters
+    - May you remove [insult]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [insult]{"entity": "filter_name"} filters
+    - Unselect [insult]{"entity": "filter_name"} filtering
+    - Get rid of [insult]{"entity": "filter_name"} features
+    - Would I be able to take [insult]{"entity": "filter_name"} off
+    - I'd like to clear off [insult]{"entity": "filter_name"}
 
 - intent: filters_aggressiveness_hide
   examples: |
-    - Hide [aggressiveness]{"entity": "filter_name"}
-    - Deselect [aggressiveness]{"entity": "filter_name" }
-    - Uncheck  [aggressiveness]{"entity": "filter_name" }
-
+    - Can I [aggressiveness]{"entity": "filter_name"}
+    - Uncheck [aggressiveness]{"entity": "filter_name"} features
+    - May you turn off [aggressiveness]{"entity": "filter_name"} filters
+    - I want to reset [aggressiveness]{"entity": "filter_name"} features
+    - I would like to switch off [aggressiveness]{"entity": "filter_name"} features
+    - Deselect [aggressiveness]{"entity": "filter_name"} filtering
+    - Could you hide [aggressiveness]{"entity": "filter_name"} features
+    - I was hoping you could switch off [aggressiveness]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [aggressiveness]{"entity": "filter_name"}
+    - Would you be able to untick [aggressiveness]{"entity": "filter_name"} filters
+    - Could you possibly clear [aggressiveness]{"entity": "filter_name"} filtering
+    - Clear off [aggressiveness]{"entity": "filter_name"} filters
+    - May you remove [aggressiveness]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [aggressiveness]{"entity": "filter_name"} filters
+    - Unselect [aggressiveness]{"entity": "filter_name"} filtering
+    - Get rid of [aggressiveness]{"entity": "filter_name"} features
+    - Would I be able to take [aggressiveness]{"entity": "filter_name"} off
+    - I'd like to clear off [aggressiveness]{"entity": "filter_name"}
 
 - intent: filters_stereotype_hide
   examples: |
-    - Deselect [stereotype]{"entity": "filter_name"}
-    - Hide [stereotype]{"entity": "filter_name" }
-    - Uncheck  [stereotype]{"entity": "filter_name" }
-
+    - Can I [stereotype]{"entity": "filter_name"}
+    - Uncheck [stereotype]{"entity": "filter_name"} features
+    - May you turn off [stereotype]{"entity": "filter_name"} filters
+    - I want to reset [stereotype]{"entity": "filter_name"} features
+    - I would like to switch off [stereotype]{"entity": "filter_name"} features
+    - Deselect [stereotype]{"entity": "filter_name"} filtering
+    - Could you hide [stereotype]{"entity": "filter_name"} features
+    - I was hoping you could switch off [stereotype]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [stereotype]{"entity": "filter_name"}
+    - Would you be able to untick [stereotype]{"entity": "filter_name"} filters
+    - Could you possibly clear [stereotype]{"entity": "filter_name"} filtering
+    - Clear off [stereotype]{"entity": "filter_name"} filters
+    - May you remove [stereotype]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [stereotype]{"entity": "filter_name"} filters
+    - Unselect [stereotype]{"entity": "filter_name"} filtering
+    - Get rid of [stereotype]{"entity": "filter_name"} features
+    - Would I be able to take [stereotype]{"entity": "filter_name"} off
+    - I'd like to clear off [stereotype]{"entity": "filter_name"}
 
 - intent: filters_person_hide
   examples: |
-    - Deselect [target person]{"entity": "filter_name"}
-    - Hide [target person]{"entity": "filter_name" }
-    - Uncheck [target person]{"entity": "filter_name" }
+    - Can I [target person]{"entity": "filter_name"}
+    - Uncheck [target person]{"entity": "filter_name"} features
+    - May you turn off [target person]{"entity": "filter_name"} filters
+    - I want to reset [target person]{"entity": "filter_name"} features
+    - I would like to switch off [target person]{"entity": "filter_name"} features
+    - Deselect [target person]{"entity": "filter_name"} filtering
+    - Could you hide [target person]{"entity": "filter_name"} features
+    - I was hoping you could switch off [target person]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [target person]{"entity": "filter_name"}
+    - Would you be able to untick [target person]{"entity": "filter_name"} filters
+    - Could you possibly clear [target person]{"entity": "filter_name"} filtering
+    - Clear off [target person]{"entity": "filter_name"} filters
+    - May you remove [target person]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [target person]{"entity": "filter_name"} filters
+    - Unselect [target person]{"entity": "filter_name"} filtering
+    - Get rid of [target person]{"entity": "filter_name"} features
+    - Would I be able to take [target person]{"entity": "filter_name"} off
+    - I'd like to clear off [target person]{"entity": "filter_name"}
 
 - intent: filters_group_hide
   examples: |
-    - Deselect [target group]{"entity": "filter_name"}
-    - Hide [target group]{"entity": "filter_name" }
-    - Uncheck [target group]{"entity": "filter_name" }
+    - Can I [target group]{"entity": "filter_name"}
+    - Uncheck [target group]{"entity": "filter_name"} features
+    - May you turn off [target group]{"entity": "filter_name"} filters
+    - I want to reset [target group]{"entity": "filter_name"} features
+    - I would like to switch off [target group]{"entity": "filter_name"} features
+    - Deselect [target group]{"entity": "filter_name"} filtering
+    - Could you hide [target group]{"entity": "filter_name"} features
+    - I was hoping you could switch off [target group]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [target group]{"entity": "filter_name"}
+    - Would you be able to untick [target group]{"entity": "filter_name"} filters
+    - Could you possibly clear [target group]{"entity": "filter_name"} filtering
+    - Clear off [target group]{"entity": "filter_name"} filters
+    - May you remove [target group]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [target group]{"entity": "filter_name"} filters
+    - Unselect [target group]{"entity": "filter_name"} filtering
+    - Get rid of [target group]{"entity": "filter_name"} features
+    - Would I be able to take [target group]{"entity": "filter_name"} off
+    - I'd like to clear off [target group]{"entity": "filter_name"}
 
 - intent: reset_all_filters
   examples: |
@@ -2737,6 +2910,7 @@ nlu:
     - Give me help on [sarcasm]{"entity": "filter_name"}
     - Guide for [sarcasm]{"entity": "filter_name"}
     - May you inform me on [sarcasm]{"entity": "filter_name"}
+    - Learn more [sarcasm]{"entity": "filter_name"}
 
 - intent: define_mockery
   examples: |
@@ -2753,6 +2927,7 @@ nlu:
     - Give me help on [mockery]{"entity": "filter_name"}
     - Guide for [mockery]{"entity": "filter_name"}
     - May you inform me on [mockery]{"entity": "filter_name"}
+    - Learn more [mockery]{"entity": "filter_name"}
 
 - intent: define_intolerance
   examples: | 
@@ -2769,6 +2944,7 @@ nlu:
     - Give me help on [intolerance]{"entity": "filter_name"}
     - Guide for [intolerance]{"entity": "filter_name"}
     - May you inform me on [intolerance]{"entity": "filter_name"}
+    - Learn more [intolerance]{"entity": "filter_name"}
 
 - intent: define_insult
   examples: |
@@ -2785,6 +2961,7 @@ nlu:
     - Give me help on [insult]{"entity": "filter_name"}
     - Guide for [insult]{"entity": "filter_name"}
     - May you inform me on [insult]{"entity": "filter_name"}
+    - Learn more [insult]{"entity": "filter_name"}
 
 - intent: define_improper_language
   examples: |
@@ -2801,6 +2978,7 @@ nlu:
     - Give me help on [improper language]{"entity": "filter_name"}
     - Guide for [improper language]{"entity": "filter_name"}
     - May you inform me on [improper language]{"entity": "filter_name"}
+    - Learn more [improper language]{"entity": "filter_name"}
 
 - intent: define_aggressiveness
   examples: |
@@ -2817,6 +2995,7 @@ nlu:
     - Give me help on [aggressiveness]{"entity": "filter_name"}
     - Guide for [aggressiveness]{"entity": "filter_name"}
     - May you inform me on [aggressiveness]{"entity": "filter_name"}
+    - Learn more [aggressiveness]{"entity": "filter_name"}
 
 - intent: define_stereotype
   examples: |
@@ -2834,6 +3013,7 @@ nlu:
     - Guide for [stereotype]{"entity": "filter_name"}
     - What is [stereotype]{"entity": "filter_name"}
     - May you inform me on [stereotype]{"entity": "filter_name"}
+    - Learn more [stereotype]{"entity": "filter_name"}
 
 
 - intent: define_stance
@@ -2853,6 +3033,7 @@ nlu:
     - May you inform me on stance
     - What are stances
     - What is stance
+    - Learn more stance
 
 - intent: define_toxic
   examples: |
@@ -2871,6 +3052,8 @@ nlu:
     - May you inform me on toxic
     - What is toxic?
     - What does level of toxicity mean?
+    - Learn more toxicity
+    - Show me the most common toxicity level
 #help me with toxicity
 
 - intent: define_commentid
@@ -2888,6 +3071,7 @@ nlu:
     - Give me help on [comment identification]{"entity": "tag_comment_id"} number
     - Guide for [comment id]{"entity": "tag_comment_id"}
     - May you inform me on [identification]{"entity": "tag_comment_id"} No.
+    - Learn more [comment id]{"entity": "tag_comment_id"}
 
 
 - synonym: comment id
@@ -2913,6 +3097,7 @@ nlu:
     - Give me help on [argumentation]{"entity": "filter_name"}
     - Guide for [argumentation]{"entity": "filter_name"}
     - May you inform me on [argumentation]{"entity": "filter_name"}
+    - Learn more [argumentation]{"entity": "filter_name"}
 
 - intent: define_constructiveness
   examples: |
@@ -2929,6 +3114,7 @@ nlu:
     - Give me help on [constructiveness]{"entity": "filter_name"}
     - Guide for [constructiveness]{"entity": "filter_name"}
     - May you inform me on [constructiveness]{"entity": "filter_name"}
+    - Learn more [constructiveness]{"entity": "filter_name"}
 
 - intent: define_targetgroup
   examples: |
@@ -2945,6 +3131,7 @@ nlu:
     - Give me help on target group
     - Guide for target group
     - May you inform me on target group
+    - Learn more target group
 
 - intent: define_targetperson
   examples: |
@@ -2961,6 +3148,7 @@ nlu:
     - Give me help on target person
     - Guide for target person
     - May you inform me on target person
+    - Learn more target person
 
 
 - intent: define_commentlevel
@@ -2978,6 +3166,7 @@ nlu:
     - Give me help on comment level
     - Guide for comment level
     - May you inform me on comment level
+    - Learn more comment level
 
 - intent: define_commentdepth
   examples: |
@@ -2994,6 +3183,7 @@ nlu:
     - Give me help on comment depth
     - Guide for comment depth
     - May you inform me on comment depth
+    - Learn more comment depth
     
 
 #- Tutorial for comment depth- yes
@@ -3024,6 +3214,7 @@ nlu:
     - Give me help on direct comments
     - Guide for direct comments
     - May you inform me on direct comments
+    - Learn more direct comments
 #what are direct comments- yes
 #what is direct comments for- yes
 #what does direct comments mean- yes
@@ -3045,6 +3236,7 @@ nlu:
     - Give me help on subtrees
     - Guide for subtrees
     - May you inform me on subtrees
+    - Learn more subtrees
 
 #synonym: subtree
  # examples: |
@@ -3081,34 +3273,39 @@ nlu:
 
 - intent: tutorial_layouts
   examples: |
-    - Tutorial for layouts
-    - Show me tutorial for layouts
+    - null Tutorial for layouts null
+    - no value Show me tutorial for layouts no value
 
 
 - intent: tutorial_glyphs
   examples: |
-    - Tutorial for glyphs
-    - Show me tutorial for glyphs
+    - null Tutorial for glyphs null
+    - no value Show me tutorial for glyphs no value
 
 - intent: tutorial_targets
   examples: |
-    - Tutorial for targets
-    - Show me tutorial for targets
+    - null Tutorial for targets null
+    - no value Show me tutorial for targets no value
 
 - intent: tutorial_node_and_edge
   examples: |
-    - Tutorial for node and edge
-    - Show me tutorial for node and edge
+    - null Tutorial for node and edge null
+    - no value Show me tutorial for node and edge no value
+
+- intent: tutorial_statistics_introduction
+  examples: |
+    - null statistics introduction null
+    - no value statistics introduction no value
 
 - intent: tutorial_statistics
   examples: |
-    - Tutorial for statistics
-    - Show me tutorial for statistics
+    - null Tutorial for statistics null
+    - no value Show me tutorial for statistics no value
 
 - intent: tutorial_most_tagged_features
   examples: |
-    - Tutorial for most tagged features
-    - Show me tutorial for most tagged features
+    - null Tutorial for most tagged features null
+    - no value Show me tutorial for most tagged features no value
 
 - intent: tutorial_high_level
   examples: |
@@ -3127,14 +3324,49 @@ nlu:
     - null chatbot null 
     - no value chatbot no value
 
-
 - intent: tutorial_change_file
   examples: |
     - null change file null 
     - no value change file no value
+
+- intent: tutorial_help_choices
+  examples: |
+    - null null help choices null null
+    - no value no value help choices no value no value
 
 - intent: tutorial_do_not_want
   examples: |
     - I do not want a tutorial
     - I don't need a tutorial
 
+- intent: download_user_interaction
+  examples: |
+    - My analysis is done
+    - I completed my analysis
+    - Analysis done
+    - I finished the analysis
+
+- intent: help_highlight_select_menus
+  examples: |
+    - What is the difference between highlight colour features and select node and edge menus?
+    - Why there are two menus Highlight colour features and Select node and edge
+    - What is the difference between colour feature and node and edge filters?
+    - How can I use highlight colour features and select node and edge menu filters?
+    - What will be different if I highlight colour features or select nodes and edges?
+    - Can you show me how select node and edge and highlight colour features differ?
+    - Would you be able to give me an example of how highlight colour features/select nodes and edges menus work?
+    - Can you tell me what is meant by select node and edge and highlight colour features filtering types?
+    - I was wondering if you could explain select node and edge and highlight colour features menus to me?
+    - Could you explain to me what select node and edge and highlight colour feature refers to?
+    - I would like you to explain what highlight colour feature menu and select node and edge menus are
+    - Would you be able to give me a tutorial for highlight colour features and select node and edge filtering menus?
+    - I want you to give me an explanation about highlight colour feature and select node and edge menus?
+    - I was hoping you could help me understand highlight colour features/select node and edge
+    - I'd like you to define select node and edge and highlight colour features
+    - Would it be possible to have a tutorial for highlight colour features or select node and edge?
+    - Could you possibly go into more detail about what highlight colour features/select node and edge are for?
+    - Give me help on highlight colour feature menu and select node and edge menu
+    - Guide for select node and edge/highlight colour feature filters
+    - May you inform me on highlight colour features/select node and edge filtering options
+    - Highlight colour features vs select node and edge
+    - What are the differences between the feature menus?

@@ -196,6 +196,7 @@ stories:
         - document_requested: "20200831_CR"
     - action: action_open_document
 
+
 - story: User provides the name of a document
   steps:
     - intent: select_document
@@ -204,6 +205,7 @@ stories:
     - slot_was_set:
         - document_requested: "test3"
     - action: action_open_document
+
 
 - story: User requests to open an unspecified document
   steps:
@@ -225,6 +227,7 @@ stories:
         - requested_slot: null
     - active_loop: null
     - action: action_open_document
+
 
 
 
@@ -360,6 +363,7 @@ stories:
     - action: utter_help_layouts_two
     - intent: help_subtree_barchart
     - action: utter_help_subtree_bar
+
 
 
 - story: help layout
