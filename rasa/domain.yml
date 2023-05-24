@@ -1313,7 +1313,7 @@ responses:
   utter_tutorial_mode_statistics_introduction:
     - text: "After you have chosen the features you want to analyse, you can look at Statistics. \ \n
     
-    Statistics summary gives you a breakdown of the levels of toxicity and targets in the current visualisation. When you select filters, my answer changes"
+    Statistics summary gives you a breakdown of toxicity and targets in the current visualisation. When you select filters, my answer changes"
       buttons:
         - title: "Next"
           payload: '/tutorial_statistics'
@@ -1383,7 +1383,7 @@ responses:
     - text: "And the final part of this interface is me! \ \n
 
                   I’m here to: \ \n
-                  - Change visualisation options \ \n
+                  - Change visualisation options / Select filters \ \n
                   - Show you subtrees and answer basic statistics questions \ \n
                   - Offer you help  \ \n
                   Use this window or your microphone to talk to me 😄"
