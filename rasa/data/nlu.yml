@@ -2559,70 +2559,216 @@ nlu:
 
 - intent: filters_argument_hide
   examples: |
-    - Hide [argumentation]{"entity": "filter_name"}
-    - Deselect [argument]{"entity": "filter_name" }
-    - Uncheck  [argumentation]{"entity": "filter_name" }
-    
+    - Can I [argumentation]{"entity": "filter_name"}
+    - Uncheck [argumentation]{"entity": "filter_name"} features
+    - May you turn off [argumentation]{"entity": "filter_name"} filters
+    - I want to reset [argumentation]{"entity": "filter_name"} features
+    - I would like to switch off [argumentation]{"entity": "filter_name"} features
+    - Deselect [argumentation]{"entity": "filter_name"} filtering
+    - Could you hide [argumentation]{"entity": "filter_name"} features
+    - I was hoping you could switch off [argumentation]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [argumentation]{"entity": "filter_name"}
+    - Would you be able to untick [argumentation]{"entity": "filter_name"} filters
+    - Could you possibly clear [argumentation]{"entity": "filter_name"} filtering
+    - Clear off [argumentation]{"entity": "filter_name"} filters
+    - May you remove [argumentation]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [argumentation]{"entity": "filter_name"} filters
+    - Unselect [argumentation]{"entity": "filter_name"} filtering
+    - Get rid of [argumentation]{"entity": "filter_name"} features
+    - Would I be able to take [argumentation]{"entity": "filter_name"} off
+    - I'd like to clear off [argumentation]{"entity": "filter_name"}
     
 
 
 - intent: filters_sarcasm_hide
   examples: |
-    - Deselect [sarcasm]{"entity": "filter_name"}
-    - Hide [sarcastic]{"entity": "filter_name" }
-    - Uncheck [sarcasm]{"entity": "filter_name" }
-
+    - Can I [sarcasm]{"entity": "filter_name"}
+    - Uncheck [sarcasm]{"entity": "filter_name"} features
+    - May you turn off [sarcasm]{"entity": "filter_name"} filters
+    - I want to reset [sarcasm]{"entity": "filter_name"} features
+    - I would like to switch off [sarcasm]{"entity": "filter_name"} features
+    - Deselect [sarcasm]{"entity": "filter_name"} filtering
+    - Could you hide [sarcasm]{"entity": "filter_name"} features
+    - I was hoping you could switch off [sarcasm]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [sarcasm]{"entity": "filter_name"}
+    - Would you be able to untick [sarcasm]{"entity": "filter_name"} filters
+    - Could you possibly clear [sarcasm]{"entity": "filter_name"} filtering
+    - Clear off [sarcasm]{"entity": "filter_name"} filters
+    - May you remove [sarcasm]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [sarcasm]{"entity": "filter_name"} filters
+    - Unselect [sarcasm]{"entity": "filter_name"} filtering
+    - Get rid of [sarcasm]{"entity": "filter_name"} features
+    - Would I be able to take [sarcasm]{"entity": "filter_name"} off
+    - I'd like to clear off [sarcasm]{"entity": "filter_name"}
 
 - intent: filters_mockery_hide
   examples: |
-    - Deselect [mockery]{"entity": "filter_name"}
-    - Hide [mockery]{"entity": "filter_name" }
-    - Uncheck  [mockery]{"entity": "filter_name"}
+    - Can I [mockery]{"entity": "filter_name"}
+    - Uncheck [mockery]{"entity": "filter_name"} features
+    - May you turn off [mockery]{"entity": "filter_name"} filters
+    - I want to reset [mockery]{"entity": "filter_name"} features
+    - I would like to switch off [mockery]{"entity": "filter_name"} features
+    - Deselect [mockery]{"entity": "filter_name"} filtering
+    - Could you hide [mockery]{"entity": "filter_name"} features
+    - I was hoping you could switch off [mockery]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [mockery]{"entity": "filter_name"}
+    - Would you be able to untick [mockery]{"entity": "filter_name"} filters
+    - Could you possibly clear [mockery]{"entity": "filter_name"} filtering
+    - Clear off [mockery]{"entity": "filter_name"} filters
+    - May you remove [mockery]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [mockery]{"entity": "filter_name"} filters
+    - Unselect [mockery]{"entity": "filter_name"} filtering
+    - Get rid of [mockery]{"entity": "filter_name"} features
+    - Would I be able to take [mockery]{"entity": "filter_name"} off
+    - I'd like to clear off [mockery]{"entity": "filter_name"}
 
 - intent: filters_intolerance_hide
   examples: |
-    - Deselect [intolerance]{"entity": "filter_name"}
-    - Hide [intolerance]{"entity": "filter_name" }
-    - Uncheck  [intolerance]{"entity": "filter_name" }
+    - Can I [intolerance]{"entity": "filter_name"}
+    - Uncheck [intolerance]{"entity": "filter_name"} features
+    - May you turn off [intolerance]{"entity": "filter_name"} filters
+    - I want to reset [intolerance]{"entity": "filter_name"} features
+    - I would like to switch off [intolerance]{"entity": "filter_name"} features
+    - Deselect [intolerance]{"entity": "filter_name"} filtering
+    - Could you hide [intolerance]{"entity": "filter_name"} features
+    - I was hoping you could switch off [intolerance]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [intolerance]{"entity": "filter_name"}
+    - Would you be able to untick [intolerance]{"entity": "filter_name"} filters
+    - Could you possibly clear [intolerance]{"entity": "filter_name"} filtering
+    - Clear off [intolerance]{"entity": "filter_name"} filters
+    - May you remove [intolerance]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [intolerance]{"entity": "filter_name"} filters
+    - Unselect [intolerance]{"entity": "filter_name"} filtering
+    - Get rid of [intolerance]{"entity": "filter_name"} features
+    - Would I be able to take [intolerance]{"entity": "filter_name"} off
+    - I'd like to clear off [intolerance]{"entity": "filter_name"}
 
 
 - intent: filters_improper_hide
   examples: |
-    - Deselect [improper language]{"entity": "filter_name"}
-    - Hide [improper language]{"entity": "filter_name" }
-    - Uncheck [improper language]{"entity": "filter_name" }
+    - Can I [improper language]{"entity": "filter_name"}
+    - Uncheck [improper language]{"entity": "filter_name"} features
+    - May you turn off [improper language]{"entity": "filter_name"} filters
+    - I want to reset [improper language]{"entity": "filter_name"} features
+    - I would like to switch off [improper language]{"entity": "filter_name"} features
+    - Deselect [improper language]{"entity": "filter_name"} filtering
+    - Could you hide [improper language]{"entity": "filter_name"} features
+    - I was hoping you could switch off [improper language]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [improper language]{"entity": "filter_name"}
+    - Would you be able to untick [improper language]{"entity": "filter_name"} filters
+    - Could you possibly clear [improper language]{"entity": "filter_name"} filtering
+    - Clear off [improper language]{"entity": "filter_name"} filters
+    - May you remove [improper language]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [improper language]{"entity": "filter_name"} filters
+    - Unselect [improper language]{"entity": "filter_name"} filtering
+    - Get rid of [improper language]{"entity": "filter_name"} features
+    - Would I be able to take [improper language]{"entity": "filter_name"} off
+    - I'd like to clear off [improper language]{"entity": "filter_name"}
 
 - intent: filters_insult_hide
-  examples: |
-    - Deselect [insult]{"entity": "filter_name"}
-    - Hide [insult]{"entity": "filter_name" }
-    - Uncheck [insult]{"entity": "filter_name" }
+  examples: | 
+    - Can I [insult]{"entity": "filter_name"}
+    - Uncheck [insult]{"entity": "filter_name"} features
+    - May you turn off [insult]{"entity": "filter_name"} filters
+    - I want to reset [insult]{"entity": "filter_name"} features
+    - I would like to switch off [insult]{"entity": "filter_name"} features
+    - Deselect [insult]{"entity": "filter_name"} filtering
+    - Could you hide [insult]{"entity": "filter_name"} features
+    - I was hoping you could switch off [insult]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [insult]{"entity": "filter_name"}
+    - Would you be able to untick [insult]{"entity": "filter_name"} filters
+    - Could you possibly clear [insult]{"entity": "filter_name"} filtering
+    - Clear off [insult]{"entity": "filter_name"} filters
+    - May you remove [insult]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [insult]{"entity": "filter_name"} filters
+    - Unselect [insult]{"entity": "filter_name"} filtering
+    - Get rid of [insult]{"entity": "filter_name"} features
+    - Would I be able to take [insult]{"entity": "filter_name"} off
+    - I'd like to clear off [insult]{"entity": "filter_name"}
 
 - intent: filters_aggressiveness_hide
   examples: |
-    - Hide [aggressiveness]{"entity": "filter_name"}
-    - Deselect [aggressiveness]{"entity": "filter_name" }
-    - Uncheck  [aggressiveness]{"entity": "filter_name" }
-
+    - Can I [aggressiveness]{"entity": "filter_name"}
+    - Uncheck [aggressiveness]{"entity": "filter_name"} features
+    - May you turn off [aggressiveness]{"entity": "filter_name"} filters
+    - I want to reset [aggressiveness]{"entity": "filter_name"} features
+    - I would like to switch off [aggressiveness]{"entity": "filter_name"} features
+    - Deselect [aggressiveness]{"entity": "filter_name"} filtering
+    - Could you hide [aggressiveness]{"entity": "filter_name"} features
+    - I was hoping you could switch off [aggressiveness]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [aggressiveness]{"entity": "filter_name"}
+    - Would you be able to untick [aggressiveness]{"entity": "filter_name"} filters
+    - Could you possibly clear [aggressiveness]{"entity": "filter_name"} filtering
+    - Clear off [aggressiveness]{"entity": "filter_name"} filters
+    - May you remove [aggressiveness]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [aggressiveness]{"entity": "filter_name"} filters
+    - Unselect [aggressiveness]{"entity": "filter_name"} filtering
+    - Get rid of [aggressiveness]{"entity": "filter_name"} features
+    - Would I be able to take [aggressiveness]{"entity": "filter_name"} off
+    - I'd like to clear off [aggressiveness]{"entity": "filter_name"}
 
 - intent: filters_stereotype_hide
   examples: |
-    - Deselect [stereotype]{"entity": "filter_name"}
-    - Hide [stereotype]{"entity": "filter_name" }
-    - Uncheck  [stereotype]{"entity": "filter_name" }
-
+    - Can I [stereotype]{"entity": "filter_name"}
+    - Uncheck [stereotype]{"entity": "filter_name"} features
+    - May you turn off [stereotype]{"entity": "filter_name"} filters
+    - I want to reset [stereotype]{"entity": "filter_name"} features
+    - I would like to switch off [stereotype]{"entity": "filter_name"} features
+    - Deselect [stereotype]{"entity": "filter_name"} filtering
+    - Could you hide [stereotype]{"entity": "filter_name"} features
+    - I was hoping you could switch off [stereotype]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [stereotype]{"entity": "filter_name"}
+    - Would you be able to untick [stereotype]{"entity": "filter_name"} filters
+    - Could you possibly clear [stereotype]{"entity": "filter_name"} filtering
+    - Clear off [stereotype]{"entity": "filter_name"} filters
+    - May you remove [stereotype]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [stereotype]{"entity": "filter_name"} filters
+    - Unselect [stereotype]{"entity": "filter_name"} filtering
+    - Get rid of [stereotype]{"entity": "filter_name"} features
+    - Would I be able to take [stereotype]{"entity": "filter_name"} off
+    - I'd like to clear off [stereotype]{"entity": "filter_name"}
 
 - intent: filters_person_hide
   examples: |
-    - Deselect [target person]{"entity": "filter_name"}
-    - Hide [target person]{"entity": "filter_name" }
-    - Uncheck [target person]{"entity": "filter_name" }
+    - Can I [target person]{"entity": "filter_name"}
+    - Uncheck [target person]{"entity": "filter_name"} features
+    - May you turn off [target person]{"entity": "filter_name"} filters
+    - I want to reset [target person]{"entity": "filter_name"} features
+    - I would like to switch off [target person]{"entity": "filter_name"} features
+    - Deselect [target person]{"entity": "filter_name"} filtering
+    - Could you hide [target person]{"entity": "filter_name"} features
+    - I was hoping you could switch off [target person]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [target person]{"entity": "filter_name"}
+    - Would you be able to untick [target person]{"entity": "filter_name"} filters
+    - Could you possibly clear [target person]{"entity": "filter_name"} filtering
+    - Clear off [target person]{"entity": "filter_name"} filters
+    - May you remove [target person]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [target person]{"entity": "filter_name"} filters
+    - Unselect [target person]{"entity": "filter_name"} filtering
+    - Get rid of [target person]{"entity": "filter_name"} features
+    - Would I be able to take [target person]{"entity": "filter_name"} off
+    - I'd like to clear off [target person]{"entity": "filter_name"}
 
 - intent: filters_group_hide
   examples: |
-    - Deselect [target group]{"entity": "filter_name"}
-    - Hide [target group]{"entity": "filter_name" }
-    - Uncheck [target group]{"entity": "filter_name" }
+    - Can I [target group]{"entity": "filter_name"}
+    - Uncheck [target group]{"entity": "filter_name"} features
+    - May you turn off [target group]{"entity": "filter_name"} filters
+    - I want to reset [target group]{"entity": "filter_name"} features
+    - I would like to switch off [target group]{"entity": "filter_name"} features
+    - Deselect [target group]{"entity": "filter_name"} filtering
+    - Could you hide [target group]{"entity": "filter_name"} features
+    - I was hoping you could switch off [target group]{"entity": "filter_name"}
+    - I was wondering if you could deactivate [target group]{"entity": "filter_name"}
+    - Would you be able to untick [target group]{"entity": "filter_name"} filters
+    - Could you possibly clear [target group]{"entity": "filter_name"} filtering
+    - Clear off [target group]{"entity": "filter_name"} filters
+    - May you remove [target group]{"entity": "filter_name"}
+    - Would it be possible for you to unmark [target group]{"entity": "filter_name"} filters
+    - Unselect [target group]{"entity": "filter_name"} filtering
+    - Get rid of [target group]{"entity": "filter_name"} features
+    - Would I be able to take [target group]{"entity": "filter_name"} off
+    - I'd like to clear off [target group]{"entity": "filter_name"}
 
 - intent: reset_all_filters
   examples: |
