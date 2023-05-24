@@ -1391,7 +1391,7 @@ responses:
 
 
   utter_tutorial_do_not_want:
-    - text: "Okay, I am here if need me 😊"
+    - text: "Okay, I am here if you need me 😊"
 
 
 #  utter_interactive_tutorial_one:
