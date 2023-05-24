@@ -208,6 +208,7 @@ intents:
 
 
 
+
 actions:
   - action_check_session_login
   - action_check_session_signup
@@ -1491,6 +1492,8 @@ responses:
   utter_which_node_and_edge:
     - text: "intent_node_edge_signal;highlight_accordion_button;Please choose a feature you want to highlight"
 
+  utter_download_user_interaction:
+    - text: "download_user_interaction;I downloaded your conversation please upload it to google forms"
 
   utter_download_user_interaction:
     - text: "download_user_interaction;I downloaded your conversation please upload it to google forms"
