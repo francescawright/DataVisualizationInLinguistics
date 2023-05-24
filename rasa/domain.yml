@@ -1275,7 +1275,9 @@ responses:
    To activate/deactivate the features:
    
     - Use the Highlight Colour features menu \ \n
-    - Ask me"
+    - Ask me \ \n
+    
+    I've shown you an example, zoom in to take a look"
       buttons:
         - title: "Next"
           payload: '/tutorial_targets'
@@ -1287,7 +1289,7 @@ responses:
                          - Target person \ \n
                          - None \ \n
 
-                         Activate/deactivate targets by: \ \n
+                         Activate/Deactivate targets: \ \n
                          
                          - Using the Targets menu \ \n
                          - Using the Select Node and Edge menu \ \n
@@ -1303,7 +1305,9 @@ responses:
 
     To activate/deactivate the features \ \n
     - Use the Select node and edge menu \ \n
-    - Ask me"
+    - Ask me \ \n
+    
+    I've shown you an example, zoom in to take a look"
 
 
       buttons:
