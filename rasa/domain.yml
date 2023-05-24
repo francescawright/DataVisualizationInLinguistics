@@ -638,7 +638,7 @@ responses:
 
 
   utter_help_main_bar_one:
-    - text: "intent_signal_additional_graphs;chart_main_button;statistics_all_features_tree;Selected Comments Statistics shows you how many comments have the features selected in the Select Node and Edge menu. \ \n
+    - text: "intent_signal_additional_graphs;chart_main_button;statistics_all_features_tree;Selected Comments Statistics shows you overall numbers of features for comments you've selected using the Select Node and Edge menu. \ \n
     
     You can change the variables and graph type using the drop down menus. \ \n 
 
@@ -660,7 +660,7 @@ responses:
     
     - Selected Comments and Level One comments are graphs showing overall numbers of features for comments \ \n
     
-    You can change the variables and graph type using the drop down menus.  \ \n
+    You can change the variables and graph type using the drop-down menus.  \ \n
   
     If you click variables on your graph, they will also be activated on the main interface \ \n
 
@@ -1175,7 +1175,7 @@ responses:
           - Asking me \ \n
           
           Statistics summary will also tell you how many targets there are in the current visualisation \ \n
-          You can also use the Selected Comments and Level One statistics options to look at targets"
+          You can also use the Selected Comments and Level One Statistics to look at targets"
 
   utter_target_person_definition:
     - text: "intent_targets_signal;targets_accordion_button;intent_node_edge_signal;highlight_accordion_button; All comments are tagged with the targets that they are directed at. Target Person refers to comments targeting a person. \ \n
@@ -1187,7 +1187,7 @@ responses:
           - Asking me \ \n
           
           Statistics summary will also tell you how many targets there are in the current visualisation \ \n
-          You can also use the Selected Comments and Level One statistics options to look at targets"
+          You can also use the Selected Comments and Level One Statistics to look at targets"
 
   utter_comment_level_definition:
     - text: "intent_signal_level_one_button;chart_sub_button;Comment levels refers to the relationship of the news article with its' comments. \ \n
@@ -1319,7 +1319,7 @@ responses:
           payload: '/tutorial_statistics'
 
   utter_tutorial_mode_statistics:
-    - text: " intent_tutorial_statistics_charts_signal;statistics_all_features_subtrees;Selected Comments Statistics shows you how many comments have the features selected in the Select Node and Edge menu. \ \n
+    - text: " intent_tutorial_statistics_charts_signal;statistics_all_features_subtrees;Selected Comments Statistics shows you overall numbers of features for comments selected using the Select Node and Edge menu. \ \n
 
               Level One Comments Statistics allows you to analyse the features of comments at level one and the comments in their threads. \ \n
 
@@ -1383,7 +1383,7 @@ responses:
     - text: "And the final part of this interface is me! \ \n
 
                   I’m here to: \ \n
-                  - Carry out actions \ \n
+                  - Change visualisation options \ \n
                   - Show you subtrees and answer basic statistics questions \ \n
                   - Offer you help  \ \n
                   Use this window or your microphone to talk to me 😄"
