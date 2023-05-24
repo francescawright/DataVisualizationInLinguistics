@@ -555,7 +555,7 @@ responses:
             payload: '/change_glyph_trivial{{"object_requested":"glyph","glyph_requested":"trivial"}}'
 
   utter_explain_targets_one:
-     - text: "intent_targets_signal;targets_accordion_button;intent_node_edge_signal;All comments are tagged with the targets that they are directed at:
+     - text: "intent_targets_signal;targets_accordion_button;All comments are tagged with the targets that they are directed at:
      
      - Target group \ \n
      - Target person \ \n
@@ -564,13 +564,13 @@ responses:
      Summary will also tell you how many targets there are in the current visualisation"
 
   utter_explain_targets_two:
-    - text: "intent_targets_signal;targets_accordion_button;intent_node_edge_signal; You can activate/deactivate targets: \ \n
+    - text: "You can activate/deactivate targets: \ \n
                      - From the Targets menu \ \n
                      - From the Select Node and Edge menu \ \n
                      - Asking me"
 
   utter_explain_features_tab:
-    - text: "intent_features_signal;features_accordion_button;Highlight colour features shows tagged features different colours in Glyphs  \ \n
+    - text: "intent_glyphs_blinking;glyphs-radio-buttons;Highlight colour features shows tagged features different colours in Glyphs  \ \n
 
         Activate/deactivate colour features: \ \n
         - From the Highlight colour features menu \ \n
@@ -1153,7 +1153,7 @@ responses:
       image: "https://ecemkavaz.github.io/imagesRasa/CommentID5.png"
 
   utter_argumentation_definition:
-    - text: "intent_features_definition_signals,Argumentation indicates that the comment gives arguments or reasoned explanations or grounds opinions with evidences. \ \n
+    - text: "intent_features_definition_signals;Argumentation indicates that the comment gives arguments or reasoned explanations or grounds opinions with evidences. \ \n
     
     [Read more](https://dspace5.zcu.cz/handle/11025/45010)"
 
@@ -1178,7 +1178,7 @@ responses:
           You can also use the Selected Comments and Level One statistics options to look at targets"
 
   utter_target_person_definition:
-    - text: "intent_targets_signal;targets_accordion_button;intent_node_edge_signal;highlight_accordion_button; All comments are tagged with the targets that they are directed at. Target Person refers to comments targeting a person. \ \n
+    - text: "intent_targets_signal;targets_accordion_button;All comments are tagged with the targets that they are directed at. Target Person refers to comments targeting a person. \ \n
 
          You can activate/deactivate targets: \ \n
 
@@ -1270,7 +1270,7 @@ responses:
           payload: '/tutorial_glyphs'
 
   utter_tutorial_mode_glyphs:
-    - text: "intent_glyphs_blinking;glyphs-radio-buttons;Glyphs are designs that show you features as a colour. \ \n
+    - text: "intent_glyphs_blinking_tutorial;Glyphs are designs that show you features as a colour. \ \n
     
    To activate/deactivate the features:
    
@@ -1299,7 +1299,7 @@ responses:
           payload: '/tutorial_node_and_edge'
 
   utter_tutorial_mode_select_node_edge:
-    - text: "intent_node_edge_signal;highlight_accordion_button;Select Node and Edge will select comments with features you've selected \ \n
+    - text: "intent_node_edge_signal_tutorial;Select Node and Edge will select comments with features you've selected \ \n
 
     To activate/deactivate the features \ \n
     - Use the Select node and edge menu \ \n
@@ -1311,7 +1311,7 @@ responses:
           payload: '/tutorial_statistics_introduction'
 
   utter_tutorial_mode_statistics_introduction:
-    - text: "After you have chosen the features you want to analyse, you can look at Statistics. \ \n
+    - text: "intent_statistics_signal_tutorial_intro;After you have chosen the features you want to analyse, you can look at Statistics. \ \n
     
     Statistics summary gives you a breakdown of the levels of toxicity and targets in the current visualisation. When you select filters, my answer changes"
       buttons:
@@ -1319,7 +1319,7 @@ responses:
           payload: '/tutorial_statistics'
 
   utter_tutorial_mode_statistics:
-    - text: " intent_tutorial_statistics_charts_signal;statistics_all_features_subtrees;Selected Comments Statistics shows you how many comments have the features selected in the Select Node and Edge menu. \ \n
+    - text: "intent_tutorial_statistics_charts_signal;statistics_all_features_subtrees;Selected Comments Statistics shows you how many comments have the features selected in the Select Node and Edge menu. \ \n
 
               Level One Comments Statistics allows you to analyse the features of comments at level one and the comments in their threads. \ \n
 
