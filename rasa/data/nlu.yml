@@ -1072,6 +1072,7 @@ nlu:
     - Turn them off
     - Deactivate them
     - Deactivate it
+    - Clear the filter
 
 - synonym: positive stance
   examples: |
@@ -1612,7 +1613,7 @@ nlu:
     - Can I analyse a small section of my data?
     - Is it possible to look at smaller regions of my data?
     - Learn more statistics questions
-    - Learn more subtrees
+
 #could you remind me of the basic statistics options- yes
 #what were the questions i can ask you- yes
 

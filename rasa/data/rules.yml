@@ -737,12 +737,12 @@ rules:
     - intent: download_user_interaction
     - action: utter_download_user_interaction
 
-- rule:
+- rule: highlight select menus
   steps:
     - intent: help_highlight_select_menus
     - action: utter_help_highlight_select_menus
 
-- rule:
+- rule: reminder help
   steps:
     - intent: reminder_help
     - action: utter_reminder_help

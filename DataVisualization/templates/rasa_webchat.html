@@ -841,6 +841,48 @@
 
                     }
                     break;
+                case "intent_glyphs_blinking_tutorial":
+                    if ('{{ selected_item }}') {
+                        $("#glyphs-radio-buttons .border").css({
+                            "border-style": "solid",
+                            "box-shadow": "0 0 20px 5px rgba(51, 217, 178, 1)",
+                            "opacity": "1",
+                            "animation": "pulse-green 1.2s infinite"
+                        });
+                        setTimeout(function () {
+                            $("#glyphs-radio-buttons .border").css({
+                                "border-style": "",
+                                "box-shadow": "",
+                                "opacity": "0",
+                                "animation": ""
+
+                            });
+                        }, 8000);
+                        e.text = messageList[1];
+
+                        $("#features_accordion_button").css({
+                            "width": "calc(100% + 5px)",
+                            "height": "calc(100% + -18px)",
+                            "border": "10px solid #33FF66",
+                            "border-radius": "10px",
+                            "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                            "animation": "pulse-green-side-bar 1.3s infinite"
+                        });
+                        setTimeout(function () {
+                            $("#features_accordion_button").css({
+                                "width": "",
+                                "height": "",
+                                "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
+                                "animation": ""
+                            });
+                        }, 8000);
+                        document.getElementById("constructiveness").click();
+                        document.getElementById("argumentation").click();
+
+                    }
+                    break;
                 case "intent_layouts_signal":
                     if ('{{ selected_item }}'){
                         if (messageList[1]==="layouts-radio-buttons"){
@@ -930,33 +972,33 @@
 
                     }
                     break;
-                case "intent_features_signal":
-                    if ('{{ selected_item }}'){
-                        if (messageList[1]==="features_accordion_button"){
-                            $("#features_accordion_button").css({
-                                "width": "calc(100% + 5px)",
-                                "height": "calc(100% + -18px)",
-                                "border": "10px solid #33FF66",
-                                "border-radius": "10px",
-                                "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
-                                "animation": "pulse-green-side-bar 1.3s infinite"
-                            });
-                            setTimeout(function () {
-                                $("#features_accordion_button").css({
-                                    "width": "",
-                                    "height": "",
-                                    "border": "",
-                                    "border-radius": "",
-                                    "box-shadow": "",
-                                    "animation": ""
-                                });
-                            }, 6000);
-                            e.text =  messageList[2];
-
-                        }
-
-                    }
-                    break;
+                {#case "intent_features_signal":#}
+                {#    if ('{{ selected_item }}'){#}
+                {#        if (messageList[1]==="features_accordion_button"){#}
+                {#            $("#features_accordion_button").css({#}
+                {#                "width": "calc(100% + 5px)",#}
+                {#                "height": "calc(100% + -18px)",#}
+                {#                "border": "10px solid #33FF66",#}
+                {#                "border-radius": "10px",#}
+                {#                "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",#}
+                {#                "animation": "pulse-green-side-bar 1.3s infinite"#}
+                {#            });#}
+                {#            setTimeout(function () {#}
+                {#                $("#features_accordion_button").css({#}
+                {#                    "width": "",#}
+                {#                    "height": "",#}
+                {#                    "border": "",#}
+                {#                    "border-radius": "",#}
+                {#                    "box-shadow": "",#}
+                {#                    "animation": ""#}
+                {#                });#}
+                {#            }, 6000);#}
+                {#            e.text =  messageList[2];#}
+                {##}
+                {#        }#}
+                {##}
+                {#    }#}
+                {#    break;#}
                 case "intent_node_edge_signal":
                     if ('{{ selected_item }}'){
                         if (messageList[1]==="highlight_accordion_button"){
@@ -982,6 +1024,34 @@
 
 
                         }
+
+                    }
+                    break;
+                case "intent_node_edge_signal_tutorial":
+                    if ('{{ selected_item }}') {
+                        $("#highlight_accordion_button").css({
+                            "width": "calc(100% + 5px)",
+                            "height": "calc(100% + -18px)",
+                            "border": "10px solid #33FF66",
+                            "border-radius": "10px",
+                            "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                            "animation": "pulse-green-side-bar 1.3s infinite"
+                        });
+                        setTimeout(function () {
+                            $("#highlight_accordion_button").css({
+                                "width": "",
+                                "height": "",
+                                "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
+                                "animation": ""
+                            });
+                        }, 6000);
+                        document.getElementById("constructiveness").click();
+                        document.getElementById("argumentation").click();
+                        document.getElementById("highlight-toxicity-1").click();
+                        e.text = messageList[1];
+
 
                     }
                     break;
@@ -1090,6 +1160,47 @@
                         e.text = messageList[1]
                     }
                     break;
+                case "intent_statistics_signal_tutorial_intro":
+                    if ('{{ selected_item }}') {
+                        $("#statistics-bar").css({
+                            "border": "10px solid #33FF66",
+                            "border-radius": "10px",
+                            "height": "210px",
+                            "padding-right": "25px",
+                            "animation": "pulse-green-side-bar 1.3s infinite"
+                        });
+                        setTimeout(function () {
+                            $("#statistics-bar").css({
+                                "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
+                                "height": "",
+                                "padding-right": "",
+                                "animation": ""
+                            });
+                        }, 6000);
+                        $("#highlight_accordion_button").css({
+                            "width": "calc(100% + 5px)",
+                            "height": "calc(100% + -18px)",
+                            "border": "10px solid #33FF66",
+                            "border-radius": "10px",
+                            "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                            "animation": "pulse-green-side-bar 1.3s infinite"
+                        });
+                        setTimeout(function () {
+                            $("#highlight_accordion_button").css({
+                                "width": "",
+                                "height": "",
+                                "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
+                                "animation": ""
+                            });
+                        }, 6000);
+                        e.text = messageList[1]
+                        document.getElementById("highlight-toxicity-1").click();
+                    }
+                    break;
                 case "intent_subtrees_signal":
                     if ('{{ selected_item }}') {
                         $("#subtrees-btn").css({
@@ -1111,23 +1222,42 @@
                     break;
                 case "intent_tutorial_statistics_charts_signal":
                     if ('{{ selected_item }}') {
-                        $("#statistics-bar").css({
-                            "border": "10px solid #33FF66",
-                            "border-radius": "10px",
-                            "height": "210px",
-                            "padding-right": "25px",
-                            "animation": "pulse-green-side-bar 1.3s infinite"
-                         });
-                        setTimeout(function () {
-                            $("#statistics-bar").css({
-                                "border": "",
-                                "border-radius": "",
-                                "box-shadow": "",
-                                "height": "",
-                                "padding-right": "",
-                                "animation": ""
+                        $("#chart_main_button").css({
+                                "width": "130px",
+                                "height": "calc(100% + -10px)",
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "box-shadow": "5px -5px 10px 5px rgba(51, 217, 178, 1)",
+                                "animation": "pulse-green-side-bar 1.3s infinite"
                             });
-                         }, 6000);
+                            setTimeout(function () {
+                                $("#chart_main_button").css({
+                                    "width": "",
+                                    "height": "",
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "animation": ""
+                                });
+                            }, 6000);
+                        $("#chart_sub_button").css({
+                                "width": "130px",
+                                "height": "calc(100% + -10px)",
+                                "border": "10px solid #33FF66",
+                                "border-radius": "10px",
+                                "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                                "animation": "pulse-green-side-bar 1.3s infinite"
+                            });
+                            setTimeout(function () {
+                                $("#chart_sub_button").css({
+                                    "width": "",
+                                    "height": "",
+                                    "border": "",
+                                    "border-radius": "",
+                                    "box-shadow": "",
+                                    "animation": ""
+                                });
+                            }, 6000);
                         $(window).trigger(messageList[1]);
                         $("#select-chart-sub-data-modal, #select-chart-sub-type-modal").css({
                             "width": "auto",
@@ -1147,26 +1277,24 @@
                                 "animation": ""
                             });
                         }, 6000);
-                        $("#chart_main_button").css({
-                            "height": "auto",
-                            "border": "5px solid #33FF66",
+                        $("#highlight_accordion_button").css({
+                            "width": "calc(100% + 5px)",
+                            "height": "calc(100% + -18px)",
+                            "border": "10px solid #33FF66",
+                            "border-radius": "10px",
+                            "box-shadow": "0 -100px 10px 5px rgba(51, 217, 178, 1)",
+                            "animation": "pulse-green-side-bar 1.3s infinite"
                         });
                         setTimeout(function () {
-                            $("#chart_main_button").css({
+                            $("#highlight_accordion_button").css({
+                                "width": "",
                                 "height": "",
                                 "border": "",
+                                "border-radius": "",
+                                "box-shadow": "",
+                                "animation": ""
                             });
                         }, 6000);
-                        $("#chart_sub_button").css({
-                            "height": "auto",
-                            "border": "5px solid #33FF66",
-                         });
-                        setTimeout(function () {
-                            $("#chart_sub_button").css({
-                                "height": "",
-                                "border": ""
-                            });
-                         }, 6000);
                         e.text = messageList[2]
                     }
                      break;
