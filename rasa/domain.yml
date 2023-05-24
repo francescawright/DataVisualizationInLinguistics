@@ -1310,6 +1310,7 @@ responses:
         - title: "Next"
           payload: '/tutorial_statistics_introduction'
 
+
   utter_tutorial_mode_statistics_introduction:
     - text: "After you have chosen the features you want to analyse, you can look at Statistics. \ \n
     
