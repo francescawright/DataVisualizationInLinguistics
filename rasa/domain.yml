@@ -1325,7 +1325,7 @@ responses:
 
   utter_tutorial_mode_statistics:
 
-    - text: " intent_tutorial_statistics_charts_signal;statistics_all_features_subtrees;Selected Comments Statistics shows you overall numbers of features for comments selected using the Select Node and Edge menu. \ \n
+    - text: "intent_tutorial_statistics_charts_signal;statistics_all_features_subtrees;Selected Comments Statistics shows you overall numbers of features for comments selected using the Select Node and Edge menu. \ \n
     
               Level One Comments Statistics allows you to analyse the features of comments at level one and the comments in their threads. \ \n
 
@@ -1396,7 +1396,7 @@ responses:
 
 
   utter_tutorial_do_not_want:
-    - text: "Okay, I am here if need me 😊"
+    - text: "Okay, I am here if you need me 😊"
 
 
 #  utter_interactive_tutorial_one:
