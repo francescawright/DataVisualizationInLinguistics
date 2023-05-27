@@ -1,7 +1,7 @@
 var N = 25;
 var L = 4;
 var GFcomp = 0.25;
-var GFelon = 2;
+var GFelon = 2.8;
 var d_lvl = 6;
 var tol = 0.15;
 
