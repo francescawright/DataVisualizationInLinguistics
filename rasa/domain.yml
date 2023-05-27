@@ -1392,7 +1392,10 @@ responses:
                   - Change visualisation options / Select filters \ \n
                   - Show you subtrees and answer basic statistics questions \ \n
                   - Offer you help  \ \n
-                  Use this window or your microphone to talk to me 😄"
+                  
+                   Use this window or your microphone to talk to me 😄 \ \n
+                   
+                   P.S. Think about what I have told you I can do, and ask questions related to these things. That way, I can help you carry out your analysis step-by-step 😄 "
 
 
   utter_tutorial_do_not_want:
@@ -1400,8 +1403,9 @@ responses:
 
                             - Change visualisation options / Select filters \ \n
                             - Show you subtrees and answer basic statistics questions \ \n
-                            - Offer you help or a tutorial  \ \n"
-
+                            - Offer you help or a tutorial  \ \n
+                            
+    P.S. Think about what I have told you I can do, and ask questions related to these things. That way, I can help you carry out your analysis step-by-step 😄 "
 
 #  utter_interactive_tutorial_one:
 #    - text: "Here you have it in the main window. \ \n
