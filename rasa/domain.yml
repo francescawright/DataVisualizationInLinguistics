@@ -1400,12 +1400,12 @@ responses:
 
   utter_tutorial_do_not_want:
     - text: "Okay, remember I can: \ \n
-
                             - Change visualisation options / Select filters \ \n
                             - Show you subtrees and answer basic statistics questions \ \n
                             - Offer you help or a tutorial  \ \n
                             
     P.S. Think about what I have told you I can do, and ask questions related to these things. That way, I can help you carry out your analysis step-by-step 😄 "
+
 
 #  utter_interactive_tutorial_one:
 #    - text: "Here you have it in the main window. \ \n

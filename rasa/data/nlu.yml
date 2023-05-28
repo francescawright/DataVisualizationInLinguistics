@@ -2774,7 +2774,7 @@ nlu:
 - intent: reset_all_filters
   examples: |
     - I want to deselect all filters
-    - Could you remove all filters
+    - Could you remove all the filters
     - I was hoping you could reset all selected
     - Would you be able to undo all filters
     - Could you possibly disable all filters
@@ -2786,6 +2786,8 @@ nlu:
     - Go back to the beginning
     - Switch off filters
     - Uncheck all filters
+    - Reset all the filters
+    - Clear all the filters
 #clear the filters off the interface- yes
 # take the filters off the interface- yes
 #i'd like you to deactivate all filtering- yes

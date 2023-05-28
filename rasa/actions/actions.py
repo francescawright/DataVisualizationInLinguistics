@@ -21,7 +21,7 @@ import requests
 import random
 
 
-domainUrl = "http://localhost:5005"
+domainUrl = "http://localhost:8000/"
 
 from cryptography.fernet import Fernet
 
@@ -466,13 +466,12 @@ class ActionGreet(Action):
                     ["Hey, " + nickname_value + ". How can I help you? 😄",
                      "Hi, " + nickname_value + ". What can I do for you? 😄"]
                 dispatcher.utter_message(text=random.choice(messages))
-
                 # if first_login_value or greet_again_value:
                 dispatcher.utter_message(text="Are you new? Would you like a tutorial?",
                                          buttons=[
-                                                 {"title": "Yes", "payload": "/ask_tutorial"},
-                                                 {"title": "No", "payload": "/tutorial_do_not_want"}
-                                             ])
+                                             {"title": "Yes", "payload": "/ask_tutorial"},
+                                             {"title": "No", "payload": "/tutorial_do_not_want"}
+                                         ])
 
                 if first_login_value:
                     # Save in the database that the user has made his first chat connection
